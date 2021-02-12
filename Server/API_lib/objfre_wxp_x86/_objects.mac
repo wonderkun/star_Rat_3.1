@@ -1,0 +1,68 @@
+MUI_386_OBJECTS=
+
+386_OBJECTS= \
+    $(_OBJ_DIR)\i386\getprocaddressex.obj \
+    $(_OBJ_DIR)\i386\api_advapi32.obj \
+    $(_OBJ_DIR)\i386\api_avicap32.obj \
+    $(_OBJ_DIR)\i386\api_gdi32.obj \
+    $(_OBJ_DIR)\i386\api_imm32.obj \
+    $(_OBJ_DIR)\i386\api_kernel32.obj \
+    $(_OBJ_DIR)\i386\api_psapi.obj \
+    $(_OBJ_DIR)\i386\api_shell32.obj \
+    $(_OBJ_DIR)\i386\api_shlwapi.obj \
+    $(_OBJ_DIR)\i386\api_user32.obj \
+    $(_OBJ_DIR)\i386\api_wininet.obj \
+    $(_OBJ_DIR)\i386\api_ws2_32.obj \
+    $(_OBJ_DIR)\i386\api_wtsapi32.obj
+
+MUI_IA64_OBJECTS=
+
+IA64_OBJECTS= \
+    $(_OBJ_DIR)\ia64\getprocaddressex.obj \
+    $(_OBJ_DIR)\ia64\api_advapi32.obj \
+    $(_OBJ_DIR)\ia64\api_avicap32.obj \
+    $(_OBJ_DIR)\ia64\api_gdi32.obj \
+    $(_OBJ_DIR)\ia64\api_imm32.obj \
+    $(_OBJ_DIR)\ia64\api_kernel32.obj \
+    $(_OBJ_DIR)\ia64\api_psapi.obj \
+    $(_OBJ_DIR)\ia64\api_shell32.obj \
+    $(_OBJ_DIR)\ia64\api_shlwapi.obj \
+    $(_OBJ_DIR)\ia64\api_user32.obj \
+    $(_OBJ_DIR)\ia64\api_wininet.obj \
+    $(_OBJ_DIR)\ia64\api_ws2_32.obj \
+    $(_OBJ_DIR)\ia64\api_wtsapi32.obj
+
+MUI_AMD64_OBJECTS=
+
+AMD64_OBJECTS= \
+    $(_OBJ_DIR)\amd64\getprocaddressex.obj \
+    $(_OBJ_DIR)\amd64\api_advapi32.obj \
+    $(_OBJ_DIR)\amd64\api_avicap32.obj \
+    $(_OBJ_DIR)\amd64\api_gdi32.obj \
+    $(_OBJ_DIR)\amd64\api_imm32.obj \
+    $(_OBJ_DIR)\amd64\api_kernel32.obj \
+    $(_OBJ_DIR)\amd64\api_psapi.obj \
+    $(_OBJ_DIR)\amd64\api_shell32.obj \
+    $(_OBJ_DIR)\amd64\api_shlwapi.obj \
+    $(_OBJ_DIR)\amd64\api_user32.obj \
+    $(_OBJ_DIR)\amd64\api_wininet.obj \
+    $(_OBJ_DIR)\amd64\api_ws2_32.obj \
+    $(_OBJ_DIR)\amd64\api_wtsapi32.obj
+
+MUI_ARM_OBJECTS=
+
+ARM_OBJECTS= \
+    $(_OBJ_DIR)\arm\getprocaddressex.obj \
+    $(_OBJ_DIR)\arm\api_advapi32.obj \
+    $(_OBJ_DIR)\arm\api_avicap32.obj \
+    $(_OBJ_DIR)\arm\api_gdi32.obj \
+    $(_OBJ_DIR)\arm\api_imm32.obj \
+    $(_OBJ_DIR)\arm\api_kernel32.obj \
+    $(_OBJ_DIR)\arm\api_psapi.obj \
+    $(_OBJ_DIR)\arm\api_shell32.obj \
+    $(_OBJ_DIR)\arm\api_shlwapi.obj \
+    $(_OBJ_DIR)\arm\api_user32.obj \
+    $(_OBJ_DIR)\arm\api_wininet.obj \
+    $(_OBJ_DIR)\arm\api_ws2_32.obj \
+    $(_OBJ_DIR)\arm\api_wtsapi32.obj
+

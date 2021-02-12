@@ -1,0 +1,163 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Client - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Release/Client.res" /d "NDEBUG" "C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\Client.rc"" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4A.tmp" with contents
+[
+/nologo /MT /w /W0 /GX /I "../common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fr"Release/" /Fp"Release/Client.pch" /YX"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\common\Audio.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\AudioDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\BmpToAvi.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\include\Buffer.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\Build.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ChangeGroup.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\Client.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ClientDoc.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ClientView.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\include\CpuUsage.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DDOSDrDos.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DDOSFlood.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DDOSFlood1.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DDOSWeb.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DDOSWeb1.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\DllDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\FileManagerDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\FileTransferModeDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\IniFile.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\InputDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\include\IOCPServer.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\KeyBoardDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\LogView.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\MainFrm.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\MemoryModule.c"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\PcView.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\RegDataDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\RegDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ScreenSpyDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\Setting.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\SEU_QQwry.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ShellDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\SysInfo.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\SystemDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\TrueColorToolBar.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\UpdateDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\WebCamDlg.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\common\XvidDec.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\ZXPortMap.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4A.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4B.tmp" with contents
+[
+/nologo /MT /w /W0 /GX /I "../common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fr"Release/" /Fp"Release/Client.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Administrator\桌面\StarRat_source+加自己后门的 【密码：ZZ】\StarRat_source+ziji\StarRat_source全部搞定好的源码 密码：ZZ\StarRat_source全部搞定好的辕马 密码：ZZ\Client\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4B.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4C.tmp" with contents
+[
+../common/zlib/zlib.lib ../common/libxvidcore.lib SHLWAPI.LIB nafxcw.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/Client.pdb" /machine:I386 /nodefaultlib:"msvcrt.lib" /out:"../Bin/Client.exe" 
+".\Release\Audio.obj"
+".\Release\AudioDlg.obj"
+".\Release\BmpToAvi.obj"
+".\Release\Buffer.obj"
+".\Release\Build.obj"
+".\Release\ChangeGroup.obj"
+".\Release\Client.obj"
+".\Release\ClientDoc.obj"
+".\Release\ClientView.obj"
+".\Release\CpuUsage.obj"
+".\Release\DDOSDrDos.obj"
+".\Release\DDOSFlood.obj"
+".\Release\DDOSFlood1.obj"
+".\Release\DDOSWeb.obj"
+".\Release\DDOSWeb1.obj"
+".\Release\DllDlg.obj"
+".\Release\FileManagerDlg.obj"
+".\Release\FileTransferModeDlg.obj"
+".\Release\IniFile.obj"
+".\Release\InputDlg.obj"
+".\Release\IOCPServer.obj"
+".\Release\KeyBoardDlg.obj"
+".\Release\LogView.obj"
+".\Release\MainFrm.obj"
+".\Release\MemoryModule.obj"
+".\Release\PcView.obj"
+".\Release\RegDataDlg.obj"
+".\Release\RegDlg.obj"
+".\Release\ScreenSpyDlg.obj"
+".\Release\Setting.obj"
+".\Release\SEU_QQwry.obj"
+".\Release\ShellDlg.obj"
+".\Release\StdAfx.obj"
+".\Release\SysInfo.obj"
+".\Release\SystemDlg.obj"
+".\Release\TrueColorToolBar.obj"
+".\Release\UpdateDlg.obj"
+".\Release\WebCamDlg.obj"
+".\Release\XvidDec.obj"
+".\Release\ZXPortMap.obj"
+".\Release\Client.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4C.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Automatically linking with ToolkitPro1501vc60S.lib
+Compiling...
+Audio.cpp
+AudioDlg.cpp
+Automatically linking with ToolkitPro1501vc60S.lib
+BmpToAvi.cpp
+Buffer.cpp
+Build.cpp
+ChangeGroup.cpp
+Client.cpp
+ClientDoc.cpp
+ClientView.cpp
+CpuUsage.cpp
+DDOSDrDos.cpp
+DDOSFlood.cpp
+DDOSFlood1.cpp
+DDOSWeb.cpp
+DDOSWeb1.cpp
+DllDlg.cpp
+FileManagerDlg.cpp
+FileTransferModeDlg.cpp
+IniFile.cpp
+InputDlg.cpp
+IOCPServer.cpp
+KeyBoardDlg.cpp
+LogView.cpp
+MainFrm.cpp
+MemoryModule.c
+PcView.cpp
+Automatically linking with ToolkitPro1501vc60S.lib
+RegDataDlg.cpp
+RegDlg.cpp
+ScreenSpyDlg.cpp
+Setting.cpp
+SEU_QQwry.cpp
+ShellDlg.cpp
+SysInfo.cpp
+SystemDlg.cpp
+TrueColorToolBar.cpp
+UpdateDlg.cpp
+WebCamDlg.cpp
+XvidDec.cpp
+ZXPortMap.cpp
+Linking...
+LINK : warning LNK4049: locally defined symbol "_malloc" imported
+LINK : warning LNK4049: locally defined symbol "_free" imported
+
+
+
+<h3>Results</h3>
+Client.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

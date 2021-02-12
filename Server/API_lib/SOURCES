@@ -1,0 +1,33 @@
+TARGETNAME=API_lib
+TARGETPATH=obj
+TARGETTYPE=LIBRARY
+
+# BUFFER_OVERFLOW_CHECKS=NTDLL
+
+USE_MSVCRT=1 
+# USE_LIBCMT=1
+# USE_STL=1
+# STL_VER=70
+# DLLENTRY=_DllMainCRTStartup
+
+MSC_OPTIMIZATION=/Oxs
+
+TARGETLIBS = $(SDK_LIB_PATH)\kernel32.lib \
+		$(SDK_LIB_PATH)\user32.lib \
+
+INCLUDES = $(INCLUDES); $(DDK_INC_PATH); $(SDK_INC_PATH); $(CRT_INC_PATH);
+INCLUDES = Include
+
+SOURCES =	GetProcAddressEx.cpp \
+		API_advapi32.cpp \
+		API_avicap32.cpp \
+		API_gdi32.cpp \
+		API_imm32.cpp \
+		API_kernel32.cpp \
+		API_psapi.cpp \
+		API_shell32.cpp \
+		API_shlwapi.cpp \
+		API_user32.cpp \
+		API_wininet.cpp \
+		API_ws2_32.cpp \
+		API_wtsapi32.cpp \

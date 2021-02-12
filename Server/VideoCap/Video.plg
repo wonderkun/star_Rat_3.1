@@ -1,0 +1,66 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Video - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD.tmp" with contents
+[
+/nologo /MT /GX /I "../../common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "Video_EXPORTS" /FR"Release/" /Fp"Release/Video.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\Dllcomment\Buffer.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\CaptureVideo.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\Dllcomment\ClientSocket.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\Dllcomment\Manager.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\Dllcomment\until.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\Video.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\VideoManager.cpp"
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\XvidEnc.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE.tmp" with contents
+[
+/nologo /MT /GX /I "../../common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "Video_EXPORTS" /FR"Release/" /Fp"Release/Video.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF.tmp" with contents
+[
+STRMBASE.lib libxvidcore.lib capture.lib kernel32.lib user32.lib gdi32.lib MSVCRT.lib /nologo /dll /incremental:no /pdb:"Release/BWebCam.pdb" /machine:I386 /nodefaultlib:"LIBC.lib" /out:"../../bin/Plugins/BWebCam.dll" /implib:"Release/BWebCam.lib" 
+".\Release\Buffer.obj"
+".\Release\CaptureVideo.obj"
+".\Release\ClientSocket.obj"
+".\Release\Manager.obj"
+".\Release\StdAfx.obj"
+".\Release\until.obj"
+".\Release\Video.obj"
+".\Release\VideoManager.obj"
+".\Release\XvidEnc.obj"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+Buffer.cpp
+CaptureVideo.cpp
+ClientSocket.cpp
+Manager.cpp
+until.cpp
+Video.cpp
+C:\Documents and Settings\Administrator\桌面\StarRat_source\StarRat_source\StarRat_source\Server\VideoCap\Video.cpp(13) : warning C4305: 'return' : truncation from 'const int' to 'bool'
+VideoManager.cpp
+XvidEnc.cpp
+Generating Code...
+Linking...
+   Creating library Release/BWebCam.lib and object Release/BWebCam.exp
+LINK : warning LNK4098: defaultlib "LIBCMT" conflicts with use of other libs; use /NODEFAULTLIB:library
+
+
+
+<h3>Results</h3>
+BWebCam.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
