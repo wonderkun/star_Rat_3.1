@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -44,18 +43,38 @@ XTP_IDC_EYEDROPPER       CURSOR  DISCARDABLE     "Controls/res/eyedropper.cur"
 //
 
 XTP_IDB_BTN_OUT          BITMAP  DISCARDABLE     "Controls/res/btn_out.bmp"
-XTP_IDB_LISTEDIT         BITMAP  DISCARDABLE     "Controls/res/btn_listedit.bmp"
-XTP_IDB_FONTTYPE         BITMAP  DISCARDABLE     "Controls/res/font.bmp"
-XTP_IDB_SCROLL_ARW       BITMAP  DISCARDABLE     "Controls/res/scroll.bmp"
-XTP_IDB_CHECKLISTBOX     BITMAP  FIXED IMPURE    "Controls/res/checklist.bmp"
-XTP_IDB_CHECKLISTBOX_3D  BITMAP  FIXED IMPURE    "Controls/res/checklist_3d.bmp"
-XTP_IDB_GLYPH           BITMAP  MOVEABLE PURE   "Controls/res/glyph.bmp"
-XTP_IDB_GLYPH_HOT       BITMAP  MOVEABLE PURE   "Controls/res/glyph_hot.bmp"
-XTP_IDR_TBAR_HDR         BITMAP  DISCARDABLE     "Controls/res/tbar_hdr.bmp"
-XTP_IDR_TBAR_OUT         BITMAP  DISCARDABLE     "Controls/res/tbar_out.bmp"
-XTP_IDR_TBAR_HEXEDIT     BITMAP  DISCARDABLE     "Controls/res/tbar_hex.bmp"
-XTP_IDB_BUTTONDROPDOWNGLYPH PNG DISCARDABLE     "Controls/res/ButtonDropDownGlyph.png"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// XAML
+//
+
+IDR_XAML_ICON_LIST_SYMBOL_ADD			RT_XAML		"Controls/res/xaml/list.symbol-add.xaml"
+IDR_XAML_ICON_LIST_SYMBOL_ARROW_DOWN	RT_XAML		"Controls/res/xaml/list.symbol-arrow-down.xaml"
+IDR_XAML_ICON_LIST_SYMBOL_ARROW_UP		RT_XAML		"Controls/res/xaml/list.symbol-arrow-up.xaml"
+IDR_XAML_ICON_LIST_SYMBOL_DELETE		RT_XAML		"Controls/res/xaml/list.symbol-delete.xaml"
+IDR_XAML_ICON_TASKDLG_ARROW_RIGHT		RT_XAML		"Controls/res/xaml/task.symbol-arrow-right.xaml"
+IDR_XAML_ICON_FONTCOMBO_FONTS			RT_XAML		"Controls/res/xaml/fontCombo.fonts.xaml"
+IDR_XAML_ICON_CHECKBOX_UNCHECKED		RT_XAML		"Controls/res/xaml/checkbox.unchecked.xaml"
+IDR_XAML_ICON_CHECKBOX_CHECKED			RT_XAML		"Controls/res/xaml/checkbox.checked.xaml"
+IDR_XAML_ICON_CHECKBOX_MIXED			RT_XAML		"Controls/res/xaml/checkbox.mixed.xaml"
+IDR_XAML_ICON_CHECKBOX3D_UNCHECKED		RT_XAML		"Controls/res/xaml/checkbox3d.unchecked.xaml"
+IDR_XAML_ICON_CHECKBOX3D_CHECKED		RT_XAML		"Controls/res/xaml/checkbox3d.checked.xaml"
+IDR_XAML_ICON_CHECKBOX3D_MIXED			RT_XAML		"Controls/res/xaml/checkbox3d.mixed.xaml"
+IDR_XAML_ICON_HEADERCTRL_CENTER			RT_XAML		"Controls/res/xaml/headerCtrl.paragraph-align-center.xaml"
+IDR_XAML_ICON_HEADERCTRL_LEFT			RT_XAML		"Controls/res/xaml/headerCtrl.paragraph-align-left.xaml"
+IDR_XAML_ICON_HEADERCTRL_RIGHT			RT_XAML		"Controls/res/xaml/headerCtrl.paragraph-align-right.xaml"
+IDR_XAML_ICON_HEADERCTRL_SORTAZ			RT_XAML		"Controls/res/xaml/headerCtrl.sort-az.xaml"
+IDR_XAML_ICON_HEADERCTRL_SORTZA			RT_XAML		"Controls/res/xaml/headerCtrl.sort-za.xaml"
+IDR_XAML_ICON_HEXEDIT_COPY				RT_XAML		"Controls/res/xaml/hexEdit.clipboard-copy-text.xaml"
+IDR_XAML_ICON_HEXEDIT_CUT				RT_XAML		"Controls/res/xaml/hexEdit.clipboard-cut.xaml"
+IDR_XAML_ICON_HEXEDIT_PASTE				RT_XAML		"Controls/res/xaml/hexEdit.clipboard-paste.xaml"
+IDR_XAML_ICON_HEXEDIT_UNDO				RT_XAML		"Controls/res/xaml/hexEdit.command-undo-2.xaml"
+IDR_XAML_ICON_HEXEDIT_CANCEL			RT_XAML		"Controls/res/xaml/hexEdit.symbol-cancel.xaml"
+IDR_XAML_ICON_OUTBAR_SMALL				RT_XAML		"Controls/res/xaml/outBar.view-small-icons.xaml"
+IDR_XAML_ICON_OUTBAR_LARGE				RT_XAML		"Controls/res/xaml/outBar.view-large-icons.xaml"
+IDR_XAML_ICON_CAPTION_CLOSE_1			RT_XAML		"Controls/res/xaml/caption.button.close1.xaml"
+IDR_XAML_ICON_CAPTION_CLOSE_2			RT_XAML		"Controls/res/xaml/caption.button.close2.xaml"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -69,6 +88,7 @@ XTP_IDI_TASKWARN        ICON    DISCARDABLE     "Controls/res/Warning.ico"
 XTP_IDI_TASKQUESTION    ICON    DISCARDABLE     "Controls/res/Question.ico"
 XTP_IDI_LIGHTBULB        PNG     DISCARDABLE     "Controls/res/LightBulb.png"
 XTP_IDI_EYEDROPPER       ICON    DISCARDABLE     "Controls/res/eyedropper.ico"
+XTP_IDS_ARROW			ICON	DISCARDABLE		"Controls/res/Arrow.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

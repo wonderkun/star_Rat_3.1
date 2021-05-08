@@ -1,7 +1,6 @@
 // XTComboBoxEx.h : interface for the CXTComboBoxEx class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTCOMBOBOXEX_H__)
-#define __XTCOMBOBOXEX_H__
+#	define __XTCOMBOBOXEX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -74,9 +75,9 @@ public:
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 	//{{AFX_CODEJOCK_PRIVATE
-#if _MSC_VER > 1200 //MFC 7.0
+#	if _MSC_VER > 1200 // MFC 7.0
 	using CComboBox::DeleteItem;
-#endif //MFC 7.0
+#	endif // MFC 7.0
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
@@ -121,8 +122,16 @@ public:
 	//     otherwise returns -1.
 	//-----------------------------------------------------------------------
 	int InsertItem(const COMBOBOXEXITEM* pCBItem);
-	int InsertItem(int iItem, UINT nStringID, int iIndent = 0, int iImage = 0, int iSelectedImage = 0, UINT mask = CBEIF_TEXT | CBEIF_IMAGE | CBEIF_SELECTEDIMAGE | CBEIF_INDENT);// <combine CXTComboBoxEx::InsertItem@const COMBOBOXEXITEM*>
-	int InsertItem(int iItem, LPCTSTR lpszItem, int iIndent = 0, int iImage = 0, int iSelectedImage = 0, UINT mask = CBEIF_TEXT | CBEIF_IMAGE | CBEIF_SELECTEDIMAGE | CBEIF_INDENT); // <combine CXTComboBoxEx::InsertItem@const COMBOBOXEXITEM*>
+	int InsertItem(int iItem, UINT nStringID, int iIndent = 0, int iImage = 0,
+				   int iSelectedImage = 0,
+				   UINT mask		  = CBEIF_TEXT | CBEIF_IMAGE | CBEIF_SELECTEDIMAGE
+							   | CBEIF_INDENT); // <combine CXTComboBoxEx::InsertItem@const
+												// COMBOBOXEXITEM*>
+	int InsertItem(int iItem, LPCTSTR lpszItem, int iIndent = 0, int iImage = 0,
+				   int iSelectedImage = 0,
+				   UINT mask		  = CBEIF_TEXT | CBEIF_IMAGE | CBEIF_SELECTEDIMAGE
+							   | CBEIF_INDENT); // <combine CXTComboBoxEx::InsertItem@const
+												// COMBOBOXEXITEM*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -213,50 +222,71 @@ public:
 	//-----------------------------------------------------------------------
 	CImageList* SetImageList(CImageList* pImageList);
 
-//{{AFX_CODEJOCK_PRIVATE
-	int Dir(UINT attr, LPCTSTR lpszWildCard);                // Un-supported base class member function.
-	int FindString(int nIndexStart, LPCTSTR lpszFind) const; // Un-supported base class member function.
-	int AddString(LPCTSTR lpszString);                       // Un-supported base class member function.
-	BOOL SetEditSel(int nStartChar, int nEndChar);           // Un-supported base class member function.
-	int InsertString(int nIndex, LPCTSTR lpszString);        // Un-supported base class member function.
-//}}AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
+	int Dir(UINT attr, LPCTSTR lpszWildCard); // Un-supported base class member function.
+	int FindString(int nIndexStart,
+				   LPCTSTR lpszFind) const;			  // Un-supported base class member function.
+	int AddString(LPCTSTR lpszString);				  // Un-supported base class member function.
+	BOOL SetEditSel(int nStartChar, int nEndChar);	// Un-supported base class member function.
+	int InsertString(int nIndex, LPCTSTR lpszString); // Un-supported base class member function.
+													  //}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTComboBoxEx::CXTComboBoxEx() {
-
+AFX_INLINE CXTComboBoxEx::CXTComboBoxEx()
+{
 }
-AFX_INLINE DWORD CXTComboBoxEx::GetExtendedStyle() const {
-	ASSERT(::IsWindow(m_hWnd)); return (BOOL) ::SendMessage(m_hWnd, CBEM_GETEXTENDEDSTYLE, 0, 0);
+AFX_INLINE DWORD CXTComboBoxEx::GetExtendedStyle() const
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (BOOL)::SendMessage(m_hWnd, CBEM_GETEXTENDEDSTYLE, 0, 0);
 }
-AFX_INLINE DWORD CXTComboBoxEx::SetExtendedStyle(DWORD dwExMask, DWORD dwExStyles) {
-	ASSERT(::IsWindow(m_hWnd)); return (DWORD) ::SendMessage(m_hWnd, CBEM_SETEXTENDEDSTYLE, (DWORD) dwExMask, (LPARAM) dwExStyles);
+AFX_INLINE DWORD CXTComboBoxEx::SetExtendedStyle(DWORD dwExMask, DWORD dwExStyles)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (DWORD)::SendMessage(m_hWnd, CBEM_SETEXTENDEDSTYLE, (DWORD)dwExMask, (LPARAM)dwExStyles);
 }
-AFX_INLINE BOOL CXTComboBoxEx::HasEditChanged() {
-	ASSERT(::IsWindow(m_hWnd)); return (BOOL) ::SendMessage(m_hWnd, CBEM_HASEDITCHANGED, 0, 0);
+AFX_INLINE BOOL CXTComboBoxEx::HasEditChanged()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (BOOL)::SendMessage(m_hWnd, CBEM_HASEDITCHANGED, 0, 0);
 }
-AFX_INLINE CEdit* CXTComboBoxEx::GetEditCtrl() {
-	ASSERT(::IsWindow(m_hWnd)); return (CEdit*) CEdit::FromHandle((HWND) ::SendMessage(m_hWnd, CBEM_GETEDITCONTROL, 0, 0));
+AFX_INLINE CEdit* CXTComboBoxEx::GetEditCtrl()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (CEdit*)CEdit::FromHandle((HWND)::SendMessage(m_hWnd, CBEM_GETEDITCONTROL, 0, 0));
 }
-AFX_INLINE CComboBox* CXTComboBoxEx::GetComboBoxCtrl() {
-	ASSERT(::IsWindow(m_hWnd)); return (CComboBox*) CComboBox::FromHandle((HWND) ::SendMessage(m_hWnd, CBEM_GETCOMBOCONTROL, 0, 0));
+AFX_INLINE CComboBox* CXTComboBoxEx::GetComboBoxCtrl()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (CComboBox*)CComboBox::FromHandle(
+		(HWND)::SendMessage(m_hWnd, CBEM_GETCOMBOCONTROL, 0, 0));
 }
-AFX_INLINE CImageList* CXTComboBoxEx::SetImageList(CImageList* pImageList) {
-	ASSERT(::IsWindow(m_hWnd)); return CImageList::FromHandle((HIMAGELIST) ::SendMessage(m_hWnd, CBEM_SETIMAGELIST, 0, (LPARAM)pImageList->GetSafeHandle()));
+AFX_INLINE CImageList* CXTComboBoxEx::SetImageList(CImageList* pImageList)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return CImageList::FromHandle((HIMAGELIST)::SendMessage(m_hWnd, CBEM_SETIMAGELIST, 0,
+															(LPARAM)pImageList->GetSafeHandle()));
 }
-AFX_INLINE CImageList* CXTComboBoxEx::GetImageList() const {
-	ASSERT(::IsWindow(m_hWnd)); return CImageList::FromHandle((HIMAGELIST) ::SendMessage(m_hWnd, CBEM_GETIMAGELIST, 0, 0));
+AFX_INLINE CImageList* CXTComboBoxEx::GetImageList() const
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return CImageList::FromHandle((HIMAGELIST)::SendMessage(m_hWnd, CBEM_GETIMAGELIST, 0, 0));
 }
-AFX_INLINE BOOL CXTComboBoxEx::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTComboBoxEx::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									  const RECT& rect, CWnd* pParentWnd, UINT nID,
+									  CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 //---------------------------------------------------------------------------
@@ -264,20 +294,30 @@ AFX_INLINE BOOL CXTComboBoxEx::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowN
 // CB_messages the underlying ComboBoxEx control doesn't support.
 //---------------------------------------------------------------------------
 
-AFX_INLINE int CXTComboBoxEx::Dir(UINT /*attr*/, LPCTSTR /*lpszWildCard*/) {
-	ASSERT(FALSE); return CB_ERR;
+AFX_INLINE int CXTComboBoxEx::Dir(UINT /*attr*/, LPCTSTR /*lpszWildCard*/)
+{
+	ASSERT(FALSE);
+	return CB_ERR;
 }
-AFX_INLINE int CXTComboBoxEx::FindString(int /*nIndexStart*/, LPCTSTR /*lpszFind*/) const {
-	ASSERT(FALSE); return CB_ERR;
+AFX_INLINE int CXTComboBoxEx::FindString(int /*nIndexStart*/, LPCTSTR /*lpszFind*/) const
+{
+	ASSERT(FALSE);
+	return CB_ERR;
 }
-AFX_INLINE int CXTComboBoxEx::AddString(LPCTSTR /*lpszString*/) {
-	ASSERT(FALSE); return CB_ERR;
+AFX_INLINE int CXTComboBoxEx::AddString(LPCTSTR /*lpszString*/)
+{
+	ASSERT(FALSE);
+	return CB_ERR;
 }
-AFX_INLINE BOOL CXTComboBoxEx::SetEditSel(int /*nStartChar*/, int /*nEndChar*/) {
+AFX_INLINE BOOL CXTComboBoxEx::SetEditSel(int /*nStartChar*/, int /*nEndChar*/)
+{
 	return FALSE;
 }
-AFX_INLINE int CXTComboBoxEx::InsertString(int /*nIndex*/, LPCTSTR /*lpszString*/) {
-	ASSERT(FALSE); return CB_ERR;
+AFX_INLINE int CXTComboBoxEx::InsertString(int /*nIndex*/, LPCTSTR /*lpszString*/)
+{
+	ASSERT(FALSE);
+	return CB_ERR;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTCOMBOBOXEX_H__)

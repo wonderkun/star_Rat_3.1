@@ -1,7 +1,6 @@
 // XTPControlPopup.h : interface for the CXTPControlPopup class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLPOPUP_H__)
-#define __XTPCONTROLPOPUP_H__
+#	define __XTPCONTROLPOPUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPControlButton.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCommandBar;
 class CXTPControls;
@@ -40,7 +39,6 @@ class CXTPControls;
 class _XTP_EXT_CLASS CXTPControlPopup : public CXTPControlButton
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlPopup object
@@ -58,7 +56,8 @@ public:
 	// Summary:
 	//     Creates a CXTPControlPopup object with the specified type.
 	// Parameters:
-	//     controlType - XTPControlType type of popup control. Can be any of the values listed in the Remarks section.
+	//     controlType - XTPControlType type of popup control. Can be any of the values listed in
+	//     the Remarks section.
 	// Remarks:
 	//     Popup type can be one of the following:
 	//         * <b>xtpControlPopup</b> Popup type.
@@ -68,7 +67,6 @@ public:
 	//     A pointer to a CXTPControlPopup object
 	//-----------------------------------------------------------------------
 	static CXTPControlPopup* AFX_CDECL CreateControlPopup(XTPControlType controlType);
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -96,6 +94,14 @@ public:
 	//     TRUE if the control is a popup.
 	//-----------------------------------------------------------------------
 	BOOL GetPopuped() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the control's caption.
+	// Returns:
+	//     The caption of the control.
+	//-----------------------------------------------------------------------
+	virtual CString GetCaption() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -130,7 +136,6 @@ public:
 	virtual void OnUnderlineActivate();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to check if pControlPopup contains in
@@ -233,7 +238,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -252,7 +258,6 @@ protected:
 	virtual void UpdateShadow();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called from LoadCommandBars
@@ -263,28 +268,46 @@ protected:
 	virtual void RestoreCommandBarList(CXTPCommandBarList* pCommandBarList);
 
 protected:
-	BOOL            m_bPopup;           // TRUE if popuped.
-	CXTPCommandBar* m_pCommandBar;      // Child popup bar.
-	DWORD           m_dwCommandBarID;   // Child popup id.
-	BOOL            m_bShowShadow;      // TRUE to show shadow
+	BOOL m_bPopup;				   // TRUE if popuped.
+	CXTPCommandBar* m_pCommandBar; // Child popup bar.
+	DWORD m_dwCommandBarID;		   // Child popup id.
+	BOOL m_bShowShadow;			   // TRUE to show shadow
 
 public:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlPopup);
+
+	afx_msg LPDISPATCH OleGetCommandBar();
+	afx_msg void OleSetCommandBar(LPDISPATCH lpCommandBar);
+	enum
+	{
+		dispidCommandBar = 50L,
+		dispidStyle		 = 51L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	DECLARE_XTP_CONTROL(CXTPControlPopup)
 	friend class CXTPControls;
 	friend class CXTPPopupBar;
 	friend class CXTPCommandBar;
-
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-
-AFX_INLINE CXTPCommandBar* CXTPControlPopup::GetCommandBar() const {
+AFX_INLINE CXTPCommandBar* CXTPControlPopup::GetCommandBar() const
+{
 	return m_pCommandBar;
 }
-AFX_INLINE BOOL CXTPControlPopup::GetPopuped() const{
+AFX_INLINE BOOL CXTPControlPopup::GetPopuped() const
+{
 	return m_bPopup;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCONTROLPOPUP_H__)

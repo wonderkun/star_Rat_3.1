@@ -512,3 +512,4 @@ inline Status Region::GetLastStatus() const
 }
 
 #endif // !_GDIPLUSREGION_H
+

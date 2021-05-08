@@ -1,7 +1,6 @@
 // XTPMDIWndTab.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMDIWNDTAB_H__)
-#define __XTPMDIWNDTAB_H__
+#	define __XTPMDIWNDTAB_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // forwards
 class CXTPMDIWndTab;
@@ -64,7 +65,7 @@ public:
 	void SetBorderGap(int iSize);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPMDIClientWnd)
@@ -76,21 +77,21 @@ protected:
 	afx_msg LRESULT OnMDIDestroy(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnMDIActivate(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int             m_iBorderGap; // Amount in pixels between the client and the tab control.
-	CXTPMDIWndTab*   m_pMDIWndTab; // Pointer to the MDI tab control.
+	int m_iBorderGap;			 // Amount in pixels between the client and the tab control.
+	CXTPMDIWndTab* m_pMDIWndTab; // Pointer to the MDI tab control.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPMDIClientWnd::SetBorderGap(int iBorderGap) {
+AFX_INLINE void CXTPMDIClientWnd::SetBorderGap(int iBorderGap)
+{
 	m_iBorderGap = iBorderGap;
 }
 
-DECLATE_TABCTRL_BASE(CXTPMDIWndTabBase, CTabCtrl, CXTPTabBase)
+DECLARE_TABCTRL_BASE(CXTPMDIWndTabBase, CTabCtrl, CXTPTabBase)
 
 // -------------------------------------------------------------------
 // Summary:
@@ -121,9 +122,9 @@ class _XTP_EXT_CLASS CXTPMDIWndTab : public CXTPMDIWndTabBase
 	// ----------------------------------------------------------------------
 	struct MDICHILD
 	{
-		int     iItem;      // Index of the item in the tab control.
-		HWND    hWnd;       // Window handle of the tab item.
-		CString strItem;    // Tab label.
+		int iItem;		 // Index of the item in the tab control.
+		HWND hWnd;		 // Window handle of the tab item.
+		CString strItem; // Tab label.
 	};
 
 	// ----------------------------------------------------------------------
@@ -163,7 +164,6 @@ class _XTP_EXT_CLASS CXTPMDIWndTab : public CXTPMDIWndTabBase
 	typedef CMap<HWND, HWND, CString, CString&> CStringMap;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPMDIWndTab object
@@ -177,7 +177,6 @@ public:
 	virtual ~CXTPMDIWndTab();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to set the icon for the tab item specified
@@ -204,7 +203,8 @@ public:
 	//     true if successful, otherwise returns false.
 	//-----------------------------------------------------------------------
 	bool SetTabLabel(int iIndex, CString& strLabel);
-	bool SetTabLabel(HWND hChildWnd, CString& strLabel); // <combine CXTPMDIWndTab::SetTabLabel@int@CString&>
+	bool SetTabLabel(HWND hChildWnd,
+					 CString& strLabel); // <combine CXTPMDIWndTab::SetTabLabel@int@CString&>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -216,7 +216,8 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL Install(CMDIFrameWnd* pMDIFrameWnd, DWORD dwStyle = TCS_BOTTOM | TCS_HOTTRACK, BOOL bNoIcons = TRUE);
+	virtual BOOL Install(CMDIFrameWnd* pMDIFrameWnd, DWORD dwStyle = TCS_BOTTOM | TCS_HOTTRACK,
+						 BOOL bNoIcons = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -284,7 +285,6 @@ public:
 	CString GetChildWndText(HWND hWnd) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPMDIWndTab class to
@@ -371,7 +371,7 @@ protected:
 	virtual void RecalcLayout(BOOL bDelayRecalc);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPMDIWndTab)
@@ -383,35 +383,40 @@ protected:
 	afx_msg void OnIdleUpdateCmdUI();
 	afx_msg void OnTabClose();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	int               m_iBorderGap;      // Amount in pixels between the client and the tab control.
-	int               m_iHitTest;        // Index of the tab that received a right click.
-	int               m_nPos;            // Index of the popup menu contained in the menu.
-	UINT              m_nDefCmd;         // Command ID of the default menu item for the popup menu.
-	UINT              m_popupMenuID;     // Popup menu resource ID.
-	HWND              m_hActiveChild;    // Active MDI child.
-	BOOL              m_bNoIcons;        // TRUE if no icons are used.
-	DWORD             m_dwInitSignature; // Initialization state signature to synch up posted init requests.
-	CImageList        m_imageList;       // Tab image list.
-	CMDIFrameWnd*     m_pMDIFrameWnd;    // Points to the owner frame.
-	CMDIChildList     m_arMDIChildern;   // Array of the MDI windows added to the tab control.
-	CXTPMDIClientWnd*  m_pMDIClientWnd;   // Window that receives messages on behalf of the MDI client.
-	CIconWndMap       m_mapTabIcons;     // Hash table that maps icons to the MDI child frame windows.
-	CStringMap        m_mapTabLabels;    // Hash table that maps labels to the MDI child frame windows.
+	int m_iBorderGap;		 // Amount in pixels between the client and the tab control.
+	int m_iHitTest;			 // Index of the tab that received a right click.
+	int m_nPos;				 // Index of the popup menu contained in the menu.
+	UINT m_nDefCmd;			 // Command ID of the default menu item for the popup menu.
+	UINT m_popupMenuID;		 // Popup menu resource ID.
+	HWND m_hActiveChild;	 // Active MDI child.
+	BOOL m_bNoIcons;		 // TRUE if no icons are used.
+	DWORD m_dwInitSignature; // Initialization state signature to synch up posted init requests.
+	CImageList m_imageList;  // Tab image list.
+	CMDIFrameWnd* m_pMDIFrameWnd;	  // Points to the owner frame.
+	CMDIChildList m_arMDIChildern;	 // Array of the MDI windows added to the tab control.
+	CXTPMDIClientWnd* m_pMDIClientWnd; // Window that receives messages on behalf of the MDI client.
+	CIconWndMap m_mapTabIcons;		   // Hash table that maps icons to the MDI child frame windows.
+	CStringMap m_mapTabLabels; // Hash table that maps labels to the MDI child frame windows.
 
 	friend class CXTPMDIClientWnd;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPMDIWndTab::SetMenuID(UINT popupMenuID, int nPos, UINT nDefCmd) {
-	m_popupMenuID = popupMenuID; m_nPos = nPos; m_nDefCmd = nDefCmd;
+AFX_INLINE void CXTPMDIWndTab::SetMenuID(UINT popupMenuID, int nPos, UINT nDefCmd)
+{
+	m_popupMenuID = popupMenuID;
+	m_nPos		  = nPos;
+	m_nDefCmd	 = nDefCmd;
 }
-AFX_INLINE void CXTPMDIWndTab::SetBorderGap(int iBorderGap) {
-	m_iBorderGap = iBorderGap; m_pMDIClientWnd->SetBorderGap(iBorderGap + ::GetSystemMetrics(SM_CXSIZEFRAME));
+AFX_INLINE void CXTPMDIWndTab::SetBorderGap(int iBorderGap)
+{
+	m_iBorderGap = iBorderGap;
+	m_pMDIClientWnd->SetBorderGap(iBorderGap + ::GetSystemMetrics(SM_CXSIZEFRAME));
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMDIWNDTAB_H__)

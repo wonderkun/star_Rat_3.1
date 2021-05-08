@@ -4,8 +4,7 @@
 // CaptureVideo.cpp: implementation of the CCaptureVideo class.
 //
 /////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-
+#include "pcl.h"
 #define STRSAFE_NO_DEPRECATE
 #include "CaptureVideo.h"
 // #ifdef _DEBUG
@@ -466,7 +465,8 @@ HRESULT CCaptureVideo::InitCaptureGraphBuilder()
   HRESULT hr;
 
   // 创建IGraphBuilder接口
-  hr=CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void **)&m_pGB);
+  hr=CoCreateInstance(
+	  CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void **)&m_pGB);
   // 创建ICaptureGraphBuilder2接口
   hr = CoCreateInstance (CLSID_CaptureGraphBuilder2 , NULL, CLSCTX_INPROC,
 						IID_ICaptureGraphBuilder2, (void **) &m_pCapture);

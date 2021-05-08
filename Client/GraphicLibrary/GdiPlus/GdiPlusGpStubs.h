@@ -105,3 +105,4 @@ typedef PathData GpPathData;
 
 #endif  // !_GDIPLUSGPSTUBS.HPP
 
+

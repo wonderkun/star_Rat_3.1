@@ -1,7 +1,6 @@
 // XTPResizeRect.h: interface for the CXTPResizeRect class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZERECT_H__)
-#define __XTPRESIZERECT_H__
+#	define __XTPRESIZERECT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -58,10 +59,10 @@ typedef float XTP_RESIZE;
 // ---------------------------------------------------------------------
 struct XTP_RESIZERECT
 {
-	XTP_RESIZE left;     // Specifies the x-coordinate of the upper-left corner of a rectangle.
-	XTP_RESIZE top;      // Specifies the y-coordinate of the upper-left corner of a rectangle.
-	XTP_RESIZE right;    // Specifies the x-coordinate of the lower-right corner of a rectangle.
-	XTP_RESIZE bottom;   // Specifies the y-coordinate of the lower-right corner of a rectangle.
+	XTP_RESIZE left;   // Specifies the x-coordinate of the upper-left corner of a rectangle.
+	XTP_RESIZE top;	// Specifies the y-coordinate of the upper-left corner of a rectangle.
+	XTP_RESIZE right;  // Specifies the x-coordinate of the lower-right corner of a rectangle.
+	XTP_RESIZE bottom; // Specifies the y-coordinate of the lower-right corner of a rectangle.
 };
 
 //===========================================================================
@@ -73,10 +74,9 @@ struct XTP_RESIZERECT
 // See Also:
 //     XTP_RESIZERECT, CXTPResizePoint, XTP_RESIZEPOINT, XTP_RESIZE
 //===========================================================================
-class _XTP_EXT_CLASS CXTPResizeRect: public XTP_RESIZERECT
+class _XTP_EXT_CLASS CXTPResizeRect : public XTP_RESIZERECT
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResizeRect object
@@ -90,9 +90,10 @@ public:
 	//     b - Specifies the bottom of CXTPResizeRect.
 	//-----------------------------------------------------------------------
 	CXTPResizeRect();
-	CXTPResizeRect(const RECT& rc); // <combine CXTPResizeRect::CXTPResizeRect>
+	CXTPResizeRect(const RECT& rc);			   // <combine CXTPResizeRect::CXTPResizeRect>
 	CXTPResizeRect(const XTP_RESIZERECT& rrc); // <combine CXTPResizeRect::CXTPResizeRect>
-	CXTPResizeRect(XTP_RESIZE l, XTP_RESIZE t, XTP_RESIZE r, XTP_RESIZE b); // <combine CXTPResizeRect::CXTPResizeRect>
+	CXTPResizeRect(XTP_RESIZE l, XTP_RESIZE t, XTP_RESIZE r,
+				   XTP_RESIZE b); // <combine CXTPResizeRect::CXTPResizeRect>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -147,7 +148,7 @@ public:
 	//     A CXTPResizeRect that is the intersection of CXTPResizeRect and 'rrc'. The
 	//     intersection is the largest rectangle that is contained in both rectangles.
 	//-----------------------------------------------------------------------
-	CXTPResizeRect operator & (const XTP_RESIZERECT& rrc);
+	CXTPResizeRect operator&(const XTP_RESIZERECT& rrc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -167,7 +168,7 @@ public:
 	// Returns:
 	//     false if equal, otherwise returns true.
 	//-----------------------------------------------------------------------
-	bool operator!= (const XTP_RESIZERECT& rrc);
+	bool operator!=(const XTP_RESIZERECT& rrc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -207,31 +208,40 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPResizeRect::CXTPResizeRect(const RECT& rc) {
+AFX_INLINE CXTPResizeRect::CXTPResizeRect(const RECT& rc)
+{
 	(operator=)(rc);
 }
-AFX_INLINE CXTPResizeRect::CXTPResizeRect(const XTP_RESIZERECT& rrc) {
+AFX_INLINE CXTPResizeRect::CXTPResizeRect(const XTP_RESIZERECT& rrc)
+{
 	(operator=)(rrc);
 }
-AFX_INLINE CXTPResizeRect CXTPResizeRect::operator+(const XTP_RESIZERECT& rrc) {
+AFX_INLINE CXTPResizeRect CXTPResizeRect::operator+(const XTP_RESIZERECT& rrc)
+{
 	return CXTPResizeRect(left + rrc.left, top + rrc.top, right + rrc.right, bottom + rrc.bottom);
 }
-AFX_INLINE bool CXTPResizeRect::IsNormalized() {
+AFX_INLINE bool CXTPResizeRect::IsNormalized()
+{
 	return ((left <= right) && (top <= bottom));
 }
-AFX_INLINE bool CXTPResizeRect::operator==(const XTP_RESIZERECT& rrc) {
+AFX_INLINE bool CXTPResizeRect::operator==(const XTP_RESIZERECT& rrc)
+{
 	return left == rrc.left && top == rrc.top && right == rrc.right && bottom == rrc.bottom;
 }
-AFX_INLINE bool CXTPResizeRect::operator!= (const XTP_RESIZERECT& rrc) {
+AFX_INLINE bool CXTPResizeRect::operator!=(const XTP_RESIZERECT& rrc)
+{
 	return !operator==(rrc);
 }
-AFX_INLINE CXTPResizeRect::operator CRect() {
+AFX_INLINE CXTPResizeRect::operator CRect()
+{
 	return CRect((int)left, (int)top, (int)right, (int)bottom);
 }
-AFX_INLINE XTP_RESIZE CXTPResizeRect::Width() {
+AFX_INLINE XTP_RESIZE CXTPResizeRect::Width()
+{
 	return right - left;
 }
-AFX_INLINE XTP_RESIZE CXTPResizeRect::Height() {
+AFX_INLINE XTP_RESIZE CXTPResizeRect::Height()
+{
 	return bottom - top;
 }
 
@@ -256,18 +266,20 @@ AFX_INLINE XTP_RESIZE CXTPResizeRect::Height() {
 // SetResize(ID_WIZLINE, XTP_ANCHOR_BOTTOMLEFT, XTP_ANCHOR_BOTTOMRIGHT);
 // </code>
 // See Also:
-//     CXTPResize, CXTPResizeDialog, CXTPResizeFormView, CXTPResizeGroupBox, CXTPResizePropertyPage, CXTPResizePropertySheet,  CXTPResizePoint, CXTPResizeRect
+//     CXTPResize, CXTPResizeDialog, CXTPResizeFormView, CXTPResizeGroupBox, CXTPResizePropertyPage,
+//     CXTPResizePropertySheet,  CXTPResizePoint, CXTPResizeRect
 //-----------------------------------------------------------------------
-#define XTP_ATTR_RESIZE(x)    CXTPResizeRect(0, 0, x, x)
+#	define XTP_ATTR_RESIZE(x) CXTPResizeRect(0, 0, x, x)
 // <COMBINE XTP_ATTR_RESIZE>
-#define XTP_ATTR_REPOS(x)     CXTPResizeRect(x, x, x, x)
+#	define XTP_ATTR_REPOS(x) CXTPResizeRect(x, x, x, x)
 // <COMBINE XTP_ATTR_RESIZE>
-#define XTP_ATTR_HORRESIZE(x) CXTPResizeRect(0, 0, x, 0)
+#	define XTP_ATTR_HORRESIZE(x) CXTPResizeRect(0, 0, x, 0)
 // <COMBINE XTP_ATTR_RESIZE>
-#define XTP_ATTR_HORREPOS(x)  CXTPResizeRect(x, 0, x, 0)
+#	define XTP_ATTR_HORREPOS(x) CXTPResizeRect(x, 0, x, 0)
 // <COMBINE XTP_ATTR_RESIZE>
-#define XTP_ATTR_VERRESIZE(x) CXTPResizeRect(0, 0, 0, x)
+#	define XTP_ATTR_VERRESIZE(x) CXTPResizeRect(0, 0, 0, x)
 // <COMBINE XTP_ATTR_RESIZE>
-#define XTP_ATTR_VERREPOS(x)  CXTPResizeRect(0, x, 0, x)
+#	define XTP_ATTR_VERREPOS(x) CXTPResizeRect(0, x, 0, x)
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZERECT_H__)

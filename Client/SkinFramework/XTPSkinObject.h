@@ -1,7 +1,6 @@
 // XTPSkinObject.h: interface for the CXTPSkinObject class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPSKINOBJECT_H__)
-#define _XTPSKINOBJECT_H__
+#	define _XTPSKINOBJECT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSkinManager;
 class CXTPSkinManagerClass;
 class CXTPSkinManagerMetrics;
 class CXTPSkinManagerSchema;
-
-#include "Common/XTPSystemHelpers.h"
-
 
 //{{AFX_CODEJOCK_PRIVATE
 // Internal enumerator
@@ -47,30 +45,33 @@ enum XTPSkinDefaultProc
 	xtpSkinDefaultDefDlgProc
 };
 
-class CXTPSkinObjectPaintDC : public CDC
+class _XTP_EXT_CLASS CXTPSkinObjectPaintDC : public CDC
 {
-
-// Constructors
+	// Constructors
 public:
 	CXTPSkinObjectPaintDC(CWnd* pWnd);
 	virtual ~CXTPSkinObjectPaintDC();
 
-// Attributes
+	// Attributes
 protected:
 	HWND m_hWnd;
+
 public:
 	PAINTSTRUCT m_ps;
 };
 //}}AFX_CODEJOCK_PRIVATE
-
 
 //===========================================================================
 // Summary:
 //     CXTPSkinObject is a CWnd derived class. It represents base class for all
 //     skinable windows.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinObject : public CWnd
+class _XTP_EXT_CLASS CXTPSkinObject
+	: public CWnd
+	, public CXTPSynchronized
 {
+	DECLARE_DYNAMIC(CXTPSkinObject);
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -168,13 +169,17 @@ protected:
 	// ---------------------------------------------------------------------
 	virtual void OnHookDetached(BOOL bAuto);
 
-//{{AFX_CODEJOCK_PRIVATE
+	BOOL IsDrawingEnabled(BOOL bForceUpdateStatus = FALSE) const;
+
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	UINT GetHeadMessage();
 
 protected:
+	virtual BOOL CheckDrawingEnabled();
 	virtual BOOL OnHookMessage(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
-	virtual BOOL OnHookDefWindowProc(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
+	virtual BOOL OnHookDefWindowProc(UINT nMessage, WPARAM& wParam, LPARAM& lParam,
+									 LRESULT& lResult);
 	void AttachHook(HWND hWnd, LPCREATESTRUCT lpcs, BOOL bAuto);
 	void UnattachHook(BOOL bAuto);
 	virtual void OnFinalRelease();
@@ -182,30 +187,35 @@ protected:
 	virtual BOOL IsDefWindowProcAvail(int nMessage) const;
 	virtual LRESULT DefWindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam);
 	virtual BOOL PreHookMessage(UINT nMessage);
-#ifdef _DEBUG
-	virtual void AssertValid() const {
+#	ifdef _DEBUG
+	virtual void AssertValid() const
+	{
 	}
-#endif
+#	endif
 	void SetWindowProc();
 
-	void OnBeginHook(UINT nMessage, XTPSkinDefaultProc defProc, PROC defProcAddr, LPVOID defProcPrevWndFunc);
+	void OnBeginHook(UINT nMessage, XTPSkinDefaultProc defProc, PROC defProcAddr,
+					 LPVOID defProcPrevWndFunc);
 	void OnEndHook();
-	LRESULT DoDefWindowProc (UINT nMsg, WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	LRESULT DoDefWindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam);
+
+	static CString AFX_CDECL GetWndClassTreePath(HWND hWnd, BOOL bPathOnly = FALSE);
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	static UINT m_nMsgQuerySkinState;
-	static UINT m_nMsgUpdateSkinState;
+	static const UINT m_nMsgQuerySkinState;
+	static const UINT m_nMsgUpdateSkinState;
+	static const UINT m_nMsgSkinChanged;
 
 protected:
-	WNDPROC m_pOldWndProc;          // Old window window handler
-	CXTPSkinManager* m_pManager;    // Parent CXTPSkinManager object
-	CString m_strClassName;         // Own class name
-	BOOL m_bActiveX;                // TRUE if ActiveX controls
-	BOOL m_bWindowsForms;            // TRUE if .NET controls
+	WNDPROC m_pOldWndProc;		 // Old window window handler
+	CXTPSkinManager* m_pManager; // Parent CXTPSkinManager object
+	CString m_strClassName;		 // Own class name
+	BOOL m_bActiveX;			 // TRUE if ActiveX controls
+	BOOL m_bWindowsForms;		 // TRUE if .NET controls
 	BOOL m_bCustomDraw;
 	BOOL m_bUnicode;
-	CXTPCriticalSection m_csDescriptors;
+	CRITICAL_SECTION m_csDescriptors;
 
 	BOOL m_bSystemWindowModule;
 	BOOL m_bWindowProcAttached;
@@ -222,18 +232,20 @@ private:
 		UINT nMessage;
 	};
 	CList<DEFWINDOW_DESCRIPTIOR, DEFWINDOW_DESCRIPTIOR&> m_arrDescriptors;
+	BOOL m_bDrawingEnabled;
 
 protected:
 	friend class CXTPSkinManager;
-	friend class CXTPSkinManagerApiHook;
+	friend class CXTPSkinManagerApiHookBase;
 	friend class CXTPSkinObjectClassInfoActiveX;
 };
-
 
 //{{AFX_CODEJOCK_PRIVATE
 class CXTPSkinObjectClassMap;
 
-class _XTP_EXT_CLASS CXTPSkinObjectClassInfo : public CCmdTarget
+class _XTP_EXT_CLASS CXTPSkinObjectClassInfo
+	: public CXTPCmdTarget
+	, public CXTPSynchronized
 {
 public:
 	CXTPSkinObjectClassInfo(CRuntimeClass* pClass);
@@ -258,7 +270,7 @@ public:
 	CXTPSkinObjectClassInfoActiveX(CRuntimeClass* pClass, BOOL bSysModule, BOOL bSetWindowProc)
 		: CXTPSkinObjectClassInfo(pClass)
 	{
-		m_bSysModule = bSysModule;
+		m_bSysModule	 = bSysModule;
 		m_bSetWindowProc = bSetWindowProc;
 	}
 
@@ -268,8 +280,10 @@ public:
 		if (pObject)
 		{
 			pObject->m_bActiveX = TRUE;
-			if (m_bSysModule) pObject->m_bSystemWindowModule = TRUE;
-			if (m_bSetWindowProc) pObject->m_bSetWindowProc = TRUE;
+			if (m_bSysModule)
+				pObject->m_bSystemWindowModule = TRUE;
+			if (m_bSetWindowProc)
+				pObject->m_bSetWindowProc = TRUE;
 		}
 		return pObject;
 	}
@@ -277,19 +291,20 @@ public:
 	BOOL m_bSetWindowProc;
 };
 
-
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
 // Summary:
-//     CXTPSkinObjectClassMap class is standalone class that help map windows controls to skin framework classes.
+//     CXTPSkinObjectClassMap class is standalone class that help map windows controls to skin
+//     framework classes.
 // Remarks:
-//     CXTPSkinManager class use this class to find what skin framework class need to apply to new window to skin it right
-//     For example, if new window created with class name "BUTTON", CXTPSkinObjectClassMap::Lookup will retrieve runtime class
-//     of CXTPSkinObjectButton to apply it to new window and skin it.
+//     CXTPSkinManager class use this class to find what skin framework class need to apply to new
+//     window to skin it right For example, if new window created with class name "BUTTON",
+//     CXTPSkinObjectClassMap::Lookup will retrieve runtime class of CXTPSkinObjectButton to apply
+//     it to new window and skin it.
 // See Also: CXTPSkinManager, CXTPSkinObject, CXTPSkinManager::GetClassMap
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinObjectClassMap
+class _XTP_EXT_CLASS CXTPSkinObjectClassMap : public CXTPSynchronized
 {
 public:
 	//-----------------------------------------------------------------------
@@ -309,7 +324,8 @@ public:
 	// Summary:
 	//     This method called by framework to add all standard window classes
 	// Remarks:
-	//     CXTPSkinManager call this method to add standard window classes like "BUTTON", "LISTBOX", "SCROLLBAR"
+	//     CXTPSkinManager call this method to add standard window classes like "BUTTON", "LISTBOX",
+	//     "SCROLLBAR"
 	//-----------------------------------------------------------------------
 	void AddStandardClasses();
 
@@ -321,7 +337,8 @@ public:
 	//     lpszClassName - Window class name
 	//     pInfo - descriptor of skin framework class
 	// Example:
-	//     <code>pClassMap->AddClass(_T("ListBox"), new CXTPSkinObjectClassInfo(RUNTIME_CLASS(CXTPSkinObjectListBox)));</code>
+	//     <code>pClassMap->AddClass(_T("ListBox"), new
+	//     CXTPSkinObjectClassInfo(RUNTIME_CLASS(CXTPSkinObjectListBox)));</code>
 	// See Also:
 	//     AddSynonymClass,  AddStandardClasses
 	//-----------------------------------------------------------------------
@@ -379,15 +396,17 @@ public:
 	CXTPSkinObjectClassInfo* Lookup(LPCTSTR lpszClassName);
 
 protected:
-	CMapStringToPtr m_mapInfo;  // General map
+	CMapStringToPtr m_mapInfo; // General map
 };
 
-
-AFX_INLINE CXTPSkinManager* CXTPSkinObject::GetSkinManager() const {
+AFX_INLINE CXTPSkinManager* CXTPSkinObject::GetSkinManager() const
+{
 	return m_pManager;
 }
-AFX_INLINE CString CXTPSkinObject::GetClassName() const {
+AFX_INLINE CString CXTPSkinObject::GetClassName() const
+{
 	return m_strClassName;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPSKINOBJECT_H__)

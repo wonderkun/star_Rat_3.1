@@ -1,7 +1,6 @@
 // XTPCalendarRecurrencePattern.h: interface for the CXTPCalendarRecurrencePattern class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,23 +19,25 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARRECURRENCEPATTERN_H__)
-#define _XTPCALENDARRECURRENCEPATTERN_H__
+#	define _XTPCALENDARRECURRENCEPATTERN_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-/////////////////////////////////////////////////////////////////////////////
-#include "XTPCalendarDefines.h"
-#include "XTPCalendarEvent.h"
-#include "XTPCalendarPtrs.h"
-#include "XTPCalendarEvents.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+////////////////////////////////////////////////////////////////////////////
 class CXTPCalendarData;
+class CXTPCalendarEvent;
+class CXTPCalendarEvents;
 class CXTPPropExchange;
 class CXTPCalendarCustomProperties;
 
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvent)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvents)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarRecurrencePattern)
 
 //===========================================================================
 // Summary:
@@ -46,7 +47,6 @@ class CXTPCalendarCustomProperties;
 class _XTP_EXT_CLASS CXTPCalendarReminderForOccurrence
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -62,11 +62,11 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarReminderForOccurrence();
 
-	DATE    m_dtOccurrenceStartTime; // Start time of the described occurrence.
-	DATE    m_dtOccurrenceEndTime;   // End time of the described occurrence.
+	DATE m_dtOccurrenceStartTime; // Start time of the described occurrence.
+	DATE m_dtOccurrenceEndTime;   // End time of the described occurrence.
 
-	int     m_nbIsReminder;          // XTPEnumCalendarReminderForOccurrenceParameters
-	DATE    m_dtNextReminderTime_Snoozed; // Date/time of the next reminder event.
+	int m_nbIsReminder;				   // XTPEnumCalendarReminderForOccurrenceParameters
+	DATE m_dtNextReminderTime_Snoozed; // Date/time of the next reminder event.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -78,20 +78,19 @@ public:
 	// See Also:
 	//      CXTPCalendarReminderForOccurrence
 	//-----------------------------------------------------------------------
-	const CXTPCalendarReminderForOccurrence& operator=(const CXTPCalendarReminderForOccurrence& rSrc);
+	const CXTPCalendarReminderForOccurrence&
+		operator=(const CXTPCalendarReminderForOccurrence& rSrc);
 };
-
 
 //===========================================================================
 // Summary:
 //     This class implements a collection of CXTPCalendarReminderForOccurrence
 //     objects as well as some common operations on it.
 //===========================================================================
-class CXTPCalendarReminderForOccurrenceArray : public
-	CArray<CXTPCalendarReminderForOccurrence, const CXTPCalendarReminderForOccurrence&>
+class _XTP_EXT_CLASS CXTPCalendarReminderForOccurrenceArray
+	: public CArray<CXTPCalendarReminderForOccurrence, const CXTPCalendarReminderForOccurrence&>
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default collection constructor.
@@ -119,7 +118,7 @@ public:
 	//     or -1 if not found.
 	// See Also: Find()
 	//-----------------------------------------------------------------------
-	int Find(CXTPCalendarEvent* pOccEvent);
+	int Find(CXTPCalendarEvent* pOccEvent) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -132,7 +131,7 @@ public:
 	//     or -1 if not found.
 	// See Also: Find()
 	//-----------------------------------------------------------------------
-	int Find(DATE dtOccStartTime, DATE dtOccEndTime);
+	int Find(DATE dtOccStartTime, DATE dtOccEndTime) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -147,8 +146,7 @@ public:
 	// See Also:
 	//     UpdateOccIfNeedEx
 	//-----------------------------------------------------------------------
-	int UpdateOccIfNeed(CXTPCalendarEvent* pOccEvent,
-						CXTPCalendarRecurrencePattern* pPattern);
+	int UpdateOccIfNeed(CXTPCalendarEvent* pOccEvent, CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -164,9 +162,9 @@ public:
 	// See Also:
 	//     CXTPCalendarReminderForOccurrence overview, UpdateOccIfNeed
 	//-----------------------------------------------------------------------
-	static int UpdateOccIfNeedEx(CXTPCalendarEvent* pOccEvent,
-								 const CXTPCalendarReminderForOccurrence* pOccRmdData,
-								 CXTPCalendarRecurrencePattern* pPattern);
+	static int AFX_CDECL UpdateOccIfNeedEx(CXTPCalendarEvent* pOccEvent,
+										   const CXTPCalendarReminderForOccurrence* pOccRmdData,
+										   CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -207,10 +205,10 @@ public:
 	// See Also:
 	//     Save(), Load()
 	//-----------------------------------------------------------------------
-	static void ClearProperties(CXTPCalendarCustomProperties* pProps);
+	static void AFX_CDECL ClearProperties(CXTPCalendarCustomProperties* pProps);
 
 private:
-	static void _PropName(LPCTSTR pcszProp, int nIndex, CString& rstrPropNameI);
+	static void AFX_CDECL _PropName(LPCTSTR pcszProp, int nIndex, CString& rstrPropNameI);
 };
 
 //===========================================================================
@@ -235,9 +233,9 @@ public:
 	//=======================================================================
 	struct PATTERN_DAILY
 	{
-		BOOL    bEveryWeekDayOnly;  // Flag determines if the event occurs every week day.
-		int     nIntervalDays;      // Event occurs every nIntervalDays days
-		                            // beginning from a start date.
+		BOOL bEveryWeekDayOnly; // Flag determines if the event occurs every week day.
+		int nIntervalDays;		// Event occurs every nIntervalDays days
+								// beginning from a start date.
 	};
 	//=======================================================================
 	// Summary:
@@ -246,10 +244,9 @@ public:
 	struct PATTERN_WEEKLY
 	{
 		int nIntervalWeeks; // Event occurs every nIntervalWeeks with the
-		                    // first week beginning from a start date.
+							// first week beginning from a start date.
 		int nDayOfWeekMask; // Determines the days of the week when an event occurs.
-		                    // See Also: XTPCalendarWeekDay, XTPCalendarWeekDay_Masks.
-
+							// See Also: XTPCalendarWeekDay, XTPCalendarWeekDay_Masks.
 	};
 	//=======================================================================
 	// Summary:
@@ -257,10 +254,10 @@ public:
 	//=======================================================================
 	struct PATTERN_MONTHLY
 	{
-		int nIntervalMonths;// Event occurs every nIntervalMonths with the
-		                    // first month beginning from the start date.
-		int nDayOfMonth;    // Determines the day of the month when an event occurs.
-		                    // See Also: XTPCalendarWeek.
+		int nIntervalMonths; // Event occurs every nIntervalMonths with the
+							 // first month beginning from the start date.
+		int nDayOfMonth;	 // Determines the day of the month when an event occurs.
+							 // See Also: XTPCalendarWeek.
 	};
 	//=======================================================================
 	// Summary:
@@ -268,10 +265,10 @@ public:
 	//=======================================================================
 	struct PATTERN_MONTHNTH
 	{
-		int nIntervalMonths;// Event occurs every nIntervalMonths month
-		                    // beginning from start date.
-		int nWhichDay;      // Determines the day of the month or nth order of day.
-		int nWhichDayMask;  // Weekday code.
+		int nIntervalMonths; // Event occurs every nIntervalMonths month
+							 // beginning from start date.
+		int nWhichDay;		 // Determines the day of the month or nth order of day.
+		int nWhichDayMask;   // Weekday code.
 	};
 	//=======================================================================
 	// Summary:
@@ -279,8 +276,8 @@ public:
 	//=======================================================================
 	struct PATTERN_YEARLY
 	{
-		int nMonthOfYear;   // The month of every year that the event occurs on.
-		int nDayOfMonth;    // The day of month that the event occurs on.
+		int nMonthOfYear; // The month of every year that the event occurs on.
+		int nDayOfMonth;  // The day of month that the event occurs on.
 	};
 	//=======================================================================
 	// Summary:
@@ -288,19 +285,19 @@ public:
 	//=======================================================================
 	struct PATTERN_YEARNTH
 	{
-		int nWhichDay;      // Determines the day of the month or the nth order of the day.
-		int nWhichDayMask;  // Weekday code.
-		int nMonthOfYear;   // Month of the year.
+		int nWhichDay;	 // Determines the day of the month or the nth order of the day.
+		int nWhichDayMask; // Weekday code.
+		int nMonthOfYear;  // Month of the year.
 	};
 
-
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default class constructor.
 	//-----------------------------------------------------------------------
-	XTP_CALENDAR_RECURRENCE_OPTIONS() {
+	XTP_CALENDAR_RECURRENCE_OPTIONS()
+	{
 		memset(this, 0, sizeof(*this));
 	};
 
@@ -312,24 +309,25 @@ public:
 	// Returns:
 	//     This object reference.
 	// --------------------------
-	const XTP_CALENDAR_RECURRENCE_OPTIONS& operator=(const XTP_CALENDAR_RECURRENCE_OPTIONS& rSrc) {
+	const XTP_CALENDAR_RECURRENCE_OPTIONS& operator=(const XTP_CALENDAR_RECURRENCE_OPTIONS& rSrc)
+	{
 		memcpy(this, &rSrc, sizeof(*this));
 		return *this;
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	XTPCalendarEventRecurrenceType m_nRecurrenceType; // Recurrence type, See Also: XTPCalendarEventRecurrenceType.
+	XTPCalendarEventRecurrenceType m_nRecurrenceType; // Recurrence type, See Also:
+													  // XTPCalendarEventRecurrenceType.
 
 	// union stores active set of pattern parameters.
-	union
-	{
-		PATTERN_DAILY       m_Daily;    // Options for Daily Recurrence type.
-		PATTERN_WEEKLY      m_Weekly;   // Options for Weekly Recurrence type.
-		PATTERN_MONTHLY     m_Monthly;  // Options for Monthly Recurrence type.
-		PATTERN_MONTHNTH    m_MonthNth; // Options for MonthNth Recurrence type.
-		PATTERN_YEARLY      m_Yearly;   // Options for Yearly Recurrence type.
-		PATTERN_YEARNTH     m_YearNth;  // Options for YearNth Recurrence type.
+	union {
+		PATTERN_DAILY m_Daily;		 // Options for Daily Recurrence type.
+		PATTERN_WEEKLY m_Weekly;	 // Options for Weekly Recurrence type.
+		PATTERN_MONTHLY m_Monthly;   // Options for Monthly Recurrence type.
+		PATTERN_MONTHNTH m_MonthNth; // Options for MonthNth Recurrence type.
+		PATTERN_YEARLY m_Yearly;	 // Options for Yearly Recurrence type.
+		PATTERN_YEARNTH m_YearNth;   // Options for YearNth Recurrence type.
 	};
 
 	//-----------------------------------------------------------------------
@@ -345,7 +343,7 @@ public:
 	// See Also:
 	//     SetData()
 	//-----------------------------------------------------------------------
-	void GetData(long& rnData1, long& rnData2, long& rnData3, long& rnData4)
+	void GetData(long& rnData1, long& rnData2, long& rnData3, long& rnData4) const
 	{
 		rnData1 = m_nRecurrenceType;
 		rnData2 = m_YearNth.nWhichDay;
@@ -371,12 +369,11 @@ public:
 	{
 		ASSERT(nData1 >= 0 && nData1 <= 6); // just to check.
 
-		m_nRecurrenceType = (XTPCalendarEventRecurrenceType)nData1;
-		m_YearNth.nWhichDay = nData2;
+		m_nRecurrenceType		= (XTPCalendarEventRecurrenceType)nData1;
+		m_YearNth.nWhichDay		= nData2;
 		m_YearNth.nWhichDayMask = nData3;
-		m_YearNth.nMonthOfYear = nData4;
+		m_YearNth.nMonthOfYear  = nData4;
 	}
-
 };
 
 //===========================================================================
@@ -393,7 +390,6 @@ class _XTP_EXT_CLASS CXTPCalendarRecurrencePattern : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarRecurrencePattern)
 	//}}AFX_CODEJOCK_PRIVATE
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Protected pattern constructor.
@@ -403,8 +399,8 @@ protected:
 	//     ~CXTPCalendarEvent()
 	//-----------------------------------------------------------------------
 	CXTPCalendarRecurrencePattern(CXTPCalendarData* pDataProvider);
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default class destructor.
@@ -639,7 +635,7 @@ public:
 	// See Also: CDatesArray
 	//-----------------------------------------------------------------------
 	virtual void GetOccurrencesDates(CXTPCalendarDatesArray& rArDates, COleDateTime dtStart,
-									COleDateTime dtEnd) const;
+									 COleDateTime dtEnd) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -657,7 +653,7 @@ public:
 	// See Also: CXTPCalendarEvents, CXTPCalendarEvent
 	//-----------------------------------------------------------------------
 	virtual BOOL GetOccurrences(CXTPCalendarEvents* pEventsArray, COleDateTime dtStart,
-									COleDateTime dtEnd, CXTPCalendarEvent* pMasterEvent);
+								COleDateTime dtEnd, CXTPCalendarEvent* pMasterEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -722,7 +718,8 @@ public:
 	//     A BOOL. TRUE if the update is successful. FALSE otherwise.
 	// See Also: CXTPCalendarEvent, CXTPCalendarEvent
 	//-----------------------------------------------------------------------
-	virtual BOOL SetException(CXTPCalendarEvent* pException, CXTPCalendarEvent* pMasterEventToUpdate = NULL);
+	virtual BOOL SetException(CXTPCalendarEvent* pException,
+							  CXTPCalendarEvent* pMasterEventToUpdate = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -737,14 +734,17 @@ public:
 	//     TRUE is success; FALSE otherwise.
 	// See Also: CXTPCalendarEvent, CXTPCalendarEvent, RemoveAllExceptions()
 	//-----------------------------------------------------------------------
-	virtual BOOL RemoveException(CXTPCalendarEvent* pException, CXTPCalendarEvent* pMasterEventToUpdate = NULL);
+	virtual BOOL RemoveException(CXTPCalendarEvent* pException,
+								 CXTPCalendarEvent* pMasterEventToUpdate = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to remove all of the exceptions
 	//     from the master event.
-	// See Also: RemoveException(CXTPCalendarEvent* pException, CXTPCalendarEvent* pMasterEventToUpdate = NULL),
-	//           SetException(CXTPCalendarEvent* pException, CXTPCalendarEvent* pMasterEventToUpdate = NULL)
+	// See Also: RemoveException(CXTPCalendarEvent* pException, CXTPCalendarEvent*
+	// pMasterEventToUpdate = NULL),
+	//           SetException(CXTPCalendarEvent* pException, CXTPCalendarEvent* pMasterEventToUpdate
+	//           = NULL)
 	//-----------------------------------------------------------------------
 	virtual void RemoveAllExceptions();
 
@@ -779,10 +779,9 @@ public:
 	// See Also:
 	//      CXTPCalendarCustomProperties.
 	//-----------------------------------------------------------------------
-	CXTPCalendarCustomProperties* GetCustomProperties();
+	CXTPCalendarCustomProperties* GetCustomProperties() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to assign an ID to a pattern.
@@ -793,7 +792,8 @@ protected:
 	void SetPatternID(DWORD dwID);
 
 private:
-	void _GetOccurrenceStartEnd(const COleDateTime& dtOccStartDate, COleDateTime& rdtOccStart, COleDateTime& rdtOccEnd) const;
+	void _GetOccurrenceStartEnd(const COleDateTime& dtOccStartDate, COleDateTime& rdtOccStart,
+								COleDateTime& rdtOccEnd) const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -822,22 +822,24 @@ public:
 	//     If the exception event is not found, then the function returns NULL.
 	// See Also: CXTPCalendarEvent
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEvent* FindException(COleDateTime dtStartOrig, COleDateTime dtEndOrig) const;
+	virtual CXTPCalendarEvent* FindException(COleDateTime dtStartOrig,
+											 COleDateTime dtEndOrig) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to find an exception event by its
 	//     original start and end dates.
 	// Parameters:
-	//     pEvents - A CXTPCalendarEvents pointer that points to the collection of events to be found.
-	//     dtStart - A COleDateTime object that contains the start date of the search interval.
-	//     dtEnd   - A COleDateTime object that contains the end date of search interval.
+	//     pEvents - A CXTPCalendarEvents pointer that points to the collection of events to be
+	//     found. dtStart - A COleDateTime object that contains the start date of the search
+	//     interval. dtEnd   - A COleDateTime object that contains the end date of search interval.
 	// Returns:
 	//     A BOOL. The base class implementation alway returns TRUE.
 	//     This function should return TRUE if successful.  FALSE otherwise.
 	// See Also: CXTPCalendarEvents
 	//-----------------------------------------------------------------------
-	virtual BOOL FindExceptions(CXTPCalendarEvents* pEvents, COleDateTime dtStart, COleDateTime dtEnd) const;
+	virtual BOOL FindExceptions(CXTPCalendarEvents* pEvents, COleDateTime dtStart,
+								COleDateTime dtEnd) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -866,19 +868,18 @@ public:
 	//     XTPEnumCalendarReminderForoccurrenceParameters overview
 	//-----------------------------------------------------------------------
 	void SetOccReminder(CXTPCalendarEvent* pOccEvent,
-						int nbIsReminder = xtpCalendarRmdPrm_DontChange,
+						int nbIsReminder				= xtpCalendarRmdPrm_DontChange,
 						DATE dtNextReminderTime_Snoozed = xtpCalendarRmdPrm_DontChange);
 
-//  void ResetReminderForOccFromThePast(CXTPCalendarEvent* pMasterEvent);
-
+	//  void ResetReminderForOccFromThePast(CXTPCalendarEvent* pMasterEvent);
 
 private:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DWORD m_dwPatternID;
 	DWORD m_dwMasterEventID;
 
 	CXTPCalendarReminderForOccurrenceArray m_arOccReminders;
-	CXTPCalendarEvents  m_arExceptionEvents;
+	CXTPCalendarEvents* m_parExceptionEvents;
 	CXTPCalendarData* m_ptrDataProvider;
 
 	COleDateTime m_dtStartTime;
@@ -890,96 +891,119 @@ private:
 
 	XTP_CALENDAR_PATTERN_END m_PatternEnd;
 
-	CXTPCalendarCustomProperties* m_pCustomProperties; //Custom properties collection object.
-//}}AFX_CODEJOCK_PRIVATE
+	CXTPCalendarCustomProperties* m_pCustomProperties; // Custom properties collection object.
+													   //}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarRecurrencePattern);
+
+	afx_msg DATE OleGetStartTime();
+	afx_msg void OleSetStartTime(DATE dt);
+	DATE OleGetStartDate();
+	void OleSetStartDate(DATE dt);
+	DATE OleGetEndDate();
+	void OleSetEndDate(DATE dt);
+	long OleGetEndAfterOccurrences();
+	void OleSetEndAfterOccurrences(int nOccurrences);
+	LPDISPATCH OleGetMasterEvent();
+	LPDISPATCH OleGetOptions();
+	LPDISPATCH OleGetExceptions();
+	LPDISPATCH OleCustomProperties();
+
+	void OleSetException(LPDISPATCH pExcEventDisp);
+	void OleRemoveException(LPDISPATCH pExcEventDisp);
+	void OleRemoveAllExceptions();
+
+	long OleGetId();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 //===========================================================================
 
-
-
 /////////////////////////////////////////////////////////////////////////////
-AFX_INLINE DWORD CXTPCalendarRecurrencePattern::GetPatternID() const {
+AFX_INLINE DWORD CXTPCalendarRecurrencePattern::GetPatternID() const
+{
 	return m_dwPatternID;
 }
-
-AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetStartTime() const {
+AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetStartTime() const
+{
 	return m_dtStartTime;
 }
-
-AFX_INLINE void CXTPCalendarRecurrencePattern::SetStartTime(COleDateTime dtStart) {
+AFX_INLINE void CXTPCalendarRecurrencePattern::SetStartTime(COleDateTime dtStart)
+{
 	m_dtStartTime = dtStart;
 }
-
-AFX_INLINE int CXTPCalendarRecurrencePattern::GetDurationMinutes() const {
+AFX_INLINE int CXTPCalendarRecurrencePattern::GetDurationMinutes() const
+{
 	return m_nDurationMinutes;
 }
-
-AFX_INLINE COleDateTimeSpan CXTPCalendarRecurrencePattern::GetDuration() const {
-	return CXTPCalendarUtils::Minutes2Span(m_nDurationMinutes);
-}
-
-AFX_INLINE void CXTPCalendarRecurrencePattern::SetDurationMinutes(int nMinutes) {
+AFX_INLINE void CXTPCalendarRecurrencePattern::SetDurationMinutes(int nMinutes)
+{
 	m_nDurationMinutes = nMinutes;
 }
-
-
-AFX_INLINE int CXTPCalendarRecurrencePattern::GetRecurrenceType() const {
+AFX_INLINE int CXTPCalendarRecurrencePattern::GetRecurrenceType() const
+{
 	return m_Options.m_nRecurrenceType;
 }
-
-AFX_INLINE const XTP_CALENDAR_RECURRENCE_OPTIONS& CXTPCalendarRecurrencePattern::GetRecurrenceOptions() const {
+AFX_INLINE const XTP_CALENDAR_RECURRENCE_OPTIONS&
+	CXTPCalendarRecurrencePattern::GetRecurrenceOptions() const
+{
 	return m_Options;
 }
-
-AFX_INLINE const XTP_CALENDAR_PATTERN_END& CXTPCalendarRecurrencePattern::GetPatternEnd() const {
+AFX_INLINE const XTP_CALENDAR_PATTERN_END& CXTPCalendarRecurrencePattern::GetPatternEnd() const
+{
 	return m_PatternEnd;
 }
-
-AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetPatternStartDate() const {
+AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetPatternStartDate() const
+{
 	return m_dtPatternStartDate;
 }
-
-AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetPatternEndDate() const {
+AFX_INLINE COleDateTime CXTPCalendarRecurrencePattern::GetPatternEndDate() const
+{
 	return m_PatternEnd.m_dtPatternEndDate;
 }
-
-AFX_INLINE int CXTPCalendarRecurrencePattern::GetEndAfterOccurrences() const {
+AFX_INLINE int CXTPCalendarRecurrencePattern::GetEndAfterOccurrences() const
+{
 	return m_PatternEnd.m_nEndAfterOccurrences;
 }
-
-AFX_INLINE void CXTPCalendarRecurrencePattern::SetEndAfterOccurrences(int nOccurrences) {
+AFX_INLINE void CXTPCalendarRecurrencePattern::SetEndAfterOccurrences(int nOccurrences)
+{
 	m_PatternEnd.m_nEndAfterOccurrences = nOccurrences;
-	m_PatternEnd.m_nUseEnd = xtpCalendarPatternEndAfterOccurrences;
+	m_PatternEnd.m_nUseEnd				= xtpCalendarPatternEndAfterOccurrences;
 }
-
-AFX_INLINE BOOL CXTPCalendarRecurrencePattern::IsNoEndDate() const {
+AFX_INLINE BOOL CXTPCalendarRecurrencePattern::IsNoEndDate() const
+{
 	return (m_PatternEnd.m_nUseEnd == xtpCalendarPatternEndNoDate);
 }
-
-AFX_INLINE void CXTPCalendarRecurrencePattern::SetNoEndDate() {
+AFX_INLINE void CXTPCalendarRecurrencePattern::SetNoEndDate()
+{
 	m_PatternEnd.m_nUseEnd = xtpCalendarPatternEndNoDate;
 }
-
-AFX_INLINE XTPCalendarPatternEnd CXTPCalendarRecurrencePattern::GetUseEndMethod() const {
+AFX_INLINE XTPCalendarPatternEnd CXTPCalendarRecurrencePattern::GetUseEndMethod() const
+{
 	return m_PatternEnd.m_nUseEnd;
 }
-
-AFX_INLINE DWORD CXTPCalendarRecurrencePattern::GetMasterEventID() const {
+AFX_INLINE DWORD CXTPCalendarRecurrencePattern::GetMasterEventID() const
+{
 	return m_dwMasterEventID;
 }
-
-AFX_INLINE void CXTPCalendarRecurrencePattern::SetMasterEventID(DWORD dwEventID) {
+AFX_INLINE void CXTPCalendarRecurrencePattern::SetMasterEventID(DWORD dwEventID)
+{
 	m_dwMasterEventID = dwEventID;
 }
-
-AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarRecurrencePattern::GetCustomProperties() {
+AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarRecurrencePattern::GetCustomProperties() const
+{
 	return m_pCustomProperties;
 }
-
-AFX_INLINE CXTPCalendarReminderForOccurrenceArray* CXTPCalendarRecurrencePattern::GetOccReminders() {
+AFX_INLINE CXTPCalendarReminderForOccurrenceArray* CXTPCalendarRecurrencePattern::GetOccReminders()
+{
 	return &m_arOccReminders;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARRECURRENCEPATTERN_H__)

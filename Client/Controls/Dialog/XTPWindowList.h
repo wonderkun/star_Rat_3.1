@@ -1,7 +1,6 @@
 // XTPWindowList.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPWINDOWLIST_H__)
-#define _XTPWINDOWLIST_H__
+#	define _XTPWINDOWLIST_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -45,7 +46,6 @@ public:
 	CXTPWindowList(CMDIFrameWnd* pMDIFrameWnd);
 	CXTPWindowList(HWND hWndMDIClient);
 
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -53,7 +53,8 @@ public:
 	// Parameters:
 	//     hIcon - Icon handle to set.
 	//-----------------------------------------------------------------------
-	void SetWindowIcon(HICON hIcon) {
+	void SetWindowIcon(HICON hIcon)
+	{
 		m_hIcon = hIcon;
 	}
 
@@ -102,11 +103,11 @@ protected:
 	virtual void SelectMDIActive();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPWindowList)
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPWindowList)
@@ -122,27 +123,27 @@ protected:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_DATA(CXTPWindowList)
-	CButton  m_btnMinimize;
-	CButton  m_btnCascade;
-	CButton  m_btnOk;
-	CButton  m_btnTileVert;
-	CButton  m_btnTileHorz;
-	CButton  m_btnSave;
-	CButton  m_btnClose;
-	CButton  m_btnActivate;
+	CButton m_btnMinimize;
+	CButton m_btnCascade;
+	CButton m_btnOk;
+	CButton m_btnTileVert;
+	CButton m_btnTileHorz;
+	CButton m_btnSave;
+	CButton m_btnClose;
+	CButton m_btnActivate;
 	//}}AFX_DATA
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-	HWND                        m_hWndMDIClient; // Handle to MDI client area.
-	HICON                       m_hIcon;         // Resize dialogs handle
-	CMDIFrameWnd*               m_pMDIFrameWnd;  // Pointer to applications MDI frame.
-	CXTPListBox  m_lboxWindows;   // Flicker free list box to display MDI children.
-
+	HWND m_hWndMDIClient;		  // Handle to MDI client area.
+	HICON m_hIcon;				  // Resize dialogs handle
+	CMDIFrameWnd* m_pMDIFrameWnd; // Pointer to applications MDI frame.
+	CXTPListBox m_lboxWindows;	// Flicker free list box to display MDI children.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPWINDOWLIST_H__)

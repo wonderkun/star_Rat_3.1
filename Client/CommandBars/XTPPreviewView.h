@@ -1,7 +1,6 @@
 // XTPPreviewView.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,30 +19,30 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPREVIEWVIEW_H__)
-#define __XTPPREVIEWVIEW_H__
+#	define __XTPPREVIEWVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPToolBar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CXTPPreviewView view
 
-#define XTP_ZOOM_WHOLEPAGE 0 // Fit the entire preview page on the screen.
-#define XTP_ZOOM_PAGEWIDTH 1 // Fit the preview page to the width of the screen.
-
+#	define XTP_ZOOM_WHOLEPAGE 0 // Fit the entire preview page on the screen.
+#	define XTP_ZOOM_PAGEWIDTH 1 // Fit the preview page to the width of the screen.
 
 //===========================================================================
-// Summary: CXTPPreviewView is CPreviewView derived class that represents Print Preview window with themed toolBar.
+// Summary: CXTPPreviewView is CPreviewView derived class that represents Print Preview window with
+// themed toolBar.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPreviewView : public CPreviewView
 {
 	DECLARE_DYNCREATE(CXTPPreviewView)
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//      Constructs a CXTPPreviewView object.
@@ -61,13 +60,13 @@ protected:
 	virtual ~CXTPPreviewView();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the zoom state of the preview window.
 	// Parameters:
 	//     nNewState - Zoom state to use.  Possible values (XPT_ZOOM_WHOLEPAGE, XPT_ZOOM_PAGEWIDTH)
-	//                 Or you can specify an in integer that represents a percentage to zoom the page.
+	//                 Or you can specify an in integer that represents a percentage to zoom the
+	//                 page.
 	//     nPage - Page number to zoom.
 	//     point - Point on page to zoom.
 	//-----------------------------------------------------------------------
@@ -81,31 +80,48 @@ public:
 	//-----------------------------------------------------------------------
 	int GetZoomState() const;
 
-//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns pointer to the ToolBar of the preview window.
+	// Returns:
+	//     Pointer to the ToolBar of the preview window.
+	//-----------------------------------------------------------------------
+	CXTPToolBar* GetCommandBar();
+
+	//{{AFX_CODEJOCK_PRIVATE
 private:
 	CXTPControl* FindToolbarButton(UINT nCommandID);
 	virtual void PositionPage(UINT nPage);
 	void SetScaledSize(UINT nPage);
 	void DoZoom(UINT nPage, CPoint point);
-	CSize CalcPageDisplaySize() ;
-	void SetupScrollbar() ;
+	CSize CalcPageDisplaySize();
+	void SetupScrollbar();
 	void ZoomIn(UINT nPage, CPoint point);
 
-protected:
+	virtual void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView);
 
-#ifdef _DEBUG
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the number of pages to be viewed on the screen
+	// Parameters:
+	//     nAcross - number of pages horizontally
+	//     nDown - number of pages vertically
+	//-----------------------------------------------------------------------
+	void SetNumPreviewPages(int nAcross, int nDown);
+
+protected:
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+#	endif
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_VIRTUAL(CXTPPreviewView)
-	public:
+public:
 	void RecalLayout();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
@@ -124,7 +140,7 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnPreviewPages();
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) ;
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnGotoPageSetFocus(NMHDR* pNMHDR, LRESULT* pRes);
 	afx_msg void OnGotoPageKillFocus(NMHDR* pNMHDR, LRESULT* pRes);
@@ -136,23 +152,28 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	PAGE_INFO* m_pPageInfo2;    // Embedded array for the default implementation - replaces MFC one of size 2!
+	PAGE_INFO* m_pPageInfo2; // Embedded array for the default implementation - replaces MFC one of
+							 // size 2!
 	CXTPToolBar* m_pCommandBar; // Pointer to the "built-in" print preview toolbar.
-	int m_cxPixelsPerInch;      // Width of pixels in preview mode.
-	int m_cyPixelsPerInch;      // Height of pixels in preview mode.
+	int m_cxPixelsPerInch;		// Width of pixels in preview mode.
+	int m_cyPixelsPerInch;		// Height of pixels in preview mode.
 
 	// these variables are used in the page layout algorithm
 
-	int m_Across ;          // number across the page, >= 1
-	int m_Down ;            // number down the page, >= 1
-	CPoint m_PageOffset;    // amount to move the page from one position to the next
+	int m_Across;		 // number across the page, >= 1
+	int m_Down;			 // number down the page, >= 1
+	CPoint m_PageOffset; // amount to move the page from one position to the next
+
+	COLORREF m_clrBackColor;
 };
 
-AFX_INLINE int CXTPPreviewView::GetZoomState() const {
-	return m_nZoomState;
+AFX_INLINE CXTPToolBar* CXTPPreviewView::GetCommandBar()
+{
+	return m_pCommandBar;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPPREVIEWVIEW_H__)

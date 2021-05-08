@@ -1,7 +1,7 @@
 // FileManagerDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "FileManagerDlg.h"
 #include "FileTransferModeDlg.h"
@@ -1857,6 +1857,8 @@ void CFileManagerDlg::WriteLocalRecvFile()
 			break;
 		}
 	}
+	int i;
+
 	if (i == MAX_WRITE_RETRY && nRet <= 0)
 	{
 		::MessageBox(m_hWnd, m_strReceiveLocalFile + " Document creation failed!", "Warning", MB_OK|MB_ICONWARNING);

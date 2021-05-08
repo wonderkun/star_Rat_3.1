@@ -1,7 +1,6 @@
-// XTIncludes.h : header file
+// Includes.h : header file
 //
-// This file is a part of the XTREME SHORTCUTBAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,16 +17,32 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPSHORTCUTBAR_INCLUDES_H__)
+#	define __XTPSHORTCUTBAR_INCLUDES_H__
 
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "resource.h"
+#	include "ShortcutBar/Resource.h"
+
 //----------------------------
 // Xtreme Shortcut Bar
 //----------------------------
 
-#include "XTPShortcutBar.h"
-#include "XTPShortcutBarPaintManager.h"
-#include "XTPShortcutBarPane.h"
+#	include "ShortcutBar/XTPShortcutBarPaintManager.h"
+#	include "ShortcutBar/XTPShortcutBar.h"
+#	include "ShortcutBar/XTPShortcutBarPane.h"
+#	include "ShortcutBar/XTPShortcutBarPopup.h"
+#	include "ShortcutBar/XTPShortcutBarAnimation.h"
+
+#	include "Themes/XTPShortcutBarOffice2000Theme.h"
+#	include "Themes/XTPShortcutBarOfficeXPTheme.h"
+#	include "Themes/XTPShortcutBarOffice2003Theme.h"
+#	include "Themes/XTPShortcutBarNativeWinXPTheme.h"
+#	include "Themes/XTPShortcutBarResourceTheme.h"
+#	include "Themes/XTPShortcutBarOffice2013Theme.h"
+
+#endif //#if !defined(__XTPSHORTCUTBAR_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

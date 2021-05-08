@@ -1,7 +1,7 @@
 // SysInfo.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "SysInfo.h"
 #include "ClientView.h"

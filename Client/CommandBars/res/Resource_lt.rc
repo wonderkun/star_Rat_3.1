@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LTH)
 #ifdef _WIN32
 LANGUAGE LANG_LITHUANIAN, SUBLANG_LITHUANIAN
 #pragma code_page(1257)
@@ -111,7 +110,7 @@ BEGIN
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "Ið naujo nustatyti vartojimo duomenis",
-                    XTP_IDC_BUTTON_RESETDATA,10,42,125,14
+                    XTP_IDC_BUTTON_RESETDATA,10,42,145,14
     LTEXT           "Kita", XTP_IDC_GROUP_OTHER,4,70,250,8
     CONTROL         "Didelës piktogramos",XTP_IDC_CHECK_LARGEICONS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,82,216,10
@@ -121,7 +120,7 @@ BEGIN
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
     LTEXT           "&Meniu animacija",IDC_STATIC,10,117,56,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,79,65,CBS_DROPDOWNLIST | 
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,129,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Meniu"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Taikant meniu",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Kontekstinio meniu",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Rodyti meniu:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Nustatyti ið naujo",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Numatytoji meniu\nNumatytoji meniu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Pasirinkti kontekstinio meniu:",IDC_STATIC,10,92,98,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,113,90,120,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Nustatyti ið naujo",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Tinkinti"
     XTP_IDS_NEWMENU         "Naujas meniu"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Tinkinti bûsenos juosta"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -230,7 +229,7 @@ BEGIN
                             "Taip bus panaikintas ðioje taikomojoje programoje naudotas komandø áraðas ir bus atkurtas numatytasis matomø meniu ir árankiø juostø komandø rinkinys. Jokiø tiesioginiø derinimø nebus atsisakyta. Ar tikrai norite tai daryti?"
     XTP_IDS_INVALID_NUMBER  "Tai nëra leistinas skaièius."
     XTP_IDS_INVALID_FONTSIZE "Tai turi bûti skaièius nuo 1 iki 1638."
-    XTP_IDS_CONFIRM_RESET   "Ar tikrai norite i? naujo nustatyti padarytus ?ranki¸ juostos '%s' pakeitimus?"
+    XTP_IDS_CONFIRM_RESET   "Ar tikrai norite ið naujo nustatyti padarytus áranki¸ juostos '%s' pakeitimus?"
     XTP_IDS_BUILTINMENUS    "Átaisytieji meniu"
 END
 
@@ -238,10 +237,10 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Pasirinktinai %d"
     XTP_IDS_ERROR_BLANKNAME "Árankiø juostos vardas negali bûti tuðèias. Áveskite vardà."
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
-    XTP_IDS_ERROR_EXISTS    "?ranki¸ juosta vardu '%s' jau yra. ?veskite kit? vard?."
+    XTP_IDS_ERROR_LIMIT     "Atsipraðome, jûs pasiekëte savo ribà."
+    XTP_IDS_ERROR_EXISTS    "Áranki¸ juosta vardu '%s' jau yra. Áveskite kità pavadinimà."
     XTP_IDS_RENAMETOOLBAR   "Árankiø juostos pervardijimas"
-    XTP_IDS_CONFIRM_DELETE  "Ar tikrai norite panaikinti ?ranki¸  juost? '%s'?"
+    XTP_IDS_CONFIRM_DELETE  "Ar tikrai norite panaikinti áranki¸ juosta '%s'?"
     XTP_IDS_ALLCOMMANDS     "Visos komandos"
 END
 
@@ -255,36 +254,36 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Ar tikrai norite ið naujo nustatyti klaviðø priskyrimus? Ðis veiksmas paðalins visas pasirinktinio klaviðams teksto lygmeniu."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Ðiuo metu priskiriamas ðià nuorodà.\nAr norite ið naujo priskirti ðià nuorodà?"
+    XTP_IDS_CONFIRM_UPDATE  "Dël programinës árangos atnaujinimo árankiø '%s' buvo pakeista. Ar norite ið naujo nustatyti individualø árankiø juostà ir ákelti naujà?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Visi paveiksl?li¸ failai|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Visi failai(*.*)|*.*||"
-    XTP_ID_TOOLBAR_EXPAND   "\n?ranki¸ juostos pasirinktys"
-    XTP_ID_TOOLBAR_HIDE     "\nU?daryti"
+                            "Visi nuotraukø failus|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Rastrai (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafailai (*.wmf;*.emf)|*.wmf;*.emf|Piktogramos (*.ico;*.cur)|*.ico;*.cur|Visi failai (*.*)|*.*||"
+    XTP_ID_TOOLBAR_EXPAND   "\nÁranki¸ juostos pasirinktys"
+    XTP_ID_TOOLBAR_HIDE     "\nUþdaryti"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
-    XTP_ID_MENUBAR_CLOSE    "\nU?daryti lang?"
-    XTP_ID_MENUBAR_RESTORE  "\nAtkurti lang?"
-    XTP_ID_MENUBAR_MINIMIZE "\nMinimizuoti lang?"
+    XTP_ID_MENUBAR_CLOSE    "\nUþdaryti langà"
+    XTP_ID_MENUBAR_RESTORE  "\nAtkurti langà"
+    XTP_ID_MENUBAR_MINIMIZE "\nMinimizuoti langà"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "paspaudimo (%s). Laukia antra Styga raktas..."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_BUTTON_PENCIL    "\nPie?tukas"
-    XTP_ID_BUTTON_FILL      "\nU?pildo spalva"
-    XTP_ID_BUTTON_GETCOLOR  "\nSpalvos pa?mimas"
-    XTP_ID_BUTTON_LINE      "\nEilut?"
-    XTP_ID_BUTTON_RECTANGLE "\n?e?iakampis"
-    XTP_ID_BUTTON_CIRCLE    "\nElips?"
+    XTP_ID_BUTTON_PENCIL    "\nPieðtukas"
+    XTP_ID_BUTTON_FILL      "\nUþpildykite spalvà"
+    XTP_ID_BUTTON_GETCOLOR  "\nPasirinkite spalvà"
+    XTP_ID_BUTTON_LINE      "\nLinija"
+    XTP_ID_BUTTON_RECTANGLE "\nStaèiakampis"
+    XTP_ID_BUTTON_CIRCLE    "\nEllipse"
     XTP_ID_BUTTON_COPY      "\nKopijuoti"
-    XTP_ID_BUTTON_PASTE     "\n?klijuoti"
+    XTP_ID_BUTTON_PASTE     "\nÁklijuoti"
     XTP_ID_BUTTON_CLEAR     "\nValyti"
     XTP_ID_BUTTON_UNDO      "\nAnuliuoti"
     XTP_ID_BUTTON_REDO      "\nPerdaryti"
-    XTP_ID_BUTTON_OPEN      "\n?terpti paveiksl?l? i? failo"
+    XTP_ID_BUTTON_OPEN      "\nImportuoti ið failo"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,29 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Atðaukti"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nPereiti prie ankstesnio skirtuko grupës"
+    XTP_ID_WORKSPACE_MOVENEXT "\nPerkelti á kità skirtukø grupës"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNauja horizontali skirtukø grupës"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNauja vertikali skirtukø grupës"
+    XTP_ID_WORKSPACE_CANCEL "\nAtðaukti"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Bylø
+"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Þiûrëta elementas\nSpausdinti"
+    XTP_ID_PREVIEW_PREV     "Eiti á ankstesná puslapá\nAnkstesnis puslapis"
+    XTP_ID_PREVIEW_NEXT     "Eiti á kità puslapá\nKitame puslapyje"
+    XTP_ID_PREVIEW_ZOOMIN   "Didinti perþiûros puslapá\nArtinimas"
+    XTP_ID_PREVIEW_ZOOMOUT  "Maþinti perþiûros puslapá\nMaþinti mastelá"
+    XTP_ID_PREVIEW_ONEPAGE  "Vienintelis puslapis"
+    XTP_ID_PREVIEW_TWOPAGE  "Keli puslapiai"
+    XTP_ID_PREVIEW_CLOSE    "Uþdaryti perþiûros\nUþdaryti perþiûros"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Visà puslapá"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Puslapio plotis"
+    XTP_IDS_PREVIEW_PAGEI     "Puslapis %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Puslapis %i ið %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LTH)

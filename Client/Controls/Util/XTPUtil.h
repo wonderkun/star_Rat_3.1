@@ -1,7 +1,6 @@
 // XTPUtil.h: interface for utility classes.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPUTIL_H__)
-#define __XTPUTIL_H__
+#	define __XTPUTIL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,7 +36,6 @@
 class _XTP_EXT_CLASS CXTPIconHandle
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPIconHandle object.
@@ -53,7 +53,6 @@ public:
 	virtual ~CXTPIconHandle();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This operator is used to retrieve a handle to the icon
@@ -83,7 +82,7 @@ public:
 	//     A CSize object.
 	//-----------------------------------------------------------------------
 	CSize GetExtent() const;
-	static CSize GetExtent(HICON hIcon); // <combine CXTPIconHandle::GetExtent@const>
+	static CSize AFX_CDECL GetExtent(HICON hIcon); // <combine CXTPIconHandle::GetExtent@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -97,14 +96,15 @@ public:
 	//     An icon handle.
 	//-----------------------------------------------------------------------
 	HICON ScaleToFit(CSize desiredExtent) const;
-	static HICON ScaleToFit(HICON hIcon, CSize desiredExtent); // <combine CXTPIconHandle::ScaleToFit@CSize@const>
+	static HICON AFX_CDECL ScaleToFit(
+		HICON hIcon, CSize desiredExtent); // <combine CXTPIconHandle::ScaleToFit@CSize@const>
 
 protected:
-	HICON m_hIcon;  // Handle to a dynamically created icon.
+	HICON m_hIcon; // Handle to a dynamically created icon.
 };
 
-
-AFX_INLINE CXTPIconHandle::operator HICON() const {
+AFX_INLINE CXTPIconHandle::operator HICON() const
+{
 	return m_hIcon;
 }
 
@@ -116,7 +116,6 @@ AFX_INLINE CXTPIconHandle::operator HICON() const {
 class _XTP_EXT_CLASS CXTPSplitPath
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSplitPath object and breaks a path into its
@@ -135,7 +134,6 @@ public:
 	virtual ~CXTPSplitPath();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call SplitPath to break a path into its four components.
@@ -200,24 +198,13 @@ public:
 
 protected:
 	TCHAR m_szDrive[_MAX_DRIVE]; // Optional drive letter, followed by a colon (:)
-	TCHAR m_szDir[_MAX_DIR];     // Optional directory path, including trailing slash. Forward slashes (/), backslashes (\), or both may be used.
+	TCHAR m_szDir[_MAX_DIR]; // Optional directory path, including trailing slash. Forward slashes
+							 // (/), backslashes (\), or both may be used.
 	TCHAR m_szFName[_MAX_FNAME]; // Base filename (no extension)
-	TCHAR m_szExt[_MAX_EXT];     // Optional filename extension, including leading period (.)
+	TCHAR m_szExt[_MAX_EXT];	 // Optional filename extension, including leading period (.)
 };
-
-//{{AFX_CODEJOCK_PRIVATE
-#define DECLARE_SINGLETON(theClass)\
-public:\
-static theClass& Get();
-
-#define IMPLEMENT_SINGLETON(theClass)\
-	theClass& theClass::Get()\
-{\
-	static theClass singleton;\
-	return singleton;\
-}
-//}}AFX_CODEJOCK_PRIVATE
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPUTIL_H__)

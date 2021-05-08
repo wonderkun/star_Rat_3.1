@@ -1,7 +1,6 @@
 // XTPSyntaxEditTextIterator.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITTEXTITERATOR_H__)
-#define __XTPSYNTAXEDITTEXTITERATOR_H__
+#	define __XTPSYNTAXEDITTEXTITERATOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditBufferManager;
 
@@ -43,7 +44,6 @@ class CXTPSyntaxEditBufferManager;
 class _XTP_EXT_CLASS CXTPSyntaxEditTextIterator : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Default object constructor.
@@ -71,7 +71,7 @@ public:
 	//      Strings like "\r\n", "\n\r", "\r" are recognized as CRLF
 	//      control symbol.
 	//-----------------------------------------------------------------------
-	virtual CString GetEOL(); // "\r\n", "\n\r", "\r"
+	virtual CString GetEOL() const; // "\r\n", "\n\r", "\r"
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -99,7 +99,7 @@ public:
 	//      For big texts this operation may take a lot of time. hBreakEvent
 	//      is used to to stop function execution without reaching the specified position.
 	// Returns:
-	//      TRUE if successful< otherwise FALSE.
+	//      TRUE if successful, otherwise FALSE.
 	// See Also:
 	//      SeekBegin()
 	//-----------------------------------------------------------------------
@@ -150,7 +150,7 @@ public:
 	//      reached. You can also use IsEOF to determine whether the
 	//      data buffer contains any data or is empty.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsEOF();
+	virtual BOOL IsEOF() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -160,7 +160,7 @@ public:
 	// See Also:
 	//      XTP_EDIT_LINECOL .
 	//-----------------------------------------------------------------------
-	virtual XTP_EDIT_LINECOL GetPosLC();
+	virtual XTP_EDIT_LINECOL GetPosLC() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -172,7 +172,7 @@ public:
 	// See Also:
 	//      XTP_EDIT_LINECOL .
 	//-----------------------------------------------------------------------
-	virtual XTP_EDIT_LINECOL GetPosLC_last(BOOL bWithEOL);
+	virtual XTP_EDIT_LINECOL GetPosLC_last(BOOL bWithEOL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -180,7 +180,7 @@ public:
 	// Parameters:
 	//      rLC : [in] reference to position description structure.
 	//-----------------------------------------------------------------------
-	virtual void LCPosDec(XTP_EDIT_LINECOL& rLC);
+	virtual void LCPosDec(XTP_EDIT_LINECOL& rLC) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -189,7 +189,7 @@ public:
 	//      rLC         : [in] reference to position description structure.
 	//      nCharsAdd   : [in] Chars count to add.
 	//-----------------------------------------------------------------------
-	virtual void LCPosAdd(XTP_EDIT_LINECOL& rLC, int nCharsAdd);
+	virtual void LCPosAdd(XTP_EDIT_LINECOL& rLC, int nCharsAdd) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -204,7 +204,7 @@ public:
 	//      Call this member function to determine length of line. You
 	//      can request to ignore end of line characters.
 	//-----------------------------------------------------------------------
-	virtual int GetLineLen(int nLine, BOOL bWithEOL = FALSE);
+	virtual int GetLineLen(int nLine, BOOL bWithEOL = FALSE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -219,7 +219,7 @@ public:
 	//      Call this member function to determine length of line. You
 	//      can request to ignore end of line characters.
 	//-----------------------------------------------------------------------
-	virtual int GetLineLenBytes(int nLine, BOOL bWithEOL);
+	virtual int GetLineLenBytes(int nLine, BOOL bWithEOL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -235,7 +235,7 @@ public:
 	// Returns:
 	//      CString object containing file name.
 	//-----------------------------------------------------------------------
-	virtual CString GetFileExt();
+	virtual CString GetFileExt() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -250,11 +250,10 @@ public:
 protected:
 	CXTPSyntaxEditBufferManager* m_pData; // Pointer to used CXTPSyntaxEditBufferManager object
 
-	XTP_EDIT_LINECOL   m_LCpos;    // current position in the text.
-	BOOL m_bEOF;            // flag end of file.
+	XTP_EDIT_LINECOL m_LCpos; // current position in the text.
+	BOOL m_bEOF;			  // flag end of file.
 
 	CMap<DWORD, DWORD, int, int> m_mapLine2Len; // store map of line - length of line
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -264,28 +263,32 @@ protected:
 	// Returns:
 	//      Pointer to TCHAR buffer.
 	//-----------------------------------------------------------------------
-	TCHAR* GetBuffer(int nOffcetB);
+	TCHAR* GetBuffer(int nOffcetB) const;
 
-	CArray<CHAR, CHAR>  m_arBuffer; // buffer of chars
-	int                 m_nBufSizeB;    // buffer length
-	int                 m_nNextLine;    // next line id
+	CArray<CHAR, CHAR> m_arBuffer; // buffer of chars
+	int m_nBufSizeB;			   // buffer length
+	int m_nNextLine;			   // next line id
 
-	int                 m_nBufOffsetB;  // offset
+	int m_nBufOffsetB; // offset
 
-	int                 m_nBufOffsetB_normal;   // offset
-	int                 m_nBufOffsetB_max;  // offset
+	int m_nBufOffsetB_normal; // offset
+	int m_nBufOffsetB_max;	// offset
 
-	int                 m_nTmpOffsetC;  // offset
-	int                 m_nTmpOffsetB;  // offset
+	int m_nTmpOffsetC; // offset
+	int m_nTmpOffsetB; // offset
 };
 
 ////////////////////////////////////////////////////////////////////////////
-AFX_INLINE TCHAR* CXTPSyntaxEditTextIterator::GetBuffer(int nOffcetB) {
+AFX_INLINE TCHAR* CXTPSyntaxEditTextIterator::GetBuffer(int nOffcetB) const
+{
 	return (TCHAR*)((CHAR*)m_arBuffer.GetData() + nOffcetB);
 }
-AFX_INLINE int CXTPSyntaxEditTextIterator::GetMaxBackOffset() const {
+AFX_INLINE int CXTPSyntaxEditTextIterator::GetMaxBackOffset() const
+{
 	return m_nBufOffsetB_normal;
 }
 
 ////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITTEXTITERATOR_H__)

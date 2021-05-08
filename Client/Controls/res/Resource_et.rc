@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ETI))
 #ifdef _WIN32
 LANGUAGE LANG_ESTONIAN, SUBLANG_DEFAULT
 #pragma code_page(1257)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standardvärvid"
+	XTP_IDS_RECENT_COLORS    "Viimatised värvid"
+	XTP_IDS_THEME_COLORS     "Kujunduse värvid"
+	XTP_IDS_TAGCLOUD_TIP     "Tag %s, Keskmine %d"
     XTP_IDS_TIPTEXT          "Näpunäite tekst"
     XTP_IDS_DIDYOUKNOW       "Kas teadsite..."
     XTP_IDS_FILE_ABSENT      "Seda faili pole olemas."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Peida üksikasjad"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Taust 1"
+    XTP_IDS_BACKGROUND2        "Taust 2"
+    XTP_IDS_TEXT1              "Tekst 1"
+    XTP_IDS_TEXT2              "Tekst 2"
+    XTP_IDS_ACCENT1            "Rõhk 1"
+    XTP_IDS_ACCENT2            "Rõhk 2"
+    XTP_IDS_ACCENT3            "Rõhk 3"
+    XTP_IDS_ACCENT4            "Rõhk 4"
+    XTP_IDS_ACCENT5            "Rõhk 5"
+    XTP_IDS_ACCENT6            "Rõhk 6"
+    XTP_IDS_LIGHTER            "Tulemasin"
+    XTP_IDS_DARKER             "Tumedam"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ETI))

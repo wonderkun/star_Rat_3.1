@@ -1,7 +1,6 @@
 // XTPGlobal.h interface for the CXTPAuxData struct.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTGLOBALS_H__)
-#define __XTGLOBALS_H__
+#	define __XTGLOBALS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -43,48 +44,17 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPTcbItem();
 
-	UINT     uiToolTipId;       // Resource ID for the tooltip.
-	CWnd*    pWnd;              // A CWnd pointer to the window associated with a tab.
-	CString  szTabLabel;        // User specified label for the tab.
-	CString  szToolTipLabel;    // Tooltip text for the tab.
-	CString  szCondensedLabel;  // The label actually being displayed for auto-condensing tabs.
-	DWORD    dwStyle;           // Stores the window style when the tab item was created.
-	DWORD    dwExStyle;         // Stores the extended window style when the tab item was created.
-	COLORREF crTabBack;         // Application defined tab background color.
-	COLORREF crTabText;         // Application defined tab text color.
-	COLORREF crTabSelBack;      // Application defined selected tab background color.
-	COLORREF crTabSelText;      // Application defined selected tab text color.
-};
-
-//=============================================================================
-// Summary:
-//     CXTPNonClientMetrics is a self initializing NONCLIENTMETRICS derived
-//     class. It contains the scalable metrics associated with the
-//     non-client area of a non-minimized window.  This class is used by
-//     the SPI_GETNONCLIENTMETRICS and SPI_SETNONCLIENTMETRICS actions of
-//     SystemParametersInfo.
-// Example:
-//     The following example demonstrates using CXTPNonClientMetrics.
-// <code>
-// CXTPLogFont lfMenuFont;
-// CXTPNonClientMetrics ncm;
-//
-// lfMenuFont.lfCharSet = (BYTE)::GetTextCharsetInfo (dc, NULL, 0);
-// lfMenuFont.lfHeight  = ncm.lfMenuFont.lfHeight;
-// lfMenuFont.lfWeight  = ncm.lfMenuFont.lfWeight;
-// lfMenuFont.lfItalic  = ncm.lfMenuFont.lfItalic;
-//
-// STRCPY_S(lfMenuFont.lfFaceName, LF_FACESIZE, ncm.lfMenuFont.lfFaceName);
-// </code>
-//=============================================================================
-class _XTP_EXT_CLASS CXTPNonClientMetrics : public NONCLIENTMETRICS
-{
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs an CXTPNonClientMetrics object
-	//-------------------------------------------------------------------------
-	CXTPNonClientMetrics();
+	UINT uiToolTipId;		  // Resource ID for the tooltip.
+	CWnd* pWnd;				  // A CWnd pointer to the window associated with a tab.
+	CString szTabLabel;		  // User specified label for the tab.
+	CString szToolTipLabel;   // Tooltip text for the tab.
+	CString szCondensedLabel; // The label actually being displayed for auto-condensing tabs.
+	DWORD dwStyle;			  // Stores the window style when the tab item was created.
+	DWORD dwExStyle;		  // Stores the extended window style when the tab item was created.
+	COLORREF crTabBack;		  // Application defined tab background color.
+	COLORREF crTabText;		  // Application defined tab text color.
+	COLORREF crTabSelBack;	// Application defined selected tab background color.
+	COLORREF crTabSelText;	// Application defined selected tab text color.
 };
 
 //=============================================================================
@@ -118,7 +88,7 @@ public:
 	void operator=(LOGFONT& logfont);
 
 public:
-	DWORD dwType;  // Used to hold the font type, i.e. TT_FONT, DEVICE_FONT.
+	DWORD dwType; // Used to hold the font type, i.e. TT_FONT, DEVICE_FONT.
 };
 
 class CXTPAuxData;
@@ -153,6 +123,8 @@ _XTP_EXT_CLASS CXTPAuxData& AFXAPI XTPAuxData();
 // ---------------------------------------------------------------------
 class _XTP_EXT_CLASS CXTPAuxData
 {
+	friend class CXTPSingleton<CXTPAuxData>;
+
 private:
 	// ------------------------------------------
 	// Summary:
@@ -282,7 +254,12 @@ public:
 	// Returns:
 	//     TRUE if the font was successfully created, otherwise FALSE.
 	// -------------------------------------------------------------------------
-	BOOL CreateSysFont(const CXTPLogFont& lf, CFont& font, long lfWeight = -1, char lfUnderline = -1, long lfOrientation = -1, long lfEscapement = -1);
+	BOOL CreateSysFont(const CXTPLogFont& lf, CFont& font, long lfWeight = -1,
+					   char lfUnderline = -1, long lfOrientation = -1, long lfEscapement = -1);
+	BOOL CreateSysFont(const CXTPLogFont& lf, CXTPFont& font, long lfWeight = -1,
+					   char lfUnderline = -1, long lfOrientation = -1,
+					   long lfEscapement = -1); // <combine CXTPAuxData@const
+												// CXTPLogFont&@CFont&@long@char@long@long>
 
 	// ----------------------------------------------------------------------------------
 	// Summary:
@@ -307,7 +284,9 @@ public:
 	//     load.
 	// ----------------------------------------------------------------------------------
 	BOOL SetGlobalFont(CFont* pHorzFont, CFont* pVertFont = NULL);
-	BOOL SetGlobalFont(LPCTSTR lpszFaceName, LPCTSTR lpszVertFaceName = NULL); //<combine CXTPAuxData::SetGlobalFont@CFont*@CFont*>
+	BOOL SetGlobalFont(LPCTSTR lpszFaceName,
+					   LPCTSTR lpszVertFaceName = NULL); //<combine
+														 // CXTPAuxData::SetGlobalFont@CFont*@CFont*>
 
 	// ---------------------------------------------------------------------
 	// Summary:
@@ -325,10 +304,8 @@ public:
 	// ---------------------------------------------------------------------
 	CString XTPGetVersion(bool bVerNumOnly = false);
 
-
 private:
-	static int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* pelf,
-		NEWTEXTMETRICEX*, int, LPVOID pThis);
+	static int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* pelf, NEWTEXTMETRICEX*, int, LPVOID pThis);
 	DISABLE_COPY_OPERATOR(CXTPAuxData)
 
 public:
@@ -336,46 +313,58 @@ public:
 	//## (RGB) System colors used by Xtreme Toolkit
 	//=======================================================================
 
-	COLORREF clr3DFace;                   // An RGB value that represents the face color for three dimensional display elements.
-	COLORREF clr3DShadow;                 // An RGB value that represents the shadow color for three dimensional display elements.
-	COLORREF clr3DDkShadow;               // An RGB value that represents the dark shadow for three dimensional display elements.
-	COLORREF clr3DHilight;                // An RGB value that represents the highlight color for three dimensional display elements.
-	COLORREF clr3DLight;                  // An RGB value that represents the light color for three dimensional display elements.
-	COLORREF clrBtnText;                  // An RGB value that represents the text color on push buttons.
-	COLORREF clrGrayText;                 // An RGB value that represents the grayed (disabled) text.
-	COLORREF clrHighlight;                // An RGB value that represents the item(s) selected in a control.
-	COLORREF clrHighlightText;            // An RGB value that represents the text color of item(s) selected in a control.
-	COLORREF clrMenu;                     // An RGB value that represents the menu background.
-	COLORREF clrMenuText;                 // An RGB value that represents the text color in menus.
-	COLORREF clrWindow;                   // An RGB value that represents the window background.
-	COLORREF clrWindowFrame;              // An RGB value that represents the window frame.
-	COLORREF clrWindowText;               // An RGB value that represents the text color in windows.
-	COLORREF clrActiveCaption;            // An RGB value that represents the active window title bar.
-	COLORREF clrInActiveCaption;          // An RGB value that represents the inactive window title bar.
-	COLORREF clrGradActiveCapt;           // An RGB value that represents the gradient active title bar.
-	COLORREF clrGradInActiveCapt;         // An RGB value that represents the gradient inactive title bar.
-	COLORREF clrActiveCaptText;           // An RGB value that represents the active caption text.
-	COLORREF clrInactiveCaptText;         // An RGB value that represents the inactive caption text.
-	COLORREF clrXPBarFace;                // An RGB value that represents the XP toolbar background color.
-	COLORREF clrXPHighlight;              // An RGB value that represents the XP menu item selected color.
-	COLORREF clrXPHighlightBorder;        // An RGB value that represents the XP menu item selected border color.
-	COLORREF clrXPHighlightPushed;        // An RGB value that represents the XP menu item pushed color.
-	COLORREF clrXPIconShadow;             // An RGB value that represents the XP menu item icon shadow.
-	COLORREF clrXPGrayText;               // An RGB value that represents the XP menu item disabled text color.
-	COLORREF clrXPHighlightChecked;       // An RGB value that represents the XP menu item checked color.
-	COLORREF clrXPHighlightCheckedBorder; // An RGB value that represents the XP menu item checked border color.
-	COLORREF clrXPGripper;                // An RGB value that represents the XP toolbar gripper color.
-	COLORREF clrXPSeparator;              // An RGB value that represents the XP toolbar separator color.
-	COLORREF clrXPDisabled;               // An RGB value that represents the XP menu icon disabled color.
-	COLORREF clrXPMenuTextBack;           // An RGB value that represents the XP menu item text background color.
-	COLORREF clrXPMenuExpanded;           // An RGB value that represents the XP hidden menu commands background color.
-	COLORREF clrXPMenuBorder;             // An RGB value that represents the XP menu border color.
-	COLORREF clrXPMenuText;               // An RGB value that represents the XP menu item text color.
-	COLORREF clrXPHighlightText;          // An RGB value that represents the XP menu item selected text color.
-	COLORREF clrXPBarText;                // An RGB value that represents the XP toolbar text color.
-	COLORREF clrXPBarTextPushed;          // An RGB value that represents the XP toolbar pushed text color.
-	COLORREF clrXPTabInactiveBack;        // An RGB value that represents the XP inactive tab background color.
-	COLORREF clrXPTabInactiveText;        // An RGB value that represents the XP inactive tab text color.
+	COLORREF clr3DFace; // An RGB value that represents the face color for three dimensional display
+						// elements.
+	COLORREF clr3DShadow;   // An RGB value that represents the shadow color for three dimensional
+							// display elements.
+	COLORREF clr3DDkShadow; // An RGB value that represents the dark shadow for three dimensional
+							// display elements.
+	COLORREF clr3DHilight; // An RGB value that represents the highlight color for three dimensional
+						   // display elements.
+	COLORREF clr3DLight;   // An RGB value that represents the light color for three dimensional
+						   // display elements.
+	COLORREF clrBtnText;   // An RGB value that represents the text color on push buttons.
+	COLORREF clrGrayText;  // An RGB value that represents the grayed (disabled) text.
+	COLORREF clrHighlight; // An RGB value that represents the item(s) selected in a control.
+	COLORREF clrHighlightText; // An RGB value that represents the text color of item(s) selected in
+							   // a control.
+	COLORREF clrMenu;		   // An RGB value that represents the menu background.
+	COLORREF clrMenuText;	  // An RGB value that represents the text color in menus.
+	COLORREF clrWindow;		   // An RGB value that represents the window background.
+	COLORREF clrWindowFrame;   // An RGB value that represents the window frame.
+	COLORREF clrWindowText;	// An RGB value that represents the text color in windows.
+	COLORREF clrActiveCaption; // An RGB value that represents the active window title bar.
+	COLORREF clrInActiveCaption;   // An RGB value that represents the inactive window title bar.
+	COLORREF clrGradActiveCapt;	// An RGB value that represents the gradient active title bar.
+	COLORREF clrGradInActiveCapt;  // An RGB value that represents the gradient inactive title bar.
+	COLORREF clrActiveCaptText;	// An RGB value that represents the active caption text.
+	COLORREF clrInactiveCaptText;  // An RGB value that represents the inactive caption text.
+	COLORREF clrXPBarFace;		   // An RGB value that represents the XP toolbar background color.
+	COLORREF clrXPHighlight;	   // An RGB value that represents the XP menu item selected color.
+	COLORREF clrXPHighlightBorder; // An RGB value that represents the XP menu item selected border
+								   // color.
+	COLORREF clrXPHighlightPushed; // An RGB value that represents the XP menu item pushed color.
+	COLORREF clrXPIconShadow;	  // An RGB value that represents the XP menu item icon shadow.
+	COLORREF clrXPGrayText; // An RGB value that represents the XP menu item disabled text color.
+	COLORREF clrXPHighlightChecked; // An RGB value that represents the XP menu item checked color.
+	COLORREF clrXPHighlightCheckedBorder; // An RGB value that represents the XP menu item checked
+										  // border color.
+	COLORREF clrXPGripper;		   // An RGB value that represents the XP toolbar gripper color.
+	COLORREF clrXPSeparator;	   // An RGB value that represents the XP toolbar separator color.
+	COLORREF clrXPDisabled;		   // An RGB value that represents the XP menu icon disabled color.
+	COLORREF clrXPMenuTextBack;	// An RGB value that represents the XP menu item text background
+								   // color.
+	COLORREF clrXPMenuExpanded;	// An RGB value that represents the XP hidden menu commands
+								   // background color.
+	COLORREF clrXPMenuBorder;	  // An RGB value that represents the XP menu border color.
+	COLORREF clrXPMenuText;		   // An RGB value that represents the XP menu item text color.
+	COLORREF clrXPHighlightText;   // An RGB value that represents the XP menu item selected text
+								   // color.
+	COLORREF clrXPBarText;		   // An RGB value that represents the XP toolbar text color.
+	COLORREF clrXPBarTextPushed;   // An RGB value that represents the XP toolbar pushed text color.
+	COLORREF clrXPTabInactiveBack; // An RGB value that represents the XP inactive tab background
+								   // color.
+	COLORREF clrXPTabInactiveText; // An RGB value that represents the XP inactive tab text color.
 
 	//=======================================================================
 	//## Cursors used by Xtreme Toolkit
@@ -384,10 +373,10 @@ public:
 	HCURSOR hcurDragCopy;  // Drag copy cursor handle.
 	HCURSOR hcurDragMove;  // Drag move cursor handle.
 	HCURSOR hcurDragNone;  // Drag none cursor handle.
-	HCURSOR hcurHand;      // Hand cursor handle.
+	HCURSOR hcurHand;	  // Hand cursor handle.
 	HCURSOR hcurHSplitBar; // Horizontal Splitter cursor handle.
 	HCURSOR hcurVSplitBar; // Vertical Splitter cursor handle.
-	HCURSOR hcurMove;      // 4 way move cursor handle.
+	HCURSOR hcurMove;	  // 4 way move cursor handle.
 
 	//=======================================================================
 	//## System metrics
@@ -395,8 +384,8 @@ public:
 
 	int cxSmIcon;   // cx small icon size (width).
 	int cySmIcon;   // cy small icon size (height).
-	int cxSize;     // Width, in pixels, of a button in a window's caption or title bar.
-	int cySize;     // Height, in pixels, of a button in a window's caption or title bar.
+	int cxSize;		// Width, in pixels, of a button in a window's caption or title bar.
+	int cySize;		// Height, in pixels, of a button in a window's caption or title bar.
 	int cxHThumb;   // Width, in pixels, of the thumb box in a horizontal scroll bar.
 	int cyVThumb;   // Height, in pixels, of the thumb box in a vertical scroll bar.
 	int cyMenuItem; // Height, in pixels, of single-line menu bar.
@@ -405,39 +394,58 @@ public:
 	//## Fonts used by Xtreme Toolkit
 	//=======================================================================
 
-	CFont font;              // Menu font.
-	CFont fontBold;          // Menu bold font.
-	CFont fontULine;         // Menu underlined font.
-	CFont fontVert;          // Vertical menu font.
-	CFont fontVertBold;      // Vertical menu bold font.
-	CFont fontIconTitle;     // Icon title font.
-	CFont fontIconTitleBold; // Icon title bold font.
-	CFont fontMarlettIcon;   // Marlett icon font.
-	CFont fontStatus;        // Status bar font.
-	CFont fontSmCaption;     // Small caption font.
+	CXTPFont xtpFont;			   // Menu font.
+	CXTPFont xtpFontBold;		   // Menu bold font.
+	CXTPFont xtpFontULine;		   // Menu underlined font.
+	CXTPFont xtpFontVert;		   // Vertical menu font.
+	CXTPFont xtpFontVertBold;	  // Vertical menu bold font.
+	CXTPFont xtpFontIconTitle;	 // Icon title font.
+	CXTPFont xtpFontIconTitleBold; // Icon title bold font.
+	CXTPFont xtpFontMarlettIcon;   // Marlett icon font.
+	CXTPFont xtpFontStatus;		   // Status bar font.
+	CXTPFont xtpFontSmCaption;	 // Small caption font.
+
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, font, xtpFont, GetFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontBold, xtpFontBold, GetBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontULine, xtpFontULine, GetULineFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontVert, xtpFontVert, GetVertFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontVertBold, xtpFontVertBold,
+										  GetVertBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontIconTitle, xtpFontIconTitle,
+										  GetIconTitleFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontIconTitleBold, xtpFontIconTitleBold,
+										  GetIconTitleBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontMarlettIcon, xtpFontMarlettIcon,
+										  GetMarlettIconFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontStatus, xtpFontStatus, GetStatusFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, fontSmCaption, xtpFontSmCaption,
+										  GetSmCaptionFontHandle);
 
 	//=======================================================================
 	//## Flags used by Xtreme Toolkit
 	//=======================================================================
 
-	BOOL bWin95;           // TRUE if Windows 95.
-	BOOL bWin98;           // TRUE if Windows 98.
-	BOOL bWinNT;           // TRUE if Windows NT.
-	BOOL bWin2K;           // TRUE if Windows 2000.
-	BOOL bWinXP;           // TRUE if Windows XP.
-	BOOL bUseOfficeFont;   // TRUE to use the Tahoma font if found, good for Office style applications by default.
-	BOOL bUseSolidShadows; // TRUE to use solid shadows for operating systems that do not supported layered windows.
-	BOOL bMenuShadows;     // TRUE to use shadows under the menus.
+	BOOL bWin95;		 // TRUE if Windows 95.
+	BOOL bWin98;		 // TRUE if Windows 98.
+	BOOL bWinNT;		 // TRUE if Windows NT.
+	BOOL bWin2K;		 // TRUE if Windows 2000.
+	BOOL bWinXP;		 // TRUE if Windows XP.
+	BOOL bUseOfficeFont; // TRUE to use the Tahoma font if found, good for Office style applications
+						 // by default.
+	BOOL bUseSolidShadows; // TRUE to use solid shadows for operating systems that do not supported
+						   // layered windows.
+	BOOL bMenuShadows;	 // TRUE to use shadows under the menus.
 
 	//=======================================================================
 	//## Miscellaneous settings
 	//=======================================================================
 
-	int       iComCtlVersion;  // Common control dll (comctl32.dll) version information.
+	int iComCtlVersion; // Common control dll (comctl32.dll) version information.
 
 	friend _XTP_EXT_CLASS CXTPAuxData& AFXAPI XTPAuxData();
 };
 
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTGLOBALS_H__)

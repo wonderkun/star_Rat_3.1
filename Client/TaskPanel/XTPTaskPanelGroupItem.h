@@ -1,7 +1,6 @@
 // XTPTaskPanelGroupItem.h interface for the CXTPTaskPanelGroupItem class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELGROUPITEM_H__)
-#define __XTPTASKPANELGROUPITEM_H__
+#	define __XTPTASKPANELGROUPITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPTaskPanelItem.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -248,7 +247,7 @@ public:
 	//     CreateFromOleData, CacheGlobalData, CopyToClipboard,
 	//     PasteFromClipboard, PrepareDrag
 	//-----------------------------------------------------------------------
-	BOOL PrepareDrag (COleDataSource& srcItem, BOOL bCacheTextData = TRUE);
+	BOOL PrepareDrag(COleDataSource& srcItem, BOOL bCacheTextData = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -268,62 +267,103 @@ public:
 	BOOL IsAutoHeight() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility Support
 
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
 	virtual HRESULT AccessibleDoDefaultAction(VARIANT varChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void GetPreviewBitmap(CWnd* pWnd, CBitmap& bmp);
 
 protected:
+	CRect m_rcMargins; // Item's margins.
+	CRect m_rcItem;	// Rectangle of the item.
 
-	CRect m_rcMargins;      // Item's margins.
-	CRect m_rcItem;         // Rectangle of the item.
+	BOOL m_bBold;	 // TRUE to use bold font.
+	BOOL m_bSelected; // TRUE if the item is currently selected.
 
-	BOOL m_bBold;           // TRUE to use bold font.
-	BOOL m_bSelected;       // TRUE if the item is currently selected.
+	HWND m_hWnd; // Only used for items of type xtpTaskItemTypeControl, this is the control's child
+				 // window
+	CSize m_szItem; // Size of item.  If size is set to 0, the size will be calculated by the task
+					// panel.
+	CBitmap m_bmpPreview;  // Internally used.  This holds a screen shot of the attached Windows
+						   // control when the item type is xtpTaskItemTypeControl. This screen shot
+						   // is used during group animation.  During animation, the Windows control
+						   // is hidden and the screen shot of the control is used in place of the
+						   // actual control during the animation process.
+	CSize m_szPreview;	 // Last preview bitmap size
+	CString m_strDragText; // Drag text of the item.
+	BOOL m_bAutoHeight;	// TRUE if item stretched inside its group.
+	COLORREF m_clrText;	// Text color
 
-	HWND m_hWnd;            // Only used for items of type xtpTaskItemTypeControl, this is the control's child window
-	CSize m_szItem;         // Size of item.  If size is set to 0, the size will be calculated by the task panel.
-	CBitmap m_bmpPreview;   // Internally used.  This holds a screen shot of the attached Windows control when the item type is xtpTaskItemTypeControl.
-	                        // This screen shot is used during group animation.  During animation, the Windows control is hidden and the screen shot of
-	                        // the control is used in place of the actual control during the animation process.
-	CSize m_szPreview;      // Last preview bitmap size
-	CString m_strDragText;  // Drag text of the item.
-	BOOL m_bAutoHeight;     // TRUE if item stretched inside its group.
-	COLORREF m_clrText;     // Text color
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	afx_msg void OleSetMargins(long nLeft, long nTop, long nRight, long nBottom);
+	afx_msg void OleSetControl(LPDISPATCH lpDispatch);
+
+	afx_msg LPDISPATCH OleGetControl()
+	{
+		return NULL;
+	}
+	afx_msg HWND OleGetHandle();
+	afx_msg void OleSetHandle(HWND);
+	afx_msg BSTR OlegGetDragText();
+	afx_msg void OleSetSize(long cx, long cy, BOOL bAutHeight);
+	afx_msg void OleRedrawPanel();
+	afx_msg void OleGetRect(long* nLeft, long* nTop, long* nRight, long* nBottom);
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelGroupItem)
+
+	enum
+	{
+		dispidBold		 = 10L,
+		dispidSetMargins = 11L,
+		dispidControl	= 12L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPTaskPanelGroup;
 };
 
-AFX_INLINE CRect& CXTPTaskPanelGroupItem::GetMargins() {
+AFX_INLINE CRect& CXTPTaskPanelGroupItem::GetMargins()
+{
 	return m_rcMargins;
 }
-AFX_INLINE CRect CXTPTaskPanelGroupItem::GetItemRect() const {
+AFX_INLINE CRect CXTPTaskPanelGroupItem::GetItemRect() const
+{
 	return m_rcItem;
 }
-AFX_INLINE void CXTPTaskPanelGroupItem::SetItemRect(LPCRECT lpRect) {
+AFX_INLINE void CXTPTaskPanelGroupItem::SetItemRect(LPCRECT lpRect)
+{
 	::CopyRect(&m_rcItem, lpRect);
 }
-AFX_INLINE CSize CXTPTaskPanelGroupItem::GetSize() const {
+AFX_INLINE CSize CXTPTaskPanelGroupItem::GetSize() const
+{
 	return m_szItem;
 }
-AFX_INLINE BOOL CXTPTaskPanelGroupItem::IsAutoHeight() const {
+AFX_INLINE BOOL CXTPTaskPanelGroupItem::IsAutoHeight() const
+{
 	return m_bAutoHeight;
 }
-AFX_INLINE COLORREF CXTPTaskPanelGroupItem::GetTextColor() const {
+AFX_INLINE COLORREF CXTPTaskPanelGroupItem::GetTextColor() const
+{
 	return m_clrText;
 }
-AFX_INLINE void CXTPTaskPanelGroupItem::SetTextColor(COLORREF clr) {
+AFX_INLINE void CXTPTaskPanelGroupItem::SetTextColor(COLORREF clr)
+{
 	m_clrText = clr;
 	RedrawPanel();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELGROUPITEM_H__)

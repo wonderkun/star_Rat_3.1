@@ -1,7 +1,6 @@
 // XTPTaskPanelItems.h interface for the CXTPTaskPanelItems class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELITEMS_H__)
-#define __XTPTASKPANELITEMS_H__
+#	define __XTPTASKPANELITEMS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanelGroup;
 class CXTPTaskPanelItem;
@@ -34,7 +35,7 @@ class CXTPPropExchange;
 
 //===========================================================================
 // Summary:
-//     CXTPTaskPanelItems is a CCmdTarget derived class. It is used as collection of
+//     CXTPTaskPanelItems is a CXTPCmdTarget derived class. It is used as collection of
 //     CXTPTaskPanelItem classes.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPTaskPanelItems : public CXTPCmdTarget
@@ -67,6 +68,20 @@ public:
 	//     A pointer to a CXTPTaskPanelItem object added.
 	//-----------------------------------------------------------------------
 	CXTPTaskPanelItem* Add(CXTPTaskPanelItem* pItem, UINT nID);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to add a new item to the collection.
+	// Parameters:
+	//     pItem - Points to a CXTPTaskPanelItem to be added.
+	//     nID - Identifier of the item.
+	//     lpCaption - Caption of the item
+	//     lpTooltip - Tooltip of the item
+	// Returns:
+	//     A pointer to a CXTPTaskPanelItem object added.
+	//-----------------------------------------------------------------------
+	CXTPTaskPanelItem* Add(CXTPTaskPanelItem* pItem, UINT nID, LPCTSTR lpCaption,
+						   LPCTSTR lpTooltip = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -149,7 +164,7 @@ public:
 	// Summary:
 	//     Call this member function to get a pointer to the owner
 	// Returns:
-	//     A pointer to a CCmdTarget object owned by this collection
+	//     A pointer to a CXTPCmdTarget object owned by this collection
 	//-----------------------------------------------------------------------
 	CCmdTarget* GetOwner() const;
 
@@ -175,7 +190,6 @@ public:
 	//     pPX - A CXTPPropExchange object to serialize to or from.
 	//-----------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -214,14 +228,43 @@ public:
 	CXTPTaskPanelItem* GetLastVisibleItem() const;
 
 protected:
-	CXTPTaskPanel* m_pPanel;                                    // Parent TaskPanel control.
-	CArray<CXTPTaskPanelItem*, CXTPTaskPanelItem*> m_arrItems;  // Array of items.
-	CCmdTarget* m_pOwner;                                       // Owner of items. Can be TaskPanel or Group.
+	CXTPTaskPanel* m_pPanel;								   // Parent TaskPanel control.
+	CArray<CXTPTaskPanelItem*, CXTPTaskPanelItem*> m_arrItems; // Array of items.
+	CCmdTarget* m_pOwner; // Owner of items. Can be TaskPanel or Group.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleItem(long nIndex);
+
+	afx_msg void OleClear();
+	afx_msg void OleRemove(long nIndex);
+	afx_msg LPDISPATCH OleFind(long nID);
+	afx_msg void OleMove(LPDISPATCH lpItem, long nIndex);
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+
+	DECLARE_ENUM_VARIANT(CXTPTaskPanelItems)
+
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelItems)
+
+	enum
+	{
+		dispidCount  = 1L,
+		dispidRemove = 2L,
+		dispidClear  = 3L,
+		dispidAdd	= 4L,
+		dispidFind   = 5L,
+	};
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	friend class CXTPTaskPanel;
 	friend class CXTPTaskPanelGroup;
 };
-
 
 //===========================================================================
 // Summary:
@@ -231,7 +274,6 @@ protected:
 class _XTP_EXT_CLASS CXTPTaskPanelGroupItems : public CXTPTaskPanelItems
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs CXTPTaskPanelGroupItems object
@@ -246,6 +288,21 @@ public:
 	//-----------------------------------------------------------------------
 	virtual CRuntimeClass* GetDefaultItemClass() const;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelGroupItems)
+
+	afx_msg LPDISPATCH OleAdd(long nID, LPCTSTR lpCaption, long nType,
+							  const VARIANT& varImageIndex);
+	afx_msg LPDISPATCH OleInsert(long nIndex, long nID, LPCTSTR lpCaption, long nType,
+								 const VARIANT& varImageIndex);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -256,7 +313,6 @@ public:
 class _XTP_EXT_CLASS CXTPTaskPanelGroups : public CXTPTaskPanelItems
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTaskPanelGroups object
@@ -271,8 +327,18 @@ public:
 	//-----------------------------------------------------------------------
 	virtual CRuntimeClass* GetDefaultItemClass() const;
 
-};
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelGroups)
+
+	afx_msg LPDISPATCH OleAdd(long nID, LPCTSTR lpCaption);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
 
 AFX_INLINE int CXTPTaskPanelItems::GetCount() const
 {
@@ -287,4 +353,5 @@ AFX_INLINE CCmdTarget* CXTPTaskPanelItems::GetOwner() const
 	return m_pOwner;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELITEMS_H__)

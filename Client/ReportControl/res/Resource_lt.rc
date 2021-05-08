@@ -1,7 +1,6 @@
 // ReportControl resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -22,7 +21,7 @@
 #include "ReportControl/Resource.h"
 #include "ReportControl/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LTH)
 #ifdef _WIN32
 LANGUAGE LANG_LITHUANIAN, SUBLANG_LITHUANIAN
 #pragma code_page(1257)
@@ -84,20 +83,20 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_REPORT_NOGROUPBY         "Kad sugrupuotum?te pagal stulpel?, vilkite ? ?ia stulpelio antra?t¿."
-    XTP_IDS_REPORT_NOITEMS           "?iame rodinyje n?ra ko rodyti."
-    XTP_IDS_REPORT_NOFIELDSAVAILABLE "(n?ra lauk¸)"
+    XTP_IDS_REPORT_NOGROUPBY         "Èia vilkite stulpelio antraðtæ, kad grupuotumëte pagal ðá stulpelá."
+    XTP_IDS_REPORT_NOITEMS           "Nëra elementø, kuriuos bûtø galima parodyti."
+    XTP_IDS_REPORT_NOFIELDSAVAILABLE "(nëra laukø)"
     XTP_IDS_REPORT_SORTBY            "Rûðiuoti pagal:"
 
     XTP_IDS_REPORT_MARGINS_MM        "Paraðtës (milimetrais)"
     XTP_IDS_REPORT_MARGINS_INCH      "Paraðtës (coliais)"
-    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Enter filter text here"
+    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Áveskite filtro tekstas èia"
 
-    XTP_IDS_REPORT_INCREASING        "/Increasing"
-    XTP_IDS_REPORT_DECREASING        "/Decreasing"
-    XTP_IDS_REPORT_EXPAND            "Expand"
-    XTP_IDS_REPORT_COLLAPSE          "Collapse"
+    XTP_IDS_REPORT_INCREASING        "/ Didinimas"
+    XTP_IDS_REPORT_DECREASING        "/ Maþëja"
+    XTP_IDS_REPORT_EXPAND            "Iðplësti"
+    XTP_IDS_REPORT_COLLAPSE          "Þlugimo"
 
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LTH)

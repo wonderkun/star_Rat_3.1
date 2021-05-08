@@ -1,7 +1,6 @@
 // XTPTabManager.h: interface for the CXTPTabManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABMANAGER_H__)
-#define __XTPTABMANAGER_H__
+#	define __XTPTABMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPTabPaintManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPTabManagerNavigateButton;
+class CXTPTabManagerNavigateButtons;
+class CXTPTabManagerItem;
+class CXTPTabManagerAtom;
+class CXTPTabManager;
+class CXTPTabPaintManagerColorSet;
+class CXTPTabPaintManagerTheme;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -52,894 +59,15 @@
 //     return CXTPTabPaintManager::GetOneNoteColor(xtpTabColorOrange);
 // }
 // </code>
-// See Also: CXTPTabPaintManager::GetOneNoteColor, CXTPTabClientWnd, WM_XTP_GETWINDOWTEXT, WM_XTP_GETTABICON, WM_XTP_GETWINDOWTOOLTIP
+// See Also: CXTPTabPaintManager::GetOneNoteColor, CXTPTabClientWnd, WM_XTP_GETWINDOWTEXT,
+// WM_XTP_GETTABICON, WM_XTP_GETWINDOWTOOLTIP
 //-----------------------------------------------------------------------
 const UINT WM_XTP_GETTABCOLOR = (WM_USER + 9400 + 1);
 
-class CXTPTabManager;
 class CXTPTabPaintManager;
 class CXTPImageManagerIcon;
 class CXTPMarkupContext;
 class CXTPMarkupUIElement;
-
-//===========================================================================
-// Summary:
-//     CXTPTabManagerNavigateButton is a class used to represent the
-//     tab navigation buttons.
-// Remarks:
-//     Navigation button are the buttons that appear in the tab header
-//     area.  The buttons include the left arrow, right arrow, and close
-//     buttons.  Any combination of these buttons can be shown.  You
-//     can choose to never display then, always display them, or
-//     automatically display them.  If yo automatically display the buttons,
-//     they are only displayed when needed.  I.e, When there are too many
-//     tabs to display in the tab header, the arrow buttons appear.
-//
-//          By default these all these buttons are displayed in the
-//          CommandBars TabWorkSpace.  You will need to add them to the
-//          TabControl.
-//
-//          If the xtpTabNavigateButtonAutomatic flag is used, then the button
-//          will appear only when needed.  I.e. When the XTPTabLayoutStyle is
-//          set to xtpTabLayoutAutoSize, all tab might not fit in the tab header
-//          area.  When there are more tabs than can fit in the header, the
-//          button will automatically be displayed.
-//
-// Example:
-//     This example code illustrates how to specify when the tab navigation
-//     buttons are displayed.
-// <code>
-// //Finds the left navigation button and specifies that it is always displayed
-// m_wndTabControl.FindNavigateButton(xtpTabNavigateButtonLeft)->SetFlags(xtpTabNavigateButtonAlways);
-// //Finds the right navigation button and specifies that it is never displayed
-// m_wndTabControl.FindNavigateButton(xtpTabNavigateButtonRight)->SetFlags(xtpTabNavigateButtonNone);
-// //Finds the close navigation button and specifies that it is always displayed
-// m_wndTabControl.FindNavigateButton(xtpTabNavigateButtonClose)->SetFlags(xtpTabNavigateButtonAlways);
-//
-// //Called to recalculate tab area and reposition components
-// Reposition();
-// </code>
-// See Also: XTPTabNavigateButtonFlags, CXTPTabManager::FindNavigateButton
-//===========================================================================
-class _XTP_EXT_CLASS CXTPTabManagerNavigateButton
-{
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPTabManagerNavigateButton object.
-	// Parameters:
-	//     pManager - CXTPTabManager object to draw the button on.
-	//     nID      - Id of the button, can be one of the values listed in the
-	//                Remarks section.
-	//     dwFlags  - Indicates when to display the button.
-	// Remarks:
-	//     Standard ids of buttons are listed below:
-	//     * <b>xtpTabNavigateButtonLeft</b>  Left tab navigation button.
-	//     * <b>xtpTabNavigateButtonRight</b> Right tab navigation button.
-	//     * <b>xtpTabNavigateButtonClose</b> Close tab navigation button.
-	// See also:
-	//     CXTPTabManager::FindNavigateButton, XTPTabNavigateButtonFlags,
-	//     XTPTabNavigateButton
-	//-----------------------------------------------------------------------
-	CXTPTabManagerNavigateButton(CXTPTabManager* pManager, UINT nID, XTPTabNavigateButtonFlags dwFlags);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPTabManagerNavigateButton object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	virtual ~CXTPTabManagerNavigateButton();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to adjust the width of the tab header area.
-	//     This will subtract the width of the navigate button from
-	//     the width of the tab header area supplied.
-	// Parameters:
-	//     nWidth - Width of the tab header area.
-	//
-	// Remarks:
-	//     The width will only be adjusted if the xtpTabNavigateButtonAlways
-	//     is set.  If the tabs are vertical, then the height of the buttons
-	//     are subtracted from the tab header area.
-	//-----------------------------------------------------------------------
-	virtual void AdjustWidth(int& nWidth);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to specify when the navigation button is displayed.
-	// Parameters:
-	//     dwFlags - Indicates when to display the button.
-	// See Also: XTPTabNavigateButtonFlags, CXTPTabManager::FindNavigateButton, GetFlags
-	//-----------------------------------------------------------------------
-	void SetFlags(XTPTabNavigateButtonFlags dwFlags);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine when the navigation button is displayed.
-	// Returns:
-	//     XTPTabNavigateButtonFlags indicating when the navigation
-	//     button is displayed.
-	// See Also: XTPTabNavigateButtonFlags, CXTPTabManager::FindNavigateButton, SetFlags
-	//-----------------------------------------------------------------------
-	XTPTabNavigateButtonFlags GetFlags() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to retrieve size of the button.
-	// See Also: GetRect
-	//-----------------------------------------------------------------------
-	virtual CSize GetSize() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get parent Item of the button.
-	//-----------------------------------------------------------------------
-	CXTPTabManagerItem* GetItem() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw the navigation button in the tab
-	//     header area.
-	// Parameters:
-	//     pDC - Pointer to a valid device context.
-	//-----------------------------------------------------------------------
-	void Draw(CDC* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called when the user presses the left mouse button.
-	// Parameters:
-	//     hWnd - Handle to the CWnd object beneath the mouse cursor.
-	//     pt   - Specifies the x- and y-coordinate of the cursor. These
-	//            coordinates are always relative to the upper-left
-	//            corner of the window.
-	// Remarks:
-	//     When the user clicks on a tab navigation button,
-	//     CXTPTabManagerNavigateButton::PerformClick will call the OnExecute
-	//     member, the OnExecute member will then call the
-	//     CXTPTabManager::OnNavigateButtonClick member passing in the ID
-	//     of the tab navigation button that was pressed.
-	//
-	//          This member performs the common operations of when a button
-	//          is clicked such as drawing the "pressed" button and calling
-	//          the OnExecute function of the clicked tab navigation button.
-	//
-	// See Also: CXTPTabManager::OnNavigateButtonClick
-	//-----------------------------------------------------------------------
-	virtual void PerformClick(HWND hWnd, CPoint pt);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the navigation button is enabled.
-	// Returns:
-	//     TRUE if the navigation button is enabled, FALSE if it is disabled.
-	//-----------------------------------------------------------------------
-	BOOL IsEnabled() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called to determine if the navigation button
-	//     is currently pressed.
-	// Returns:
-	//     TRUE if the navigation button is currently pressed.
-	// Remarks:
-	//     This member is used in the CColorSetDefault::FillNavigateButton
-	//     function and all other objects derived from CColorSetDefault to
-	//     determine how to colorize the button.
-	// See Also: CColorSetDefault::FillNavigateButton
-	//-----------------------------------------------------------------------
-	BOOL IsPressed() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called to determine if the navigation button
-	//     is currently highlighted.  This occurs when the mouse cursor
-	//     is positioned over the navigation button.
-	// Remarks:
-	//     This member is used in the CColorSetDefault::FillNavigateButton
-	//     function and all other objects derived from CColorSetDefault to
-	//     determine how to colorize the button.
-	// Returns:
-	//     TRUE if the navigation button is currently highlighted.
-	// See Also: CColorSetDefault::FillNavigateButton
-	//-----------------------------------------------------------------------
-	BOOL IsHighlighted() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the navigation button is
-	//     currently visible.
-	// Returns:
-	//     TRUE if the navigation button is currently visible, FALSE
-	//     otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsVisible() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the bounding rectangle of the
-	//     navigation button.
-	// Returns:
-	//     Bounding rectangle of navigation button.
-	//-----------------------------------------------------------------------
-	CRect GetRect() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called to set bounding rectangle of the
-	//     navigation button.
-	// Parameters:
-	//     rcButton - Bounding rectangle of navigation button to set.
-	//-----------------------------------------------------------------------
-	void SetRect(CRect rcButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get identifier of the button
-	// Returns:
-	//     Identifier of the button
-	// Remarks:
-	//     See XTPTabNavigateButton for list of standard identifiers
-	// See Also:
-	//     XTPTabNavigateButton
-	//-----------------------------------------------------------------------
-	UINT GetID() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to update self position.
-	// Parameters:
-	//     rcNavigateButtons - Bounding rectangle of the tab navigation
-	//                         buttons.
-	//-----------------------------------------------------------------------
-	virtual void Reposition(CRect& rcNavigateButtons);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the tooltip for this button.  This is the
-	//     text that will be displayed when the mouse pointer is positioned
-	//     over the button.
-	// Parameters: lpszTooltip - Tooltip to set for this button.
-	// See Also: GetTooltip
-	//-----------------------------------------------------------------------
-	void SetTooltip(LPCTSTR lpszTooltip);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the tooltip displayed when the mouse
-	//     pointer is positioned over the button.
-	// Returns:
-	//     The tooltip displayed when the mouse if over the button.
-	// See Also: SetTooltip
-	//-----------------------------------------------------------------------
-	CString GetTooltip() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called to draw a symbol in the tab navigation
-	//     button. I.e. "<", ">" or "x".  This member must be overridden in
-	//     derived classes.
-	// Parameters:
-	//     pDC - Pointer to a valid device context.
-	//     rc  - Bounding rectangle of tab navigation button.
-	//-----------------------------------------------------------------------
-	virtual void DrawEntry(CDC* pDC, CRect rc) = 0;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member is called when a navigation button is clicked.
-	// Parameters:
-	//     bTick - If TRUE, CXTPTabManager::OnNavigateButtonClick will
-	//             be called passing in the Id of the navigation
-	//             button that was clicked as a parameter.
-	//-----------------------------------------------------------------------
-	virtual void OnExecute(BOOL bTick);
-
-protected:
-	UINT m_nID;                             // Id of the navigation button.
-	XTPTabNavigateButtonFlags m_dwFlags;    // Flag that indicates when the navigation button will be drawn.
-	CXTPTabManager* m_pManager;             // Pointer to the TabManager the navigation buttons are drawn on.
-	CRect m_rcButton;                       // Bounding rectangle of the navigation button.
-
-	BOOL m_bEnabled;                        // TRUE if the navigation button is enables.
-	BOOL m_bPressed;                        // TRUE if the navigation button is pressed\clicked.
-	CString m_strToolTip;                   // Tooltip for the button.
-	CXTPTabManagerItem* m_pItem;            // Owner item. NULL if common.
-
-private:
-	friend class CXTPTabManager;
-	friend class CXTPTabManagerNavigateButtons;
-};
-
-//===========================================================================
-// Summary:
-//     Navigate buttons array definition
-//===========================================================================
-class _XTP_EXT_CLASS CXTPTabManagerNavigateButtons
-{
-
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPTabManagerNavigateButtons object.
-	//-------------------------------------------------------------------------
-	CXTPTabManagerNavigateButtons();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPTabManagerNavigateButtons object, handles cleanup and deallocation.
-	//-------------------------------------------------------------------------
-	virtual ~CXTPTabManagerNavigateButtons();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves CXTPTabManagerNavigateButton by its index.
-	// Parameters:
-	//     nIndex - Zero-based index of the button.
-	// Returns:
-	//     Pointer to CXTPTabManagerNavigateButton if successful; NULL otherwise.
-	//-----------------------------------------------------------------------
-	CXTPTabManagerNavigateButton* GetAt(int nIndex) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves CXTPTabManagerNavigateButton by its index.
-	// Parameters:
-	//     nIndex - Zero-based index of the button.
-	// Returns:
-	//     Pointer to CXTPTabManagerNavigateButton if successful; NULL otherwise.
-	//-----------------------------------------------------------------------
-	CXTPTabManagerNavigateButton* operator[] (int nIndex) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Adds CXTPTabManagerNavigateButton to collection
-	// Parameters:
-	//     pButton - New button to be added
-	// Returns:
-	//     Index of button in collection
-	//-----------------------------------------------------------------------
-	int Add(CXTPTabManagerNavigateButton* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to insert CXTPTabManagerNavigateButton to collection
-	// Parameters:
-	//     nIndex - Index to insert button to
-	//     pButton - New button to be added
-	//-----------------------------------------------------------------------
-	void InsertAt(int nIndex, CXTPTabManagerNavigateButton* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to remove CXTPTabManagerNavigateButton from collection
-	// Parameters:
-	//     nIndex - Index of button to remove
-	//-----------------------------------------------------------------------
-	void RemoveAt(int nIndex);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to clean all buttons
-	//-----------------------------------------------------------------------
-	void RemoveAll();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get size of collection
-	// Returns:
-	//     Number of elements in collection
-	//-----------------------------------------------------------------------
-	int GetSize() const;
-
-
-protected:
-	CArray<CXTPTabManagerNavigateButton*, CXTPTabManagerNavigateButton*> m_arrButtons;  /// Collection of buttons
-};
-
-
-//===========================================================================
-// Summary:
-//     CXTPTabManagerItem is a CCmdTarget derived class that represents
-//     a tab item.  This is the base class for the tabs that appear
-//     in the CommandBars TabWorkSpace, DockingPanes, and TabControl.
-//===========================================================================
-class _XTP_EXT_CLASS  CXTPTabManagerItem : public CXTPCmdTarget
-{
-	DECLARE_DYNAMIC(CXTPTabManagerItem)
-
-protected:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPTabManagerItem object.
-	//-------------------------------------------------------------------------
-	CXTPTabManagerItem();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPTabManagerItem object, handles cleanup and deallocation.
-	//-------------------------------------------------------------------------
-	~CXTPTabManagerItem();
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the text caption that is displayed
-	//     in this tab's button.
-	// Parameters:
-	//     lpszCaption - Text caption of the tab.
-	// See Also: GetCaption
-	//-----------------------------------------------------------------------
-	void SetCaption(LPCTSTR lpszCaption);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the text caption to the tab.
-	// Returns:
-	//     Text caption of tab.  This is the text displayed in the tab
-	//     button.
-	// See Also: SetCaption
-	//-----------------------------------------------------------------------
-	CString GetCaption() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the tooltip for this tab.  This is the
-	//     text that will be displayed when the mouse pointer is positioned
-	//     over the tab button.
-	// Parameters: lpszTooltip - Tooltip to set for this tab.
-	// See Also: GetTooltip, CXTPTabManager::GetItemTooltip
-	//-----------------------------------------------------------------------
-	void SetTooltip(LPCTSTR lpszTooltip);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the tooltip displayed when the mouse
-	//     pointer is positioned over the tab button.
-	// Returns:
-	//     The tooltip displayed when the mouse if over the tab button.
-	// See Also: SetTooltip, CXTPTabManager::GetItemTooltip
-	//-----------------------------------------------------------------------
-	CString GetTooltip() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to retrieve the color of the tab button.
-	// Returns:
-	//     The color of the tab button.
-	// See Also: SetColor, CXTPTabManager::GetItemColor
-	//-----------------------------------------------------------------------
-	COLORREF GetColor();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the color of the tab button.
-	// Parameters:   clr - New color of the tab button.
-	// Remarks:
-	//     After the new color is set, CXTPTabManager::RedrawControl is
-	//     called.
-	// See Also: GetColor, CXTPTabManager::GetItemColor
-	//-----------------------------------------------------------------------
-	void SetColor(COLORREF clr);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the bounding rectangle of the tab
-	//     button.
-	// Returns:
-	//     Bounding rectangle of the tab button.
-	// See Also: SetRect
-	//-----------------------------------------------------------------------
-	CRect GetRect() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the width of the tab button.
-	// Returns:
-	//     Width of the tab button.
-	// Remarks:
-	//     The width might change depending on the tab layout and
-	//     position of the tabs.
-	// See Also: XTPTabLayoutStyle, XTPTabPosition
-	//-----------------------------------------------------------------------
-	int GetButtonLength() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the width of the content.
-	// Returns:
-	//     Width of the content of the button.
-	// Remarks:
-	//     The width might change depending on the tab layout and
-	//     position of the tabs.
-	// See Also: XTPTabLayoutStyle, XTPTabPosition
-	//-----------------------------------------------------------------------
-	int GetContentLength() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the index of the tab within the
-	//     collection of tabs.
-	// Returns:
-	//     Index of tab.
-	// See Also: CXTPTabManager::GetItem, CXTPTabManager
-	//-----------------------------------------------------------------------
-	int GetIndex() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the image index of the tab.
-	// Returns:
-	//     Index of the image displayed in the tab button.  The index is
-	//     the index of an image within an CXTPImageManager or CImageList
-	//     object.
-	// Remarks:
-	//     This is the index of an image within an CXTPImageManager or CImageList
-	//     object that will be displayed in the tab button.  CXTPTabManager::ShowIcons
-	//     is used to hide\show icons.
-	// See Also: SetImageIndex, CXTPTabControl::InsertItem, CXTPTabControl::GetImageManager,
-	//           CXTPTabControl::SetImageList, CXTPTabManager::ShowIcons
-	//-----------------------------------------------------------------------
-	int GetImageIndex() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the image index of the tab.
-	// Parameters: nImage - Index of an image within an CXTPImageManager or CImageList
-	//                      object that will be displayed in the tab button.
-	// Remarks:
-	//     This is the index of an image within an CXTPImageManager or CImageList
-	//     object that will be displayed in the tab button.  CXTPTabManager::ShowIcons
-	//     is used to hide\show icons.
-	// See Also: GetImageIndex, CXTPTabControl::InsertItem, CXTPTabControl::GetImageManager,
-	//           CXTPTabControl::SetImageList, CXTPTabManager::ShowIcons
-	//-----------------------------------------------------------------------
-	void SetImageIndex(int nImage);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method retrieves the application-supplied 32-bit value
-	//     associated with the tab item.
-	// Remarks:
-	//     This returns the "extra" information such as pointers or
-	//     integers that was associated with the tab item using the SetData
-	//     function.
-	//
-	//          NOTE: Do not use GetData when working with docking pane tabs.
-	//                With DockingPanes, GetData returns a pointer to a CXTPDockingPane.
-	//                Use CXTPDockingPane::GetPaneData when working with
-	//                docking panes.
-	// Returns:
-	//     The 32-bit value associated with the tab item.
-	// See Also: SetData, CXTPDockingPane::SetPaneData, CXTPDockingPane::GetPaneData
-	//-----------------------------------------------------------------------
-	DWORD_PTR GetData() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set the 32-bit value associated with the
-	//     tab item.
-	// Parameters:
-	//     dwData - Contains the new value to associate with the tab item.
-	// Remarks:
-	//     This allows any "extra" information such as pointers or
-	//     integers to be associated with the tab item.
-	//
-	//          NOTE: Do not use SetData when working with docking pane tabs.
-	//                For DockingPanes, dwData stores a pointer to a CXTPDockingPane.
-	//                Use CXTPDockingPane::SetPaneData when working with
-	//                docking panes.
-	// See Also: SetData, CXTPDockingPane::SetPaneData
-	//-----------------------------------------------------------------------
-	void SetData(DWORD_PTR dwData);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to associate an object with the tab.  This
-	//     will tell the tab what to display in the tab client area when
-	//     the tab is selected.
-	//     I.e. The HWND of a dialog.
-	// Parameters:   hWnd - HWND of object that should be displayed in this tab
-	//                      when the tab is selected.
-	// See Also: GetHandle
-	//-----------------------------------------------------------------------
-	void SetHandle(HWND hWnd);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the HWND of the object associated
-	//     with the tab.  This is the HWND of the object that is displayed
-	//     in the tab client area when the tab is selected.
-	// Returns:
-	//     HWND of object associated with the tab.
-	// See Also: SetHandle
-	//-----------------------------------------------------------------------
-	HWND GetHandle() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the bounding rectangle of the tab.
-	// Parameters:   rcItem - Bounding rectangle of tab.
-	// See Also: GetRect
-	//-----------------------------------------------------------------------
-	void SetRect(CRect rcItem);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the tab is visible.
-	// Returns:
-	//     TRUE if the tab is visible, FALSE otherwise.
-	// Remarks:
-	//     A tab might not be visible because of the tab layout.  You
-	//     can also use the SetVisible member to hide\show a tab.
-	// See Also: SetVisible
-	//-----------------------------------------------------------------------
-	BOOL IsVisible() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to hide or show the tab.
-	// Parameters: bVisible - TRUE to show the tab, FALSE to hide the tab.
-	// See Also: IsVisible
-	//-----------------------------------------------------------------------
-	virtual void SetVisible(BOOL bVisible);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the tab is enabled.
-	// Returns:
-	//     TRUE if the tab is enabled, FALSE if the tab is disabled.
-	// See Also: SetEnabled
-	//-----------------------------------------------------------------------
-	BOOL IsEnabled() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set whether the tab is enabled.
-	// Parameters:   bEnabled - TRUE to enable the tab, FALSE to disable the tab.
-	// Remarks:
-	//     If FALSE, the tab will appear "grayed out" and the user can
-	//     not access the tab.
-	// See Also: IsEnabled
-	//-----------------------------------------------------------------------
-	void SetEnabled(BOOL bEnabled);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get row of the item.
-	//-----------------------------------------------------------------------
-	int GetItemRow() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to determine if the item was shrinked.
-	//-----------------------------------------------------------------------
-	BOOL IsItemShrinked() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get collection of navigate buttons.
-	// Returns:
-	//     Array of CXTPTabManagerNavigateButton classes.
-	// See Also:
-	//     CXTPTabManagerNavigateButtons, CXTPTabManagerNavigateButton
-	//-----------------------------------------------------------------------
-	CXTPTabManagerNavigateButtons* GetNavigateButtons();
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine it the tab is currently
-	//     selected.  I.e. when a tab is clicked.
-	// Returns:
-	//     TRUE if the tab is currently selected, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsSelected() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine it the tab has focus
-	// Returns:
-	//     TRUE if the tab has focus, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsFocused() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to determine if the tab is highlighted.
-	// Returns:
-	//     TRUE if the tab is highlighted (If CXTPTabPaintManager::m_bHotTracking
-	//     is TRUE), otherwise FALSE.
-	// Remarks:
-	//     A tab will be highlighted when CXTPTabPaintManager::m_bHotTracking
-	//     is TRUE and the mouse pointer is positioned over the tab button.
-	//     and when dragging a tab.  I.e. Reordering tabs.
-	// See Also: IsPressed, IsFocused
-	//-----------------------------------------------------------------------
-	BOOL IsHighlighted() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//    Call this method to determine if the tab is pressed
-	// Returns:
-	//     TRUE if the tab is pressed, otherwise FALSE.
-	// See Also: IsHighlighted
-	//-----------------------------------------------------------------------
-	BOOL IsPressed() const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this member to delete this tab.
-	//-------------------------------------------------------------------------
-	void Remove();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this member to select this tab.
-	// Remarks:
-	//     This will invoke the OnItemClick method.  A tab can also be selected
-	//     by clicking on the tab.
-	//-------------------------------------------------------------------------
-	void Select();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to reorder item.
-	// Parameters:
-	//     nIndex - New item position to be set.
-	//-----------------------------------------------------------------------
-	void Move(int nIndex);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This method is called to determine if item can be closed
-	// Returns:
-	//     TRUE if item can be closed.
-	//-------------------------------------------------------------------------
-	BOOL IsClosable() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to forbid this tab to be closed
-	// Parameters:
-	//     bClosable - TRUE to allow user close this tab; FALSE to forbid
-	//-----------------------------------------------------------------------
-	void SetClosable(BOOL bClosable);
-
-	//-----------------------------------------------------------------------
-	// Summary: Call this method to get Markup element that renders caption of the tab
-	// Returns: Pointer to CXTPMarkupUIElement element
-	//-----------------------------------------------------------------------
-	CXTPMarkupUIElement* GetMarkupUIElement() const;
-
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get a pointer to the CXTPTabManager object.
-	//     The CXTPTabManager object manages all CXTPTabManagerItem objects.
-	// Returns:
-	//     Pointer to parent CXTPTabManager.
-	//-------------------------------------------------------------------------
-	CXTPTabManager* GetTabManager() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to draw icon of single tab
-	// Parameters:
-	//     pDC - Pointer to device context to draw
-	//     rcIcon - Bounding rectangle of icon
-	//     pImage - Pointer to image associated with tab
-	// See Also: CXTPImageManagerIcon
-	//-----------------------------------------------------------------------
-	void DrawImage(CDC* pDC, CRect rcIcon, CXTPImageManagerIcon* pImage);
-
-protected:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to update position of TabManager.
-	//-----------------------------------------------------------------------
-	void Reposition();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called when item was removed from TabManager collection
-	//-----------------------------------------------------------------------
-	virtual void OnRemoved();
-
-private:
-	BOOL DrawRotatedImage(CDC* pDC, CRect rcItem, CXTPImageManagerIcon* pImage);
-
-protected:
-	int             m_nButtonLength;      // Width of the tab button.
-	int             m_nContentLength;     // Width of the tab button.
-	int             m_nImage;       // Image index, this is the index of an image within a CXTPImageManger or CImageList object.
-	int             m_nIndex;       // Index of the tab within the collection of tabs.
-	BOOL            m_bEnabled;     // TRUE if the tab is enabled.
-	BOOL            m_bVisible;     // TRUE if the tab is visible.
-	HWND            m_hWnd;         // A CWnd pointer to the window associated with a tab.
-	HICON           m_hIcon;        // Icon associated with the tab.
-	DWORD_PTR       m_dwData;       // Developer specific data
-	CRect           m_rcItem;       // Rectangle of this tab.
-	CString         m_strCaption;   // User specified label for the tab.
-	CString         m_strToolTip;   // Tooltip text for the tab.
-	COLORREF        m_clrItem;      // Color of tab button.
-	CXTPTabManager* m_pTabManager;  // Parent item.
-	int             m_nItemRow;     // Row of the item
-	BOOL            m_bClosable;    // TRUE if item can be closed.
-
-	CXTPTabManagerNavigateButtons m_arrNavigateButtons; // Array of navigate buttons
-	CXTPMarkupUIElement* m_pMarkupUIElement;            // Markup element pointer.
-
-private:
-	BOOL            m_bFound;
-
-
-	friend class CXTPTabManager;
-	friend class CXTPTabPaintManager;
-	friend class CXTPTabWorkspace;
-	friend class CXTPTabClientWnd;
-	friend class CXTPGroupClientWnd;
-
-
-};
-
-
-//===========================================================================
-// Summary:
-//     CXTPTabManagerAtom is a class that has only one purpose, which
-//     is to catch the event when a property of the PaintManager has changed.
-//     When a property of the PaintManager has changed, the OnPropertyChanged
-//     event if called. When the OnPropertyChanged is caught, Reposition
-//     is called to recalculate self layout.
-// Remarks:
-//     This is the base class for CXTPTabManager.  When a property of the
-//     CXTPTabPaintManager has changed, then OnPropertyChanged is called
-//     to recalculate the layout.  The paint manager can be accessed
-//     with the CXTPTabManager::GetPaintManager member.
-// See Also: CXTPTabManager::GetPaintManager
-//===========================================================================
-class CXTPTabManagerAtom
-{
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This member is called when a property of the PaintManager has
-	//     changed.
-	// See Also: CXTPTabManager::GetPaintManager
-	//-------------------------------------------------------------------------
-	virtual void OnPropertyChanged()
-	{
-		Reposition();
-	}
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This member recalculates the layout of the tab manager and
-	//     then repositions itself.  This member must be overridden in
-	//     derived classes.
-	//-------------------------------------------------------------------------
-	virtual void Reposition() = 0;
-protected:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPTabManagerAtom object, handles cleanup and deallocation.
-	//-------------------------------------------------------------------------
-	virtual ~CXTPTabManagerAtom()
-	{
-
-	}
-};
-
 
 //===========================================================================
 // Summary:
@@ -964,8 +92,8 @@ public:
 	//-------------------------------------------------------------------------
 	struct ROW_ITEMS
 	{
-		int nFirstItem;     // First item index of row
-		int nLastItem;      // Last item index of row
+		int nFirstItem; // First item index of row
+		int nLastItem;  // Last item index of row
 	};
 
 protected:
@@ -1016,7 +144,6 @@ protected:
 	};
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTabManager object.
@@ -1030,7 +157,6 @@ public:
 	virtual ~CXTPTabManager();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves information about a tab in a tab manager.
@@ -1066,7 +192,6 @@ public:
 	int GetItemCount() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the caption text of a tab.
@@ -1124,7 +249,6 @@ public:
 	virtual void OnItemsChanged();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to select a tab by its index.  A selected tab
@@ -1225,7 +349,8 @@ public:
 	//     button at the point is returned, otherwise NULL is returned.
 	// See Also: HitTest
 	//-----------------------------------------------------------------------
-	CXTPTabManagerNavigateButton* HitTestNavigateButton(CPoint point, BOOL bHeaderOnly, int* pnIndex = NULL) const;
+	CXTPTabManagerNavigateButton* HitTestNavigateButton(CPoint point, BOOL bHeaderOnly,
+														int* pnIndex = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1286,17 +411,17 @@ public:
 	//-----------------------------------------------------------------------
 	void MoveItem(CXTPTabManagerItem* pItem, int nIndex);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to show close button for each tab
 	// Parameters:
-	//     bCloseItemButton - XTPTabNavigateButtonFlags that specify if close button for each tab is visible
+	//     bCloseItemButton - XTPTabNavigateButtonFlags that specify if close button for each tab is
+	//     visible
 	//-----------------------------------------------------------------------
-	void ShowCloseItemButton(XTPTabNavigateButtonFlags bCloseItemButton = xtpTabNavigateButtonAlways);
+	void ShowCloseItemButton(
+		XTPTabNavigateButtonFlags bCloseItemButton = xtpTabNavigateButtonAlways);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the total width of all the tab buttons.
@@ -1321,7 +446,7 @@ public:
 	//     area is returned.  If the tabs are vertical, then the height of
 	//     the tab client header area is returned.
 	// Remarks:
-	// See Also: GetAppearanceSet, CAppearanceSet::GetHeaderRect
+	// See Also: GetAppearanceSet, CXTPTabPaintManagerTheme::GetHeaderRect
 	//-----------------------------------------------------------------------
 	int GetRectLength(CRect rc) const;
 
@@ -1360,7 +485,7 @@ public:
 	// Summary:
 	//     Call this member to get the scroll offset of the tab buttons in the
 	//     tab header.  This is how much the tabs have been scrolled by
-	//     pressing the left "<" and right ">" tab navigation buttons.
+	//     pressing the left and right tab navigation buttons.
 	// Returns:
 	//     The scroll offset of the tab buttons in the tab header.
 	// Remarks:
@@ -1381,10 +506,12 @@ public:
 	//          of the tabs in the tab header of the CXTPTabClientWnd.
 	// <code>
 	// //Scroll the tabs in the tab header to the right by 100 pixels.
-	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset()) - 100);
+	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset())
+	// - 100);
 	//
 	// //Scroll the tabs in the tab header to the left by 100 pixels.//
-	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset()) + 100);
+	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset())
+	// + 100);
 	// </code>
 	// See Also: SetHeaderOffset, CXTPTabManagerNavigateButton, EnsureVisible
 	//-----------------------------------------------------------------------
@@ -1395,7 +522,7 @@ public:
 	//     Call this member to adjust the scroll offset of the tabs in the
 	//     tab header.
 	// Parameters:
-	//     nOffset - Scroll offset, number must be <= 0.  You should
+	//     nOffset - Scroll offset, number must be \<= 0.  You should
 	//               use GetHeaderOffset to get the current offset and add
 	//               or subtract to move left and right.  If 0, then the
 	//               tabs will be reset to there starting position.
@@ -1417,10 +544,12 @@ public:
 	//     of the tabs in the tab header of the CXTPTabClientWnd.
 	// <code>
 	// //Scroll the tabs in the tab header to the right by 100 pixels.
-	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset()) - 100);
+	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset())
+	// - 100);
 	//
 	// //Scroll the tabs in the tab header to the left by 100 pixels.//
-	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset()) + 100);
+	// m_MTIClientWnd.GetWorkspace(0)->SetHeaderOffset((m_MTIClientWnd.GetWorkspace(0)->GetHeaderOffset())
+	// + 100);
 	// </code>
 	// See Also: GetHeaderOffset, CXTPTabManagerNavigateButton, EnsureVisible
 	//-----------------------------------------------------------------------
@@ -1436,7 +565,6 @@ public:
 	void EnsureVisible(CXTPTabManagerItem* pItem);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get a pointer to the tab paint manager.
@@ -1526,7 +654,8 @@ public:
 	//     TRUE if the icon was successfully drawn, FALSE if the icon
 	//     was not drawn.
 	//-----------------------------------------------------------------------
-	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw, CSize& szIcon) const = 0;
+	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw,
+						  CSize& szIcon) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1538,19 +667,19 @@ public:
 	// Remarks:
 	//     This should only be used when the tab color is set to xtpTabColorWinNative.
 	// Example:
-	//     This sample code illustrates how to apply a Windows XP themed back color to a tab control.
+	//     This sample code illustrates how to apply a Windows XP themed back color to a tab
+	//     control.
 	// <code>
 	// m_wndTabControl.GetPaintManager()->SetColor(xtpTabColorWinNative);
 	// XTPTabColorStyle color = m_wndTabControl.GetPaintManager()->GetColor();
-	// m_wndTabControl.EnableTabThemeTexture(m_wndTabControl.GetSafeHwnd(), color == xtpTabColorWinNative ? TRUE : FALSE);
-	// RedrawWindow();
+	// m_wndTabControl.EnableTabThemeTexture(m_wndTabControl.GetSafeHwnd(), color ==
+	// xtpTabColorWinNative ? TRUE : FALSE); RedrawWindow();
 	// </code>
 	// See Also: XTPTabColorStyle, GetColor, SetColor
 	//-----------------------------------------------------------------------
 	void EnableTabThemeTexture(HWND hWnd, BOOL bEnable = TRUE);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to apply one of the "built-in" color sets to
@@ -1560,24 +689,29 @@ public:
 	//                values listed in the remarks section.
 	// Remarks:
 	//     tabColor can be one of the following:
-	//         * <b>xtpTabColorDefault</b>      Tabs will use the default color for the currently set Appearance.
-	//         * <b>xtpTabColorVisualStudio2003</b> Tabs will use the Visual Studio color style for the currently set Appearance.
-	//         * <b>xtpTabColorOffice2003</b>   Tabs will use the Office 2003 color style for the currently set Appearance.
-	//         * <b>xtpTabColorWinNative</b>        Tabs will use the Windows XP color style for the currently set Appearance.
-	//         * <b>xtpTabColorVisualStudio2005</b>      Tabs will use the Visual Studio 2005 "Whidbey" color style for the currently set Appearance.
+	//         * <b>xtpTabColorDefault</b>      Tabs will use the default color for the currently
+	//         set Appearance.
+	//         * <b>xtpTabColorVisualStudio2003</b> Tabs will use the Visual Studio color style for
+	//         the currently set Appearance.
+	//         * <b>xtpTabColorOffice2003</b>   Tabs will use the Office 2003 color style for the
+	//         currently set Appearance.
+	//         * <b>xtpTabColorWinNative</b>        Tabs will use the Windows XP color style for the
+	//         currently set Appearance.
+	//         * <b>xtpTabColorVisualStudio2005</b>      Tabs will use the Visual Studio 2005 color
+	//         style for the currently set Appearance.
 	// Returns:
-	//     Pointer to the CXTPTabPaintManager::CColorSet object applied.
+	//     Pointer to the CXTPTabPaintManagerColorSet object applied.
 	// See Also:
 	//     XTPTabColorStyle, SetColorSet, GetColor, GetColorSet, XTPTabAppearanceStyle,
 	//     SetAppearanceSet, SetAppearance, GetAppearance, GetAppearanceSet
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CColorSet* SetColor(XTPTabColorStyle tabColor);
+	CXTPTabPaintManagerColorSet* SetColor(XTPTabColorStyle tabColor);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to apply a custom color set to the tabs.
 	// Parameters:
-	//     pColorSet - Pointer to custom CXTPTabPaintManager::CColorSet
+	//     pColorSet - Pointer to custom CXTPTabPaintManagerColorSet
 	//                 appearance set.
 	// Returns:
 	//     Pointer to the newly set custom color set.
@@ -1585,7 +719,7 @@ public:
 	//     XTPTabColorStyle, SetColor, GetColor, GetColorSet, XTPTabAppearanceStyle,
 	//     SetAppearanceSet, SetAppearance, GetAppearance, GetAppearanceSet
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CColorSet* SetColorSet(CXTPTabPaintManager::CColorSet* pColorSet);
+	CXTPTabPaintManagerColorSet* SetColorSet(CXTPTabPaintManagerColorSet* pColorSet);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1595,32 +729,19 @@ public:
 	//     tabAppearance - XTPTabAppearanceStyle to apply to the tabs. Can be
 	//                     one of the values listed in the Remarks section.
 	// Returns:
-	//     Pointer to the CXTPTabPaintManager::CAppearanceSet object applied.
+	//     Pointer to the CXTPTabPaintManagerTheme object applied.
 	// Remarks:
-	//     Use SetAppearance to apply a "Built-In" theme such as
-	//     xtpTabAppearanceExcel.  To apply a custom them, use the
-	//     SetAppearanceSet member.
-	//
-	//     tabAppearance can be one of the following:
-	//         * <b>xtpTabAppearancePropertyPage</b>         Gives your tabs an Office 2000 appearance.
-	//         * <b>xtpTabAppearancePropertyPageSelected</b> Gives your tabs an Office 2000 selected appearance.
-	//         * <b>xtpTabAppearancePropertyPageFlat</b>     Gives your tabs an Office 2000 Flat appearance.
-	//         * <b>xtpTabAppearancePropertyPage2003</b>     Gives your tabs an Office 2003 appearance.
-	//         * <b>xtpTabAppearanceStateButtons</b>         Gives your tabs a State Button appearance.
-	//         * <b>xtpTabAppearanceVisualStudio</b>         Gives your tabs a Visual Studio appearance.
-	//         * <b>xtpTabAppearanceFlat</b>                 Gives your tabs Flat appearance.
-	//         * <b>xtpTabAppearanceExcel</b>                Gives your tabs an Excel appearance.
-	//         * <b>xtpTabAppearanceVisio</b>                Gives your tabs a Visio appearance.   // See Also:
+	//     See Also:
 	//     XTPTabAppearanceStyle, SetAppearanceSet, GetAppearance, GetAppearanceSet,
 	//     SetColor, GetColor, GetColorSet, SetColorSet
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CAppearanceSet* SetAppearance(XTPTabAppearanceStyle tabAppearance);
+	CXTPTabPaintManagerTheme* SetAppearance(XTPTabAppearanceStyle tabAppearance);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to apply a custom appearance set.
 	// Parameters:
-	//     pAppearanceSet - Pointer to custom CXTPTabPaintManager::CAppearanceSet
+	//     pAppearanceSet - Pointer to custom CXTPTabPaintManagerTheme
 	//                      appearance set.
 	// Remarks:
 	//     An appearance set specifies how the tabs will look.  This
@@ -1637,7 +758,7 @@ public:
 	//     XTPTabAppearanceStyle, SetAppearance, GetAppearance, GetAppearanceSet,
 	//     SetColor, GetColor, GetColorSet, SetColorSet
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CAppearanceSet* SetAppearanceSet(CXTPTabPaintManager::CAppearanceSet* pAppearanceSet);
+	CXTPTabPaintManagerTheme* SetAppearanceSet(CXTPTabPaintManagerTheme* pAppearanceSet);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1655,7 +776,7 @@ public:
 	//          a custom appearance set and apply it to the tabs.
 	// See Also: GetAppearanceSet, SetAppearanceSet, SetAppearance
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CAppearanceSet* GetAppearanceSet() const;
+	CXTPTabPaintManagerTheme* GetAppearanceSet() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1664,7 +785,7 @@ public:
 	//     Currently used custom color set.
 	// See Also: XTPTabColorStyle, GetColor, SetColorSet, SetColor
 	//-----------------------------------------------------------------------
-	CXTPTabPaintManager::CColorSet* GetColorSet() const;
+	CXTPTabPaintManagerColorSet* GetColorSet() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1722,10 +843,15 @@ public:
 	//     sized-to-fit layout.
 	//
 	//     tabLayout can be one of the following:
-	//         * <b>xtpTabLayoutAutoSize</b>   Tabs will be automatically sized based on the caption and image size.  With this flag set, tabs will appear in their normal size.
-	//         * <b>xtpTabLayoutSizeToFit</b>  Tabs are sized to fit within the tab panel.  All tabs will be compressed and forced to fit into the tab panel.
-	//         * <b>xtpTabLayoutFixed</b>      All tabs will be set to a fixed size within the tab panel.
-	//         * <b>xtpTabLayoutCompressed</b> Tabs will be compressed within the tab panel.  This will compress the size of the tabs, but all tabs will not be forced into the tab panel.
+	//         * <b>xtpTabLayoutAutoSize</b>   Tabs will be automatically sized based on the caption
+	//         and image size.  With this flag set, tabs will appear in their normal size.
+	//         * <b>xtpTabLayoutSizeToFit</b>  Tabs are sized to fit within the tab panel.  All tabs
+	//         will be compressed and forced to fit into the tab panel.
+	//         * <b>xtpTabLayoutFixed</b>      All tabs will be set to a fixed size within the tab
+	//         panel.
+	//         * <b>xtpTabLayoutCompressed</b> Tabs will be compressed within the tab panel.  This
+	//         will compress the size of the tabs, but all tabs will not be forced into the tab
+	//         panel.
 	//         * <b>xtpTabLayoutMultiRow</b>   Causes a tab control to display multiple rows of tabs
 	// See Also: XTPTabLayoutStyle, GetLayout
 	//-----------------------------------------------------------------------
@@ -1835,7 +961,8 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves the current number of rows in a tab control.
-	//     Only tab controls that have the xtpTabLayoutMultiRow layout can have multiple rows of tabs.
+	//     Only tab controls that have the xtpTabLayoutMultiRow layout can have multiple rows of
+	//     tabs.
 	// Returns:
 	//     The number of rows of tabs in the tab control.
 	// See Also: SetLayoutStyle, CXTPTabManagerItem::GetItemRow
@@ -2017,8 +1144,8 @@ public:
 	//     Returns markup context
 	//-------------------------------------------------------------------------
 	virtual CXTPMarkupContext* GetMarkupContext() const;
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Determines if navigate button with xtpTabNavigateButtonAutomatic style is visible.
@@ -2105,7 +1232,8 @@ protected:
 	//     CXTPTabManagerNavigateButton::PerformClick, XTPTabNavigateButton
 	//-----------------------------------------------------------------------
 	virtual void OnNavigateButtonClick(CXTPTabManagerNavigateButton* pButton);
-	virtual void OnNavigateButtonClick(UINT nID); // <COMBINE CXTPTabManager::OnNavigateButtonClick@CXTPTabManagerNavigateButton*>
+	virtual void OnNavigateButtonClick(
+		UINT nID); // <COMBINE CXTPTabManager::OnNavigateButtonClick@CXTPTabManagerNavigateButton*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2152,7 +1280,6 @@ protected:
 	virtual BOOL HeaderHasFocus() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to activate tab item on mouse click
@@ -2175,34 +1302,37 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnItemHandleChanged(CXTPTabManagerItem* pItem, HWND hwndOld, HWND hwndNew);
 
-
 protected:
-	CXTPTabManagerItem* m_pSelected;    // Tab currently selected.  I.e. When the tab is clicked.
-	CXTPTabManagerItem* m_pHighlighted; // Tab currently highlighted.  I.e. When the mouse cursor is over the tab button.
-	CXTPTabManagerItem* m_pPressed;     // Tab currently pressed.
+	CXTPTabManagerItem* m_pSelected;	// Tab currently selected.  I.e. When the tab is clicked.
+	CXTPTabManagerItem* m_pHighlighted; // Tab currently highlighted.  I.e. When the mouse cursor is
+										// over the tab button.
+	CXTPTabManagerItem* m_pPressed;		// Tab currently pressed.
 
-	CXTPTabManagerNavigateButton* m_pHighlightedNavigateButton;         // Pointer to highlighted navigate button
+	CXTPTabManagerNavigateButton* m_pHighlightedNavigateButton; // Pointer to highlighted navigate
+																// button
 
-	int m_nHeaderOffset;                // Scroll offset, this is how much the tabs in the tab header have been scrolled
-	                                    // using the left and right tab navigation buttons.  See: GetHeaderOffset, SetHeaderOffset
-	BOOL m_bAllowReorder;               // TRUE to allow tabs to be reordered.
-	BOOL m_bActive;                     // TRUE if the MDITabClient tab group is active.  This only applies to
-	                                    // a TabWorkspace when grouping is enabled.
+	int m_nHeaderOffset;  // Scroll offset, this is how much the tabs in the tab header have been
+						  // scrolled using the left and right tab navigation buttons.  See:
+						  // GetHeaderOffset, SetHeaderOffset
+	BOOL m_bAllowReorder; // TRUE to allow tabs to be reordered.
+	BOOL m_bActive;		  // TRUE if the MDITabClient tab group is active.  This only applies to
+						  // a TabWorkspace when grouping is enabled.
 
-	XTPTabNavigateButtonFlags m_bCloseItemButton;      // TRUE to show close button for tabs.
+	XTPTabNavigateButtonFlags m_bCloseItemButton; // TRUE to show close button for tabs.
 
-	CRect m_rcHeaderRect;               // Bounding rectangle of the tab header area.
-	CRect m_rcControl;                  // Bounding rectangle of the tab manager control.  This is the bounding
-	                                    // rectangle for both the tab header and tab client.
-	CRect m_rcClient;                   // Bounding rectangle of the tab client area.
+	CRect m_rcHeaderRect; // Bounding rectangle of the tab header area.
+	CRect m_rcControl;	// Bounding rectangle of the tab manager control.  This is the bounding
+						  // rectangle for both the tab header and tab client.
+	CRect m_rcClient;	 // Bounding rectangle of the tab client area.
 
-	CArray<CXTPTabManagerItem*, CXTPTabManagerItem*> m_arrItems;                                // Collection of tabs of this tab manager.
-	CXTPTabManagerNavigateButtons m_arrNavigateButtons; // Collection of tab navigation buttons for this tab manager
+	CArray<CXTPTabManagerItem*, CXTPTabManagerItem*> m_arrItems; // Collection of tabs of this tab
+																 // manager.
+	CXTPTabManagerNavigateButtons m_arrNavigateButtons; // Collection of tab navigation buttons for
+														// this tab manager
 
-	CXTPWinThemeWrapper m_themeTabControl;  // Internal helper for drawing XP interface parts.
-	CRowIndexer* m_pRowIndexer;         // Row indexer;
-	int  m_nScrollDelta;                // Scroll header delta
-	CXTPMarkupContext* m_pMarkupContext;                // Markup context of TabManager
+	CRowIndexer* m_pRowIndexer;			 // Row indexer;
+	int m_nScrollDelta;					 // Scroll header delta
+	CXTPMarkupContext* m_pMarkupContext; // Markup context of TabManager
 
 private:
 	friend class CXTPTabManagerItem;
@@ -2211,223 +1341,128 @@ private:
 	friend class CXTPTabClientWnd;
 };
 
-
-//////////////////////////////////////////////////////////////////////////
-// CXTPTabManagerItem
-
-AFX_INLINE CXTPTabManager* CXTPTabManagerItem::GetTabManager() const{
-	return m_pTabManager;
-}
-AFX_INLINE BOOL CXTPTabManagerItem::IsSelected() const {
-	return m_pTabManager->m_pSelected == this;
-}
-AFX_INLINE BOOL CXTPTabManagerItem::IsHighlighted() const {
-	return m_pTabManager->m_pHighlighted == this;
-}
-AFX_INLINE BOOL CXTPTabManagerItem::IsPressed() const {
-	return m_pTabManager->m_pPressed == this;
-}
-AFX_INLINE CRect CXTPTabManagerItem::GetRect() const{
-	return m_rcItem;
-}
-AFX_INLINE int CXTPTabManagerItem::GetIndex() const {
-	return m_nIndex;
-}
-AFX_INLINE DWORD_PTR CXTPTabManagerItem::GetData() const {
-	return m_dwData;
-}
-AFX_INLINE void CXTPTabManagerItem::SetData(DWORD_PTR dwData) {
-	m_dwData = dwData;
-}
-AFX_INLINE int CXTPTabManagerItem::GetImageIndex() const {
-	return m_nImage;
-}
-AFX_INLINE BOOL CXTPTabManagerItem::IsClosable() const {
-	return m_bClosable;
-}
-AFX_INLINE void CXTPTabManagerItem::SetClosable(BOOL bClosable) {
-	m_bClosable = bClosable;
-}
-AFX_INLINE void CXTPTabManagerItem::SetImageIndex(int nImage) {
-	if (m_nImage != nImage) { m_nImage = nImage; m_pTabManager->Reposition(); }
-}
-AFX_INLINE int CXTPTabManagerItem::GetButtonLength() const {
-	return m_nButtonLength;
-}
-AFX_INLINE int CXTPTabManagerItem::GetContentLength() const {
-	return m_nContentLength;
-}
-AFX_INLINE void CXTPTabManagerItem::SetTooltip(LPCTSTR lpszTooltip) {
-	m_strToolTip = lpszTooltip;
-}
-AFX_INLINE int CXTPTabManagerItem::GetItemRow() const {
-	return m_nItemRow;
-}
-AFX_INLINE BOOL CXTPTabManagerItem::IsItemShrinked() const {
-	return m_nButtonLength < m_nContentLength;
-}
-AFX_INLINE CXTPTabManagerNavigateButtons* CXTPTabManagerItem::GetNavigateButtons() {
-	return &m_arrNavigateButtons;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CXTPTabManagerNavigateButton
-
-AFX_INLINE void CXTPTabManagerNavigateButton::SetFlags(XTPTabNavigateButtonFlags dwFlags) {
-	m_dwFlags = dwFlags;
-}
-AFX_INLINE XTPTabNavigateButtonFlags CXTPTabManagerNavigateButton::GetFlags() const {
-	return m_dwFlags;
-}
-AFX_INLINE BOOL CXTPTabManagerNavigateButton::IsEnabled() const {
-	return m_bEnabled;
-}
-AFX_INLINE BOOL CXTPTabManagerNavigateButton::IsPressed() const {
-	return m_bPressed;
-}
-AFX_INLINE BOOL CXTPTabManagerNavigateButton::IsHighlighted() const {
-	return m_pManager->m_pHighlightedNavigateButton == this;
-}
-AFX_INLINE CRect CXTPTabManagerNavigateButton::GetRect() const {
-	return m_rcButton;
-}
-AFX_INLINE BOOL CXTPTabManagerNavigateButton::IsVisible() const {
-	return !m_rcButton.IsRectEmpty();
-}
-AFX_INLINE UINT CXTPTabManagerNavigateButton::GetID() const {
-	return m_nID;
-}
-AFX_INLINE void CXTPTabManagerNavigateButton::SetTooltip(LPCTSTR lpszTooltip) {
-	m_strToolTip = lpszTooltip;
-}
-AFX_INLINE CString CXTPTabManagerNavigateButton::GetTooltip() const {
-	return m_strToolTip;
-}
-AFX_INLINE CXTPTabManagerItem* CXTPTabManagerNavigateButton::GetItem() const {
-	return m_pItem;
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CXTPTabManager
 
-AFX_INLINE CXTPTabPaintManager::CAppearanceSet* CXTPTabManager::GetAppearanceSet() const {
-	return GetPaintManager()->GetAppearanceSet();
-}
-AFX_INLINE CXTPTabPaintManager::CColorSet* CXTPTabManager::GetColorSet() const {
-	return GetPaintManager()->GetColorSet();
-}
-AFX_INLINE XTPTabAppearanceStyle CXTPTabManager::GetAppearance() const {
-	return GetPaintManager()->GetAppearance();
-}
-AFX_INLINE XTPTabColorStyle CXTPTabManager::GetColor() const {
-	return GetPaintManager()->GetColor();
-}
-AFX_INLINE int CXTPTabManager::GetItemCount() const {
+AFX_INLINE int CXTPTabManager::GetItemCount() const
+{
 	return (int)m_arrItems.GetSize();
 }
-AFX_INLINE CXTPTabManagerItem* CXTPTabManager::GetItem(int nIndex) const {
+AFX_INLINE CXTPTabManagerItem* CXTPTabManager::GetItem(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < GetItemCount() ? m_arrItems[nIndex] : NULL;
 }
-AFX_INLINE int CXTPTabManager::GetNavigateButtonCount() const {
+AFX_INLINE int CXTPTabManager::GetNavigateButtonCount() const
+{
 	return (int)m_arrNavigateButtons.GetSize();
 }
-AFX_INLINE CXTPTabManagerNavigateButton* CXTPTabManager::GetNavigateButton(int nIndex) const {
+AFX_INLINE CXTPTabManagerNavigateButton* CXTPTabManager::GetNavigateButton(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < GetNavigateButtonCount() ? m_arrNavigateButtons[nIndex] : NULL;
 }
-AFX_INLINE CXTPTabManagerItem* CXTPTabManager::GetSelectedItem() const {
+AFX_INLINE CXTPTabManagerItem* CXTPTabManager::GetSelectedItem() const
+{
 	return m_pSelected;
 }
-AFX_INLINE BOOL CXTPTabManager::IsHorizontalPosition() const {
+AFX_INLINE BOOL CXTPTabManager::IsHorizontalPosition() const
+{
 	return (GetPosition() == xtpTabPositionBottom || GetPosition() == xtpTabPositionTop);
 }
-AFX_INLINE int CXTPTabManager::GetRectLength(CRect rc) const {
-	if (IsHorizontalPosition()) return rc.Width();
+AFX_INLINE int CXTPTabManager::GetRectLength(CRect rc) const
+{
+	if (IsHorizontalPosition())
+		return rc.Width();
 	return rc.Height();
 }
-AFX_INLINE int CXTPTabManager::GetHeaderOffset() const {
+AFX_INLINE int CXTPTabManager::GetHeaderOffset() const
+{
 	return m_nHeaderOffset;
 }
-AFX_INLINE void CXTPTabManager::OnNavigateButtonClick(UINT) {
-
+AFX_INLINE void CXTPTabManager::OnNavigateButtonClick(UINT)
+{
 }
-AFX_INLINE void CXTPTabManager::OnNavigateButtonClick(CXTPTabManagerNavigateButton* pButton) {
+AFX_INLINE void CXTPTabManager::OnNavigateButtonClick(CXTPTabManagerNavigateButton* pButton)
+{
 	OnNavigateButtonClick(pButton->GetID());
 }
-AFX_INLINE BOOL CXTPTabManager::IsAllowReorder() const {
+AFX_INLINE BOOL CXTPTabManager::IsAllowReorder() const
+{
 	return m_bAllowReorder;
 }
-AFX_INLINE void CXTPTabManager::SetAllowReorder(BOOL bAllowReorder) {
+AFX_INLINE void CXTPTabManager::SetAllowReorder(BOOL bAllowReorder)
+{
 	m_bAllowReorder = bAllowReorder;
 }
-AFX_INLINE void CXTPTabManager::SetPaintManager(CXTPTabPaintManager* /*pPaintManager*/) {
-
+AFX_INLINE void CXTPTabManager::SetPaintManager(CXTPTabPaintManager* /*pPaintManager*/)
+{
 }
-AFX_INLINE BOOL CXTPTabManager::IsActive() const {
+AFX_INLINE BOOL CXTPTabManager::IsActive() const
+{
 	return m_bActive;
 }
-AFX_INLINE CRect CXTPTabManager::GetControlRect() const {
+AFX_INLINE CRect CXTPTabManager::GetControlRect() const
+{
 	return m_rcControl;
 }
-AFX_INLINE CRect CXTPTabManager::GetClientRect() const {
+AFX_INLINE CRect CXTPTabManager::GetClientRect() const
+{
 	return m_rcClient;
 }
-AFX_INLINE CRect CXTPTabManager::GetHeaderRect() const {
+AFX_INLINE CRect CXTPTabManager::GetHeaderRect() const
+{
 	return m_rcHeaderRect;
 }
-AFX_INLINE BOOL CXTPTabManager::IsMouseLocked() const {
+AFX_INLINE BOOL CXTPTabManager::IsMouseLocked() const
+{
 	return FALSE;
 }
-AFX_INLINE int CXTPTabManager::GetRowCount() const {
+AFX_INLINE int CXTPTabManager::GetRowCount() const
+{
 	return m_pRowIndexer->m_nRowCount;
 }
-AFX_INLINE BOOL CXTPTabManager::HeaderHasFocus() const {
+AFX_INLINE BOOL CXTPTabManager::HeaderHasFocus() const
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPTabManagerItem::IsFocused() const {
+AFX_INLINE BOOL CXTPTabManagerItem::IsFocused() const
+{
 	return IsSelected() && m_pTabManager->HeaderHasFocus();
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPTabManagerItem::GetMarkupUIElement() const {
+AFX_INLINE CXTPMarkupUIElement* CXTPTabManagerItem::GetMarkupUIElement() const
+{
 	return m_pMarkupUIElement;
 }
-AFX_INLINE CXTPTabManager::ROW_ITEMS* CXTPTabManager::CRowIndexer::GetRowItems() const {
+AFX_INLINE CXTPTabManager::ROW_ITEMS* CXTPTabManager::CRowIndexer::GetRowItems() const
+{
 	return m_pRowItems;
 }
-AFX_INLINE CXTPTabManagerNavigateButtons* CXTPTabManager::GetNavigateButtons() {
+AFX_INLINE CXTPTabManagerNavigateButtons* CXTPTabManager::GetNavigateButtons()
+{
 	return &m_arrNavigateButtons;
 }
-AFX_INLINE void CXTPTabManager::OnItemHandleChanged(CXTPTabManagerItem*, HWND, HWND) {
-
+AFX_INLINE void CXTPTabManager::OnItemHandleChanged(CXTPTabManagerItem*, HWND, HWND)
+{
 }
-AFX_INLINE BOOL CXTPTabManager::DrawParentBackground(CDC* /*pDC*/, CRect /*rc*/) {
+AFX_INLINE BOOL CXTPTabManager::DrawParentBackground(CDC* /*pDC*/, CRect /*rc*/)
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPTabManager::ShowCloseItemButton(XTPTabNavigateButtonFlags bCloseItemButton) {
+AFX_INLINE void CXTPTabManager::ShowCloseItemButton(XTPTabNavigateButtonFlags bCloseItemButton)
+{
 	m_bCloseItemButton = bCloseItemButton;
 }
-AFX_INLINE CXTPMarkupContext* CXTPTabManager::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPTabManager::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
-AFX_INLINE void CXTPTabManager::OnSwitchItem(CXTPTabManagerItem* /*pItem1*/, CXTPTabManagerItem* /*pItem2*/) {
-
+AFX_INLINE void CXTPTabManager::OnSwitchItem(CXTPTabManagerItem* /*pItem1*/,
+											 CXTPTabManagerItem* /*pItem2*/)
+{
 }
-AFX_INLINE void CXTPTabManager::OnItemOrderChanged(CXTPTabManagerItem* /*pItem*/, int /*nOldIndex*/, int /*nNewIndex*/) {
-
-}
-
-AFX_INLINE CXTPTabManagerNavigateButton* CXTPTabManagerNavigateButtons::GetAt(int nIndex) const {
-	return m_arrButtons.GetAt(nIndex);
-}
-AFX_INLINE int CXTPTabManagerNavigateButtons::Add(CXTPTabManagerNavigateButton* pButton) {
-	return (int)m_arrButtons.Add(pButton);
-}
-AFX_INLINE int CXTPTabManagerNavigateButtons::GetSize() const {
-	return (int)m_arrButtons.GetSize();
-}
-AFX_INLINE void CXTPTabManagerNavigateButtons::InsertAt(int nIndex, CXTPTabManagerNavigateButton* pButton) {
-	m_arrButtons.InsertAt(nIndex, pButton);
-}
-AFX_INLINE CXTPTabManagerNavigateButton* CXTPTabManagerNavigateButtons::operator[] (int nIndex) const {
-	return m_arrButtons.GetAt(nIndex);
+AFX_INLINE void CXTPTabManager::OnItemOrderChanged(CXTPTabManagerItem* /*pItem*/, int /*nOldIndex*/,
+												   int /*nNewIndex*/)
+{
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTABMANAGER_H__)

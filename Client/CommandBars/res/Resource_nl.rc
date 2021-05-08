@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)
 #ifdef _WIN32
 LANGUAGE LANG_DUTCH, SUBLANG_DUTCH
 #pragma code_page(1252)
@@ -76,9 +75,9 @@ BEGIN
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Druk op gewenste sneltoets:",XTP_IDC_TXT_NEWKEY,100,93,100,8
     EDITTEXT        XTP_IDC_EDIT_SHORTCUTKEY,100,103,75,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Toewijzen",XTP_IDC_BTN_ASSIGN,179,39,49,14
-    PUSHBUTTON      "Verwijderen",XTP_IDC_BTN_REMOVE,179,56,49,14
-    PUSHBUTTON      "Beginwaarden",XTP_IDC_BTN_ACCEL_RESET,179,73,49,14
+    PUSHBUTTON      "Toewijzen",XTP_IDC_BTN_ASSIGN,177,39,52,14
+    PUSHBUTTON      "Verwijderen",XTP_IDC_BTN_REMOVE,177,56,52,14
+    PUSHBUTTON      "Beginwaarden",XTP_IDC_BTN_ACCEL_RESET,177,73,52,14
     LTEXT           "Beschrijving:",XTP_IDC_TXT_DESC_TITLE,4,117,89,8
     LTEXT           "",XTP_IDC_TXT_DESC_OVERVIEW,4,127,224,19,0,
                     WS_EX_STATICEDGE
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Sneltoetsen weergeven in Scherminfo",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Menuanimaties:",IDC_STATIC,10,117,56,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Menu Animaties:",IDC_STATIC,10,117,56,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -131,12 +130,12 @@ CAPTION "Opdrachten"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Een opdracht toevoegen aan een werkbalk: selecteer een categorie en sleep de opdracht vanuit dit dialoogvenster naar een werkbalk.",
-                    IDC_STATIC,4,5,220,19
-    LTEXT           "Categorieën:",IDC_STATIC,4,25,80,8
-    LISTBOX         XTP_IDC_LIST_CATEGORIES,4,35,81,111,LBS_NOINTEGRALHEIGHT | 
+                    IDC_STATIC,4,5,220,29
+    LTEXT           "Categorieën:",IDC_STATIC,4,35,80,8
+    LISTBOX         XTP_IDC_LIST_CATEGORIES,4,45,81,101,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Opdrachten:",IDC_STATIC,90,25,134,8
-    LISTBOX         XTP_IDC_LIST_COMMANDS,90,35,135,111,LBS_OWNERDRAWFIXED | 
+    LTEXT           "Opdrachten:",IDC_STATIC,90,35,134,8
+    LISTBOX         XTP_IDC_LIST_COMMANDS,90,45,135,101,LBS_OWNERDRAWFIXED | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
 END
 
@@ -145,17 +144,17 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "&Menus"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Programmamenu 's",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Contextmenu 's",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Menu weergeven:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,149,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    LTEXT           "Standaardmenu\nStandaard programmamenu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Selecteer contextmenu:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,120,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Aanpassen"
     XTP_IDS_NEWMENU         "Nieuw menu"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Statusbalk aanpassen"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Aangepast %d"
     XTP_IDS_ERROR_BLANKNAME "De naam van de werkbalk mag niet leeg zijn. Typ een naam."
-    XTP_IDS_ERROR_LIMIT     "Sorry u heeft uw limiet bereikt."
+    XTP_IDS_ERROR_LIMIT     "Droevig dat u hebt de limiet bereikt."
     XTP_IDS_ERROR_EXISTS    "Er is al een werkbalk met de naam '%s'. Typ een andere naam."
     XTP_IDS_RENAMETOOLBAR   "Werkbalknaam wijzigen"
     XTP_IDS_CONFIRM_DELETE  "Weet u zeker dat u de werkbalk '%s' wilt verwijderen?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Weet u zeker dat u alle toetstoewijzingen wilt resetten? Deze actie verwijdert alle eigen toetstoewijzingen op tekstniveau."
+                            "Weet u zeker dat u wilt herstellen van de toetstoewijzingen? Deze actie verwijdert alle aangepaste toetstoewijzingen op het niveau van de tekst."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "Deze sneltoets is reeds toegewezen.\nWilt u deze sneltoets opnieuw toewijzen?"
-    XTP_IDS_CONFIRM_UPDATE  "Vanwege een software update is de werkbalk '%s' gewijzigd. Wilt u uw gewijzigde werkbalk resetten en de nieuwe laden?"
+                            "See otsetee on määratud.\nWilt u deze sneltoets opnieuw toewijzen?"
+    XTP_IDS_CONFIRM_UPDATE  "De werkbalk '%s' is veranderd als gevolg van een software-update. Wilt u uw aangepaste werkbalk herstellen en nieuwe laden?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Alle afbeeldinsbestanden|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metabestanden(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Alle bestanden(*.*)|*.*||"
+                            "Alle beeld bestanden|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmaps (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metabestanden (*.wmf;*.emf)|*.wmf;*.emf|Pictogrammen (*.ico;*.cur)|*.ico;*.cur|Alle bestanden (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nWerkbalkopties"
     XTP_ID_TOOLBAR_HIDE     "\nSluiten"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nFormaat van venster herstellen"
     XTP_ID_MENUBAR_MINIMIZE "\nVenster minimaliseren"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) werd ingedrukt. Wacht voor een tweede toets regel..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,22 +302,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nVerplaatsen naar V&olgende Tab Groep"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNieuwe Hori&zontale Tab Groep"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNieuwe &Verticale Tab Groep"
-    XTP_ID_WORKSPACE_CANCEL "Annuleren"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Actieve Bestanden"
+    XTP_ID_WORKSPACE_CANCEL "\nAnnuleren"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Actieve bestanden"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "De prospectieve item afdrukken\nAfdrukken"
+    XTP_ID_PREVIEW_PREV     "Ga naar de vorige pagina\nVorige pagina"
+    XTP_ID_PREVIEW_NEXT     "Ga naar de volgende pagina\nVolgende pagina"
+    XTP_ID_PREVIEW_ZOOMIN   "Vergroting van de voorbeeldpagina verhogen\nZoom In"
+    XTP_ID_PREVIEW_ZOOMOUT  "Vergroting van de voorbeeldpagina verlagen\nUitzoomen"
+    XTP_ID_PREVIEW_ONEPAGE  "Enkele pagina"
+    XTP_ID_PREVIEW_TWOPAGE  "Meerdere pagina's"
+    XTP_ID_PREVIEW_CLOSE    "Het voorbeeld sluiten\nVoorbeeld sluiten"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Hele pagina"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Breedte van de pagina"
+    XTP_IDS_PREVIEW_PAGEI     "Pagina %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Pagina %i van %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)

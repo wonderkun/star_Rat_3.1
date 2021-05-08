@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)
 #ifdef _WIN32
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -46,11 +45,11 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,43,105,10
     CONTROL         "&Okraj výbìru",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,54,105,10
-    CONTROL         "C&ollapsible Nodes",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
+    CONTROL         "Sbalitelné uzly",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,65,105,10
     CONTROL         "&Automatické odsazení",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,20,115,10
-    CONTROL         "Virtual &space",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
+    CONTROL         "Virtuální prostor",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
     CONTROL         "Barva synta&xe",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
@@ -70,7 +69,7 @@ BEGIN
     GROUPBOX        "Možnosti ukládání ",IDC_STATIC,7,135,246,37
     CONTROL         "Automaticky znovu &naèíst externì upravené soubory",
                     XTP_IDC_EDIT_CHK_AUTO_RELOAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,151,155,10
+                    WS_TABSTOP,15,151,232,10
 END
 XTP_IDD_EDIT_PAGEFONT DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
@@ -290,4 +289,4 @@ BEGIN
     XTP_IDS_EDIT_OPENSCHEMAMSG "Chcete zavøít dialogové okno Možnosti a otevøít soubor schématu „%s%s“ v oknì editoru?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)

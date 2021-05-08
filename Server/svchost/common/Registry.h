@@ -6,7 +6,7 @@
 
 //
 #include "../ClientSocket.h"
-#include "macros.h"
+#include "../../../common/macros.h"
 #include "until.h"
 
 #include <winreg.h>

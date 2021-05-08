@@ -10,12 +10,12 @@
 ====    Creation date       :  13/1/2003                                 ====
 ====    Author(s)           :  Dany Cantin                               ====
 ====                                                                     ====
-====                  Copyright © DCUtility  2003                        ====
+====                  Copyright ?DCUtility  2003                        ====
 ====                                                                     ====
 =============================================================================
 ===========================================================================*/
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "TrueColorToolBar.h"
 
 #ifdef _DEBUG
@@ -37,11 +37,11 @@ CTrueColorToolBar::~CTrueColorToolBar()
 }
 
 
-BEGIN_MESSAGE_MAP(CTrueColorToolBar, CToolBar)
+//BEGIN_MESSAGE_MAP(CTrueColorToolBar, CToolBar)
 	//{{AFX_MSG_MAP(CTrueColorToolBar)
-	ON_NOTIFY_REFLECT(TBN_DROPDOWN, OnToolbarDropDown)
+//	ON_NOTIFY_REFLECT(TBN_DROPDOWN, OnToolbarDropDown)
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+//END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CTrueColorToolBar message handlers

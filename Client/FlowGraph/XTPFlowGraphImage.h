@@ -1,7 +1,6 @@
 // XTPFlowGraphImage.h: interface for the CXTPFlowGraphmage class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHIMAGE_H__)
-#define __XTPFLOWGRAPHIMAGE_H__
+#	define __XTPFLOWGRAPHIMAGE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 namespace Gdiplus
 {
-	class Image;
-	class Bitmap;
-};
+class Image;
+class Bitmap;
+} // namespace Gdiplus
 
 class CXTPImageManager;
 class CXTPImageManagerIcon;
+class CXTPFlowGraphControl;
 
 // ------------------------------------------------------------
 //
@@ -150,15 +152,26 @@ protected:
 	friend class CXTPFlowGraphImages;
 
 protected:
-	Gdiplus::Bitmap* m_pImage; // Reference to a Gdiplus::Image for this flow graph image.
+	Gdiplus::Bitmap* m_pImage;	 // Reference to a Gdiplus::Image for this flow graph image.
 	CXTPImageManagerIcon* m_pIcon; // Reference to a CXTPImageManagerIcon for this flow graph image.
 
-	CSize m_szImage; // Size of the image.
-	CXTPFlowGraphImages* m_pParent; // Reference to the collection of images that this image belongs to.
+	CSize m_szImage;				// Size of the image.
+	CXTPFlowGraphImages* m_pParent; // Reference to the collection of images that this image belongs
+									// to.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphImage)
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	friend class CXTPFlowGraphImages;
-};
 
+	UINT m_nCommandId;
+};
 
 // --------------------------------------------------------------------
 //
@@ -175,7 +188,7 @@ protected:
 	// Summary:
 	//     Constructs a CXTPFlowGraphImages object.
 	// --------------------------------------------
-	CXTPFlowGraphImages();
+	CXTPFlowGraphImages(CXTPFlowGraphControl* pControl);
 	// -------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPFlowGraphImage object, handles cleanup and
@@ -252,24 +265,46 @@ public:
 	CXTPImageManager* GetImageManager() const;
 
 protected:
-	CArray<CXTPFlowGraphImage*, CXTPFlowGraphImage*> m_arrImages; // List of images for the Flow Graph
+	CArray<CXTPFlowGraphImage*, CXTPFlowGraphImage*> m_arrImages; // List of images for the Flow
+																  // Graph
 	CXTPImageManager* m_pImageManager; // Pointer to ImageManager associated with the Flow Graph.
+
+	CXTPFlowGraphControl* m_pControl;
 
 	friend class CXTPFlowGraphControl;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphImages)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphImages)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddImage();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphImages::GetCount() const {
+AFX_INLINE int CXTPFlowGraphImages::GetCount() const
+{
 	return (int)m_arrImages.GetSize();
 }
-AFX_INLINE CXTPFlowGraphImage* CXTPFlowGraphImages::GetAt(int nIndex) const {
+AFX_INLINE CXTPFlowGraphImage* CXTPFlowGraphImages::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrImages.GetSize() ? m_arrImages[nIndex] : NULL;
 }
-AFX_INLINE CXTPImageManager* CXTPFlowGraphImages::GetImageManager() const {
+AFX_INLINE CXTPImageManager* CXTPFlowGraphImages::GetImageManager() const
+{
 	return m_pImageManager;
 }
-AFX_INLINE CSize CXTPFlowGraphImage::GetSize() const {
+AFX_INLINE CSize CXTPFlowGraphImage::GetSize() const
+{
 	return m_szImage;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHIMAGE_H__)

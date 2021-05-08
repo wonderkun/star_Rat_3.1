@@ -1,7 +1,7 @@
 // ClientDoc.cpp : implementation of the CClientDoc class
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "ClientDoc.h"
 

@@ -193,8 +193,8 @@ public:
     static const FontFamily *GenericMonospace();
 
     Status GetFamilyName(
-        OUT WCHAR        name[LF_FACESIZE],
-        IN LANGID        language = 0
+        LPWSTR                              name,
+        IN LANGID                           language = 0
     ) const;
 
     FontFamily * Clone() const;
@@ -457,6 +457,12 @@ public:
     Status GetEncoderParameterList(IN const CLSID* clsidEncoder,
                                    IN UINT size,
                                    OUT EncoderParameters* buffer);
+#if (GDIPVER >= 0x0110)
+    Status FindFirstItem(IN ImageItemData *item);
+    Status FindNextItem(IN ImageItemData *item);
+    Status GetItemData(IN ImageItemData *item);
+    Status SetAbort(GdiplusAbort *pIAbort);
+#endif //(GDIPVER >= 0x0110)
 
     Status GetLastStatus() const;
 
@@ -548,6 +554,54 @@ public:
     Status SetPixel(IN INT x,
                     IN INT y,
                     IN const Color &color);
+    
+#if (GDIPVER >= 0x0110)
+    Status ConvertFormat(
+        PixelFormat format,
+        DitherType dithertype,
+        PaletteType palettetype,
+        ColorPalette *palette,
+        REAL alphaThresholdPercent
+        );
+    
+    // The palette must be allocated and count must be set to the number of
+    // entries in the palette. If there are not enough, the API will fail.
+    
+    static Status InitializePalette(
+        IN OUT ColorPalette *palette,  // Palette to initialize.
+        PaletteType palettetype,       // palette enumeration type.
+        INT optimalColors,             // how many optimal colors
+        BOOL useTransparentColor,      // add a transparent color to the palette.
+        Bitmap *bitmap                 // optional bitmap for median cut.
+        );
+        
+    Status ApplyEffect(Effect *effect, RECT *ROI);
+    
+    static Status 
+    ApplyEffect(
+        IN  Bitmap **inputs,
+        IN  INT numInputs,
+        IN  Effect *effect, 
+        IN  RECT *ROI,           // optional parameter.
+        OUT RECT *outputRect,    // optional parameter.
+        OUT Bitmap **output
+    );
+    
+    Status GetHistogram(
+        IN HistogramFormat format,
+        IN UINT NumberOfEntries,
+        UINT *channel0,
+        UINT *channel1,
+        UINT *channel2,
+        UINT *channel3
+    );
+    
+    static Status GetHistogramSize(
+        IN HistogramFormat format,
+        OUT UINT *NumberOfEntries
+    );
+#endif //(GDIPVER >= 0x0110)
+    
     Status SetResolution(IN REAL xdpi,
                          IN REAL ydpi);
 
@@ -668,4 +722,215 @@ protected:
     mutable Status lastResult;
 };
 
+class Metafile : public Image
+{
+public:
+    friend class Image;
+
+    // Playback a metafile from a HMETAFILE
+    // If deleteWmf is TRUE, then when the metafile is deleted,
+    // the hWmf will also be deleted.  Otherwise, it won't be.
+    
+    Metafile(
+        IN HMETAFILE                      hWmf,
+        IN const WmfPlaceableFileHeader * wmfPlaceableFileHeader,
+        IN BOOL                           deleteWmf = FALSE
+        );
+
+    // Playback a metafile from a HENHMETAFILE
+    // If deleteEmf is TRUE, then when the metafile is deleted,
+    // the hEmf will also be deleted.  Otherwise, it won't be.
+    
+    Metafile(
+        IN HENHMETAFILE hEmf,
+        IN BOOL deleteEmf = FALSE
+        );
+    
+    Metafile(IN const WCHAR* filename);
+
+    // Playback a WMF metafile from a file.
+
+    Metafile(
+        IN const WCHAR*                   filename,
+        IN const WmfPlaceableFileHeader * wmfPlaceableFileHeader
+        );
+
+    Metafile(IN IStream* stream);
+
+    // Record a metafile to memory.
+
+    Metafile(
+        IN HDC                 referenceHdc,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    // Record a metafile to memory.
+
+    Metafile(
+        IN HDC                 referenceHdc,
+        IN const RectF &       frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    // Record a metafile to memory.
+
+    Metafile(
+        IN HDC                 referenceHdc,
+        IN const Rect &        frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN const WCHAR*        fileName,
+        IN HDC                 referenceHdc,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN const WCHAR*        fileName,
+        IN HDC                 referenceHdc,
+        IN const RectF &       frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN const WCHAR*        fileName,
+        IN HDC                 referenceHdc,
+        IN const Rect &        frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN IStream *           stream,
+        IN HDC                 referenceHdc,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN IStream *           stream,
+        IN HDC                 referenceHdc,
+        IN const RectF &       frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    Metafile(
+        IN IStream *           stream,
+        IN HDC                 referenceHdc,
+        IN const Rect &        frameRect,
+        IN MetafileFrameUnit   frameUnit   = MetafileFrameUnitGdi,
+        IN EmfType             type        = EmfTypeEmfPlusDual,
+        IN const WCHAR *       description = NULL
+        );
+
+    static Status GetMetafileHeader(
+        IN HMETAFILE                       hWmf,
+        IN const WmfPlaceableFileHeader *  wmfPlaceableFileHeader,
+        OUT MetafileHeader *               header
+        );
+
+    static Status GetMetafileHeader(
+        IN HENHMETAFILE        hEmf,
+        OUT MetafileHeader *   header
+        );
+
+    static Status GetMetafileHeader(
+        IN const WCHAR*        filename,
+        OUT MetafileHeader *   header
+        );
+
+    static Status GetMetafileHeader(
+        IN IStream *           stream,
+        OUT MetafileHeader *   header
+        );
+
+    Status GetMetafileHeader(
+        OUT MetafileHeader *    header
+        ) const;
+
+    // Once this method is called, the Metafile object is in an invalid state
+    // and can no longer be used.  It is the responsiblity of the caller to
+    // invoke DeleteEnhMetaFile to delete this hEmf.
+
+    HENHMETAFILE GetHENHMETAFILE();
+
+    // Used in conjuction with Graphics::EnumerateMetafile to play an EMF+
+    // The data must be DWORD aligned if it's an EMF or EMF+.  It must be
+    // WORD aligned if it's a WMF.
+    
+    Status PlayRecord(
+        IN EmfPlusRecordType   recordType,
+        IN UINT                flags,
+        IN UINT                dataSize,
+        IN const BYTE *        data
+        ) const;
+
+    // If you're using a printer HDC for the metafile, but you want the
+    // metafile rasterized at screen resolution, then use this API to set
+    // the rasterization dpi of the metafile to the screen resolution,
+    // e.g. 96 dpi or 120 dpi.
+    
+    Status SetDownLevelRasterizationLimit(
+        IN UINT     metafileRasterizationLimitDpi
+        );
+
+    UINT GetDownLevelRasterizationLimit() const;
+
+    static UINT EmfToWmfBits(
+        IN HENHMETAFILE       hemf,
+        IN UINT               cbData16,
+        OUT LPBYTE            pData16,
+        IN INT                iMapMode = MM_ANISOTROPIC,
+        IN INT                eFlags = EmfToWmfBitsFlagsDefault
+    );
+
+#if (GDIPVER >= 0x0110)
+    Status ConvertToEmfPlus(
+        IN const Graphics* refGraphics,
+        IN OUT INT* conversionFailureFlag = NULL,
+        IN EmfType emfType = EmfTypeEmfPlusOnly,
+        IN const WCHAR* description = NULL
+    );
+    Status ConvertToEmfPlus(
+        IN const Graphics* refGraphics,
+        IN const WCHAR* filename, 
+        IN OUT INT* conversionFailureFlag = NULL,
+        IN EmfType emfType = EmfTypeEmfPlusOnly,
+        IN const WCHAR* description = NULL
+    );
+    Status ConvertToEmfPlus(
+        IN const Graphics* refGraphics,
+        IN IStream* stream, 
+        IN OUT INT* conversionFailureFlag = NULL,
+        IN EmfType emfType = EmfTypeEmfPlusOnly,
+        IN const WCHAR* description = NULL
+    );
+#endif
+
+protected:
+    Metafile()
+    {
+        SetNativeImage(NULL);
+        lastResult = Ok;
+    }
+
+private:
+    Metafile(const Metafile &);
+    Metafile& operator=(const Metafile &);
+};
+
+
 #endif  // !_GDIPLUSHEADERS.HPP
+

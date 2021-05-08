@@ -4,12 +4,12 @@ Copyright (c) 1985-95, Microsoft Corporation
 
 Module Name:
 
-    glu.h
+	glu.h
 
 Abstract:
 
-    Procedure declarations, constant definitions and macros for the OpenGL
-    Utility Library.
+	Procedure declarations, constant definitions and macros for the OpenGL
+	Utility Library.
 
 --*/
 
@@ -28,12 +28,12 @@ extern "C" {
 /*
 ** Copyright 1991-1993, Silicon Graphics, Inc.
 ** All Rights Reserved.
-** 
+**
 ** This is UNPUBLISHED PROPRIETARY SOURCE CODE of Silicon Graphics, Inc.;
 ** the contents of this file may not be disclosed to third parties, copied or
 ** duplicated in any form, in whole or in part, without the prior written
 ** permission of Silicon Graphics, Inc.
-** 
+**
 ** RESTRICTED RIGHTS LEGEND:
 ** Use, duplication or disclosure by the Government is subject to restrictions
 ** as set forth in subdivision (c)(1)(ii) of the Rights in Technical Data
@@ -58,95 +58,95 @@ extern "C" {
 #endif
 
 const GLubyte* APIENTRY gluErrorString (
-    GLenum   errCode);
+	GLenum   errCode);
 
 const wchar_t* APIENTRY gluErrorUnicodeStringEXT (
-    GLenum   errCode);
+	GLenum   errCode);
 
 const GLubyte* APIENTRY gluGetString (
-    GLenum   name);
+	GLenum   name);
 
 void APIENTRY gluOrtho2D (
-    GLdouble left, 
-    GLdouble right, 
-    GLdouble bottom, 
-    GLdouble top);
+	GLdouble left,
+	GLdouble right,
+	GLdouble bottom,
+	GLdouble top);
 
 void APIENTRY gluPerspective (
-    GLdouble fovy, 
-    GLdouble aspect, 
-    GLdouble zNear, 
-    GLdouble zFar);
+	GLdouble fovy,
+	GLdouble aspect,
+	GLdouble zNear,
+	GLdouble zFar);
 
 void APIENTRY gluPickMatrix (
-    GLdouble x, 
-    GLdouble y, 
-    GLdouble width, 
-    GLdouble height, 
-    GLint    viewport[4]);
+	GLdouble x,
+	GLdouble y,
+	GLdouble width,
+	GLdouble height,
+	GLint    viewport[4]);
 
 void APIENTRY gluLookAt (
-    GLdouble eyex, 
-    GLdouble eyey, 
-    GLdouble eyez, 
-    GLdouble centerx, 
-    GLdouble centery, 
-    GLdouble centerz, 
-    GLdouble upx, 
-    GLdouble upy, 
-    GLdouble upz);
+	GLdouble eyex,
+	GLdouble eyey,
+	GLdouble eyez,
+	GLdouble centerx,
+	GLdouble centery,
+	GLdouble centerz,
+	GLdouble upx,
+	GLdouble upy,
+	GLdouble upz);
 
 int APIENTRY gluProject (
-    GLdouble        objx, 
-    GLdouble        objy, 
-    GLdouble        objz,  
-    const GLdouble  modelMatrix[16], 
-    const GLdouble  projMatrix[16], 
-    const GLint     viewport[4], 
-    GLdouble        *winx, 
-    GLdouble        *winy, 
-    GLdouble        *winz);
+	GLdouble        objx,
+	GLdouble        objy,
+	GLdouble        objz,
+	const GLdouble  modelMatrix[16],
+	const GLdouble  projMatrix[16],
+	const GLint     viewport[4],
+	GLdouble        *winx,
+	GLdouble        *winy,
+	GLdouble        *winz);
 
 int APIENTRY gluUnProject (
-    GLdouble       winx, 
-    GLdouble       winy, 
-    GLdouble       winz, 
-    const GLdouble modelMatrix[16], 
-    const GLdouble projMatrix[16], 
-    const GLint    viewport[4], 
-    GLdouble       *objx, 
-    GLdouble       *objy, 
-    GLdouble       *objz);
+	GLdouble       winx,
+	GLdouble       winy,
+	GLdouble       winz,
+	const GLdouble modelMatrix[16],
+	const GLdouble projMatrix[16],
+	const GLint    viewport[4],
+	GLdouble       *objx,
+	GLdouble       *objy,
+	GLdouble       *objz);
 
 
 int APIENTRY gluScaleImage (
-    GLenum      format, 
-    GLint       widthin, 
-    GLint       heightin, 
-    GLenum      typein, 
-    const void  *datain, 
-    GLint       widthout, 
-    GLint       heightout, 
-    GLenum      typeout, 
-    void        *dataout);
+	GLenum      format,
+	GLint       widthin,
+	GLint       heightin,
+	GLenum      typein,
+	const void  *datain,
+	GLint       widthout,
+	GLint       heightout,
+	GLenum      typeout,
+	void        *dataout);
 
 
 int APIENTRY gluBuild1DMipmaps (
-    GLenum      target, 
-    GLint       components, 
-    GLint       width, 
-    GLenum      format, 
-    GLenum      type, 
-    const void  *data);
+	GLenum      target,
+	GLint       components,
+	GLint       width,
+	GLenum      format,
+	GLenum      type,
+	const void  *data);
 
 int APIENTRY gluBuild2DMipmaps (
-    GLenum      target, 
-    GLint       components, 
-    GLint       width, 
-    GLint       height, 
-    GLenum      format, 
-    GLenum      type, 
-    const void  *data);
+	GLenum      target,
+	GLint       components,
+	GLint       width,
+	GLint       height,
+	GLenum      format,
+	GLenum      type,
+	const void  *data);
 
 #ifdef __cplusplus
 
@@ -177,181 +177,181 @@ typedef struct GLUtesselator GLUtriangulatorObj;
 
 GLUquadric* APIENTRY gluNewQuadric (void);
 void APIENTRY gluDeleteQuadric (
-    GLUquadric          *state);
+	GLUquadric          *state);
 
 void APIENTRY gluQuadricNormals (
-    GLUquadric          *quadObject, 
-    GLenum              normals);
+	GLUquadric          *quadObject,
+	GLenum              normals);
 
 void APIENTRY gluQuadricTexture (
-    GLUquadric          *quadObject, 
-    GLboolean           textureCoords);
+	GLUquadric          *quadObject,
+	GLboolean           textureCoords);
 
 void APIENTRY gluQuadricOrientation (
-    GLUquadric          *quadObject, 
-    GLenum              orientation);
+	GLUquadric          *quadObject,
+	GLenum              orientation);
 
 void APIENTRY gluQuadricDrawStyle (
-    GLUquadric          *quadObject, 
-    GLenum              drawStyle);
+	GLUquadric          *quadObject,
+	GLenum              drawStyle);
 
 void APIENTRY gluCylinder (
-    GLUquadric          *qobj, 
-    GLdouble            baseRadius, 
-    GLdouble            topRadius, 
-    GLdouble            height, 
-    GLint               slices, 
-    GLint               stacks);
+	GLUquadric          *qobj,
+	GLdouble            baseRadius,
+	GLdouble            topRadius,
+	GLdouble            height,
+	GLint               slices,
+	GLint               stacks);
 
 void APIENTRY gluDisk (
-    GLUquadric          *qobj, 
-    GLdouble            innerRadius, 
-    GLdouble            outerRadius, 
-    GLint               slices, 
-    GLint               loops);
+	GLUquadric          *qobj,
+	GLdouble            innerRadius,
+	GLdouble            outerRadius,
+	GLint               slices,
+	GLint               loops);
 
 void APIENTRY gluPartialDisk (
-    GLUquadric          *qobj, 
-    GLdouble            innerRadius, 
-    GLdouble            outerRadius, 
-    GLint               slices, 
-    GLint               loops, 
-    GLdouble            startAngle, 
-    GLdouble            sweepAngle);
+	GLUquadric          *qobj,
+	GLdouble            innerRadius,
+	GLdouble            outerRadius,
+	GLint               slices,
+	GLint               loops,
+	GLdouble            startAngle,
+	GLdouble            sweepAngle);
 
 void APIENTRY gluSphere (
-    GLUquadric          *qobj, 
-    GLdouble            radius, 
-    GLint               slices, 
-    GLint               stacks);
+	GLUquadric          *qobj,
+	GLdouble            radius,
+	GLint               slices,
+	GLint               stacks);
 
 void APIENTRY gluQuadricCallback (
-    GLUquadric          *qobj, 
-    GLenum              which, 
-    void                (CALLBACK* fn)());
+	GLUquadric          *qobj,
+	GLenum              which,
+	void                (CALLBACK* fn)());
 
-GLUtesselator* APIENTRY  gluNewTess(          
-    void );
+GLUtesselator* APIENTRY  gluNewTess(
+	void );
 
-void APIENTRY  gluDeleteTess(       
-    GLUtesselator       *tess );
+void APIENTRY  gluDeleteTess(
+	GLUtesselator       *tess );
 
-void APIENTRY  gluTessBeginPolygon( 
-    GLUtesselator       *tess,
-    void                *polygon_data );
+void APIENTRY  gluTessBeginPolygon(
+	GLUtesselator       *tess,
+	void                *polygon_data );
 
-void APIENTRY  gluTessBeginContour( 
-    GLUtesselator       *tess );
+void APIENTRY  gluTessBeginContour(
+	GLUtesselator       *tess );
 
-void APIENTRY  gluTessVertex(       
-    GLUtesselator       *tess,
-    GLdouble            coords[3], 
-    void                *data );
+void APIENTRY  gluTessVertex(
+	GLUtesselator       *tess,
+	GLdouble            coords[3],
+	void                *data );
 
-void APIENTRY  gluTessEndContour(   
-    GLUtesselator       *tess );
+void APIENTRY  gluTessEndContour(
+	GLUtesselator       *tess );
 
-void APIENTRY  gluTessEndPolygon(   
-    GLUtesselator       *tess );
+void APIENTRY  gluTessEndPolygon(
+	GLUtesselator       *tess );
 
-void APIENTRY  gluTessProperty(     
-    GLUtesselator       *tess,
-    GLenum              which, 
-    GLdouble            value );
- 
-void APIENTRY  gluTessNormal(       
-    GLUtesselator       *tess, 
-    GLdouble            x,
-    GLdouble            y, 
-    GLdouble            z );
+void APIENTRY  gluTessProperty(
+	GLUtesselator       *tess,
+	GLenum              which,
+	GLdouble            value );
 
-void APIENTRY  gluTessCallback(     
-    GLUtesselator       *tess,
-    GLenum              which, 
-    void                (CALLBACK *fn)());
+void APIENTRY  gluTessNormal(
+	GLUtesselator       *tess,
+	GLdouble            x,
+	GLdouble            y,
+	GLdouble            z );
 
-void APIENTRY  gluGetTessProperty(  
-    GLUtesselator       *tess,
-    GLenum              which, 
-    GLdouble            *value );
- 
+void APIENTRY  gluTessCallback(
+	GLUtesselator       *tess,
+	GLenum              which,
+	void                (CALLBACK *fn)());
+
+void APIENTRY  gluGetTessProperty(
+	GLUtesselator       *tess,
+	GLenum              which,
+	GLdouble            *value );
+
 GLUnurbs* APIENTRY gluNewNurbsRenderer (void);
 
 void APIENTRY gluDeleteNurbsRenderer (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluBeginSurface (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluBeginCurve (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluEndCurve (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluEndSurface (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluBeginTrim (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluEndTrim (
-    GLUnurbs            *nobj);
+	GLUnurbs            *nobj);
 
 void APIENTRY gluPwlCurve (
-    GLUnurbs            *nobj, 
-    GLint               count, 
-    GLfloat             *array, 
-    GLint               stride, 
-    GLenum              type);
+	GLUnurbs            *nobj,
+	GLint               count,
+	GLfloat             *array,
+	GLint               stride,
+	GLenum              type);
 
 void APIENTRY gluNurbsCurve (
-    GLUnurbs            *nobj, 
-    GLint               nknots, 
-    GLfloat             *knot, 
-    GLint               stride, 
-    GLfloat             *ctlarray, 
-    GLint               order, 
-    GLenum              type);
+	GLUnurbs            *nobj,
+	GLint               nknots,
+	GLfloat             *knot,
+	GLint               stride,
+	GLfloat             *ctlarray,
+	GLint               order,
+	GLenum              type);
 
-void APIENTRY 
-gluNurbsSurface(     
-    GLUnurbs            *nobj, 
-    GLint               sknot_count, 
-    float               *sknot, 
-    GLint               tknot_count, 
-    GLfloat             *tknot, 
-    GLint               s_stride, 
-    GLint               t_stride, 
-    GLfloat             *ctlarray, 
-    GLint               sorder, 
-    GLint               torder, 
-    GLenum              type);
+void APIENTRY
+gluNurbsSurface(
+	GLUnurbs            *nobj,
+	GLint               sknot_count,
+	float               *sknot,
+	GLint               tknot_count,
+	GLfloat             *tknot,
+	GLint               s_stride,
+	GLint               t_stride,
+	GLfloat             *ctlarray,
+	GLint               sorder,
+	GLint               torder,
+	GLenum              type);
 
-void APIENTRY 
+void APIENTRY
 gluLoadSamplingMatrices (
-    GLUnurbs            *nobj, 
-    const GLfloat       modelMatrix[16], 
-    const GLfloat       projMatrix[16], 
-    const GLint         viewport[4] );
+	GLUnurbs            *nobj,
+	const GLfloat       modelMatrix[16],
+	const GLfloat       projMatrix[16],
+	const GLint         viewport[4] );
 
-void APIENTRY 
+void APIENTRY
 gluNurbsProperty (
-    GLUnurbs            *nobj, 
-    GLenum              property, 
-    GLfloat             value );
+	GLUnurbs            *nobj,
+	GLenum              property,
+	GLfloat             value );
 
-void APIENTRY 
+void APIENTRY
 gluGetNurbsProperty (
-    GLUnurbs            *nobj, 
-    GLenum              property, 
-    GLfloat             *value );
+	GLUnurbs            *nobj,
+	GLenum              property,
+	GLfloat             *value );
 
-void APIENTRY 
+void APIENTRY
 gluNurbsCallback (
-    GLUnurbs            *nobj, 
-    GLenum              which, 
-    void                (CALLBACK* fn)() );
+	GLUnurbs            *nobj,
+	GLenum              which,
+	void                (CALLBACK* fn)() );
 
 
 /****           Callback function prototypes    ****/
@@ -366,19 +366,19 @@ typedef void (CALLBACK* GLUtessVertexProc)       (void *);
 typedef void (CALLBACK* GLUtessEndProc)          (void);
 typedef void (CALLBACK* GLUtessErrorProc)        (GLenum);
 typedef void (CALLBACK* GLUtessCombineProc)      (GLdouble[3],
-                                                  void*[4], 
-                                                  GLfloat[4],
-                                                  void** );
+												  void*[4],
+												  GLfloat[4],
+												  void** );
 typedef void (CALLBACK* GLUtessBeginDataProc)    (GLenum, void *);
 typedef void (CALLBACK* GLUtessEdgeFlagDataProc) (GLboolean, void *);
 typedef void (CALLBACK* GLUtessVertexDataProc)   (void *, void *);
 typedef void (CALLBACK* GLUtessEndDataProc)      (void *);
 typedef void (CALLBACK* GLUtessErrorDataProc)    (GLenum, void *);
 typedef void (CALLBACK* GLUtessCombineDataProc)  (GLdouble[3],
-                                                  void*[4], 
-                                                  GLfloat[4],
-                                                  void**,
-                                                  void* );
+												  void*[4],
+												  GLfloat[4],
+												  void**,
+												  void* );
 
 /* gluNurbsCallback */
 typedef void (CALLBACK* GLUnurbsErrorProc)   (GLenum);
@@ -449,23 +449,23 @@ typedef void (CALLBACK* GLUnurbsErrorProc)   (GLenum);
 #define GLU_TESS_ERROR          100103  /* void (CALLBACK*)(GLenum    errno) */
 #define GLU_TESS_EDGE_FLAG      100104  /* void (CALLBACK*)(GLboolean boundaryEdge)  */
 #define GLU_TESS_COMBINE        100105  /* void (CALLBACK*)(GLdouble  coords[3],
-                                                            void      *data[4],
-                                                            GLfloat   weight[4],
-                                                            void      **dataOut)     */
-#define GLU_TESS_BEGIN_DATA     100106  /* void (CALLBACK*)(GLenum    type,  
-                                                            void      *polygon_data) */
-#define GLU_TESS_VERTEX_DATA    100107  /* void (CALLBACK*)(void      *data, 
-                                                            void      *polygon_data) */
+															void      *data[4],
+															GLfloat   weight[4],
+															void      **dataOut)     */
+#define GLU_TESS_BEGIN_DATA     100106  /* void (CALLBACK*)(GLenum    type,
+															void      *polygon_data) */
+#define GLU_TESS_VERTEX_DATA    100107  /* void (CALLBACK*)(void      *data,
+															void      *polygon_data) */
 #define GLU_TESS_END_DATA       100108  /* void (CALLBACK*)(void      *polygon_data) */
-#define GLU_TESS_ERROR_DATA     100109  /* void (CALLBACK*)(GLenum    errno, 
-                                                            void      *polygon_data) */
+#define GLU_TESS_ERROR_DATA     100109  /* void (CALLBACK*)(GLenum    errno,
+															void      *polygon_data) */
 #define GLU_TESS_EDGE_FLAG_DATA 100110  /* void (CALLBACK*)(GLboolean boundaryEdge,
-                                                            void      *polygon_data) */
+															void      *polygon_data) */
 #define GLU_TESS_COMBINE_DATA   100111  /* void (CALLBACK*)(GLdouble  coords[3],
-                                                            void      *data[4],
-                                                            GLfloat   weight[4],
-                                                            void      **dataOut,
-                                                            void      *polygon_data) */
+															void      *data[4],
+															GLfloat   weight[4],
+															void      **dataOut,
+															void      *polygon_data) */
 
 /* TessError */
 #define GLU_TESS_ERROR1     100151
@@ -557,8 +557,8 @@ typedef void (CALLBACK* GLUnurbsErrorProc)   (GLenum);
 
 void APIENTRY   gluBeginPolygon( GLUtesselator *tess );
 
-void APIENTRY   gluNextContour(  GLUtesselator *tess, 
-                                 GLenum        type );
+void APIENTRY   gluNextContour(  GLUtesselator *tess,
+								 GLenum        type );
 
 void APIENTRY   gluEndPolygon(   GLUtesselator *tess );
 

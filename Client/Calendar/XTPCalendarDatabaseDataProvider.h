@@ -1,8 +1,7 @@
 // XTPCalendarDatabaseDataProvider.h: interface for
 //                          the CXTPCalendarDatabaseDataProvider class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,24 +20,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARDATABASEDATAPROVIDER_H__)
-#define _XTPCALENDARDATABASEDATAPROVIDER_H__
+#	define _XTPCALENDARDATABASEDATAPROVIDER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
-#include "XTPCalendarData.h"
-#include "XTPCalendarEvents.h"
-#include "XTPCalendarEvent.h"
-#include "XTPCalendarRecurrencePattern.h"
-#include "XTPCalendarMemoryDataProvider.h"
-#include "XTPCalendarDefines.h"
-#include "XTPCalendarADO.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarSchedule;
 class CXTPCalendarSchedules;
+struct XTP_CALENDAR_RECURRENCE_OPTIONS;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarSchedules)
 
 //===========================================================================
 // Summary:
@@ -66,7 +61,6 @@ class _XTP_EXT_CLASS CXTPCalendarDatabaseDataProvider : public CXTPCalendarData
 	DECLARE_DYNAMIC(CXTPCalendarDatabaseDataProvider)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -145,7 +139,6 @@ public:
 	virtual void Close();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieve day events for a specified day.
@@ -321,13 +314,13 @@ protected:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom,
+													  COleDateTimeSpan spPeriod);
 
 public:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	static void AFX_CDECL TRACE_ProviderError(XTPADODB::_Connection* pConnDB);
-	static void AFX_CDECL TRACE_ComError(_com_error &e);
+	static void AFX_CDECL TRACE_ComError(_com_error& e);
 	//}}AFX_CODEJOCK_PRIVATE
 
 private:
@@ -335,7 +328,8 @@ private:
 
 	virtual BOOL _ReadRExceptions(CXTPCalendarRecurrencePattern* pPattern);
 
-	virtual BOOL _GetRPatternOptions(XTPADODB::_Recordset* pRS, XTP_CALENDAR_RECURRENCE_OPTIONS& rROptions);
+	virtual BOOL _GetRPatternOptions(XTPADODB::_Recordset* pRS,
+									 XTP_CALENDAR_RECURRENCE_OPTIONS* rROptions);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -361,17 +355,18 @@ private:
 	virtual void UpdateSchedules();
 
 	virtual void _AddSchedules(CXTPCalendarSchedules* pAddSet);
-	virtual void _UpdateSchedules(CXTPCalendarSchedules* pUpdateSet, CXTPCalendarSchedules* pOrigSet);
+	virtual void _UpdateSchedules(CXTPCalendarSchedules* pUpdateSet,
+								  CXTPCalendarSchedules* pOrigSet);
 	virtual void _DeleteSchedules(CUIntArray* pDeleteIDs);
 
 	virtual CXTPCalendarSchedule* _ReadSchedule(XTPADODB::_Recordset* pRS);
 
 protected:
 	BOOL m_bTraceOptions; // Indicates whether there should be only one record
-	                      // in the options table, or every save should add the new one.
+						  // in the options table, or every save should add the new one.
 
 private:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL _Open();
 
 	void CreateEventTable(XTPADOX::_CatalogPtr ptrCatalog);
@@ -381,48 +376,48 @@ private:
 
 	BOOL IsTableExist(XTPADOX::_CatalogPtr ptrCatalog, LPCWSTR pwszTableName);
 
-	//void CreateDicTable(XTPADOX::_CatalogPtr ptrCatalog, LPCWSTR strTable,
+	// void CreateDicTable(XTPADOX::_CatalogPtr ptrCatalog, LPCWSTR strTable,
 	//                  LPCWSTR strNameID, bool bAuto = true);
 
 	BOOL UpdateDBStructure(XTPADODB::_Connection* pconnDb);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// members
 
 	XTPADODB::_ConnectionPtr m_pconnDb;
 	BOOL m_bCloseDbConnection;
 
-	CADOCommand*  m_pcmdGetLastID;
+	CADOCommand* m_pcmdGetLastID;
 
-	CADOCommand*  m_pcmdAddEvent;
-	CADOCommand*  m_pcmdDelEvent;
-	CADOCommand*  m_pcmdUpdEvent;
+	CADOCommand* m_pcmdAddEvent;
+	CADOCommand* m_pcmdDelEvent;
+	CADOCommand* m_pcmdUpdEvent;
 
-	CADOCommand*  m_pcmdGetDayEvents;
-	CADOCommand*  m_pcmdGetRExceptions;
-	CADOCommand*  m_pcmdGetEvent;
-	CADOCommand*  m_pcmdUpdEventPatternID;
+	CADOCommand* m_pcmdGetDayEvents;
+	CADOCommand* m_pcmdGetRExceptions;
+	CADOCommand* m_pcmdGetEvent;
+	CADOCommand* m_pcmdUpdEventPatternID;
 
-	CADOCommand*  m_pcmdAddRPattern;
-	CADOCommand*  m_pcmdDelRPattern;
-	CADOCommand*  m_pcmdUpdRPattern;
-	CADOCommand*  m_pcmdGetRPattern;
+	CADOCommand* m_pcmdAddRPattern;
+	CADOCommand* m_pcmdDelRPattern;
+	CADOCommand* m_pcmdUpdRPattern;
+	CADOCommand* m_pcmdGetRPattern;
 
-	CADOCommand*  m_pcmdRemoveAllEvents;
-	CADOCommand*  m_pcmdRemoveAllRPatterns;
+	CADOCommand* m_pcmdRemoveAllEvents;
+	CADOCommand* m_pcmdRemoveAllRPatterns;
 
-	CADOCommand*  m_pcmdRemoveAllOptions;
-	CADOCommand*  m_pcmdGetOptions;
-	CADOCommand*  m_pcmdAddOptions;
+	CADOCommand* m_pcmdRemoveAllOptions;
+	CADOCommand* m_pcmdGetOptions;
+	CADOCommand* m_pcmdAddOptions;
 
-	CADOCommand*  m_pcmdAddSchedule;
-	CADOCommand*  m_pcmdUpdSchedule;
-//}}AFX_CODEJOCK_PRIVATE
+	CADOCommand* m_pcmdAddSchedule;
+	CADOCommand* m_pcmdUpdSchedule;
+	//}}AFX_CODEJOCK_PRIVATE
 private:
 	// internal only used member functions
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual BOOL _SetRPatternOptions(CADOCommand* pCmd, CXTPCalendarRecurrencePattern* pPattern);
 
 	void DeleteAllDBCommands();
@@ -448,7 +443,8 @@ private:
 
 	void CreateAddScheduleCommand();
 	void CreateUpdScheduleCommand();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARDATABASEDATAPROVIDER_H__)

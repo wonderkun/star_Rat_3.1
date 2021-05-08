@@ -57,3 +57,4 @@ GetImageEncoders(
 }
 
 #endif  // _GDIPLUSIMAGECODEC_H
+

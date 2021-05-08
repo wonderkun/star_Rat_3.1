@@ -1,7 +1,6 @@
 // XTPTipWindow.h interface for the CXTPTipWindow class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTIPWINDOW_H__)
-#define __XTPTIPWINDOW_H__
+#	define __XTPTIPWINDOW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-const DWORD TWS_XTP_THICKBORDER     = 0x0001;  //<ALIAS CXTPTipWindow::ShowTipWindow@const CPoint&@DWORD@UINT@UINT@BOOL>
-const DWORD TWS_XTP_DROPSHADOW      = 0x0002;  //<ALIAS CXTPTipWindow::ShowTipWindow@const CPoint&@DWORD@UINT@UINT@BOOL>
-const DWORD TWS_XTP_ALPHASHADOW     = 0x0004;  //<ALIAS CXTPTipWindow::ShowTipWindow@const CPoint&@DWORD@UINT@UINT@BOOL>
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+const DWORD TWS_XTP_THICKBORDER = 0x0001; //<ALIAS CXTPTipWindow::ShowTipWindow@const
+										  // CPoint&@DWORD@UINT@UINT@BOOL>
+const DWORD TWS_XTP_DROPSHADOW = 0x0002;  //<ALIAS CXTPTipWindow::ShowTipWindow@const
+										  // CPoint&@DWORD@UINT@UINT@BOOL>
+const DWORD TWS_XTP_ALPHASHADOW = 0x0004; //<ALIAS CXTPTipWindow::ShowTipWindow@const
+										  // CPoint&@DWORD@UINT@UINT@BOOL>
 
 //===========================================================================
 // Summary:
@@ -41,7 +45,6 @@ const DWORD TWS_XTP_ALPHASHADOW     = 0x0004;  //<ALIAS CXTPTipWindow::ShowTipWi
 class _XTP_EXT_CLASS CXTPTipWindow : public CWnd
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTipWindow object
@@ -66,7 +69,6 @@ public:
 	virtual BOOL Create(CWnd* pParentWnd);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to offset the tip window by the distance
@@ -149,8 +151,14 @@ public:
 	//           to display an alpha style shadow. By default, mono shadowing is
 	//           enabled.
 	// ------------------------------------------------------------------------------------
-	virtual BOOL ShowTipWindow(const CPoint& point, DWORD dwTipStyle = TWS_XTP_DROPSHADOW, UINT nDelay = 0, UINT nElapse = 5000, BOOL bCenterHorz = FALSE);
-	virtual BOOL ShowTipWindow(const CRect& rectCtrl, const CPoint& pointMousePos, DWORD dwTipStyle = TWS_XTP_DROPSHADOW, UINT nDelay = 0, UINT nElapse = 5000, BOOL bCenterHorz = FALSE, BOOL bShowTipAtCursorPos = FALSE); //<combine CXTPTipWindow::ShowTipWindow@const CPoint&@DWORD@UINT@UINT@BOOL>
+	virtual BOOL ShowTipWindow(const CPoint& point, DWORD dwTipStyle = TWS_XTP_DROPSHADOW,
+							   UINT nDelay = 0, UINT nElapse = 5000, BOOL bCenterHorz = FALSE);
+	virtual BOOL ShowTipWindow(
+		const CRect& rectCtrl, const CPoint& pointMousePos, DWORD dwTipStyle = TWS_XTP_DROPSHADOW,
+		UINT nDelay = 0, UINT nElapse = 5000, BOOL bCenterHorz = FALSE,
+		BOOL bShowTipAtCursorPos = FALSE); //<combine
+										   // CXTPTipWindow::ShowTipWindow@const
+										   // CPoint&@DWORD@UINT@UINT@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,7 +177,6 @@ public:
 	void SetLineSpace(int nLineSpace);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will draw a shadow rect to the device context
@@ -217,7 +224,7 @@ protected:
 	void CreateShadow();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTipWindow)
@@ -233,56 +240,77 @@ protected:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	COLORREF AlphaPixel(COLORREF crPixel, int i);
 	int CheckValue(int iValue);
 
 protected:
-	BOOL            m_bSystemShadow;
-	int             m_nLineSpace;          // Amount in pixels to space the title and description text.
-	int             m_nTabPositions;       // Specifies the number of tab-stop positions in the array pointed to by <i>m_pnTabStopPositions</i>.
-	UINT            m_nElapseTimerEventID; // Elapse timer event ID.
-	UINT            m_nDelayTimerEventID;  // Delay timer event ID.
-	BOOL            m_bDelayTimerRunning;  // TRUE if delay timer is running.
-	BOOL            m_bCenterHorz;         // TRUE if the window is to be centered horizontally.
-	LPINT           m_pnTabStopPositions;  // Points to an array of integers containing the tab-stop positions in logical units. The tab stops must be sorted in increasing order; the smallest x-value should be the first item in the array. Back tabs are not allowed.
-	DWORD           m_dwTipStyle;          // Initial style for the tip window. See ShowTipWindow(..).
-	COLORREF        m_crBackColor;         // Background color for the tip window.
-	COLORREF        m_crTextColor;         // Text color for the tip window.
-	CRect           m_rcWindow;            // Initial size of the tip window.
-	CRect           m_rcScreenWindow;      // Initial size of the desktop.
-	CRect           m_rcShadow;            // Initial size of the tip window shadow.
-	CRect           m_rectTipArea;         // Size of the client area for the tip window.
-	CPoint          m_pointTipOffsetPos;   // Specifies the offset to move the top window in relation to the mouse cursor.
-	CPoint          m_ptMousePos;          // Initial xy coordinates of the cursor when when tip window was created.
-	CWnd*           m_pParentWnd;          // Parent window.
-	CSize           m_sizeMargin;          // Amount in pixels of the tip and side margins of where the tip text is displayed.
-	CSize           m_sizeTitle;           // title text size.
-	CString         m_strTitle;            // Title text for the tip window.
-	CString m_strDescrip;          // Description text for the tip window.
-	CStringArray    m_arStrings;           // Stores strings if the tip is multiline.
+	BOOL m_bSystemShadow;
+	int m_nLineSpace;	// Amount in pixels to space the title and description text.
+	int m_nTabPositions; // Specifies the number of tab-stop positions in the array pointed to by
+						 // <i>m_pnTabStopPositions</i>.
+	UINT m_nElapseTimerEventID; // Elapse timer event ID.
+	UINT m_nDelayTimerEventID;  // Delay timer event ID.
+	BOOL m_bDelayTimerRunning;  // TRUE if delay timer is running.
+	BOOL m_bCenterHorz;			// TRUE if the window is to be centered horizontally.
+	LPINT m_pnTabStopPositions; // Points to an array of integers containing the tab-stop positions
+								// in logical units. The tab stops must be sorted in increasing
+								// order; the smallest x-value should be the first item in the
+								// array. Back tabs are not allowed.
+	DWORD m_dwTipStyle;			// Initial style for the tip window. See ShowTipWindow(..).
+	COLORREF m_crBackColor;		// Background color for the tip window.
+	COLORREF m_crTextColor;		// Text color for the tip window.
+	CRect m_rcWindow;			// Initial size of the tip window.
+	CRect m_rcScreenWindow;		// Initial size of the desktop.
+	CRect m_rcShadow;			// Initial size of the tip window shadow.
+	CRect m_rectTipArea;		// Size of the client area for the tip window.
+	CPoint m_pointTipOffsetPos; // Specifies the offset to move the top window in relation to the
+								// mouse cursor.
+	CPoint m_ptMousePos;  // Initial xy coordinates of the cursor when when tip window was created.
+	CWnd* m_pParentWnd;   // Parent window.
+	CSize m_sizeMargin;   // Amount in pixels of the tip and side margins of where the tip text is
+						  // displayed.
+	CSize m_sizeTitle;	// title text size.
+	CString m_strTitle;   // Title text for the tip window.
+	CString m_strDescrip; // Description text for the tip window.
+	CStringArray m_arStrings; // Stores strings if the tip is multiline.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPTipWindow::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPTipWindow::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									  const RECT& rect, CWnd* pParentWnd, UINT nID,
+									  CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPTipWindow::SetTipColors(COLORREF crBackColor, COLORREF crTextColor, BOOL bRedraw) {
-	m_crBackColor = crBackColor; m_crTextColor = crTextColor; if (bRedraw) { InvalidateRect(NULL); }
+AFX_INLINE void CXTPTipWindow::SetTipColors(COLORREF crBackColor, COLORREF crTextColor,
+											BOOL bRedraw)
+{
+	m_crBackColor = crBackColor;
+	m_crTextColor = crTextColor;
+	if (bRedraw)
+	{
+		InvalidateRect(NULL);
+	}
 }
-AFX_INLINE void CXTPTipWindow::SetMargins(CSize size) {
-	m_sizeMargin.cx = __max(0, size.cx); m_sizeMargin.cy = __max(0, size.cy); //EM_BM
+AFX_INLINE void CXTPTipWindow::SetMargins(CSize size)
+{
+	m_sizeMargin.cx = __max(0, size.cx);
+	m_sizeMargin.cy = __max(0, size.cy); // EM_BM
 }
-AFX_INLINE void CXTPTipWindow::SetLineSpace(int nLineSpace) {
+AFX_INLINE void CXTPTipWindow::SetLineSpace(int nLineSpace)
+{
 	m_nLineSpace = __max(0, nLineSpace);
 }
-AFX_INLINE void CXTPTipWindow::SetTipOffsetPos(CPoint pointOffset) {
+AFX_INLINE void CXTPTipWindow::SetTipOffsetPos(CPoint pointOffset)
+{
 	m_pointTipOffsetPos = pointOffset;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTIPWINDOW_H__)

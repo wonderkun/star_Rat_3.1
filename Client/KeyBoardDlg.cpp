@@ -1,7 +1,7 @@
 // KeyBoardDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "KeyBoardDlg.h"
 #include "stdlib.h"

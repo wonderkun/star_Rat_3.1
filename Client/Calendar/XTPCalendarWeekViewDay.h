@@ -1,7 +1,6 @@
 // XTPCalendarWeekViewDay.h: interface for the CXTPCalendarWeekViewDay class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCALENDARWEEKVIEWDAY_H_)
-#define __XTPCALENDARWEEKVIEWDAY_H_
+#	define __XTPCALENDARWEEKVIEWDAY_H_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-#include "XTPCalendarWeekViewEvent.h"
-#include "XTPCalendarViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarWeekView;
-
+class CXTPCalendarWeekViewDay;
+class CXTPCalendarWeekViewEvent;
 
 //===========================================================================
 // Summary:
@@ -44,21 +43,18 @@ class CXTPCalendarWeekView;
 //
 // See Also: CXTPCalendarWeekViewDay
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarWeekViewGroup : public CXTPCalendarViewGroupT<
-											CXTPCalendarWeekViewDay,
-											CXTPCalendarWeekViewEvent,
-											XTP_CALENDAR_HITTESTINFO_WEEK_VIEW,
-											CXTPCalendarWeekViewGroup >
+class _XTP_EXT_CLASS CXTPCalendarWeekViewGroup
+	: public CXTPCalendarViewGroupT<CXTPCalendarWeekViewDay, CXTPCalendarWeekViewEvent,
+									CXTPCalendarWeekViewGroup>
 {
 public:
 	//------------------------------------------------------------------------
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewGroupT<     CXTPCalendarWeekViewDay,
-										CXTPCalendarWeekViewEvent,
-										XTP_CALENDAR_HITTESTINFO_WEEK_VIEW,
-										CXTPCalendarWeekViewGroup >  TBase;
+	typedef CXTPCalendarViewGroupT<CXTPCalendarWeekViewDay, CXTPCalendarWeekViewEvent,
+								   CXTPCalendarWeekViewGroup>
+		TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -79,15 +75,15 @@ public:
 
 protected:
 	// Summary:
-	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW structure.
+	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW struct.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO struct.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the week view group.
-	// See Also: XTP_CALENDAR_HITTESTINFO_WEEK_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_WEEK_VIEW* pHitTest);
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 private:
 	//-----------------------------------------------------------------------
@@ -99,13 +95,12 @@ private:
 	//     Pointer to a CXTPCalendarWeekViewGroup.
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarWeekViewGroup* GetPThis();
-
 };
 
-AFX_INLINE CXTPCalendarWeekViewGroup* CXTPCalendarWeekViewGroup::GetPThis() {
+AFX_INLINE CXTPCalendarWeekViewGroup* CXTPCalendarWeekViewGroup::GetPThis()
+{
 	return this;
 }
-
 
 //===========================================================================
 // Summary:
@@ -122,11 +117,9 @@ AFX_INLINE CXTPCalendarWeekViewGroup* CXTPCalendarWeekViewGroup::GetPThis() {
 //
 // See Also: CXTPCalendarViewDay, CXTPCalendarViewDayT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarWeekViewDay : public CXTPCalendarViewDayT<
-										CXTPCalendarWeekView,
-										CXTPCalendarWeekViewGroup,
-										XTP_CALENDAR_HITTESTINFO_WEEK_VIEW,
-										CXTPCalendarWeekViewDay >
+class _XTP_EXT_CLASS CXTPCalendarWeekViewDay
+	: public CXTPCalendarViewDayT<CXTPCalendarWeekView, CXTPCalendarWeekViewGroup,
+								  XTP_CALENDAR_HITTESTINFO, CXTPCalendarWeekViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarWeekViewEvent;
@@ -137,11 +130,9 @@ public:
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewDayT<
-									CXTPCalendarWeekView,
-									CXTPCalendarWeekViewGroup,
-									XTP_CALENDAR_HITTESTINFO_WEEK_VIEW,
-									CXTPCalendarWeekViewDay>    TBase;
+	typedef CXTPCalendarViewDayT<CXTPCalendarWeekView, CXTPCalendarWeekViewGroup,
+								 XTP_CALENDAR_HITTESTINFO, CXTPCalendarWeekViewDay>
+		TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -163,31 +154,31 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW structure.
+	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW struct.
+	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO struct.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the week view.
-	// See Also: XTP_CALENDAR_HITTESTINFO_WEEK_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_WEEK_VIEW* pInfo);
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to determine which view item,
 	//     if any, is at the specified position index, and returns additional
-	//     info in the _THitTest template object.
+	//     info in the XTP_CALENDAR_HITTESTINFO template object.
 	// Parameters:
 	//     pt       - A CPoint that contains the coordinates of the point test.
-	//     pHitTest - A pointer to a _THitTest structure.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Implements standard functionality for the HitTestEx method.
 	// Returns:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_WEEK_VIEW* pHitTest);
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -231,10 +222,9 @@ public:
 	// Returns:
 	//     A CString object that contains the day's view caption.
 	//-----------------------------------------------------------------------
-	virtual CString GetCaption();
+	virtual CString GetCaption() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to processes left mouse button events.
@@ -277,8 +267,10 @@ protected:
 };
 ////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPCalendarWeekViewDay* CXTPCalendarWeekViewDay::GetPThis() {
+AFX_INLINE CXTPCalendarWeekViewDay* CXTPCalendarWeekViewDay::GetPThis()
+{
 	return this;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCALENDARWEEKVIEWDAY_H_)

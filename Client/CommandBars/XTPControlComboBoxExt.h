@@ -1,7 +1,6 @@
 // XTPControlComboBoxExt.h
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLCOMBOBOXEXT_H__)
-#define __XTPCONTROLCOMBOBOXEXT_H__
+#	define __XTPCONTROLCOMBOBOXEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The XTP_FN_SETFORMAT notification sent by CXTPControlFontComboBox to set current RichEdit selection format
+//     The XTP_FN_SETFORMAT notification sent by CXTPControlFontComboBox to set current RichEdit
+//     selection format
 // Example:
 //     Here is an example of how an application would process the XTP_FN_SETFORMAT
 //     message.
@@ -50,11 +51,12 @@
 // </code>
 // See Also: XTP_FN_GETFORMAT, CXTPControlFontComboBox
 //-----------------------------------------------------------------------
-const UINT XTP_FN_SETFORMAT    = 0x1000;
+const UINT XTP_FN_SETFORMAT = 0x1000;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The XTP_FN_GETFORMAT notification sent by CXTPControlFontComboBox to get current RichEdit selection format
+//     The XTP_FN_GETFORMAT notification sent by CXTPControlFontComboBox to get current RichEdit
+//     selection format
 // Example:
 //     Here is an example of how an application would process the XTP_FN_GETFORMAT
 //     message.
@@ -74,8 +76,7 @@ const UINT XTP_FN_SETFORMAT    = 0x1000;
 // </code>
 // See Also: XTP_FN_SETFORMAT, CXTPControlFontComboBox
 //-----------------------------------------------------------------------
-const UINT XTP_FN_GETFORMAT    = 0x1001;
-
+const UINT XTP_FN_GETFORMAT = 0x1001;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -85,18 +86,19 @@ const UINT XTP_FN_GETFORMAT    = 0x1001;
 //-----------------------------------------------------------------------
 struct NMXTPCHARHDR : public NMXTPCONTROL
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a NMXTPCHARHDR object
 	//-------------------------------------------------------------------------
-	NMXTPCHARHDR() {cf.cbSize = sizeof(CHARFORMAT);}
-//}}AFX_CODEJOCK_PRIVATE
+	NMXTPCHARHDR()
+	{
+		cf.cbSize = sizeof(CHARFORMAT);
+	}
+	//}}AFX_CODEJOCK_PRIVATE
 
-
-	CHARFORMAT cf;          // Character formatting in a rich edit control.
+	CHARFORMAT cf; // Character formatting in a rich edit control.
 };
-
 
 //===========================================================================
 // Summary:
@@ -108,7 +110,6 @@ class _XTP_EXT_CLASS CXTPControlSizeComboBox : public CXTPControlComboBox
 	DECLARE_XTP_CONTROL(CXTPControlSizeComboBox)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlSizeComboBox object
@@ -148,7 +149,6 @@ public:
 	static CString AFX_CDECL TwipsToPointString(int nTwips);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to popup the control.
@@ -167,7 +167,6 @@ protected:
 	//-----------------------------------------------------------------------
 	int GetTwipSize() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the control is executed.
@@ -177,8 +176,8 @@ protected:
 private:
 	void EnumFontSizes(CDC& dc, LPCTSTR pFontName);
 
-	static BOOL CALLBACK AFX_EXPORT EnumSizeCallBack(LOGFONT FAR* /*lplf*/,
-		LPNEWTEXTMETRIC lpntm, int FontType, LPVOID lpv);
+	static BOOL CALLBACK AFX_EXPORT EnumSizeCallBack(LOGFONT FAR* /*lplf*/, LPNEWTEXTMETRIC lpntm,
+													 int FontType, LPVOID lpv);
 
 	void InsertSize(int nSize);
 
@@ -197,12 +196,12 @@ class _XTP_EXT_CLASS CXTPControlFontComboBoxList : public CXTPControlComboBoxLis
 	DECLARE_XTP_COMMANDBAR(CXTPControlFontComboBoxList)
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	class _XTP_EXT_CLASS CFontDesc
 	{
 	public:
-		CFontDesc(LPCTSTR lpszName, LPCTSTR lpszScript, BYTE nCharSet,
-			BYTE nPitchAndFamily, DWORD dwFlags);
+		CFontDesc(LPCTSTR lpszName, LPCTSTR lpszScript, BYTE nCharSet, BYTE nPitchAndFamily,
+				  DWORD dwFlags);
 		CString m_strName;
 		CString m_strScript;
 		BYTE m_nCharSet;
@@ -213,13 +212,13 @@ public:
 	class _XTP_EXT_CLASS CFontDescHolder
 	{
 	public:
-		static BOOL CALLBACK AFX_EXPORT EnumFamScreenCallBack(
-			ENUMLOGFONT* pelf, NEWTEXTMETRICEX* /*lpntm*/, int FontType,
-			LPVOID pThis);
+		static BOOL CALLBACK AFX_EXPORT EnumFamScreenCallBack(ENUMLOGFONT* pelf,
+															  NEWTEXTMETRICEX* /*lpntm*/,
+															  int FontType, LPVOID pThis);
 
-		static BOOL CALLBACK AFX_EXPORT EnumFamScreenCallBackEx(
-			ENUMLOGFONTEX* pelf, NEWTEXTMETRICEX* /*lpntm*/, int FontType,
-			LPVOID pThis);
+		static BOOL CALLBACK AFX_EXPORT EnumFamScreenCallBackEx(ENUMLOGFONTEX* pelf,
+																NEWTEXTMETRICEX* /*lpntm*/,
+																int FontType, LPVOID pThis);
 
 		void AddFont(ENUMLOGFONT* pelf, DWORD dwType, LPCTSTR lpszScript = NULL);
 
@@ -229,15 +228,14 @@ public:
 		{
 			for (int i = 0; i < m_arrayFontDesc.GetSize(); i++)
 				delete m_arrayFontDesc[i];
-
 		}
+
 	public:
 		CArray<CFontDesc*, CFontDesc*> m_arrayFontDesc;
 	};
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Reads or writes this object from or to an archive.
@@ -271,11 +269,10 @@ public:
 	void EnumFontFamiliesEx(BOOL dwStyleListBox = 1);
 
 protected:
-	DWORD m_dwStyleListBox;     // Style of the control.
+	DWORD m_dwStyleListBox; // Style of the control.
 
 private:
 	friend class CXTPControlFontComboBox;
-
 };
 
 //===========================================================================
@@ -288,7 +285,6 @@ class _XTP_EXT_CLASS CXTPControlFontComboBox : public CXTPControlComboBox
 	DECLARE_XTP_CONTROL(CXTPControlFontComboBox)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlFontComboBox object
@@ -319,8 +315,7 @@ protected:
 	//     This method is called when the control is executed.
 	//-----------------------------------------------------------------------
 	virtual void OnExecute();
-
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCONTROLCOMBOBOXEXT_H__)

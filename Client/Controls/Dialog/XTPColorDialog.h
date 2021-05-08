@@ -1,7 +1,6 @@
 // XTPColorDialog.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOLORDIALOG_H__)
-#define __XTPCOLORDIALOG_H__
+#	define __XTPCOLORDIALOG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -91,19 +92,21 @@ public:
 	void ShowPreview(BOOL bShowPreview);
 
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+						const RECT& rect, CWnd* pParentWnd, UINT nID,
+						CCreateContext* pContext = NULL);
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int      m_nPadding;       // Size of the gap between eyedropper and preview display.
-	CSize    m_icoSize;        // Size of the preview icon.
-	BOOL     m_bPreInit;       // TRUE when initializing from PreSubclassWindow.
-	BOOL     m_bSetClipboard;  // TRUE to set the selected RGB color on the clipboard.
-	BOOL     m_bShowPreview;   // TRUE to show color preview.
-	HICON    m_hIcon;          // Handle to the eye dropper icon.
-	HCURSOR  m_hCurEyeDropper; // Handle to the eye dropper cursor.
-	HCURSOR  m_hCurPrevious;   // Handle to the previous cursor.
-	COLORREF m_color;          // Selected RGB color value.
+	int m_nPadding;			  // Size of the gap between eyedropper and preview display.
+	CSize m_icoSize;		  // Size of the preview icon.
+	BOOL m_bPreInit;		  // TRUE when initializing from PreSubclassWindow.
+	BOOL m_bSetClipboard;	 // TRUE to set the selected RGB color on the clipboard.
+	BOOL m_bShowPreview;	  // TRUE to show color preview.
+	HICON m_hIcon;			  // Handle to the eye dropper icon.
+	HCURSOR m_hCurEyeDropper; // Handle to the eye dropper cursor.
+	HCURSOR m_hCurPrevious;   // Handle to the previous cursor.
+	COLORREF m_color;		  // Selected RGB color value.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -182,7 +185,6 @@ class _XTP_EXT_CLASS CXTPColorDialog : public CPropertySheet
 	DECLARE_DYNAMIC(CXTPColorDialog)
 
 public:
-
 	// ---------------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorDialog object
@@ -203,7 +205,8 @@ public:
 	//     CXTPColorPopup::Create, CXTPColorSelectorCtrl::Create,
 	//     CXTPColorPicker::ModifyCPStyle
 	// ---------------------------------------------------------------------------------
-	CXTPColorDialog(COLORREF clrNew, COLORREF clrCurrent, DWORD dwFlags = 0L, CWnd* pWndParent = NULL);
+	CXTPColorDialog(COLORREF clrNew, COLORREF clrCurrent, DWORD dwFlags = 0L,
+					CWnd* pWndParent = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -212,7 +215,6 @@ public:
 	virtual ~CXTPColorDialog();
 
 public:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Sets the active color for the dialog.
@@ -277,7 +279,7 @@ public:
 	// Returns:
 	//     A CString object.
 	//-----------------------------------------------------------------------
-	static CString RGBtoHex(COLORREF clr);
+	static CString AFX_CDECL RGBtoHex(COLORREF clr);
 
 	// ------------------------------------------------------------------------
 	// Summary:
@@ -292,7 +294,7 @@ public:
 	virtual void CalculateRects();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorDialog)
@@ -307,41 +309,42 @@ protected:
 	afx_msg LRESULT OnEyeDropperSelect(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	DWORD         m_dwStyle;       // Styles for the dialog.
-	CEdit         m_wndHexEdit;    // Edit window to display the color hex value.
+	DWORD m_dwStyle;				// Styles for the dialog.
+	CEdit m_wndHexEdit;				// Edit window to display the color hex value.
 	CXTPEyeDropper m_wndEyeDropper; // TODO
-	CRect         m_rcNew;         // Size of the rectangle that represents the new color.
-	CRect         m_rcCurrent;     // Size of the rectangle that represents the current color.
-	COLORREF      m_clrNew;        // A COLORREF value that contains the RGB information for the new color.
-	COLORREF      m_clrCurrent;    // A COLORREF value that contains the RGB information for the current color.
+	CRect m_rcNew;					// Size of the rectangle that represents the new color.
+	CRect m_rcCurrent;				// Size of the rectangle that represents the current color.
+	COLORREF m_clrNew;	 // A COLORREF value that contains the RGB information for the new color.
+	COLORREF m_clrCurrent; // A COLORREF value that contains the RGB information for the current
+						   // color.
 
+private:
+	int m_nTextHeight;
+	int m_nGapSize;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE COLORREF CXTPColorDialog::GetCurrentColor() {
+AFX_INLINE COLORREF CXTPColorDialog::GetCurrentColor()
+{
 	return m_clrCurrent;
 }
-AFX_INLINE COLORREF CXTPColorDialog::GetColor() {
+AFX_INLINE COLORREF CXTPColorDialog::GetColor()
+{
 	return m_clrNew;
 }
 
-AFX_INLINE void CXTPEyeDropper::SetClipboard(BOOL bSetClipboard) {
+AFX_INLINE void CXTPEyeDropper::SetClipboard(BOOL bSetClipboard)
+{
 	m_bSetClipboard = bSetClipboard;
 }
-AFX_INLINE void CXTPEyeDropper::ShowPreview(BOOL bShowPreview) {
+AFX_INLINE void CXTPEyeDropper::ShowPreview(BOOL bShowPreview)
+{
 	m_bShowPreview = bShowPreview;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CXTPEyeDropper window
-
-const DWORD CPS_XTP_SHOWHEXVALUE    = 0x0020;  //<ALIAS CXTPColorDialog::CXTPColorDialog@COLORREF@COLORREF@DWORD@CWnd*>
-const DWORD CPS_XTP_SHOW3DSELECTION = 0x0040;  //<ALIAS CXTPColorDialog::CXTPColorDialog@COLORREF@COLORREF@DWORD@CWnd*>
-const DWORD CPS_XTP_SHOWEYEDROPPER  = 0x0080;  //<ALIAS CXTPColorDialog::CXTPColorDialog@COLORREF@COLORREF@DWORD@CWnd*>
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCOLORDIALOG_H__)

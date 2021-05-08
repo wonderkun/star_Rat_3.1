@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI)
 #ifdef _WIN32
 LANGUAGE LANG_LATVIAN, SUBLANG_DEFAULT
 #pragma code_page(1257)
@@ -121,7 +120,7 @@ BEGIN
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
     LTEXT           "Izvçlòu animâcijas:",IDC_STATIC,10,117,63,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,77,115,79,65,CBS_DROPDOWNLIST | 
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,77,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Izvçlnes"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Lietojumprogrammas izvçlòu",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "Konteksta izvçlnes",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Râdît izvçlni:",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Atiestatît",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Noklusçjuma izvçlnes\nNoklusçjuma lietojumprogrammas izvçlni",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           "Konteksta izvçlne:",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Atiestatît",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Pielâgot"
     XTP_IDS_NEWMENU         "Jauna izvçlne"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Statusa joslas pielâgoðana"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -236,9 +235,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_CUSTOM_BAR      "Piel?gota %d"
+    XTP_IDS_CUSTOM_BAR      "Pielâgots %d"
     XTP_IDS_ERROR_BLANKNAME "Rîkjoslas nosaukums nedrîkst bût tukðs. Ierakstiet nosaukumu."
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
+    XTP_IDS_ERROR_LIMIT     "Atvainojiet, jûs esat sasniedzis savu limitu."
     XTP_IDS_ERROR_EXISTS    "Rîkjosla ar nosaukumu %s jau pastâv. Norâdiet citu nosaukumu."
     XTP_IDS_RENAMETOOLBAR   "Rîkjoslas pârdçvçðana"
     XTP_IDS_CONFIRM_DELETE  "Vai tieðâm vçlaties izdzçst rîkjoslu %s?"
@@ -247,44 +246,44 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_CUSTOMIZE        "\nPie&l?got..."
-    XTP_ID_CUSTOMIZE_RESET  "\nAtiestatît"
+    XTP_ID_CUSTOMIZE        "Pielâgojiet lietojumprogrammas izskatu, rîkjoslas un izvçlnes\nPielâgot..."
+    XTP_ID_CUSTOMIZE_RESET  "\nAtiestatît rîkjoslu"
     XTP_ID_CUSTOMIZE_ADDORREMOVE "\nPievienot vai noòemt pogas"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Vai tieðâm vçlaties atiestatît taustiòu pieðíires? Ðî darbîba noòems visus pielâgotu taustiòu pieðíires teksta lîmenî."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Ðo saîsni paðlaik ir pieðíirts.\nVai vçlaties atkârtoti pieðíirt ðo saîsni?"
+    XTP_IDS_CONFIRM_UPDATE  "Sakarâ ar programmatûras atjauninâðana rîkjoslâ '%s' ir mainîjusies. Vai vçlaties atiestatît pielâgotu rîkjoslu un ielâdçt jaunu"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Visi att?lu faili|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitkartes (*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Ikonas (*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Visi faili(*.*)|*.*||"
-    XTP_ID_TOOLBAR_EXPAND   "\nR?kjoslas opcijas"
-    XTP_ID_TOOLBAR_HIDE     "\nAizv?rt"
+                            "Visi attçlu faili|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitkartes (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafaili (*.wmf;*.emf)|*.wmf;*.emf|Ikonas (*.ico;*.cur)|*.ico;*.cur|Visi faili (*.*)|*.*||"
+    XTP_ID_TOOLBAR_EXPAND   "\nRîkjoslas opcijas"
+    XTP_ID_TOOLBAR_HIDE     "\nAizvçrt"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
-    XTP_ID_MENUBAR_CLOSE    "\nAizv?rt logu"
+    XTP_ID_MENUBAR_CLOSE    "\nAizvçrt logu"
     XTP_ID_MENUBAR_RESTORE  "\nAtjaunot logu"
-    XTP_ID_MENUBAR_MINIMIZE "\nMinimiz?t logu"
+    XTP_ID_MENUBAR_MINIMIZE "\nMinimizçt logu"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) tika nospiests. Gaida otro atslçgu horda..."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_BUTTON_PENCIL    "\nZ?mulis"
-    XTP_ID_BUTTON_FILL      "\nAizpild?juma kr?sa"
-    XTP_ID_BUTTON_GETCOLOR  "\nKr?sas atlas??ana"
-    XTP_ID_BUTTON_LINE      "\nL?nija"
-    XTP_ID_BUTTON_RECTANGLE "\nTaisnst?ris"
+    XTP_ID_BUTTON_PENCIL    "\nZîmulis"
+    XTP_ID_BUTTON_FILL      "\nAizpildiet krâsu"
+    XTP_ID_BUTTON_GETCOLOR  "\nIzvçlieties krâsu"
+    XTP_ID_BUTTON_LINE      "\nLînija"
+    XTP_ID_BUTTON_RECTANGLE "\nTaisnstûris"
     XTP_ID_BUTTON_CIRCLE    "\nElipse"
-    XTP_ID_BUTTON_COPY      "\nKop?t"
-    XTP_ID_BUTTON_PASTE     "\nIel?m?t"
-    XTP_ID_BUTTON_CLEAR     "\nDz?st"
+    XTP_ID_BUTTON_COPY      "\nKopçt"
+    XTP_ID_BUTTON_PASTE     "\nIelîmçt"
+    XTP_ID_BUTTON_CLEAR     "\nSkaidrs"
     XTP_ID_BUTTON_UNDO      "\nAtsaukt"
     XTP_ID_BUTTON_REDO      "\nAtcelt"
-    XTP_ID_BUTTON_OPEN      "\nIespraust att?lu no faila"
+    XTP_ID_BUTTON_OPEN      "\nImportçt no faila"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Atcelt"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nPârvietot uz iepriekðçjo cilni grupu"
+    XTP_ID_WORKSPACE_MOVENEXT "\nPârvietot uz nâkamo Tab Group"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nJaunâ horizontâlâ ciïòu grupâ"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nJaunu cilnes grupu vertikâla"
+    XTP_ID_WORKSPACE_CANCEL "\nAtcelt"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktîvâ failus"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
+    XTP_ID_PREVIEW_PRINT    "Drukas priekðskatîjumâ vienumu\nDrukât"
+    XTP_ID_PREVIEW_PREV     "Doties uz iepriekðçjo lappusi\nIepriekðçjo lappusi"
+    XTP_ID_PREVIEW_NEXT     "Doties uz nâkamo lappusi\nNâkamo lappusi"
+    XTP_ID_PREVIEW_ZOOMIN   "Palielinâtu palielinâjuma priekðskatîjuma lapu\nZoom"
+    XTP_ID_PREVIEW_ZOOMOUT  "Samazinâtu palielinâjumu no priekðskatîjuma lapu\nTâlinât"
+    XTP_ID_PREVIEW_ONEPAGE  "Viena lappuse"
+    XTP_ID_PREVIEW_TWOPAGE  "Vairâkas lapas"
+    XTP_ID_PREVIEW_CLOSE    "Jâaizver priekðskatîjums\nAizvçrt priekðskatîjumu"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Visa lapa"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Lappuses platums"
     XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i no %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI)

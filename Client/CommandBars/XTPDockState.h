@@ -1,7 +1,6 @@
 // XTPDockState.h : interface for the CXTPDockState class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKSTATE_H__)
-#define __XTPDOCKSTATE_H__
+#	define __XTPDOCKSTATE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPToolbar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -68,7 +67,6 @@ public:
 	DWORD GetVersion() const;
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPDockState object.
@@ -87,7 +85,8 @@ public:
 	//     Call this function to save the state information to the registry or .INI file
 	// Parameters:
 	//     lpszProfileName - Points to a null-teminated string that specifies the name of a section
-	//                       in the initialization file or a key in the Windows registry where state information is stored.
+	//                       in the initialization file or a key in the Windows registry where state
+	//                       information is stored.
 	//-----------------------------------------------------------------------
 	void SaveState(LPCTSTR lpszProfileName);
 
@@ -95,8 +94,10 @@ public:
 	// Summary:
 	//     Call this function to retrieve state information from the registry or .INI file.
 	// Parameters:
-	//     lpszProfileName - Points to a null-teminated string that specifies the name of a section in the initialization
-	//                       file or a key in the Windows registry where state information is stored.
+	//     lpszProfileName - Points to a null-teminated string that specifies the name of a section
+	//     in the initialization
+	//                       file or a key in the Windows registry where state information is
+	//                       stored.
 	//-----------------------------------------------------------------------
 	void LoadState(LPCTSTR lpszProfileName);
 
@@ -115,7 +116,6 @@ private:
 	void SetScreenSize(CSize& size);
 	void Clear();
 
-
 private:
 	DWORD m_dwVersion;
 	CArray<TOOLBARINFO*, TOOLBARINFO*> m_arrBarInfo;
@@ -124,9 +124,10 @@ private:
 	CSize m_sizeLogical;
 };
 
-AFX_INLINE DWORD CXTPDockState::GetVersion() const {
+AFX_INLINE DWORD CXTPDockState::GetVersion() const
+{
 	return m_dwVersion;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPDOCKSTATE_H__)

@@ -1,7 +1,6 @@
 // XTPTrackControlItem.h: interface for the CXTPTrackControlItem class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRACKCONTROLITEM_H__)
-#define __XTPTRACKCONTROLITEM_H__
+#	define __XTPTRACKCONTROLITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-//#include "TrackerHelper.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTrackControl;
-
-#include "XTPTrackBlock.h"
+class CXTPTrackBlock;
+typedef CArray<CXTPTrackBlock*, CXTPTrackBlock*> CXTPTrackBlockArray;
 
 //===========================================================================
 // Summary:
@@ -44,7 +43,6 @@ class _XTP_EXT_CLASS CXTPTrackControlItem : public CXTPReportRecordItem
 	DECLARE_SERIAL(CXTPTrackControlItem)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates a CXTPTrackControlItem item.
@@ -68,6 +66,8 @@ public:
 	//     Text caption of the item.
 	//-----------------------------------------------------------------------
 	CString GetCaption(CXTPReportColumn* pColumn);
+
+	using CXTPReportRecordItem::GetCaption;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -204,7 +204,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnLButtonDown(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs);
 
-//  virtual BOOL OnRButtonDown(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs);
+	//  virtual BOOL OnRButtonDown(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -295,8 +295,8 @@ public:
 	//     Call this method to do a redrawing of the track control.
 	//-----------------------------------------------------------------------
 	void RedrawControl();
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to highlight the work area.
@@ -306,12 +306,10 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void HighlightWorkArea(CDC* pDC, CRect rcItem);
 
-
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
-
 
 	LPDISPATCH OleGetBlock(int nIndex);
 	int OleGetBlockCount();
@@ -323,21 +321,19 @@ protected:
 
 	DECLARE_OLETYPELIB_EX(CXTPTrackControlItem);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 public:
-	BOOL m_bLocked;                 // TRUE if whole track is locked
+	BOOL m_bLocked; // TRUE if whole track is locked
 
 protected:
 	CXTPTrackBlockArray m_arrBlocks; // Blocks array
 
 protected:
-
 	struct DOCK_INFO;
 	class CDockInfoArray;
 
 	friend class CXTPTrackControl;
-
 };
 
 AFX_INLINE CXTPTrackBlock* CXTPTrackControlItem::GetBlock(int nIndex) const
@@ -360,5 +356,5 @@ AFX_INLINE void CXTPTrackControlItem::SetLocked(BOOL bLocked)
 	m_bLocked = bLocked;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTRACKCONTROLITEM_H__)

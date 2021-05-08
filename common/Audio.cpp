@@ -150,6 +150,7 @@ bool CAudio::InitializeWaveOut()
 	mmResult = waveOutOpen(&m_hWaveOut, (WORD)WAVE_MAPPER, &(m_GSMWavefmt.wfx), (LONG)0, (LONG)0, CALLBACK_NULL);
 	if (mmResult != MMSYSERR_NOERROR)
 		return false;
+	int i;
 
 	for (i = 0; i < 2; i++)
 	{

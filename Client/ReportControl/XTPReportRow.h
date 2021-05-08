@@ -1,7 +1,6 @@
 // XTPReportRow.h: interface for the CXTPReportRow class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTROW_H__)
-#define __XTPREPORTROW_H__
+#	define __XTPREPORTROW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
-#include "Common/XTPSystemHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRecord;
 class CXTPReportControl;
@@ -36,28 +34,17 @@ class CXTPReportTip;
 class CXTPReportRecordItem;
 class CXTPReportRows;
 class CXTPReportColumn;
+class CXTPReportRecordMergeItems;
+class CXTPReportSection;
 
 struct XTP_REPORTRECORDITEM_DRAWARGS;
 struct XTP_REPORTRECORDITEM_METRICS;
 struct XTP_REPORTRECORDITEM_CLICKARGS;
 
-
-//-----------------------------------------------------------------------
-// Summary:
-//      This enum defines body, header, and footer rows.
-// See Also:
-//      CXTPReportRow::m_nRowType
-//-----------------------------------------------------------------------
-enum XTPReportRowType
+class _XTP_EXT_CLASS CXTPReportRowBase
+	: public CXTPCmdTarget
+	, public CXTPAccessible
 {
-	xtpRowTypeBody      = 0,    // The row is in body rows collection.
-	xtpRowTypeHeader    = 1,    // The row is in Headers rows collection.
-	xtpRowTypeFooter    = 2     // The row is in Footers rows collection.
-};
-
-class _XTP_EXT_CLASS CXTPReportRowBase : public CCmdTarget, public CXTPAccessible
-{
-
 };
 
 //===========================================================================
@@ -79,7 +66,8 @@ class _XTP_EXT_CLASS CXTPReportRowBase : public CCmdTarget, public CXTPAccessibl
 //     CXTPReportControl overview, CXTPReportRows, CXTPReportRecord,
 //     CXTPReportRecordItem, CXTPReportGroupRow
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportRow : public CXTPHeapObjectT<CXTPReportRowBase, CXTPReportRowAllocator>
+class _XTP_EXT_CLASS CXTPReportRow
+	: public CXTPHeapObjectT<CXTPReportRowBase, CXTPReportRowAllocator>
 {
 	DECLARE_INTERFACE_MAP()
 	DECLARE_DYNAMIC(CXTPReportRow)
@@ -101,12 +89,16 @@ public:
 	// Summary:
 	//     This method is called for initial initialization of the row.
 	// Parameters:
-	//     pRow - Row which settings will be copied for the row.
+	//     pRow     - Pointer to the row which settings will be copied.
 	//     pControl - Pointer to the parent report control.
-	//     pRecord - Pointer to the record associated with the row.
+	//     pSection - Pointer to the parent section.
+	//     pRecord  - Pointer to the record associated with the row.
 	//-----------------------------------------------------------------------
 	virtual void InitRow(CXTPReportRow* pRow);
-	virtual void InitRow(CXTPReportControl* pControl, CXTPReportRecord* pRecord);// <COMBINE CXTPReportRow::InitRow@CXTPReportRow*>
+
+	virtual void InitRow(CXTPReportControl* pControl, CXTPReportSection* pSection,
+						 CXTPReportRecord* pRecord); // <COMBINE
+													 // CXTPReportRow::InitRow@CXTPReportRow*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -125,6 +117,7 @@ public:
 	// Parameters:
 	//     pDC    - Pointer to control drawing context.
 	//     rcRow  - Coordinates of the rectangle for drawing this row.
+	//     rcClip - Coordinates of the rectangle for drawing rows
 	//     nLeftOffset - Start drawing left offset in pixels (Horizontal scroll position).
 	// Remarks:
 	//     Call this member function to draw an item. This function
@@ -135,7 +128,10 @@ public:
 	//     provide your own implementation of PaintManager
 	// See Also: CXTPPaintManager
 	//-----------------------------------------------------------------------
-	virtual void Draw(CDC* pDC, CRect rcRow, int nLeftOffset);
+	virtual void Draw(CDC* pDC, CRect rcRow, CRect rcClip, int nLeftOffset,
+					  CXTPReportRecordMergeItems& mergeItems, int nColumnFrom, int nColumnTo);
+
+	virtual void DrawItemGrid(CDC* pDC, CXTPReportColumn* pColumn, CRect rcGridItem);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -211,6 +207,7 @@ public:
 	// See Also: IsExpanded
 	//-----------------------------------------------------------------------
 	virtual void SetExpanded(BOOL bExpanded, BOOL bRecursive = FALSE);
+	virtual void _SetExpanded(BOOL bExpanded, BOOL bRecursive, BOOL bNotify);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -221,6 +218,46 @@ public:
 	//     Call this member function if you want to expand or collapse this row.
 	//-----------------------------------------------------------------------
 	void SetFullExpanded(BOOL bExpanded);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns row visible state.
+	// Remarks:
+	//     Call this member function if you want to determine whether
+	//     this row is visible in the report control or not.
+	// Returns:
+	//     TRUE if row is visible, FALSE otherwise.
+	// See Also: SetVisible
+	//-----------------------------------------------------------------------
+	virtual BOOL IsVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets row visibility state.
+	// Parameters:
+	//  bVisible - New row visibility state.
+	// Remarks:
+	//     Call this member function if you want to show or hide
+	//     this row.
+	// See Also: IsVisible
+	//-----------------------------------------------------------------------
+	virtual void SetVisible(BOOL bVisible);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns whether collapsing/expanding rows is locked.
+	// Returns:
+	//     TRUE if collapsing/expanding rows is locked.
+	//-----------------------------------------------------------------------
+	virtual BOOL IsLockExpand() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets whether collapsing/expanding rows is locked.
+	// Parameter:
+	//     bLockExpand - TRUE to lock collapsing/expanding rows.
+	//-----------------------------------------------------------------------
+	virtual void LockExpand(BOOL bLockExpand);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -262,7 +299,8 @@ public:
 	//     The record item at the specified position, if any,
 	//     or NULL otherwise.
 	//-----------------------------------------------------------------------
-	virtual CXTPReportRecordItem* HitTest(CPoint ptPoint, CRect* pRectItem = NULL, CXTPReportColumn** ppColumn = NULL) const;
+	virtual CXTPReportRecordItem* HitTest(CPoint ptPoint, CRect* pRectItem = NULL,
+										  CXTPReportColumn** ppColumn = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -364,6 +402,16 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Sets a pointer to the parent report control.
+	// Remarks:
+	//     Call this member function to set a pointer to the
+	//     CXTPReportControl which this item belongs to.
+	// See Also: CXTPReportControl overview
+	//-----------------------------------------------------------------------
+	virtual void SetControl(CXTPReportControl* pControl);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Returns a pointer to the parent report control.
 	// Remarks:
 	//     Call this member function to retrieve a pointer to the
@@ -372,7 +420,7 @@ public:
 	//     A pointer to an associated report control object.
 	// See Also: CXTPReportControl overview
 	//-----------------------------------------------------------------------
-	CXTPReportControl* GetControl() const;
+	virtual CXTPReportControl* GetControl() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -537,7 +585,8 @@ public:
 	//     Call this member function when you want to retrieve drawing metrics.
 	// See Also: XTP_REPORTRECORDITEM_DRAWARGS, XTP_REPORTRECORDITEM_METRICS
 	//-----------------------------------------------------------------------
-	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
+	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -575,27 +624,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void EnsureVisible();
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws the row (of header/footer records) on the provided DC.
-	// Parameters:
-	//     pDC    - Pointer to control drawing context.
-	//     rcRow  - Coordinates of the rectangle for drawing this row.
-	//     nLeftOffset - Start drawing left offset in pixels (Horizontal scroll position).
-	//     rcArea - Coordinates of the rectangle for drawing rows of header/footer records.
-	// Remarks:
-	//     Call this member function to draw an item. This function
-	//     only prepares data for drawing and calls needed drawing functions
-	//     from PaintManager.
-	//
-	//     Thus if you wish to change the look of your report item, you must just
-	//     provide your own implementation of PaintManager
-	// See Also: CXTPPaintManager
-	//-----------------------------------------------------------------------
-	void DrawFixed(CDC* pDC, CRect rcRow, int nLeftOffset, CRect rcArea);
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is call to update rectangle of item
@@ -615,7 +644,8 @@ public:
 	//     pMetrics - Output drawing metrics for the item
 	// See Also: GetItemMetrics
 	//-----------------------------------------------------------------------
-	virtual void FillMetrics(CXTPReportColumn* pColumn, CXTPReportRecordItem* pItem, XTP_REPORTRECORDITEM_METRICS* pMetrics);
+	virtual void FillMetrics(CXTPReportColumn* pColumn, CXTPReportRecordItem* pItem,
+							 XTP_REPORTRECORDITEM_METRICS* pMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -633,13 +663,59 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to determine the row type: body, header, or footer.
+	//     Call this method to determine the row type: body, header, or footer.
 	// Returns:
 	//     A value of enum XTPReportRowType.
 	//-----------------------------------------------------------------------
 	XTPReportRowType GetType() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns a pointer to the section this row belongs to.
+	// Returns:
+	//     Pointer to the section this row belongs to.
+	//-----------------------------------------------------------------------
+	CXTPReportSection* GetSection() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to determine if this row has merged items.
+	// Returns:
+	//     TRUE if the row has merged items, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL HasMergedItems() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to set height of row which calculated on merge cells processing.
+	// Remarks:
+	//     (-1) means undefined height. On calculating height of any merge cell we must
+	//     calc height of all related merge cells. We save those values to prevent repeating
+	//     the same actions for every related rows.
+	//-----------------------------------------------------------------------
+	void SetMergeHeight(int nMergeHeight);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get height of row which calculated on merge cells processing.
+	// Remarks:
+	//     (-1) means undefined height. On calculating height of any merge cell we must
+	//     calc height of all related merge cells. We save those values to prevent repeating
+	//     the same actions for every related rows.
+	//-----------------------------------------------------------------------
+	int GetMergeHeight() const;
+
 protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines rectangle of specified item
+	// Parameters:
+	//     pItem - Record Item
+	// Returns:
+	//     Rectangle of the item.
+	//-----------------------------------------------------------------------
+	CRect GetItemRect(CXTPReportRecordItem* pItem, BOOL bAsMerged);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets new row index in the view.
@@ -661,58 +737,77 @@ protected:
 	//-----------------------------------------------------------------------
 	int GetLastChildRow(CXTPReportRows* pChilds) const;
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPReportRecord* m_pRecord;    // Pointer to the associated CXTPReportRecord object.
-	CXTPReportControl* m_pControl;  // Pointer to the parent report control.
-	int m_nIndex;                   // Item index.
-	CRect m_rcRow;                  // A rectangle where a row is to be drawn.
+	CXTPReportControl* m_pControl; // Pointer to the parent report control.
+	CXTPReportRecord* m_pRecord;   // Pointer to the associated CXTPReportRecord object.
+	CXTPReportRow* m_pParentRow;   // Pointer to the parent row in the tree.
+	CXTPReportRows* m_pParentRows; // Pointer to the parent rows in the tree.
+	CXTPReportRows* m_pChilds;	 // Pointer to collection of children.
+	CXTPReportSection* m_pSection; // Pointer to section the row belongs to.
 
-	CXTPReportRow* m_pParentRow;    // Pointer to the parent row in the tree.
-	CXTPReportRows* m_pParentRows;  // Pointer to the parent rows in the tree.
-	int m_nGroupLevel;              // Contains row depth level when row is a group row.
-	BOOL m_bVisible;                // TRUE if this row should be visible, FALSE when row is hidden.
+	CRect m_rcRow;		// A rectangle where a row is to be drawn.
+	CRect m_rcCollapse; // A rectangle with coordinates of collapse/expand bitmap.
 
-	CXTPReportRows* m_pChilds;      // A collection of row children.
-	BOOL m_bExpanded;               // TRUE when row is expanded in a tree view, FALSE when row is collapsed.
-	int m_nPreviewHeight;           // Height of the preview item of this row.
-	int m_nChildIndex;              // Index of row inside parent rows.
+	int m_nIndex;	  // Item index.
+	int m_nGroupLevel; // Contains row depth level when row is a group row.
+	int m_nRowLevel;   // Row depth level in a tree.
 
-	XTPReportRowType m_nRowType;    // Row type from XTPReportRowType
+	BOOL m_bVisible;		   // TRUE if this row should be visible, FALSE if row is hidden.
+	BOOL m_bExpanded;		   // TRUE if row is expanded in a tree view, FALSE if row is collapsed.
+	BOOL m_bLockExpand;		   // TRUE if row can not be expanded/collapsed by the user
+	BOOL m_bHasSelectedChilds; // TRUE if has selected childs (on any deep level)
 
-public:
-	CRect m_rcCollapse;             // A rectangle with coordinates of collapse/expand bitmap.
-	int m_nRowLevel;                // Row depth level in a tree.
-	BOOL m_bHasSelectedChilds;      // TRUE if has selected childs (on any deep level)
-	int m_VertCorrection;           // for Vertical Merge Cells case
-//{{AFX_CODEJOCK_PRIVATE
-
-//<<TC>>
-	int m_nFreeHeight;              // Height of row in FreeHeight RC mode.
-//<<TC>>
-
-//}}AFX_CODEJOCK_PRIVATE
+	int m_nPreviewHeight; // Height of the preview item of this row.
+	int m_nFreeHeight;	// Height of row in FreeHeight RC mode.
+	int m_nMergeHeight;   // Height of row which calculated on merge cells processing. (-1) means
+						  // undefined height.
+	int m_nChildIndex;	// Index of row inside parent rows.
 
 private:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRow);
+
+	afx_msg LPDISPATCH OleGetRecord();
+	afx_msg LPDISPATCH OleGetChilds();
+	afx_msg LPDISPATCH OleGetParentRow();
+	afx_msg LPDISPATCH OleGetSection();
+	afx_msg LPDISPATCH OleGetNextSiblingRow();
+	afx_msg void OleGetRect(long* Left, long* Top, long* Right, long* Bottom);
+	afx_msg void OleGetItemRect(LPDISPATCH lpDispatch, long* Left, long* Top, long* Right,
+								long* Bottom);
+	afx_msg void OleGetItemRectAsMerged(LPDISPATCH lpDispatch, long* Left, long* Top, long* Right,
+										long* Bottom, VARIANT_BOOL fAsMerged);
+
+public:
+	static CXTPReportRow* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPReportControl;
 	friend class CXTPReportSelectedRows;
 	friend class CXTPReportRows;
 	friend class CXTPReportRecordItem;
+	friend class CXTPReportSection;
+	friend class CXTPReportPaintManager;
 	//}}AFX_CODEJOCK_PRIVATE
 };
 
@@ -729,6 +824,11 @@ AFX_INLINE CXTPReportRecord* CXTPReportRow::GetRecord() const
 AFX_INLINE CXTPReportRow* CXTPReportRow::GetParentRow() const
 {
 	return m_pParentRow;
+}
+
+AFX_INLINE void CXTPReportRow::SetControl(CXTPReportControl* pControl)
+{
+	m_pControl = pControl;
 }
 
 AFX_INLINE CXTPReportControl* CXTPReportRow::GetControl() const
@@ -756,9 +856,20 @@ AFX_INLINE CXTPReportRows* CXTPReportRow::GetParentRows() const
 	return m_pParentRows;
 }
 
-AFX_INLINE XTPReportRowType CXTPReportRow::GetType() const
+AFX_INLINE CXTPReportSection* CXTPReportRow::GetSection() const
 {
-	return m_nRowType;
+	return m_pSection;
 }
 
+AFX_INLINE void CXTPReportRow::SetMergeHeight(int nMergeHeight)
+{
+	m_nMergeHeight = nMergeHeight;
+}
+
+AFX_INLINE int CXTPReportRow::GetMergeHeight() const
+{
+	return m_nMergeHeight;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTROW_H__)

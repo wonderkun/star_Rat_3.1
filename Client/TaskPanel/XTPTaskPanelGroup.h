@@ -1,7 +1,6 @@
 // XTPTaskPanelGroup.h interface for the CXTPTaskPanelGroup class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELGROUP_H__)
-#define __XTPTASKPANELGROUP_H__
+#	define __XTPTASKPANELGROUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPTaskPanelItem.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanel;
 class CXTPTaskPanelItems;
@@ -61,7 +60,6 @@ public:
 	virtual ~CXTPTaskPanelGroup();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get collection of group items.
@@ -100,6 +98,20 @@ public:
 	//     A pointer to the created CXTPTaskPanelGroupItem class
 	//-----------------------------------------------------------------------
 	CXTPTaskPanelGroupItem* AddLinkItem(UINT nID, int nImage = -1);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to add a new link item to group.
+	// Parameters:
+	//     nID - Identifier of item to be added.
+	//     lpCaption - Caption of the item
+	//     lpTooltip - Tooltip of the item
+	//     nImage - Image index in TaskPanel image list.
+	// Returns:
+	//     A pointer to the created CXTPTaskPanelGroupItem class
+	//-----------------------------------------------------------------------
+	CXTPTaskPanelGroupItem* AddLinkItem(UINT nID, LPCTSTR lpCaption, LPCTSTR lpTooltip = NULL,
+										int nImage = -1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -383,7 +395,8 @@ public:
 	// See Also:
 	//     OnFillClient
 	//-----------------------------------------------------------------------
-	void SetClientBitmap(UINT nID, COLORREF clrTransparent, int nBackgroundAlignemnt = DT_RIGHT | DT_BOTTOM);
+	void SetClientBitmap(UINT nID, COLORREF clrTransparent,
+						 int nBackgroundAlignemnt = DT_RIGHT | DT_BOTTOM);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -447,7 +460,7 @@ public:
 	//     This checks to see if CSTPTaskPanel::m_pItemDragOver belongs to the group.
 	//     This is used in the PaintManager to determine if an inverted rectangle
 	//     must be drawn for the item.  An inverted rectangle is only drawn when
-	//     the XTPTaskPanelPaintTheme is set to xtpTaskPanelThemeToolbox.
+	//     the XTPTaskPanelPaintTheme is set to xtpTaskPanelThemeVisualStudio2003.
 	// See Also:
 	//     XTPTaskPanelPaintTheme, CXTPTaskPanelToolboxTheme::DrawGroupCaption
 	//-----------------------------------------------------------------------
@@ -655,7 +668,6 @@ public:
 	CXTPTaskPanelGroupItem* GetNextVisibleItem(int nIndex, int nDirection = +1) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to determine the area that can be used to draw
@@ -685,72 +697,103 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnRemoved();
 
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility Support
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
 	virtual HRESULT AccessibleDoDefaultAction(VARIANT varChild);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void RepositionAutoHeightControls(int nHeightOffset);
 	void RepositionScrollOffset();
 
 protected:
+	CRect m_rcGroupTarget;  // Target rectangle of group during animation.
+	CRect m_rcGroupCurrent; // Current rectangle of group during animation.
 
-	CRect m_rcGroupTarget;              // Target rectangle of group during animation.
-	CRect m_rcGroupCurrent;             // Current rectangle of group during animation.
+	CRect m_rcMarginsOuter; // Outer margins.
+	CRect m_rcMarginsInner; // Inner margins.
 
-	CRect m_rcMarginsOuter;             // Outer margins.
-	CRect m_rcMarginsInner;             // Inner margins.
+	int m_nCaptionHeight; // Height of caption.
 
-	int m_nCaptionHeight;               // Height of caption.
+	BOOL m_bSpecial; // TRUE if group is special.
 
-	BOOL m_bSpecial;                    // TRUE if group is special.
+	BOOL m_bExpandable;			 // TRUE if group is expandable.
+	BOOL m_bExpanded;			 // TRUE if group is expanded.
+	BOOL m_bExpanding;			 // TRUE if group is expanding now.
+	int m_nExpandedClientHeight; // Expanded client height.
+	int m_nMinClientHeight;		 // Minimum client height.
+	BOOL m_bCaptionVisible;		 // TRUE if caption is visible.
 
-	BOOL m_bExpandable;                 // TRUE if group is expandable.
-	BOOL m_bExpanded;                   // TRUE if group is expanded.
-	BOOL m_bExpanding;                  // TRUE if group is expanding now.
-	int m_nExpandedClientHeight;        // Expanded client height.
-	int m_nMinClientHeight;             // Minimum client height.
-	BOOL m_bCaptionVisible;             // TRUE if caption is visible.
+	int m_nScrollOffset; // Scroll offset of group.  Only applies if the task panel behavior is set
+						 // to xtpTaskPanelBehaviourList or xtpTaskPanelBehaviourToolbox.
+	int m_nItemsInRow; // Number of group items in a row when using the xtpTaskPanelBehaviourToolbox
+					   // XTPTaskPanelBehaviour. For all other behaviors it will only be 1 unless
+					   // the layout is set to to xtpTaskPanelBehaviourExplorer or
+					   // xtpTaskPanelBehaviourList.
+	CSize m_szItemIcon; // Size of group item icons.
 
-	int m_nScrollOffset;                // Scroll offset of group.  Only applies if the task panel behavior is set to xtpTaskPanelBehaviourList or xtpTaskPanelBehaviourToolbox.
-	int m_nItemsInRow;                  // Number of group items in a row when using the xtpTaskPanelBehaviourToolbox XTPTaskPanelBehaviour. For all other behaviors it will only be 1 unless the layout is set to to xtpTaskPanelBehaviourExplorer or xtpTaskPanelBehaviourList.
-	CSize m_szItemIcon;                 // Size of group item icons.
+	CXTPTaskPanelGroupItems* m_pItems;   // Collection of items.
+	XTPTaskPanelItemLayout m_itemLayout; // Currently set layout for the group.
 
-	CXTPTaskPanelGroupItems* m_pItems;  // Collection of items.
-	XTPTaskPanelItemLayout m_itemLayout;// Currently set layout for the group.
-
-	int m_nBackgroundImage;             // Index of image in ImageManager that will be background for Group
-	int m_nBackgroundAlignemnt;         // Alignment of Background image
-
+	int m_nBackgroundImage;		// Index of image in ImageManager that will be background for Group
+	int m_nBackgroundAlignemnt; // Alignment of Background image
 
 private:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelGroup)
+
+	enum
+	{
+
+		dispidItems			 = 10L,
+		dispidSpecial		 = 11L,
+		dispidCaptionVisible = 12L,
+		dispidExpandable	 = 13L,
+		dispidExpanded		 = 14L,
+	};
+
+	afx_msg LPDISPATCH OleGetItems();
+	afx_msg void OleSetIconSize(long cx, long cy);
+	afx_msg void OleSetBackgroundImage(int ImageIndex, int Alignment);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPTaskPanel;
 };
 
-AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanelGroup::GetItems() const {
+AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanelGroup::GetItems() const
+{
 	ASSERT(m_pItems);
 	return (CXTPTaskPanelItems*)m_pItems;
 }
-AFX_INLINE int CXTPTaskPanelGroup::GetExpandedClientHeight() const {
+AFX_INLINE int CXTPTaskPanelGroup::GetExpandedClientHeight() const
+{
 	return m_nExpandedClientHeight;
 }
-AFX_INLINE CRect& CXTPTaskPanelGroup::GetOuterMargins() {
+AFX_INLINE CRect& CXTPTaskPanelGroup::GetOuterMargins()
+{
 	return m_rcMarginsOuter;
 }
-AFX_INLINE CRect& CXTPTaskPanelGroup::GetInnerMargins() {
+AFX_INLINE CRect& CXTPTaskPanelGroup::GetInnerMargins()
+{
 	return m_rcMarginsInner;
 }
-AFX_INLINE int CXTPTaskPanelGroup::GetItemsInRow() const {
+AFX_INLINE int CXTPTaskPanelGroup::GetItemsInRow() const
+{
 	return m_nItemsInRow;
 }
-AFX_INLINE int CXTPTaskPanelGroup::GetCaptionHeight() const {
+AFX_INLINE int CXTPTaskPanelGroup::GetCaptionHeight() const
+{
 	return m_nCaptionHeight;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELGROUP_H__)

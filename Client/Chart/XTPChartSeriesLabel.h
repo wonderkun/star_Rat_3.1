@@ -1,7 +1,6 @@
 // XTPChartSeriesLabel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,28 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSERIESLABEL_H__)
-#define __XTPCHARTSERIESLABEL_H__
+#	define __XTPCHARTSERIESLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesStyle;
 class CXTPChartElementView;
 class CXTPChartDeviceContext;
 class CXTPChartSeriesPointView;
-class CXTPChartDiagramPoint;
 class CXTPChartDeviceCommand;
 class CXTPChartBorder;
 class CXTPChartFillStyle;
 class CXTPChartSeriesPoint;
-
-
-#include "Types/XTPChartTypes.h"
-#include "XTPChartElement.h"
-#include "XTPChartElementView.h"
-#include "Utils/XTPChartTextPainter.h"
+class CXTPChartNumberFormat;
 
 //===========================================================================
 // Summary:
@@ -52,7 +47,8 @@ class CXTPChartSeriesPoint;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartSeriesLabel : public CXTPChartTextElement
 {
-	DECLARE_SERIAL(CXTPChartSeriesLabel)
+	DECLARE_SERIAL(CXTPChartSeriesLabel);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -182,8 +178,23 @@ public:
 	//-------------------------------------------------------------------------
 	BOOL GetAntialiasing() const;
 
-	CString GetFormat() const;
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get pointer to CXTPChartNumberFormat that specify how to convert
+	//     number to string
+	// Returns:
+	//     Pointer to CXTPChartNumberFormat class
+	// See Also: CXTPChartNumberFormat
+	//-------------------------------------------------------------------------
+	CXTPChartNumberFormat* GetFormat() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Obsolete method. Use GetFormat()->SetPattern(lpszFormat) instead
+	// Parameters:
+	//     lpszFormat - New Pattern to be set
+	// See Also: CXTPChartNumberFormat
+	//-------------------------------------------------------------------------
 	void SetFormat(LPCTSTR lpszFormat);
 
 	virtual CXTPChartString GetPointLabel(CXTPChartSeriesPoint* pPoint, int nValueIndex = -1) const;
@@ -209,8 +220,6 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPChartColor GetBackColor() const;
 
-	CXTPChartColor GetActualBackColor() const;
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to set the text color of the label.
@@ -229,26 +238,68 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPChartColor GetLineColor() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the transparency of the filled area with
+	//     respect to the background.
+	// Returns:
+	//     Returns an integer whose values are from 0 to 255.
+	// Remarks:
+	//     A value of 0 means fully transparent and 255 fully opaque
+	// See Also:
+	//-------------------------------------------------------------------------
+	int GetTransparency() const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to set the transparency of the filled area with
+	//     respect to the background.
+	// Parameters:
+	//     nTransparency - an integer whose values are from 0 to 255.
+	// Remarks:
+	//     A value of 0 means fully transparent and 255 fully opaque
+	// See Also:
+	//-------------------------------------------------------------------------
+	void SetTransparency(int nTransparency);
+
+public:
+	CXTPChartColor GetActualBackColor() const;
+
+	CXTPChartColor GetActualConnectorColor() const;
+
 public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartSeriesPointView* pPointView,
+											 CXTPChartElementView* pParentView);
 
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPChartSeriesLabel);
+	afx_msg void OleChartChanged();
+	afx_msg LPDISPATCH OleGetFormat();
+	afx_msg LPDISPATCH OleGetFont();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CXTPChartColor m_clrTextColor;   //The text color.
-	CXTPChartColor m_clrBackColor;   //The background color.
-	CXTPChartColor m_clrLineColor;   //The line color.
-	BOOL m_bVisible;                //TRUE if the label is visible and FALSE if not.
-	CXTPChartFont* m_pFont;          //The font of the label.
-	BOOL m_bAntialiasing;           //TRUE if antialiasing enabled, FLASE if not.
-	BOOL m_bShowLines;              //TRUE if the lines are visible, FALSE if not.
-	int m_nLineLength;              //The line length.
-	CXTPChartBorder* m_pBorder;      //Chart border object.
+	CXTPChartColor m_clrTextColor; // The text color.
+	CXTPChartColor m_clrBackColor; // The background color.
+	CXTPChartColor m_clrLineColor; // The line color.
+	BOOL m_bVisible;			   // TRUE if the label is visible and FALSE if not.
+	CXTPChartFont* m_pFont;		   // The font of the label.
+	BOOL m_bAntialiasing;		   // TRUE if antialiasing enabled, FLASE if not.
+	BOOL m_bShowLines;			   // TRUE if the lines are visible, FALSE if not.
+	int m_nLineLength;			   // The line length.
+	CXTPChartBorder* m_pBorder;	// Chart border object.
 	CXTPChartFillStyle* m_pFillStyle;
-	CString m_strFormat;
-
+	CXTPChartNumberFormat* m_pFormat;
+	int m_nTransparency; // The transparency values range from 0 to 255.
 
 	LPDISPATCH OleGetBorder();
 	LPDISPATCH OleGetFillStyle();
@@ -259,16 +310,17 @@ protected:
 	OLE_COLOR OleGetLineColor();
 	void OleSetLineColor(OLE_COLOR clr);
 
-
 protected:
 	friend class CXTPChartSeriesStyle;
 };
 
-
 class _XTP_EXT_CLASS CXTPChartSeriesLabelView : public CXTPChartElementView
 {
+	DECLARE_DYNAMIC(CXTPChartSeriesLabelView);
+
 public:
-	CXTPChartSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	CXTPChartSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView,
+							 CXTPChartElementView* pParentView);
 
 public:
 	virtual void CalculateLayout(CXTPChartDeviceContext* pDC);
@@ -276,20 +328,29 @@ public:
 	CXTPChartColor GetActualTextColor() const;
 	CXTPChartColor GetActualBorderColor() const;
 	CXTPChartColor GetActualConnectorColor() const;
+	CXTPChartSeriesPointView* GetPointView() const;
+	CXTPChartSeriesLabel* GetLabel() const;
 
 protected:
 	CXTPChartSeriesLabel* m_pLabel;
 	CXTPChartSeriesPointView* m_pPointView;
 };
 
+AFX_INLINE CXTPChartSeriesLabel* CXTPChartSeriesLabelView::GetLabel() const
+{
+	return m_pLabel;
+}
 
 class _XTP_EXT_CLASS CXTPChartSeriesLabelConnectorPainterBase
 {
 public:
-	CXTPChartSeriesLabelConnectorPainterBase(CXTPChartPointF startPoint, CXTPChartPointF finishPoint, CXTPChartRectF bounds);
+	CXTPChartSeriesLabelConnectorPainterBase(CXTPChartPointF startPoint,
+											 CXTPChartPointF finishPoint, CXTPChartRectF bounds);
 
 public:
-	static CXTPChartRectF CalcBorderBoundsForTangentDrawing(const CXTPChartDiagramPoint& point, double angle, const CXTPChartSizeF& textSize, int borderThickness, CXTPChartRectF& innerBounds);
+	static CXTPChartRectF AFX_CDECL CalcBorderBoundsForTangentDrawing(
+		const CXTPPoint3d& point, double angle, const CXTPChartSizeF& textSize, int borderThickness,
+		CXTPChartRectF& innerBounds);
 
 protected:
 	CXTPChartPointF m_startPoint;
@@ -297,89 +358,135 @@ protected:
 	CXTPChartRectF m_bounds;
 };
 
-class _XTP_EXT_CLASS CXTPChartSeriesLabelLineConnectorPainter : public CXTPChartSeriesLabelConnectorPainterBase
+class _XTP_EXT_CLASS CXTPChartSeriesLabelLineConnectorPainter
+	: public CXTPChartSeriesLabelConnectorPainterBase
 {
 public:
-	CXTPChartSeriesLabelLineConnectorPainter(CXTPChartPointF startPoint, CXTPChartPointF finishPoint, double angle, CXTPChartRectF bounds);
+	CXTPChartSeriesLabelLineConnectorPainter(CXTPChartPointF startPoint,
+											 CXTPChartPointF finishPoint, CXTPChartRectF bounds);
 
 public:
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC, CXTPChartSeriesLabel* pLabel, const CXTPChartColor& color);
-protected:
-	double m_angle;
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC,
+														const CXTPChartColor& color);
 };
 
-
-AFX_INLINE CXTPChartElementView* CXTPChartSeriesLabel::CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView) {
+AFX_INLINE CXTPChartElementView* CXTPChartSeriesLabel::CreateView(
+	CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView,
+	CXTPChartElementView* pParentView)
+{
 	UNREFERENCED_PARAMETER(pDC);
 	UNREFERENCED_PARAMETER(pPointView);
 	UNREFERENCED_PARAMETER(pParentView);
 	return NULL;
 }
 
-AFX_INLINE CXTPChartFont* CXTPChartSeriesLabel::GetFont() const {
+AFX_INLINE CXTPChartFont* CXTPChartSeriesLabel::GetFont() const
+{
 	return m_pFont;
 }
-AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetTextColor() const {
+
+AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetTextColor() const
+{
 	return m_clrTextColor;
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetShowLines(BOOL bShowLines) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetShowLines(BOOL bShowLines)
+{
 	m_bShowLines = bShowLines;
 	OnChartChanged();
 }
-AFX_INLINE BOOL CXTPChartSeriesLabel::GetShowLines() const {
+
+AFX_INLINE BOOL CXTPChartSeriesLabel::GetShowLines() const
+{
 	return m_bShowLines;
 }
-AFX_INLINE int CXTPChartSeriesLabel::GetLineLength() const {
+
+AFX_INLINE int CXTPChartSeriesLabel::GetLineLength() const
+{
 	return m_nLineLength;
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetLineLength(int nLineLength) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetLineLength(int nLineLength)
+{
 	m_nLineLength = nLineLength;
 	OnChartChanged();
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetVisible(BOOL bVisible) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetVisible(BOOL bVisible)
+{
 	m_bVisible = bVisible;
 	OnChartChanged();
 }
-AFX_INLINE BOOL CXTPChartSeriesLabel::IsVisible() const {
+
+AFX_INLINE BOOL CXTPChartSeriesLabel::IsVisible() const
+{
 	return m_bVisible;
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetAntialiasing(BOOL bAntialiasing) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetAntialiasing(BOOL bAntialiasing)
+{
 	m_bAntialiasing = bAntialiasing;
 	OnChartChanged();
 }
-AFX_INLINE  BOOL CXTPChartSeriesLabel::GetAntialiasing() const {
+
+AFX_INLINE BOOL CXTPChartSeriesLabel::GetAntialiasing() const
+{
 	return m_bAntialiasing;
 }
-AFX_INLINE CString CXTPChartSeriesLabel::GetFormat() const {
-	return m_strFormat;
+
+AFX_INLINE CXTPChartNumberFormat* CXTPChartSeriesLabel::GetFormat() const
+{
+	return m_pFormat;
 }
 
-AFX_INLINE void CXTPChartSeriesLabel::SetFormat(LPCTSTR lpszFormat) {
-	m_strFormat = lpszFormat;
-	OnChartChanged();
-}
-AFX_INLINE void CXTPChartSeriesLabel::SetTextColor(const CXTPChartColor& clrTextColor) {
+AFX_INLINE void CXTPChartSeriesLabel::SetTextColor(const CXTPChartColor& clrTextColor)
+{
 	m_clrTextColor = clrTextColor;
 	OnChartChanged();
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetLineColor(const CXTPChartColor& clrLineColor) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetLineColor(const CXTPChartColor& clrLineColor)
+{
 	m_clrLineColor = clrLineColor;
 	OnChartChanged();
 }
-AFX_INLINE void CXTPChartSeriesLabel::SetBackColor(const CXTPChartColor& clrBackColor) {
+
+AFX_INLINE void CXTPChartSeriesLabel::SetBackColor(const CXTPChartColor& clrBackColor)
+{
 	m_clrBackColor = clrBackColor;
 	OnChartChanged();
 }
-AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetBackColor() const {
+
+AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetBackColor() const
+{
 	return m_clrBackColor;
 }
-AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetLineColor() const {
+
+AFX_INLINE CXTPChartColor CXTPChartSeriesLabel::GetLineColor() const
+{
 	return m_clrLineColor;
 }
-AFX_INLINE CXTPChartBorder* CXTPChartSeriesLabel::GetBorder() const {
+
+AFX_INLINE CXTPChartBorder* CXTPChartSeriesLabel::GetBorder() const
+{
 	return m_pBorder;
 }
-AFX_INLINE CXTPChartFillStyle* CXTPChartSeriesLabel::GetFillStyle() const {
+
+AFX_INLINE CXTPChartFillStyle* CXTPChartSeriesLabel::GetFillStyle() const
+{
 	return m_pFillStyle;
 }
+
+AFX_INLINE int CXTPChartSeriesLabel::GetTransparency() const
+{
+	return m_nTransparency;
+}
+
+AFX_INLINE void CXTPChartSeriesLabel::SetTransparency(int nTransparency)
+{
+	m_nTransparency = nTransparency;
+	OnChartChanged();
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSERIESLABEL_H__)

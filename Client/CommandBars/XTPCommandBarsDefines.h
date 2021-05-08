@@ -1,7 +1,6 @@
-// XTPCommandBarDefines.h
+// XTPCommandBarsDefines.h
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOMMANDBARDEFINES_H__)
-#define __XTPCOMMANDBARDEFINES_H__
+#	define __XTPCOMMANDBARDEFINES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControl;
 class CXTPCommandBar;
@@ -42,18 +43,19 @@ class CXTPPopupBar;
 // See Also:
 //     CXTPCommandBars, CXTPToolBar, CXTPToolBar::SetPosition
 //
-// <KEYWORDS xtpBarTop, xtpBarBottom, xtpBarLeft, xtpBarRight, xtpBarFloating, xtpBarPopup, xtpBarListBox, xtpBarNone>
+// <KEYWORDS xtpBarTop, xtpBarBottom, xtpBarLeft, xtpBarRight, xtpBarFloating, xtpBarPopup,
+// xtpBarListBox, xtpBarNone>
 //-----------------------------------------------------------------------
 enum XTPBarPosition
 {
-	xtpBarTop = 0,      // Docked at top.
-	xtpBarBottom = 1,   // Docked at bottom.
-	xtpBarLeft = 2,     // Docked at left.
-	xtpBarRight = 3,    // Docked at right.
+	xtpBarTop	  = 0, // Docked at top.
+	xtpBarBottom   = 1, // Docked at bottom.
+	xtpBarLeft	 = 2, // Docked at left.
+	xtpBarRight	= 3, // Docked at right.
 	xtpBarFloating = 4, // Floated.
-	xtpBarPopup = 5,    // Popup.
-	xtpBarListBox = 6,  // List box.
-	xtpBarNone = 7      // None.
+	xtpBarPopup	= 5, // Popup.
+	xtpBarListBox  = 6, // List box.
+	xtpBarNone	 = 7  // None.
 };
 
 //-----------------------------------------------------------------------
@@ -70,10 +72,10 @@ enum XTPBarPosition
 //-----------------------------------------------------------------------
 enum XTPBarType
 {
-	xtpBarTypeMenuBar, // Command bar is a menu bar.
-	xtpBarTypeNormal,  // Command bar is a toolbar.
-	xtpBarTypePopup,   // Command bar is a popup.
-	xtpBarTypeRibbon   // Command bar is a ribbonbar.
+	xtpBarTypeMenuBar, // Command bar is a CXTPMenuBar.
+	xtpBarTypeNormal,  // Command bar is a CXTPToolBar.
+	xtpBarTypePopup,   // Command bar is a CXTPPopupBar.
+	xtpBarTypeRibbon   // Command bar is a CXTPRibbonBar.
 };
 
 //-------------------------------------------------------------------------
@@ -82,8 +84,9 @@ enum XTPBarType
 //-------------------------------------------------------------------------
 enum XTPBarTextOrientation
 {
-	xtpBarTextAuto,      // Lets the Commandbars decide the best orientation.  Horizontal bars will diisplay text horizontally and vertical bars will display text vertically
-	xtpBarTextVertical,  // Display text in the bar vertically, regardless of bar location
+	xtpBarTextAuto,		// Lets the Commandbars decide the best orientation.  Horizontal bars will
+						// diisplay text horizontally and vertical bars will display text vertically
+	xtpBarTextVertical, // Display text in the bar vertically, regardless of bar location
 	xtpBarTextHorizontal // Display text in the bar horizontally, regardless of bar location
 };
 
@@ -94,22 +97,24 @@ enum XTPBarTextOrientation
 //     <code>pToolBar->GetControls()->Add(xtpControlButton, ID_FILE_NEW);</code>
 // See Also: CXTPControl, CXTPControl::GetType, CXTPControls
 //
-// <KEYWORDS xtpControlError, xtpControlButton, xtpControlPopup, xtpControlButtonPopup, xtpControlSplitButtonPopup, xtpControlComboBox, xtpControlEdit, xtpControlCustom, xtpControlLabel>
+// <KEYWORDS xtpControlError, xtpControlButton, xtpControlPopup, xtpControlButtonPopup,
+// xtpControlSplitButtonPopup, xtpControlComboBox, xtpControlEdit, xtpControlCustom,
+// xtpControlLabel>
 //-----------------------------------------------------------------------
 enum XTPControlType
 {
-	xtpControlError,            // Type is not defined.
-	xtpControlButton,           // Button type.
-	xtpControlPopup,            // Popup type.
-	xtpControlButtonPopup,      // Button popup.
+	xtpControlError,			// Type is not defined.
+	xtpControlButton,			// Button type.
+	xtpControlPopup,			// Popup type.
+	xtpControlButtonPopup,		// Button popup.
 	xtpControlSplitButtonPopup, // Split button popup.
-	xtpControlComboBox,         // Combo box button.
-	xtpControlEdit,             // Edit control.
-	xtpControlCustom,           // Custom control.
-	xtpControlLabel,            // Label control
-	xtpControlCheckBox,         // CheckBox control
-	xtpControlGallery,          // Gallery control
-	xtpControlRadioButton       // Radio Button control
+	xtpControlComboBox,			// Combo box button.
+	xtpControlEdit,				// Edit control.
+	xtpControlCustom,			// Custom control.
+	xtpControlLabel,			// Label control
+	xtpControlCheckBox,			// CheckBox control
+	xtpControlGallery,			// Gallery control
+	xtpControlRadioButton		// Radio Button control
 };
 
 //-----------------------------------------------------------------------
@@ -119,18 +124,20 @@ enum XTPControlType
 //     <code>pControl->SetFlags(xtpFlagRightAlign);</code>
 // See Also: CXTPControl, CXTPControl::SetFlags
 //
-// <KEYWORDS xtpFlagRightAlign, xtpFlagSkipFocus, xtpFlagLeftPopup, xtpFlagManualUpdate, xtpFlagNoMovable, xtpFlagControlStretched>
+// <KEYWORDS xtpFlagRightAlign, xtpFlagSkipFocus, xtpFlagLeftPopup, xtpFlagManualUpdate,
+// xtpFlagNoMovable, xtpFlagControlStretched>
 //-----------------------------------------------------------------------
 enum XTPControlFlags
 {
-	xtpFlagRightAlign = 1,          // Control is right aligned.
-	xtpFlagSkipFocus = 2,           // Control does not have focus.
-	xtpFlagLeftPopup = 4,           // To Pop up child bar left.
-	xtpFlagManualUpdate = 8,        // Control is manually updated.
-	xtpFlagNoMovable = 16,          // To disable customization.
-	xtpFlagControlStretched = 32,   // Control is stretched in parent command bar.
-	xtpFlagShowPopupBarTip = 64,    // Show tooltip always
-	xtpFlagWrapRow = 128            // Wrap row for toolbar or popup bar.
+	xtpFlagRightAlign		   = 1,   // Control is right aligned.
+	xtpFlagSkipFocus		   = 2,   // Control does not have focus.
+	xtpFlagLeftPopup		   = 4,   // To Pop up child bar left.
+	xtpFlagManualUpdate		   = 8,   // Control is manually updated.
+	xtpFlagNoMovable		   = 16,  // To disable customization.
+	xtpFlagControlStretched	= 32,  // Control is stretched in parent command bar.
+	xtpFlagShowPopupBarTip	 = 64,  // Show tooltip always
+	xtpFlagWrapRow			   = 128, // Wrap row for toolbar or popup bar.
+	xtpFlagRibbonTabBackground = 256  // Control is on the right side of Ribbon tabs
 };
 
 //-----------------------------------------------------------------------
@@ -140,19 +147,27 @@ enum XTPControlFlags
 //     <code>pControl->SetHideFlags(xtpHideGeneric);</code>
 // See Also: CXTPControl, CXTPControl::SetHideFlags
 //
-// <KEYWORDS xtpNoHide, xtpHideGeneric, xtpHideWrap, xtpHideDockingPosition, xtpHideScroll, xtpHideCustomize, xtpHideExpand, xtpHideDocTemplate>
+// <KEYWORDS xtpNoHide, xtpHideGeneric, xtpHideWrap, xtpHideDockingPosition, xtpHideScroll,
+// xtpHideCustomize, xtpHideExpand, xtpHideDocTemplate>
 //-----------------------------------------------------------------------
 enum XTPControlHideFlags
 {
-	xtpNoHide = 0,              // Control is visible.
-	xtpHideGeneric = 1,         // Control is hidden by generic reason.  Developer set Visible = False.
-	xtpHideWrap = 2,            // Control is hidden by wrap.  Toolbar is too small and the control is wrapped.
-	xtpHideDockingPosition = 4, // Control is hidden by docking position.  If a toolbar has a combobox or edit control, when the toolbar is docked in the left or in the right side of frame, the Commandbar ComboBox and Edit controls becomes hidden.
-	xtpHideScroll = 8,          // Control is hidden by scrolling.  There are too many controls in a popup and the control is hidden because the popup is scrolled.
-	xtpHideCustomize = 16,      // Control is hidden by customize settings.  User removed it.  This is only possible when customization is enabled.  This flag is set if the user removes the control from the Add and Remove Buttons popup menu.
-	xtpHideExpand = 32,         // If the control is rarely used and it is not visible because the intelligent menus option on and the command is a hidden command.
-	xtpHideDocTemplate = 64,    // Control is hidden because active template excluded from its list.
-	xtpHideRibbonTab =  128     // Control is hidden because inactive ribbon tab.
+	xtpNoHide	  = 0, // Control is visible.
+	xtpHideGeneric = 1, // Control is hidden by generic reason.  Developer set Visible = False.
+	xtpHideWrap = 2, // Control is hidden by wrap.  Toolbar is too small and the control is wrapped.
+	xtpHideDockingPosition = 4, // Control is hidden by docking position.  If a toolbar has a
+								// combobox or edit control, when the toolbar is docked in the left
+								// or in the right side of frame, the Commandbar ComboBox and Edit
+								// controls becomes hidden.
+	xtpHideScroll = 8, // Control is hidden by scrolling.  There are too many controls in a popup
+					   // and the control is hidden because the popup is scrolled.
+	xtpHideCustomize = 16, // Control is hidden by customize settings.  User removed it.  This is
+						   // only possible when customization is enabled.  This flag is set if the
+						   // user removes the control from the Add and Remove Buttons popup menu.
+	xtpHideExpand = 32,	// If the control is rarely used and it is not visible because the
+						   // intelligent menus option on and the command is a hidden command.
+	xtpHideDocTemplate = 64, // Control is hidden because active template excluded from its list.
+	xtpHideRibbonTab   = 128 // Control is hidden because inactive ribbon tab.
 };
 
 //-----------------------------------------------------------------------
@@ -168,52 +183,63 @@ enum XTPControlHideFlags
 //-----------------------------------------------------------------------
 enum XTPButtonStyle
 {
-	xtpButtonUndefined = -1,      // Automatic style.
-	xtpButtonAutomatic = 0,     // Automatic style.
-	xtpButtonCaption = 1,       // Button draw only caption.
-	xtpButtonIcon = 2,          // Button draw only icon.
-	xtpButtonIconAndCaption = 3, // Button draw icon and caption.
-	xtpButtonIconAndCaptionBelow = 4,      // Button draw icon and draw caption below icon.
-	xtpButtonCaptionAndDescription = 5     // Button draw icon, caption and description for popup bar.
+	xtpButtonUndefined			   = -1, // Automatic style.
+	xtpButtonAutomatic			   = 0,  // Automatic style.
+	xtpButtonCaption			   = 1,  // Button draw only caption.
+	xtpButtonIcon				   = 2,  // Button draw only icon.
+	xtpButtonIconAndCaption		   = 3,  // Button draw icon and caption.
+	xtpButtonIconAndCaptionBelow   = 4,  // Button draw icon and draw caption below icon.
+	xtpButtonCaptionAndDescription = 5   // Button draw icon, caption and description for popup bar.
 };
 
 //-----------------------------------------------------------------------
 // Summary: Deprecated style for Combo control
 //-----------------------------------------------------------------------
-#define xtpComboNormal xtpButtonAutomatic
+#	define xtpComboNormal xtpButtonAutomatic
 
 //-----------------------------------------------------------------------
 // Summary: Deprecated style for Combo control
 //-----------------------------------------------------------------------
-#define xtpComboLabel xtpButtonCaption
-
+#	define xtpComboLabel xtpButtonCaption
 
 //-----------------------------------------------------------------------
 // Summary:
 //     Paint themes used by command bars.
 // Example:
-//     <code>XTPPaintManager()->SetTheme(xtpThemeWhidbey);</code>
+//     <code>XTPPaintManager()->SetTheme(xtpThemeVisualStudio2005);</code>
 // See Also:
 //     CXTPCommandBars, CXTPPaintManager
 //
-// <KEYWORDS xtpThemeOfficeXP, xtpThemeOffice2000, xtpThemeOffice2003, xtpThemeNativeWinXP, xtpThemeWhidbey, xtpThemeCustom>
+// <KEYWORDS xtpThemeOfficeXP, xtpThemeOffice2000, xtpThemeOffice2003, xtpThemeNativeWinXP,
+// xtpThemeVisualStudio2005, xtpThemeCustom>
 //-----------------------------------------------------------------------
 enum XTPPaintTheme
 {
-	xtpThemeOffice2000,     // Office 2000 theme.
-	xtpThemeOfficeXP,       // Office XP theme.
-	xtpThemeOffice2003,     // Office 2003 theme.
-	xtpThemeNativeWinXP,    // Windows XP themes support.
-	xtpThemeWhidbey,        // Visual Studio 2005 theme.
-	xtpThemeResource,       // Office 2007 theme.
-	xtpThemeRibbon,         // Office 2007 style ribbon theme
-	xtpThemeVisualStudio2008, // Visual Studio 2008 theme
-	xtpThemeVisualStudio6,    // Visual Studio 6 theme
-	xtpThemeVisualStudio2010, // Visual Studio 2010 theme
-	xtpThemeCustom          // Custom theme.
+	xtpThemeNone				  = -1, // No theme selected.
+	xtpThemeOffice2000			  = 0,  // Office 2000 theme.
+	xtpThemeOfficeXP			  = 1,  // Office XP theme.
+	xtpThemeOffice2003			  = 2,  // Office 2003 theme.
+	xtpThemeNativeWinXP			  = 3,  // Windows XP and later native theme support.
+	xtpThemeVisualStudio2005	  = 4,  // Visual Studio 2005 theme
+	xtpThemeResource			  = 5,  // Office 2007 theme.
+	xtpThemeRibbon				  = 6,  // Office 2007 style ribbon theme
+	xtpThemeVisualStudio2008	  = 7,  // Visual Studio 2008 theme
+	xtpThemeVisualStudio6		  = 8,  // Visual Studio 6 theme
+	xtpThemeVisualStudio2010	  = 9,  // Visual Studio 2010 theme
+	xtpThemeCustom				  = 10, // Custom theme.
+	xtpThemeOffice2007System	  = 11, // Office 2007 theme with system colors
+	xtpThemeOffice2013			  = 12, // Office 2013 theme
+	xtpThemeOffice2016			  = xtpThemeOffice2013, // Office 2016 theme
+	xtpThemeVisualStudio2012	  = 13,					// Visual Studio 2012 theme, uses INI file
+	xtpThemeVisualStudio2012Light = 14,					// Visual Studio 2012 light theme
+	xtpThemeVisualStudio2012Dark  = 15,					// Visual Studio 2012 dark theme
+	xtpThemeVisualStudio2015	  = 16,					// Visual Studio 2015 theme, uses INI file
 };
 
-#define xtpThemeOffice2007 xtpThemeResource
+//{{AFX_CODEJOCK_PRIVATE
+#	define xtpThemeWhidbey xtpThemeVisualStudio2005 // old names.
+#	define xtpThemeOffice2007 xtpThemeResource
+//}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -226,17 +252,23 @@ enum XTPPaintTheme
 // See Also:
 //     CXTPMenuBar, CXTPCommandBar, CXTPCommandBar::SetFlags
 //
-// <KEYWORDS xtpFlagHideMinimizeBox, xtpFlagHideMaximizeBox, xtpFlagIgnoreSetMenuMessage, xtpFlagUseMDIMenus, xtpFlagHideClose, xtpFlagHideMDIButtons, xtpFlagAddMDISysPopup>
+// <KEYWORDS xtpFlagHideMinimizeBox, xtpFlagHideMaximizeBox, xtpFlagIgnoreSetMenuMessage,
+// xtpFlagUseMDIMenus, xtpFlagHideClose, xtpFlagHideMDIButtons, xtpFlagAddMDISysPopup>
 //-----------------------------------------------------------------------
 enum XTPMenuBarFlags
 {
-	xtpFlagHideMinimizeBox      = 0x0100L,          // To hide minimize box.
-	xtpFlagHideMaximizeBox      = 0x0200L,          // To hide maximize box.
-	xtpFlagIgnoreSetMenuMessage = 0x0400L,          // To ignore MDI menus.
-	xtpFlagUseMDIMenus          = 0x0800L,          // To use MDI menus. Not longer used.
-	xtpFlagHideClose            = 0x1000L,          // To hide close button.
-	xtpFlagHideMDIButtons = xtpFlagHideMinimizeBox | xtpFlagHideMaximizeBox | xtpFlagHideClose,  // Specifies to hide all MDI buttons displayed on the Command Bar.
-	xtpFlagAddMDISysPopup       = 0x2000L           // To add system MDI popup bar.  Specifies to add system MDI popup menu to the Menu Bar.  This will appears as an icon to the far left of the Menu Bar and will display the MDI menu bar options when clicked.
+	xtpFlagHideMinimizeBox		= 0x0100L, // To hide minimize box.
+	xtpFlagHideMaximizeBox		= 0x0200L, // To hide maximize box.
+	xtpFlagIgnoreSetMenuMessage = 0x0400L, // To ignore MDI menus.
+	xtpFlagUseMDIMenus			= 0x0800L, // To use MDI menus. Not longer used.
+	xtpFlagHideClose			= 0x1000L, // To hide close button.
+	xtpFlagHideMDIButtons		= xtpFlagHideMinimizeBox | xtpFlagHideMaximizeBox
+							| xtpFlagHideClose, // Specifies to hide all MDI buttons displayed on
+												// the Command Bar.
+	xtpFlagAddMDISysPopup = 0x2000L // To add system MDI popup bar.  Specifies to add system MDI
+									// popup menu to the Menu Bar.  This will appears as an icon to
+									// the far left of the Menu Bar and will display the MDI menu
+									// bar options when clicked.
 };
 
 //-----------------------------------------------------------------------
@@ -249,22 +281,26 @@ enum XTPMenuBarFlags
 // </code>
 // See Also: CXTPToolBar, CXTPToolBar::EnableDocking
 //
-// <KEYWORDS xtpFlagAlignTop, xtpFlagAlignBottom, xtpFlagAlignLeft, xtpFlagAlignRight, xtpFlagAlignAny, xtpFlagFloating, xtpFlagHideWrap, xtpFlagStretched>
+// <KEYWORDS xtpFlagAlignTop, xtpFlagAlignBottom, xtpFlagAlignLeft, xtpFlagAlignRight,
+// xtpFlagAlignAny, xtpFlagFloating, xtpFlagHideWrap, xtpFlagStretched, xtpFlagNoBorders,
+// xtpFlagStretchedShared, xtpFlagSmartLayout>
 //-----------------------------------------------------------------------
 enum XTPToolBarFlags
 {
-	xtpFlagAlignTop = 1,                // Allows docking at the top of the client area.
-	xtpFlagAlignBottom = 2,             // Allows docking at the bottom of the client area.
-	xtpFlagAlignLeft = 4,               // Allows docking on the left side of the client area.
-	xtpFlagAlignRight = 8,              // Allows docking on the right side of the client area.
-	xtpFlagAlignAny = xtpFlagAlignTop | xtpFlagAlignBottom | xtpFlagAlignLeft | xtpFlagAlignRight, // Allows docking on any side of the client area.
-	xtpFlagFloating = 16,               // Allows floating.
-	xtpFlagHideWrap = 32,               // Allow to hide wrapped controls.
-	xtpFlagStretched = 64,              // Bar is stretched.
-	xtpFlagStretchedShared = 0x100000,  // Bar is stretched, but not fill whole row
-	xtpFlagSmartLayout = 0x200000       // Smart layout enabled
+	xtpFlagAlignTop	= 0x000001, // Allows docking at the top of the client area.
+	xtpFlagAlignBottom = 0x000002, // Allows docking at the bottom of the client area.
+	xtpFlagAlignLeft   = 0x000004, // Allows docking on the left side of the client area.
+	xtpFlagAlignRight  = 0x000008, // Allows docking on the right side of the client area.
+	xtpFlagAlignAny	= (xtpFlagAlignTop | xtpFlagAlignBottom | xtpFlagAlignLeft
+						  | xtpFlagAlignRight), // Allows docking on any side of the client area.
+	xtpFlagFloating	= 0x000010,				// Allows floating.
+	xtpFlagHideWrap	= 0x000020,				// Allow to hide wrapped controls.
+	xtpFlagStretched   = 0x000040,				// Bar is stretched.
+	xtpFlagNoBorders   = 0x000080,				// Bar has no borders, this will cause
+												// CXTPPaintManager::IsFlatToolBar() to return TRUE.
+	xtpFlagStretchedShared = 0x100000,			// Bar is stretched, but not fill whole row
+	xtpFlagSmartLayout	 = 0x200000			// Smart layout enabled
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -276,9 +312,9 @@ enum XTPToolBarFlags
 //-----------------------------------------------------------------------
 enum XTPKeyboardCuesShow
 {
-	xtpKeyboardCuesShowAlways,          // Show keyboard cues always
-	xtpKeyboardCuesShowNever,           // Never show keyboard cues
-	xtpKeyboardCuesShowWindowsDefault   // System defined.
+	xtpKeyboardCuesShowAlways,		  // Show keyboard cues always
+	xtpKeyboardCuesShowNever,		  // Never show keyboard cues
+	xtpKeyboardCuesShowWindowsDefault // System defined.
 };
 
 //-----------------------------------------------------------------------
@@ -291,10 +327,11 @@ enum XTPKeyboardCuesShow
 //-----------------------------------------------------------------------
 enum XTPKeyboardCuesUse
 {
-	xtpKeyboardCuesUseMenuOnly      = 0, // Activate only menu by using underlines
-	xtpKeyboardCuesUseAll           = 1, // Activate menu and tool bars by using underlines
-	xtpKeyboardCuesUseNone          = 2, // No using underlines
-	xtpKeyboardCuesUseAmpersandOnly = 4  // Activates menu items with ampersand only (by default first character used if no ampersand found)
+	xtpKeyboardCuesUseMenuOnly		= 0, // Activate only menu by using underlines
+	xtpKeyboardCuesUseAll			= 1, // Activate menu and tool bars by using underlines
+	xtpKeyboardCuesUseNone			= 2, // No using underlines
+	xtpKeyboardCuesUseAmpersandOnly = 4  // Activates menu items with ampersand only (by default
+										 // first character used if no ampersand found)
 };
 
 //-----------------------------------------------------------------------
@@ -304,16 +341,17 @@ enum XTPKeyboardCuesUse
 //     <code> pCommandBars->GetCommandBarsOptions()->animationType = xtpAnimateSlide; </code>
 // See Also: CXTPCommandBarsOptions, CXTPCommandBarsOptions::animationType
 //
-// <KEYWORDS xtpAnimateWindowsDefault, xtpAnimateRandom, xtpAnimateUnfold, xtpAnimateSlide, xtpAnimateFade, xtpAnimateNone>
+// <KEYWORDS xtpAnimateWindowsDefault, xtpAnimateRandom, xtpAnimateUnfold, xtpAnimateSlide,
+// xtpAnimateFade, xtpAnimateNone>
 //-----------------------------------------------------------------------
 enum XTPAnimationType
 {
-	xtpAnimateWindowsDefault,   // As defined in the "Display" settings.
-	xtpAnimateRandom,           // Any of the first three in random selection.
-	xtpAnimateUnfold,           // Unfold top to bottom.
-	xtpAnimateSlide,            // Slide in from left.
-	xtpAnimateFade,             // Fade-in.
-	xtpAnimateNone              // No animation.
+	xtpAnimateWindowsDefault, // As defined in the "Display" settings.
+	xtpAnimateRandom,		  // Any of the first three in random selection.
+	xtpAnimateUnfold,		  // Unfold top to bottom.
+	xtpAnimateSlide,		  // Slide in from left.
+	xtpAnimateFade,			  // Fade-in.
+	xtpAnimateNone			  // No animation.
 };
 
 //-----------------------------------------------------------------------
@@ -325,10 +363,10 @@ enum XTPAnimationType
 //-----------------------------------------------------------------------
 enum XTPPopupDirection
 {
-	xtpPopupRight = 0,          // Popup Bar will be opened right of control.
-	xtpPopupLeft  = 1,          // Popup Bar will be opened left of control.
-	xtpPopupDown  = 2,          // Popup Bar will be opened bottom of control.
-	xtpPopupUp    = 4           // Popup Bar will be opened top of control.
+	xtpPopupRight = 0, // Popup Bar will be opened right of control.
+	xtpPopupLeft  = 1, // Popup Bar will be opened left of control.
+	xtpPopupDown  = 2, // Popup Bar will be opened bottom of control.
+	xtpPopupUp	= 4  // Popup Bar will be opened top of control.
 };
 
 //-----------------------------------------------------------------------
@@ -338,21 +376,22 @@ enum XTPPopupDirection
 //     See CXTPCommandBar::ProcessSpecialKey for details.
 // See Also: CXTPCommandBar, CXTPCommandBar::ProcessSpecialKey
 //
-// <KEYWORDS xtpKeyNext, xtpKeyPrev, xtpKeyBack, xtpKeyPopup, xtpKeyEscape, xtpKeyReturn, xtpKeyHome, xtpKeyEnd>
+// <KEYWORDS xtpKeyNext, xtpKeyPrev, xtpKeyBack, xtpKeyPopup, xtpKeyEscape, xtpKeyReturn,
+// xtpKeyHome, xtpKeyEnd>
 //-----------------------------------------------------------------------
 enum XTPSpecialKey
 {
-	xtpKeyNext,             // Select next key
-	xtpKeyPrev,             // Select previous key
-	xtpKeyBack,             // Close active popup key
-	xtpKeyPopup,            // Open selected popup key
-	xtpKeyEscape,           // Escape key
-	xtpKeyReturn,           // Return key
-	xtpKeyHome,             // Select firs key
-	xtpKeyEnd,              // Select last key
-	xtpKeyLeft,             // Select left
-	xtpKeyRight,            // Select right
-	xtpKeySpace             // Space
+	xtpKeyNext,   // Select next key
+	xtpKeyPrev,   // Select previous key
+	xtpKeyBack,   // Close active popup key
+	xtpKeyPopup,  // Open selected popup key
+	xtpKeyEscape, // Escape key
+	xtpKeyReturn, // Return key
+	xtpKeyHome,   // Select firs key
+	xtpKeyEnd,	// Select last key
+	xtpKeyLeft,   // Select left
+	xtpKeyRight,  // Select right
+	xtpKeySpace   // Space
 };
 
 //-----------------------------------------------------------------------
@@ -366,13 +405,11 @@ enum XTPSpecialKey
 //-----------------------------------------------------------------------
 enum XTPIdleFlags
 {
-	xtpIdleLayout = 1,         // Delay recalculate layout of command bar
-	xtpIdleRedraw = 2          // Delay redraw.command bar.
+	xtpIdleLayout = 1, // Delay recalculate layout of command bar
+	xtpIdleRedraw = 2  // Delay redraw.command bar.
 };
 
-
-#include "XTPCommandBars.inl"
-#include "Common/XTPPropExchange.inc"
+#	include "Common/XTPPropExchange.inc"
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -440,8 +477,8 @@ const UINT WM_XTP_CONTROLSELECTED = (WM_XTP_COMMANDBARS_BASE + 2);
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_DRAGCONTROLCHANGED is sent to the CXTPCommandBars site when user select button of toolbar
-//     in customization mode
+//     The WM_XTP_DRAGCONTROLCHANGED is sent to the CXTPCommandBars site when user select button of
+//     toolbar in customization mode
 // Example:
 //     Here is an example of how an application would process the WM_XTP_DRAGCONTROLCHANGED
 //     message.
@@ -460,7 +497,6 @@ const UINT WM_XTP_CONTROLSELECTED = (WM_XTP_COMMANDBARS_BASE + 2);
 // See Also: CXTPCommandBars::GetDragControl, CXTPCommandBars::SetCustomizeMode
 //-----------------------------------------------------------------------
 const UINT WM_XTP_DRAGCONTROLCHANGED = (WM_XTP_COMMANDBARS_BASE + 3);
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -492,7 +528,6 @@ const UINT WM_XTP_DRAGCONTROLCHANGED = (WM_XTP_COMMANDBARS_BASE + 3);
 // See Also: CXTPCommandBars, CXTPMenuBar
 //-----------------------------------------------------------------------
 const UINT WM_XTP_INITMENU = (WM_XTP_COMMANDBARS_BASE + 4);
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -528,7 +563,8 @@ const UINT WM_XTP_INITMENU = (WM_XTP_COMMANDBARS_BASE + 4);
 //          CPoint pt;
 //          GetCursorPos(&pt);
 //
-//          UINT nReturn = CXTPCommandBars::TrackPopupMenu(menu.GetSubMenu(0), TPM_NONOTIFY | TPM_RECURSE | TPM_RETURNCMD, pt.x, pt.y, this);
+//          UINT nReturn = CXTPCommandBars::TrackPopupMenu(menu.GetSubMenu(0), TPM_NONOTIFY |
+//          TPM_RECURSE | TPM_RETURNCMD, pt.x, pt.y, this);
 //
 //          switch (nReturn)
 //          {
@@ -570,7 +606,6 @@ const UINT WM_XTP_CONTROLRBUTTONUP = (WM_XTP_COMMANDBARS_BASE + 5);
 //-----------------------------------------------------------------------
 const UINT WM_XTP_COMMANDBARKEYDOWN = (WM_XTP_COMMANDBARS_BASE + 6);
 
-
 //-----------------------------------------------------------------------
 // Summary:
 //     The WM_XTP_INITCOMMANDSPOPUP is sent to the CXTPCommandBars site when a pop-up menu
@@ -599,7 +634,8 @@ const UINT WM_XTP_INITCOMMANDSPOPUP = (WM_XTP_COMMANDBARS_BASE + 7);
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_TOOLBARCONTEXTMENU is sent to the CXTPCommandBars site when context menu is about to become visible
+//     The WM_XTP_TOOLBARCONTEXTMENU is sent to the CXTPCommandBars site when context menu is about
+//     to become visible
 // Parameters:
 //     pToolBar - (CXTPToolBar*)wParam - Toolbar under cursor; or NULL if clicked docking bar.
 //     pPopup - (CXTPPopupBar*)lParam - Popup bar with context menu.
@@ -628,12 +664,17 @@ const UINT WM_XTP_INITCOMMANDSPOPUP = (WM_XTP_COMMANDBARS_BASE + 7);
 const UINT WM_XTP_TOOLBARCONTEXTMENU = (WM_XTP_COMMANDBARS_BASE + 8);
 
 //<ALIAS WM_XTP_INITCOMMANDSPOPUP>
-#define ON_XTP_INITCOMMANDSPOPUP()
+#	define ON_XTP_INITCOMMANDSPOPUP()
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_INITCOMMANDSPOPUP
-#define ON_XTP_INITCOMMANDSPOPUP()\
-	{ WM_XTP_INITCOMMANDSPOPUP, 0, 0, 0, AfxSig_vs, \
-	(AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(CXTPPopupBar*))&OnInitCommandsPopup } ,
+#	undef ON_XTP_INITCOMMANDSPOPUP
+#	define ON_XTP_INITCOMMANDSPOPUP()                                                             \
+		{ WM_XTP_INITCOMMANDSPOPUP,                                                                \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vs,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(CXTPPopupBar*))                        \
+			  & OnInitCommandsPopup },
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
@@ -663,12 +704,17 @@ const UINT WM_XTP_TOOLBARCONTEXTMENU = (WM_XTP_COMMANDBARS_BASE + 8);
 const UINT WM_XTP_UNINITCOMMANDSPOPUP = (WM_XTP_COMMANDBARS_BASE + 9);
 
 //<ALIAS WM_XTP_UNINITCOMMANDSPOPUP>
-#define ON_XTP_UNINITCOMMANDSPOPUP()
+#	define ON_XTP_UNINITCOMMANDSPOPUP()
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_UNINITCOMMANDSPOPUP
-#define ON_XTP_UNINITCOMMANDSPOPUP()\
-	{ WM_XTP_UNINITCOMMANDSPOPUP, 0, 0, 0, AfxSig_vs, \
-	(AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(CXTPPopupBar*))&OnUninitCommandsPopup } ,
+#	undef ON_XTP_UNINITCOMMANDSPOPUP
+#	define ON_XTP_UNINITCOMMANDSPOPUP()                                                           \
+		{ WM_XTP_UNINITCOMMANDSPOPUP,                                                              \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vs,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(CXTPPopupBar*))                        \
+			  & OnUninitCommandsPopup },
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
@@ -680,22 +726,22 @@ const UINT WM_XTP_UNINITCOMMANDSPOPUP = (WM_XTP_COMMANDBARS_BASE + 9);
 //-----------------------------------------------------------------------
 typedef struct
 {
-	NMHDR   hdr;            // NMHDR structure that contains additional information about this notification.
-	CXTPControl* pControl;  // Pointer to control that caused the event.
-}
-NMXTPCONTROL, FAR* LPNMXTPCONTROL;
+	NMHDR hdr; // NMHDR structure that contains additional information about this notification.
+	CXTPControl* pControl; // Pointer to control that caused the event.
+} NMXTPCONTROL, FAR* LPNMXTPCONTROL;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The CBN_XTP_EXECUTE is sent to the CXTPCommandBars site when user click item of CXTPCommandBar object
+//     The CBN_XTP_EXECUTE is sent to the CXTPCommandBars site when user click item of
+//     CXTPCommandBar object
 // Parameters:
 //     id -         ID of control was clicked.
 //     memberFxn -  Name of member function to handle the message.
 // Remarks:
-//     Use ON_COMMAND to map a single command to a member function if you don't need exact control that caused the event.
-//     Use ON_COMMAND_RANGE or ON_XTP_EXECUTE_RANGE to map a range of command ids to one member function.
-//     <p/>
-//     If you don't set *pResult = 1 then WM_COMMAND also will be sent for this event.
+//     Use ON_COMMAND to map a single command to a member function if you don't need exact control
+//     that caused the event. Use ON_COMMAND_RANGE or ON_XTP_EXECUTE_RANGE to map a range of command
+//     ids to one member function. <p/> If you don't set *pResult = 1 then WM_COMMAND also will be
+//     sent for this event.
 // Example:
 //     Here is an example of how an application would process the CBN_XTP_EXECUTE
 //     message.
@@ -729,19 +775,18 @@ NMXTPCONTROL, FAR* LPNMXTPCONTROL;
 const UINT CBN_XTP_EXECUTE = 100;
 
 //<ALIAS CBN_XTP_EXECUTE>
-#define ON_XTP_EXECUTE(id, memberFxn)
+#	define ON_XTP_EXECUTE(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_EXECUTE
-#define ON_XTP_EXECUTE(id, memberFxn) \
-	ON_NOTIFY(CBN_XTP_EXECUTE, id, memberFxn)
+#	undef ON_XTP_EXECUTE
+#	define ON_XTP_EXECUTE(id, memberFxn) ON_NOTIFY(CBN_XTP_EXECUTE, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 //<ALIAS CBN_XTP_EXECUTE>
-#define ON_XTP_EXECUTE_RANGE(id, idLast, memberFxn)
+#	define ON_XTP_EXECUTE_RANGE(id, idLast, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_EXECUTE_RANGE
-#define ON_XTP_EXECUTE_RANGE(id, idLast, memberFxn) \
-	ON_NOTIFY_EX_RANGE(CBN_XTP_EXECUTE, id, idLast, memberFxn)
+#	undef ON_XTP_EXECUTE_RANGE
+#	define ON_XTP_EXECUTE_RANGE(id, idLast, memberFxn)                                            \
+		ON_NOTIFY_EX_RANGE(CBN_XTP_EXECUTE, id, idLast, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 //-------------------------------------------------------------------------
@@ -749,30 +794,30 @@ const UINT CBN_XTP_EXECUTE = 100;
 //     Create control structure.
 // Remarks:
 //     This structure contains extended information about CXTPControl object to be created.
-//     CXTPCommandBars sent XTP_COMMANDBARS_CREATECONTROL message to owner site when new CXTPControl object
-//     is about to become created.
+//     CXTPCommandBars sent XTP_COMMANDBARS_CREATECONTROL message to owner site when new CXTPControl
+//     object is about to become created.
 // See Also: WM_XTP_CREATECONTROL
 //-------------------------------------------------------------------------
 typedef struct
 {
-	UINT nID;                       // Identifier of the control to be created.
-	CXTPControl* pControl;          // Control to be created.
-	BOOL bToolBar;                  // TRUE if control is toolbar located.
-	int nIndex;                     // Index of the control to be created.
-	CMenu* pMenu;                   // A Pointer to CMenu object.
-	CXTPCommandBar* pCommandBar;    // Pointer to the parent command bar class.
-	CString strCaption;             // Caption of the control to be created.
-	XTPControlType controlType;     // Type of the control.
-	XTPButtonStyle buttonStyle;     // Button Style of the control.
-}
-XTP_COMMANDBARS_CREATECONTROL, FAR* LPCREATECONTROLSTRUCT;
+	UINT nID;					 // Identifier of the control to be created.
+	CXTPControl* pControl;		 // Control to be created.
+	BOOL bToolBar;				 // TRUE if control is toolbar located.
+	int nIndex;					 // Index of the control to be created.
+	CMenu* pMenu;				 // A Pointer to CMenu object.
+	CXTPCommandBar* pCommandBar; // Pointer to the parent command bar class.
+	CString strCaption;			 // Caption of the control to be created.
+	XTPControlType controlType;  // Type of the control.
+	XTPButtonStyle buttonStyle;  // Button Style of the control.
+} XTP_COMMANDBARS_CREATECONTROL, FAR* LPCREATECONTROLSTRUCT;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_BEFORECREATECONTROL is sent to the CXTPCommandBars site when new CXTPControl object
-//     is created.
+//     The WM_XTP_BEFORECREATECONTROL is sent to the CXTPCommandBars site when new CXTPControl
+//     object is created.
 // Parameters:
-//     lpCreateControl - Pointer to XTP_COMMANDBARS_CREATECONTROL structure with information about control to be created.
+//     lpCreateControl - Pointer to XTP_COMMANDBARS_CREATECONTROL structure with information about
+//     control to be created.
 // Returns:
 //     If an application processes this message, it should return TRUE.
 // Example:
@@ -800,21 +845,26 @@ XTP_COMMANDBARS_CREATECONTROL, FAR* LPCREATECONTROLSTRUCT;
 const UINT WM_XTP_BEFORECREATECONTROL = (WM_XTP_COMMANDBARS_BASE + 10);
 
 //<ALIAS WM_XTP_BEFORECREATECONTROL>
-#define ON_XTP_CREATECONTROL()
+#	define ON_XTP_CREATECONTROL()
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_CREATECONTROL
-#define ON_XTP_CREATECONTROL()\
-	{ WM_XTP_BEFORECREATECONTROL, 0, 0, 0, AfxSig_is, \
-	(AFX_PMSG)(AFX_PMSGW)(int (AFX_MSG_CALL CWnd::*)(LPCREATECONTROLSTRUCT))&OnCreateControl } ,
+#	undef ON_XTP_CREATECONTROL
+#	define ON_XTP_CREATECONTROL()                                                                 \
+		{ WM_XTP_BEFORECREATECONTROL,                                                              \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_is,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(int (AFX_MSG_CALL CWnd::*)(LPCREATECONTROLSTRUCT))                 \
+			  & OnCreateControl },
 //}}AFX_CODEJOCK_PRIVATE
-
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_AFTERCREATECONTROL is sent to the CXTPCommandBars site after new CXTPControl object
-//     is created.
+//     The WM_XTP_AFTERCREATECONTROL is sent to the CXTPCommandBars site after new CXTPControl
+//     object is created.
 // Parameters:
-//     lpCreateControl - Pointer to XTP_COMMANDBARS_CREATECONTROL structure with information about control to be created.
+//     lpCreateControl - Pointer to XTP_COMMANDBARS_CREATECONTROL structure with information about
+//     control to be created.
 // Returns:
 //     If an application processes this message, it should return TRUE.
 // Example:
@@ -843,14 +893,18 @@ const UINT WM_XTP_BEFORECREATECONTROL = (WM_XTP_COMMANDBARS_BASE + 10);
 const UINT WM_XTP_AFTERCREATECONTROL = (WM_XTP_COMMANDBARS_BASE + 11);
 
 //<ALIAS WM_XTP_AFTERCREATECONTROL>
-#define ON_XTP_AFTERCREATECONTROL()
+#	define ON_XTP_AFTERCREATECONTROL()
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_AFTERCREATECONTROL
-#define ON_XTP_AFTERCREATECONTROL()\
-	{ WM_XTP_AFTERCREATECONTROL, 0, 0, 0, AfxSig_vs, \
-	(AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(LPCREATECONTROLSTRUCT))&OnAfterCreateControl } ,
+#	undef ON_XTP_AFTERCREATECONTROL
+#	define ON_XTP_AFTERCREATECONTROL()                                                            \
+		{ WM_XTP_AFTERCREATECONTROL,                                                               \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vs,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(LPCREATECONTROLSTRUCT))                \
+			  & OnAfterCreateControl },
 //}}AFX_CODEJOCK_PRIVATE
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -881,34 +935,33 @@ const UINT WM_XTP_AFTERCREATECONTROL = (WM_XTP_COMMANDBARS_BASE + 11);
 //-----------------------------------------------------------------------
 const UINT WM_XTP_GETTABICON = (WM_XTP_COMMANDBARS_BASE + 12);
 
-
 //-------------------------------------------------------------------------
 // Summary:
 //     Create bar structure
 // Remarks:
 //     This structure contains extended information about bar to be created.
-//     CXTPCommandBars sent XTP_COMMANDBARS_CREATEBAR message to owner site when new CXTPCommandBar object
-//     is about to become created.
+//     CXTPCommandBars sent XTP_COMMANDBARS_CREATEBAR message to owner site when new CXTPCommandBar
+//     object is about to become created.
 // See Also: WM_XTP_CREATECOMMANDBAR
 //-------------------------------------------------------------------------
 typedef struct
 {
-	CXTPCommandBar* pCommandBar;    // Created command bar.
-	BOOL bPopup;                    // TRUE if it is a popup command bar,
-	BOOL bExpandBar;                // TRUE if it is an expanded popup.
-	BOOL bCustomBar;                // TRUE if it is a user defined toolbar.
-	BOOL bTearOffBar;               // TRUE if it is a user tear-off popup.
-	LPCTSTR lpcstrCaption;          // Caption of the command bar.
-	UINT nID;                       // Identifier of the command bar.
-}
-XTP_COMMANDBARS_CREATEBAR, FAR* LPCREATEBARSTRUCT;
+	CXTPCommandBar* pCommandBar; // Created command bar.
+	BOOL bPopup;				 // TRUE if it is a popup command bar,
+	BOOL bExpandBar;			 // TRUE if it is an expanded popup.
+	BOOL bCustomBar;			 // TRUE if it is a user defined toolbar.
+	BOOL bTearOffBar;			 // TRUE if it is a user tear-off popup.
+	LPCTSTR lpcstrCaption;		 // Caption of the command bar.
+	UINT nID;					 // Identifier of the command bar.
+} XTP_COMMANDBARS_CREATEBAR, FAR* LPCREATEBARSTRUCT;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_CREATECOMMANDBAR is sent to the CXTPCommandBars site when new CXTPCommandBars object
-//     is created.
+//     The WM_XTP_CREATECOMMANDBAR is sent to the CXTPCommandBars site when new CXTPCommandBars
+//     object is created.
 // Parameters:
-//     lpCreateBar - Pointer to XTP_COMMANDBARS_CREATEBAR structure with information about bar to be created.
+//     lpCreateBar - Pointer to XTP_COMMANDBARS_CREATEBAR structure with information about bar to be
+//     created.
 // Returns:
 //     If an application processes this message, it should return TRUE.
 // Example:
@@ -938,29 +991,109 @@ XTP_COMMANDBARS_CREATEBAR, FAR* LPCREATEBARSTRUCT;
 //-----------------------------------------------------------------------
 const UINT WM_XTP_CREATECOMMANDBAR = (WM_XTP_COMMANDBARS_BASE + 13);
 
-//<ALIAS WM_XTP_CREATECOMMANDBAR>
-#define ON_XTP_CREATECOMMANDBAR()
-//{{AFX_CODEJOCK_PRIVATE
-#undef ON_XTP_CREATECOMMANDBAR
-#define ON_XTP_CREATECOMMANDBAR()\
-	{ WM_XTP_CREATECOMMANDBAR, 0, 0, 0, AfxSig_is, \
-	(AFX_PMSG)(AFX_PMSGW)(int (AFX_MSG_CALL CWnd::*)(LPCREATEBARSTRUCT))&OnCreateCommandBar} ,
-//}}AFX_CODEJOCK_PRIVATE
-
+//-----------------------------------------------------------------------
+// Summary:
+//     The WM_XTP_MESSAGEBARCLOSED is sent to the CXTPCommandBars site
+//     when the user clicks the Close button on a message bar object
+// Parameters:
+//     pMessageBar - (CXTPMessageBar*)lParam - pointer to message bar being closed.
+// Example:
+//     Here is an example of how an application would process the WM_XTP_MESSAGEBARCLOSED
+//     message.
+// <code>
+// BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
+//     //{{AFX_MSG_MAP(CMainFrame)
+//     ON_MESSAGE(WM_XTP_MESSAGEBARCLOSED, OnMessageBarClosed)
+//     //}}AFX_MSG_MAP
+// END_MESSAGE_MAP()
+//
+// LRESULT CMainFrame::OnMessageBarClosed(WPARAM wParam, LPARAM lParam)
+// {
+//     UNUSED_ALWAYS(wParam);
+//     CXTPMessageBar* pMessageBar = (CXTPMessageBar*)lParam;
+//
+//     return 0;
+// }
+// </code>
+// See Also: CXTPToolBar
+//-----------------------------------------------------------------------
+const UINT WM_XTP_MESSAGEBARCLOSED = (WM_XTP_COMMANDBARS_BASE + 21);
 
 //-----------------------------------------------------------------------
 // Summary:
-//     This macro generates the C++ header code necessary for a CXTPControl-derived class that can be serialized.
+//     The WM_XTP_SETBAKSTAGEBUTTONKEYTIP is sent to the CXTPRibbonBackstageButton
+//     when the keyboard tip character for this button is changed
+// Parameters:
+//     nChar - (TCHAR)lParam - the code of the character for the keyboard tip.
+//-----------------------------------------------------------------------
+const UINT WM_XTP_SETBAKSTAGEBUTTONKEYTIP = (WM_XTP_COMMANDBARS_BASE + 31);
+
+//-----------------------------------------------------------------------
+// Summary:
+//     The WM_XTP_SETBAKSTAGEBUTTONKEYTIPDRAWFLAG is sent to the CXTPRibbonBackstageButton
+//     to show/hide the keyboard tip
+// Parameters:
+//     bShow - (BOOL)lParam - TRUE: to show keyboard tip; FALSE: to hide keyboard tip
+//-----------------------------------------------------------------------
+const UINT WM_XTP_SETBAKSTAGEBUTTONKEYTIPDRAWFLAG = (WM_XTP_COMMANDBARS_BASE + 32);
+
+//-----------------------------------------------------------------------
+// Summary:
+//    XTP_CN_UPDATE_CUSTOMIZE_COMMAND_UI is sent to the command target
+//    via WM_COMMAND instead of CN_UPDATE_COMMAND_UI when it is necessary to
+//    update Customize menu command without updating the command itself.
+// Parameters:
+//    pExtra - A pointer to an array of two CXTPControl pointers where the
+//             first element is a pointer to a Customize menu control and
+//             the second element is a pointer to the control itself.
+// Example:
+// <code>
+//    BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+//    {
+//        BOOL bHandled = FALSE;
+//
+//        if (XTP_CN_UPDATE_CUSTOMIZE_COMMAND_UI == nCode)
+//        {
+//            CXTPControl** pControls = reinterpret_cast<CXTPControl**>(pExtra);
+//            CXTPControl* pCustomizedMenuControl = pControls[0];
+//            CXTPControl* pControl = pControls[1];
+//            ASSERT(nID == pControl->GetID());
+//            pCustomizedMenuControl->SetEnabled(TRUE);
+//            bHandled = TRUE;
+//        }
+//
+//        return bHandled ? TRUE : CXTPMDIFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+//    }
+// </code>
+//-----------------------------------------------------------------------
+#	define XTP_CN_UPDATE_CUSTOMIZE_COMMAND_UI ((UINT)(INT_MIN + 1))
+
+//<ALIAS WM_XTP_CREATECOMMANDBAR>
+#	define ON_XTP_CREATECOMMANDBAR()
+//{{AFX_CODEJOCK_PRIVATE
+#	undef ON_XTP_CREATECOMMANDBAR
+#	define ON_XTP_CREATECOMMANDBAR()                                                              \
+		{ WM_XTP_CREATECOMMANDBAR,                                                                 \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_is,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(int (AFX_MSG_CALL CWnd::*)(LPCREATEBARSTRUCT))                     \
+			  & OnCreateCommandBar },
+//}}AFX_CODEJOCK_PRIVATE
+
+//-----------------------------------------------------------------------
+// Summary:
+//     This macro generates the C++ header code necessary for a CXTPControl-derived class that can
+//     be serialized.
 // Parameters:
 //     class_name - The actual name of the class (not enclosed in quotation marks).
 // Remarks:
-//     Use the DECLARE_XTP_CONTROL macro in a .H module, then include that module in all .CPP modules
-//     that need access to objects of this class.
-//     <p/>
-//     If DECLARE_XTP_CONTROL is included in the class declaration, then IMPLEMENT_XTP_CONTROL must be
-//     included in the class implementation.
-//     <p/>
-//     The DECLARE_XTP_CONTROL macro includes all the functionality of DECLARE_SERIAL, DECLARE_DYNAMIC and DECLARE_DYNCREATE.
+//     Use the DECLARE_XTP_CONTROL macro in a .H module, then include that module in all .CPP
+//     modules that need access to objects of this class. <p/> If DECLARE_XTP_CONTROL is included in
+//     the class declaration, then IMPLEMENT_XTP_CONTROL must be included in the class
+//     implementation. <p/> The DECLARE_XTP_CONTROL macro includes all the functionality of
+//     DECLARE_SERIAL, DECLARE_DYNAMIC and DECLARE_DYNCREATE.
 //
 // Example:
 // <code>
@@ -975,22 +1108,24 @@ const UINT WM_XTP_CREATECOMMANDBAR = (WM_XTP_COMMANDBARS_BASE + 13);
 // </code>
 // See Also: IMPLEMENT_XTP_CONTROL, DECLARE_XTP_COMMANDBAR
 //-----------------------------------------------------------------------
-#define DECLARE_XTP_CONTROL(class_name)
+#	define DECLARE_XTP_CONTROL(class_name)
 //{{AFX_CODEJOCK_PRIVATE
-#undef DECLARE_XTP_CONTROL
-#define DECLARE_XTP_CONTROL(class_name) \
-	DECLARE_SERIAL(class_name)\
-	virtual CXTPControl* Clone(BOOL bRecursive);
+#	undef DECLARE_XTP_CONTROL
+#	define DECLARE_XTP_CONTROL(class_name)                                                        \
+		DECLARE_SERIAL(class_name)                                                                 \
+		virtual CXTPControl* Clone(BOOL bRecursive);
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
-//     This macro generates the C++ code necessary for a CXTPControl-derived class that can be serialized.
+//     This macro generates the C++ code necessary for a CXTPControl-derived class that can be
+//     serialized.
 // Parameters:
 //     class_name      - The actual name of the class (not enclosed in quotation marks).
 //     base_class_name - The name of the base class (not enclosed in quotation marks).
 // Remarks:
-//     Use the IMPLEMENT_XTP_CONTROL macro in a .CPP module; then link the resulting object code only once.
+//     Use the IMPLEMENT_XTP_CONTROL macro in a .CPP module; then link the resulting object code
+//     only once.
 // Example:
 // <code>
 // // BitmapControl.cpp
@@ -1001,31 +1136,31 @@ const UINT WM_XTP_CREATECOMMANDBAR = (WM_XTP_COMMANDBARS_BASE + 13);
 // </code>
 // See Also: DECLARE_XTP_CONTROL, DECLARE_XTP_COMMANDBAR
 //-----------------------------------------------------------------------
-#define IMPLEMENT_XTP_CONTROL(class_name, base_class_name)
+#	define IMPLEMENT_XTP_CONTROL(class_name, base_class_name)
 //{{AFX_CODEJOCK_PRIVATE
-#undef IMPLEMENT_XTP_CONTROL
-#define IMPLEMENT_XTP_CONTROL(class_name, base_class_name) \
-	IMPLEMENT_SERIAL(class_name, base_class_name, VERSIONABLE_SCHEMA | _XTP_SCHEMA_CURRENT)\
-	CXTPControl* class_name::Clone(BOOL bRecursive) {\
-		class_name* pButton = (class_name*)class_name::CreateObject();\
-		pButton->Copy(this, bRecursive);\
-		return pButton;\
-	}
+#	undef IMPLEMENT_XTP_CONTROL
+#	define IMPLEMENT_XTP_CONTROL(class_name, base_class_name)                                     \
+		IMPLEMENT_SERIAL(class_name, base_class_name, VERSIONABLE_SCHEMA | _XTP_SCHEMA_CURRENT)    \
+		CXTPControl* class_name::Clone(BOOL bRecursive)                                            \
+		{                                                                                          \
+			class_name* pButton = (class_name*)class_name::CreateObject();                         \
+			pButton->Copy(this, bRecursive);                                                       \
+			return pButton;                                                                        \
+		}
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
-//     This macro generates the C++ header code necessary for a CXTPCommandBar-derived class that can be serialized.
+//     This macro generates the C++ header code necessary for a CXTPCommandBar-derived class that
+//     can be serialized.
 // Parameters:
 //     class_name - The actual name of the class (not enclosed in quotation marks).
 // Remarks:
-//     Use the DECLARE_XTP_COMMANDBAR macro in a .H module, then include that module in all .CPP modules
-//     that need access to objects of this class.
-//     <p/>
-//     If DECLARE_XTP_COMMANDBAR is included in the class declaration, then IMPLEMENT_XTP_COMMANDBAR must be
-//     included in the class implementation.
-//     <p/>
-//     The DECLARE_XTP_COMMANDBAR macro includes all the functionality of DECLARE_SERIAL, DECLARE_DYNAMIC and DECLARE_DYNCREATE.
+//     Use the DECLARE_XTP_COMMANDBAR macro in a .H module, then include that module in all .CPP
+//     modules that need access to objects of this class. <p/> If DECLARE_XTP_COMMANDBAR is included
+//     in the class declaration, then IMPLEMENT_XTP_COMMANDBAR must be included in the class
+//     implementation. <p/> The DECLARE_XTP_COMMANDBAR macro includes all the functionality of
+//     DECLARE_SERIAL, DECLARE_DYNAMIC and DECLARE_DYNCREATE.
 //
 // Example:
 // <code>
@@ -1040,22 +1175,24 @@ const UINT WM_XTP_CREATECOMMANDBAR = (WM_XTP_COMMANDBARS_BASE + 13);
 // </code>
 // See Also: IMPLEMENT_XTP_COMMANDBAR, DECLARE_XTP_CONTROL
 //-----------------------------------------------------------------------
-#define DECLARE_XTP_COMMANDBAR(class_name)
+#	define DECLARE_XTP_COMMANDBAR(class_name)
 //{{AFX_CODEJOCK_PRIVATE
-#undef DECLARE_XTP_COMMANDBAR
-#define DECLARE_XTP_COMMANDBAR(class_name) \
-	DECLARE_SERIAL(class_name)\
-	virtual CXTPCommandBar* Clone(BOOL bRecursive);
+#	undef DECLARE_XTP_COMMANDBAR
+#	define DECLARE_XTP_COMMANDBAR(class_name)                                                     \
+		DECLARE_SERIAL(class_name)                                                                 \
+		virtual CXTPCommandBar* Clone(BOOL bRecursive);
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
-//     This macro generates the C++ code necessary for a CXTPCommandBar-derived class that can be serialized.
+//     This macro generates the C++ code necessary for a CXTPCommandBar-derived class that can be
+//     serialized.
 // Parameters:
 //     class_name      - The actual name of the class (not enclosed in quotation marks).
 //     base_class_name - The name of the base class (not enclosed in quotation marks).
 // Remarks:
-//     Use the IMPLEMENT_XTP_COMMANDBAR macro in a .CPP module; then link the resulting object code only once.
+//     Use the IMPLEMENT_XTP_COMMANDBAR macro in a .CPP module; then link the resulting object code
+//     only once.
 // Example:
 // <code>
 // // ToolPopupBar.cpp
@@ -1069,61 +1206,141 @@ const UINT WM_XTP_CREATECOMMANDBAR = (WM_XTP_COMMANDBARS_BASE + 13);
 // </code>
 // See Also: DECLARE_XTP_COMMANDBAR, DECLARE_XTP_CONTROL
 //-----------------------------------------------------------------------
-#define IMPLEMENT_XTP_COMMANDBAR(class_name, base_class_name)
+#	define IMPLEMENT_XTP_COMMANDBAR(class_name, base_class_name)
 //{{AFX_CODEJOCK_PRIVATE
-#undef IMPLEMENT_XTP_COMMANDBAR
-#define IMPLEMENT_XTP_COMMANDBAR(class_name, base_class_name) \
-	IMPLEMENT_SERIAL(class_name, base_class_name, VERSIONABLE_SCHEMA | _XTP_SCHEMA_CURRENT)\
-	CXTPCommandBar* class_name::Clone(BOOL bRecursive) {\
-		class_name* pCommandBar = (class_name*)class_name::CreateObject();\
-		pCommandBar->Copy(this, bRecursive);\
-		return pCommandBar;\
-	}
+#	undef IMPLEMENT_XTP_COMMANDBAR
+#	define IMPLEMENT_XTP_COMMANDBAR(class_name, base_class_name)                                  \
+		IMPLEMENT_SERIAL(class_name, base_class_name, VERSIONABLE_SCHEMA | _XTP_SCHEMA_CURRENT)    \
+		CXTPCommandBar* class_name::Clone(BOOL bRecursive)                                         \
+		{                                                                                          \
+			class_name* pCommandBar = (class_name*)class_name::CreateObject();                     \
+			pCommandBar->Copy(this, bRecursive);                                                   \
+			return pCommandBar;                                                                    \
+		}
 
 // Internal defines
-#define TRUE_POPUP 2
-#define TRUE_KEYBOARD 2
-#define TRUE_KEYBOARD_NEXT 2
-#define TRUE_KEYBOARD_PREV 3
-#define TRUE_SPLITCOMMAND 4
-#define TRUE_SPLITDROPDOWN 5
-#define XTP_EDITSPIN_UP 4
-#define XTP_EDITSPIN_DOWN 5
-#define XTP_EDITBUDDYBUTTON 6
-#define FALSE_EXIT 2
-#define LM_HIDEWRAP 0x80
-#define LM_POPUP 0x100
+#	define TRUE_POPUP 2
+#	define TRUE_KEYBOARD 2
+#	define TRUE_KEYBOARD_NEXT 2
+#	define TRUE_KEYBOARD_PREV 3
+#	define TRUE_SPLITCOMMAND 4
+#	define TRUE_SPLITDROPDOWN 5
+#	define XTP_EDITSPIN_UP 4
+#	define XTP_EDITSPIN_DOWN 5
+#	define XTP_EDITBUDDYBUTTON 6
+#	define FALSE_EXIT 2
+#	define LM_HIDEWRAP 0x80
+#	define LM_POPUP 0x100
 
-AFX_INLINE BOOL IsKeyboardSelected(BOOL bSelected) {
+AFX_INLINE BOOL IsKeyboardSelected(BOOL bSelected)
+{
 	return bSelected == TRUE_KEYBOARD_NEXT || bSelected == TRUE_KEYBOARD_PREV;
 }
-AFX_INLINE BOOL IsControlCommandEnabled(BOOL bEnabled) {
+AFX_INLINE BOOL IsControlCommandEnabled(BOOL bEnabled)
+{
 	return bEnabled && bEnabled != TRUE_SPLITDROPDOWN;
 }
-AFX_INLINE BOOL IsControlDropDownEnabled(BOOL bEnabled) {
+AFX_INLINE BOOL IsControlDropDownEnabled(BOOL bEnabled)
+{
 	return bEnabled && bEnabled != TRUE_SPLITCOMMAND;
 }
 
-
 // ActiveX commands
-#define WM_XTP_COMMAND (WM_XTP_COMMANDBARS_BASE + 14)
-#define WM_XTP_UPDATE_COMMAND (WM_XTP_COMMANDBARS_BASE + 15)
-#define WM_XTP_CUSTOMIZATION_RESETTOOLBAR (WM_XTP_COMMANDBARS_BASE + 16)
-#define WM_XTP_CUSTOMIZATION_ADDTOOLBAR (WM_XTP_COMMANDBARS_BASE + 17)
-#define WM_XTP_CUSTOMIZATION_DELETETOOLBAR (WM_XTP_COMMANDBARS_BASE + 18)
-#define WM_XTP_TEAROFFDONE (WM_XTP_COMMANDBARS_BASE + 19)
-#define WM_XTP_DELAYEXECUTE (WM_XTP_COMMANDBARS_BASE + 20)
+#	define WM_XTP_COMMAND (WM_XTP_COMMANDBARS_BASE + 14)
+#	define WM_XTP_UPDATE_COMMAND (WM_XTP_COMMANDBARS_BASE + 15)
+#	define WM_XTP_CUSTOMIZATION_RESETTOOLBAR (WM_XTP_COMMANDBARS_BASE + 16)
+#	define WM_XTP_CUSTOMIZATION_ADDTOOLBAR (WM_XTP_COMMANDBARS_BASE + 17)
+#	define WM_XTP_CUSTOMIZATION_DELETETOOLBAR (WM_XTP_COMMANDBARS_BASE + 18)
+#	define WM_XTP_TEAROFFDONE (WM_XTP_COMMANDBARS_BASE + 19)
+#	define WM_XTP_DELAYEXECUTE (WM_XTP_COMMANDBARS_BASE + 20)
 
-#define XTP_CN_REDRAWPARENT 1
+#	define XTP_CN_REDRAWPARENT 1
 
-#ifndef TPM_RECURSE
-#define TPM_RECURSE         0x0001L
-#endif
+#	ifndef TPM_RECURSE
+#		define TPM_RECURSE 0x0001L
+#	endif
 
-#ifndef _XTP_INCLUDE_COMMANDBARS
-#undef _XTP_ACTIVEX
-#endif
+#	ifndef _XTP_INCLUDE_COMMANDBARS
+#		undef _XTP_ACTIVEX
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
+//-----------------------------------------------------------------------
+// Summary:
+//     Call this member to determine if the specified bar position is left,
+//     top, right, or bottom.
+// Parameters:
+//     barPosition - Bar position.
+// Returns:
+//     TRUE if the specified bar position is left, top, right, or bottom.
+//     FALSE if the position is anything else.
+//-----------------------------------------------------------------------
+AFX_INLINE BOOL IsDockingPosition(XTPBarPosition barPosition)
+{
+	return barPosition == xtpBarLeft || barPosition == xtpBarTop || barPosition == xtpBarRight
+		   || barPosition == xtpBarBottom;
+}
 
+//-----------------------------------------------------------------------
+// Summary:
+//     Call this member to determine if the specified button style is button caption
+//     or button icon and caption.
+// Parameters:
+//     buttonStyle - Button style.
+// Returns:
+//     TRUE if the specified button style is button caption or button icon and caption.
+//     FALSE otherwise.
+//-----------------------------------------------------------------------
+AFX_INLINE BOOL IsCaptionStyle(XTPButtonStyle buttonStyle)
+{
+	return buttonStyle == xtpButtonCaption || buttonStyle == xtpButtonIconAndCaption;
+}
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Call this member to determine if the specified control type is popup control,
+//     a button popup control, or a split button popup control.
+// Parameters:
+//     controlType - Control type.
+// Returns:
+//     TRUE if the specified control type is popup control, a button popup control,
+//     or a split button popup control.  FALSE otherwise.
+//-----------------------------------------------------------------------
+AFX_INLINE BOOL IsPopupControlType(XTPControlType controlType)
+{
+	return controlType == xtpControlPopup || controlType == xtpControlButtonPopup
+		   || controlType == xtpControlSplitButtonPopup;
+}
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Call this member to determine if the specified bar position is
+//     left, right, or is a popup toolbar.
+// Parameters:
+//     barPosition - Bar position.
+// Returns:
+//     TRUE if the specified bar position is left, right, or is a
+//     popup toolbar.  FALSE otherwise.
+//-----------------------------------------------------------------------
+AFX_INLINE BOOL IsVerticalPosition(XTPBarPosition barPosition)
+{
+	return barPosition == xtpBarLeft || barPosition == xtpBarRight || barPosition == xtpBarPopup;
+}
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Call this member to determine if the menu animation type is
+//     set to fade, slide, or unfold.
+// Parameters:
+//     animationType - Animation type.
+// Returns:
+//     TRUE if the animation type is set to fade, slide, or unfold.
+//-----------------------------------------------------------------------
+AFX_INLINE BOOL IsAnimateType(XTPAnimationType animationType)
+{
+	return animationType == xtpAnimateFade || animationType == xtpAnimateSlide
+		   || animationType == xtpAnimateUnfold;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCOMMANDBARDEFINES_H__)

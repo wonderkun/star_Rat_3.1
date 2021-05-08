@@ -1,7 +1,7 @@
 // LogView.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "LogView.h"
 
@@ -236,7 +236,7 @@ void CLogView::OnSize(UINT nType, int cx, int cy)
 	if (nClientWidth < g_Log_Width)
 		return;
 	
-	m_pLogList->SetColumnWidth(nIndex, nClientWidth - g_Log_Width + g_Log_Data[nIndex].nWidth);
+	//m_pLogList->SetColumnWidth(nIndex, nClientWidth - g_Log_Width + g_Log_Data[nIndex].nWidth);
 }
 
 void CLogView::InsertLogItem(LPCTSTR Text,int Mode, int Flag)

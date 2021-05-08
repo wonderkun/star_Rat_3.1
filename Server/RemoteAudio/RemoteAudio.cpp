@@ -1,7 +1,7 @@
 // RemoteAudio.cpp : Defines the entry point for the DLL application.
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "AudioManager.h"
 #include "../Dllcomment/ClientSocket.h"
 extern "C" __declspec(dllexport) bool Main(LPCTSTR lpszHost, UINT nPort,LPBYTE blparam)

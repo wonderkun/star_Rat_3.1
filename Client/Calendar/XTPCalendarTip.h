@@ -1,7 +1,6 @@
 // XTPCalendarTip.h: interface for the CXTPCalendarTip class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCalendarTip_H__)
-#define __XTPCalendarTip_H__
+#	define __XTPCalendarTip_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -47,9 +48,8 @@
 //===========================================================================
 class _XTP_EXT_CLASS CXTPCalendarTip : public CWnd
 {
-// Construction
+	// Construction
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCalendarTip object.
@@ -107,9 +107,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL Create(CWnd* pParentWnd);
 
-// Attributes
+	// Attributes
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the tooltip text string.
@@ -117,7 +116,7 @@ public:
 	//     A CString that contains the current tooltip text.
 	// See Also: SetTooltipText
 	//-----------------------------------------------------------------------
-	CString GetTooltipText();
+	CString GetTooltipText() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -158,7 +157,7 @@ public:
 	//     The coordinates of the tooltip hover rectangle in parent window coordinates.
 	// See Also: SetHoverRect
 	//-----------------------------------------------------------------------
-	CRect GetHoverRect();
+	CRect GetHoverRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -167,7 +166,7 @@ public:
 	// Returns:
 	//     TRUE when advanced mode enabled (left mouse click handling).
 	//-----------------------------------------------------------------------
-	BOOL IsAdvancedMode();
+	BOOL IsAdvancedMode() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -188,15 +187,14 @@ public:
 	//-----------------------------------------------------------------------
 	void SetTheme(CXTPCalendarTheme* pTheme);
 
-// Operations
+	// Operations
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to activate or deactivate a tool tip control.
 	// Parameters:
-	//     bActive - A BOOL. Specifies whether the tool tip control is to be activated or deactivated.
-	//     bAdvanced - TRUE for advanced processing (Office2007 theme "add new appt")
+	//     bActive - A BOOL. Specifies whether the tool tip control is to be activated or
+	//     deactivated. bAdvanced - TRUE for advanced processing (Office2007 theme "add new appt")
 	// Remarks:
 	//     If <i>bActivate</i> is <b>TRUE</b>, the control is activated.
 	//     If <b>FALSE</b>, it is deactivated.
@@ -224,7 +222,7 @@ public:
 	CSize CalcToolTipRect(BOOL bFull = FALSE);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPCalendarTip)
@@ -232,57 +230,56 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC*);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	CRect  m_rcHover;           // Hover window coordinates.
-	CFont* m_pFont;             // Font for displaying tooltip text.
-	CWnd * m_pParentWnd;        // Pointer to the parent report window.
-	CString m_strTooltipText;   // Tooltip text to display.
-	BOOL m_bAdvancedMode;       // TRUE when advanced mode is on
-	CXTPCalendarTheme* m_pTheme;// Pointer to associated Theme object
+	CRect m_rcHover;			 // Hover window coordinates.
+	CFont* m_pFont;				 // Font for displaying tooltip text.
+	CWnd* m_pParentWnd;			 // Pointer to the parent report window.
+	CString m_strTooltipText;	// Tooltip text to display.
+	BOOL m_bAdvancedMode;		 // TRUE when advanced mode is on
+	CXTPCalendarTheme* m_pTheme; // Pointer to associated Theme object
 };
 
-AFX_INLINE BOOL CXTPCalendarTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPCalendarTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
+										CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-
-AFX_INLINE CString CXTPCalendarTip::GetTooltipText()
+AFX_INLINE CString CXTPCalendarTip::GetTooltipText() const
 {
 	return m_strTooltipText;
 }
-
 AFX_INLINE void CXTPCalendarTip::SetTooltipText(LPCTSTR str)
 {
 	m_strTooltipText = str;
 }
-
 AFX_INLINE void CXTPCalendarTip::SetFont(CFont* pFont)
 {
 	m_pFont = pFont;
 }
-
 AFX_INLINE void CXTPCalendarTip::SetHoverRect(CRect rc)
 {
 	m_rcHover = rc;
 	MoveWindow(rc);
 }
-
-AFX_INLINE CRect CXTPCalendarTip::GetHoverRect()
+AFX_INLINE CRect CXTPCalendarTip::GetHoverRect() const
 {
 	return m_rcHover;
 }
-
 AFX_INLINE void CXTPCalendarTip::SetAdvancedMode(BOOL bMode)
 {
 	m_bAdvancedMode = bMode;
 }
-AFX_INLINE BOOL CXTPCalendarTip::IsAdvancedMode() {
+AFX_INLINE BOOL CXTPCalendarTip::IsAdvancedMode() const
+{
 	return m_bAdvancedMode;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCalendarTip_H__)

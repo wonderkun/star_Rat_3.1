@@ -1,8 +1,7 @@
 // XTPCalendarRemindersManager.h: interface for the
 // CXTPCalendarRemindersManager class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,25 +20,26 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_REMINDERS_MANAGER_H__)
-#define _XTP_CALENDAR_REMINDERS_MANAGER_H__
+#	define _XTP_CALENDAR_REMINDERS_MANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //////////////////////
-#include "Common/XTPNotifyConnection.h"
-
-#include "XtpCalendarPtrs.h"
-#include "XTPCalendarUtils.h"
-#include "XTPCalendarPtrCollectionT.h"
-
 class CXTPCalendarData;
 class CXTPCalendarResources;
 class CXTPCalendarResourcesNf;
 class CXTPCalendarRemindersManager;
+class CXTPNotifyConnection;
+class CXTPCalendarEvent;
+class CXTPCalendarEvents;
+class CXTPNotifySink;
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvent)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvents)
 
 //===========================================================================
 // Summary:
@@ -55,7 +55,6 @@ class _XTP_EXT_CLASS CXTPCalendarReminder : public CXTPCmdTarget
 	friend class CXTPCalendarReminders;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -80,7 +79,7 @@ public:
 	// Returns:
 	//     A pointer to calendar event object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventPtr GetEvent();
+	virtual CXTPCalendarEventPtr GetEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -94,7 +93,7 @@ public:
 	//     Reminder activation date and time.
 	// See Also: GetMinutesBeforeStart, Snooze, GetEvent.
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetNextReminderTime();
+	virtual COleDateTime GetNextReminderTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -105,7 +104,7 @@ public:
 	//     an event.
 	// See Also: CXTPCalendarEvent::GetReminderMinutesBeforeStart, GetEvent.
 	//-----------------------------------------------------------------------
-	virtual int GetMinutesBeforeStart();
+	virtual int GetMinutesBeforeStart() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -144,8 +143,8 @@ public:
 	virtual BOOL IsEqualID(const CXTPCalendarReminder* pReminder2) const;
 
 protected:
-	COleDateTime    m_dtNextReminderTime;   // Store reminder activation date and time.
-	int             m_nMinutesBeforeStart;  // Store minutes before start event to activate reminder.
+	COleDateTime m_dtNextReminderTime; // Store reminder activation date and time.
+	int m_nMinutesBeforeStart;		   // Store minutes before start event to activate reminder.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -160,9 +159,10 @@ protected:
 	// Summary:
 	//     This enum define the event type: recurrence or non-recurrence.
 	//-----------------------------------------------------------------------
-	enum EventType {
-		evtNormal = 1,      // event type is recurrence.
-		evtRecurrence = 2,  // event type is non-recurrence.
+	enum EventType
+	{
+		evtNormal	 = 1, // event type is recurrence.
+		evtRecurrence = 2, // event type is non-recurrence.
 	};
 
 	//-----------------------------------------------------------------------
@@ -173,15 +173,17 @@ protected:
 	//-----------------------------------------------------------------------
 	struct RecurrenceEventInfo
 	{
-		DWORD   m_dwMasterEventID;          // Recurrence master event ID.
-		DATE    m_dtOccurrenceStartTime;    // Recurrence occurrence start time or recurrence exception original start time.
-		DATE    m_dtOccurrenceEndTime;      // Recurrence occurrence end time or recurrence exception original end time.
+		DWORD m_dwMasterEventID;	  // Recurrence master event ID.
+		DATE m_dtOccurrenceStartTime; // Recurrence occurrence start time or recurrence exception
+									  // original start time.
+		DATE m_dtOccurrenceEndTime;   // Recurrence occurrence end time or recurrence exception
+									  // original end time.
 	};
 
-	COleDateTime    m_dtEventStartTime;     // Store related event start time.
+	COleDateTime m_dtEventStartTime;		// Store related event start time.
 	CXTPCalendarData* m_pEventDataProvider; // Store related event data provider.
 
-	EventType   m_eEventType;               // Define related event type: recurrence or non-recurrence.
+	EventType m_eEventType; // Define related event type: recurrence or non-recurrence.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -190,14 +192,30 @@ protected:
 	// See Also: RecurrenceEventInfo, m_eEventType
 	//-----------------------------------------------------------------------
 	union {
-		DWORD               m_dwNormalEventID;          // Non-recurrence event ID.
-		RecurrenceEventInfo m_RecurrenceEventInfo;      // Recurrence event information (instead of ID).
+		DWORD m_dwNormalEventID;				   // Non-recurrence event ID.
+		RecurrenceEventInfo m_RecurrenceEventInfo; // Recurrence event information (instead of ID).
 	};
 
 private:
 	CXTPCalendarRemindersManager* m_pOwnerMan;
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarReminder);
+
+	LPDISPATCH OleGetEvent();
+
+	DATE OleGetNextReminderTime();
+	long OleGetMinutesBeforeStart();
+
+	BOOL OleSnooze(long nMinutesAfterNow);
+	BOOL OleDismiss();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -208,7 +226,6 @@ protected:
 class _XTP_EXT_CLASS CXTPCalendarReminders : public CXTPCalendarPtrCollectionT<CXTPCalendarReminder>
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Finds a specified reminder object in the collection.
@@ -267,8 +284,8 @@ public:
 	//     Sort reminders by the event start time field.
 	//-----------------------------------------------------------------------
 	virtual void Sort();
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Try to find and remove reminder(s) object(s) which are related to
@@ -291,14 +308,14 @@ protected:
 //     When Reminder manager starts it check all events which have Reminder
 //     flag set.
 //     Reminder for event is added to active reminders list when:
-//         Event->StartTime - Event->ReminderMinutesBeforeStart <= Now
+//         Event->StartTime - Event->ReminderMinutesBeforeStart \<= Now
 //
 //     There are 2 actions with reminder:
 //         Dismiss - reset Reminder flag for the event and remove reminder.
 //                   Reminder never comes back;
 //
 //         Snooze - set new NextReminderTime value and remove reminder.
-//                  Reminder will come back when NextReminderTime <= Now.
+//                  Reminder will come back when NextReminderTime \<= Now.
 //
 //     Some Reminder manager data stored in CalendarEvent custom properties
 //     (or RecurrencePattern custom properties) - this means if own events
@@ -319,7 +336,6 @@ class _XTP_EXT_CLASS CXTPCalendarRemindersManager : public CWnd
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -346,7 +362,7 @@ public:
 	// See Also:
 	//     GetActiveReminders
 	//-----------------------------------------------------------------------
-	virtual int GetActiveRemindersCount();
+	virtual int GetActiveRemindersCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -357,7 +373,7 @@ public:
 	// See Also:
 	//     GetActiveRemindersCount
 	//-----------------------------------------------------------------------
-	virtual void GetActiveReminders(CXTPCalendarReminders& rarActiveReminders);
+	virtual void GetActiveReminders(CXTPCalendarReminders& rarActiveReminders) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -410,7 +426,7 @@ public:
 	// See Also:
 	//     CXTPNotifyConnection overview, IXTPNotificationSink overview
 	//-----------------------------------------------------------------------
-	virtual CXTPNotifyConnection* GetConnection();
+	CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -432,7 +448,8 @@ public:
 	// See Also:
 	//     StopMonitoring
 	//-----------------------------------------------------------------------
-	virtual BOOL StartMonitoring(CXTPCalendarResources* pResources, COleDateTimeSpan spPeriod2Cache);
+	virtual BOOL StartMonitoring(CXTPCalendarResources* pResources,
+								 COleDateTimeSpan spPeriod2Cache);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -485,8 +502,8 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void RemoveAll();
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK(CXTPCalendarRemindersManager, m_Sink)
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPNotifySink* m_pSink;
 
 	afx_msg void OnTimeChange();
 	afx_msg void OnTimer(UINT_PTR uTimerID);
@@ -494,72 +511,99 @@ protected:
 	virtual BOOL _Dismiss(CXTPCalendarReminder* pReminder);
 
 	virtual BOOL UpdateDataFromDP(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
-	virtual BOOL GetUpcomingEventsAll(COleDateTime dtFrom, COleDateTimeSpan spPeriod, CXTPCalendarEventsPtr& rptrEvents);
+	virtual BOOL GetUpcomingEventsAll(COleDateTime dtFrom, COleDateTimeSpan spPeriod,
+									  CXTPCalendarEventsPtr& rptrEvents);
 
 	virtual BOOL ProcessActiveReminders(COleDateTime dtTime);
 
-
-	virtual void OnEventChanged(XTP_NOTIFY_CODE Event, WPARAM wParam , LPARAM lParam);
-	virtual BOOL ProcessNewEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual void OnEventChanged(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
+	virtual BOOL ProcessNewEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom,
+								 COleDateTimeSpan spPeriod);
 	virtual BOOL ProcessChangedEvent(CXTPCalendarEvent* pEvent);
-	virtual BOOL _ProcessNewSingleEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom, COleDateTimeSpan spPeriod);
-	virtual BOOL _ProcessNewMasterEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom, COleDateTimeSpan spPeriod);
-	virtual BOOL _GetMaxExceptionReminder(CXTPCalendarRecurrencePattern* pPattern,int& rnMinutes);
+	virtual BOOL _ProcessNewSingleEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom,
+										COleDateTimeSpan spPeriod);
+	virtual BOOL _ProcessNewMasterEvent(CXTPCalendarEvent* pEvent, COleDateTime dtFrom,
+										COleDateTimeSpan spPeriod);
+	virtual BOOL _GetMaxExceptionReminder(CXTPCalendarRecurrencePattern* pPattern, int& rnMinutes);
 
 	virtual BOOL _RemoveSnoozeData(CXTPCalendarReminder* pRmd);
 
 	virtual BOOL _CreateWnd();
 	virtual void OnFinalRelease();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPNotifyConnection* m_pConnection;        // A pointer to the notification connection object.
+	CXTPNotifyConnection* m_pConnection; // A pointer to the notification connection object.
 
-	CXTPCalendarResourcesNf* m_pResourcesNf;    // A collection of calendar resources to be monitored.
-	COleDateTimeSpan        m_spPeriod2Cache;   // Time period to cache data from the calendar resources.
+	CXTPCalendarResourcesNf* m_pResourcesNf; // A collection of calendar resources to be monitored.
+	COleDateTimeSpan m_spPeriod2Cache; // Time period to cache data from the calendar resources.
 
-	COleDateTime            m_dtLastUpdateTime; // Store last time when reminders data was loaded from the calendar resources.
+	COleDateTime m_dtLastUpdateTime; // Store last time when reminders data was loaded from the
+									 // calendar resources.
 
-	CXTPCalendarReminders   m_arWaitingReminders;  // Waiting reminders collection.
-	CXTPCalendarReminders   m_arActiveReminders;   // Active reminders collection.
+	CXTPCalendarReminders m_arWaitingReminders; // Waiting reminders collection.
+	CXTPCalendarReminders m_arActiveReminders;  // Active reminders collection.
 
-	BOOL m_bMonitoringRunning;          // Flag indicate that reminders manager is started;
+	BOOL m_bMonitoringRunning; // Flag indicate that reminders manager is started;
 
 	//{{AFX_CODEJOCK_PRIVATE
 	BOOL m_bSkipOnEventChanged;
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarRemindersManager);
+
+	DECLARE_ENUM_VARIANT(CXTPCalendarRemindersManager);
+
+	int OleGetItemCount();
+	LPDISPATCH OleGetItem(long nIndex);
+
+	void OleDismissAll();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 ////////////////////////////////////////////////////////////////////////////
-AFX_INLINE COleDateTime CXTPCalendarReminder::GetNextReminderTime() {
+AFX_INLINE COleDateTime CXTPCalendarReminder::GetNextReminderTime() const
+{
 	return m_dtNextReminderTime;
 }
-AFX_INLINE int  CXTPCalendarReminder::GetMinutesBeforeStart() {
+AFX_INLINE int CXTPCalendarReminder::GetMinutesBeforeStart() const
+{
 	return m_nMinutesBeforeStart;
 }
-AFX_INLINE BOOL CXTPCalendarReminder::Snooze(int nMinutesAfterNow) {
+AFX_INLINE BOOL CXTPCalendarReminder::Snooze(int nMinutesAfterNow)
+{
 	ASSERT(m_pOwnerMan);
 	return m_pOwnerMan ? m_pOwnerMan->Snooze(this, nMinutesAfterNow) : FALSE;
 }
-AFX_INLINE BOOL CXTPCalendarReminder::Dismiss() {
+AFX_INLINE BOOL CXTPCalendarReminder::Dismiss()
+{
 	ASSERT(m_pOwnerMan);
 	return m_pOwnerMan ? m_pOwnerMan->Dismiss(this) : FALSE;
 }
 
 //===========================================================================
-AFX_INLINE CXTPNotifyConnection* CXTPCalendarRemindersManager::GetConnection() {
+AFX_INLINE CXTPNotifyConnection* CXTPCalendarRemindersManager::GetConnection() const
+{
 	return m_pConnection;
 }
 
-AFX_INLINE BOOL CXTPCalendarRemindersManager::IsMonitoringRunning() const {
+AFX_INLINE BOOL CXTPCalendarRemindersManager::IsMonitoringRunning() const
+{
 	return m_bMonitoringRunning;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_REMINDERS_MANAGER_H__)

@@ -1,7 +1,6 @@
 // ReportControl resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -22,7 +21,7 @@
 #include "ReportControl/Resource.h"
 #include "ReportControl/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK)
 #ifdef _WIN32
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 #pragma code_page(1254)
@@ -91,13 +90,13 @@ BEGIN
 
     XTP_IDS_REPORT_MARGINS_MM        "Kenar Boþluklarý (milimetre)"
     XTP_IDS_REPORT_MARGINS_INCH      "Kenar Boþluklarý (inç)"
-    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Enter filter text here"
+    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Burada filtre metni girin"
 
-    XTP_IDS_REPORT_INCREASING        "/Increasing"
-    XTP_IDS_REPORT_DECREASING        "/Decreasing"
-    XTP_IDS_REPORT_EXPAND            "Expand"
-    XTP_IDS_REPORT_COLLAPSE          "Collapse"
+    XTP_IDS_REPORT_INCREASING        "Artan /"
+    XTP_IDS_REPORT_DECREASING        "/ Azalan"
+    XTP_IDS_REPORT_EXPAND            "Geniþletin"
+    XTP_IDS_REPORT_COLLAPSE          "Daralt"
 
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK)

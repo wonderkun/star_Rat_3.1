@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB)
 #ifdef _WIN32
 LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
 #pragma code_page(1252)
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Mostrar teclas de atalho nas dicas de tela",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Animações de menu:",IDC_STATIC,10,117,67,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,81,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Animações de menu:",IDC_STATIC,10,117,87,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,101,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -145,19 +144,19 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "&Menus"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Menus de aplicativo",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Menus de contexto",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "&Mostrar Menu:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,64,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Redefinir",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Menu padrão\nMenu de aplicativo padrão",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Selecione o menu de contexto:",IDC_STATIC,10,92,112,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,113,90,110,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Redefinir",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Personalizar"
     XTP_IDS_NEWMENU         "Novo menu"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Personalizar Barra de Status"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -257,18 +256,18 @@ BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
                             "Você tem certesa que deseja retornar aos padrões? Esta ação fará com que todas as customizações sejam excluídas."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Esse atalho é atribuído atualmente.\nVocê quer re-atribuir este atalho?"
+    XTP_IDS_CONFIRM_UPDATE  "Devido a uma atualização de software, a barra de ferramentas '%s' foi alterado. Gostaria de redefinir sua barra de ferramentas personalizada e carregar um novo?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Todos os arquivos de imagens|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metarquivos(*.Wmf;*.Emf)|*.wmf;*.emf|Ícones(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Todos os arquivos(*.*)|*.*||"
+                            "Todos os arquivos de imagem|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metarquivos(*.Wmf;*.Emf)|*.wmf;*.emf|Ícones(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Todos os arquivos(*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nOpções da barra de ferramentas"
     XTP_ID_TOOLBAR_HIDE     "\nFechar"
-    XTP_ID_POPUPBAR_EXPAND  "\nExpand"
+    XTP_ID_POPUPBAR_EXPAND  "\nExpande"
     XTP_ID_MENUBAR_CLOSE    "\nFechar janela"
     XTP_ID_MENUBAR_RESTORE  "\nRestaurar janela"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimizar janela"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) foi pressionado. Esperando pela segunda tecla..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Cancelar"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMover para o Grupo de Abas Anterio&r"
+    XTP_ID_WORKSPACE_MOVENEXT "\nMover para o Pró&ximo Grupo de Abas "
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNovo Grupo de Abas Hori&zontal"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNovo Grupo de Abas &Vertical"
+    XTP_ID_WORKSPACE_CANCEL "\nCancelar"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Arquivos Ativos"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Imprimir o item visualizado\nImprimir"
+    XTP_ID_PREVIEW_PREV     "Ir para a página anterior\nPágina Anterior"
+    XTP_ID_PREVIEW_NEXT     "Ir para a próxima página\nPróxima Página"
+    XTP_ID_PREVIEW_ZOOMIN   "Aumentar o zoom da página em visualização\nAumentar Zoom"
+    XTP_ID_PREVIEW_ZOOMOUT  "Diminuir o zoom da página em visualização\nDiminuir Zoom"
+    XTP_ID_PREVIEW_ONEPAGE  "Página Única"
+    XTP_ID_PREVIEW_TWOPAGE  "Múltiplas páginas"
+    XTP_ID_PREVIEW_CLOSE    "Fechar a visualização\nFechar Visualização"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Página Inteira"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Largura da Página"
+    XTP_IDS_PREVIEW_PAGEI     "Pagina %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Pagina %i de %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB)

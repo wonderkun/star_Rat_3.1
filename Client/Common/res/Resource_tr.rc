@@ -1,7 +1,6 @@
 // Common resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,12 +23,27 @@
 #include "Common/Resource.h"
 #include "Common/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK)
 #ifdef _WIN32
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 #pragma code_page(1254)
 #endif //_WIN32
 
+#ifndef _AFXDLL
+
+#include <afxctl.rc>
+#include <afxdb.rc>
+#include <afxolecl.rc>
+#include <afxolesv.rc>
+#include <afxprint.rc>
+#include <afxres.rc>
+
+#ifdef _XTP_INCLUDE_MFC_STRINGS
+#include "Common/res/mfc/indicate.rc"
+#include "Common/res/mfc/prompts.rc"
+#endif
+
+#endif	//_AFXDLL
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -87,63 +101,63 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_ONEPAGE         "Bir Sayfa"
     XTP_IDS_TWOPAGE         "Ýki Sayfa"
-    XTP_IDS_PREVIEWPAGEDESC "Page %u\nPages %u-%u"
+    XTP_IDS_PREVIEWPAGEDESC "Sayfa %u\nSayfalar %u-%u"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_CLR_INDIGO      "Indigo"
-    XTP_IDS_CLR_GRAY80      "Gray-80%"
-    XTP_IDS_CLR_DARK_RED    "Dark Red"
-    XTP_IDS_CLR_ORANGE      "Orange"
-    XTP_IDS_CLR_DARK_YELLOW "Dark Yellow"
-    XTP_IDS_CLR_GREEN       "Green"
-    XTP_IDS_CLR_TEAL        "Teal"
-    XTP_IDS_CLR_BLUE        "Blue"
-    XTP_IDS_CLR_BLUEGRAY    "Blue-Gray"
-    XTP_IDS_CLR_GRAY50      "Gray-50%"
-    XTP_IDS_CLR_RED         "Red"
-    XTP_IDS_CLR_LIGHTORANGE "Light Orange"
-    XTP_IDS_CLR_LIME        "Lime"
-    XTP_IDS_CLR_SEA_GREEN   "Sea Green"
-    XTP_IDS_CLR_AQUA        "Aqua"
-    XTP_IDS_CLR_LIGHT_BLUE  "Light Blue"
-    XTP_IDS_CLR_VIOLET      "Violet"
-    XTP_IDS_CLR_GRAY40      "Gray-40%"
-    XTP_IDS_CLR_PINK        "Pink"
-    XTP_IDS_CLR_GOLD        "Gold"
-    XTP_IDS_CLR_YELLOW      "Yellow"
-    XTP_IDS_CLR_BRIGHT_GREEN "Bright Green"
-    XTP_IDS_CLR_TURQUOISE   "Turquoise"
-    XTP_IDS_CLR_SKY_BLUE    "Sky Blue"
-    XTP_IDS_CLR_PLUM        "Plum"
-    XTP_IDS_CLR_GRAY25      "Gray-25%"
-    XTP_IDS_CLR_ROSE        "Rose"
-    XTP_IDS_CLR_TAN         "Tan"
-    XTP_IDS_CLR_LIGHT_YELLOW "Light Yellow"
-    XTP_IDS_CLR_LIGHT_GREEN "Light Green"
-    XTP_IDS_CLR_LIGHT_TURQUOISE "Light Turquoise"
-    XTP_IDS_CLR_PALE_BLUE   "Pale Blue"
-    XTP_IDS_CLR_BLACK       "Black"
-    XTP_IDS_CLR_BROWN       "Brown"
-    XTP_IDS_CLR_OLIVE_GREEN "Olive Green"
-    XTP_IDS_CLR_DARK_GREEN  "Dark Green"
-    XTP_IDS_CLR_DARK_TEAL   "Dark Teal"
-    XTP_IDS_CLR_DARK_BLUE   "Dark Blue"
-    XTP_IDS_CLR_LAVENDER    "Lavender"
-    XTP_IDS_CLR_WHITE       "White"
-    XTP_IDS_CLR_GRAY        "Gray"
-    XTP_IDS_CLR_MAROON      "Maroon"
-    XTP_IDS_CLR_OLIVE       "Olive"
-    XTP_IDS_CLR_NAVY        "Navy"
-    XTP_IDS_CLR_PURPLE      "Purple"
-    XTP_IDS_CLR_SILVER      "Silver"
-    XTP_IDS_CLR_FUCHSIA     "Fuchsia"
-    XTP_IDS_CLR_NOFILL      "No Fill\nNo Fill"
-    XTP_IDS_CLR_AUTOMATIC   "Automatic Color\nAutomatic Color"
-    XTP_IDS_CLR_MORE        "More Colors..."
+    XTP_IDS_CLR_INDIGO      "Çivit"
+    XTP_IDS_CLR_GRAY80      "Gri-% 80"
+    XTP_IDS_CLR_DARK_RED    "Koyu Kýrmýzý"
+    XTP_IDS_CLR_ORANGE      "turuncu"
+    XTP_IDS_CLR_DARK_YELLOW "Koyu Sarý"
+    XTP_IDS_CLR_GREEN       "Yeþil"
+    XTP_IDS_CLR_TEAL        "Çamurcun"
+    XTP_IDS_CLR_BLUE        "Mavi yapmak"
+    XTP_IDS_CLR_BLUEGRAY    "Mavi-Gri"
+    XTP_IDS_CLR_GRAY50      "Gri% 50"
+    XTP_IDS_CLR_RED         "Kýrmýzý"
+    XTP_IDS_CLR_LIGHTORANGE "Iþýk Turuncu"
+    XTP_IDS_CLR_LIME        "Kireç"
+    XTP_IDS_CLR_SEA_GREEN   "Deniz yeþili"
+    XTP_IDS_CLR_AQUA        "Su"
+    XTP_IDS_CLR_LIGHT_BLUE  "Açýk mavi"
+    XTP_IDS_CLR_VIOLET      "Menekþe"
+    XTP_IDS_CLR_GRAY40      "Gri% 40"
+    XTP_IDS_CLR_PINK        "Pembe"
+    XTP_IDS_CLR_GOLD        "Altýn rengi"
+    XTP_IDS_CLR_YELLOW      "Sarý"
+    XTP_IDS_CLR_BRIGHT_GREEN "Parlak yeþil"
+    XTP_IDS_CLR_TURQUOISE   "Turkuaz"
+    XTP_IDS_CLR_SKY_BLUE    "Gök mavisi"
+    XTP_IDS_CLR_PLUM        "Erik"
+    XTP_IDS_CLR_GRAY25      "Gri-25%"
+    XTP_IDS_CLR_ROSE        "Gül"
+    XTP_IDS_CLR_TAN         "Yani"
+    XTP_IDS_CLR_LIGHT_YELLOW "Açýk sarý"
+    XTP_IDS_CLR_LIGHT_GREEN "Açýk yeþil"
+    XTP_IDS_CLR_LIGHT_TURQUOISE "Iþýk Turkuaz"
+    XTP_IDS_CLR_PALE_BLUE   "Soluk mavi"
+    XTP_IDS_CLR_BLACK       "Siyah"
+    XTP_IDS_CLR_BROWN       "Kahverengi"
+    XTP_IDS_CLR_OLIVE_GREEN "Zeytin yeþili"
+    XTP_IDS_CLR_DARK_GREEN  "Koyu yeþil"
+    XTP_IDS_CLR_DARK_TEAL   "Koyu Teal"
+    XTP_IDS_CLR_DARK_BLUE   "Koyu mavi"
+    XTP_IDS_CLR_LAVENDER    "Lavanta"
+    XTP_IDS_CLR_WHITE       "Ak"
+    XTP_IDS_CLR_GRAY        "Gri"
+    XTP_IDS_CLR_MAROON      "Kestane rengi"
+    XTP_IDS_CLR_OLIVE       "Zeytin"
+    XTP_IDS_CLR_NAVY        "Donanma"
+    XTP_IDS_CLR_PURPLE      "Mor"
+    XTP_IDS_CLR_SILVER      "Gümüþ rengi"
+    XTP_IDS_CLR_FUCHSIA     "Fuþya"
+    XTP_IDS_CLR_NOFILL      "Hiçbir Dolgu \nHayýr doldurun"
+    XTP_IDS_CLR_AUTOMATIC   "Otomatik Renk \nAutomatic Renk"
+    XTP_IDS_CLR_MORE        "Daha fazla renk..."
 END
 
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK)
 #endif // __XTPCOMMONRESOURCE_RC__

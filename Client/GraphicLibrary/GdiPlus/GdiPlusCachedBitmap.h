@@ -49,3 +49,4 @@ CachedBitmap::GetLastStatus() const
 
 #endif
 
+

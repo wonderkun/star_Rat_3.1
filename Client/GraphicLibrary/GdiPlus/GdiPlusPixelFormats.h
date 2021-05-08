@@ -56,36 +56,29 @@ typedef INT PixelFormat;
 #define    PixelFormat48bppRGB        (12 | (48 << 8) | PixelFormatExtended)
 #define    PixelFormat64bppARGB       (13 | (64 << 8) | PixelFormatAlpha  | PixelFormatCanonical | PixelFormatExtended)
 #define    PixelFormat64bppPARGB      (14 | (64 << 8) | PixelFormatAlpha  | PixelFormatPAlpha | PixelFormatExtended)
-#define    PixelFormatMax             15
+#define    PixelFormat32bppCMYK       (15 | (32 << 8))
+#define    PixelFormatMax             16
 
 inline UINT
-GetPixelFormatSize(
-                   PixelFormat pixfmt
-    )
+GetPixelFormatSize(PixelFormat pixfmt)
 {
     return (pixfmt >> 8) & 0xff;
 }
 
 inline BOOL
-IsIndexedPixelFormat(
-                     PixelFormat pixfmt
-    )
+IsIndexedPixelFormat(PixelFormat pixfmt)
 {
     return (pixfmt & PixelFormatIndexed) != 0;
 }
 
 inline BOOL
-IsAlphaPixelFormat(
-                     PixelFormat pixfmt
-)
+IsAlphaPixelFormat(PixelFormat pixfmt)
 {
    return (pixfmt & PixelFormatAlpha) != 0;
 }
 
 inline BOOL
-IsExtendedPixelFormat(
-                     PixelFormat pixfmt
-    )
+IsExtendedPixelFormat(PixelFormat pixfmt)
 {
    return (pixfmt & PixelFormatExtended) != 0;
 }
@@ -99,12 +92,80 @@ IsExtendedPixelFormat(
 //--------------------------------------------------------------------------
 
 inline BOOL
-IsCanonicalPixelFormat(
-                     PixelFormat pixfmt
-    )
+IsCanonicalPixelFormat(PixelFormat pixfmt)
 {
    return (pixfmt & PixelFormatCanonical) != 0;
 }
+
+#if (GDIPVER >= 0x0110)
+//----------------------------------------------------------------------------
+// Color format conversion parameters
+//----------------------------------------------------------------------------
+
+enum PaletteType
+{
+    // Arbitrary custom palette provided by caller.
+    
+    PaletteTypeCustom           = 0,
+    
+    // Optimal palette generated using a median-cut algorithm.
+    
+    PaletteTypeOptimal        = 1,
+    
+    // Black and white palette.
+    
+    PaletteTypeFixedBW          = 2,
+    
+    // Symmetric halftone palettes.
+    // Each of these halftone palettes will be a superset of the system palette.
+    // E.g. Halftone8 will have it's 8-color on-off primaries and the 16 system
+    // colors added. With duplicates removed, that leaves 16 colors.
+    
+    PaletteTypeFixedHalftone8   = 3, // 8-color, on-off primaries
+    PaletteTypeFixedHalftone27  = 4, // 3 intensity levels of each color
+    PaletteTypeFixedHalftone64  = 5, // 4 intensity levels of each color
+    PaletteTypeFixedHalftone125 = 6, // 5 intensity levels of each color
+    PaletteTypeFixedHalftone216 = 7, // 6 intensity levels of each color
+
+    // Assymetric halftone palettes.
+    // These are somewhat less useful than the symmetric ones, but are 
+    // included for completeness. These do not include all of the system
+    // colors.
+    
+    PaletteTypeFixedHalftone252 = 8, // 6-red, 7-green, 6-blue intensities
+    PaletteTypeFixedHalftone256 = 9, // 8-red, 8-green, 4-blue intensities
+};
+
+enum DitherType
+{
+    DitherTypeNone          = 0,
+    
+    // Solid color - picks the nearest matching color with no attempt to 
+    // halftone or dither. May be used on an arbitrary palette.
+    
+    DitherTypeSolid         = 1,
+    
+    // Ordered dithers and spiral dithers must be used with a fixed palette.
+    
+    // NOTE: DitherOrdered4x4 is unique in that it may apply to 16bpp 
+    // conversions also.
+    
+    DitherTypeOrdered4x4    = 2,
+    
+    DitherTypeOrdered8x8    = 3,
+    DitherTypeOrdered16x16  = 4,
+    DitherTypeSpiral4x4     = 5,
+    DitherTypeSpiral8x8     = 6,
+    DitherTypeDualSpiral4x4 = 7,
+    DitherTypeDualSpiral8x8 = 8,
+    
+    // Error diffusion. May be used with any palette.
+    
+    DitherTypeErrorDiffusion   = 9,
+
+    DitherTypeMax              = 10
+};
+#endif //(GDIPVER >= 0x0110)
 
 enum PaletteFlags
 {
@@ -115,10 +176,13 @@ enum PaletteFlags
 
 struct ColorPalette
 {
+
 public:
+
     UINT Flags;             // Palette flags
     UINT Count;             // Number of color entries
     ARGB Entries[1];        // Palette color entries
 };
 
 #endif
+

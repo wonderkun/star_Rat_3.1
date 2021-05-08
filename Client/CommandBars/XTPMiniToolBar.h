@@ -1,7 +1,6 @@
 // XTPMiniToolBar.h : interface for the CXTPMiniToolBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMINITOOLBAR_H__)
-#define __XTPMINITOOLBAR_H__
+#	define __XTPMINITOOLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPPopupBar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CXTPMiniToolBar window
@@ -48,7 +47,6 @@ class _XTP_EXT_CLASS CXTPMiniToolBar : public CXTPPopupToolBar
 	DECLARE_XTP_COMMANDBAR(CXTPMiniToolBar);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Call this method to create CXTPMiniToolBar class
@@ -59,7 +57,6 @@ public:
 	static CXTPMiniToolBar* AFX_CDECL CreateMiniToolBar(CXTPCommandBars* pCommandBars);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary: Constructs a CXTPMiniToolBar object.
 	//-------------------------------------------------------------------------
@@ -73,7 +70,6 @@ protected:
 	virtual ~CXTPMiniToolBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to show minibar in specific position
 	// Input:   nFlags - Reserved, currently not used.
@@ -107,8 +103,15 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnHookKeyDown(UINT nChar, LPARAM lParam);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary: Call this method to enable/disable keyboard interaction with custom control
+	// (xtpControlCustom) disabled by default (the minitoolbar closes on keyboard events in the
+	// custom control)
+	void SetCustomControlKeyboardInteraction(BOOL bInteract = TRUE);
 
+	BOOL IsCustomControlKeyboardInteraction() const;
+
+protected:
 	//-------------------------------------------------------------------------
 	// Summary: Translates all messages in message queue.
 	//-------------------------------------------------------------------------
@@ -117,7 +120,7 @@ protected:
 	//-------------------------------------------------------------------------
 	// Summary: Updates the opacity of the mini toolbar and popup menu.
 	//-------------------------------------------------------------------------
-	void UpdateOpacity();
+	virtual void UpdateOpacity();
 
 	//-----------------------------------------------------------------------
 	// Summary: Specifies whether the mouse cursor is hovered over the mini
@@ -126,8 +129,7 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL CursorInWindow() const;
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPMiniToolBar)
@@ -135,51 +137,73 @@ protected:
 	virtual void Animate();
 	virtual BOOL SetTrackingMode(int bMode, BOOL bSelectFirst = TRUE, BOOL bKeyboard = FALSE);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
-	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
+	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam,
+							  LRESULT& lResult);
 
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPMiniToolBar)
 	//}}AFX_MSG
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMiniToolBar);
+	DECLARE_INTERFACE_MAP()
+
+	long OlePopupMiniToolBar(const VARIANT& varFlags, const VARIANT& x, const VARIANT& y);
+	long OlePopupContextMenu(LPDISPATCH lpDispatch, const VARIANT& varFlags, const VARIANT& x,
+							 const VARIANT& y);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//      UpdateLayeredWindow declaration.
 	// Input:
-	//      LPFNUPDATELAYEREDWINDOW - Struct that contains the position, size, shape, content, and translucency of a layered window.
+	//      LPFNUPDATELAYEREDWINDOW - Struct that contains the position, size, shape, content, and
+	//      translucency of a layered window.
 	// Remarks:
-	//      Required for transparent Windows.  But they are not present in the VC6 headers. They are only present
-	//      on Win2k or later.
+	//      Required for transparent Windows.  But they are not present in the VC6 headers. They are
+	//      only present on Win2k or later.
 	// Returns:
 	//      TRUE if successful; otherwise returns FALSE
 	//-------------------------------------------------------------------------
-	typedef BOOL(WINAPI* LPFNUPDATELAYEREDWINDOW) (HWND hwnd, HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, DWORD dwFlags);
+	typedef BOOL(WINAPI* LPFNUPDATELAYEREDWINDOW)(HWND hwnd, HDC hdcDst, POINT* pptDst, SIZE* psize,
+												  HDC hdcSrc, POINT* pptSrc, COLORREF crKey,
+												  BLENDFUNCTION* pblend, DWORD dwFlags);
 
 	//-------------------------------------------------------------------------
 	// Summary:
 	//      SetLayeredWindowAttributes declaration.
 	// Input:
-	//      PFNSETLAYEREDWINDOWATTRIBUTES - Struct that contains the opacity and transparency color key of a layered window.
+	//      PFNSETLAYEREDWINDOWATTRIBUTES - Struct that contains the opacity and transparency color
+	//      key of a layered window.
 	// Remarks:
-	//      Required for transparent Windows.  But they are not present in the VC6 headers. They are only present
-	//      on Win2k or later.
+	//      Required for transparent Windows.  But they are not present in the VC6 headers. They are
+	//      only present on Win2k or later.
 	// Returns:
 	//      TRUE if successful; otherwise returns FALSE
 	//-------------------------------------------------------------------------
-	typedef BOOL (WINAPI *PFNSETLAYEREDWINDOWATTRIBUTES) (HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags);
+	typedef BOOL(WINAPI* PFNSETLAYEREDWINDOWATTRIBUTES)(HWND hwnd, COLORREF crKey, BYTE bAlpha,
+														DWORD dwFlags);
 
-	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes;  // Point to Transparency proc in USER32.dll module
-	LPFNUPDATELAYEREDWINDOW m_pfnUpdateLayeredWindow;               // Point to UpdateLayeredWindow proc in USER32.dll module
+	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes; // Point to Transparency proc in
+																   // USER32.dll module
+	LPFNUPDATELAYEREDWINDOW m_pfnUpdateLayeredWindow; // Point to UpdateLayeredWindow proc in
+													  // USER32.dll module
 
-	BOOL m_bActivated;          // TRUE if the mini toolbar is activated.
-	int m_nOpacity;         // Opacity level.
-	BOOL m_bTracking;           // TRUE if the command bar is in tracking mode.
-	CXTPPopupBar* m_pContextMenu;           // Context menu that is displayed in customization mode when a user right-clicks on a control.
+	BOOL m_bActivated;			  // TRUE if the mini toolbar is activated.
+	int m_nOpacity;				  // Opacity level.
+	BOOL m_bTracking;			  // TRUE if the command bar is in tracking mode.
+	CXTPPopupBar* m_pContextMenu; // Context menu that is displayed in customization mode when a
+								  // user right-clicks on a control.
+	BOOL m_bCustomControlKeyboardInteraction;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMINITOOLBAR_H__)

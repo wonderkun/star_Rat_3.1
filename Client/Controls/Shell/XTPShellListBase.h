@@ -1,7 +1,6 @@
 // XTPShellListBase.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLLISTBASE_H__)
-#define __XTPSHELLLISTBASE_H__
+#	define __XTPSHELLLISTBASE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDirWatcher;
 
@@ -34,10 +35,11 @@ class CXTPDirWatcher;
 //     CXTPShellListBase is a multiple inheritance class derived from CXTPListView
 //     and CXTPShellPidl. It is used to create a CXTPShellListBase class object.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPShellListBase : public CXTPListBase, public CXTPShellPidl
+class _XTP_EXT_CLASS CXTPShellListBase
+	: public CXTPListBase
+	, public CXTPShellPidl
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellListBase object
@@ -51,7 +53,6 @@ public:
 	virtual ~CXTPShellListBase();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to enable or disable the display of the
@@ -139,7 +140,8 @@ public:
 	//     true if successful, otherwise returns false.
 	//-----------------------------------------------------------------------
 	virtual bool ShellOpenItem(int iItem);
-	virtual bool ShellOpenItem(XTP_LVITEMDATA* lplvid); // <combine CXTPShellListBase::ShellOpenItem@int>
+	virtual bool ShellOpenItem(XTP_LVITEMDATA* lplvid); // <combine
+														// CXTPShellListBase::ShellOpenItem@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -218,8 +220,9 @@ public:
 	//-------------------------------------------------------------------------
 	BOOL RefreshRowColors();
 
-protected:
+	void SetExplorerStyle();
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPShellListBase class to
@@ -271,7 +274,7 @@ protected:
 	virtual BOOL IsItemFiltered(LPCTSTR lpszItemName, ULONG ulItemAttrs);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPShellListBase)
 	virtual void UpdateList(int nMessage, XTP_TVITEMDATA* pItemData);
 	//}}AFX_VIRTUAL
@@ -279,59 +282,67 @@ protected:
 	//{{AFX_MSG(CXTPShellListBase)
 	afx_msg void OnDeleteListItem(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int              m_nNameColumnWidth; // Size in pixels for the name column width.
-	UINT             m_uFlags;           // Flags indicating which items to include in the enumeration.
-	BOOL             m_bContextMenu;     // TRUE to display the shell context menu on right item click.
-	LPITEMIDLIST     m_pidlINet;         // Points to the CSIDL_INTERNET folder location.
-	CString          m_csIncludeEXT;     // Comma delimited string of extensions to include in file display.
-	CXTPDirWatcher*   m_pDirThread;       // Thread used to monitor directory activity.
-	CXTPShellSettings m_shSettings;       // Contains SHELLFLAGSTATE info.
-	LPSHELLFOLDER    m_lpsfFolder;       // Represents the parent IShellFolder interface.
+	int m_nNameColumnWidth;  // Size in pixels for the name column width.
+	UINT m_uFlags;			 // Flags indicating which items to include in the enumeration.
+	BOOL m_bContextMenu;	 // TRUE to display the shell context menu on right item click.
+	LPITEMIDLIST m_pidlINet; // Points to the CSIDL_INTERNET folder location.
+	CString m_csIncludeEXT;  // Comma delimited string of extensions to include in file display.
+	CXTPDirWatcher* m_pDirThread;   // Thread used to monitor directory activity.
+	CXTPShellSettings m_shSettings; // Contains SHELLFLAGSTATE info.
+	LPSHELLFOLDER m_lpsfFolder;		// Represents the parent IShellFolder interface.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPShellListBase::SetEnumFlags(UINT uFlags) {
+AFX_INLINE void CXTPShellListBase::SetEnumFlags(UINT uFlags)
+{
 	m_uFlags = uFlags;
 }
-AFX_INLINE void CXTPShellListBase::EnableContextMenu(BOOL bEnable) {
+AFX_INLINE void CXTPShellListBase::EnableContextMenu(BOOL bEnable)
+{
 	m_bContextMenu = bEnable;
 }
-AFX_INLINE void CXTPShellListBase::SetIncludeExtensions(LPCTSTR lpszFilters) {
+AFX_INLINE void CXTPShellListBase::SetIncludeExtensions(LPCTSTR lpszFilters)
+{
 	m_csIncludeEXT = lpszFilters;
 }
 
-
 //{{AFX_CODEJOCK_PRIVATE
-#define DECLATE_SHELLLIST_BASE(ClassName, List, Base)\
-DECLATE_LIST_BASE(Base##List, List, Base)\
-class _XTP_EXT_CLASS ClassName : public Base##List\
-{\
-protected:  \
-	void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) {\
-		NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;\
-		OnDragDrop(pNMListView);    \
-		*pResult = 0;\
-	}   \
-	void OnDeleteListItem(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnDeleteListItem(pNMHDR, pResult);\
-	}   \
-	void OnContextMenu(CWnd* pWnd, CPoint pos) {\
-		if (m_bContextMenu) ShowShellContextMenu(pos);\
-		else List::OnContextMenu(pWnd, pos);\
-	} \
-};
+#	define DECLARE_SHELLLIST_BASE(ClassName, List, Base)                                          \
+		DECLARE_LIST_BASE(Base##List, List, Base)                                                  \
+		class _XTP_EXT_CLASS ClassName : public Base##List                                         \
+		{                                                                                          \
+		protected:                                                                                 \
+			void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)                                      \
+			{                                                                                      \
+				NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;                                   \
+				OnDragDrop(pNMListView);                                                           \
+				*pResult = 0;                                                                      \
+			}                                                                                      \
+			void OnDeleteListItem(NMHDR* pNMHDR, LRESULT* pResult)                                 \
+			{                                                                                      \
+				Base::OnDeleteListItem(pNMHDR, pResult);                                           \
+			}                                                                                      \
+			void OnContextMenu(CWnd* pWnd, CPoint pos)                                             \
+			{                                                                                      \
+				if (m_bContextMenu)                                                                \
+					ShowShellContextMenu(pos);                                                     \
+				else                                                                               \
+					List::OnContextMenu(pWnd, pos);                                                \
+			}                                                                                      \
+		};
 
-#define ON_SHELLLIST_REFLECT\
-	ON_NOTIFY_REFLECT(NM_DBLCLK, OnDblclk)\
-	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)\
-	ON_NOTIFY_REFLECT(LVN_BEGINRDRAG, OnBeginDrag)\
-	ON_NOTIFY_REFLECT(LVN_DELETEITEM, OnDeleteListItem)\
-	ON_WM_CONTEXTMENU()\
-	ON_LISTCTRL_REFLECT
+#	define ON_SHELLLIST_REFLECT                                                                   \
+		ON_NOTIFY_REFLECT(NM_DBLCLK, OnDblclk)                                                     \
+		ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)                                              \
+		ON_NOTIFY_REFLECT(LVN_BEGINRDRAG, OnBeginDrag)                                             \
+		ON_NOTIFY_REFLECT(LVN_DELETEITEM, OnDeleteListItem)                                        \
+		ON_WM_CONTEXTMENU()                                                                        \
+		ON_LISTCTRL_REFLECT
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTPSHELLLISTBASE_H__
 //}}AFX_CODEJOCK_PRIVATE

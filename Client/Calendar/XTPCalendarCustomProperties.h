@@ -1,7 +1,6 @@
 // XTPCalendarCustomProperties.h: interface for the CXTPCalendarCustomProperties class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_CUSTOM_PROPERTIES_H__)
-#define _XTP_CALENDAR_CUSTOM_PROPERTIES_H__
+#	define _XTP_CALENDAR_CUSTOM_PROPERTIES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-//#include "Common/XTPPropExchange.h"
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //////////////////////
 class CXTPPropExchange;
@@ -46,7 +45,6 @@ class _XTP_EXT_CLASS CXTPCalendarCustomProperties : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarCustomProperties)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -209,8 +207,6 @@ public:
 	//-----------------------------------------------------------------------
 	void CopyTo(CXTPCalendarCustomProperties* pDest);
 
-
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -248,11 +244,31 @@ protected:
 	typedef CMap<CString, LPCTSTR, COleVariant, COleVariant&> CXTPOleVariantMap;
 	//}}AFX_CODEJOCK_PRIVATE
 
-	CXTPOleVariantMap   m_mapProperties;    // Properties storage map.
-	BOOL                m_bNameIgnoreCase;  // if TRUE - properties names are not case sensitive.
+	CXTPOleVariantMap m_mapProperties; // Properties storage map.
+	BOOL m_bNameIgnoreCase;			   // if TRUE - properties names are not case sensitive.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg VARIANT OleGetProperty(LPCTSTR strName);
+	afx_msg void OleSetProperty(LPCTSTR strName, VARIANT& Value);
+
+	afx_msg long OleGetCount();
+
+	afx_msg void OleRemove(LPCTSTR strName);
+	afx_msg void OleRemoveAll();
+
+	afx_msg void OleLoadFromString(LPCTSTR strData);
+	afx_msg BSTR OleSaveToString();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarCustomProperties);
+
+	DECLARE_ENUM_VARIANTLIST(CXTPCalendarCustomProperties);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_CUSTOM_PROPERTIES_H__)

@@ -439,7 +439,11 @@ enum SmoothingMode
     SmoothingModeHighSpeed   = QualityModeLow,
     SmoothingModeHighQuality = QualityModeHigh,
     SmoothingModeNone,
-    SmoothingModeAntiAlias
+    SmoothingModeAntiAlias,
+#if (GDIPVER >= 0x0110)
+    SmoothingModeAntiAlias8x4 = SmoothingModeAntiAlias,
+    SmoothingModeAntiAlias8x8
+#endif //(GDIPVER >= 0x0110) 
 };
 
 //---------------------------------------------------------------------------
@@ -511,8 +515,13 @@ enum ObjectType
     ObjectTypeStringFormat,
     ObjectTypeImageAttributes,
     ObjectTypeCustomLineCap,
+#if (GDIPVER >= 0x0110)
+    ObjectTypeGraphics,
 
+    ObjectTypeMax = ObjectTypeGraphics,
+#else
     ObjectTypeMax = ObjectTypeCustomLineCap,
+#endif //(GDIPVER >= 0x0110)
     ObjectTypeMin = ObjectTypeBrush
 };
 
@@ -530,8 +539,6 @@ ObjectTypeIsValid(
 
 // We have to change the WMF record numbers so that they don't conflict with
 // the EMF and EMF+ record numbers.
-
-enum EmfPlusRecordType;
 
 #define GDIP_EMFPLUS_RECORD_BASE        0x00004000
 #define GDIP_WMF_RECORD_BASE            0x00010000
@@ -824,6 +831,14 @@ enum EmfPlusRecordType
     EmfPlusRecordTypeOffsetClip,
 
     EmfPlusRecordTypeDrawDriverString,
+#if (GDIPVER >= 0x0110)
+    EmfPlusRecordTypeStrokeFillPath,
+    EmfPlusRecordTypeSerializableObject,
+
+    EmfPlusRecordTypeSetTSGraphics,
+    EmfPlusRecordTypeSetTSClip,
+#endif
+    // NOTE: New records *must* be added immediately before this line.
 
     EmfPlusRecordTotal,
 
@@ -914,7 +929,8 @@ enum StringFormatFlags
     StringFormatFlagsNoWrap                      = 0x00001000,
     StringFormatFlagsLineLimit                   = 0x00002000,
 
-    StringFormatFlagsNoClip                      = 0x00004000
+    StringFormatFlagsNoClip                      = 0x00004000,
+    StringFormatFlagsBypassGDI                   = 0x80000000
 };
 
 //---------------------------------------------------------------------------
@@ -1011,10 +1027,13 @@ enum EncoderParameterValueType
                                                     // are inclusive at both ends
     EncoderParameterValueTypeUndefined      = 7,    // 8-bit byte that can take any value
                                                     // depending on field definition
-    EncoderParameterValueTypeRationalRange  = 8     // Two Rationals. The first Rational
+    EncoderParameterValueTypeRationalRange  = 8,    // Two Rationals. The first Rational
                                                     // specifies the lower end and the second
                                                     // specifies the higher end. All values
                                                     // are inclusive at both ends
+#if (GDIPVER >= 0x0110)
+    EncoderParameterValueTypePointer        = 9     // a pointer to a parameter defined data.
+#endif //(GDIPVER >= 0x0110)
 };
 
 //---------------------------------------------------------------------------
@@ -1046,7 +1065,11 @@ enum EncoderValue
     EncoderValueFlush,
     EncoderValueFrameDimensionTime,
     EncoderValueFrameDimensionResolution,
-    EncoderValueFrameDimensionPage
+    EncoderValueFrameDimensionPage,
+#if (GDIPVER >= 0x0110)
+    EncoderValueColorTypeGray,
+    EncoderValueColorTypeRGB,
+#endif
 };
 
 //---------------------------------------------------------------------------
@@ -1060,6 +1083,21 @@ enum EmfToWmfBitsFlags
     EmfToWmfBitsFlagsIncludePlaceable = 0x00000002,
     EmfToWmfBitsFlagsNoXORClip        = 0x00000004
 };
+
+#if (GDIPVER >= 0x0110)
+//---------------------------------------------------------------------------
+// Conversion of Emf To Emf+ Bits flags
+//---------------------------------------------------------------------------
+
+enum ConvertToEmfPlusFlags
+{
+    ConvertToEmfPlusFlagsDefault       = 0x00000000,
+    ConvertToEmfPlusFlagsRopUsed       = 0x00000001,
+    ConvertToEmfPlusFlagsText          = 0x00000002,
+    ConvertToEmfPlusFlagsInvalidRecord = 0x00000004
+};
+#endif
+
 
 //---------------------------------------------------------------------------
 // Test Control flags
@@ -1075,3 +1113,4 @@ enum GpTestControlEnum
 
 
 #endif // !_GDIPLUSENUMS_H
+

@@ -1,7 +1,6 @@
 // XTPShellSettings.h: interface for the CXTPShellSettings class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLSETTINGS_H__)
-#define __XTPSHELLSETTINGS_H__
+#	define __XTPSHELLSETTINGS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -36,7 +37,6 @@
 class _XTP_EXT_CLASS CXTPShellSettings : public SHELLFLAGSTATE
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellSettings object
@@ -50,7 +50,6 @@ public:
 	~CXTPShellSettings();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function checks whether or not the Show All Files option is
@@ -166,47 +165,61 @@ public:
 	//-----------------------------------------------------------------------
 	void RefreshSettings();
 
-	COLORREF m_crCompColor; // RGB color value that represents the system alternate compressed color.
+	COLORREF m_crCompColor; // RGB color value that represents the system alternate compressed
+							// color.
 	COLORREF m_crEncrColor; // RGB color value that represents the system alternate encrypted color.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE bool CXTPShellSettings::ShowAllFiles() {
+AFX_INLINE bool CXTPShellSettings::ShowAllFiles()
+{
 	return fShowAllObjects != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowExtensions() {
+AFX_INLINE bool CXTPShellSettings::ShowExtensions()
+{
 	return fShowExtensions != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::NoConfirmRecycle() {
+AFX_INLINE bool CXTPShellSettings::NoConfirmRecycle()
+{
 	return fNoConfirmRecycle != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowSysFiles() {
+AFX_INLINE bool CXTPShellSettings::ShowSysFiles()
+{
 	return fShowSysFiles != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowCompColor() {
+AFX_INLINE bool CXTPShellSettings::ShowCompColor()
+{
 	return fShowCompColor != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::DoubleClickOpen() {
+AFX_INLINE bool CXTPShellSettings::DoubleClickOpen()
+{
 	return fDoubleClickInWebView != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::HTMLDesktop() {
+AFX_INLINE bool CXTPShellSettings::HTMLDesktop()
+{
 	return fDesktopHTML != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::Win95Classic() {
+AFX_INLINE bool CXTPShellSettings::Win95Classic()
+{
 	return fWin95Classic != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::AllowUpperCase() {
+AFX_INLINE bool CXTPShellSettings::AllowUpperCase()
+{
 	return fDontPrettyPath != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowAttributes() {
+AFX_INLINE bool CXTPShellSettings::ShowAttributes()
+{
 	return fShowAttribCol != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowMapNetworkDrive() {
+AFX_INLINE bool CXTPShellSettings::ShowMapNetworkDrive()
+{
 	return fMapNetDrvBtn != 0 ? true : false;
 }
-AFX_INLINE bool CXTPShellSettings::ShowInfoTips() {
+AFX_INLINE bool CXTPShellSettings::ShowInfoTips()
+{
 	return fShowInfoTip != 0 ? true : false;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSHELLSETTINGS_H__)

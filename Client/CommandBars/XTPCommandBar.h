@@ -1,7 +1,6 @@
 // XTPCommandBar.h : interface for the CXTPCommandBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOMMANDBAR_H__)
-#define __XTPCOMMANDBAR_H__
+#	define __XTPCOMMANDBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Common/XTPSystemHelpers.h"
-#include "XTPCommandBarsDefines.h"
-#include "Common/XTPHookManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockBar;
 class CXTPControls;
@@ -45,131 +42,25 @@ struct XTP_COMMANDBARS_PROPEXCHANGE_PARAM;
 class CXTPToolTipContext;
 class CXTPCommandBarAnimation;
 class CXTPCommandBarKeyboardTip;
+class CXTPCommandBarList;
 
 //{{AFX_CODEJOCK_PRIVATE
-#define XTP_TID_HOVER    112223
-#define XTP_TID_EXPANDED_POPUP 112224
-#define XTP_BOOL_DEFAULT 2
-#define XTP_TID_SHOWKEYBOARDTIPS 0xCCCA
+#	define XTP_TID_HOVER 112223
+#	define XTP_TID_EXPANDED_POPUP 112224
+#	define XTP_BOOL_DEFAULT 2
+#	define XTP_TID_SHOWKEYBOARDTIPS 0xCCCA
 //}}AFX_CODEJOCK_PRIVATE
-
-//===========================================================================
-// Summary:
-//     CXTPCommandBarList is a CList derived class. It is used as a collection
-//     of CXTPCommandBar classes.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBarList : public CXTPCmdTarget
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPCommandBarList object
-	// Parameters:
-	//     pCommandBars - Parent CXTPCommandBars pointer
-	//-----------------------------------------------------------------------
-	CXTPCommandBarList(CXTPCommandBars* pCommandBars)
-	{
-		m_pCommandBars = pCommandBars;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPCommandBarList object, handles cleanup and
-	//     deallocation
-	//-----------------------------------------------------------------------
-	virtual ~CXTPCommandBarList();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to find the CommandBar with the specified
-	//     identifier.
-	// Parameters:
-	//     nBarID - Identifier CommandBar to find.
-	// Returns:
-	//     A pointer to a CXTPCommandBar object.
-	//-----------------------------------------------------------------------
-	CXTPCommandBar* FindCommandBar(UINT nBarID) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns Commandbars object attached to list
-	// Returns:
-	//     Pointer to CXTPCommandBars parent object
-	// See Also:
-	//     CXTPCommandBars, CXTPCommandBar
-	//-----------------------------------------------------------------------
-	CXTPCommandBars* GetCommandBars() const { return m_pCommandBars; }
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns CommandBar in list by its index
-	// Parameters:
-	//     nIndex - Index of the commandbar to return
-	// Returns:
-	//     CommandBar in list by its index
-	// See Also: GetCount
-	//-----------------------------------------------------------------------
-	CXTPCommandBar* GetAt(int nIndex) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Return count of commanbars in list
-	// Returns:
-	//     Commanbars count
-	// See Also: GetAt
-	//-----------------------------------------------------------------------
-	int GetCount() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to add new commandbar to the list
-	// Parameters:
-	//      pCommandBar - CommandBar to be added
-	// Returns:
-	//      Pointer to just added CommandBar
-	// See Also: GetAt, GetCount
-	//-----------------------------------------------------------------------
-	virtual CXTPCommandBar* Add(CXTPCommandBar* pCommandBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to check if CommandBar exists in the list
-	// Parameters:
-	//      pCommandBar - CommandBar to test
-	// Returns:
-	//      TRUE if CommandBar exists in the list
-	//-----------------------------------------------------------------------
-	BOOL Lookup(CXTPCommandBar* pCommandBar) const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this method to clean the list
-	// See Also: Remove
-	//-------------------------------------------------------------------------
-	void RemoveAll();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to remove CommandBar from the list
-	// Parameters:
-	//     pCommandBar - CommandBar to be removed
-	// See Also: RemoveAll
-	//-----------------------------------------------------------------------
-	void Remove(CXTPCommandBar* pCommandBar);
-
-protected:
-	CXTPCommandBars* m_pCommandBars;            // Parent CXTPCommandBars object
-	CArray<CXTPCommandBar*, CXTPCommandBar*> m_arrBars;         // Array of CommandBars
-};
 
 //===========================================================================
 // Summary:
 //     CXTPCommandBar is a CWnd derived class. It represents the parent
 //     class for command bars.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBar : public CWnd, public CXTPHookManagerHookAble, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPCommandBar
+	: public CWnd
+	, public CXTPHookManagerHookAble
+	, public CXTPAccessible
+	, IXTPPaintManagerEvents
 {
 protected:
 	//-----------------------------------------------------------------------
@@ -185,7 +76,6 @@ protected:
 	virtual ~CXTPCommandBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the tracking state.
@@ -227,7 +117,8 @@ public:
 	// Summary:
 	//     Call this member to change text orientation.
 	// PArameters:
-	//     nTextOrientation - xtpBarTextHorizontal to draw text horizontal and xtpBarTextVertical to draw text vertical.
+	//     nTextOrientation - xtpBarTextHorizontal to draw text horizontal and xtpBarTextVertical to
+	//     draw text vertical.
 	//-----------------------------------------------------------------------
 	void SetTextOrientation(XTPBarTextOrientation nTextOrientation);
 
@@ -387,8 +278,8 @@ public:
 	//     dwFlagsAdd    - Flags to be added.
 	//     dwFlagsRemove - Flags to be removed.
 	// Remarks:
-	//     dwFlagsAdd and dwFlagsRemove can be combination of XTPToolBarFlags and XTPMenuBarFlags<p/>
-	//     Use the bitwise-OR (|) operator to combine the flags.<p/>
+	//     dwFlagsAdd and dwFlagsRemove can be combination of XTPToolBarFlags and
+	//     XTPMenuBarFlags<p/> Use the bitwise-OR (|) operator to combine the flags.<p/>
 	//     * <b>xtpFlagAlignTop</b> -  Allows docking at the top of the client area.
 	//     * <b>xtpFlagAlignBottom</b> -  Allows docking at the bottom of the client area.
 	//     * <b>xtpFlagAlignLeft</b> -  Allows docking on the left side of the client area.
@@ -404,8 +295,11 @@ public:
 	//     * <b>xtpFlagHideMaximizeBox</b> - To hide maximize box.
 	//     * <b>xtpFlagIgnoreSetMenuMessage</b> - To ignore MDI menus.
 	//     * <b>xtpFlagHideClose</b> - To hide close button.
-	//     * <b>xtpFlagHideMDIButtons</b> - Specifies to hide all MDI buttons displayed on the Command Bar.
-	//     * <b>xtpFlagAddMDISysPopup</b> - To add system MDI popup bar.  Specifies to add system MDI popup menu to the Menu Bar.  This will appears as an icon to the far left of the Menu Bar and will display the MDI menu bar options when clicked.
+	//     * <b>xtpFlagHideMDIButtons</b> - Specifies to hide all MDI buttons displayed on the
+	//     Command Bar.
+	//     * <b>xtpFlagAddMDISysPopup</b> - To add system MDI popup bar.  Specifies to add system
+	//     MDI popup menu to the Menu Bar.  This will appears as an icon to the far left of the Menu
+	//     Bar and will display the MDI menu bar options when clicked.
 	//
 	// See Also: XTPMenuBarFlags, XTPToolBarFlags
 	//-----------------------------------------------------------------------
@@ -626,7 +520,8 @@ public:
 	//     ptDrop      - Point where user drops the control.
 	//     ptDrag      - Point where user starts drag the control.
 	//-----------------------------------------------------------------------
-	virtual void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop, CPoint ptDrag);
+	virtual void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop,
+								 CPoint ptDrag);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -636,6 +531,7 @@ public:
 	//     TRUE if the command bar is customizable; otherwise returns FALSE
 	//-----------------------------------------------------------------------
 	virtual BOOL IsCustomizable() const;
+	BOOL IsCustomizeDialogPresent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -859,7 +755,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL IsKeyboardCuesVisible() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called internally to prevent command bar to grab edit focus.
@@ -924,7 +819,8 @@ public:
 	//     lResult  - The return value of WindowProc. Depends on the message;
 	//                may be NULL.
 	//-----------------------------------------------------------------------
-	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
+	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam,
+							  LRESULT& lResult);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1052,6 +948,18 @@ public:
 	//-------------------------------------------------------------------------
 	void HideKeyboardTips();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Captures the mouse cursor for a control specified.
+	//-----------------------------------------------------------------------
+	void LockMouseMove(CXTPControl* pControl);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Unlocks the mouse cursor.
+	//-----------------------------------------------------------------------
+	void UnlockMouseMove();
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1069,8 +977,9 @@ protected:
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. dwMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
@@ -1082,15 +991,20 @@ protected:
 	// Parameters:
 	//     key - Special keys enumerator. Can be any of the values listed in the Remarks section.
 	// Remarks:
-	//     CXTPCommandBar maps key passed as parameter of OnKeyDown to XTPSpecialKey enumerator and call ProcessSpecialKey.<p/>
-	//     key parameter can be one of the following:
-	//         * <b>xtpKeyNext</b> Indicates the RIGHT or DOWN key was pressed  Next control must be selected
-	//         * <b>xtpKeyPrev</b> Indicates the LEFT or UP key was pressed. Previous control must be selected.
-	//         * <b>xtpKeyBack</b> Indicates the LEFT key was pressed for popup bar. Current submenu must be closed
-	//         * <b>xtpKeyPopup</b> Indicates the RIGHT key was pressed for popup bar. Submenu must be opened.
+	//     CXTPCommandBar maps key passed as parameter of OnKeyDown to XTPSpecialKey enumerator and
+	//     call ProcessSpecialKey.<p/> key parameter can be one of the following:
+	//         * <b>xtpKeyNext</b> Indicates the RIGHT or DOWN key was pressed  Next control must be
+	//         selected
+	//         * <b>xtpKeyPrev</b> Indicates the LEFT or UP key was pressed. Previous control must
+	//         be selected.
+	//         * <b>xtpKeyBack</b> Indicates the LEFT key was pressed for popup bar. Current submenu
+	//         must be closed
+	//         * <b>xtpKeyPopup</b> Indicates the RIGHT key was pressed for popup bar. Submenu must
+	//         be opened.
 	//         * <b>xtpKeyEscape</b> Indicates the ESCAPE key was pressed.
 	//         * <b>xtpKeyReturn</b> Indicates the RETURN key was pressed
-	//         * <b>xtpKeyHome</b> Indicates the HOME key was pressed. First control must be selected.
+	//         * <b>xtpKeyHome</b> Indicates the HOME key was pressed. First control must be
+	//         selected.
 	//         * <b>xtpKeyEnd</b> Indicates the END key was pressed. Last control must be selected.
 	// Returns:
 	//     TRUE if key handled, otherwise returns FALSE
@@ -1128,8 +1042,10 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void UpdateShortcuts();
 
-protected:
+public:
+	BOOL IsDwmEnabled() const;
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves active MDI document template
@@ -1142,7 +1058,6 @@ protected:
 	UINT GetActiveDocTemplate() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to assign self identifiers for serialization process.
@@ -1151,11 +1066,13 @@ protected:
 	//     pCommandBarList - List of CommandBars.
 	//     pParam          - Address of a XTP_COMMANDBARS_PROPEXCHANGE_PARAM structure.
 	//-----------------------------------------------------------------------
-	virtual void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	virtual void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList,
+										XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called in serialization process.to restore popups from list of command bars.
+	//     This method is called in serialization process.to restore popups from list of command
+	//     bars.
 	// Parameters:
 	//     pCommandBarList - List of CommandBars.
 	//-----------------------------------------------------------------------
@@ -1173,37 +1090,39 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnRemoved();
 
-
 	virtual BOOL IsControlEnabled(const CXTPControl* pControl) const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
-	virtual void CustomizeFindDropIndex(CXTPControl* pDataObject, const CPoint& point, CRect& rcMarker, int& nDropIndex, BOOL& bDropAfter);
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual void OnPaintManagerDestroyed(CXTPPaintManager* pPaintManager);
+	virtual void CustomizeFindDropIndex(CXTPControl* pDataObject, const CPoint& point,
+										CRect& rcMarker, int& nDropIndex, BOOL& bDropAfter);
 	void CustomizeDrawMarker(CDC* pDC);
 	void UpdateDocTemplateControls();
 	BOOL IsMouseLocked() const;
 	CSize GetAutoIconSize(BOOL bLarge) const;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_VIRTUAL(CXTPCommandBar)
-	public:
+public:
 	virtual void OnFinalRelease();
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -1235,72 +1154,141 @@ protected:
 	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
 	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	int              m_nStateFlags;         // State of the command bars.
-	static int       s_nHoverDelay;         // Hover delay time
-	static int       s_nExpandDelay;        // Expand delay time
-	static int       s_nExpandHoverDelay;   // Expand hover delay
-	BOOL             m_bComboBar;           // TRUE if it is combo box list
-	BOOL             m_bTrackOnHover;       // TRUE to select item if mouse stay over control
+	int m_nStateFlags;				// State of the command bars.
+	static int s_nHoverDelay;		// Hover delay time
+	static int s_nExpandDelay;		// Expand delay time
+	static int s_nExpandHoverDelay; // Expand hover delay
+	BOOL m_bComboBar;				// TRUE if it is combo box list
+	BOOL m_bTrackOnHover;			// TRUE to select item if mouse stay over control
 
 protected:
-	BOOL             m_bGrabFocus;          // TRUE to grab current focus.
-	int              m_nMRUWidth;           // Recent width.
-	int              m_nSelected;           // Selected control index.
-	int              m_nPopuped;            // Popuped control index.
-	HWND             m_hwndFocus;           // The handle of the window that currently has focus.
-	UINT             m_nBarID;              // Command bar's identifier.
-	BOOL             m_bVisible;            // TRUE if the command bar is visible.
-	BOOL             m_bTracking;           // TRUE if the command bar is in tracking mode.
-	CWnd*            m_pSite;               // Command bar's site.
-	DWORD            m_nIdleFlags;          // Idle flags.
-	DWORD            m_dwFlags;             // Command bar's flags.
-	DWORD            m_dwStyle;             // Command bar's styles.
-	CString          m_strTitle;            // Command bar's caption.
-	XTPBarType       m_barType;             // Type of the command bar.
-	CXTPControls*    m_pControls;           // A pointer to controls collection.
-	XTPBarPosition   m_barPosition;         // Position of the command bar.
-	CXTPCommandBars* m_pCommandBars;        // parent command bars class.
-	CWnd*            m_pOwner;              // Owner window.
-	CSize            m_szIcons;             // Size of the command bar's icons.
-	CSize            m_szButtons;           // Size of the command bar's icons.
-	BOOL             m_bTextBelow;          // TRUE if text is shown below the CommandBar buttons.
-	BOOL             m_bExecOnRButton;      // TRUE if the control button is executed on a right-click
-	BOOL             m_bIgnoreUpdateHandler;// TRUE to skip update handler for all child controls
-	BOOL             m_bRecursePopup;       // TRUE if popup bar was opened recursively. See TPM_RECURSE flag description.
-	int              m_nLockRecurse;        // TRUE if another popup bar is opened recursively.
-	BOOL             m_bKeyboardSelect;     // TRUE if last item was selected by keyboard.
-	BOOL             m_bCloseable;          // TRUE if the CommandBar can be closed and\or Hidden
-	BOOL             m_bCustomizable;       // TRUE if command bar is customizable.
-	CRect            m_rcMarker;            // Marker position.
-	BOOL             m_bVerticalMarker;     // TRUE to draw marker vertically.
-	DWORD_PTR        m_dwData;              // The 32-bit value associated with the command bar.
-	UINT*            m_pReturnCmd;          // Return command holder.
-	BOOL             m_bCustomizeDialogPresent; // TRUE if the command bar is present in Customize dialog.
-	BOOL             m_bAnimatePopup;       // TRUE to animate popup bar.
-	BOOL             m_nLockRedraw;         // TRUE if all drawing routines skipped
-	CXTPPaintManager* m_pPaintManager;      // Selected paint manager for command bar
-	CXTPImageManager* m_pImageManager;      // Selected image manager for command bar
-	BOOL             m_bMultiLine;          // True if multi line commandbar
-	XTPButtonStyle   m_buttonStyle;         // Default button Style
-	XTPBarTextOrientation m_nTextOrientation;   // Commandbar text orientation.
+	BOOL m_bGrabFocus;				 // TRUE to grab current focus.
+	int m_nMRUWidth;				 // Recent width.
+	int m_nSelected;				 // Selected control index.
+	int m_nPopuped;					 // Popuped control index.
+	HWND m_hwndFocus;				 // The handle of the window that currently has focus.
+	UINT m_nBarID;					 // Command bar's identifier.
+	BOOL m_bTracking;				 // TRUE if the command bar is in tracking mode.
+	CWnd* m_pSite;					 // Command bar's site.
+	DWORD m_nIdleFlags;				 // Idle flags.
+	DWORD m_dwFlags;				 // Command bar's flags.
+	DWORD m_dwStyle;				 // Command bar's styles.
+	CString m_strTitle;				 // Command bar's caption.
+	XTPBarType m_barType;			 // Type of the command bar.
+	CXTPControls* m_pControls;		 // A pointer to controls collection.
+	XTPBarPosition m_barPosition;	// Position of the command bar.
+	CXTPCommandBars* m_pCommandBars; // parent command bars class.
+	CWnd* m_pOwner;					 // Owner window.
+	CSize m_szIcons;				 // Size of the command bar's icons.
+	CSize m_szButtons;				 // Size of the command bar's buttons.
+	BOOL m_bTextBelow;				 // TRUE if text is shown below the CommandBar buttons.
+	BOOL m_bExecOnRButton;			 // TRUE if the control button is executed on a right-click
+	BOOL m_bIgnoreUpdateHandler;	 // TRUE to skip update handler for all child controls
+	BOOL m_bRecursePopup;   // TRUE if popup bar was opened recursively. See TPM_RECURSE flag
+							// description.
+	int m_nLockRecurse;		// TRUE if another popup bar is opened recursively.
+	BOOL m_bKeyboardSelect; // TRUE if last item was selected by keyboard.
+	BOOL m_bCloseable;		// TRUE if the CommandBar can be closed and\or Hidden
+	BOOL m_bCustomizable;   // TRUE if command bar is customizable.
+	CRect m_rcMarker;		// Marker position.
+	BOOL m_bVerticalMarker; // TRUE to draw marker vertically.
+	DWORD_PTR m_dwData;		// The 32-bit value associated with the command bar.
+	UINT* m_pReturnCmd;		// Return command holder.
+	BOOL m_bCustomizeDialogPresent;	// TRUE if the command bar is present in Customize dialog.
+	BOOL m_bAnimatePopup;			   // TRUE to animate popup bar.
+	BOOL m_nLockRedraw;				   // TRUE if all drawing routines skipped
+	CXTPPaintManager* m_pPaintManager; // Selected paint manager for command bar
+	CXTPImageManager* m_pImageManager; // Selected image manager for command bar
+	BOOL m_bMultiLine;				   // True if multi line commandbar
+	XTPButtonStyle m_buttonStyle;	  // Default button Style
+	XTPBarTextOrientation m_nTextOrientation; // Commandbar text orientation.
+	CXTPControl* m_pMouseMoveLockControl;
 
-	CXTPToolTipContext* m_pToolTipContext;  // Tool tip Context.
-	CXTPCommandBarAnimation* m_pAnimation;  // Animation context
-	CSize            m_szButtonSpacing; // Spacing used between toolbar buttons
+	CXTPToolTipContext* m_pToolTipContext; // Tool tip Context.
+	CXTPCommandBarAnimation* m_pAnimation; // Animation context
+	CSize m_szButtonSpacing;			   // Spacing used between toolbar buttons
 private:
 	int m_nClickedControl;
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	DECLARE_XTP_COMMANDBAR(CXTPCommandBar)
 
 	class CCommandBarCmdUI;
 
 	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
 
+#	ifdef _XTP_ACTIVEX
+
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCommandBar);
+
+	afx_msg LPDISPATCH OleControls();
+	afx_msg long OleGetType();
+	afx_msg LPDISPATCH OleGetCommandBars();
+	afx_msg long OleGetPosition();
+	afx_msg void OleSetPosition(long);
+	afx_msg long OleShowPopup(const VARIANT& Flags, const VARIANT& x, const VARIANT& y);
+	afx_msg void OleSetIconSize(long cx, long cy);
+	afx_msg int OleGetIconWidth();
+	afx_msg int OleGetIconHeight();
+	afx_msg void OleEnableDocking(long dwFlags);
+	afx_msg void OleSetTearOffPopup(LPCTSTR strCaption, long nID, long nWidth);
+	afx_msg LPDISPATCH OleFindControl(const VARIANT& varType, const VARIANT& nId,
+									  const VARIANT& bVisible, const VARIANT& bRecursive);
+	afx_msg LPDISPATCH OleParent();
+	afx_msg BOOL OleBuiltIn();
+	afx_msg void OleModifyStyle(long dwRemove, long dwAdd);
+	afx_msg void OleGetWindowRect(long* pLeft, long* pTop, long* pRight, long* pBottom);
+	afx_msg void OleSetPopupToolBar(BOOL bToolBarType);
+	afx_msg LPDISPATCH OleGetControlPopup();
+	afx_msg BOOL OleGetCustomizable();
+	afx_msg void OleSetCustomizable(BOOL);
+	afx_msg void OleRedrawBar();
+	afx_msg void OleRecalcLayout();
+	afx_msg void OleSetSelectedControl(LPDISPATCH);
+	afx_msg LPDISPATCH OleGetSelectedControl();
+	afx_msg HWND OleGetHandle();
+	afx_msg BOOL OleGetVisible();
+	afx_msg void OleSetVisible(BOOL bVisible);
+
+public:
+	void OlePixelToUnits(CRect& rc);
+	void OleUnitsToPixel(CPoint& pt);
+	BOOL m_bAutoMenuLoad;
+
+	void OleFireTrackingModeChanged(int bMode);
+
+	enum
+	{
+		dispidTitle			  = 1L,
+		dispidControls		  = 2L,
+		dispidType			  = 3L,
+		dispidVisible		  = 4L,
+		dispidPosition		  = 5L,
+		dispidShowPopup		  = 6L,
+		dispidSetIconSize	 = 7L,
+		dispidEnableDocking   = 8L,
+		dispidSetTearOffPopup = 9L,
+		dispidBarID			  = 10L,
+		dispidFindControl	 = 11L,
+		dispidParent		  = 12L,
+		dispidBuiltIn		  = 13L,
+		dispidDelete		  = 14L,
+		dispidModifyStyle	 = 16L,
+		dispidGetWindowRect   = 17L,
+		dispidSetFlags		  = 18L
+	};
+
+public:
+	static CXTPCommandBar* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+#	endif /*_XTP_ACTIVEX*/
 
 	friend class CXTPCommandBars;
 	friend class CXTPDockBar;
@@ -1315,147 +1303,202 @@ private:
 	friend class CXTPPaintManager;
 	friend class CXTPMiniToolBar;
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-
-AFX_INLINE int CXTPCommandBar::IsTrackingMode() const{
+AFX_INLINE int CXTPCommandBar::IsTrackingMode() const
+{
 	return m_bTracking;
 }
-AFX_INLINE CXTPControls* CXTPCommandBar::GetControls() const {
+AFX_INLINE CXTPControls* CXTPCommandBar::GetControls() const
+{
 	return m_pControls;
 }
-AFX_INLINE XTPBarType CXTPCommandBar::GetType() const {
+AFX_INLINE XTPBarType CXTPCommandBar::GetType() const
+{
 	return m_barType;
 }
-AFX_INLINE XTPBarPosition CXTPCommandBar::GetPosition() const {
+AFX_INLINE XTPBarPosition CXTPCommandBar::GetPosition() const
+{
 	return m_barPosition;
 }
-AFX_INLINE void CXTPCommandBar::DelayLayout() {
+AFX_INLINE void CXTPCommandBar::DelayLayout()
+{
 	m_nIdleFlags |= xtpIdleLayout;
 }
 
-AFX_INLINE void CXTPCommandBar::DelayRedraw() {
+#	ifndef _XTP_ACTIVEX
+AFX_INLINE void CXTPCommandBar::DelayRedraw()
+{
 	m_nIdleFlags |= xtpIdleRedraw;
 }
+#	endif
 
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+AFX_INLINE void CXTPCommandBar::DelayRedraw()
+{
+	Redraw();
+}
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
-AFX_INLINE void CXTPCommandBar::SetTitle(LPCTSTR lpszTitle) {
+AFX_INLINE void CXTPCommandBar::SetTitle(LPCTSTR lpszTitle)
+{
 	m_strTitle = lpszTitle;
 	Redraw();
 }
-AFX_INLINE CString CXTPCommandBar::GetTitle() const {
+AFX_INLINE CString CXTPCommandBar::GetTitle() const
+{
 	return m_strTitle;
 }
-AFX_INLINE void CXTPCommandBar::SetCommandBars(CXTPCommandBars* pCommandBars){
+AFX_INLINE void CXTPCommandBar::SetCommandBars(CXTPCommandBars* pCommandBars)
+{
 	m_pCommandBars = pCommandBars;
 }
-AFX_INLINE HWND CXTPCommandBar::GetTrackFocus() const {
+AFX_INLINE HWND CXTPCommandBar::GetTrackFocus() const
+{
 	return m_hwndFocus;
 }
-AFX_INLINE void CXTPCommandBar::SetTrackFocus(HWND hwnd) {
+AFX_INLINE void CXTPCommandBar::SetTrackFocus(HWND hwnd)
+{
 	m_hwndFocus = hwnd;
 }
-AFX_INLINE void CXTPCommandBar::SetVisible(BOOL /*bVisible*/) {
+AFX_INLINE void CXTPCommandBar::SetVisible(BOOL /*bVisible*/)
+{
 }
-AFX_INLINE BOOL CXTPCommandBar::IsVisible() const {
+AFX_INLINE BOOL CXTPCommandBar::IsVisible() const
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPCommandBar::SetPosition(XTPBarPosition /*barPosition*/) {
+AFX_INLINE BOOL CXTPCommandBar::SetPosition(XTPBarPosition /*barPosition*/)
+{
 	return FALSE;
 }
-AFX_INLINE CSize CXTPCommandBar::CalcDynamicLayout(int, DWORD /*nMode*/) {
+AFX_INLINE CSize CXTPCommandBar::CalcDynamicLayout(int, DWORD /*nMode*/)
+{
 	return CSize(0, 0);
 }
-AFX_INLINE CXTPCommandBar* CXTPCommandBar::GetParentCommandBar() const {
+AFX_INLINE CXTPCommandBar* CXTPCommandBar::GetParentCommandBar() const
+{
 	return NULL;
 }
-AFX_INLINE void CXTPCommandBar::OnRecalcLayout() {
-
+AFX_INLINE void CXTPCommandBar::OnRecalcLayout()
+{
 }
-AFX_INLINE BOOL CXTPCommandBar::IsCustomizable() const{
+AFX_INLINE BOOL CXTPCommandBar::IsCustomizable() const
+{
 	return m_bCustomizable;
 }
-AFX_INLINE BOOL CXTPCommandBar::IsDialogBar() const {
+AFX_INLINE BOOL CXTPCommandBar::IsCustomizeDialogPresent() const
+{
+	return m_bCustomizeDialogPresent;
+}
+AFX_INLINE BOOL CXTPCommandBar::IsDialogBar() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPCommandBar::EnableCustomization(BOOL bEnable) {
-	if (!IsDialogBar()) m_bCustomizable = bEnable;
+AFX_INLINE void CXTPCommandBar::EnableCustomization(BOOL bEnable)
+{
+	if (!IsDialogBar())
+		m_bCustomizable = bEnable;
 }
 
-AFX_INLINE void CXTPCommandBar::SetIconSize(CSize size) {
+AFX_INLINE void CXTPCommandBar::SetIconSize(CSize size)
+{
 	m_szIcons = size;
 }
-AFX_INLINE void CXTPCommandBar::SetButtonSize(CSize size) {
+AFX_INLINE void CXTPCommandBar::SetButtonSize(CSize size)
+{
 	m_szButtons = size;
 }
 
-AFX_INLINE DWORD CXTPCommandBar::GetFlags() const {
+AFX_INLINE DWORD CXTPCommandBar::GetFlags() const
+{
 	return m_dwFlags;
 }
 
-AFX_INLINE UINT CXTPCommandBar::GetBarID() const {
+AFX_INLINE UINT CXTPCommandBar::GetBarID() const
+{
 	return m_nBarID;
 }
-AFX_INLINE void CXTPCommandBar::SetCommandBarData(DWORD_PTR dwData) {
+AFX_INLINE void CXTPCommandBar::SetCommandBarData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE DWORD_PTR CXTPCommandBar::GetCommandBarData() const {
+AFX_INLINE DWORD_PTR CXTPCommandBar::GetCommandBarData() const
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTPCommandBar::LockRedraw() {
-	m_nLockRedraw ++;
+AFX_INLINE void CXTPCommandBar::LockRedraw()
+{
+	m_nLockRedraw++;
 }
-AFX_INLINE void CXTPCommandBar::UnlockRedraw() {
-	m_nLockRedraw --;
+AFX_INLINE void CXTPCommandBar::UnlockRedraw()
+{
+	m_nLockRedraw--;
 	if (m_nLockRedraw == 0 && (m_nIdleFlags & xtpIdleRedraw))
 		Redraw();
 }
-AFX_INLINE void CXTPCommandBar::SetGrabFocus(BOOL bGrabFocus) {
+AFX_INLINE void CXTPCommandBar::SetGrabFocus(BOOL bGrabFocus)
+{
 	m_bGrabFocus = bGrabFocus;
 }
-AFX_INLINE BOOL CXTPCommandBar::PreviewAccel(UINT) {
+AFX_INLINE BOOL CXTPCommandBar::PreviewAccel(UINT)
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPCommandBar::IsRibbonBar() const {
+AFX_INLINE BOOL CXTPCommandBar::IsRibbonBar() const
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPCommandBar::IsPopupBar() const {
+AFX_INLINE BOOL CXTPCommandBar::IsPopupBar() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPCommandBar::SetBarID(UINT nID) {
+AFX_INLINE void CXTPCommandBar::SetBarID(UINT nID)
+{
 	m_nBarID = nID;
 }
-AFX_INLINE XTPButtonStyle CXTPCommandBar::GetDefaultButtonStyle() const {
+AFX_INLINE XTPButtonStyle CXTPCommandBar::GetDefaultButtonStyle() const
+{
 	return m_buttonStyle;
 }
 
-AFX_INLINE void CXTPCommandBar::SetDefaultButtonStyle(XTPButtonStyle buttonStyle) {
+AFX_INLINE void CXTPCommandBar::SetDefaultButtonStyle(XTPButtonStyle buttonStyle)
+{
 	m_buttonStyle = buttonStyle;
 }
-AFX_INLINE BOOL CXTPCommandBar::IsResizable() const {
+AFX_INLINE BOOL CXTPCommandBar::IsResizable() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPCommandBar::OnPopupRButtonUp(CXTPCommandBar* /*pCommandBar*/, CPoint /*point*/) {
-
+AFX_INLINE void CXTPCommandBar::OnPopupRButtonUp(CXTPCommandBar* /*pCommandBar*/, CPoint /*point*/)
+{
 }
-AFX_INLINE CXTPControl* CXTPCommandBar::GetSelected() const {
+AFX_INLINE CXTPControl* CXTPCommandBar::GetSelected() const
+{
 	return GetControl(m_nSelected);
 }
-AFX_INLINE void CXTPCommandBar::SetTextOrientation(XTPBarTextOrientation nTextOrientation) {
+AFX_INLINE void CXTPCommandBar::SetTextOrientation(XTPBarTextOrientation nTextOrientation)
+{
 	m_nTextOrientation = nTextOrientation;
 	DelayLayout();
 }
-AFX_INLINE XTPBarTextOrientation CXTPCommandBar::GetTextOrientation() const {
+AFX_INLINE XTPBarTextOrientation CXTPCommandBar::GetTextOrientation() const
+{
 	return m_nTextOrientation;
 }
-AFX_INLINE void CXTPCommandBar::SetOwner(CWnd* pWnd) {
+AFX_INLINE void CXTPCommandBar::SetOwner(CWnd* pWnd)
+{
 	m_pOwner = pWnd;
 }
-AFX_INLINE BOOL CXTPCommandBar::IsControlEnabled(const CXTPControl* /*pControl*/) const {
+AFX_INLINE BOOL CXTPCommandBar::IsControlEnabled(const CXTPControl* /*pControl*/) const
+{
 	return (BOOL)-1;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCOMMANDBAR_H__)

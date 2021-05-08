@@ -1,7 +1,6 @@
 // XTPDropSource.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDROPSOURCE_H__)
-#define __XTPDROPSOURCE_H__
+#	define __XTPDROPSOURCE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // -------------------------------------------------------------------------
 // Summary:
@@ -69,7 +70,7 @@ public:
 	// Summary:
 	//     Destroys a CXTPDropSource object, handles clean up and deallocation
 	//-----------------------------------------------------------------------
-	~CXTPDropSource();
+	virtual ~CXTPDropSource();
 
 public:
 	//////////////////////////////////////////////////////////////////////
@@ -101,7 +102,7 @@ public:
 	// ------------------------------------------------------------------------------
 	STDMETHODIMP QueryInterface(REFIID riid, LPVOID* ppReturn);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// ---------------------------------------------------------------------------
 	// Summary:
 	//     Increments the reference counter.
@@ -130,7 +131,7 @@ public:
 	//     count, which is used for diagnostic and testing purposes only.
 	// ----------------------------------------------------------------------
 	STDMETHODIMP_(ULONG) Release();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//////////////////////////////////////////////////////////////////////
 	// IDropSource Interface Members
@@ -200,4 +201,5 @@ protected:
 	UINT m_uiRefCount; // Indicates the current reference count.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTPDROPSOURCE_H__

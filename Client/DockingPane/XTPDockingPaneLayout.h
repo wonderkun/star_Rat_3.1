@@ -1,7 +1,6 @@
 // XTPDockingPaneLayout.h : interface for the CXTPDockingPaneLayout class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANELAYOUT_H__)
-#define __XTPDOCKINGPANELAYOUT_H__
+#	define __XTPDOCKINGPANELAYOUT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
-#include "Common/XTPXMLHelpers.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneBase;
 class CXTPDockingPaneSplitterContainer;
@@ -41,6 +38,11 @@ class CXTPDockingPaneTabbedContainer;
 class CXTPDockingPaneSplitterWnd;
 class CXTPDockingPaneClientContainer;
 
+namespace XTPXML
+{
+struct IXMLDOMNode;
+};
+
 //===========================================================================
 // Summary:
 //     CXTPDockingPaneLayout is a stand alone class. It is used to manipulate
@@ -48,6 +50,8 @@ class CXTPDockingPaneClientContainer;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPDockingPaneLayout : public CXTPCmdTarget
 {
+	DECLARE_DYNAMIC(CXTPDockingPaneLayout);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -110,7 +114,7 @@ public:
 	//-----------------------------------------------------------------------
 	void Serialize(CArchive& ar);
 
-#ifndef  _XTP_EXCLUDE_XML
+#	ifndef _XTP_EXCLUDE_XML
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -139,7 +143,7 @@ public:
 	//     xmlNode     - XML node to save.
 	//     lpszSection - Registry section.
 	//-----------------------------------------------------------------------
-	void SaveToNode(CXTPDOMNodePtr xmlNode, LPCTSTR lpszSection);
+	void SaveToNode(XTPXML::IXMLDOMNode* pNode, LPCTSTR lpszSection);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -150,9 +154,9 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL LoadFromNode(CXTPDOMNodePtr xmlNode, LPCTSTR lpszSection);
+	BOOL LoadFromNode(XTPXML::IXMLDOMNode* pNode, LPCTSTR lpszSection);
 
-#endif
+#	endif
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -171,6 +175,11 @@ public:
 	BOOL IsValid() const;
 
 public:
+	void DestroyPane(CXTPDockingPane* pPane);
+
+	CXTPDockingPane* FindPane(int nID) const;
+
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to save/restore the settings of the pane.
@@ -182,10 +191,12 @@ public:
 	BOOL DoPropExchange(CXTPPropExchange* pPX);
 
 private:
-	void Push(CXTPDockingPaneBase* pPane) { m_lstStack.AddTail(pPane); }
+	void Push(CXTPDockingPaneBase* pPane)
+	{
+		m_lstStack.AddTail(pPane);
+	}
 	void HidePane(CXTPDockingPaneBase* pPane);
 	void OnSizeParent(CWnd* pParent, CRect rect, LPVOID lParam);
-	void DestroyPane(CXTPDockingPane* pPane);
 	void Free();
 	void _FreeEmptyPanes();
 	XTPDockingPaneDirection _GetPaneDirection(const CXTPDockingPaneBase* pPane) const;
@@ -193,7 +204,8 @@ private:
 	void _Save(CXTPPropExchange* pPX);
 	BOOL _Load(CXTPPropExchange* pPX);
 	BOOL _FindTabbedPaneToHide(CXTPDockingPaneAutoHidePanel* pPanel, CXTPDockingPaneBase* pPane);
-	void _AddPanesTo(CXTPDockingPaneTabbedContainer* pContainer, CXTPDockingPaneBaseList& lst, DWORD dwIgnoredOptions);
+	void _AddPanesTo(CXTPDockingPaneTabbedContainer* pContainer, CXTPDockingPaneBaseList& lst,
+					 DWORD dwIgnoredOptions);
 
 	void MoveToTail(CXTPDockingPaneBase* pBase);
 
@@ -204,7 +216,7 @@ private:
 	CXTPDockingPaneInfoList m_lstPanes;
 	CXTPDockingPaneBaseList m_lstStack;
 
-	XTP_DOCKINGPANE_INFO* FindPane(CXTPDockingPane* pPane);
+	XTP_DOCKINGPANE_INFO* FindPaneInfo(CXTPDockingPane* pPane);
 	void RepositionMargins(CRect& rect, const CRect& lpszClientMargins);
 
 	CXTPDockingPaneAutoHidePanel* m_wndPanels[4];
@@ -213,6 +225,28 @@ private:
 	BOOL m_bUserLayout;
 	CXTPDockingPaneManager* m_pManager;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneLayout);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneLayout);
+
+public:
+	void OleDoPropExchange(LPDISPATCH lpPropExchage);
+	long OleGetItemCount();
+	LPDISPATCH OleGetItem(int nIndex);
+	LPDISPATCH OleGetPane(int nIndex);
+	long CXTPDockingPaneLayout::OleGetContainersCount();
+	LPDISPATCH CXTPDockingPaneLayout::OleGetContainer(int nIndex);
+	long OleGetPaneCount();
+	LPDISPATCH OleGetClientContainer();
+	LPDISPATCH OleGetTopContainer();
+
+	static CXTPDockingPaneLayout* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 
 private:
 	friend class CXTPDockingPaneManager;
@@ -224,13 +258,14 @@ private:
 	friend class CXTPDockingPaneSidePanel;
 };
 
-
-
-AFX_INLINE BOOL CXTPDockingPaneLayout::IsUserLayout() const {
+AFX_INLINE BOOL CXTPDockingPaneLayout::IsUserLayout() const
+{
 	return m_bUserLayout;
 }
-AFX_INLINE CXTPDockingPaneInfoList& CXTPDockingPaneLayout::GetPaneList() const {
+AFX_INLINE CXTPDockingPaneInfoList& CXTPDockingPaneLayout::GetPaneList() const
+{
 	return (CXTPDockingPaneInfoList&)m_lstPanes;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANELAYOUT_H__)

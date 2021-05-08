@@ -1,7 +1,7 @@
 // DDOSFlood.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "DDOSFlood.h"
 #include "PcView.h"

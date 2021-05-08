@@ -1,7 +1,7 @@
 // ScreenSpyDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "ScreenSpyDlg.h"
 

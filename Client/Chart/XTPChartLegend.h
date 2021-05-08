@@ -1,7 +1,6 @@
 // XTPChartLegend.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTLEGEND_H__)
-#define __XTPCHARTLEGEND_H__
+#	define __XTPCHARTLEGEND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartElement.h"
-#include "XTPChartElementView.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartFont;
 class CXTPChartElementView;
 class CXTPChartDeviceContext;
 class CXTPChartLegend;
+class CXTPChartLegendView;
 class CXTPChartDeviceContext;
 class CXTPChartDeviceCommand;
 class CXTPChartBorder;
@@ -42,133 +41,13 @@ class CXTPPropExchange;
 
 //===========================================================================
 // Summary:
-//     CXTPChartLegendItem is an abstract base class, this class also act as
-//     a multiple inheritance base class.It represents a chart legend item.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartLegendItem
-{
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function returns the legend name, it is a pure virtual
-	//     function so it should be implemented in the derived classes.
-	// Returns:
-	//     Returns the legend name represented by the CXTPChartString class.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	virtual CXTPChartString GetLegendName() const = 0;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of a legend item in the chart.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
-	//     the drawing of the legend item.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds) = 0;
-};
-
-//===========================================================================
-// Summary:
-//     This class abstracts the view of a legend and its child items in
-//     a bounding rectangle context.
-// Remarks:
-// See Also:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartLegendView : public CXTPChartElementView
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartLegendView object.
-	// Parameters:
-	//     pLegend     - Pointer to a CXTPChartLegend object.
-	//     pParentView - Pointer to a CXTPChartElementView object.
-	// Remarks:
-	// See Also:
-	//-----------------------------------------------------------------------
-	CXTPChartLegendView(CXTPChartLegend* pLegend, CXTPChartElementView* pParentView);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPChartLegendView object, handles cleanup
-	//-------------------------------------------------------------------------
-	virtual ~CXTPChartLegendView();
-
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of a legend in the chart.
-	// Parameters:
-	//     pDC     - Pointer to a CXTPChartDeviceContext object.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
-	//     the drawing of the legend.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Function calculates the legend location in the chart based on the state
-	//     of the CXTPChartLegend object and it adjusts the chart layout accordingly.
-	// Parameters:
-	//     pDC     - Pointer to a CXTPChartDeviceContext object.
-	//     rcChart - The chart bounding rectangle.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	void CalculateView(CXTPChartDeviceContext* pDC, CRect& rcChart);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This member function calculates the legend's width and height based
-	//     on the number of legend items present.
-	// Parameters:
-	//     pDC     - Pointer to a CXTPChartDeviceContext object.
-	// Returns:
-	//     The return value is a CSize object represents the height and width
-	//     of the legend.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CSize CalcSize(CXTPChartDeviceContext* pDC);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to add a new legend item.
-	// Parameters:
-	//     pItem     - Pointer to a CXTPChartLegendItem object.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	void AddItem(CXTPChartLegendItem* pItem);
-
-
-protected:
-	CXTPChartLegend* m_pLegend;                      //Pointer to the legend object.
-	CRect m_rcBounds;                               //The bounding rectangle of the legend.
-	CArray<CXTPChartLegendItem*, CXTPChartLegendItem*> m_arrItems;//The list of legend items.
-};
-
-//===========================================================================
-// Summary:
 //     Enumerates the legend orientation.
 // Remarks:
 //===========================================================================
 enum XTPChartLegendDirection
 {
-	xtpChartLegendTopToBottom,       //The legend items are arranged from top to bottom.
-	xtpChartLegendLeftToRight,       //The legend items are arranged from left to right.
+	xtpChartLegendTopToBottom, // The legend items are arranged from top to bottom.
+	xtpChartLegendLeftToRight, // The legend items are arranged from left to right.
 };
 
 //===========================================================================
@@ -178,11 +57,13 @@ enum XTPChartLegendDirection
 //===========================================================================
 enum XTPChartLegendAlignment
 {
-	xtpChartLegendNearOutside,       //The legend is placed out side of the chart, near the primary Y axis.
-	xtpChartLegendNear,              //The legend is placed inside of the chart, near the primary Y axis.
-	xtpChartLegendCenter,            //The legend is placed at the center of the chart.
-	xtpChartLegendFar,               //The legend is placed inside of the chart, near the secondary Y axis.
-	xtpChartLegendFarOutside,        //The legend is placed outside of the chart, near the secondary Y axis.
+	xtpChartLegendNearOutside, // The legend is placed out side of the chart, near the primary Y
+							   // axis.
+	xtpChartLegendNear,		   // The legend is placed inside of the chart, near the primary Y axis.
+	xtpChartLegendCenter,	  // The legend is placed at the center of the chart.
+	xtpChartLegendFar, // The legend is placed inside of the chart, near the secondary Y axis.
+	xtpChartLegendFarOutside, // The legend is placed outside of the chart, near the secondary Y
+							  // axis.
 };
 
 //===========================================================================
@@ -212,7 +93,6 @@ public:
 	virtual ~CXTPChartLegend();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to to see whether the legend is visible.
@@ -490,8 +370,10 @@ public:
 	void SetColumnCount(int nColumnCount);
 	int GetColumnCount() const;
 
-public:
+	void SetOffset(CPoint ptOffset);
+	CPoint GetOffset() const;
 
+public:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This function creates the view (CXTPChartLegendView)of the legend.
@@ -503,10 +385,10 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartLegendView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartElementView* pParentView);
+	virtual CXTPChartLegendView* CreateView(CXTPChartDeviceContext* pDC,
+											CXTPChartElementView* pParentView);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties of legend object
@@ -519,96 +401,167 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPChartLegend);
+
+	afx_msg OLE_COLOR OleGetTextColor();
+	afx_msg void OleSetTextColor(OLE_COLOR clr);
+	afx_msg OLE_COLOR OleGetBackgroundColor();
+	afx_msg void OleSetBackgroundColor(OLE_COLOR clr);
+	afx_msg int OleGetMarkerWidth();
+	afx_msg void OleSetMarkerWidth(int sz);
+	afx_msg int OleGetMarkerHeight();
+	afx_msg void OleSetMarkerHeight(int sz);
+	afx_msg LPDISPATCH OleGetFillStyle();
+	afx_msg LPDISPATCH OleGetBorder();
+	afx_msg int OleGetOffsetX();
+	afx_msg int OleGetOffsetY();
+	afx_msg void OleSetOffsetY(int val);
+	afx_msg void OleSetOffsetX(int val);
+	afx_msg LPDISPATCH CXTPChartLegend::OleGetFont();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 public:
+	BOOL m_bVisible;				  // TRUE if the legend is visible.
+	BOOL m_bAntialiasing;			  // TRUE if antialiasing is turned ON
+	CXTPChartBorder* m_pBorder;		  // Pointer to chart border object.
+	CXTPChartFillStyle* m_pFillStyle; // Pointer to chart fill style object.
+	CXTPChartFont* m_pFont;			  // Pointer to font object.
+	CSize m_szMarkerSize;			  // Size of the marker.
 
-	BOOL m_bVisible;                                    //TRUE if the legend is visible.
-	BOOL m_bAntialiasing;                               //TRUE if antialiasing is turned ON
-	CXTPChartBorder* m_pBorder;                         //Pointer to chart border object.
-	CXTPChartFillStyle* m_pFillStyle;                   //Pointer to chart fill style object.
-	CXTPChartFont* m_pFont;                             //Pointer to font object.
-	CSize m_szMarkerSize;                               //Size of the marker.
+	CXTPChartColor m_clrBackgroundColor; // Chart background color.
+	CXTPChartColor m_clrTextColor;		 // Chart text color.
+	BOOL m_bMarkerVisible;				 // TRUE if marker is visible.
 
-	CXTPChartColor m_clrBackgroundColor;                //Chart background color.
-	CXTPChartColor m_clrTextColor;                      //Chart text color.
-	BOOL m_bMarkerVisible;                              //TRUE if marker is visible.
+	int m_nColumnCount; // Column Count
 
-	int m_nColumnCount;                                 // Column Count
+	XTPChartLegendAlignment m_nHorizontalAlignment; // Legend horizontal alignment.
+	XTPChartLegendAlignment m_nVerticalAlignment;   // Legend vertical alignment.
+	XTPChartLegendDirection m_nDirection;			// Legend orientation.
 
-	XTPChartLegendAlignment m_nHorizontalAlignment;     //Legend horizontal alignment.
-	XTPChartLegendAlignment m_nVerticalAlignment;       //Legend vertical alignment.
-	XTPChartLegendDirection m_nDirection;               //Legend orientation.
-
+	CPoint m_ptOffset;
 
 	friend class CXTPChartContent;
 };
 
-AFX_INLINE BOOL CXTPChartLegend::IsVisible() const {
+AFX_INLINE BOOL CXTPChartLegend::IsVisible() const
+{
 	return m_bVisible;
 }
-AFX_INLINE void CXTPChartLegend::SetVisible(BOOL bVisible) {
+
+AFX_INLINE void CXTPChartLegend::SetVisible(BOOL bVisible)
+{
 	m_bVisible = bVisible;
 	OnChartChanged();
 }
-AFX_INLINE CXTPChartFont* CXTPChartLegend::GetFont() const {
+
+AFX_INLINE CXTPChartFont* CXTPChartLegend::GetFont() const
+{
 	return m_pFont;
 }
-AFX_INLINE CSize CXTPChartLegend::GetMarkerSize() const {
+
+AFX_INLINE CSize CXTPChartLegend::GetMarkerSize() const
+{
 	return m_szMarkerSize;
 }
-AFX_INLINE void CXTPChartLegend::SetMarkerSize(CSize sz) {
+
+AFX_INLINE void CXTPChartLegend::SetMarkerSize(CSize sz)
+{
 	m_szMarkerSize = sz;
 	OnChartChanged();
 }
-AFX_INLINE BOOL CXTPChartLegend::IsMarkerVisible() const {
+
+AFX_INLINE BOOL CXTPChartLegend::IsMarkerVisible() const
+{
 	return m_bMarkerVisible;
 }
-AFX_INLINE void CXTPChartLegend::SetMarkerVisible(BOOL bVisible) {
+
+AFX_INLINE void CXTPChartLegend::SetMarkerVisible(BOOL bVisible)
+{
 	m_bMarkerVisible = bVisible;
 	OnChartChanged();
 }
-AFX_INLINE void CXTPChartLegend::SetAntialiasing(BOOL bAntialiasing) {
+
+AFX_INLINE void CXTPChartLegend::SetAntialiasing(BOOL bAntialiasing)
+{
 	m_bAntialiasing = bAntialiasing;
 	OnChartChanged();
 }
-AFX_INLINE BOOL CXTPChartLegend::GetAntialiasing() const {
+
+AFX_INLINE BOOL CXTPChartLegend::GetAntialiasing() const
+{
 	return m_bAntialiasing;
 }
-AFX_INLINE CXTPChartFillStyle* CXTPChartLegend::GetFillStyle() const {
+
+AFX_INLINE CXTPChartFillStyle* CXTPChartLegend::GetFillStyle() const
+{
 	return m_pFillStyle;
 }
-AFX_INLINE CXTPChartBorder* CXTPChartLegend::GetBorder() const {
+
+AFX_INLINE CXTPChartBorder* CXTPChartLegend::GetBorder() const
+{
 	return m_pBorder;
 }
-AFX_INLINE void CXTPChartLegend::SetHorizontalAlignment(XTPChartLegendAlignment nAlignment) {
+
+AFX_INLINE void CXTPChartLegend::SetHorizontalAlignment(XTPChartLegendAlignment nAlignment)
+{
 	m_nHorizontalAlignment = nAlignment;
 	OnChartChanged();
 }
-AFX_INLINE XTPChartLegendAlignment CXTPChartLegend::GetHorizontalAlignment() const {
+
+AFX_INLINE XTPChartLegendAlignment CXTPChartLegend::GetHorizontalAlignment() const
+{
 	return m_nHorizontalAlignment;
 }
-AFX_INLINE void CXTPChartLegend::SetVerticalAlignment(XTPChartLegendAlignment nAlignment) {
+
+AFX_INLINE void CXTPChartLegend::SetVerticalAlignment(XTPChartLegendAlignment nAlignment)
+{
 	m_nVerticalAlignment = nAlignment;
 	OnChartChanged();
 }
-AFX_INLINE XTPChartLegendAlignment CXTPChartLegend::GetVerticalAlignment() const {
+
+AFX_INLINE XTPChartLegendAlignment CXTPChartLegend::GetVerticalAlignment() const
+{
 	return m_nVerticalAlignment;
 }
-AFX_INLINE void CXTPChartLegend::SetDirection(XTPChartLegendDirection nDirection) {
+
+AFX_INLINE void CXTPChartLegend::SetDirection(XTPChartLegendDirection nDirection)
+{
 	m_nDirection = nDirection;
 	OnChartChanged();
 }
-AFX_INLINE XTPChartLegendDirection CXTPChartLegend::GetDirection() const {
+
+AFX_INLINE XTPChartLegendDirection CXTPChartLegend::GetDirection() const
+{
 	return m_nDirection;
 }
-AFX_INLINE void CXTPChartLegend::SetColumnCount(int nColumnCount) {
+
+AFX_INLINE void CXTPChartLegend::SetColumnCount(int nColumnCount)
+{
 	m_nColumnCount = nColumnCount;
 	OnChartChanged();
 }
-AFX_INLINE int CXTPChartLegend::GetColumnCount() const {
+
+AFX_INLINE int CXTPChartLegend::GetColumnCount() const
+{
 	return m_nColumnCount;
 }
 
+AFX_INLINE void CXTPChartLegend::SetOffset(CPoint ptOffset)
+{
+	m_ptOffset = ptOffset;
+	OnChartChanged();
+}
 
+AFX_INLINE CPoint CXTPChartLegend::GetOffset() const
+{
+	return m_ptOffset;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTLEGEND_H__)

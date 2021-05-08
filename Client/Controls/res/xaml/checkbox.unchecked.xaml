@@ -1,0 +1,5 @@
+<Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Width="12" Height="12">
+  <Canvas>
+    <Rectangle Width="12" Height="12" Fill="#FFFFFF" Stroke="#808080" StrokeThickness="1"/>
+  </Canvas>
+</Viewbox>

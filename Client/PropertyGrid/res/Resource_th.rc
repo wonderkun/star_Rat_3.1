@@ -1,7 +1,6 @@
 // Property Grid resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "PropertyGrid/Resource.h"
 #include "PropertyGrid/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA)
 #ifdef _WIN32
 LANGUAGE LANG_THAI, SUBLANG_DEFAULT
 #pragma code_page(874)
@@ -38,6 +37,8 @@ BEGIN
     XTP_IDC_PROPERTYGRID_CATEGORIZED        "ประเภท"
     XTP_IDC_PROPERTYGRID_ALPHABETIC         "รายการเรียงตามอักษร"
     XTP_IDS_PROPERTYGRID_TRUEFALSE          "จริง\nเท็จ"
+    XTP_IDS_PROPERTYGRID_WIDTH              "ความกว้าง"
+    XTP_IDS_PROPERTYGRID_HEIGHT             "ความสูง"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA)

@@ -1,7 +1,6 @@
 // XTPDockContext.h : interface for the CXTPDockContext class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKCONTEXT_H__)
-#define __XTPDOCKCONTEXT_H__
+#	define __XTPDOCKCONTEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBarsDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPToolBar;
 
@@ -79,9 +78,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL ToggleDocking();
 
-
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to start tracking loop
@@ -113,25 +110,26 @@ protected:
 	void Resize(CPoint pt);
 
 private:
-	static void AdjustRectangle(CRect& rect, CPoint pt);
+	static void AFX_CDECL AdjustRectangle(CRect& rect, CPoint pt);
 	void EnsureVisible(CRect& rectDragFrame);
 
 protected:
-	CXTPToolBar* m_pBar;                    // Child toolbar.
-	int m_nHitTest;                         // Hit Test code
-	CPoint m_ptLast;                        // Last mouse position.
+	CXTPToolBar* m_pBar; // Child toolbar.
+	int m_nHitTest;		 // Hit Test code
+	CPoint m_ptLast;	 // Last mouse position.
 
-	XTPBarPosition m_uMRUDockPosition;      // Last docking position.
+	XTPBarPosition m_uMRUDockPosition; // Last docking position.
 
-	CRect m_rectMRUDockPos;                 // Last docking rectangle.
-	CPoint m_ptMRUFloatPos;                 // Last floating rectangle
+	CRect m_rectMRUDockPos; // Last docking rectangle.
+	CPoint m_ptMRUFloatPos; // Last floating rectangle
 
-	CRect m_rectDragDock;                   // Current docking rectangle
-	CRect m_rectDragFrame;                  // Current floating rectangle.
+	CRect m_rectDragDock;  // Current docking rectangle
+	CRect m_rectDragFrame; // Current floating rectangle.
 
 private:
 	friend class CXTPToolBar;
 	friend class CXTPDockBar;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPDOCKCONTEXT_H__)

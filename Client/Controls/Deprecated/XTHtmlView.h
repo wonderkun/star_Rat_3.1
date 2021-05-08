@@ -1,7 +1,6 @@
 // XTHtmlView.h interface for the CXTHtmlView class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTHTMLVIEW_H__)
-#define __XTHTMLVIEW_H__
+#	define __XTHTMLVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -575,7 +576,8 @@ public:
 	//                           This parameter is ignored if the URL is
 	//                           not an HTTP URL.
 	//-----------------------------------------------------------------------
-	void Navigate(LPCTSTR URL, DWORD dwFlags = 0, LPCTSTR lpszTargetFrameName = NULL, LPCTSTR lpszHeaders = NULL, LPVOID lpvPostData = NULL, DWORD dwPostDataLen = 0);
+	void Navigate(LPCTSTR URL, DWORD dwFlags = 0, LPCTSTR lpszTargetFrameName = NULL,
+				  LPCTSTR lpszHeaders = NULL, LPVOID lpvPostData = NULL, DWORD dwPostDataLen = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -630,7 +632,8 @@ public:
 	//     dwPostDataLen       - Length in bytes of the data pointed to by the
 	//                           'lpvPostData' parameter.
 	//-----------------------------------------------------------------------
-	void Navigate2(LPCTSTR lpszURL, DWORD dwFlags = 0, LPCTSTR lpszTargetFrameName = NULL, LPCTSTR lpszHeaders = NULL, LPVOID lpvPostData = NULL, DWORD dwPostDataLen = 0);
+	void Navigate2(LPCTSTR lpszURL, DWORD dwFlags = 0, LPCTSTR lpszTargetFrameName = NULL,
+				   LPCTSTR lpszHeaders = NULL, LPVOID lpvPostData = NULL, DWORD dwPostDataLen = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -658,7 +661,8 @@ public:
 	//                           ignored if the URL is not an HTTP URL.
 	//     baPostedData        - A reference to a CByteArray object
 	//-----------------------------------------------------------------------
-	void Navigate2(LPCTSTR lpszURL, DWORD dwFlags, CByteArray& baPostedData, LPCTSTR lpszTargetFrameName = NULL, LPCTSTR lpszHeader = NULL);
+	void Navigate2(LPCTSTR lpszURL, DWORD dwFlags, CByteArray& baPostedData,
+				   LPCTSTR lpszTargetFrameName = NULL, LPCTSTR lpszHeader = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -702,11 +706,16 @@ public:
 	//     lValue           - The new value of the property.
 	//     nValue           - The new value of the property.
 	//-----------------------------------------------------------------------
-	void PutProperty(LPCTSTR lpszPropertyName , const VARIANT& vtValue);
-	void PutProperty(LPCTSTR lpszPropertyName, double dValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
-	void PutProperty(LPCTSTR lpszPropertyName, LPCTSTR lpszValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
-	void PutProperty(LPCTSTR lpszPropertyName, long lValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
-	void PutProperty(LPCTSTR lpszPropertyName, short nValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
+	void PutProperty(LPCTSTR lpszPropertyName, const VARIANT& vtValue);
+	void PutProperty(LPCTSTR lpszPropertyName,
+					 double dValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
+	void PutProperty(LPCTSTR lpszPropertyName,
+					 LPCTSTR lpszValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const
+										 // VARIANT&>
+	void PutProperty(LPCTSTR lpszPropertyName,
+					 long lValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
+	void PutProperty(LPCTSTR lpszPropertyName,
+					 short nValue); // <combine CXTHtmlView::PutProperty@LPCTSTR@const VARIANT&>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -723,7 +732,8 @@ public:
 	//     returns nonzero if completed successfully, otherwise returns zero.
 	//-----------------------------------------------------------------------
 	COleVariant GetProperty(LPCTSTR lpszProperty);
-	BOOL GetProperty(LPCTSTR lpszProperty, CString& strValue); // <combine CXTHtmlView::GetProperty@LPCTSTR>
+	BOOL GetProperty(LPCTSTR lpszProperty,
+					 CString& strValue); // <combine CXTHtmlView::GetProperty@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -752,11 +762,11 @@ public:
 	BOOL LoadFromResource(LPCTSTR lpszResource); // <combine CXTHtmlView::LoadFromResource@UINT>
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
-//}}AFX_CODEJOCK_PRIVATE
+#	endif
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -793,7 +803,9 @@ public:
 	// Returns:
 	//     Nonzero if successful, otherwise returns zero.
 	//-----------------------------------------------------------------------
-	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+						const RECT& rect, CWnd* pParentWnd, UINT nID,
+						CCreateContext* pContext = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -840,7 +852,8 @@ public:
 	//                           navigation operation, or to zero to allow
 	//                           it to proceed.
 	//-----------------------------------------------------------------------
-	virtual void OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags, LPCTSTR lpszTargetFrameName, CByteArray& baPostedData, LPCTSTR lpszHeaders, BOOL* pbCancel);
+	virtual void OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags, LPCTSTR lpszTargetFrameName,
+								   CByteArray& baPostedData, LPCTSTR lpszHeaders, BOOL* pbCancel);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1031,14 +1044,17 @@ public:
 	virtual void OnNavigateError(LPCTSTR lpszURL, LPCTSTR lpszFrame, DWORD dwError, BOOL* pbCancel);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTHtmlView)
 	virtual void NavigateComplete2(LPDISPATCH pDisp, VARIANT* URL);
-	virtual void BeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* Flags, VARIANT* TargetFrameName, VARIANT* PostData, VARIANT* Headers,   BOOL* Cancel);
+	virtual void BeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* Flags,
+								 VARIANT* TargetFrameName, VARIANT* PostData, VARIANT* Headers,
+								 BOOL* Cancel);
 	virtual void DocumentComplete(LPDISPATCH pDisp, VARIANT* URL);
-	virtual void NavigateError(LPDISPATCH pDisp, VARIANT* pvURL, VARIANT* pvFrame, VARIANT* pvStatusCode, VARIANT_BOOL* pvbCancel);
+	virtual void NavigateError(LPDISPATCH pDisp, VARIANT* pvURL, VARIANT* pvFrame,
+							   VARIANT* pvStatusCode, VARIANT_BOOL* pvbCancel);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTHtmlView)
@@ -1048,94 +1064,171 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CWnd          m_wndBrowser;      // CWnd object that represents the internet browser control associated with this view
+	CWnd m_wndBrowser; // CWnd object that represents the internet browser control associated with
+					   // this view
 
 protected:
-	bool          m_bLoading;        // true when loading the browser.
-	bool          m_bLoadingMessage; // true to display a loading message while a page is updating.
-	CString       m_strLoading;      // Loading message string.
-	IWebBrowser2* m_pBrowserApp;     // Points to the IWebBrowser2 object associated with this view.
+	bool m_bLoading;			 // true when loading the browser.
+	bool m_bLoadingMessage;		 // true to display a loading message while a page is updating.
+	CString m_strLoading;		 // Loading message string.
+	IWebBrowser2* m_pBrowserApp; // Points to the IWebBrowser2 object associated with this view.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTHtmlView::SetRegisterAsBrowser(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_RegisterAsBrowser((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetRegisterAsBrowser(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_RegisterAsBrowser((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetRegisterAsDropTarget(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_RegisterAsDropTarget((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetRegisterAsDropTarget(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_RegisterAsDropTarget((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetTheaterMode(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_TheaterMode((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetTheaterMode(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_TheaterMode((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetVisible(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Visible((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetVisible(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Visible((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetMenuBar(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_MenuBar((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetMenuBar(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_MenuBar((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetToolBar(int nNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_ToolBar(nNewValue);
+AFX_INLINE void CXTHtmlView::SetToolBar(int nNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_ToolBar(nNewValue);
 }
-AFX_INLINE void CXTHtmlView::SetOffline(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Offline((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetOffline(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Offline((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetSilent(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Silent((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetSilent(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Silent((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::GoBack() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->GoBack();
+AFX_INLINE void CXTHtmlView::GoBack()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->GoBack();
 }
-AFX_INLINE void CXTHtmlView::GoForward() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->GoForward();
+AFX_INLINE void CXTHtmlView::GoForward()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->GoForward();
 }
-AFX_INLINE void CXTHtmlView::GoHome() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->GoHome();
+AFX_INLINE void CXTHtmlView::GoHome()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->GoHome();
 }
-AFX_INLINE void CXTHtmlView::GoSearch() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->GoSearch();
+AFX_INLINE void CXTHtmlView::GoSearch()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->GoSearch();
 }
-AFX_INLINE void CXTHtmlView::Refresh() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->Refresh();
+AFX_INLINE void CXTHtmlView::Refresh()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->Refresh();
 }
-AFX_INLINE void CXTHtmlView::Refresh2(int nLevel) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->Refresh2(COleVariant((long) nLevel, VT_I4));
+AFX_INLINE void CXTHtmlView::Refresh2(int nLevel)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->Refresh2(COleVariant((long)nLevel, VT_I4));
 }
-AFX_INLINE void CXTHtmlView::Stop() {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->Stop();
+AFX_INLINE void CXTHtmlView::Stop()
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->Stop();
 }
-AFX_INLINE void CXTHtmlView::SetFullScreen(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_FullScreen((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetFullScreen(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_FullScreen((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetAddressBar(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_AddressBar((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetAddressBar(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_AddressBar((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
-AFX_INLINE void CXTHtmlView::SetHeight(long nNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Height(nNewValue);
+AFX_INLINE void CXTHtmlView::SetHeight(long nNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Height(nNewValue);
 }
-AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, long lValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) PutProperty(lpszPropertyName, COleVariant(lValue, VT_UI4));
+AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, long lValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		PutProperty(lpszPropertyName, COleVariant(lValue, VT_UI4));
 }
-AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, short nValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) PutProperty(lpszPropertyName, COleVariant(nValue, VT_UI2));
+AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, short nValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		PutProperty(lpszPropertyName, COleVariant(nValue, VT_UI2));
 }
-AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, LPCTSTR lpszValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) PutProperty(lpszPropertyName, COleVariant(lpszValue, VT_BSTR));
+AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, LPCTSTR lpszValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		PutProperty(lpszPropertyName, COleVariant(lpszValue, VT_BSTR));
 }
-AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, double dValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) PutProperty(lpszPropertyName, COleVariant(dValue));
+AFX_INLINE void CXTHtmlView::PutProperty(LPCTSTR lpszPropertyName, double dValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		PutProperty(lpszPropertyName, COleVariant(dValue));
 }
-AFX_INLINE void CXTHtmlView::SetTop(long nNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Top(nNewValue);
+AFX_INLINE void CXTHtmlView::SetTop(long nNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Top(nNewValue);
 }
-AFX_INLINE void CXTHtmlView::SetLeft(long nNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_Left(nNewValue);
+AFX_INLINE void CXTHtmlView::SetLeft(long nNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_Left(nNewValue);
 }
-AFX_INLINE void CXTHtmlView::SetStatusBar(BOOL bNewValue) {
-	ASSERT(m_pBrowserApp != NULL); if (m_pBrowserApp) m_pBrowserApp->put_StatusBar((short) (bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
+AFX_INLINE void CXTHtmlView::SetStatusBar(BOOL bNewValue)
+{
+	ASSERT(m_pBrowserApp != NULL);
+	if (m_pBrowserApp)
+		m_pBrowserApp->put_StatusBar((short)(bNewValue ? AFX_OLE_TRUE : AFX_OLE_FALSE));
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTHTMLVIEW_H__)

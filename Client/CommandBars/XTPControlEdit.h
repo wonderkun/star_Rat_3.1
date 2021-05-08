@@ -1,7 +1,6 @@
 // XTPControlEdit.h : interface for the CXTPControlEdit class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,25 +19,201 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTOLEDIT_H__)
-#define __XTPCONTOLEDIT_H__
+#	define __XTPCONTOLEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPControl.h"
-#include "XTPControlComboBox.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControlEdit;
+class CXTPControlComboBoxAutoCompleteWnd;
 
-const UINT XTP_FN_SPINUP     = 0x1008;  // Button is spinning up.
-const UINT XTP_FN_SPINDOWN   = 0x1009;  // Button is spinning down.
+const UINT XTP_FN_SPINUP		   = 0x1008; // Button is spinning up.
+const UINT XTP_FN_SPINDOWN		   = 0x1009; // Button is spinning down.
 const UINT XTP_FN_BUDDYBUTTONCLICK = 0x100A; // Buddy button down
 
 struct NMXTPUPDOWN : public NMXTPCONTROL
 {
-	int   iDelta;
+	int iDelta;
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+
+#	ifndef SHACF_DEFAULT
+#		define SHACF_FILESYSTEM                                                                   \
+			0x00000001 // This includes the File System as well as the rest of the shell (Desktop\My
+					   // Computer\Control Panel\)
+#		define SHACF_URLALL                                                                       \
+			(SHACF_URLHISTORY                                                                      \
+			 | SHACF_URLMRU) // Include the URL's in the users History and Recently Used lists.
+							 // Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
+#		define SHACF_URLHISTORY 0x00000002 // URLs in the User's History
+#		define SHACF_URLMRU 0x00000004		// URLs in the User's Recently Used list.
+#		define SHACF_FILESYS_ONLY                                                                 \
+			0x00000010 // Include only the file system. Do not include virtual folders such as
+					   // Desktop or Control Panel.
+#		define SHACF_USETAB                                                                       \
+			0x00000008 // Use the tab to move thru the autocomplete possibilities instead of to the
+					   // next dialog/window control.
+#	endif
+
+//}}AFX_CODEJOCK_PRIVATE
+
+//===========================================================================
+// Summary:
+//     CXTPCommandBarEditCtrl is a CEdit derived class. It is for internal usage only.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCommandBarEditCtrl : public CEdit
+{
+private:
+	class _XTP_EXT_CLASS CRichEditContext
+	{
+	public:
+		CRichEditContext();
+		~CRichEditContext();
+
+	public:
+		HINSTANCE m_hInstance;
+		CString m_strClassName;
+		BOOL m_bRichEdit2;
+	};
+
+	DECLARE_DYNCREATE(CXTPCommandBarEditCtrl)
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPCommandBarEditCtrl object
+	//-----------------------------------------------------------------------
+	CXTPCommandBarEditCtrl();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Called by the framework to route and dispatch command messages
+	//     and to handle the update of command user-interface objects.
+	// Parameters:
+	//     nID          - Contains the command ID.
+	//     nCode        - Identifies the command notification code.
+	//     pExtra       - Used according to the value of nCode.
+	//     pHandlerInfo - If not NULL, OnCmdMsg fills in the pTarget and
+	//                    pmf members of the pHandlerInfo structure instead
+	//                    of dispatching the command. Typically, this parameter
+	//                    should be NULL.
+	// Returns:
+	//     Nonzero if the message is handled; otherwise 0.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     The framework calls this member function when the user selects
+	//     an item from a menu, when a child control sends a notification
+	//     message, or when an accelerator keystroke is translated.
+	// Parameters:
+	//     wParam - The low-order word of wParam identifies the command
+	//              ID of the menu item, control, or accelerator. The
+	//              high-order word of wParam specifies the notification
+	//              message if the message is from a control. If the message
+	//              is from an accelerator, the high-order word is 1. If
+	//              the message is from a menu, the high-order word is 0.
+	//     lParam   - Specifies additional message-dependent information.
+	// Returns:
+	//     An application returns nonzero if it processes this message;
+	//     otherwise 0.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function displays a popup context menu.
+	// Parameters:
+	//     pControl - Pointer to a CXTPControl control.
+	//     point - CPoint object specifies xy coordinates.
+	// Returns:
+	//     TRUE if successful; otherwise returns FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL ShowContextMenu(CXTPControl* pControl, CPoint point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function displays a popup context menu.
+	// Parameters:
+	//     dwStyle - Specifies object's style flags.
+	//     pParentWnd - Pointer to the parent window.
+	// Returns:
+	//     TRUE if successful; otherwise returns FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL CreateEdit(DWORD dwStyle, CWnd* pParentWnd);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method determines whether the specified character is intended for a edit. If it is,
+	//     this method processes the message.
+	// Parameters:
+	//     nChar - Specifies the virtual key code of the given key.
+	//     lParam   - Specifies additional message-dependent information.
+	// Returns:
+	//     TRUE if successful; otherwise returns FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsDialogCode(UINT nChar, LPARAM lParam);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns window text of edit
+	// Parameters:
+	//     rString - String to return text
+	//-----------------------------------------------------------------------
+	void GetWindowTextEx(CString& rString);
+
+	//-----------------------------------------------------------------------
+	// Input:   lpszString - String to set text
+	// Summary: Sets the window text of edit
+	//-----------------------------------------------------------------------
+	void SetWindowTextEx(LPCTSTR lpszString);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if the Input Method Editor(IME) is being used.
+	// Returns:
+	//     TRUE if the Input Method Editor(IME) is being used, FALSE otherwise.
+	//-----------------------------------------------------------------------
+	BOOL IsImeMode() const;
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get rich edit version information.
+	//-----------------------------------------------------------------------
+	CRichEditContext& GetRichEditContext();
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if edit command is enable,
+	// Parameters:
+	//     nID - Edit command
+	// Returns:
+	//     TRUE if edit command is enabled for control
+	//-----------------------------------------------------------------------
+	BOOL IsCommandEnabled(UINT nID);
+
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_MESSAGE_MAP()
+
+	//{{AFX_MSG(CXTPCommandBarEditCtrl)
+	afx_msg void OnImeStartComposition();
+	afx_msg void OnImeEndComposition();
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg void OnPaint();
+	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	BOOL m_bImeMode;			// TRUE if IME editor currently enabled.
+	BOOL m_bComposited;			// TRUE if control is AERO composited.
+	BOOL m_bIgonoreEditChanged; // Don't send OnEditChanged.
 };
 
 //===========================================================================
@@ -66,7 +241,7 @@ protected:
 	void UpdateCharFormat();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPControlEditCtrl)
@@ -81,15 +256,15 @@ protected:
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg LRESULT OnWindowFromPoint(WPARAM, LPARAM);
 	afx_msg void OnEditChanged();
+	afx_msg LRESULT OnEnableDisable(WPARAM, LPARAM);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPControlEdit* m_pControl;            // Parent edit control
+	CXTPControlEdit* m_pControl; // Parent edit control
 
 private:
 	friend class CXTPControlEdit;
-
 };
 
 //===========================================================================
@@ -123,8 +298,6 @@ public:
 	virtual CXTPControlEditCtrl* CreateEditControl();
 
 public:
-
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the edit control.
@@ -147,7 +320,7 @@ public:
 	// Parameters:
 	//     strText - New text of the edit control.
 	//-----------------------------------------------------------------------
-	void SetEditText(const CString&  strText);
+	void SetEditText(const CString& strText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -179,11 +352,14 @@ public:
 	// Remarks:
 	//     Flags can be combined by using the bitwise
 	//     OR (|) operator. It can be one or more of the following:
-	//     * <b>SHACF_FILESYSTEM</b> This includes the File System as well as the rest of the shell (Desktop\My Computer\Control Panel\)
-	//     * <b>SHACF_URLALL</b>  Include the URL's in the users History and Recently Used lists. Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
+	//     * <b>SHACF_FILESYSTEM</b> This includes the File System as well as the rest of the shell
+	//     (Desktop\My Computer\Control Panel\)
+	//     * <b>SHACF_URLALL</b>  Include the URL's in the users History and Recently Used lists.
+	//     Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
 	//     * <b>HACF_URLHISTORY</b> URLs in the User's History
 	//     * <b>SHACF_URLMRU</b> URLs in the User's Recently Used list.
-	//     * <b>SHACF_FILESYS_ONLY</b> Include only the file system. Do not include virtual folders such as Desktop or Control Panel.
+	//     * <b>SHACF_FILESYS_ONLY</b> Include only the file system. Do not include virtual folders
+	//     such as Desktop or Control Panel.
 	// ---------------------------------------------------------------------------
 	void EnableShellAutoComplete(DWORD dwFlags = SHACF_FILESYSTEM | SHACF_URLALL);
 
@@ -434,9 +610,19 @@ public:
 	//-----------------------------------------------------------------------
 	int GetEditIconId() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to allow only digits to be entered into the edit control.
+	//-----------------------------------------------------------------------
+	BOOL SetNumericOnly(BOOL bNumericOnly = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns is only digits to be entered into the edit control.
+	//-----------------------------------------------------------------------
+	BOOL IsNumericOnly() const;
 
 protected:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to check if control accept focus
@@ -479,7 +665,6 @@ protected:
 	//     rcControl - Rectangle of Edit area.
 	//-----------------------------------------------------------------------
 	virtual void DeflateEditRect(CRect& rcControl);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -632,7 +817,7 @@ protected:
 	virtual void OnRemoved();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void _SetEditText(const CString& strText);
 	CString _GetEditText() const;
 	void TrackSpinButton(CPoint pt);
@@ -640,92 +825,158 @@ protected:
 	virtual void NotifySpinChanged(int increment, int direction);
 	void OnThemeChanged();
 	void ShowHideEditControl();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	CXTPControlEditCtrl* m_pEdit;       // Inplace edit control.
-	BOOL m_bLabel;              // TRUE if label is visible.
-	BOOL m_bReadOnly;           // TRUE if edit is readonly
-	int m_nLabelWidth;          // Width of the label.
-	BOOL m_bDelayReposition;    // Need to reposition control.
-	BOOL m_bDelayDestroy;       // Need to reposition control.
-	CString m_strEditHint;      // Edit hint of the controls
-	BOOL m_bFocused;            // TRUE if edit has focus
-	CString m_strLastText;      // Last entered text
-	mutable CString m_strEditText;      // Edit text.
-	mutable BOOL m_bEditChanged;        // TRUE if Edit Text was changed.
+	CXTPControlEditCtrl* m_pEdit;							// Inplace edit control.
+	BOOL m_bLabel;											// TRUE if label is visible.
+	BOOL m_bReadOnly;										// TRUE if edit is readonly
+	int m_nLabelWidth;										// Width of the label.
+	BOOL m_bDelayReposition;								// Need to reposition control.
+	BOOL m_bDelayDestroy;									// Need to reposition control.
+	CString m_strEditHint;									// Edit hint of the controls
+	BOOL m_bFocused;										// TRUE if edit has focus
+	CString m_strLastText;									// Last entered text
+	mutable CString m_strEditText;							// Edit text.
+	mutable BOOL m_bEditChanged;							// TRUE if Edit Text was changed.
 	CXTPControlComboBoxAutoCompleteWnd* m_pAutoCompleteWnd; // Auto complete window hook.
-	DWORD m_dwShellAutoCompleteFlags;   // Shell auto complete flags.
-	DWORD m_dwEditStyle;        // Edit style
-	BOOL m_bShowSpinButtons;    // TRUE to show spsin buttons
-	int m_nEditIconId;          // Edit Icon identifier
-	int m_nTextLimit;       // The maximum number of characters that can be entered into the edit box
+	DWORD m_dwShellAutoCompleteFlags;						// Shell auto complete flags.
+	DWORD m_dwEditStyle;									// Edit style
+	BOOL m_bShowSpinButtons;								// TRUE to show spsin buttons
+	int m_nEditIconId;										// Edit Icon identifier
+	int m_nTextLimit; // The maximum number of characters that can be entered into the edit box
 	int m_nBuddyButtonId;
+	BOOL m_bNumericOnly; // Allows only digits to be entered into the edit control.
 
 public:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlEdit);
+
+	afx_msg BSTR OleGetText();
+	afx_msg void OleSetText(LPCTSTR str);
+
+	afx_msg int OleGetBuddyButtonId();
+	afx_msg void OleSetBuddyButtonId(int nValue);
+
+	afx_msg HWND OleGetEditHandle();
+	afx_msg BSTR OleGetEditHint();
+	afx_msg DWORD OleGetShellAutoComplete();
+	afx_msg void OleSetShellAutoComplete(DWORD dwShellAutoCompleteFlags);
+
+	afx_msg void OleSetEditIconId(int nId);
+	afx_msg int OleGetEditIconId();
+
+	afx_msg VOID OleSetNumericOnly(BOOL Value);
+	afx_msg BOOL OleGetNumericOnly();
+
+	enum
+	{
+		dispidShowLabel = 50L,
+		dispidWidth		= 54L,
+		dispidText		= 59L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	DECLARE_XTP_CONTROL(CXTPControlEdit)
 	friend class CXTPControlEditCtrl;
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-
-AFX_INLINE CEdit* CXTPControlEdit::GetEditCtrl() const {
+AFX_INLINE CEdit* CXTPControlEdit::GetEditCtrl() const
+{
 	return m_pEdit;
 }
-AFX_INLINE void CXTPControlEdit::SetEditIconId(int nId) {
-	if (m_nEditIconId != nId) {m_nEditIconId = nId; RedrawParent();m_bDelayReposition = TRUE;}
-}
-AFX_INLINE int CXTPControlEdit::GetEditIconId() const{
-	return m_nEditIconId;
-}
-AFX_INLINE void CXTPControlEdit::ShowLabel(BOOL bShow) {
-	SetStyle(bShow ? xtpButtonCaption : xtpButtonAutomatic);
-}
-AFX_INLINE BOOL CXTPControlEdit::IsLabeled() const {
-	return IsCaptionVisible();
-}
-AFX_INLINE BOOL CXTPControlEdit::IsCustomizeResizeAllow() const {
-	return TRUE;
-}
-AFX_INLINE int CXTPControlEdit::GetCustomizeMinWidth() const {
-	return m_nLabelWidth + 10;
-}
-AFX_INLINE CXTPControlEdit* CXTPControlEditCtrl::GetControlEdit() const {
-	return m_pControl;
-}
-AFX_INLINE int CXTPControlEdit::GetLabelWidth() const {
-	return m_nLabelWidth;
-}
-AFX_INLINE void CXTPControlEdit::SetLabelWidth(int nLabelWidth) {
-	if (m_nLabelWidth != nLabelWidth)
+AFX_INLINE void CXTPControlEdit::SetEditIconId(int nId)
+{
+	if (m_nEditIconId != nId)
 	{
-		m_nLabelWidth = nLabelWidth;
+		m_nEditIconId = nId;
+		RedrawParent();
 		m_bDelayReposition = TRUE;
 	}
 }
-AFX_INLINE void CXTPControlEdit::OnThemeChanged() {
+AFX_INLINE int CXTPControlEdit::GetEditIconId() const
+{
+	return m_nEditIconId;
+}
+AFX_INLINE BOOL CXTPControlEdit::IsNumericOnly() const
+{
+	return m_bNumericOnly;
+}
+AFX_INLINE void CXTPControlEdit::ShowLabel(BOOL bShow)
+{
+	SetStyle(bShow ? xtpButtonCaption : xtpButtonAutomatic);
+}
+AFX_INLINE BOOL CXTPControlEdit::IsLabeled() const
+{
+	return IsCaptionVisible();
+}
+AFX_INLINE BOOL CXTPControlEdit::IsCustomizeResizeAllow() const
+{
+	return TRUE;
+}
+AFX_INLINE int CXTPControlEdit::GetCustomizeMinWidth() const
+{
+	return m_nLabelWidth + 10;
+}
+AFX_INLINE CXTPControlEdit* CXTPControlEditCtrl::GetControlEdit() const
+{
+	return m_pControl;
+}
+AFX_INLINE int CXTPControlEdit::GetLabelWidth() const
+{
+	return m_nLabelWidth;
+}
+AFX_INLINE void CXTPControlEdit::SetLabelWidth(int nLabelWidth)
+{
+	if (m_nLabelWidth != nLabelWidth)
+	{
+		m_nLabelWidth	  = nLabelWidth;
+		m_bDelayReposition = TRUE;
+	}
+}
+AFX_INLINE void CXTPControlEdit::OnThemeChanged()
+{
 	m_bDelayReposition = TRUE;
 }
-AFX_INLINE void CXTPControlEdit::ShowSpinButtons(BOOL bShow) {
-	if (m_bShowSpinButtons != bShow) {m_bShowSpinButtons = bShow; m_bDelayReposition = TRUE; DelayLayoutParent();}
+AFX_INLINE void CXTPControlEdit::ShowSpinButtons(BOOL bShow)
+{
+	if (m_bShowSpinButtons != bShow)
+	{
+		m_bShowSpinButtons = bShow;
+		m_bDelayReposition = TRUE;
+		DelayLayoutParent();
+	}
 }
-AFX_INLINE BOOL CXTPControlEdit::IsSpinButtonsVisible() const {
+AFX_INLINE BOOL CXTPControlEdit::IsSpinButtonsVisible() const
+{
 	return m_bShowSpinButtons;
 }
 
-AFX_INLINE void CXTPControlEdit::ShowBuddyButton(int nBuddyButtonId) {
-	if (m_nBuddyButtonId != nBuddyButtonId) {m_nBuddyButtonId = nBuddyButtonId; m_bDelayReposition = TRUE; DelayLayoutParent();}
-
+AFX_INLINE void CXTPControlEdit::ShowBuddyButton(int nBuddyButtonId)
+{
+	if (m_nBuddyButtonId != nBuddyButtonId)
+	{
+		m_nBuddyButtonId   = nBuddyButtonId;
+		m_bDelayReposition = TRUE;
+		DelayLayoutParent();
+	}
 }
-AFX_INLINE BOOL CXTPControlEdit::IsBuddyButtonVisible() const {
+AFX_INLINE BOOL CXTPControlEdit::IsBuddyButtonVisible() const
+{
 	return m_nBuddyButtonId > 0;
 }
-AFX_INLINE BOOL CXTPControlEdit::GetBuddyButtonId() const {
+AFX_INLINE BOOL CXTPControlEdit::GetBuddyButtonId() const
+{
 	return m_nBuddyButtonId;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCONTOLEDIT_H__)

@@ -1,7 +1,6 @@
-// XTIncludes.h : header file
+// Includes.h : header file
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,20 +17,28 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPTASKPANEL_INCLUDES_H__)
+#	define __XTPTASKPANEL_INCLUDES_H__
 
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "resource.h"
+#	include "TaskPanel/Resource.h"
 
 //----------------------------
 // Xtreme Task Panel
 //----------------------------
 
-#include "XTPTaskPanel.h"
-#include "XTPTaskPanelItem.h"
-#include "XTPTaskPanelItems.h"
-#include "XTPTaskPanelGroup.h"
-#include "XTPTaskPanelGroupItem.h"
-#include "XTPTaskPanelPaintManager.h"
+#	include "TaskPanel/XTPTaskPanelDefines.h"
+#	include "TaskPanel/XTPTaskPanel.h"
+#	include "TaskPanel/XTPTaskPanelItem.h"
+#	include "TaskPanel/XTPTaskPanelItems.h"
+#	include "TaskPanel/XTPTaskPanelGroup.h"
+#	include "TaskPanel/XTPTaskPanelGroupItem.h"
+#	include "TaskPanel/XTPTaskPanelPaintManager.h"
+#	include "Themes/XTPTaskPanelPaintManagerPlain.h"
+
+#endif //#if !defined(__XTPTASKPANEL_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

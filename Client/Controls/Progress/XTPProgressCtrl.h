@@ -1,7 +1,6 @@
 // XTPProgressCtrl.h interface for the CXTPProgressCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROGRESSCTRL_H__)
-#define __XTPPROGRESSCTRL_H__
+#	define __XTPPROGRESSCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#ifndef PBS_MARQUEE
-#define PBS_MARQUEE             0x08
-#endif
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#ifndef PBM_SETMARQUEE
-#define PBM_SETMARQUEE          (WM_USER+10)
-#endif
+#	ifndef PBS_MARQUEE
+#		define PBS_MARQUEE 0x08
+#	endif
+
+#	ifndef PBM_SETMARQUEE
+#		define PBM_SETMARQUEE (WM_USER + 10)
+#	endif
+
+class CXTPProgressCtrlPaintManager;
 
 //===========================================================================
 // Summary:
@@ -60,37 +63,60 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPProgressCtrl();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Handles cleanup, destroys object
+	//-----------------------------------------------------------------------
+	virtual ~CXTPProgressCtrl();
 
-public:
+	// ----------------------------------------------------------------------
+	// Summary:
+	//     This member function returns a pointer to the associated paint
+	//     manager.
+	// Remarks:
+	//     Call this member function to obtain a pointer to the paint manager
+	//     object. The paint manager object is used for drawing the date
+	//     picker window.
+	// Returns:
+	//     Pointer to the paint manager object.
+	// See Also:
+	//     SetTheme, SetPaintManager
+	// ----------------------------------------------------------------------
+	CXTPProgressCtrlPaintManager* GetPaintManager() const;
+
+	// ---------------------------------------------------------------------
+	// Summary:
+	//     This member function sets the new control drawing theme.
+	// Parameters:
+	//     pPaintManager :  Pointer of the new paint manager object or derived
+	//                      class. If NULL - the default paint manager object is set.
+	// Remarks:
+	//     Call this member function to set the paint manager object that is
+	//     used for drawing a date picker window.
+	// See Also:
+	//     GetPaintManager
+	// ---------------------------------------------------------------------
+	void SetTheme(CXTPProgressCtrlPaintManager* pPaintManager = NULL);
+
+	// -----------------------------------------------------------------
+	// Summary:
+	//    This member function sets the border color for the progress bar.
+	// Parameters:
+	//    clrNew  - COLORREF value that specifies the new border color.
+	// Returns:
+	//     COLORREF value used for the bar.
+	// -----------------------------------------------------------------
+	COLORREF SetBorderColor(COLORREF clrNew);
 
 	// -----------------------------------------------------------------
 	// Summary:
 	//    This member function sets the bar color for the progress bar.
 	// Parameters:
-	//    clrBarColor  - COLORREF value that specifies the new bar color.
+	//    clrNew  - COLORREF value that specifies the new bar color.
 	// Returns:
 	//     COLORREF value used for the bar.
 	// -----------------------------------------------------------------
-	void SetBarColor(COLORREF clrBarColor);
-
-	// -----------------------------------------------------------------
-	// Summary:
-	//     Turns marquee mode on or off for the current progress bar
-	//     control.
-	// Parameters:
-	//     fMarqueeMode - TRUE to turn marquee mode on, or FALSE to turn
-	//                    marquee mode off.
-	//     nInterval    - Time in milliseconds between updates of the
-	//                    marquee animation.
-	// Example:
-	//    The following code example starts and stops the marquee
-	//    scrolling animation.
-	// <code>
-	// int piAlpha[5] = { 25, 50, 75, 100, 100 };
-	// m_wndProgress.SetMarquee(TRUE, 50);
-	// </code>
-	// -----------------------------------------------------------------
-	BOOL SetMarquee(BOOL fMarqueeMode, int nInterval);
+	COLORREF SetBarColor(COLORREF clrNew);
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -112,8 +138,24 @@ public:
 	// -----------------------------------------------------------------
 	COLORREF SetTextColor(COLORREF clrNew);
 
-
-public:
+	// -----------------------------------------------------------------
+	// Summary:
+	//     Turns marquee mode on or off for the current progress bar
+	//     control.
+	// Parameters:
+	//     fMarqueeMode - TRUE to turn marquee mode on, or FALSE to turn
+	//                    marquee mode off.
+	//     nInterval    - Time in milliseconds between updates of the
+	//                    marquee animation.
+	// Example:
+	//    The following code example starts and stops the marquee
+	//    scrolling animation.
+	// <code>
+	// int piAlpha[5] = { 25, 50, 75, 100, 100 };
+	// m_wndProgress.SetMarquee(TRUE, 50);
+	// </code>
+	// -----------------------------------------------------------------
+	BOOL SetMarquee(BOOL fMarqueeMode, int nInterval);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -195,13 +237,21 @@ public:
 	void SetUseVisualStyle(BOOL bUseVisualStyle = TRUE);
 
 protected:
+	// -----------------------------------------------------------------
+	// Summary:
+	//     This member is called to update color, text and other visual
+	//     elements of the control.
+	// -----------------------------------------------------------------
+	void RefreshMetrics();
 
 	// -----------------------------------------------------------------
 	// Summary:
-	//     This member is called to update color, text and other visual elements
-	//     of the control.
+	//     This member function is called by the progress bar to draw
+	//     non client area borders.
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     rc  - Size of the area to draw.
 	// -----------------------------------------------------------------
-	void RefreshMetrics();
 	void DrawNcBorders(CDC* pDC, CRect rc);
 
 	//-----------------------------------------------------------------------
@@ -211,7 +261,22 @@ protected:
 	//     pDC - Pointer to a valid device context
 	//-----------------------------------------------------------------------
 	void DoPaint(CDC* pDC);
-	void PaintOffice2007(CDC* pDC);
+
+	// -----------------------------------------------------------------
+	// Summary:
+	//    This member function gets the border color for the progress bar.
+	// Returns:
+	//     COLORREF value used for the border.
+	// -----------------------------------------------------------------
+	COLORREF GetBorderColor();
+
+	// -----------------------------------------------------------------
+	// Summary:
+	//    This member function gets the bar color for the progress bar.
+	// Returns:
+	//     COLORREF value used for the bar.
+	// -----------------------------------------------------------------
+	COLORREF GetBarColor();
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -220,59 +285,71 @@ protected:
 	//     COLORREF value used for the background.
 	// -----------------------------------------------------------------
 	COLORREF GetBackColor();
+
+	// -----------------------------------------------------------------
+	// Summary:
+	//    This member function gets the text color for the progress bar.
+	// Returns:
+	//     COLORREF value used for the text.
+	// -----------------------------------------------------------------
+	COLORREF GetTextColor();
+
+	//{{AFX_CODEJOCK_PRIVATE
+
+	void Init();
 	void DoStep(int nStep);
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
+	//{{AFX_VIRTUAL(CXTPProgressCtrl)
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void PreSubclassWindow();
+	//}}AFX_VIRTUAL
 
-	BOOL PreCreateWindow(CREATESTRUCT& cs);
-	void PreSubclassWindow();
-	void Init();
-
-	//{{AFX_MSG(CXTPEdit)
-
+	//{{AFX_MSG(CXTPProgressCtrl)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSysColorChange();
-
-	LRESULT OnSetPos(WPARAM /*wParam*/, LPARAM /*lParam*/);
-	LRESULT OnStepIt(WPARAM /*wParam*/, LPARAM /*lParam*/);
-	void OnTimer(UINT_PTR nIDEvent);
-	LRESULT OnStartMarquee(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
 
+	afx_msg LRESULT OnSetPos(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnStepIt(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnStartMarquee(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
+
+	DECLARE_MESSAGE_MAP()
+
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL m_bPreSubclassInit;
-	int m_nMarqueePos;
-
-	BOOL m_bUseVisualStyle;
-	int m_nMarqueeDelay;
-	CXTPWinThemeWrapper m_wrapperProgress;
-	XTPControlTheme m_nTheme;
-
-	CXTPPaintManagerColor m_clrBorderNormal;
-	CXTPPaintManagerColor m_clrBarColor;
-	CXTPPaintManagerColor m_clrTextColor;
-	CXTPPaintManagerColor m_clrBackColor;
-	BOOL m_bFlatStyle;
+	int m_nMarqueePos;		 // Position of Marquee progress bar.
+	int m_nMarqueeDelay;	 // TRUE if delay is enabled.
+	BOOL m_bPreSubclassInit; // TRUE if the progress bar has been subsclassed.
+	BOOL m_bFlatStyle;		 // TRUE if the progress bar is drawn flat (deprecated).
+	CXTPProgressCtrlPaintManager* m_pPaintManager; // Pointer to the progress bar paint manager.
 };
-AFX_INLINE BOOL CXTPProgressCtrl::SetMarquee(BOOL fMarqueeMode, int nInterval) {
-	ASSERT(::IsWindow(m_hWnd)); return (BOOL)::SendMessage(m_hWnd, PBM_SETMARQUEE, (WPARAM)fMarqueeMode, (LPARAM)nInterval);
-}
 
+/////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPProgressCtrl::GetUseVisualStyle() const {
-	return m_bUseVisualStyle;
+AFX_INLINE CXTPProgressCtrlPaintManager* CXTPProgressCtrl::GetPaintManager() const
+{
+	return m_pPaintManager;
 }
-AFX_INLINE BOOL CXTPProgressCtrl::GetFlatStyle() const{
+AFX_INLINE BOOL CXTPProgressCtrl::SetMarquee(BOOL fMarqueeMode, int nInterval)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (BOOL)::SendMessage(m_hWnd, PBM_SETMARQUEE, (WPARAM)fMarqueeMode, (LPARAM)nInterval);
+}
+AFX_INLINE BOOL CXTPProgressCtrl::GetFlatStyle() const
+{
 	return m_bFlatStyle;
 }
-AFX_INLINE void CXTPProgressCtrl::SetFlatStyle(BOOL bFlatStyle/* = TRUE*/) {
+AFX_INLINE void CXTPProgressCtrl::SetFlatStyle(BOOL bFlatStyle /* = TRUE*/)
+{
 	m_bFlatStyle = bFlatStyle;
-	if (m_hWnd) Invalidate(FALSE);
+	if (m_hWnd)
+		Invalidate(FALSE);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROGRESSCTRL_H__)

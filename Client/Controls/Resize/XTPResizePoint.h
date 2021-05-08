@@ -1,7 +1,6 @@
 // XTPResizePoint.h: interface for the CXTPResizePoint class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZEPOINT_H__)
-#define __XTPRESIZEPOINT_H__
+#	define __XTPRESIZEPOINT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // -----------------------------------------------------------------
 // Summary:
@@ -94,24 +95,26 @@ public:
 // SetResize(IDOK,                XTP_ANCHOR_BOTTOMRIGHT, XTP_ANCHOR_BOTTOMRIGHT);
 // </code>
 // See Also:
-//     CXTPResize, CXTPResizeDialog, CXTPResizeFormView, CXTPResizeGroupBox, CXTPResizePropertyPage, CXTPResizePropertySheet,  CXTPResizePoint, CXTPResizeRect
+//     CXTPResize, CXTPResizeDialog, CXTPResizeFormView, CXTPResizeGroupBox, CXTPResizePropertyPage,
+//     CXTPResizePropertySheet,  CXTPResizePoint, CXTPResizeRect
 //-----------------------------------------------------------------------
-#define XTP_ANCHOR_BOTTOMCENTER CXTPResizePoint(.5, 1)
+#	define XTP_ANCHOR_BOTTOMCENTER CXTPResizePoint(.5, 1)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_BOTTOMLEFT   CXTPResizePoint(0, 1)
+#	define XTP_ANCHOR_BOTTOMLEFT CXTPResizePoint(0, 1)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_BOTTOMRIGHT  CXTPResizePoint(1, 1)
+#	define XTP_ANCHOR_BOTTOMRIGHT CXTPResizePoint(1, 1)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_MIDDLECENTER CXTPResizePoint(.5, .5)
+#	define XTP_ANCHOR_MIDDLECENTER CXTPResizePoint(.5, .5)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_MIDDLELEFT   CXTPResizePoint(0, .5)
+#	define XTP_ANCHOR_MIDDLELEFT CXTPResizePoint(0, .5)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_MIDDLERIGHT  CXTPResizePoint(1, .5)
+#	define XTP_ANCHOR_MIDDLERIGHT CXTPResizePoint(1, .5)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_TOPLEFT      CXTPResizePoint(0, 0)
+#	define XTP_ANCHOR_TOPLEFT CXTPResizePoint(0, 0)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_TOPRIGHT     CXTPResizePoint(1, 0)
+#	define XTP_ANCHOR_TOPRIGHT CXTPResizePoint(1, 0)
 //<COMBINE XTP_ANCHOR_BOTTOMCENTER>
-#define XTP_ANCHOR_TOPCENTER    CXTPResizePoint(.5, 0)
+#	define XTP_ANCHOR_TOPCENTER CXTPResizePoint(.5, 0)
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZEPOINT_H__)

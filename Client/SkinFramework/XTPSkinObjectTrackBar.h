@@ -1,7 +1,6 @@
 // XTPSkinObjectTrackBar.h: interface for the CXTPSkinObjectTrackBar class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTTRACKBAR_H__)
-#define __XTPSKINOBJECTTRACKBAR_H__
+#	define __XTPSKINOBJECTTRACKBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -63,8 +61,7 @@ public:
 	virtual ~CXTPSkinObjectTrackBar();
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void DrawTics(CDC* pDC);
 	void DrawTicsOneLine(CDC* pDC, int dir, int yTic);
 	void DrawTic(CDC* pDC, int x, int y, int dir, COLORREF clr);
@@ -92,10 +89,11 @@ protected:
 	//}}AFX_MSG
 
 protected:
-	int m_nTickFreq;            // Frequency of tick marks
-	DRAWRECT m_drawRect;        // Drawing rectangle
-	BOOL m_bHotThumb;           // TRUE if Thumb is selected
-//}}AFX_CODEJOCK_PRIVATE
+	int m_nTickFreq;	 // Frequency of tick marks
+	DRAWRECT m_drawRect; // Drawing rectangle
+	BOOL m_bHotThumb;	// TRUE if Thumb is selected
+						 //}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTTRACKBAR_H__)

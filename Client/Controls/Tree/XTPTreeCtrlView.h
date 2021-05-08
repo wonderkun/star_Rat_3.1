@@ -1,7 +1,6 @@
 // XTPTreeCtrlView.h interface for the CXTPTreeView class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTREEVIEW_H__)
-#define __XTPTREEVIEW_H__
+#	define __XTPTREEVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-DECLATE_TREE_BASE(CXTPTreeViewBase, CTreeView, CXTPTreeBase)
-DECLATE_TREE_BASE(CXTPTreeCtrlBase, CTreeCtrl, CXTPTreeBase)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+DECLARE_TREE_BASE(CXTPTreeViewBase, CTreeView, CXTPTreeBase)
+DECLARE_TREE_BASE(CXTPTreeCtrlBase, CTreeCtrl, CXTPTreeBase)
 
 //===========================================================================
 // Summary:
@@ -41,7 +42,6 @@ class _XTP_EXT_CLASS CXTPTreeView : public CXTPTreeViewBase
 	DECLARE_DYNCREATE(CXTPTreeView)
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Protected constructor used by dynamic creation. Constructs a CXTPTreeView
@@ -69,7 +69,6 @@ class _XTP_EXT_CLASS CXTPTreeCtrl : public CXTPTreeCtrlBase
 	DECLARE_DYNAMIC(CXTPTreeCtrl)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTreeCtrl object
@@ -83,8 +82,79 @@ public:
 	virtual ~CXTPTreeCtrl();
 
 protected:
-
 	DECLARE_MESSAGE_MAP()
 };
 
+//=======================================================================
+// Summary:
+//	An adaptor for any CTreeCtrl derived control that overrides standard scroll bars with custom
+// scroll
+// bars.
+// Parameters:
+//	TreeBase - base CTreeCtrl derived class name.
+// See also:
+//	CXTPScrollable
+//=======================================================================
+template<class TreeBase>
+class CXTPScrollableTreeCtrlT : public CXTPScrollable<TreeBase>
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//	Initializes scrollable control instance.
+	//-----------------------------------------------------------------------
+	CXTPScrollableTreeCtrlT();
+
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual BOOL HasVScroll(DWORD dwStyle, DWORD dwExStyle) const;
+	virtual BOOL HasHScroll(DWORD dwStyle, DWORD dwExStyle) const;
+	virtual void DisableScrollbars();
+	virtual void DisableScrollbars(CWnd& wnd);
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//	Type alias for CXTPTreeCtrl derived scrollable control.
+//-----------------------------------------------------------------------
+typedef CXTPScrollableTreeCtrlT<CXTPTreeCtrl> CXTPScrollableTreeCtrl;
+
+template<class TreeBase>
+AFX_INLINE CXTPScrollableTreeCtrlT<TreeBase>::CXTPScrollableTreeCtrlT()
+{
+	ASSERT(GetRuntimeClass()->IsDerivedFrom(RUNTIME_CLASS(CTreeCtrl)));
+}
+
+template<class TreeBase>
+AFX_INLINE BOOL CXTPScrollableTreeCtrlT<TreeBase>::HasVScroll(DWORD dwStyle, DWORD dwExStyle) const
+{
+	UNREFERENCED_PARAMETER(dwExStyle);
+	return 0 == (dwStyle & TVS_NOSCROLL);
+}
+
+template<class TreeBase>
+AFX_INLINE BOOL CXTPScrollableTreeCtrlT<TreeBase>::HasHScroll(DWORD dwStyle, DWORD dwExStyle) const
+{
+	UNREFERENCED_PARAMETER(dwExStyle);
+
+	const DWORD nTVS_NOHSCROLL = 0x8000;
+	return 0 == (dwStyle & (TVS_NOSCROLL | nTVS_NOHSCROLL));
+}
+
+template<class TreeBase>
+AFX_INLINE void CXTPScrollableTreeCtrlT<TreeBase>::DisableScrollbars()
+{
+	ModifyStyle(WS_VSCROLL | WS_HSCROLL, 0);
+	ModifyStyleEx(WS_EX_LEFTSCROLLBAR, 0);
+}
+
+template<class TreeBase>
+AFX_INLINE void CXTPScrollableTreeCtrlT<TreeBase>::DisableScrollbars(CWnd& wnd)
+{
+	UNREFERENCED_PARAMETER(wnd);
+	// Do nothing as SysTreeView32 behaves improperly if scroll bars gets disabled repeatedly.
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTREEVIEW_H__)

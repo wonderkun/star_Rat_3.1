@@ -1,7 +1,6 @@
 // XTPCommandBarAnimation.h: interface for the CXTPCommandBarAnimation class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONANIMATION_H__)
-#define __XTPRIBBONANIMATION_H__
+#	define __XTPRIBBONANIMATION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 class CXTPCommandBar;
 
-#define XTP_TID_ANIMATION 0xACD43
+#	define XTP_TID_ANIMATION 0xACD43
 
 class _XTP_EXT_CLASS CXTPCommandBarAnimation
 {
@@ -80,12 +81,11 @@ public:
 	BOOL m_bAnimation;
 	BOOL m_bDoubleBuffer;
 
-
 protected:
 	CArray<CAnimateInfo*, CAnimateInfo*> m_arrAnimation;
 };
 
 //}}AFX_CODEJOCK_PRIVATE
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONANIMATION_H__)

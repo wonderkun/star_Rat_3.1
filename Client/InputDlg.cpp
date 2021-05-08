@@ -4,7 +4,7 @@
 // If not, I don't know who wrote it.
 // Compiles with Visual Studio .NET 2003 (V7.1) on Windows XP. Tab size=3.
 //
-#include "stdafx.h"
+#include "pcl.h"
 #include "InputDlg.h"
 #include <ATLCONV.H>
 #ifdef _DEBUG
@@ -12,7 +12,8 @@
 #endif
 
 //////////////////
-// Note: Make sure nBufLen is big enough to hold your entire dialog template!
+// Note: Make sure nBufLen is big enough to hold your entire dialog 
+// !
 //
 CDlgTemplateBuilder::CDlgTemplateBuilder(UINT nBufLen)
 {
@@ -134,13 +135,13 @@ WORD* CDlgTemplateBuilder::AddText(WORD* buf, LPCTSTR text)
 //
 BOOL CInputDialog::Init(LPCTSTR caption, LPCTSTR prompt, CWnd* pParent, WORD nIDIcon)
 {
-	const CXDIALOG  = 200;					 // dialog width
-	const DLGMARGIN = 7;						 // margins all around
-	const CYSTATIC  = 8;						 // height of static text
-	const CYEDIT    = 12;					 // height of edit control
-	const CYSPACE   = 5;						 // vertical space between controls
-	const CXBUTTON  = 40;					 // button width...
-	const CYBUTTON  = 15;					 // ..and height
+	const int CXDIALOG  = 200;					 // dialog width
+	const int DLGMARGIN = 7;						 // margins all around
+	const int CYSTATIC  = 8;						 // height of static text
+	const int CYEDIT    = 12;					 // height of edit control
+	const int CYSPACE   = 5;						 // vertical space between controls
+	const int CXBUTTON  = 40;					 // button width...
+	const int CYBUTTON  = 15;					 // ..and height
 
 	CDlgTemplateBuilder& dtb = m_dtb;
 	CRect rc(

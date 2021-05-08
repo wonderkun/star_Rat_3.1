@@ -1,7 +1,6 @@
 // XTPPropertyGridInplaceEdit.h interface for the CXTPPropertyGridInplaceEdit class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDINPLACEEDIT_H__)
-#define __XTPPROPERTYGRIDINPLACEEDIT_H__
+#	define __XTPPROPERTYGRIDINPLACEEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // class forwards.
-
-#include "Common/XTPMaskEditT.h"
 
 class CXTPPropertyGridView;
 class CXTPPropertyGridItem;
@@ -44,7 +43,6 @@ class _XTP_EXT_CLASS CXTPPropertyGridInplaceEdit : public CXTPMaskEditT<CEdit>
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceEdit)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceEdit object
@@ -107,25 +105,26 @@ public:
 	virtual BOOL SelectConstraint(int nDirection, BOOL bCircle);
 
 protected:
+	CString m_strValue; // Previous item value
 
-	CString              m_strValue;    // Previous item value
-	CBrush               m_brBack;      // Background brush
-	COLORREF             m_clrBack;     // Background color
-	CXTPPropertyGridView* m_pGrid;      // Parent Grid view
-	CXTPPropertyGridItem* m_pItem;      // Current Item
-	BOOL m_bDelayCreate;                // TRUE to create Edit after activate
-	BOOL m_bCreated;                    // TRUE if Create method was executed
-	BOOL m_bEditMode;                   // TRUE after edit first receve focus
-	BOOL m_bCancel;                     // User cancel edit with Escape
-	BOOL m_bCheckAutoComplete;          // Check Auto Complete
-	BOOL m_bIgnoreEditChanged;          // TRUE to Ignore EnChange notification
+	CXTPBrush m_xtpBrushBack; // Background brush
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brBack, m_xtpBrushBack, GetBackBrushHandle);
+
+	COLORREF m_clrBack;			   // Background color
+	CXTPPropertyGridView* m_pGrid; // Parent Grid view
+	CXTPPropertyGridItem* m_pItem; // Current Item
+	BOOL m_bDelayCreate;		   // TRUE to create Edit after activate
+	BOOL m_bCreated;			   // TRUE if Create method was executed
+	BOOL m_bEditMode;			   // TRUE after edit first receve focus
+	BOOL m_bCancel;				   // User cancel edit with Escape
+	BOOL m_bCheckAutoComplete;	 // Check Auto Complete
+	BOOL m_bIgnoreEditChanged;	 // TRUE to Ignore EnChange notification
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPPropertyGridInplaceEdit)
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
-
 
 	//{{AFX_MSG(CXTPPropertyGridInplaceEdit)
 	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
@@ -141,11 +140,13 @@ protected:
 	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 	DECLARE_MESSAGE_MAP()
@@ -155,13 +156,13 @@ private:
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridInplaceControl is CWnd derived class, represents base class for all item in place controls.
+//     CXTPPropertyGridInplaceControl is CWnd derived class, represents base class for all item in
+//     place controls.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridInplaceControl : public CWnd
 {
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceControl)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceControl object
@@ -171,7 +172,6 @@ public:
 	CXTPPropertyGridInplaceControl(CXTPPropertyGridItem* pItem);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when item creates its in-place control.
@@ -215,8 +215,7 @@ public:
 	virtual BOOL OnEditMouseWheel(CEdit* pEdit, short zDelta);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	virtual void OnFinalRelease();
 
@@ -225,11 +224,11 @@ protected:
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPPropertyGridItem* m_pItem;          // Parent item pointer
-	int m_nWidth;                           // Width of in-place item
+	CXTPPropertyGridItem* m_pItem; // Parent item pointer
+	int m_nWidth;				   // Width of in-place item
 };
 
 //===========================================================================
@@ -242,7 +241,6 @@ class _XTP_EXT_CLASS CXTPPropertyGridInplaceSlider : public CXTPPropertyGridInpl
 {
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceSlider)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceSlider object
@@ -252,7 +250,6 @@ public:
 	CXTPPropertyGridInplaceSlider(CXTPPropertyGridItem* pItem);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when item creates its in-place control.
@@ -331,7 +328,6 @@ public:
 	virtual BOOL OnEditMouseWheel(CEdit* pEdit, short zDelta);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This virtual method is called when slide was moved by user
@@ -342,7 +338,7 @@ protected:
 	virtual void OnScroll(UINT nSBCode, UINT nPos);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	int CalcualteEditWidth();
@@ -351,47 +347,61 @@ protected:
 	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
 	afx_msg void HScroll(UINT nSBCode, UINT nPos);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg UINT OnGetDlgCode();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridInplaceSlider);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	int m_nMin;         // Lower range
-	int m_nMax;         // Upper range
-	int m_nValue;       // Value of slider
+	int m_nMin;   // Lower range
+	int m_nMax;   // Upper range
+	int m_nValue; // Value of slider
 
 private:
 	COLORREF m_clrBack;
-	CBrush m_brBack;
+	CXTPBrush m_xtpBrushBack;
 };
 
-AFX_INLINE CSliderCtrl* CXTPPropertyGridInplaceSlider::GetSliderCtrl() const {
+AFX_INLINE CSliderCtrl* CXTPPropertyGridInplaceSlider::GetSliderCtrl() const
+{
 	return (CSliderCtrl*)this;
 }
-AFX_INLINE void CXTPPropertyGridInplaceSlider::SetMin(int nMin) {
+AFX_INLINE void CXTPPropertyGridInplaceSlider::SetMin(int nMin)
+{
 	m_nMin = nMin;
 }
-AFX_INLINE void CXTPPropertyGridInplaceSlider::SetMax(int nMax) {
+AFX_INLINE void CXTPPropertyGridInplaceSlider::SetMax(int nMax)
+{
 	m_nMax = nMax;
 }
-AFX_INLINE int CXTPPropertyGridInplaceSlider::GetMin() const {
+AFX_INLINE int CXTPPropertyGridInplaceSlider::GetMin() const
+{
 	return m_nMin;
 }
-AFX_INLINE int CXTPPropertyGridInplaceSlider::GetMax() const {
+AFX_INLINE int CXTPPropertyGridInplaceSlider::GetMax() const
+{
 	return m_nMax;
 }
 
 //===========================================================================
 // Summary:
 //     CXTPPropertyGridInplaceSpinButton is CXTPPropertyGridInplaceControl derived class.
-//     It represents in-place spin button of the items. Call  CXTPPropertyGridItem::AddSpinButton() to
-//     add spin button for property grid item
+//     It represents in-place spin button of the items. Call  CXTPPropertyGridItem::AddSpinButton()
+//     to add spin button for property grid item
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridInplaceSpinButton : public CXTPPropertyGridInplaceControl
 {
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceSpinButton)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceSpinButton object
@@ -401,7 +411,6 @@ public:
 	CXTPPropertyGridInplaceSpinButton(CXTPPropertyGridItem* pItem);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when item creates its in-place control.
@@ -478,33 +487,48 @@ public:
 	virtual BOOL OnEditMouseWheel(CEdit* pEdit, short zDelta);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPPropertyGridInplaceSpinButton)
-	afx_msg void OnDeltapos(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltapos(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg UINT OnGetDlgCode();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridInplaceSpinButton);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	int m_nMin;         // Lower range
-	int m_nMax;         // Upper range
+	int m_nMin; // Lower range
+	int m_nMax; // Upper range
 };
 
-AFX_INLINE CSpinButtonCtrl* CXTPPropertyGridInplaceSpinButton::GetSpinButtonCtrl() const {
+AFX_INLINE CSpinButtonCtrl* CXTPPropertyGridInplaceSpinButton::GetSpinButtonCtrl() const
+{
 	return (CSpinButtonCtrl*)this;
 }
-AFX_INLINE void CXTPPropertyGridInplaceSpinButton::SetMin(int nMin) {
+AFX_INLINE void CXTPPropertyGridInplaceSpinButton::SetMin(int nMin)
+{
 	m_nMin = nMin;
 }
-AFX_INLINE void CXTPPropertyGridInplaceSpinButton::SetMax(int nMax) {
+AFX_INLINE void CXTPPropertyGridInplaceSpinButton::SetMax(int nMax)
+{
 	m_nMax = nMax;
 }
-AFX_INLINE int CXTPPropertyGridInplaceSpinButton::GetMin() const {
+AFX_INLINE int CXTPPropertyGridInplaceSpinButton::GetMin() const
+{
 	return m_nMin;
 }
-AFX_INLINE int CXTPPropertyGridInplaceSpinButton::GetMax() const {
+AFX_INLINE int CXTPPropertyGridInplaceSpinButton::GetMax() const
+{
 	return m_nMax;
 }
 
@@ -516,7 +540,6 @@ AFX_INLINE int CXTPPropertyGridInplaceSpinButton::GetMax() const {
 class _XTP_EXT_CLASS CXTPPropertyGridInplaceControls
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceControls object
@@ -529,8 +552,8 @@ public:
 	//     cleanup and deallocation
 	//-------------------------------------------------------------------------
 	~CXTPPropertyGridInplaceControls();
-public:
 
+public:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this method to remove all in-place controls from collection.
@@ -567,24 +590,31 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridInplaceControl* GetAt(int nIndex);
 
-
 protected:
-	CArray<CXTPPropertyGridInplaceControl*, CXTPPropertyGridInplaceControl*> m_arrControls;         // Array of controls
+	CArray<CXTPPropertyGridInplaceControl*, CXTPPropertyGridInplaceControl*>
+		m_arrControls; // Array of controls
 };
 
-
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridInplaceEdit::GetItem() {
+AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridInplaceEdit::GetItem()
+{
 	return m_pItem;
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceEdit::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceEdit::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+													DWORD dwStyle, const RECT& rect,
+													CWnd* pParentWnd, UINT nID,
+													CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceEdit::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceEdit::Create(DWORD dwStyle, const RECT& rect,
+													CWnd* pParentWnd, UINT nID)
+{
 	return CEdit::Create(dwStyle, rect, pParentWnd, nID);
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceControl::OnEditMouseWheel(CEdit* /*pEdit*/, short /*zDelta*/) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceControl::OnEditMouseWheel(CEdit* /*pEdit*/, short /*zDelta*/)
+{
 	return FALSE;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDINPLACEEDIT_H__)

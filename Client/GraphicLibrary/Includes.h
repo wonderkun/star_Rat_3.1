@@ -1,7 +1,6 @@
-// Includes.h
+// Includes.h : header file
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,13 +17,15 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(__XTPGRAPHICLIBRARYINCLUDES_H__)
-#define __XTPGRAPHICLIBRARYINCLUDES_H__
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPGRAPHICLIBRARY_INCLUDES_H__)
+#	define __XTPGRAPHICLIBRARY_INCLUDES_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPGraphicBitmapPng.h"
+#	include "GraphicLibrary/XTPGraphicBitmapPng.h"
 
-#endif //#if !defined(__XTPGRAPHICLIBRARYINCLUDES_H__)
+#endif //#if !defined(__XTPGRAPHICLIBRARY_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

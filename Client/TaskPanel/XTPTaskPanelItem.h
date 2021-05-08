@@ -1,7 +1,6 @@
 // XTPTaskPanelItem.h interface for the CXTPTaskPanelItem class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELITEM_H__)
-#define __XTPTASKPANELITEM_H__
+#	define __XTPTASKPANELITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanel;
 class CXTPTaskPanelPaintManager;
@@ -34,15 +35,15 @@ class CXTPTaskPanelGroup;
 class CXTPImageManagerIcon;
 class CXTPPropExchange;
 class CXTPMarkupUIElement;
-#include "Common/XTPSystemHelpers.h"
-#include "XTPTaskPanelDefines.h"
 
 //---------------------------------------------------------------------------
 // Summary:
-//     CXTPTaskPanelItem is a CCmdTarget derived class. It is used in TaskPanel control
+//     CXTPTaskPanelItem is a CXTPCmdTarget derived class. It is used in TaskPanel control
 //     as parent for CXTPTaskPanelGroupItem and CXTPTaskPanelGroup classes.
 //---------------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPTaskPanelItem : public CXTPCmdTarget, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPTaskPanelItem
+	: public CXTPCmdTarget
+	, public CXTPAccessible
 {
 	DECLARE_INTERFACE_MAP()
 	DECLARE_DYNCREATE(CXTPTaskPanelItem)
@@ -54,13 +55,13 @@ protected:
 	//-----------------------------------------------------------------------
 	CXTPTaskPanelItem();
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPTaskPanelItem object, handles cleanup and deallocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPTaskPanelItem();
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get parent TaskPanel control item belongs to
@@ -79,11 +80,29 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this method to set the identifier of the item.
+	// Parameters:
+	//     nID - The new identifier of the item.
+	//     lpCaption - The new caption of the item.
+	//     lpTooltip - The new tooltip of the item.
+	//-----------------------------------------------------------------------
+	void SetID(UINT nID, LPCTSTR lpCaption, LPCTSTR lpTooltip = NULL);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this method to get the identifier of the item.
 	// Returns:
 	//     Identifier of the item.
 	//-----------------------------------------------------------------------
 	UINT GetID() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get the identifier of the item.
+	// Returns:
+	//     Identifier of the item.
+	//---------------------------------------------------------------------
+	BOOL IsDroppedOff() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -383,11 +402,13 @@ public:
 	//     dragOptions parameter can be one or more of the following values:
 	//          * <b>xtpTaskItemAllowDragCopyWithinGroup</b> To allow copy within group only
 	//          * <b>xtpTaskItemAllowDragCopyWithinControl</b> To allow copy within task panel only
-	//          * <b>xtpTaskItemAllowDragCopyOutsideControl</b> To allow copy outside task panel only
+	//          * <b>xtpTaskItemAllowDragCopyOutsideControl</b> To allow copy outside task panel
+	//          only
 	//          * <b>xtpTaskItemAllowDragCopy</b> To allow copy operation
 	//          * <b>xtpTaskItemAllowDragMoveWithinGroup</b> To allow move within group only
 	//          * <b>xtpTaskItemAllowDragMoveWithinControl</b> To allow move within task panel only
-	//          * <b>xtpTaskItemAllowDragMoveOutsideControl</b> To allow move outside task panel only
+	//          * <b>xtpTaskItemAllowDragMoveOutsideControl</b> To allow move outside task panel
+	//          only
 	//          * <b>xtpTaskItemAllowDragMove </b>   // To allow move operation
 	//          * <b>xtpTaskItemAllowDragAll</b> To allow all drag operations
 	// See Also: IsAllowDrag, XTPTaskPanelItemAllowDrag
@@ -473,7 +494,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual CRect GetInvalidateRect() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method retrieves the application-supplied 32-bit value
@@ -524,7 +544,6 @@ public:
 	virtual void DrawCaptionText(CDC* pDC, CRect rc, UINT nFormat);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Reads or writes this object from or to an archive.
@@ -562,7 +581,6 @@ public:
 	void EnsureVisible();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when item was removed from parent items collection
@@ -576,77 +594,122 @@ protected:
 	virtual void OnInserted();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility Support
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleDescription(VARIANT varChild, BSTR* pszDescription);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPTaskPanel* m_pPanel;            // Parent TaskPanel class
-	CString m_strCaption;               // Caption of the item.
-	CString m_strTooltip;               // Tooltip of the item.
-	UINT m_nID;                         // Identifier.
+	CXTPTaskPanel* m_pPanel; // Parent TaskPanel class
+	CString m_strCaption;	// Caption of the item.
+	CString m_strTooltip;	// Tooltip of the item.
+	UINT m_nID;				 // Identifier.
 
-	XTPTaskPanelItemType m_typeItem;    // Type of the item.
+	XTPTaskPanelItemType m_typeItem; // Type of the item.
 
-	CXTPTaskPanelItems* m_pItems;       // Collection of child items.
+	CXTPTaskPanelItems* m_pItems; // Collection of child items.
 
-	int m_nIconIndex;                   // Icon index.
-	BOOL m_bEnabled;                    // TRUE if item is enabled.
-	BOOL m_bAllowDrop;                  // TRUE if item can be dragged.
-	long m_nAllowDrag;                  // TRUE if item can be dropped.
+	int m_nIconIndex;  // Icon index.
+	BOOL m_bEnabled;   // TRUE if item is enabled.
+	BOOL m_bAllowDrop; // TRUE if item can be dragged.
+	long m_nAllowDrag; // TRUE if item can be dropped.
 
-	CRect m_rcText;                     // Size and location of caption text of item.
-	UINT m_nTextFormat;                 // Format of caption text of item.
-	BOOL m_bVisible;                    // TRUE if item is visible
-	CRect m_rcIconPadding;              // Padding\spacing placed around the item icon.
+	CRect m_rcText;		   // Size and location of caption text of item.
+	UINT m_nTextFormat;	// Format of caption text of item.
+	BOOL m_bVisible;	   // TRUE if item is visible
+	CRect m_rcIconPadding; // Padding\spacing placed around the item icon.
 
-	DWORD_PTR m_dwData;                 // The 32-bit value associated with the item
+	DWORD_PTR m_dwData; // The 32-bit value associated with the item
 
-	CFont m_fntItem;                    // Font of the item
-	CXTPMarkupUIElement* m_pMarkupUIElement;    // Markup element that renders caption
+	CXTPFont m_xtpFontItem; // Font of the item
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntItem, m_xtpFontItem, GetItemFontHandle);
 
+	CXTPMarkupUIElement* m_pMarkupUIElement; // Markup element that renders caption
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPTaskPanelItem)
+
+	enum
+	{
+		dispidCaption   = 1L,
+		dispidTooltip   = 2L,
+		dispidEnabled   = 3L,
+		dispidType		= 4L,
+		dispidId		= 5L,
+		dispidIconIndex = 6L,
+	};
+	afx_msg BSTR OleGetCaption();
+	afx_msg BSTR OleGetTooltip();
+	afx_msg LPDISPATCH OleGetGroup();
+	afx_msg LPDISPATCH OleGetParentItems();
+	int OleGetIndex();
+	COleVariant m_oleTag;
+	void OleSetIconPadding(long nLeft, long nTop, long nRight, long nBottom);
+	LPFONTDISP OleGetFont();
+	void OleSetFont(LPFONTDISP pFontDisp);
+	void SetID_(UINT nID);
+
+public:
+	static CXTPTaskPanelItem* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 
 	friend class CXTPTaskPanelItems;
 	friend class CXTPTaskPanelPaintManager;
 };
 
-AFX_INLINE CXTPTaskPanel* CXTPTaskPanelItem::GetTaskPanel() const {
+AFX_INLINE CXTPTaskPanel* CXTPTaskPanelItem::GetTaskPanel() const
+{
 	ASSERT(m_pPanel != NULL);
 	return m_pPanel;
 }
-AFX_INLINE CString CXTPTaskPanelItem::GetCaption() const {
+AFX_INLINE CString CXTPTaskPanelItem::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE CString CXTPTaskPanelItem::GetTooltip() const {
+AFX_INLINE CString CXTPTaskPanelItem::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanelItem::GetParentItems() const {
+AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanelItem::GetParentItems() const
+{
 	return m_pItems;
 }
-AFX_INLINE CRect& CXTPTaskPanelItem::GetIconPadding() {
+AFX_INLINE CRect& CXTPTaskPanelItem::GetIconPadding()
+{
 	return m_rcIconPadding;
 }
-AFX_INLINE void CXTPTaskPanelItem::OnRemoved() {
-
+AFX_INLINE void CXTPTaskPanelItem::OnRemoved()
+{
 }
-AFX_INLINE DWORD_PTR CXTPTaskPanelItem::GetItemData() const {
+AFX_INLINE DWORD_PTR CXTPTaskPanelItem::GetItemData() const
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTPTaskPanelItem::SetItemData(DWORD_PTR dwData) {
+AFX_INLINE void CXTPTaskPanelItem::SetItemData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPTaskPanelItem::GetMarkupUIElement() const {
+AFX_INLINE CXTPMarkupUIElement* CXTPTaskPanelItem::GetMarkupUIElement() const
+{
 	return m_pMarkupUIElement;
 }
+AFX_INLINE BOOL CXTPTaskPanelItem::IsDroppedOff() const
+{
+	return m_pPanel == NULL ? TRUE : FALSE;
+}
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELITEM_H__)

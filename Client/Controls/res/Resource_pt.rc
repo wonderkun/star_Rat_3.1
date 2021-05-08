@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTG))
 #ifdef _WIN32
 LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE
 #pragma code_page(1252)
@@ -104,18 +103,18 @@ CAPTION "Organizar janelas"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Selecionar &janela:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,189,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,184,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Ativar",XTP_IDC_BTN_ACTIVATE,202,7,96,14
-    PUSHBUTTON      "Fechar",IDOK,202,24,96,14
-    PUSHBUTTON      "Salvar",XTP_IDC_BTN_SAVE,202,41,96,14
-    PUSHBUTTON      "Fechar janela",XTP_IDC_BTN_CLOSEWINDOWS,202,58,96,14
-    PUSHBUTTON      "Em cascata",XTP_IDC_BTN_CASCADE,202,75,96,14
-    PUSHBUTTON      "Lado a lado horizontalmente",XTP_IDC_BTN_TILEHORZ,202,92,96,14
-    PUSHBUTTON      "Lado a lado verticalmente",XTP_IDC_BTN_TILEVERT,202,109,96,14
-    PUSHBUTTON      "Minimizar",XTP_IDC_BTN_MINIMIZE,202,126,96,14
+    PUSHBUTTON      "Ativar",XTP_IDC_BTN_ACTIVATE,197,7,101,14
+    PUSHBUTTON      "Fechar",IDOK,197,24,101,14
+    PUSHBUTTON      "Salvar",XTP_IDC_BTN_SAVE,197,41,101,14
+    PUSHBUTTON      "Fechar janela",XTP_IDC_BTN_CLOSEWINDOWS,197,58,101,14
+    PUSHBUTTON      "Em cascata",XTP_IDC_BTN_CASCADE,197,75,101,14
+    PUSHBUTTON      "Lado a lado horizontalmente",XTP_IDC_BTN_TILEHORZ,197,92,101,14
+    PUSHBUTTON      "Lado a lado verticalmente",XTP_IDC_BTN_TILEVERT,197,109,101,14
+    PUSHBUTTON      "Minimizar",XTP_IDC_BTN_MINIMIZE,197,126,101,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Cores padrão"
+	XTP_IDS_RECENT_COLORS    "Cores recentes"
+	XTP_IDS_THEME_COLORS     "Cores do tema"
+	XTP_IDS_TAGCLOUD_TIP     "Etiqueta: %s, Conta: %d"
     XTP_IDS_TIPTEXT          "Texto da dica"
     XTP_IDS_DIDYOUKNOW       "Você sabia..."
     XTP_IDS_FILE_ABSENT      "O arquivo especificado não existe ou é somente para leitura."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Ocultar detalhes"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Fundo 1"
+    XTP_IDS_BACKGROUND2        "Fundo 2"
+    XTP_IDS_TEXT1              "Texto 1"
+    XTP_IDS_TEXT2              "Texto 2"
+    XTP_IDS_ACCENT1            "Acento 1"
+    XTP_IDS_ACCENT2            "Acento 2"
+    XTP_IDS_ACCENT3            "Acento 3"
+    XTP_IDS_ACCENT4            "Acento 4"
+    XTP_IDS_ACCENT5            "Acento 5"
+    XTP_IDS_ACCENT6            "Acento 6"
+    XTP_IDS_LIGHTER            "Isqueiro"
+    XTP_IDS_DARKER             "Mais escuro"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTG))

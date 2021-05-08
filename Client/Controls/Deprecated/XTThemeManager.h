@@ -1,7 +1,6 @@
 // XTThemeManager.h: interface for the CXTThemeManager class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTTHEMEMANAGER_H__)
-#define __XTTHEMEMANAGER_H__
+#	define __XTTHEMEMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // -------------------------------------------------------------
 // Summary:
@@ -43,15 +41,15 @@
 // -------------------------------------------------------------
 enum XTThemeStyle
 {
-	xtThemeNone,                // No theme selected.
-	xtThemeOffice2000,          // Office 2000 theme.
-	xtThemeOfficeXP,            // Office XP theme.
-	xtThemeOffice2003,          // Office 2003 theme.
-	xtThemeOffice2007,          // Office 2007 theme.
-	xtThemeOffice2010,          // Office 2010 theme.
-	xtThemeNativeWinXP,         // Windows XP themes support.
-	xtThemeVisualStudio2008,    // Visual Studio 2008 theme
-	xtThemeCustom               // Custom theme.
+	xtThemeNone,			 // No theme selected.
+	xtThemeOffice2000,		 // Office 2000 theme.
+	xtThemeOfficeXP,		 // Office XP theme.
+	xtThemeOffice2003,		 // Office 2003 theme.
+	xtThemeOffice2007,		 // Office 2007 theme.
+	xtThemeOffice2010,		 // Office 2010 theme.
+	xtThemeNativeWinXP,		 // Windows XP themes support.
+	xtThemeVisualStudio2008, // Visual Studio 2008 theme
+	xtThemeCustom			 // Custom theme.
 };
 
 class CXTThemeManagerStyleHost;
@@ -104,7 +102,6 @@ public:
 	virtual ~CXTThemeManagerStyle();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to refresh the visual metrics of
@@ -173,10 +170,9 @@ public:
 	virtual BOOL DrawTransparentBack(CDC* pDC, CWnd* pWndOwner);
 
 protected:
-
-	CXTThemeManagerStyleFactory*    m_pFactory;     // Self factory class.
-	XTThemeStyle                    m_enumTheme;    // Self theme enumerator.
-	CBitmap                         m_bmpSnapShot;  // Used for drawing transparent background.
+	CXTThemeManagerStyleFactory* m_pFactory; // Self factory class.
+	XTThemeStyle m_enumTheme;				 // Self theme enumerator.
+	CBitmap m_bmpSnapShot;					 // Used for drawing transparent background.
 
 	friend class CXTThemeManagerStyleFactory;
 };
@@ -197,7 +193,6 @@ class _XTP_EXT_CLASS CXTThemeManagerStyleFactory : public CObject
 {
 	DECLARE_DYNCREATE(CXTThemeManagerStyleFactory)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Construct a CXTThemeManagerStyleFactory object.
@@ -211,7 +206,6 @@ public:
 	virtual ~CXTThemeManagerStyleFactory();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method created specified theme for corresponded CXTThemeManagerStyleHost component
@@ -235,7 +229,9 @@ public:
 	//     * <b>xtThemeOffice2003</b> Enables Microsoft(r) Office 2003 theme.
 	//-----------------------------------------------------------------------
 	void SetTheme(XTThemeStyle theme);
-	void SetTheme(CXTThemeManagerStyle* pTheme); // <COMBINE CXTThemeManagerStyleFactory::SetTheme@XTThemeStyle>
+	void SetTheme(
+		CXTThemeManagerStyle* pTheme); // <COMBINE
+									   // CXTThemeManagerStyleFactory::SetTheme@XTThemeStyle>
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -263,7 +259,6 @@ public:
 	CXTThemeManagerStyle* GetSafeTheme();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when new theme created.
@@ -277,11 +272,12 @@ private:
 	DISABLE_COPY_OPERATOR(CXTThemeManagerStyleFactory)
 
 protected:
-	CXTThemeManagerStyle*                       m_pTheme;       // Safe theme pointer
-	CTypedSimpleList<CXTThemeManagerStyleHost*> m_hostList;     // Collection of Host objects used this factory.
+	CXTThemeManagerStyle* m_pTheme;							// Safe theme pointer
+	CTypedSimpleList<CXTThemeManagerStyleHost*> m_hostList; // Collection of Host objects used this
+															// factory.
 
 private:
-	CXTThemeManagerStyleFactory*                m_pNextFactory;
+	CXTThemeManagerStyleFactory* m_pNextFactory;
 
 	friend class CXTThemeManager;
 	friend class CXTThemeManagerStyleHost;
@@ -322,7 +318,6 @@ protected:
 	void InitStyleHost(CRuntimeClass* pThemeFactoryClass);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to attach factory to the component.
@@ -333,8 +328,8 @@ public:
 	// <code>
 	// extern CXTCaptionThemeFactory m_buttonFactory;
 	// m_buttonFactory.SetTheme(xtpThemeOffice2003);
-	// m_btnOK.AttachThemeFactory(&m_buttonFactory)
-	// m_btnCancel.AttachThemeFactory(&m_buttonFactory)
+	// m_btnOK.AttachThemeFactory(&m_buttonFactory);
+	// m_btnCancel.AttachThemeFactory(&m_buttonFactory);
 	// </code>
 	//-----------------------------------------------------------------------
 	void AttachThemeFactory(CXTThemeManagerStyleFactory* pFactory);
@@ -353,15 +348,15 @@ public:
 	// Example:
 	//     The following example demonstrates how to use SetTheme.
 	// <code>
-	// m_btnOK.SetTheme(xtThemeOffice2003)
-	// m_btnCancel.SetTheme(xtThemeOffice2003)
+	// m_btnOK.SetTheme(xtThemeOffice2003);
+	// m_btnCancel.SetTheme(xtThemeOffice2003);
 	// </code>
 	//-----------------------------------------------------------------------
-	void SetTheme (XTThemeStyle theme);
-	void SetTheme (CXTThemeManagerStyle* pTheme); // <combine CXTThemeManagerStyleHost::SetTheme@XTThemeStyle>
+	void SetTheme(XTThemeStyle theme);
+	void SetTheme(CXTThemeManagerStyle* pTheme); // <combine
+												 // CXTThemeManagerStyleHost::SetTheme@XTThemeStyle>
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method called to create self theme factory class
@@ -402,13 +397,13 @@ protected:
 	CXTThemeManagerStyleFactory* GetSafeThemeFactory() const;
 
 protected:
-	BOOL                         m_bAutoDeleteCustomFactory; // TRUE to delete custom theme factory.
-	CRuntimeClass*               m_pThemeFactoryClass;       // Runtime class of default theme factory.
-	CXTThemeManagerStyleFactory* m_pCustomFactory;           // Custom theme factory
-	CXTThemeManagerStyleFactory* m_pDefaultFactory;          // Default theme factory
+	BOOL m_bAutoDeleteCustomFactory;				// TRUE to delete custom theme factory.
+	CRuntimeClass* m_pThemeFactoryClass;			// Runtime class of default theme factory.
+	CXTThemeManagerStyleFactory* m_pCustomFactory;  // Custom theme factory
+	CXTThemeManagerStyleFactory* m_pDefaultFactory; // Default theme factory
 
 private:
-	CXTThemeManagerStyleHost*    m_pNextHost;
+	CXTThemeManagerStyleHost* m_pNextHost;
 	friend class CXTThemeManagerStyleFactory;
 };
 
@@ -426,7 +421,6 @@ private:
 class _XTP_EXT_CLASS CXTThemeManager : public CNoTrackObject
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTThemeManager object.
@@ -440,7 +434,6 @@ public:
 	virtual ~CXTThemeManager();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieved theme factory class for specified runtime class.
@@ -498,12 +491,13 @@ public:
 	void RefreshMetrics();
 
 protected:
-	CMapPtrToPtr                               m_mapDefaultFactories; // Default factories collection
-	XTThemeStyle                               m_enumTheme;           // Default theme for all components
-	CTypedSimpleList<CXTThemeManagerStyleFactory*> m_factoryList;     // Collection of all theme factories.
+	CMapPtrToPtr m_mapDefaultFactories; // Default factories collection
+	XTThemeStyle m_enumTheme;			// Default theme for all components
+	CTypedSimpleList<CXTThemeManagerStyleFactory*> m_factoryList; // Collection of all theme
+																  // factories.
 
 private:
-	static CProcessLocal<CXTThemeManager>          m_sThemeManager;
+	static CProcessLocal<CXTThemeManager> m_sThemeManager;
 
 	friend _XTP_EXT_CLASS CXTThemeManager* AFX_CDECL XTThemeManager();
 	friend class CXTThemeManagerStyleFactory;
@@ -527,16 +521,16 @@ private:
 // </code>
 // See Also: IMPLEMENT_THEME_FACTORY, CXTThemeManagerStyleFactory
 //-----------------------------------------------------------------------
-#define DECLARE_THEME_FACTORY(theClass)
+#	define DECLARE_THEME_FACTORY(theClass)
 //{{AFX_CODEJOCK_PRIVATE
-#undef DECLARE_THEME_FACTORY
-#define DECLARE_THEME_FACTORY(theClass)\
-class _XTP_EXT_CLASS theClass##Factory : public CXTThemeManagerStyleFactory\
-{\
-	DECLARE_DYNCREATE(theClass##Factory)\
-public:\
-	CXTThemeManagerStyle* CreateTheme(XTThemeStyle theme);\
-};
+#	undef DECLARE_THEME_FACTORY
+#	define DECLARE_THEME_FACTORY(theClass)                                                        \
+		class _XTP_EXT_CLASS theClass##Factory : public CXTThemeManagerStyleFactory                \
+		{                                                                                          \
+			DECLARE_DYNCREATE(theClass##Factory)                                                   \
+		public:                                                                                    \
+			CXTThemeManagerStyle* CreateTheme(XTThemeStyle theme);                                 \
+		};
 //}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
@@ -565,128 +559,129 @@ public:\
 // </code>
 // See Also: DECLARE_THEME_FACTORY, CXTThemeManagerStyleFactory
 //-----------------------------------------------------------------------
-#define IMPLEMENT_THEME_FACTORY(theClass)
+#	define IMPLEMENT_THEME_FACTORY(theClass)
 //{{AFX_CODEJOCK_PRIVATE
-#undef IMPLEMENT_THEME_FACTORY
+#	undef IMPLEMENT_THEME_FACTORY
 
-#define IMPLEMENT_THEME_FACTORY(theClass)\
-IMPLEMENT_DYNCREATE(theClass##Factory, CXTThemeManagerStyleFactory)\
-CXTThemeManagerStyle* theClass##Factory::CreateTheme(XTThemeStyle theme)\
-{\
-	CXTThemeManagerStyle* pTheme = 0;\
-	switch (theme)\
-	{\
-		case xtThemeOfficeXP:\
-			pTheme = new theClass##OfficeXP();\
-			break;\
-		case xtThemeOffice2003:\
-			pTheme = new theClass##Office2003();\
-			break;\
-		default:\
-			pTheme = new theClass##();\
-			break;\
-	}\
-	OnCreateSafeTheme(pTheme, theme);\
-	return pTheme;\
-}
+#	define IMPLEMENT_THEME_FACTORY(theClass)                                                      \
+		IMPLEMENT_DYNCREATE(theClass##Factory, CXTThemeManagerStyleFactory)                        \
+		CXTThemeManagerStyle* theClass##Factory::CreateTheme(XTThemeStyle theme)                   \
+		{                                                                                          \
+			CXTThemeManagerStyle* pTheme = 0;                                                      \
+			switch (theme)                                                                         \
+			{                                                                                      \
+				case xtThemeOfficeXP: pTheme = new theClass##OfficeXP(); break;                    \
+				case xtThemeOffice2003: pTheme = new theClass##Office2003(); break;                \
+				default: pTheme = new theClass##(); break;                                         \
+			}                                                                                      \
+			OnCreateSafeTheme(pTheme, theme);                                                      \
+			return pTheme;                                                                         \
+		}
 
-#define IMPLEMENT_THEME_FACTORY2(theClass)\
-IMPLEMENT_DYNCREATE(theClass##Factory, CXTThemeManagerStyleFactory)\
-CXTThemeManagerStyle* theClass##Factory::CreateTheme(XTThemeStyle theme)\
-{\
-	CXTThemeManagerStyle* pTheme = NULL;\
-	switch (theme)\
-	{\
-	case xtThemeOffice2000:\
-		pTheme = new theClass##Office2000();\
-		break;\
-	case xtThemeOfficeXP:\
-		pTheme = new theClass##OfficeXP();\
-		break;\
-	case xtThemeOffice2003:\
-		pTheme = new theClass##Office2003();\
-		break;\
-	case xtThemeOffice2007:\
-		pTheme = new theClass##Office2007();\
-		break;\
-	case xtThemeOffice2010:\
-		pTheme = new theClass##Office2010();\
-		break;\
-	default:\
-		break;\
-	}\
-	if (pTheme) {\
-		OnCreateSafeTheme(pTheme, theme);\
-	}\
-	return pTheme;\
-}
+#	define IMPLEMENT_THEME_FACTORY2(theClass)                                                     \
+		IMPLEMENT_DYNCREATE(theClass##Factory, CXTThemeManagerStyleFactory)                        \
+		CXTThemeManagerStyle* theClass##Factory::CreateTheme(XTThemeStyle theme)                   \
+		{                                                                                          \
+			CXTThemeManagerStyle* pTheme = NULL;                                                   \
+			switch (theme)                                                                         \
+			{                                                                                      \
+				case xtThemeOffice2000: pTheme = new theClass##Office2000(); break;                \
+				case xtThemeOfficeXP: pTheme = new theClass##OfficeXP(); break;                    \
+				case xtThemeOffice2003: pTheme = new theClass##Office2003(); break;                \
+				case xtThemeOffice2007: pTheme = new theClass##Office2007(); break;                \
+				case xtThemeOffice2010: pTheme = new theClass##Office2010(); break;                \
+				default: break;                                                                    \
+			}                                                                                      \
+			if (pTheme)                                                                            \
+			{                                                                                      \
+				OnCreateSafeTheme(pTheme, theme);                                                  \
+			}                                                                                      \
+			return pTheme;                                                                         \
+		}
 
-#define DECLARE_THEME_HOST(theClass)\
-public:\
-theClass##Theme* GetTheme() const;\
-static theClass##Theme* AFX_CDECL GetDefaultTheme();\
-static void AFX_CDECL SetDefaultTheme(XTThemeStyle theme);\
-static void AFX_CDECL SetDefaultTheme(CXTThemeManagerStyle* pTheme);\
-static CRuntimeClass* AFX_CDECL GetThemeFactoryClass();
+#	define DECLARE_THEME_HOST(theClass)                                                           \
+	public:                                                                                        \
+		theClass##Theme* GetTheme() const;                                                         \
+		static theClass##Theme* AFX_CDECL GetDefaultTheme();                                       \
+		static void AFX_CDECL SetDefaultTheme(XTThemeStyle theme);                                 \
+		static void AFX_CDECL SetDefaultTheme(CXTThemeManagerStyle* pTheme);                       \
+		static CRuntimeClass* AFX_CDECL GetThemeFactoryClass();
 
-#define IMPLEMENT_THEME_HOST(theClass)\
-theClass##Theme* theClass::GetTheme() const {\
-	return (theClass##Theme*)GetSafeTheme();\
-}\
-theClass##Theme* theClass::GetDefaultTheme() {\
-	return (theClass##Theme*)XTThemeManager()->GetDefaultThemeFactory(GetThemeFactoryClass())->GetSafeTheme();\
-}\
-void theClass::SetDefaultTheme(XTThemeStyle theme) {\
-	XTThemeManager()->GetDefaultThemeFactory(GetThemeFactoryClass())->SetTheme(theme);\
-}\
-void theClass::SetDefaultTheme(CXTThemeManagerStyle* pTheme) {\
-	XTThemeManager()->GetDefaultThemeFactory(GetThemeFactoryClass())->SetTheme(pTheme);\
-}\
-CRuntimeClass* theClass::GetThemeFactoryClass() {\
-	return RUNTIME_CLASS(theClass##ThemeFactory);\
-}
+#	define IMPLEMENT_THEME_HOST(theClass)                                                         \
+		theClass##Theme* theClass::GetTheme() const                                                \
+		{                                                                                          \
+			return (theClass##Theme*)GetSafeTheme();                                               \
+		}                                                                                          \
+		theClass##Theme* theClass::GetDefaultTheme()                                               \
+		{                                                                                          \
+			return (theClass##Theme*)XTThemeManager()                                              \
+				->GetDefaultThemeFactory(GetThemeFactoryClass())                                   \
+				->GetSafeTheme();                                                                  \
+		}                                                                                          \
+		void theClass::SetDefaultTheme(XTThemeStyle theme)                                         \
+		{                                                                                          \
+			XTThemeManager()->GetDefaultThemeFactory(GetThemeFactoryClass())->SetTheme(theme);     \
+		}                                                                                          \
+		void theClass::SetDefaultTheme(CXTThemeManagerStyle* pTheme)                               \
+		{                                                                                          \
+			XTThemeManager()->GetDefaultThemeFactory(GetThemeFactoryClass())->SetTheme(pTheme);    \
+		}                                                                                          \
+		CRuntimeClass* theClass::GetThemeFactoryClass()                                            \
+		{                                                                                          \
+			return RUNTIME_CLASS(theClass##ThemeFactory);                                          \
+		}
 
-#define DECLARE_THEME_REFRESH(theClass)\
-protected:\
-virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+#	define DECLARE_THEME_REFRESH(theClass)                                                        \
+	protected:                                                                                     \
+		virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-#define IMPLEMENT_THEME_REFRESH(theClass, theBase)\
-BOOL theClass::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult) {\
-	if (message == WM_SETTINGCHANGE || message == WM_SYSCOLORCHANGE)\
-	{\
-		if (GetTheme())\
-		{\
-			GetTheme()->RefreshMetrics();\
-			RedrawWindow();\
-		}\
-	}\
-	return theBase::OnWndMsg(message, wParam, lParam, pResult);\
-}
+#	define IMPLEMENT_THEME_REFRESH(theClass, theBase)                                             \
+		BOOL theClass::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)      \
+		{                                                                                          \
+			if (message == WM_SETTINGCHANGE || message == WM_SYSCOLORCHANGE)                       \
+			{                                                                                      \
+				if (GetTheme())                                                                    \
+				{                                                                                  \
+					GetTheme()->RefreshMetrics();                                                  \
+					RedrawWindow();                                                                \
+				}                                                                                  \
+			}                                                                                      \
+			return theBase::OnWndMsg(message, wParam, lParam, pResult);                            \
+		}
 
-#define CXTThemeManagerStyleHostBase CXTThemeManagerStyleHost
+#	define CXTThemeManagerStyleHostBase CXTThemeManagerStyleHost
 
 //}}AFX_CODEJOCK_PRIVATE
 
 //{{AFX_CODEJOCK_PRIVATE
 // deprecated, use xtThemeOffice2000 instead.
-#define xtThemeDefault xtThemeOffice2000
+#	define xtThemeDefault xtThemeOffice2000
 //}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE XTThemeStyle CXTThemeManagerStyle::GetTheme() {
+AFX_INLINE XTThemeStyle CXTThemeManagerStyle::GetTheme()
+{
 	return m_enumTheme;
 }
-AFX_INLINE CXTThemeManagerStyleFactory* CXTThemeManagerStyle::GetThemeFactory() {
+AFX_INLINE CXTThemeManagerStyleFactory* CXTThemeManagerStyle::GetThemeFactory()
+{
 	return m_pFactory;
 }
-AFX_INLINE XTThemeStyle CXTThemeManager::GetTheme() {
+AFX_INLINE XTThemeStyle CXTThemeManager::GetTheme()
+{
 	return m_enumTheme;
 }
-AFX_INLINE void CXTThemeManagerStyleFactory::OnCreateSafeTheme(CXTThemeManagerStyle* pTheme, XTThemeStyle theme) {
-	if (pTheme) { pTheme->m_enumTheme = theme; }
+AFX_INLINE void CXTThemeManagerStyleFactory::OnCreateSafeTheme(CXTThemeManagerStyle* pTheme,
+															   XTThemeStyle theme)
+{
+	if (pTheme)
+	{
+		pTheme->m_enumTheme = theme;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTTHEMEMANAGER_H__)

@@ -1,7 +1,6 @@
 // XTPRibbonControlTab.h: interface for the CXTPRibbonControlTab class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,36 +19,37 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONCONTROLTAB_H__)
-#define __XTPRIBBONCONTROLTAB_H__
+#	define __XTPRIBBONCONTROLTAB_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonGroups;
 class CXTPRibbonBar;
 class CXTPRibbonGroup;
 class CXTPRibbonTab;
 
-#include "CommandBars/XTPControlPopup.h"
-#include "TabManager/XTPTabManager.h"
-
-
 //-----------------------------------------------------------------------
 // Summary:
-//     Structure used as parameter for TCN_SELCHANGING and TCN_SELCHANGE messages when Ribbon tab is changed
+//     Structure used as parameter for TCN_SELCHANGING and TCN_SELCHANGE messages when Ribbon tab is
+//     changed
 //-----------------------------------------------------------------------
 struct NMXTPTABCHANGE : public NMXTPCONTROL
 {
-	CXTPRibbonTab* pTab;    // Ribbon Tab to be selected
+	CXTPRibbonTab* pTab; // Ribbon Tab to be selected
 };
 
 //===========================================================================
 // Summary:
 //     CXTPRibbonControlTab is a CXTPTabManager derived class, It represents tabs of the ribbon bar
 //===========================================================================
-class _XTP_EXT_CLASS CXTPRibbonControlTab : public CXTPControlPopup, public CXTPTabManager
+class _XTP_EXT_CLASS CXTPRibbonControlTab
+	: public CXTPControlPopup
+	, public CXTPTabManager
 {
 	DECLARE_XTP_CONTROL(CXTPRibbonControlTab)
 public:
@@ -168,7 +168,7 @@ protected:
 	// Returns:
 	//     TRUE if successful; otherwise returns FALSE
 	//----------------------------------------------------------------------
-	BOOL  OnSetSelected(int bSelected);
+	BOOL OnSetSelected(int bSelected);
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -179,7 +179,7 @@ protected:
 	// Returns:
 	//     TRUE if key handled, otherwise returns FALSE
 	//----------------------------------------------------------------------
-	BOOL OnHookKeyDown (UINT nChar, LPARAM lParam);
+	BOOL OnHookKeyDown(UINT nChar, LPARAM lParam);
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -190,7 +190,6 @@ protected:
 	void OnItemClick(CXTPTabManagerItem* pItem);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called when the icon of the ribbon tab needs to be
@@ -272,29 +271,31 @@ protected:
 	//     TRUE if the ribbon is in the tracking mode.
 	//-----------------------------------------------------------------------
 	BOOL IsPopupBarTracking() const;
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void OnClick(BOOL bKeyboard = FALSE, CPoint pt = CPoint(0, 0));
 	void ShowPopupBar(BOOL bKeyboard);
 	BOOL OnSetPopup(BOOL bPopup);
 	void SetEnabled(BOOL bEnabled);
 	CString GetItemTooltip(const CXTPTabManagerItem* pItem) const;
 	virtual void AdjustExcludeRect(CRect& rc, BOOL bVertical);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
 	virtual HRESULT AccessibleDoDefaultAction(VARIANT varChild);
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	BOOL m_bFocused; // TRUE if groups focused
@@ -302,9 +303,10 @@ protected:
 	friend class CXTPRibbonBar;
 };
 
-AFX_INLINE CXTPRibbonBar* CXTPRibbonControlTab::GetRibbonBar() const {
+AFX_INLINE CXTPRibbonBar* CXTPRibbonControlTab::GetRibbonBar() const
+{
 	return (CXTPRibbonBar*)m_pParent;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONCONTROLTAB_H__)

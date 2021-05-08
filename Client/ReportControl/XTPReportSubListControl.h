@@ -1,7 +1,6 @@
 // XTPReportSubListControl.h: interface for the CXTPReportSubListControl class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTSUBLISTCONTROL_H__)
-#define __XTPREPORTSUBLISTCONTROL_H__
+#	define __XTPREPORTSUBLISTCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportHeaderDragWnd;
 class CXTPReportControl;
@@ -173,7 +174,6 @@ public:
 	CXTPReportColumn* GetItemColumn(int nIndex);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Finds item index by its data.
@@ -245,18 +245,20 @@ protected:
 	//-----------------------------------------------------------------------
 	void Dropped(CPoint pt);
 
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	void ParentNotify_SelChangd();
 	//{{AFX_VIRTUAL(CXTPReportSubListControl)
-	public:
+public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	protected:
+
+protected:
 	virtual void PreSubclassWindow();
-	virtual void MeasureItem(LPMEASUREITEMSTRUCT){}
+	virtual void MeasureItem(LPMEASUREITEMSTRUCT)
+	{
+	}
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPReportSubListControl)
@@ -265,20 +267,19 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPReportControl* m_pReportCtrl;       // Pointer to the parent report control.
+	CXTPReportControl* m_pReportCtrl; // Pointer to the parent report control.
 
-	CXTPReportHeaderDragWnd* m_pDragWnd;    // Pointer to the associated dragging window.
-	CRect m_rcDragWnd;                      // Coordinates of the associated dragging window.
-	CRect m_rcDropTarget1;                  // Contains first drop target - the list window itself.
-	CRect m_rcDropTarget2;                  // Contains second drop target - report header.
+	CXTPReportHeaderDragWnd* m_pDragWnd; // Pointer to the associated dragging window.
+	CRect m_rcDragWnd;					 // Coordinates of the associated dragging window.
+	CRect m_rcDropTarget1;				 // Contains first drop target - the list window itself.
+	CRect m_rcDropTarget2;				 // Contains second drop target - report header.
 
-	int m_nDropIndex;                       // Drop item index.
-	BOOL m_bSortAscending;                  // TRUE to sort items in list.
-
+	int m_nDropIndex;	  // Drop item index.
+	BOOL m_bSortAscending; // TRUE to sort items in list.
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTSUBLISTCONTROL_H__)

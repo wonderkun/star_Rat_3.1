@@ -1,7 +1,6 @@
 // XTPPropertyGridItemExt.h
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,26 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEMEXT_H__)
-#define __XTPPROPERTYGRIDITEMEXT_H__
+#	define __XTPPROPERTYGRIDITEMEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPPropertyGridItem.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropertyGridItemDate;
-
 
 //===========================================================================
 // Summary:
 //     Month calendar popup used for CXTPPropertyGridItemDate item.
 //===========================================================================
-class CXTPPropertyGridInplaceMonthCal : public CWnd
+class _XTP_EXT_CLASS CXTPPropertyGridInplaceMonthCal : public CWnd
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceMonthCal object.
@@ -68,7 +65,6 @@ public:
 	BOOL GetMinReqRect(RECT* pRect) const;
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary: Called if the user hits the Return while an inplace calendar is displayed.
 	// Remarks: Also occurs when an item in the implace calendar is selected.
@@ -83,19 +79,17 @@ protected:
 	//-------------------------------------------------------------------------
 	void OnCancel();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual void PostNcDestroy();
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg void OnSelect(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPPropertyGridItemDate* m_pItem;          // Parent item
-
+	CXTPPropertyGridItemDate* m_pItem; // Parent item
 };
-
 
 //===========================================================================
 // Summary:
@@ -117,7 +111,8 @@ protected:
 // COleDateTime dates(2004, 12, 26, 0, 0, 0);
 //
 // //Adds a date item to the property grid and set the date to the value stored in dates
-// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new CXTPPropertyGridItemDate(_T("Date item"), dates)));
+// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new
+// CXTPPropertyGridItemDate(_T("Date item"), dates)));
 //
 // //Set the date format to MM/DD/YYYY
 // pDate->SetDateFormat("%m/%d/%Y");
@@ -133,10 +128,9 @@ protected:
 // </code>
 // See Also: SetDate, GetMonth, GetDay, GetYear, SetDateFormat
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridItemDate: public CXTPPropertyGridItem
+class _XTP_EXT_CLASS CXTPPropertyGridItemDate : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemDate object.
@@ -148,11 +142,16 @@ public:
 	//     pBindDate  - If not NULL, then the value of this item
 	//                  is bound the value of this variable.
 	//-----------------------------------------------------------------------
-	CXTPPropertyGridItemDate(LPCTSTR strCaption, const COleDateTime& oleDate, COleDateTime* pBindDate = NULL);
-	CXTPPropertyGridItemDate(UINT nID, const COleDateTime& oleDate, COleDateTime* pBindDate = NULL);  // <COMBINE CXTPPropertyGridItemDate::CXTPPropertyGridItemDate@LPCTSTR@const COleDateTime&@COleDateTime*>
+	CXTPPropertyGridItemDate(LPCTSTR strCaption, const COleDateTime& oleDate,
+							 COleDateTime* pBindDate = NULL);
+	CXTPPropertyGridItemDate(
+		UINT nID, const COleDateTime& oleDate,
+		COleDateTime* pBindDate =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemDate::CXTPPropertyGridItemDate@LPCTSTR@const
+				   // COleDateTime&@COleDateTime*>
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to set the date of the item.
@@ -171,7 +170,8 @@ public:
 	// COleDateTime dates(2004, 12, 26, 0, 0, 0);
 	//
 	// //Adds a date item to the property grid and set the date to the value stored in dates
-	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new CXTPPropertyGridItemDate(_T("Date item"), dates)));
+	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new
+	// CXTPPropertyGridItemDate(_T("Date item"), dates)));
 	//
 	// //Set the date format to MM/DD/YYYY
 	// pDate->SetDateFormat("%m/%d/%Y");
@@ -210,14 +210,16 @@ public:
 	// COleDateTime dates(2004, 12, 26, 0, 0, 0);
 	//
 	// //Adds a date item to the property grid and set the date to the value stored in dates
-	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new CXTPPropertyGridItemDate(_T("Date item"), dates)));
+	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new
+	// CXTPPropertyGridItemDate(_T("Date item"), dates)));
 	//
 	// //Creates a SYSTEMTIME object
 	// SYSTEMTIME sysTime;
 	//
 	// //Stores the day, month, and year into the SYSTEMTIME structure, all other members will be 0.
 	// if (pDate->GetAsSystemTime(sysTime))
-	//     TRACE(_T("SysTime Current Date= %d/%d/%d\n"), sysTime.wMonth, sysTime.wDay, sysTime.wYear);
+	//     TRACE(_T("SysTime Current Date= %d/%d/%d\n"), sysTime.wMonth, sysTime.wDay,
+	//     sysTime.wYear);
 	// </code>
 	//-----------------------------------------------------------------------
 	virtual BOOL GetAsSystemTime(SYSTEMTIME& sysTime);
@@ -286,9 +288,9 @@ public:
 	//     dt       - COleDateTime object containing the month, day, and year
 	//     strValue - The date format.
 	//                Format Code:
-	//                <p>  \%m - Month as decimal number (01 - 12)
-	//                <p>  \%d - Day of month as decimal number (01 - 31)
-	//                <p>  \%Y - Year with century, as decimal number
+	//                *  \%m - Month as decimal number (01 - 12)
+	//                *  \%d - Day of month as decimal number (01 - 31)
+	//                *  \%Y - Year with century, as decimal number
 	//                     Format string for 05/22/2004 is "\%m\%d\%Y"
 	// Returns:
 	//     TRUE if a valid date was extracted, FALSE if an invalid date
@@ -301,9 +303,9 @@ public:
 	//     Call this member to change the date format.
 	// Parameters:
 	//     strFormat - The date format.
-	//                 <p>  %m - Month as decimal number (01 - 12)
-	//                 <p>  %d - Day of month as decimal number (01 - 31)
-	//                 <p>  %Y - Year with century, as decimal number
+	//                 *  %m - Month as decimal number (01 - 12)
+	//                 *  %d - Day of month as decimal number (01 - 31)
+	//                 *  %Y - Year with century, as decimal number
 	//                 Format string for 05/22/2004 is "\%m\%d\%Y"
 	// Example:
 	//     This sample code illustrates how to change the date format of
@@ -316,14 +318,14 @@ public:
 	// COleDateTime dates(2004, 12, 26, 0, 0, 0);
 	//
 	// //Adds a date item to the property grid and set the date to the value stored in dates
-	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new CXTPPropertyGridItemDate(_T("Date item"), dates)));
+	// CXTPPropertyGridItemDate* pDate = (CXTPPropertyGridItemDate*)(pStandard->AddChildItem(new
+	// CXTPPropertyGridItemDate(_T("Date item"), dates)));
 	//
 	// //Set the date format to MM/DD/YYYY
 	// pDate->SetDateFormat("%m/%d/%Y");
 	// </code>
 	//-----------------------------------------------------------------------
 	virtual void SetDateFormat(LPCTSTR strFormat);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -367,9 +369,7 @@ public:
 	//-----------------------------------------------------------------------
 	void BindToDate(COleDateTime* pBindDate);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method creates a formatted representation of the date/time value
@@ -425,35 +425,49 @@ protected:
 	//-------------------------------------------------------------------------
 	virtual void OnBeforeInsert();
 
-
 private:
 	void Init(const COleDateTime& oleDate);
 
 protected:
-	COleDateTime m_oleDate;         // Currently selected date.  Only Month, Day, and Year are used.
-	CString m_strNullValue;         // String value to be displayed for a Date Item when the current date is NULL.
-	COleDateTime* m_pBindDate;      // Pointer to variable bound to this item, this is the date of the bound item.
+	COleDateTime m_oleDate; // Currently selected date.  Only Month, Day, and Year are used.
+	CString m_strNullValue; // String value to be displayed for a Date Item when the current date is
+							// NULL.
+	COleDateTime* m_pBindDate; // Pointer to variable bound to this item, this is the date of the
+							   // bound item.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemDate)
+
+	void OleSetValue(const VARIANT* varValue);
+	const VARIANT OleGetValue();
+	void BindDispatch();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	friend class CXTPPropertyGridInplaceMonthCal;
 
 	DECLARE_DYNAMIC(CXTPPropertyGridItemDate)
 };
 
-AFX_INLINE const COleDateTime& CXTPPropertyGridItemDate::GetDate() const {
+AFX_INLINE const COleDateTime& CXTPPropertyGridItemDate::GetDate() const
+{
 	return m_oleDate;
 }
 
-#ifdef __AFXCTL_H__
+#	ifdef __AFXCTL_H__
 //{{AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
 // Summary:
 //     Picture item of ActiveX PropertyGrid
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridItemPicture: public CXTPPropertyGridItem
+class _XTP_EXT_CLASS CXTPPropertyGridItemPicture : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a XTPPropertyGridItemPicture object.
@@ -469,7 +483,6 @@ public:
 	virtual void SetPicturePath(LPCTSTR lpszPath);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the user presses the in-place button.
@@ -499,25 +512,33 @@ protected:
 	CString m_strPicturePath;
 	int m_nPreviewWidth;
 
+#		ifdef _XTP_ACTIVEX
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemPicture)
+
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
+	BSTR OleGetPicturePath();
+#		endif
 };
 
-
-AFX_INLINE CPictureHolder& CXTPPropertyGridItemPicture::GetPicture() {
+AFX_INLINE CPictureHolder& CXTPPropertyGridItemPicture::GetPicture()
+{
 	return m_olePicture;
 }
 //}}AFX_CODEJOCK_PRIVATE
-#endif
-
+#	endif
 
 //===========================================================================
 // Summary:
 //     CXTPPropertyGridItemMultilineString is a CXTPPropertyGridItem derived class.
 //     It is used to create item with inplace multi line edit box
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridItemMultilineString: public CXTPPropertyGridItem
+class _XTP_EXT_CLASS CXTPPropertyGridItemMultilineString : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemMultilineString object.
@@ -525,14 +546,18 @@ public:
 	//     lpszCaption - Caption of the item.
 	//     nID         - Identifier of the item.
 	//     strValue    - The initial value of the item.
-	//     pBindString - If not NULL, then the value of this item is bound the value of this variable.
+	//     pBindString - If not NULL, then the value of this item is bound the value of this
+	//     variable.
 	//-----------------------------------------------------------------------
-	CXTPPropertyGridItemMultilineString(LPCTSTR lpszCaption, LPCTSTR strValue = NULL, CString* pBindString = NULL);
-	CXTPPropertyGridItemMultilineString(UINT nID, LPCTSTR strValue = NULL, CString* pBindString = NULL);  // <COMBINE CXTPPropertyGridItemMultilineString::CXTPPropertyGridItemMultilineString@LPCTSTR@LPCTSTR@CString*>
-
+	CXTPPropertyGridItemMultilineString(LPCTSTR lpszCaption, LPCTSTR strValue = NULL,
+										CString* pBindString = NULL);
+	CXTPPropertyGridItemMultilineString(
+		UINT nID, LPCTSTR strValue = NULL,
+		CString* pBindString =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemMultilineString::CXTPPropertyGridItemMultilineString@LPCTSTR@LPCTSTR@CString*>
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the user presses the in-place button.
@@ -546,9 +571,11 @@ protected:
 	virtual void OnInplaceButtonDown(CXTPPropertyGridInplaceButton* pButton);
 };
 
-AFX_INLINE BOOL CXTPPropertyGridInplaceMonthCal::GetMinReqRect(RECT* pRect) const {
-	ASSERT(::IsWindow(m_hWnd)); return (BOOL) ::SendMessage(m_hWnd, MCM_GETMINREQRECT, 0, (LPARAM) pRect);
+AFX_INLINE BOOL CXTPPropertyGridInplaceMonthCal::GetMinReqRect(RECT* pRect) const
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return (BOOL)::SendMessage(m_hWnd, MCM_GETMINREQRECT, 0, (LPARAM)pRect);
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDITEMEXT_H__)

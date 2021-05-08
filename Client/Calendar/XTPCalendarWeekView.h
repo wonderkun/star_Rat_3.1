@@ -1,7 +1,6 @@
 // XTPCalendarWeekView.h: interface for the CXTPCalendarWeekView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARWEEKVIEW_H__)
-#define _XTPCALENDARWEEKVIEW_H__
+#	define _XTPCALENDARWEEKVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarView.h"
-#include "XTPCalendarWeekViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarWeekView;
-class CXTPCalendarContorl;
-
-
+class CXTPCalendarWeekViewDay;
+class CXTPCalendarControl;
 
 //===========================================================================
 // Summary:
@@ -49,9 +46,7 @@ class CXTPCalendarContorl;
 // See Also: CXTPCalendarView, CXTPCalendarDayView, CXTPCalendarMonthView,
 //          CXTPCalendarWeekViewDay, CXTPCalendarWeekViewEvent
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarWeekView : public CXTPCalendarViewT<
-										CXTPCalendarWeekViewDay,
-										XTP_CALENDAR_HITTESTINFO_WEEK_VIEW>
+class _XTP_EXT_CLASS CXTPCalendarWeekView : public CXTPCalendarViewT<CXTPCalendarWeekViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarWeekView)
@@ -60,13 +55,11 @@ class _XTP_EXT_CLASS CXTPCalendarWeekView : public CXTPCalendarViewT<
 	friend class CXTPCalendarTheme;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewT<  CXTPCalendarWeekViewDay,
-								XTP_CALENDAR_HITTESTINFO_WEEK_VIEW> TBase;
+	typedef CXTPCalendarViewT<CXTPCalendarWeekViewDay> TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -122,7 +115,8 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView,
+							   BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -134,7 +128,7 @@ public:
 	//     A BOOL. This function should return TRUE to indicate success.
 	//     FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI);
+	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -191,7 +185,7 @@ public:
 	//     A COleDateTime object that contains the day view date and time.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetViewDayDate(int nIndex);
+	virtual COleDateTime GetViewDayDate(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -244,7 +238,6 @@ public:
 	int GetDayHeidht() const;
 
 protected: // member function
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to adjust the first day of the week.
@@ -257,66 +250,53 @@ private:
 	COleDateTime ShiftDateToCell_00(COleDateTime dtDate) const;
 
 public:
-
-	int GetFirstDayOfWeek();
-	//===========================================================================
-	// Summary:
-	//     This struct store a Week View layout.
-	//===========================================================================
-	struct XTP_WEEK_VIEW_LAYOUT
-	{
-		int m_nGridColumns;     // Number of columns in a week day grid.
-		int m_nDayHeaderHeight; // Height of a day header.
-
-		int m_nDayWidth;        // Width of day rectangle.
-		int m_nDayHeidht;       // Height of day rectangle.
-	};
+	int GetFirstDayOfWeek() const;
 
 protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_WEEK_VIEW_LAYOUT& GetLayout();
-	//}}AFX_CODEJOCK_PRIVATE
+	XTP_WEEK_VIEW_LAYOUT& GetLayout();
 
-protected: // data members
-
+protected:							// data members
 	XTP_WEEK_VIEW_LAYOUT m_LayoutX; // Layout data.
-	int m_nCurrPos;         // Current scrollbar position.
+	int m_nCurrPos;					// Current scrollbar position.
 
 	COleDateTime m_dtBeginDate; // First date of week (Monday's date).
 	int m_nFirstDayOfWeekIndex; // Index for first weekday.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarWeekView);
 
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPCalendarWeekView::GetFirstDayOfWeek()
+AFX_INLINE int CXTPCalendarWeekView::GetFirstDayOfWeek() const
 {
 	return m_nFirstDayOfWeekIndex;
 }
-
-AFX_INLINE CXTPCalendarWeekView::XTP_WEEK_VIEW_LAYOUT& CXTPCalendarWeekView::GetLayout()
+AFX_INLINE XTP_WEEK_VIEW_LAYOUT& CXTPCalendarWeekView::GetLayout()
 {
 	return m_LayoutX;
 }
-
 AFX_INLINE int CXTPCalendarWeekView::GetDayHeaderHeight() const
 {
 	return m_LayoutX.m_nDayHeaderHeight;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarWeekView::GetBeginDate() const
 {
 	return m_dtBeginDate;
 }
-
 AFX_INLINE int CXTPCalendarWeekView::GetDayWidth() const
 {
 	return m_LayoutX.m_nDayWidth;
 }
-
 AFX_INLINE int CXTPCalendarWeekView::GetDayHeidht() const
 {
 	return m_LayoutX.m_nDayHeidht;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARWEEKVIEW_H__)

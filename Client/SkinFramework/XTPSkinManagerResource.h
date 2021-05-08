@@ -1,7 +1,6 @@
 // XTPSkinManagerResource.h: interface for the CXTPSkinManagerResourceFile class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINMANAGERRESOURCE_H__)
-#define __XTPSKINMANAGERRESOURCE_H__
+#	define __XTPSKINMANAGERRESOURCE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSkinImage;
 class CXTPSkinManagerSchema;
@@ -36,7 +37,9 @@ class CXTPSkinManager;
 //     CXTPSkinManagerResourceFile is a standalone class that represents a
 //     manager of visual style resources
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinManagerResourceFile : public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPSkinManagerResourceFile
+	: public CXTPCmdTarget
+	, public CXTPSynchronized
 {
 public:
 	//-----------------------------------------------------------------------
@@ -89,7 +92,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to create CXTPSkinManagerSchema class associated with loaded resources
+	//     This method is called to create CXTPSkinManagerSchema class associated with loaded
+	//     resources
 	// Returns: New CXTPSkinManagerSchema class that will be used to read resource
 	// See Also: CXTPSkinManagerSchema
 	//-----------------------------------------------------------------------
@@ -132,35 +136,40 @@ private:
 	CString GetDefaultIniFileName();
 
 protected:
-	LPWSTR m_lpTextFile;            // Pointer to next string
-	LPWSTR m_lpTextFileEnd;         // Pointer to end of the file
-	HMODULE m_hModule;              // Handle of the visual style
-	HMODULE m_hInstance;            // Handle of the visual style
+	LPWSTR m_lpTextFile;	// Pointer to next string
+	LPWSTR m_lpTextFileEnd; // Pointer to end of the file
+	HMODULE m_hModule;		// Handle of the visual style
+	HMODULE m_hInstance;	// Handle of the visual style
 
-	CString m_strResourcePath;      // Resource path
-	CString m_strIniFileName;       // Ini file name.
-	CXTPSkinManager* m_pManager;    // Parent manager class.
+	CString m_strResourcePath;   // Resource path
+	CString m_strIniFileName;	// Ini file name.
+	CXTPSkinManager* m_pManager; // Parent manager class.
 
-	CStdioFile* m_pIniFile;         // POinter to ini file on disk
+	CStdioFile* m_pIniFile; // POinter to ini file on disk
 
 	friend class CXTPSkinManager;
 };
 
-AFX_INLINE CString CXTPSkinManagerResourceFile::GetIniFileName() const {
+AFX_INLINE CString CXTPSkinManagerResourceFile::GetIniFileName() const
+{
 	return m_strIniFileName;
 }
-AFX_INLINE CString CXTPSkinManagerResourceFile::GetResourcePath() const {
+AFX_INLINE CString CXTPSkinManagerResourceFile::GetResourcePath() const
+{
 	return m_strResourcePath;
 }
-AFX_INLINE HMODULE CXTPSkinManagerResourceFile::GetModuleHandle() const {
+AFX_INLINE HMODULE CXTPSkinManagerResourceFile::GetModuleHandle() const
+{
 	return m_hModule;
 }
-AFX_INLINE void CXTPSkinManagerResourceFile::SetModuleHandle(HMODULE hModule) {
+AFX_INLINE void CXTPSkinManagerResourceFile::SetModuleHandle(HMODULE hModule)
+{
 	m_hInstance = hModule;
 }
-AFX_INLINE CXTPSkinManager* CXTPSkinManagerResourceFile::GetSkinManager() const {
+AFX_INLINE CXTPSkinManager* CXTPSkinManagerResourceFile::GetSkinManager() const
+{
 	return m_pManager;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINMANAGERRESOURCE_H__)

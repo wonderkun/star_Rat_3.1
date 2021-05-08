@@ -1,7 +1,6 @@
 // XTPPopupItem.h: interface for the CXTPPopupItem class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPPOPUPITEM_H__)
-#define _XTPPOPUPITEM_H__
+#	define _XTPPOPUPITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPopupControl;
 class CXTPImageManagerIcon;
@@ -48,22 +49,22 @@ class CXTPMarkupUIElement;
 //-----------------------------------------------------------------------
 enum XTPPopupItemIcon
 {
-	xtpPopupItemIconNormal = 1,     //normal icon handler
-	xtpPopupItemIconSelected = 2,   //selected icon handler
-	xtpPopupItemIconPressed = 4     //pressed icon handler
+	xtpPopupItemIconNormal   = 1, // normal icon handler
+	xtpPopupItemIconSelected = 2, // selected icon handler
+	xtpPopupItemIconPressed  = 4  // pressed icon handler
 };
 
 //===========================================================================
 // Summary:
 //     Cpecial Id for close item
 //===========================================================================
-#define XTP_ID_POPUP_CLOSE -1
+#	define XTP_ID_POPUP_CLOSE -1
 
 //===========================================================================
 // Summary:
 //     CXTPPopupItem is a class used to management popup item object
 //===========================================================================
-class _XTP_EXT_CLASS  CXTPPopupItem : public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPPopupItem : public CXTPCmdTarget
 {
 	DECLARE_DYNCREATE(CXTPPopupItem)
 
@@ -78,7 +79,8 @@ public:
 	//     clrBack       - Background color of the item.
 	//     clrBorder     - Border color of the item
 	//-----------------------------------------------------------------------
-	CXTPPopupItem(LPRECT rcItem = NULL, LPCTSTR lpszCaption = NULL, COLORREF clrBack = (COLORREF)-1, COLORREF clrBorder = (COLORREF)-1);
+	CXTPPopupItem(LPRECT rcItem = NULL, LPCTSTR lpszCaption = NULL, COLORREF clrBack = (COLORREF)-1,
+				  COLORREF clrBorder = (COLORREF)-1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,7 +354,10 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL SetIcon(HICON hIcon, XTPPopupItemIcon itemIcon = xtpPopupItemIconNormal);
-	BOOL SetIcon(UINT nIDIcon, XTPPopupItemIcon itemIcon = xtpPopupItemIconNormal); // <combine CXTPPopupItem::SetIcon@HICON@XTPPopupItemIcon>
+	BOOL SetIcon(UINT nIDIcon,
+				 XTPPopupItemIcon itemIcon =
+					 xtpPopupItemIconNormal); // <combine
+											  // CXTPPopupItem::SetIcon@HICON@XTPPopupItemIcon>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -367,7 +372,8 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL SetIcons(UINT nIDBitmap, COLORREF clrTransparent, int itemIcon);
-	BOOL SetIcons(HBITMAP hBitmap, COLORREF clrTransparent, int itemIcon, BOOL bAlphaBitmap = FALSE); // <combine CXTPPopupItem::SetIcons@UINT@COLORREF@int>
+	BOOL SetIcons(HBITMAP hBitmap, COLORREF clrTransparent, int itemIcon,
+				  BOOL bAlphaBitmap = FALSE); // <combine CXTPPopupItem::SetIcons@UINT@COLORREF@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -424,6 +430,12 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPMarkupUIElement* GetMarkupUIElement() const;
 
+	//-----------------------------------------------------------------------
+	// Summary: Call this method to get Rich Render element that renders the item.
+	// Returns: Pointer to Render element.
+	//-----------------------------------------------------------------------
+	CXTPRichRender* GetRichRender() const;
+
 protected:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -438,30 +450,34 @@ protected:
 	virtual void OnItemInserted();
 
 protected:
-	int                  m_nID;         // ID of the popup item.
-	int                  m_nIndex;      // Zero based index of the item in the parent popup control's item list.
-	int                  m_nIconIndex;  // Zero based index of the item's icon in the parent control's image list.
-	BOOL                 m_bButton;     // TRUE if the popup item is a button, FALSE otherwise.
-	BOOL                 m_bHyperLink;  // TRUE if the popup item is a hyperlink, FALSE otherwise.
-	BOOL                 m_bBold;       // TRUE if the popup item's text is bold, FALSE otherwise.
-	BOOL                 m_bUnderline;  // TRUE if the popup item's text is underlined on mouse over, FALSE otherwise.
-	UINT                 m_nAlign;     // Specifies the method of formatting the text. It can be any combination of the values described for the nAlign parameter in CDC::DrawText.
-	CFont                m_fntText;     // Popup item's fntText.
-	CRect                m_rcItem;      // Size and location of the popup item.
-	CPoint               m_ptOffset;    // XY coordinates representing the offset for the popup item's icon.
-	CString              m_strCaption;  // Popup item's display text.
-	COLORREF             m_clrText;     // RGB color value representing the item's normal text color.
-	COLORREF             m_clrHotText;  // RGB color value representing the item's mouse over text color.
-	COLORREF             m_clrBack;     // RGB color value representing the item's background color.
-	COLORREF             m_clrBorder;   // RGB color value representing the item's border color.
-	CXTPPopupControl*    m_pControl;    // Point to CXTPPopupControl object containing this item
-	CXTPRichRender*      m_pRichRender; // Richtext Render
-	CXTPMarkupUIElement* m_pUIElement;  // Markup Element that renders the item.
+	int m_nID;		   // ID of the popup item.
+	int m_nIndex;	  // Zero based index of the item in the parent popup control's item list.
+	int m_nIconIndex;  // Zero based index of the item's icon in the parent control's image list.
+	BOOL m_bButton;	// TRUE if the popup item is a button, FALSE otherwise.
+	BOOL m_bHyperLink; // TRUE if the popup item is a hyperlink, FALSE otherwise.
+	BOOL m_bBold;	  // TRUE if the popup item's text is bold, FALSE otherwise.
+	BOOL m_bUnderline; // TRUE if the popup item's text is underlined on mouse over, FALSE
+					   // otherwise.
+	UINT m_nAlign; // Specifies the method of formatting the text. It can be any combination of the
+				   // values described for the nAlign parameter in CDC::DrawText.
+
+	CXTPFont m_xtpFontText; // Popup item's fntText.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntText, m_xtpFontText, GetTextFontHandle);
+
+	CRect m_rcItem;		   // Size and location of the popup item.
+	CPoint m_ptOffset;	 // XY coordinates representing the offset for the popup item's icon.
+	CString m_strCaption;  // Popup item's display text.
+	COLORREF m_clrText;	// RGB color value representing the item's normal text color.
+	COLORREF m_clrHotText; // RGB color value representing the item's mouse over text color.
+	COLORREF m_clrBack;	// RGB color value representing the item's background color.
+	COLORREF m_clrBorder;  // RGB color value representing the item's border color.
+	CXTPPopupControl* m_pControl;	  // Point to CXTPPopupControl object containing this item
+	CXTPRichRender* m_pRichRender;	 // Richtext Render
+	CXTPMarkupUIElement* m_pUIElement; // Markup Element that renders the item.
 
 protected:
-
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 
@@ -482,90 +498,118 @@ protected:
 	afx_msg void OleSetHeight(long nHeight);
 	afx_msg BSTR OleGetCaption();
 
-	enum {
+	enum
+	{
 		dispidCaption = 1L,
 	};
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 	friend class CXTPPopupControl;
 	friend class CXTPPopupPaintManager;
 };
 
-
-
-AFX_INLINE CRect CXTPPopupItem::GetRect() const {
+AFX_INLINE CRect CXTPPopupItem::GetRect() const
+{
 	return m_rcItem;
 }
-AFX_INLINE BOOL CXTPPopupItem::IsButton() const {
+AFX_INLINE BOOL CXTPPopupItem::IsButton() const
+{
 	return m_bButton;
 }
-AFX_INLINE void CXTPPopupItem::SetButton(BOOL bButton) {
+AFX_INLINE void CXTPPopupItem::SetButton(BOOL bButton)
+{
 	m_bButton = bButton;
 }
-AFX_INLINE void CXTPPopupItem::SetID(int nID) {
+AFX_INLINE void CXTPPopupItem::SetID(int nID)
+{
 	m_nID = nID;
 }
-AFX_INLINE int CXTPPopupItem::GetID() const {
+AFX_INLINE int CXTPPopupItem::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE COLORREF CXTPPopupItem::GetTextColor() const {
+AFX_INLINE COLORREF CXTPPopupItem::GetTextColor() const
+{
 	return IsSelected() ? ((m_clrHotText != (COLORREF)-1) ? m_clrHotText : m_clrText) : m_clrText;
 }
-AFX_INLINE int CXTPPopupItem::GetTextAlignment() const {
+AFX_INLINE int CXTPPopupItem::GetTextAlignment() const
+{
 	return m_nAlign;
 }
-AFX_INLINE void CXTPPopupItem::SetTextAlignment(int nAlign) {
+AFX_INLINE void CXTPPopupItem::SetTextAlignment(int nAlign)
+{
 	m_nAlign = nAlign;
 	RedrawControl();
 }
-AFX_INLINE CString CXTPPopupItem::GetCaption() const {
+AFX_INLINE CString CXTPPopupItem::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE void CXTPPopupItem::SetTextColor(COLORREF clrText, COLORREF clrHotText) {
-	m_clrText = clrText; m_clrHotText = clrHotText;
+AFX_INLINE void CXTPPopupItem::SetTextColor(COLORREF clrText, COLORREF clrHotText)
+{
+	m_clrText	= clrText;
+	m_clrHotText = clrHotText;
 	RedrawControl();
 }
-AFX_INLINE BOOL CXTPPopupItem::IsHyperLink() const {
+AFX_INLINE BOOL CXTPPopupItem::IsHyperLink() const
+{
 	return m_bHyperLink;
 }
-AFX_INLINE BOOL CXTPPopupItem::IsBold() const {
+AFX_INLINE BOOL CXTPPopupItem::IsBold() const
+{
 	return m_bBold;
 }
-AFX_INLINE BOOL CXTPPopupItem::IsUnderline() const {
+AFX_INLINE BOOL CXTPPopupItem::IsUnderline() const
+{
 	return m_bUnderline;
 }
-AFX_INLINE void CXTPPopupItem::SetBold(BOOL bBold) {
+AFX_INLINE void CXTPPopupItem::SetBold(BOOL bBold)
+{
 	m_bBold = bBold;
 	RedrawControl();
 }
-AFX_INLINE void CXTPPopupItem::SetUnderline(BOOL bUnderline) {
+AFX_INLINE void CXTPPopupItem::SetUnderline(BOOL bUnderline)
+{
 	m_bUnderline = bUnderline;
 	RedrawControl();
 }
-AFX_INLINE void CXTPPopupItem::SetHyperLink(BOOL bHyperLink) {
+AFX_INLINE void CXTPPopupItem::SetHyperLink(BOOL bHyperLink)
+{
 	m_bHyperLink = bHyperLink;
 }
-AFX_INLINE COLORREF CXTPPopupItem::GetBackgroundColor() const {
+AFX_INLINE COLORREF CXTPPopupItem::GetBackgroundColor() const
+{
 	return m_clrBack;
 }
-AFX_INLINE COLORREF CXTPPopupItem::GetBorderColor() const {
+AFX_INLINE COLORREF CXTPPopupItem::GetBorderColor() const
+{
 	return m_clrBorder;
 }
-AFX_INLINE CPoint CXTPPopupItem::GetIconOffset() const {
+AFX_INLINE CPoint CXTPPopupItem::GetIconOffset() const
+{
 	return m_ptOffset;
 }
-AFX_INLINE void CXTPPopupItem::SetIconIndex(int nIconIndex) {
+AFX_INLINE void CXTPPopupItem::SetIconIndex(int nIconIndex)
+{
 	m_nIconIndex = nIconIndex;
 	RedrawControl();
 }
-AFX_INLINE int CXTPPopupItem::GetIconIndex() const {
+AFX_INLINE int CXTPPopupItem::GetIconIndex() const
+{
 	return m_nIconIndex == -1 ? m_nIndex : m_nIconIndex;
 }
-AFX_INLINE CXTPPopupControl* CXTPPopupItem::GetPopupControl() const {
+AFX_INLINE CXTPPopupControl* CXTPPopupItem::GetPopupControl() const
+{
 	return m_pControl;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPPopupItem::GetMarkupUIElement() const {
+AFX_INLINE CXTPMarkupUIElement* CXTPPopupItem::GetMarkupUIElement() const
+{
 	return m_pUIElement;
 }
+AFX_INLINE CXTPRichRender* CXTPPopupItem::GetRichRender() const
+{
+	return m_pRichRender;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPPOPUPITEM_H__)

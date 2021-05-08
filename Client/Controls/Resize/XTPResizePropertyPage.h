@@ -1,7 +1,6 @@
 // XTPResizePropertyPage.h: interface for the CXTPResizePropertyPage class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZEPROPERTYPAGE_H__)
-#define __XTPRESIZEPROPERTYPAGE_H__
+#	define __XTPRESIZEPROPERTYPAGE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -34,12 +35,13 @@
 //     a resizable CPropertyPage type object that allows its dialog items to
 //     be resized or moved dynamically.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPResizePropertyPage : public CPropertyPage, public CXTPResize
+class _XTP_EXT_CLASS CXTPResizePropertyPage
+	: public CPropertyPage
+	, public CXTPResize
 {
 	DECLARE_DYNCREATE(CXTPResizePropertyPage)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResizePropertyPage object
@@ -48,7 +50,8 @@ public:
 	//     nCaption  - ID of the name to be placed in the tab for this page. If 0, the name
 	//                 will be taken from the dialog template for this page.
 	//     nFlags    - Flags that are to be passed to CXTPResize that specify the attributes
-	//                 of the resizing property page. They can be one or more of the values in the Remarks section.
+	//                 of the resizing property page. They can be one or more of the values in the
+	//                 Remarks section.
 	// Remarks:
 	//     Styles to be added or removed can be combined by using the bitwise
 	//     OR (|) operator. It can be one or more of the following:<p/>
@@ -60,11 +63,11 @@ public:
 	//     * <b>xtpResizeNoTransparentGroup</b> Do not set transparent style
 	//       for group boxes.
 	//-----------------------------------------------------------------------
-	CXTPResizePropertyPage(const UINT nTemplate = 0, const UINT nCaption = 0, const UINT nFlags = 0);
+	CXTPResizePropertyPage(const UINT nTemplate = 0, const UINT nCaption = 0,
+						   const UINT nFlags = 0);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	virtual BOOL OnInitDialog();
@@ -74,11 +77,11 @@ protected:
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
 	DWORD m_nDialogID; // ID of the template used for this page
-
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZEPROPERTYPAGE_H__)

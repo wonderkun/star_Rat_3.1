@@ -1,7 +1,7 @@
 // ClientView.cpp : implementation of the CClientView class
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 
 #include "ClientView.h"
@@ -75,12 +75,12 @@ void CClientView::OnDraw(CDC* pDC)
 #ifdef _DEBUG
 void CClientView::AssertValid() const
 {
-	CXTPListView::AssertValid();
+	//CXTPListView::AssertValid();
 }
 
 void CClientView::Dump(CDumpContext& dc) const
 {
-	CXTPListView::Dump(dc);
+	//CXTPListView::Dump(dc);
 }
 
 CClientDoc* CClientView::GetDocument() // non-debug version is inline

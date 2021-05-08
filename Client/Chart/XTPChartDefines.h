@@ -1,170 +1,214 @@
-// XTPChartDefines.h
-//
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
-//
-// THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
-// RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
-// CONSENT OF CODEJOCK SOFTWARE.
-//
-// THIS SOURCE CODE CAN ONLY BE USED UNDER THE TERMS AND CONDITIONS OUTLINED
-// IN THE XTREME TOOLKIT PRO LICENSE AGREEMENT. CODEJOCK SOFTWARE GRANTS TO
-// YOU (ONE SOFTWARE DEVELOPER) THE LIMITED RIGHT TO USE THIS SOFTWARE ON A
-// SINGLE COMPUTER.
-//
-// CONTACT INFORMATION:
-// support@codejock.com
-// http://www.codejock.com
-//
-/////////////////////////////////////////////////////////////////////////////
+/* this ALWAYS GENERATED file contains the definitions for the interfaces */
+
+/* File created by MIDL compiler version 3.03.0110 */
+/* at Sat Sep 29 16:06:21 2012
+ */
+/* Compiler settings for XTPChartDefines.odl:
+	Os (OptLev=s), W1, Zp8, env=Win32, ms_ext, c_ext
+	error checks: none
+*/
 
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(__XTPCHARTDEFINES_H__)
-#define __XTPCHARTDEFINES_H__
+#ifndef __XTPChartDefines_h__
+#	define __XTPChartDefines_h__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the various scale types used in the chart.
-// Remarks:
-//===========================================================================
-enum XTPChartScaleType
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartScaleType
 {
-	xtpChartScaleQualitative,    //Qualitative type.
-	xtpChartScaleNumerical,      //Numeric type.
-	xtpChartScaleDateTime        //Date time type.
-};
+	xtpChartScaleQualitative = 0,
+	xtpChartScaleNumerical   = xtpChartScaleQualitative + 1,
+	xtpChartScaleDateTime	= xtpChartScaleNumerical + 1,
+	xtpChartScaleTime		 = xtpChartScaleDateTime + 1
+} XTPChartScaleType;
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the various alignments for the chart title.
-// Remarks:
-//===========================================================================
-enum XTPChartStringAlignment
+typedef XTPChartScaleType ChartScaleType;
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartStringAlignment
 {
-	xtpChartAlignNear,       //Left side of the chart.
-	xtpChartAlignCenter,     //Center of the chart.
-	xtpChartAlignFar,        //Right side of the chart.
-};
+	xtpChartAlignNear   = 0,
+	xtpChartAlignCenter = xtpChartAlignNear + 1,
+	xtpChartAlignFar	= xtpChartAlignCenter + 1
+} XTPChartStringAlignment;
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the various line styles for the charts.
-// Remarks:
-//===========================================================================
-enum XTPChartDashStyle
+typedef XTPChartStringAlignment ChartStringAlignment;
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartDashStyle
 {
-	xtpChartDashStyleEmpty,          //Empty style, invisible.
-	xtpChartDashStyleSolid,          //Solid line style.
-	xtpChartDashStyleDash,           //Dash line style.
-	xtpChartDashStyleDot,            //Dot line style.
-	xtpChartDashStyleDashDot,        //Alternate dash and dot line style.
-	xtpChartDashStyleDashDotDot      //Dash dot dot line style.
-};
+	xtpChartDashStyleEmpty		= 0,
+	xtpChartDashStyleSolid		= xtpChartDashStyleEmpty + 1,
+	xtpChartDashStyleDash		= xtpChartDashStyleSolid + 1,
+	xtpChartDashStyleDot		= xtpChartDashStyleDash + 1,
+	xtpChartDashStyleDashDot	= xtpChartDashStyleDot + 1,
+	xtpChartDashStyleDashDotDot = xtpChartDashStyleDashDot + 1,
+	xtpChartDashStyleCustom		= xtpChartDashStyleDashDotDot + 1
+} XTPChartDashStyle;
 
+typedef XTPChartDashStyle ChartDashStyle;
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the various background fill modes.
-// Remarks:
-//===========================================================================
-enum XTPChartFillMode
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartFillMode
 {
-	xtpChartFillEmpty,       //Empty style.
-	xtpChartFillSolid,       //Solid style.
-	xtpChartFillGradient,    //Gradient style.
-	xtpChartFillHatch        //Hatch style.
-};
+	xtpChartFillEmpty	= 0,
+	xtpChartFillSolid	= xtpChartFillEmpty + 1,
+	xtpChartFillGradient = xtpChartFillSolid + 1,
+	xtpChartFillHatch	= xtpChartFillGradient + 1
+} XTPChartFillMode;
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the different gradient directions used for background
-//     filling.
-// Remarks:
-//===========================================================================
-enum XTPChartGradientDirection
+typedef XTPChartFillMode ChartFillMode;
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartGradientAngle
 {
-	xtpChartGradientTopToBottom,             //Top to bottom.
-	xtpChartGradientBottomToTop,             //Bottom to top.
-	xtpChartGradientLeftToRight,             //Left to right.
-	xtpChartGradientRightToLeft,             //Right to left.
-	xtpChartGradientTopLeftToBottomRight,    //Top left to bottom right.
-	xtpChartGradientBottomRightToTopLeft,    //Bottom right to top left.
-	xtpChartGradientTopRightToBottomLeft,    //Top right to bottom left.
-	xtpChartGradientBottomLeftToTopRight,    //Bottom left to top right.
-	xtpChartGradientToCenterHorizontal,
-	xtpChartGradientFromCenterHorizontal,
-	xtpChartGradientToCenterVertical,
-	xtpChartGradientFromCenterVertical,
-};
+	xtpChartGradientAngle0   = 0,
+	xtpChartGradientAngle45  = 45,
+	xtpChartGradientAngle90  = 90,
+	xtpChartGradientAngle135 = 135,
+	xtpChartGradientAngle180 = 180,
+	xtpChartGradientAngle225 = 225,
+	xtpChartGradientAngle270 = 270,
+	xtpChartGradientAngle315 = 315
+} XTPChartGradientAngle;
 
-//===========================================================================
-// Summary:
-//     Enumeration defines the various hatch styles used for background
-//     filling.
-// Remarks:
-//===========================================================================
-enum XTPChartHatchStyle
+typedef XTPChartGradientAngle ChartGradientAngle;
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartLinearGradientMode
 {
-	xtpChartHatchStyleHorizontal,                   // 0
-	xtpChartHatchStyleVertical,                     // 1
-	xtpChartHatchStyleForwardDiagonal,              // 2
-	xtpChartHatchStyleBackwardDiagonal,             // 3
-	xtpChartHatchStyleCross,                        // 4
-	xtpChartHatchStyleDiagonalCross,                // 5
-	xtpChartHatchStyle05Percent,                    // 6
-	xtpChartHatchStyle10Percent,                    // 7
-	xtpChartHatchStyle20Percent,                    // 8
-	xtpChartHatchStyle25Percent,                    // 9
-	xtpChartHatchStyle30Percent,                    // 10
-	xtpChartHatchStyle40Percent,                    // 11
-	xtpChartHatchStyle50Percent,                    // 12
-	xtpChartHatchStyle60Percent,                    // 13
-	xtpChartHatchStyle70Percent,                    // 14
-	xtpChartHatchStyle75Percent,                    // 15
-	xtpChartHatchStyle80Percent,                    // 16
-	xtpChartHatchStyle90Percent,                    // 17
-	xtpChartHatchStyleLightDownwardDiagonal,        // 18
-	xtpChartHatchStyleLightUpwardDiagonal,          // 19
-	xtpChartHatchStyleDarkDownwardDiagonal,         // 20
-	xtpChartHatchStyleDarkUpwardDiagonal,           // 21
-	xtpChartHatchStyleWideDownwardDiagonal,         // 22
-	xtpChartHatchStyleWideUpwardDiagonal,           // 23
-	xtpChartHatchStyleLightVertical,                // 24
-	xtpChartHatchStyleLightHorizontal,              // 25
-	xtpChartHatchStyleNarrowVertical,               // 26
-	xtpChartHatchStyleNarrowHorizontal,             // 27
-	xtpChartHatchStyleDarkVertical,                 // 28
-	xtpChartHatchStyleDarkHorizontal,               // 29
-	xtpChartHatchStyleDashedDownwardDiagonal,       // 30
-	xtpChartHatchStyleDashedUpwardDiagonal,         // 31
-	xtpChartHatchStyleDashedHorizontal,             // 32
-	xtpChartHatchStyleDashedVertical,               // 33
-	xtpChartHatchStyleSmallConfetti,                // 34
-	xtpChartHatchStyleLargeConfetti,                // 35
-	xtpChartHatchStyleZigZag,                       // 36
-	xtpChartHatchStyleWave,                         // 37
-	xtpChartHatchStyleDiagonalBrick,                // 38
-	xtpChartHatchStyleHorizontalBrick,              // 39
-	xtpChartHatchStyleWeave,                        // 40
-	xtpChartHatchStylePlaid,                        // 41
-	xtpChartHatchStyleDivot,                        // 42
-	xtpChartHatchStyleDottedGrid,                   // 43
-	xtpChartHatchStyleDottedDiamond,                // 44
-	xtpChartHatchStyleShingle,                      // 45
-	xtpChartHatchStyleTrellis,                      // 46
-	xtpChartHatchStyleSphere,                       // 47
-	xtpChartHatchStyleSmallGrid,                    // 48
-	xtpChartHatchStyleSmallCheckerBoard,            // 49
-	xtpChartHatchStyleLargeCheckerBoard,            // 50
-	xtpChartHatchStyleOutlinedDiamond,              // 51
-	xtpChartHatchStyleSolidDiamond                  // 52
-};
+	xtpChartLinearGradientModeHorizontal	   = 0,
+	xtpChartLinearGradientModeVertical		   = xtpChartLinearGradientModeHorizontal + 1,
+	xtpChartLinearGradientModeForwardDiagonal  = xtpChartLinearGradientModeVertical + 1,
+	xtpChartLinearGradientModeBackwardDiagonal = xtpChartLinearGradientModeForwardDiagonal + 1,
+	xtpChartLinearGradientModeCenterHorizontal = xtpChartLinearGradientModeBackwardDiagonal + 1,
+	xtpChartLinearGradientModeCenterVertical   = xtpChartLinearGradientModeCenterHorizontal + 1
+} XTPChartLinearGradientMode;
 
+typedef XTPChartLinearGradientMode ChartLinearGradientMode;
 
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartHatchStyle
+{
+	xtpChartHatchStyleHorizontal			 = 0,
+	xtpChartHatchStyleVertical				 = xtpChartHatchStyleHorizontal + 1,
+	xtpChartHatchStyleForwardDiagonal		 = xtpChartHatchStyleVertical + 1,
+	xtpChartHatchStyleBackwardDiagonal		 = xtpChartHatchStyleForwardDiagonal + 1,
+	xtpChartHatchStyleCross					 = xtpChartHatchStyleBackwardDiagonal + 1,
+	xtpChartHatchStyleDiagonalCross			 = xtpChartHatchStyleCross + 1,
+	xtpChartHatchStyle05Percent				 = xtpChartHatchStyleDiagonalCross + 1,
+	xtpChartHatchStyle10Percent				 = xtpChartHatchStyle05Percent + 1,
+	xtpChartHatchStyle20Percent				 = xtpChartHatchStyle10Percent + 1,
+	xtpChartHatchStyle25Percent				 = xtpChartHatchStyle20Percent + 1,
+	xtpChartHatchStyle30Percent				 = xtpChartHatchStyle25Percent + 1,
+	xtpChartHatchStyle40Percent				 = xtpChartHatchStyle30Percent + 1,
+	xtpChartHatchStyle50Percent				 = xtpChartHatchStyle40Percent + 1,
+	xtpChartHatchStyle60Percent				 = xtpChartHatchStyle50Percent + 1,
+	xtpChartHatchStyle70Percent				 = xtpChartHatchStyle60Percent + 1,
+	xtpChartHatchStyle75Percent				 = xtpChartHatchStyle70Percent + 1,
+	xtpChartHatchStyle80Percent				 = xtpChartHatchStyle75Percent + 1,
+	xtpChartHatchStyle90Percent				 = xtpChartHatchStyle80Percent + 1,
+	xtpChartHatchStyleLightDownwardDiagonal  = xtpChartHatchStyle90Percent + 1,
+	xtpChartHatchStyleLightUpwardDiagonal	= xtpChartHatchStyleLightDownwardDiagonal + 1,
+	xtpChartHatchStyleDarkDownwardDiagonal   = xtpChartHatchStyleLightUpwardDiagonal + 1,
+	xtpChartHatchStyleDarkUpwardDiagonal	 = xtpChartHatchStyleDarkDownwardDiagonal + 1,
+	xtpChartHatchStyleWideDownwardDiagonal   = xtpChartHatchStyleDarkUpwardDiagonal + 1,
+	xtpChartHatchStyleWideUpwardDiagonal	 = xtpChartHatchStyleWideDownwardDiagonal + 1,
+	xtpChartHatchStyleLightVertical			 = xtpChartHatchStyleWideUpwardDiagonal + 1,
+	xtpChartHatchStyleLightHorizontal		 = xtpChartHatchStyleLightVertical + 1,
+	xtpChartHatchStyleNarrowVertical		 = xtpChartHatchStyleLightHorizontal + 1,
+	xtpChartHatchStyleNarrowHorizontal		 = xtpChartHatchStyleNarrowVertical + 1,
+	xtpChartHatchStyleDarkVertical			 = xtpChartHatchStyleNarrowHorizontal + 1,
+	xtpChartHatchStyleDarkHorizontal		 = xtpChartHatchStyleDarkVertical + 1,
+	xtpChartHatchStyleDashedDownwardDiagonal = xtpChartHatchStyleDarkHorizontal + 1,
+	xtpChartHatchStyleDashedUpwardDiagonal   = xtpChartHatchStyleDashedDownwardDiagonal + 1,
+	xtpChartHatchStyleDashedHorizontal		 = xtpChartHatchStyleDashedUpwardDiagonal + 1,
+	xtpChartHatchStyleDashedVertical		 = xtpChartHatchStyleDashedHorizontal + 1,
+	xtpChartHatchStyleSmallConfetti			 = xtpChartHatchStyleDashedVertical + 1,
+	xtpChartHatchStyleLargeConfetti			 = xtpChartHatchStyleSmallConfetti + 1,
+	xtpChartHatchStyleZigZag				 = xtpChartHatchStyleLargeConfetti + 1,
+	xtpChartHatchStyleWave					 = xtpChartHatchStyleZigZag + 1,
+	xtpChartHatchStyleDiagonalBrick			 = xtpChartHatchStyleWave + 1,
+	xtpChartHatchStyleHorizontalBrick		 = xtpChartHatchStyleDiagonalBrick + 1,
+	xtpChartHatchStyleWeave					 = xtpChartHatchStyleHorizontalBrick + 1,
+	xtpChartHatchStylePlaid					 = xtpChartHatchStyleWeave + 1,
+	xtpChartHatchStyleDivot					 = xtpChartHatchStylePlaid + 1,
+	xtpChartHatchStyleDottedGrid			 = xtpChartHatchStyleDivot + 1,
+	xtpChartHatchStyleDottedDiamond			 = xtpChartHatchStyleDottedGrid + 1,
+	xtpChartHatchStyleShingle				 = xtpChartHatchStyleDottedDiamond + 1,
+	xtpChartHatchStyleTrellis				 = xtpChartHatchStyleShingle + 1,
+	xtpChartHatchStyleSphere				 = xtpChartHatchStyleTrellis + 1,
+	xtpChartHatchStyleSmallGrid				 = xtpChartHatchStyleSphere + 1,
+	xtpChartHatchStyleSmallCheckerBoard		 = xtpChartHatchStyleSmallGrid + 1,
+	xtpChartHatchStyleLargeCheckerBoard		 = xtpChartHatchStyleSmallCheckerBoard + 1,
+	xtpChartHatchStyleOutlinedDiamond		 = xtpChartHatchStyleLargeCheckerBoard + 1,
+	xtpChartHatchStyleSolidDiamond			 = xtpChartHatchStyleOutlinedDiamond + 1
+} XTPChartHatchStyle;
 
-#endif //#if !defined(__XTPCHARTDEFINES_H__)
+typedef XTPChartHatchStyle ChartHatchStyle;
+
+typedef /* [helpcontext][helpstring][uuid] */
+	enum XTPChartNearTextPosition
+{
+	xtpChartTextNearLeft   = 0,
+	xtpChartTextNearRight  = xtpChartTextNearLeft + 1,
+	xtpChartTextNearTop	= xtpChartTextNearRight + 1,
+	xtpChartTextNearBottom = xtpChartTextNearTop + 1
+} XTPChartNearTextPosition;
+
+typedef XTPChartNearTextPosition ChartNearTextPosition;
+
+typedef /* [helpstring][uuid] */
+	enum XTPChartErrorBarType
+{
+	xtpChartErrorBarTypeNone			  = 0,
+	xtpChartErrorBarTypeFixedValue		  = 1,
+	xtpChartErrorBarTypePercentage		  = 2,
+	xtpChartErrorBarTypeStandardDeviation = 3,
+	xtpChartErrorBarTypeStandardError	 = 4,
+	xtpChartErrorBarTypeCustom			  = 5
+} XTPChartErrorBarType;
+
+typedef XTPChartErrorBarType ChartErrorBarType;
+
+typedef /* [helpstring][uuid] */
+	enum XTPChartErrorBarDirection
+{
+	xtpChartErrorBarDirectionNone  = 0,
+	xtpChartErrorBarDirectionPlus  = 1,
+	xtpChartErrorBarDirectionMinus = 2,
+	xtpChartErrorBarDirectionBoth  = 3
+} XTPChartErrorBarDirection;
+
+typedef XTPChartErrorBarDirection ChartErrorBarDirection;
+
+typedef /* [helpstring][uuid] */
+	enum XTPChartErrorBarEndStyle
+{
+	xtpChartErrorBarEndStyleNoCap = 0,
+	xtpChartErrorBarEndStyleCap   = 1
+} XTPChartErrorBarEndStyle;
+
+typedef XTPChartErrorBarEndStyle ChartErrorBarEndStyle;
+
+typedef /* [helpstring][uuid] */
+	enum XTPChartErrorBarPosition
+{
+	xtpChartErrorBarPositionNone   = 0,
+	xtpChartErrorBarPositionTop	= 1,
+	xtpChartErrorBarPositionCenter = 2
+} XTPChartErrorBarPosition;
+
+typedef XTPChartErrorBarPosition ChartErrorBarPosition;
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+
+//{{AFX_CODEJOCK_PRIVATE
+#endif /*__XTPChartDefines_h__*/
+//}}AFX_CODEJOCK_PRIVATE

@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESP)
 #ifdef _WIN32
 LANGUAGE LANG_SPANISH, SUBLANG_SPANISH_MODERN
 #pragma code_page(1252)
@@ -52,7 +51,7 @@ BEGIN
     LTEXT           "",XTP_IDC_CLR_ERASE,116,153,15,15,SS_NOTIFY
     CTEXT           "Herramientas",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
-    CTEXT           "Mover",XTP_IDC_STATIC_MOVE,111,83,62,12,SS_CENTERIMAGE | 
+    CTEXT           "movimiento",XTP_IDC_STATIC_MOVE,111,83,62,12,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
     CONTROL         "",XTP_IDC_CLR_PICKER,"Static",SS_LEFTNOWORDWRAP | 
                     SS_NOTIFY | WS_GROUP,109,144,15,15
@@ -111,7 +110,7 @@ BEGIN
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "Restablecer datos de uso de las barras de menús y herramientas",
-                    XTP_IDC_BUTTON_RESETDATA,12,42,211,14
+                    XTP_IDC_BUTTON_RESETDATA,10,42,225,14
     LTEXT           "Otros", XTP_IDC_GROUP_OTHER,4,70,232,8
     CONTROL         "Iconos grandes",XTP_IDC_CHECK_LARGEICONS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,82,216,10
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Mostrar teclas de método abreviado en la información de pantalla",
                     XTP_IDC_CHECK_SHORTCUTS,"Button", BS_MULTILINE | BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,18
-    LTEXT           "Animaciones de menú:",IDC_STATIC,10,126,72,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,86,124,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Animaciones de menú:",IDC_STATIC,10,126,82,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,94,124,129,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menús"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Menús de aplicación",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Menús contextuales",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Mostrar el menú:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "RESET",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Menú predeterminado\nMenú de la aplicación por defecto",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Seleccione menú contextual:",IDC_STATIC,10,92,102,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,113,90,120,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "RESET",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Personalizar"
     XTP_IDS_NEWMENU         "Nuevo menú"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Personalizar la barra de estado"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nRestaurar ventana"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimizar ventana"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "se presionó (%s). Esperando la segunda llave de cuerda..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,22 +302,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nMover al grupo de fichas siguiente"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNuevo grupo de fichas horizontal"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNuevo grupo de fichas vertical"
-    XTP_ID_WORKSPACE_CANCEL "Cancelar"
+    XTP_ID_WORKSPACE_CANCEL "\nCancelar"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Archivos activos"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "El punto de vista previa de impresión\nImprimir"
+    XTP_ID_PREVIEW_PREV     "Ir a la página anterior\nPágina anterior"
+    XTP_ID_PREVIEW_NEXT     "Ir a la página siguiente\nPágina siguiente"
+    XTP_ID_PREVIEW_ZOOMIN   "Aumentar la ampliación de la página de vista previa\nZoom In"
+    XTP_ID_PREVIEW_ZOOMOUT  "Disminuir la ampliación de la página de vista previa\nZoom de alejamiento"
+    XTP_ID_PREVIEW_ONEPAGE  "Única página"
+    XTP_ID_PREVIEW_TWOPAGE  "Multiples paginas"
+    XTP_ID_PREVIEW_CLOSE    "Cerrar la vista previa\nCerrar vista previa"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Página entera"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Ancho de página"
+    XTP_IDS_PREVIEW_PAGEI     "Página %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Página %i de %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESP)

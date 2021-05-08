@@ -1,7 +1,6 @@
 // XTPPropertyPageNavigator.h : interface for the CXTPPropertyPageNavigator class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYPAGENAVIGATOR_H__)
-#define __XTPPROPERTYPAGENAVIGATOR_H__
+#	define __XTPPROPERTYPAGENAVIGATOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropertySheet;
 class CXTPPropertyPage;
@@ -70,7 +71,8 @@ public:
 	//     rcPage  - Result bounding rectangle of property pages
 	//     szClient - Result size of property sheet
 	//-----------------------------------------------------------------------
-	virtual void PageToSize(AFX_SIZEPARENTPARAMS* pLayout, CSize szPage, CRect& rcPage, CSize& szClient) = 0;
+	virtual void PageToSize(AFX_SIZEPARENTPARAMS* pLayout, CSize szPage, CRect& rcPage,
+							CSize& szClient) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -109,14 +111,16 @@ protected:
 	virtual void SetPropertySheet(CXTPPropertySheet* pSheet);
 
 public:
-	CRect m_rcNavigatorMargin;  // Total navigator margin
-	CRect m_rcButtonMargin;     // Total buttons margin
-	CRect m_rcPageMargin;       // Total page margin
+	CRect m_rcNavigatorMargin; // Total navigator margin
+	CRect m_rcButtonMargin;	// Total buttons margin
+	CRect m_rcPageMargin;	  // Total page margin
 protected:
-	CXTPPropertySheet* m_pSheet;    // Parent property sheet object
+	CXTPPropertySheet* m_pSheet; // Parent property sheet object
 
 	friend class CXTPPropertySheet;
 };
+
+#	if defined(_XTP_INCLUDE_TABMANAGER)
 
 //===========================================================================
 // Summary:
@@ -125,7 +129,9 @@ protected:
 // See Also:
 //     CXTPPropertySheet, CXTPPropertySheet::DoModal, CXTPPropertySheet::SetNavigator
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyPageTabNavigator : public CXTPTabControl, public CXTPPropertyPageNavigator
+class _XTP_EXT_CLASS CXTPPropertyPageTabNavigator
+	: public CXTPTabControl
+	, public CXTPPropertyPageNavigator
 {
 public:
 	//-----------------------------------------------------------------------
@@ -134,7 +140,7 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyPageTabNavigator();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	virtual BOOL Create();
 	virtual void OnPageChanged();
@@ -143,9 +149,11 @@ public:
 	void SizeToPage(AFX_SIZEPARENTPARAMS* pLayout, CSize szClient, CRect& rcPage);
 
 	virtual void OnPageSelected(CXTPPropertyPage* pPage);
-	virtual HWND GetSafeHwnd() const { return m_hWnd; }
+	virtual HWND GetSafeHwnd() const
+	{
+		return m_hWnd;
+	}
 	virtual HBRUSH GetPageBrush(CDC* pDC, CXTPPropertyPage* pPage);
-
 
 protected:
 	void SetSelectedItem(CXTPTabManagerItem* pItem);
@@ -155,11 +163,12 @@ protected:
 	afx_msg void OnSysColorChange();
 
 private:
-	CBrush m_brushPage;
+	CXTPBrush m_brushPage;
 	COLORREF m_clrBrush;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	endif // #if defined(_XTP_INCLUDE_TABMANAGER)
 
 //===========================================================================
 // Summary:
@@ -177,7 +186,7 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyPageControlNavigator();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	void PageToSize(AFX_SIZEPARENTPARAMS* pLayout, CSize szPage, CRect& rcPage, CSize& szClient);
 	void SizeToPage(AFX_SIZEPARENTPARAMS* pLayout, CSize szClient, CRect& rcPage);
@@ -187,19 +196,21 @@ public:
 	CSize m_szControl;
 
 private:
-	CBrush m_brushPage;
+	CXTPBrush m_brushPage;
 	COLORREF m_clrBrush;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyPageListNavigator is CXTPListBox and CXTPPropertyPageControlNavigator derived class
-//     It represents list property page navigator
+//     CXTPPropertyPageListNavigator is CXTPListBox and CXTPPropertyPageControlNavigator derived
+//     class It represents list property page navigator
 // See Also:
 //     CXTPPropertySheet, CXTPPropertySheet::DoModal, CXTPPropertySheet::SetNavigator
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyPageListNavigator : public CXTPListBox, public CXTPPropertyPageControlNavigator
+class _XTP_EXT_CLASS CXTPPropertyPageListNavigator
+	: public CXTPListBox
+	, public CXTPPropertyPageControlNavigator
 {
 public:
 	//-----------------------------------------------------------------------
@@ -208,13 +219,16 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyPageListNavigator();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	virtual BOOL Create();
 	virtual void OnPageChanged();
 
 	virtual void OnPageSelected(CXTPPropertyPage* pPage);
-	virtual HWND GetSafeHwnd() const { return m_hWnd; }
+	virtual HWND GetSafeHwnd() const
+	{
+		return m_hWnd;
+	}
 	virtual void SetPropertySheet(CXTPPropertySheet* pSheet);
 
 protected:
@@ -226,9 +240,8 @@ public:
 	int m_nItemMargin;
 
 protected:
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
-
 
 //===========================================================================
 // Summary:
@@ -237,7 +250,9 @@ protected:
 // See Also:
 //     CXTPPropertySheet, CXTPPropertySheet::DoModal, CXTPPropertySheet::SetNavigator
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyPageTreeNavigator : public CTreeCtrl, public CXTPPropertyPageControlNavigator
+class _XTP_EXT_CLASS CXTPPropertyPageTreeNavigator
+	: public CTreeCtrl
+	, public CXTPPropertyPageControlNavigator
 {
 public:
 	//-----------------------------------------------------------------------
@@ -248,13 +263,16 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyPageTreeNavigator(DWORD dwStyle = TVS_SHOWSELALWAYS);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	virtual BOOL Create();
 	virtual void OnPageChanged();
 
 	virtual void OnPageSelected(CXTPPropertyPage* pPage);
-	virtual HWND GetSafeHwnd() const { return m_hWnd; }
+	virtual HWND GetSafeHwnd() const
+	{
+		return m_hWnd;
+	}
 	virtual void SetPropertySheet(CXTPPropertySheet* pSheet);
 
 protected:
@@ -267,11 +285,13 @@ protected:
 
 protected:
 	DWORD m_dwStyle;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-AFX_INLINE void CXTPPropertyPageNavigator::OnPageChanged() {
+AFX_INLINE void CXTPPropertyPageNavigator::OnPageChanged()
+{
 	ASSERT(FALSE); // Not implemented ?
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPPROPERTYPAGENAVIGATOR_H__)

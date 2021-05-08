@@ -1,7 +1,6 @@
 // XTPMemFile.h interface for the CXTPMemFile class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTMEMFILE_H__)
-#define __XTMEMFILE_H__
+#	define __XTMEMFILE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -68,7 +69,6 @@
 //===========================================================================
 class _XTP_EXT_CLASS CXTPMemFile : public CMemFile
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -115,7 +115,6 @@ public:
 	virtual ~CXTPMemFile();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function forces any data remaining in the file buffer
@@ -125,9 +124,9 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void Flush();
 
-#if _MSC_VER > 1200 //MFC 7.0
+#	if _MSC_VER > 1200 // MFC 7.0
 	using CMemFile::Open;
-#endif
+#	endif
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -174,9 +173,9 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void WriteString(LPCTSTR lpsz);
 
-#if _MSC_VER > 1200 //MFC 7.0
+#	if _MSC_VER > 1200 // MFC 7.0
 	using CMemFile::Duplicate;
-#endif //MFC 7.0
+#	endif // MFC 7.0
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -215,7 +214,8 @@ public:
 	//     A DWORD value that represents the length of the copied bytes.
 	//-----------------------------------------------------------------------
 	virtual DWORD Insert(CFile* fSrc, DWORD dwSourcePos, DWORD dwDestPos, DWORD dwBytes);
-	virtual DWORD Insert(LPCTSTR strSrc, DWORD dwSourcePos, DWORD dwDestPos, DWORD dwBytes); // <combine CXTPMemFile::Insert@CFile*@DWORD@DWORD@DWORD>
+	virtual DWORD Insert(LPCTSTR strSrc, DWORD dwSourcePos, DWORD dwDestPos,
+						 DWORD dwBytes); // <combine CXTPMemFile::Insert@CFile*@DWORD@DWORD@DWORD>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -231,7 +231,8 @@ public:
 	//     A DWORD value that represents the length of the copied bytes.
 	//-----------------------------------------------------------------------
 	virtual DWORD Extract(CFile* fDest, DWORD dwStartPos, DWORD dwBytes);
-	virtual DWORD Extract(LPCTSTR strDest, DWORD dwStartPos, DWORD dwBytes); // <combine CXTPMemFile::Extract@CFile*@DWORD@DWORD>
+	virtual DWORD Extract(LPCTSTR strDest, DWORD dwStartPos,
+						  DWORD dwBytes); // <combine CXTPMemFile::Extract@CFile*@DWORD@DWORD>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -298,10 +299,9 @@ public:
 	// Parameters:
 	//     dwFilePos - DWORD value that specifies file position.
 	//-----------------------------------------------------------------------
-	BYTE operator [](DWORD dwFilePos);
+	BYTE operator[](DWORD dwFilePos);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function loads the file into memory.
@@ -345,9 +345,10 @@ private:
 	virtual CFile* Duplicate() const;
 
 private:
-	UINT            m_uiOpenFlags;
-	bool            m_bOpen;
-	CFile           m_File;
+	UINT m_uiOpenFlags;
+	bool m_bOpen;
+	CFile m_File;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTMEMFILE_H__)

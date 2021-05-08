@@ -1,7 +1,6 @@
 // XTPResourceManager.h: interface for the CXTPResourceManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESOURCEMANAGER_H__)
-#define __XTPRESOURCEMANAGER_H__
+#	define __XTPRESOURCEMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#pragma warning(disable: 4275) // ID: Q134980
-#pragma warning(disable: 4251) // ID: Q134980
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -36,29 +34,29 @@
 //===========================================================================
 struct XTP_RESOURCEMANAGER_LANGINFO
 {
-	WORD wLanguage; // Language
-	UINT nCodePage; // CodePage
+	WORD wLanguage;		  // Language
+	UINT nCodePage;		  // CodePage
 	LPCTSTR lpszEncoding; // Encoding
-	LPCTSTR lpszCaption; // Caption
-	LPCTSTR lpszLang; // Lang
-	LPCTSTR lpszSubLang; // SubLang
-	BYTE nFontCharSet; // FontCharSet
+	LPCTSTR lpszCaption;  // Caption
+	LPCTSTR lpszLang;	 // Lang
+	LPCTSTR lpszSubLang;  // SubLang
+	BYTE nFontCharSet;	// FontCharSet
 };
 
-//}}AFX_CODEJOCK_PRIVATE
-#ifdef _UNICODE
-#define XTP_CT2CW(lp) ((LPCWSTR)(LPCTSTR)(lp))
-#define XTP_CW2CT(lp) ((LPCTSTR)(LPCWSTR)(lp))
-#define XTP_CT2CA(lp) ((LPCSTR)CXTPResourceManager::CXTPW2A((LPCTSTR)(lp)))
-#else
-#define XTP_CT2CW(lp) ((LPCWSTR)CXTPResourceManager::CXTPA2W((LPCTSTR)(lp)))
-#define XTP_CW2CT(lp) ((LPCTSTR)CXTPResourceManager::CXTPW2A((LPCWSTR)(lp)))
-#define XTP_CT2CA(lp) ((LPCSTR)(LPCTSTR)(lp))
-#endif
-
-#define XTP_CW2CA(lp) ((LPCSTR)CXTPResourceManager::CXTPW2A((LPCWSTR)(lp)))
-#define XTP_CA2CW(lp) ((LPCWSTR)CXTPResourceManager::CXTPA2W((LPCSTR)(lp)))
 //{{AFX_CODEJOCK_PRIVATE
+#	ifdef _UNICODE
+#		define XTP_CT2CW(lp) ((LPCWSTR)(LPCTSTR)(lp))
+#		define XTP_CW2CT(lp) ((LPCTSTR)(LPCWSTR)(lp))
+#		define XTP_CT2CA(lp) ((LPCSTR)CXTPResourceManager::CXTPW2A((LPCTSTR)(lp)))
+#	else
+#		define XTP_CT2CW(lp) ((LPCWSTR)CXTPResourceManager::CXTPA2W((LPCTSTR)(lp)))
+#		define XTP_CW2CT(lp) ((LPCTSTR)CXTPResourceManager::CXTPW2A((LPCWSTR)(lp)))
+#		define XTP_CT2CA(lp) ((LPCSTR)(LPCTSTR)(lp))
+#	endif
+
+#	define XTP_CW2CA(lp) ((LPCSTR)CXTPResourceManager::CXTPW2A((LPCWSTR)(lp)))
+#	define XTP_CA2CW(lp) ((LPCWSTR)CXTPResourceManager::CXTPA2W((LPCSTR)(lp)))
+//}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
 // Summary:
@@ -77,7 +75,6 @@ public:
 	class _XTP_EXT_CLASS CManageState
 	{
 	public:
-
 		//-------------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CManageState object
@@ -104,11 +101,11 @@ public:
 		void Redo();
 
 	protected:
-		bool            m_bSet;             // true to set
-		HMODULE         m_hModOldResource;  // Handle to previous resource.
+		bool m_bSet;			   // true to set
+		HMODULE m_hModOldResource; // Handle to previous resource.
 	};
-public:
 
+public:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResourceManager object.
@@ -170,7 +167,6 @@ public:
 	HRSRC FindResource(HMODULE& hModule, LPCTSTR lpName, LPCTSTR c);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Reads a Windows string resource, identified by nID, into an existing CString object
@@ -220,12 +216,14 @@ public:
 	// Summary:
 	//     Reads a Windows bitmap resource, identified by nID, into an existing CBitmap object
 	// Parameters:
-	//     pBitmap     - Result CBitmap pointer
-	//     nIDResource -  A Windows bitmap resource ID.
+	//     pBitmap      - Result CBitmap pointer
+	//     nIDResource  -  A Windows bitmap resource ID.
+	//     lpszResource -  A Windows bitmap resource name.
 	// Returns:
 	//     Nonzero if resource load was successful; otherwise 0.
 	//-----------------------------------------------------------------------
 	virtual BOOL LoadBitmap(CBitmap* pBitmap, UINT nIDResource);
+	virtual BOOL LoadBitmap(CBitmap* pBitmap, LPCTSTR lpszResource);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -276,6 +274,18 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Reads a Windows HTML resource, identified by pszResource,
+	//     into an existing CString object.
+	// Parameters:
+	//     pString     -  Output string pointer
+	//     pszResource -  A string specifying resource name.
+	// Returns:
+	//     Nonzero if resource load was successful; otherwise 0.
+	//-----------------------------------------------------------------------
+	virtual BOOL LoadHTML(CString* pText, LPCTSTR pszResource);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//      The LoadIcon function loads an icon by locating its resource handle.
 	// Parameters:
 	//      lpszID   - [in] Specifies the name of the icon to load.
@@ -302,6 +312,18 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Reads a Windows RT_XAML resource, identified by pszResource,
+	//     into an existing CString object.
+	// Parameters:
+	//     xaml -  Output string
+	//     pszResource -  A string specifying resource name.
+	// Returns:
+	//     Nonzero if resource load was successful; otherwise 0.
+	//-----------------------------------------------------------------------
+	virtual BOOL LoadXAML(CString& xaml, UINT nIDResource);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//      The CreateIconFromResource function creates a new icon from the specified
 	//      modules icon resource.
 	// Parameters:
@@ -317,7 +339,6 @@ public:
 	virtual HICON CreateIconFromResource(HMODULE hModule, LPCTSTR lpszID, CSize iconSize);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Displays a message box on the screen
@@ -339,7 +360,6 @@ public:
 	virtual void Close();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to set application defined Resource manager
@@ -367,6 +387,24 @@ public:
 	//     hResModule - Resource instance
 	//-----------------------------------------------------------------------
 	static WORD AFX_CDECL GetResourceLanguage(HMODULE hResModule);
+
+	//-----------------------------------------------------------------------
+	// Summary: Checks if resource name is INT-resource.
+	// Parameters:
+	//    lpName - Resource name pointer
+	//    bTryParse - If TRUE, the function will try to parse a string
+	//                representation of INT-resource, e.g.: '#123'
+	// Returns: TRUE if resource name indicates and INT-resource.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL IsIntResource(LPCTSTR lpName, BOOL bTryParse = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary: Makes resource identified from INT-resource name provided.
+	// Parameters: lpName - Resource name pointer. Can be noth INT-resource or
+	//                      a pointer string representation of INT-resource, e.g.: '#123'
+	// Returns: A resource idenifier value of 0 if INT-resource name is invalid.
+	//-----------------------------------------------------------------------
+	static WORD AFX_CDECL MakeIntResource(LPCTSTR lpName);
 
 public:
 	void SetResourceLanguage(WORD wLanguage);
@@ -438,34 +476,45 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL LoadFailed();
 
-
-
 public:
 	static CProcessLocal<CXTPResourceManager> m_managerInstance; // Manager instance.
 
 protected:
-	BOOL m_bValid;                      // TRUE if Resource manager is valid.
-	HMODULE m_hResourceFile;            // Resource file handle.
+	BOOL m_bValid;			 // TRUE if Resource manager is valid.
+	HMODULE m_hResourceFile; // Resource file handle.
 
-	XTP_RESOURCEMANAGER_LANGINFO* m_pLanguageInfo;    // Resource language
+	XTP_RESOURCEMANAGER_LANGINFO* m_pLanguageInfo; // Resource language
 
-	static HMODULE  m_hModXTResource;   // Handle to toolkit resource.
+	static HMODULE m_hModXTResource; // Handle to toolkit resource.
 
 	BOOL m_bResourceCharset;
 	BYTE m_nSystemCharset;
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	static BOOL CALLBACK EnumResTypeProc(HMODULE hModule, LPTSTR lpszType, LONG_PTR lParam);
-	static BOOL CALLBACK EnumResNameProc(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam); // <combine CXTPResourceManager::EnumResTypeProc@HMODULE@LPTSTR@LONG_PTR>
-	static BOOL CALLBACK EnumResLangProc(HMODULE hModule, LPCTSTR lpszType, LPCTSTR lpszName,
-										 WORD wIDLanguage, LONG_PTR lParam); // <combine CXTPResourceManager::EnumResTypeProc@HMODULE@LPTSTR@LONG_PTR>
-//}}AFX_CODEJOCK_PRIVATE
+	static BOOL CALLBACK EnumResNameProc(
+		HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName,
+		LONG_PTR lParam); // <combine CXTPResourceManager::EnumResTypeProc@HMODULE@LPTSTR@LONG_PTR>
+	static BOOL CALLBACK EnumResLangProc(
+		HMODULE hModule, LPCTSTR lpszType, LPCTSTR lpszName, WORD wIDLanguage,
+		LONG_PTR lParam); // <combine CXTPResourceManager::EnumResTypeProc@HMODULE@LPTSTR@LONG_PTR>
+						  //}}AFX_CODEJOCK_PRIVATE
 };
 
+//-----------------------------------------------------------------------
+// Summary: Call this member to safely return an instance handle of the
+//          current application.
+// Returns: An HINSTANCE to the current instance of the application if
+//          available, otherwise returns a handle to the file used to
+//          create the calling process (.exe file).
+//-----------------------------------------------------------------------
+AFX_INLINE HMODULE XTPGetInstanceHandle()
+{
+	return (afxCurrentInstanceHandle == NULL) ? ::GetModuleHandle(NULL) : afxCurrentInstanceHandle;
+}
 
-#ifndef  _XTP_EXCLUDE_XML
+#	ifndef _XTP_EXCLUDE_XML
 
 class CXTPPropExchangeXMLNode;
 class CXTPPropExchange;
@@ -485,7 +534,6 @@ private:
 	struct DLGITEMTEMPLATEEX;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResourceManagerXML object.
@@ -494,7 +542,9 @@ public:
 	//     pResourceRoot - Base XML Node
 	//-----------------------------------------------------------------------
 	CXTPResourceManagerXML(LPCTSTR lpszFileName);
-	CXTPResourceManagerXML(CXTPPropExchangeXMLNode* pResourceRoot); // <combine CXTPResourceManagerXML::CXTPResourceManagerXML@LPCTSTR>
+	CXTPResourceManagerXML(
+		CXTPPropExchangeXMLNode*
+			pResourceRoot); // <combine CXTPResourceManagerXML::CXTPResourceManagerXML@LPCTSTR>
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -504,6 +554,8 @@ public:
 	~CXTPResourceManagerXML();
 
 public:
+	using CXTPResourceManager::LoadString;
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Reads a Windows string resource, identified by nID, into an existing CString object
@@ -562,7 +614,7 @@ private:
 	CMap<UINT, UINT, DLGTEMPLATE*, DLGTEMPLATE*> m_mapDialogs;
 };
 
-#endif
+#	endif
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -578,27 +630,59 @@ private:
 //-----------------------------------------------------------------------
 _XTP_EXT_CLASS CXTPResourceManager* AFX_CDECL XTPResourceManager();
 
-
-AFX_INLINE WORD CXTPResourceManager::GetResourcesLangID() {
+AFX_INLINE WORD CXTPResourceManager::GetResourcesLangID()
+{
 	return m_pLanguageInfo->wLanguage;
 }
-AFX_INLINE XTP_RESOURCEMANAGER_LANGINFO* CXTPResourceManager::GetLanguageInfo() const {
+AFX_INLINE XTP_RESOURCEMANAGER_LANGINFO* CXTPResourceManager::GetLanguageInfo() const
+{
 	return m_pLanguageInfo;
 }
 
-AFX_INLINE CString CXTPResourceManager::LoadString(UINT nIDResource, BOOL* pbError) {
+AFX_INLINE CString CXTPResourceManager::LoadString(UINT nIDResource, BOOL* pbError)
+{
 	CString str;
 	BOOL bRes = LoadString(&str, nIDResource);
 	ASSERT(bRes);
-	if (pbError) *pbError = !bRes;
+	if (pbError)
+		*pbError = !bRes;
 	return str;
 }
-AFX_INLINE void CXTPResourceManager::SetResourceFontCharset(BOOL bResourceCharset) {
+AFX_INLINE void CXTPResourceManager::SetResourceFontCharset(BOOL bResourceCharset)
+{
 	m_bResourceCharset = bResourceCharset;
 }
-AFX_INLINE void CXTPResourceManager::SetFontCharset(BYTE nFontCharset) {
+AFX_INLINE void CXTPResourceManager::SetFontCharset(BYTE nFontCharset)
+{
 	m_bResourceCharset = FALSE;
-	m_nSystemCharset = nFontCharset;
+	m_nSystemCharset   = nFontCharset;
 }
 
+//-----------------------------------------------------------------------
+// Summary: Obtains default resource type name depending on file extension
+//          specified by full path to a resource.
+// Parameters:
+//     lpszPath - Full path to resource.
+// Returns:
+//     A poitner to a string or integer resource that indicates a default
+//     resource type for the resource specified, or NULL if no association
+//     is found.
+//-----------------------------------------------------------------------
+_XTP_EXT_CLASS LPCTSTR AFX_CDECL XTPGetDefaultResourceTypeFromPath(LPCTSTR lpszPath);
+
+//-----------------------------------------------------------------------
+// Summary: Tries to find resource type name in a provided module
+//          by looking up through all resource directories for
+//          a default culture. The first matching resource type is
+//          then returned.
+// Parameters:
+//     hModule - Module handle in which resource lookup should be done.
+//     lpszName - Resource name or INT-resource value to find type name for.
+// Returns:
+//     Resource type name for the first match for the name provided or
+//     an empty string if no resource type is found.
+//-----------------------------------------------------------------------
+_XTP_EXT_CLASS CString AFX_CDECL XTPFindResourceType(HMODULE hModule, LPCTSTR lpszName);
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESOURCEMANAGER_H__)

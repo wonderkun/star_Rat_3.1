@@ -1,7 +1,6 @@
 // XTPPropertyGrid.h interface for the CXTPPropertyGrid class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,49 +19,39 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRID_H__)
-#define __XTPPROPERTYGRID_H__
+#	define __XTPPROPERTYGRID_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPPropertyGridPaintManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+// Starting from version 19.2 PropertyGrid supports scroll bar themes,
+// however due to technical challenges having scroll bar themes enabled
+// has also introduced a number of issues for various use cases.
+// If you are affected by any of those issues would prefer to fallback
+// to pre-19.2 behavior at the price of disabling scroll bar themes then
+// you can either uncomment the XTP_PROPERTY_GRID_DISABLE_SCROLLBAR_THEMES
+// macro at the beginning of XTPPropertyGrid.h file or specify that macro
+// as defined in the C++ compiler properties of the ToolkitPro or PropertyGrid
+// library project for selected configurations then re-build the ToolkitPro or
+// PropertyGrid projects in order the change to take an effect.
+// #define XTP_PROPERTY_GRID_DISABLE_SCROLLBAR_THEMES
 
 class CXTPToolTipContext;
 class CXTPImageManager;
 class CXTPMarkupContext;
-
-//-----------------------------------------------------------------------
-// Summary:
-//     XTPPropertyGridSortOrder is an enumeration used by CXTPPropertyGrid to
-//     determine the grouping style.  This will specify how the items
-//     in the grid are displayed, I.e. Alphabetical, not sort, and
-//     grouped by category.
-// See Also: CXTPPropertyGrid::SetPropertySort, CXTPPropertyGrid::GetPropertySort
-// Example:
-//     <code>XTPPropertyGridSortOrder sort = m_wndPropertyGrid.GetPropertySort();</code>
-//
-// <KEYWORDS xtpGridSortCategorized, xtpGridSortAlphabetical, xtpGridSortNoSort>
-//-----------------------------------------------------------------------
-enum XTPPropertyGridSortOrder
-{
-	xtpGridSortCategorized,     // Group items by category.
-	xtpGridSortAlphabetical,    // Sort items alphabetically.
-	xtpGridSortNoSort           // Disable sorting and grouping, all items are displayed in
-	                            // the order that they are added to the grid.
-};
-
-#include "XTPPropertyGridView.h"
+class CXTPPropertyGridPaintManager;
 
 class CXTPPropertyGridView;
 class CXTPPropertyGridPaintManager;
 class CXTPPropertyGrid;
 
-
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridUpdateContext is a CCmdTarget derived class used
+//     CXTPPropertyGridUpdateContext is a CXTPCmdTarget derived class used
 //     to save the state of the property grid such as the currently
 //     selected item, XTPPropertyGridSortOrder preference, and the expanding state
 //     of each item in the grid.  The property grid state information is
@@ -85,8 +74,9 @@ class CXTPPropertyGrid;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridUpdateContext : public CXTPCmdTarget
 {
-public:
+	DECLARE_DYNAMIC(CXTPPropertyGridUpdateContext);
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridUpdateContext object.
@@ -94,7 +84,6 @@ public:
 	CXTPPropertyGridUpdateContext();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to determine if any items in the grid were
@@ -107,58 +96,28 @@ public:
 	BOOL IsEmpty() const;
 
 protected:
-	CMap<UINT, UINT, BOOL, BOOL&> m_mapState;   // Stores the expanded state of each item in the grid before CXTPPropertyGrid::BeginUpdate.
-	UINT m_nSelected;                           // Stores the Id of the currently selected item before CXTPPropertyGrid::BeginUpdate.
-	UINT m_nTopIndex;                           // Stores the Index of the top-most visible item in the property grid.
-	XTPPropertyGridSortOrder m_propertySort;    // Stores the currently used sort method of the grid before CXTPPropertyGrid::BeginUpdate.
+	CMap<UINT, UINT, BOOL, BOOL&> m_mapState; // Stores the expanded state of each item in the grid
+											  // before CXTPPropertyGrid::BeginUpdate.
+	UINT m_nSelected;						  // Stores the Id of the currently selected item before
+											  // CXTPPropertyGrid::BeginUpdate.
+	UINT m_nTopIndex; // Stores the Index of the top-most visible item in the property grid.
+	XTPPropertyGridSortOrder m_propertySort; // Stores the currently used sort method of the grid
+											 // before CXTPPropertyGrid::BeginUpdate.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridUpdateContext)
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPPropertyGrid;
-
-};
-
-//===========================================================================
-// Summary:
-//     CXTPPropertyGridToolBar is a CToolBar derived class.
-//     It is an internal class used by Property Grid control
-//===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridToolBar : public CToolBar
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPPropertyGridToolBar object
-	//-----------------------------------------------------------------------
-	CXTPPropertyGridToolBar();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPPropertyGridToolBar object, handles cleanup and deallocation.
-	//-------------------------------------------------------------------------
-	~CXTPPropertyGridToolBar();
-
-protected:
-
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(CXTPPropertyGridToolBar)
-	virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
-	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CXTPPropertyGridToolBar)
-	afx_msg BOOL OnEraseBkgnd(CDC*);
-	afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
-	afx_msg void OnPaint();
-	afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
 };
 
 class CXTPPropertyGridVerbs;
-
 
 //===========================================================================
 // Summary:
@@ -183,7 +142,6 @@ public:
 	CXTPPropertyGridVerb();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to retrieve the text caption of this verb link.
@@ -250,19 +208,25 @@ public:
 	CPoint GetClickPoint() const;
 
 protected:
-	CString m_strCaption;               // Text caption of this verb link.
-	int m_nID;                          // Id assigned this verb link.
-	int m_nIndex;                       // Index of this verb link in the collection of verbs.
-	CRect m_rcPart;                     // Bounding rectangle of verb.
-	CPoint m_ptClick;                   // The last position the user clicked.
-	CXTPPropertyGridVerbs* m_pVerbs;    // Collection of verb links.
+	CString m_strCaption;			 // Text caption of this verb link.
+	int m_nID;						 // Id assigned this verb link.
+	int m_nIndex;					 // Index of this verb link in the collection of verbs.
+	CRect m_rcPart;					 // Bounding rectangle of verb.
+	CPoint m_ptClick;				 // The last position the user clicked.
+	CXTPPropertyGridVerbs* m_pVerbs; // Collection of verb links.
 
 	friend class CXTPPropertyGridVerbs;
 	friend class CXTPPropertyGrid;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridVerb)
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
-
-
 
 //===========================================================================
 // Summary:
@@ -273,7 +237,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridVerbs : public CXTPCmdTarget
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridVerbs object.
@@ -287,7 +250,6 @@ public:
 	~CXTPPropertyGridVerbs();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to determine if any verbs have been added to the
@@ -338,12 +300,26 @@ public:
 	void Add(LPCTSTR lpszCaption, UINT nID);
 
 protected:
-	CArray<CXTPPropertyGridVerb*, CXTPPropertyGridVerb*> m_arrVerbs;    // Collection of verb links.
-	CXTPPropertyGrid* m_pGrid;                                          // Pointer to the property grid that the verbs are drawn on.
+	CArray<CXTPPropertyGridVerb*, CXTPPropertyGridVerb*> m_arrVerbs; // Collection of verb links.
+	CXTPPropertyGrid* m_pGrid; // Pointer to the property grid that the verbs are drawn on.
 
 	friend class CXTPPropertyGrid;
 	friend class CXTPPropertyGridVerb;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_ENUM_VARIANT(CXTPPropertyGridVerbs)
+
+	LPDISPATCH OleItem(long nIndex);
+	LPDISPATCH OleGetItem(long nIndex);
+	int OleGetItemCount();
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridVerbs)
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //-----------------------------------------------------------------------
@@ -359,21 +335,29 @@ protected:
 //     item will receive focus.
 // See Also: CXTPPropertyGrid::OnNavigate, CXTPPropertyGrid::NavigateItems
 //
-// <KEYWORDS xtpGridUIParentPrev, xtpGridUIViewPrev, xtpGridUIView, xtpGridUIInplaceEdit, xtpGridUIInplaceButton, xtpGridUIViewNext, xtpGridUIVerb, xtpGridUIParentNext>
+// <KEYWORDS xtpGridUIParentPrev, xtpGridUIViewPrev, xtpGridUIView, xtpGridUIInplaceEdit,
+// xtpGridUIInplaceButton, xtpGridUIViewNext, xtpGridUIVerb, xtpGridUIParentNext>
 //-----------------------------------------------------------------------
 enum XTPPropertyGridUI
 {
-	xtpGridUIParentPrev      = -2,  // Used to indicate that focus should be given to the previous object in the tab order.
-	xtpGridUIViewPrev        = -1,  // If m_bTabItems is TRUE, Used to indicate that focus should be given to the previous item in the grid.
-	                                // This occurs when an item has focus and Shift+Tab is pressed.
-	xtpGridUIView            =  0,  // Used to indicate that focus should be given to the Property Grid.
-	xtpGridUIInplaceEdit     =  1,  // Used to indicate that the Tab key is pressed while in an in-place edit box has focus.
-	xtpGridUIInplaceControl  =  2,  // Used to indicate that the Tab key is pressed while in an in-place edit box has focus.
-	xtpGridUIInplaceButton   =  3,  // Used to indicate that the Tab key is pressed while an in-place button has focus.
-	xtpGridUIViewNext        =  4,  // If m_bTabItems is TRUE, Used to indicate that focus should be given to the next item in the grid.
-	                                // This occurs when an item has focus and the Tab key is pressed.
-	xtpGridUIVerb            =  5,  // Used to indicate that the Tab key is pressed while in Verb has focus.
-	xtpGridUIParentNext      =  6   // Used to indicate that focus should be given to the next object in the tab order.
+	xtpGridUIParentPrev = -2, // Used to indicate that focus should be given to the previous object
+							  // in the tab order.
+	xtpGridUIViewPrev = -1,   // If m_bTabItems is TRUE, Used to indicate that focus should be given
+							// to the previous item in the grid. This occurs when an item has focus
+							// and Shift+Tab is pressed.
+	xtpGridUIView		 = 0, // Used to indicate that focus should be given to the Property Grid.
+	xtpGridUIInplaceEdit = 1, // Used to indicate that the Tab key is pressed while in an in-place
+							  // edit box has focus.
+	xtpGridUIInplaceControl = 2, // Used to indicate that the Tab key is pressed while in an
+								 // in-place edit box has focus.
+	xtpGridUIInplaceButton = 3,  // Used to indicate that the Tab key is pressed while an in-place
+								 // button has focus.
+	xtpGridUIViewNext = 4, // If m_bTabItems is TRUE, Used to indicate that focus should be given to
+						   // the next item in the grid. This occurs when an item has focus and the
+						   // Tab key is pressed.
+	xtpGridUIVerb = 5,	 // Used to indicate that the Tab key is pressed while in Verb has focus.
+	xtpGridUIParentNext = 6 // Used to indicate that focus should be given to the next object in the
+							// tab order.
 };
 
 //-----------------------------------------------------------------------
@@ -391,11 +375,11 @@ enum XTPPropertyGridUI
 //-----------------------------------------------------------------------
 enum XTPPropertyGridHitCode
 {
-	xtpGridHitError         = -1,   // Indicates that the help splitter, verb splitter
-	                                // and verbs were not clicked.
-	xtpGridHitHelpSplitter  =  1,   // Indicates that the help splitter was clicked.
-	xtpGridHitVerbsSplitter =  2,   // Indicates that the Verb splitter was clicked.
-	xtpGridHitFirstVerb     =  3    // Determines if the item clicked upon is a verb.
+	xtpGridHitError = -1,		 // Indicates that the help splitter, verb splitter
+								 // and verbs were not clicked.
+	xtpGridHitHelpSplitter  = 1, // Indicates that the help splitter was clicked.
+	xtpGridHitVerbsSplitter = 2, // Indicates that the Verb splitter was clicked.
+	xtpGridHitFirstVerb		= 3  // Determines if the item clicked upon is a verb.
 };
 
 //===========================================================================
@@ -409,7 +393,6 @@ class _XTP_EXT_CLASS CXTPPropertyGrid : public CWnd
 	DECLARE_DYNAMIC(CXTPPropertyGrid)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGrid object
@@ -452,7 +435,6 @@ public:
 	virtual BOOL Create(const RECT& rect, CWnd* pParentWnd, UINT nID, DWORD dwListStyle = 0);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to add a new category to the Property Grid control.
@@ -466,7 +448,9 @@ public:
 	//     The pointer to the item object of the newly inserted category.
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItem* AddCategory(LPCTSTR lpszCaption, CXTPPropertyGridItem* pCategory = NULL);
-	CXTPPropertyGridItem* AddCategory(int nID, CXTPPropertyGridItem* pCategory = NULL);//<COMBINE CXTPPropertyGrid::AddCategory@LPCTSTR@CXTPPropertyGridItem*>
+	CXTPPropertyGridItem* AddCategory(
+		int nID, CXTPPropertyGridItem* pCategory =
+					 NULL); //<COMBINE CXTPPropertyGrid::AddCategory@LPCTSTR@CXTPPropertyGridItem*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -481,8 +465,12 @@ public:
 	// Returns:
 	//     The pointer to the item object of the newly inserted category.
 	//-----------------------------------------------------------------------
-	CXTPPropertyGridItem* InsertCategory(int nIndex, LPCTSTR lpszCaption, CXTPPropertyGridItem* pCategory = NULL);
-	CXTPPropertyGridItem* InsertCategory(int nIndex, int nID, CXTPPropertyGridItem* pCategory = NULL);//<COMBINE CXTPPropertyGrid::InsertCategory@int@LPCTSTR@CXTPPropertyGridItem*>
+	CXTPPropertyGridItem* InsertCategory(int nIndex, LPCTSTR lpszCaption,
+										 CXTPPropertyGridItem* pCategory = NULL);
+	CXTPPropertyGridItem* InsertCategory(
+		int nIndex, int nID,
+		CXTPPropertyGridItem* pCategory =
+			NULL); //<COMBINE CXTPPropertyGrid::InsertCategory@int@LPCTSTR@CXTPPropertyGridItem*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -496,7 +484,7 @@ public:
 	//     * <b>xtpGridSortNoSort</b> Disable sorting.
 	// See Also: GetPropertySort
 	//-----------------------------------------------------------------------
-	void SetPropertySort (XTPPropertyGridSortOrder sort);
+	void SetPropertySort(XTPPropertyGridSortOrder sort);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -560,7 +548,9 @@ public:
 	//     clrCategoryFore - An RGB value that represents the text color of
 	//                   the Category item text.
 	//-----------------------------------------------------------------------
-	void SetCustomColors(COLORREF clrHelpBack, COLORREF clrHelpFore, COLORREF clrViewLine, COLORREF clrViewBack, COLORREF clrViewFore, COLORREF clrCategoryFore = ::GetSysColor(COLOR_GRAYTEXT));
+	void SetCustomColors(COLORREF clrHelpBack, COLORREF clrHelpFore, COLORREF clrViewLine,
+						 COLORREF clrViewBack, COLORREF clrViewFore,
+						 COLORREF clrCategoryFore = ::GetSysColor(COLOR_GRAYTEXT));
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -579,7 +569,8 @@ public:
 	//     The pointer to the CXTPPropertyGridItem object.
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItem* FindItem(LPCTSTR strCaption) const;
-	CXTPPropertyGridItem* FindItem(UINT nID) const; // <COMBINE CXTPPropertyGrid::FindItem@LPCTSTR@const>
+	CXTPPropertyGridItem* FindItem(UINT nID) const; // <COMBINE
+													// CXTPPropertyGrid::FindItem@LPCTSTR@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -746,7 +737,7 @@ public:
 	//      * <b>xtpGridThemeCool</b> Enables Cool theme.
 	//      * <b>xtpGridThemeSimple</b> Enables Visual Basic style theme.
 	//      * <b>xtpGridThemeDelphi</b> Enables Delphi style theme.
-	//      * <b>xtpGridThemeWhidbey</b> Enables Visual Studio 2005 "Whidbey" style theme.
+	//      * <b>xtpGridThemeVisualStudio2005</b> Enables Visual Studio 2005 style theme.
 	//      * <b>xtpGridThemeOfficeXP</b> Enables Visual Office XP style theme.
 	//      * <b>xtpGridThemeOffice2007</b> Enables Visual  Office 2007 style theme.
 	//-----------------------------------------------------------------------
@@ -828,6 +819,17 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates View of Property grid. Override this member to use custom view.
+	// Remarks:
+	//     Starting from version 19.2 PropertyGrid supports scroll bar themes,
+	//     however due to technical challenges having scroll bar themes enabled
+	//     has also introduced a number of issues for various use cases.
+	//     If you are affected by any of those issues would prefer to fallback
+	//     to pre-19.2 behavior at the price of disabling scroll bar themes then
+	//     you can either uncomment the XTP_PROPERTY_GRID_DISABLE_SCROLLBAR_THEMES
+	//     macro at the beginning of XTPPropertyGrid.h file or specify that macro
+	//     as defined in the C++ compiler properties of the ToolkitPro or PropertyGrid
+	//     library project for selected configurations then re-build the ToolkitPro or
+	//     PropertyGrid projects in order the change to take an effect.
 	//-----------------------------------------------------------------------
 	virtual CXTPPropertyGridView* CreateView() const;
 
@@ -863,7 +865,8 @@ public:
 	//     pItem      - Pointer to the currently selected item.
 	// See Also: XTPPropertyGridUI
 	//-----------------------------------------------------------------------
-	virtual void OnNavigate(XTPPropertyGridUI nUIElement, BOOL bForward, CXTPPropertyGridItem* pItem);
+	virtual void OnNavigate(XTPPropertyGridUI nUIElement, BOOL bForward,
+							CXTPPropertyGridItem* pItem);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -881,7 +884,8 @@ public:
 	// Summary:
 	//     Call this member to show all in-place buttons of all items
 	// Parameters:
-	//     bShow - TRUE to always show in-place buttons; FALSE to show buttons only for selected item.
+	//     bShow - TRUE to always show in-place buttons; FALSE to show buttons only for selected
+	//     item.
 	// See Also: GetShowInplaceButtonsAlways
 	//-----------------------------------------------------------------------
 	void SetShowInplaceButtonsAlways(BOOL bShow);
@@ -897,9 +901,18 @@ public:
 	//     Call this member to specify the height of the verb box when visible.
 	// Parameters:
 	//     nHeight - Height of the verb box.
-	// See Also: CXTPPropertyGridVerb, CXTPPropertyGridVerbs, IsVerbsVisible
+	// See Also: CXTPPropertyGridVerb, CXTPPropertyGridVerbs, IsVerbsVisible, GetVerbsHeight
 	//-----------------------------------------------------------------------
 	void SetVerbsHeight(int nHeight);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the height of the verb box when visible.
+	// Returns:
+	//      Height of the verb box.
+	// See Also: CXTPPropertyGridVerb, CXTPPropertyGridVerbs, IsVerbsVisible, SetVerbsHeight
+	//-----------------------------------------------------------------------
+	int GetVerbsHeight() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -979,7 +992,7 @@ public:
 	//     <code>m_wndPropertyGrid.SetInplaceEdit(new CMyInplaceEdit());</code>
 	// See Also: SetInplaceList, CXTPPropertyGridItem::GetInplaceEdit
 	//-----------------------------------------------------------------------
-	void SetInplaceEdit(CXTPPropertyGridInplaceEdit*  pInplaceEdit);
+	void SetInplaceEdit(CXTPPropertyGridInplaceEdit* pInplaceEdit);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -990,7 +1003,7 @@ public:
 	//     <code>m_wndPropertyGrid.SetInplaceList(new CMyInplaceList());</code>
 	// See Also: SetInplaceEdit, CXTPPropertyGridItem::GetInplaceList
 	//-----------------------------------------------------------------------
-	void SetInplaceList(CXTPPropertyGridInplaceList*  pInplaceList);
+	void SetInplaceList(CXTPPropertyGridInplaceList* pInplaceList);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1006,7 +1019,8 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves the zero-based index of the first visible item in a control.
-	//     Initially, item 0 is at the top of the property grid, but if the list box is scrolled, another item may be at the top.
+	//     Initially, item 0 is at the top of the property grid, but if the list box is scrolled,
+	//     another item may be at the top.
 	// Returns:
 	//     The zero-based index of the first visible item in a control if successful, -1 otherwise.
 	//-----------------------------------------------------------------------
@@ -1137,7 +1151,6 @@ public:
 	int GetSelectedItems(CArray<int, int>* pItems) const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Determines if right-to-left mode was set.
@@ -1160,7 +1173,6 @@ public:
 	//-------------------------------------------------------------------------
 	void Reposition();
 
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this method to prevent all edit operations
@@ -1168,7 +1180,6 @@ public:
 	//     bAllowEdit - TRUE to allow edit property grid.
 	//-------------------------------------------------------------------------
 	void AllowEdit(BOOL bAllowEdit);
-
 
 public:
 	//-------------------------------------------------------------------------
@@ -1185,9 +1196,7 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPMarkupContext* GetMarkupContext() const;
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called by the framework during resizing of splitters.
@@ -1294,7 +1303,8 @@ protected:
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     Call this method to refresh all binding in pItem tree. pItem can be NULL to refresh all items
+	//     Call this method to refresh all binding in pItem tree. pItem can be NULL to refresh all
+	//     items
 	// Parameters:
 	//     pItem - Root item to refresh
 	//-------------------------------------------------------------------------
@@ -1302,65 +1312,67 @@ protected:
 
 private:
 	CWnd* GetNextGridTabItem(BOOL bForward);
-	void RestoreExpandingState(CXTPPropertyGridItems* pItems, CXTPPropertyGridUpdateContext& context);
+	void RestoreExpandingState(CXTPPropertyGridItems* pItems,
+							   CXTPPropertyGridUpdateContext& context);
 	void SaveExpandingState(CXTPPropertyGridItems* pItems, CXTPPropertyGridUpdateContext& context);
 	void RecreateView();
 
 public:
-	int                         m_nHelpHeight;              // Height of the description area (help panel).
-	int                         m_nVerbsHeight;             // Height of the verbs panel.
-	BOOL                        m_bHideSelection;           // TRUE to hide selection when control doesn't have focus;
+	BOOL m_bHideSelection; // TRUE to hide selection when control doesn't have focus;
 
 protected:
-	BOOL                        m_bHelpVisible;             // TRUE if the help panel is visible.
-	BOOL                        m_bViewVisible;             // TRUE if the view panel is visible.
-	BOOL                        m_bEnableTooltips;          // TRUE if tooltips enabled
-	BOOL m_bVariableHelpHeight;                             // TRUE to allow user resize Help pane
-	BOOL                        m_bToolBarVisible;          // TRUE if the built in toolbar is visible.
-	CXTPPropertyGridToolBar     m_wndToolbar;               // Pointer to the "built-in" PropertyGrid toolbar.
-	HCURSOR                     m_hCursorSplit;             // Handle to the cursor when positioned over a splitter.
-	HCURSOR                     m_hCursorHand;              // Handle of the cursor.
-	BOOL                        m_bTabItems;                // TRUE to navigate items with the tab key.
-	BOOL                        m_bTabCaptions;             // TRUE to navigate items with the tab key.
+	BOOL m_bHelpVisible;				  // TRUE if the help panel is visible.
+	BOOL m_bViewVisible;				  // TRUE if the view panel is visible.
+	BOOL m_bEnableTooltips;				  // TRUE if tooltips enabled
+	BOOL m_bVariableHelpHeight;			  // TRUE to allow user resize Help pane
+	BOOL m_bToolBarVisible;				  // TRUE if the built in toolbar is visible.
+	CXTPPropertyGridToolBar m_wndToolbar; // "built-in" PropertyGrid toolbar.
+	HCURSOR m_hCursorSplit;				  // Handle to the cursor when positioned over a splitter.
+	HCURSOR m_hCursorHand;				  // Handle of the cursor.
+	BOOL m_bTabItems;					  // TRUE to navigate items with the tab key.
+	BOOL m_bTabCaptions;				  // TRUE to navigate items with the tab key.
 
-	CXTPPropertyGridVerbs*      m_pVerbs;                   // Collection of verbs (links) displayed in the verb panel when the panel is visible.
-	BOOL                        m_bVerbsVisible;            // TRUE if the verb panel is visible.
+	CXTPPropertyGridVerbs* m_pVerbs; // Collection of verbs (links) displayed in the verb panel when
+									 // the panel is visible.
+	BOOL m_bVerbsVisible;			 // TRUE if the verb panel is visible.
 
-	XTPPropertyGridPaintTheme   m_themeCurrent;             // Currently set theme.
-	CXTPPropertyGridPaintManager* m_pPaintManager;          // Current paint manager.
-	int                         m_nFocusedVerb;             // Index of the currently focused verb within the collection of verbs.
-	mutable CXTPPropertyGridView* m_pView;                    // View pointer
-	BOOL                        m_bHighlightChanged;        // TRUE to highlight changed values
-	BOOL                        m_bHighlightChangedButton; // TRUE to highlight changed in-place button value text
-	CXTPImageManager*           m_pImageManager;            // Image manager of property grid
-	BOOL                        m_bVariableItemsHeight;     // TRUE to allow variable items height
-	BOOL                        m_bPreSubclassWindow;       // 'true' when initialized from PreSubclassWindow.
+	XTPPropertyGridPaintTheme m_themeCurrent;	  // Currently set theme.
+	CXTPPropertyGridPaintManager* m_pPaintManager; // Current paint manager.
+	int m_nFocusedVerb; // Index of the currently focused verb within the collection of verbs.
+	mutable CXTPPropertyGridView* m_pView; // View pointer
+	BOOL m_bHighlightChanged;			   // TRUE to highlight changed values
+	BOOL m_bHighlightChangedButton;		   // TRUE to highlight changed in-place button value text
+	CXTPImageManager* m_pImageManager;	 // Image manager of property grid
+	BOOL m_bVariableItemsHeight;		   // TRUE to allow variable items height
+	BOOL m_bPreSubclassWindow;			   // 'true' when initialized from PreSubclassWindow.
 
-	CXTPPropertyGridInplaceEdit*   m_pInplaceEdit;          // In-place edit control.
-	CXTPPropertyGridInplaceList*   m_pInplaceListBox;       // In-place list control.
-	BOOL                       m_bShowInplaceButtonsAlways;         // TRUE to show all inplace buttons
-	CXTPToolTipContext*        m_pToolTipContext;           // Tooltip context
-	BOOL                       m_bMultiSelect;              // TRUE for MultiSelect;
-	CXTPMarkupContext*         m_pMarkupContext;            // Markup context of Property Grid
-	BOOL                       m_bAllowEdit;                // FALSE to prevent all edit operations.
+	CXTPPropertyGridInplaceEdit* m_pInplaceEdit;	// In-place edit control.
+	CXTPPropertyGridInplaceList* m_pInplaceListBox; // In-place list control.
+	BOOL m_bShowInplaceButtonsAlways;				// TRUE to show all inplace buttons
+	CXTPToolTipContext* m_pToolTipContext;			// Tooltip context
+	BOOL m_bMultiSelect;							// TRUE for MultiSelect;
+	CXTPMarkupContext* m_pMarkupContext;			// Markup context of Property Grid
+	BOOL m_bAllowEdit;								// FALSE to prevent all edit operations.
 
 private:
-	CRect                       m_rectTracker;
-	BOOL                        m_bVerbActivate;
+	CRect m_rectTracker;
+	BOOL m_bVerbActivate;
 	XTPPropertyGridBorderStyle m_borderStyle;
 
-
 protected:
-
 //{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	BOOL m_bFocusNext;
+#	endif
 	//{{AFX_VIRTUAL(CXTPPropertyGrid)
-	protected:
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void PreSubclassWindow();
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPPropertyGrid)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM /*lParam*/);
@@ -1382,10 +1394,11 @@ protected:
 	afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	void SetLayoutRTL(CWnd* pWnd, BOOL bRTLLayout);
 
 	friend class CXTPPropertyGridView;
@@ -1396,138 +1409,134 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////
-AFX_INLINE BOOL CXTPPropertyGridUpdateContext::IsEmpty() const {
+AFX_INLINE BOOL CXTPPropertyGridUpdateContext::IsEmpty() const
+{
 	return m_mapState.IsEmpty();
 }
 
-AFX_INLINE CString CXTPPropertyGridVerb::GetCaption() const {
+AFX_INLINE CString CXTPPropertyGridVerb::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE int CXTPPropertyGridVerb::GetID() const {
+AFX_INLINE int CXTPPropertyGridVerb::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE int CXTPPropertyGridVerb::GetIndex() const {
+AFX_INLINE int CXTPPropertyGridVerb::GetIndex() const
+{
 	return m_nIndex;
 }
-AFX_INLINE void CXTPPropertyGridVerb::SetPart(CRect rc) {
+AFX_INLINE void CXTPPropertyGridVerb::SetPart(CRect rc)
+{
 	m_rcPart = rc;
 }
-AFX_INLINE CRect CXTPPropertyGridVerb::GetPart() const {
+AFX_INLINE CRect CXTPPropertyGridVerb::GetPart() const
+{
 	return m_rcPart;
 }
-AFX_INLINE CPoint CXTPPropertyGridVerb::GetClickPoint() const {
+AFX_INLINE CPoint CXTPPropertyGridVerb::GetClickPoint() const
+{
 	return m_ptClick;
 }
-AFX_INLINE BOOL CXTPPropertyGridVerb::IsFocused() const {
-	return (m_nIndex == m_pVerbs->m_pGrid->m_nFocusedVerb) && (::GetFocus() == m_pVerbs->m_pGrid->GetSafeHwnd());
+AFX_INLINE BOOL CXTPPropertyGridVerb::IsFocused() const
+{
+	return (m_nIndex == m_pVerbs->m_pGrid->m_nFocusedVerb)
+		   && (::GetFocus() == m_pVerbs->m_pGrid->GetSafeHwnd());
 }
-AFX_INLINE CXTPPropertyGridVerb* CXTPPropertyGridVerbs::GetAt(int nIndex) const {
+AFX_INLINE CXTPPropertyGridVerb* CXTPPropertyGridVerbs::GetAt(int nIndex) const
+{
 	return m_arrVerbs.GetAt(nIndex);
 }
-AFX_INLINE BOOL CXTPPropertyGridVerbs::IsEmpty() const {
+AFX_INLINE BOOL CXTPPropertyGridVerbs::IsEmpty() const
+{
 	return m_arrVerbs.GetSize() == 0;
 }
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGrid::FindItem(LPCTSTR strCaption) const {
-	return GetGridView().m_pCategories->FindItem(strCaption);
-}
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGrid::FindItem(UINT nID) const {
-	return GetGridView().m_pCategories->FindItem(nID);
-}
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGrid::AddCategory(LPCTSTR strCaption, CXTPPropertyGridItem* pCategory) {
-	return GetGridView().AddCategory(strCaption, pCategory);
-}
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGrid::InsertCategory(int nIndex, LPCTSTR strCaption, CXTPPropertyGridItem* pCategory) {
-	return GetGridView().InsertCategory(nIndex, strCaption, pCategory);
-}
-AFX_INLINE void CXTPPropertyGrid::SetPropertySort (XTPPropertyGridSortOrder sort) {
-	GetGridView().SetPropertySort(sort);
-}
-AFX_INLINE XTPPropertyGridSortOrder CXTPPropertyGrid::GetPropertySort () const {
-	return GetGridView().m_properetySort;
-}
-AFX_INLINE BOOL CXTPPropertyGrid::IsHelpVisible() const {
+AFX_INLINE BOOL CXTPPropertyGrid::IsHelpVisible() const
+{
 	return m_bHelpVisible;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::IsBarVisible() const {
+AFX_INLINE BOOL CXTPPropertyGrid::IsBarVisible() const
+{
 	return m_bToolBarVisible;
 }
-AFX_INLINE int CXTPPropertyGrid::GetHelpHeight() const {
-	return m_nHelpHeight;
-}
-AFX_INLINE void CXTPPropertyGrid::EnableToolTips(BOOL bEnable) {
+AFX_INLINE void CXTPPropertyGrid::EnableToolTips(BOOL bEnable)
+{
 	m_bEnableTooltips = bEnable;
 }
-AFX_INLINE COLORREF CXTPPropertyGrid::GetHelpBackColor() const {
-	return m_pPaintManager->GetItemMetrics()->m_clrHelpBack;
-}
-AFX_INLINE COLORREF CXTPPropertyGrid::GetHelpForeColor() const {
-	return m_pPaintManager->GetItemMetrics()->m_clrHelpFore;
-}
-AFX_INLINE CToolBar& CXTPPropertyGrid::GetToolBar() {
+AFX_INLINE CToolBar& CXTPPropertyGrid::GetToolBar()
+{
 	return m_wndToolbar;
 }
-AFX_INLINE XTPPropertyGridPaintTheme CXTPPropertyGrid::GetCurrentTheme() const {
+AFX_INLINE XTPPropertyGridPaintTheme CXTPPropertyGrid::GetCurrentTheme() const
+{
 	return m_themeCurrent;
 }
-AFX_INLINE CXTPPropertyGridVerbs* CXTPPropertyGrid::GetVerbs() const {
+AFX_INLINE CXTPPropertyGridVerbs* CXTPPropertyGrid::GetVerbs() const
+{
 	return m_pVerbs;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::IsVerbsVisible() const {
+AFX_INLINE BOOL CXTPPropertyGrid::IsVerbsVisible() const
+{
 	return !m_pVerbs->IsEmpty();
 }
-AFX_INLINE CXTPPropertyGridPaintManager* CXTPPropertyGrid::GetPaintManager() const {
+AFX_INLINE CXTPPropertyGridPaintManager* CXTPPropertyGrid::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPropertyGrid::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPPropertyGrid::NavigateItems(BOOL bTabItems, BOOL bTabCaptions) {
-	m_bTabItems = bTabItems;
+AFX_INLINE void CXTPPropertyGrid::NavigateItems(BOOL bTabItems, BOOL bTabCaptions)
+{
+	m_bTabItems	= bTabItems;
 	m_bTabCaptions = bTabCaptions;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::IsHighlightChangedItems() const {
+AFX_INLINE BOOL CXTPPropertyGrid::IsHighlightChangedItems() const
+{
 	return m_bHighlightChanged;
 }
-AFX_INLINE void CXTPPropertyGrid::HighlightChangedItems(BOOL bHighlightChanged) {
+AFX_INLINE void CXTPPropertyGrid::HighlightChangedItems(BOOL bHighlightChanged)
+{
 	m_bHighlightChanged = bHighlightChanged;
 	RedrawControl();
 }
-AFX_INLINE BOOL CXTPPropertyGrid::IsHighlightChangedButtonItems() const {
+AFX_INLINE BOOL CXTPPropertyGrid::IsHighlightChangedButtonItems() const
+{
 	return m_bHighlightChangedButton;
 }
-AFX_INLINE void CXTPPropertyGrid::HighlightChangedButtonItems(BOOL bHighlightChanged) {
+AFX_INLINE void CXTPPropertyGrid::HighlightChangedButtonItems(BOOL bHighlightChanged)
+{
 	m_bHighlightChangedButton = bHighlightChanged;
 	RedrawControl();
 }
-AFX_INLINE int CXTPPropertyGrid::GetCount() const {
-	return GetGridView().GetCount();
-}
-
-AFX_INLINE void CXTPPropertyGrid::SetVariableSplitterPos(BOOL bVariable) {
-	GetGridView().m_bVariableSplitterPos = bVariable;
-}
-AFX_INLINE BOOL CXTPPropertyGrid::GetVariableSplitterPos() const {
-	return GetGridView().m_bVariableSplitterPos;
-}
-AFX_INLINE void CXTPPropertyGrid::SetVariableHelpHeight(BOOL bVariable) {
+AFX_INLINE void CXTPPropertyGrid::SetVariableHelpHeight(BOOL bVariable)
+{
 	m_bVariableHelpHeight = bVariable;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::GetVariableHelpHeight() const {
+AFX_INLINE BOOL CXTPPropertyGrid::GetVariableHelpHeight() const
+{
 	return m_bVariableHelpHeight;
 }
-AFX_INLINE BOOL CXTPPropertyGrid::GetShowInplaceButtonsAlways() const {
+AFX_INLINE BOOL CXTPPropertyGrid::GetShowInplaceButtonsAlways() const
+{
 	return m_bShowInplaceButtonsAlways;
 }
-AFX_INLINE void CXTPPropertyGrid::SetShowInplaceButtonsAlways(BOOL bShow) {
+AFX_INLINE void CXTPPropertyGrid::SetShowInplaceButtonsAlways(BOOL bShow)
+{
 	m_bShowInplaceButtonsAlways = bShow;
 	Reposition();
 }
-AFX_INLINE CXTPToolTipContext* CXTPPropertyGrid::GetToolTipContext() const {
+AFX_INLINE CXTPToolTipContext* CXTPPropertyGrid::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
-AFX_INLINE CXTPMarkupContext* CXTPPropertyGrid::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPPropertyGrid::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRID_H__)

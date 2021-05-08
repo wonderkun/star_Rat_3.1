@@ -1,7 +1,6 @@
 // XTPSkinObjectStatusBar.h: interface for the CXTPSkinObjectStatusBar class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTSTATUSBAR_H__)
-#define __XTPSKINOBJECTSTATUSBAR_H__
+#	define __XTPSKINOBJECTSTATUSBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObject.h"
-#include "XTPSkinObjectFrame.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -54,7 +51,7 @@ public:
 	virtual ~CXTPSkinObjectStatusBar();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void RefreshMetrics();
 
 protected:
@@ -70,4 +67,5 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTSTATUSBAR_H__)

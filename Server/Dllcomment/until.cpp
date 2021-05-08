@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "pcl.h"
 #include <windows.h>
 #include <process.h>
 #include <Tlhelp32.h>

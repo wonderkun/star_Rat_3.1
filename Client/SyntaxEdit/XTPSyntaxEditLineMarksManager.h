@@ -1,7 +1,6 @@
 // XTPSyntaxEditLineMarksManager.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,36 +19,37 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITLINEMARKSMANAGER_H__)
-#define __XTPSYNTAXEDITLINEMARKSMANAGER_H__
+#	define __XTPSYNTAXEDITLINEMARKSMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 typedef LPCTSTR XTP_EDIT_LINEMARKTYPE;
 
 // You can define your own line mark types (as string constants)
 // Strings are case sensitive!
 //
-static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Bookmark     = _T("Bookmark");
-static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Breakpoint   = _T("Breakpoint");
-static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Collapsed    = _T("Collapsed");
+static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Bookmark   = _T("Bookmark");
+static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Breakpoint = _T("Breakpoint");
+static const XTP_EDIT_LINEMARKTYPE xtpEditLMT_Collapsed  = _T("Collapsed");
 
 //===========================================================================
 // Summary: Enumerates types of mark refreshing
 //===========================================================================
 enum XTPSyntaxEditLineMarksRefreshType
 {
-	xtpEditLMRefresh_Unknown    = 0, // unknown refresh state
-	xtpEditLMRefresh_Insert     = 0x01, // mark inserted
-	xtpEditLMRefresh_Delete     = 0x02, // mark deleted
+	xtpEditLMRefresh_Unknown = 0,	// unknown refresh state
+	xtpEditLMRefresh_Insert  = 0x01, // mark inserted
+	xtpEditLMRefresh_Delete  = 0x02, // mark deleted
 
 	xtpEditLMRefresh_Delete_only1 = 0x10, // delete mark for first row of deleted text block;
 	xtpEditLMRefresh_Delete_only2 = 0x20, // delete mark for last row of deleted text block;
-	xtpEditLMRefresh_InsertAt0    = 0x40, // move mark for first row of inserted text block;
+	xtpEditLMRefresh_InsertAt0	= 0x40, // move mark for first row of inserted text block;
 };
-
 
 //{{AFX_CODEJOCK_PRIVATE
 
@@ -57,25 +57,24 @@ enum XTPSyntaxEditLineMarksRefreshType
 class _XTP_EXT_CLASS CXTPSyntaxEditVoidObj : public CXTPCmdTarget
 {
 public:
-	typedef void (AFX_CDECL* TPFDeleter)(void*);
+	typedef void(AFX_CDECL* TPFDeleter)(void*);
 
 protected:
-	void*       m_pPtr;     // A pointer to a handled object
-	TPFDeleter  m_pfDeleter;
+	void* m_pPtr; // A pointer to a handled object
+	TPFDeleter m_pfDeleter;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Parameters:  pPtr                : [in]Pointer to the handled object.
-	//          bCallInternalAddRef : [in]If this parameter is TRUE
-	//                                pPtr->InternalAddRef() will be
-	//                                called in constructor.
-	//                                By default this parameter is FALSE.
+	//              pfDeleter           : [in]pointer to function which should
+	//                                delete object in pPtr.
+	//                                By default this parameter is NULL.
 	// Summary: Default class constructor.
 	// See Also: ~CXTPSmartPtrInternalT()
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditVoidObj(void* pPtr, TPFDeleter pfDeleter = NULL) {
-		m_pPtr = pPtr;
+	CXTPSyntaxEditVoidObj(void* pPtr, TPFDeleter pfDeleter = NULL)
+	{
+		m_pPtr		= pPtr;
 		m_pfDeleter = pfDeleter;
 	};
 
@@ -86,7 +85,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPSyntaxEditVoidObj()
 	{
-		if(m_pfDeleter) {
+		if (m_pfDeleter)
+		{
 			m_pfDeleter(m_pPtr);
 		}
 		else
@@ -99,11 +99,13 @@ public:
 	// Summary: Get a handled object.
 	// Returns: Pointer to the handled object.
 	//-----------------------------------------------------------------------
-	operator void*() const {
+	operator void*() const
+	{
 		return m_pPtr;
 	}
 
-	void* GetPtr() const {
+	void* GetPtr() const
+	{
 		return m_pPtr;
 	}
 
@@ -111,37 +113,37 @@ public:
 	// Summary: Check is handled object equal NULL.
 	// Returns: TRUE if handled object equal NULL, else FALSE.
 	//-----------------------------------------------------------------------
-	BOOL operator !() const {
+	BOOL operator!() const
+	{
 		return !m_pPtr;
 	}
 };
 //---------------------------------------------------------------------------
 typedef CXTPSmartPtrInternalT<CXTPSyntaxEditVoidObj> CXTPSyntaxEditVoidObjPtr;
 
-
 //===========================================================================
 enum XTPSyntaxEditLMParamType
 {
-	xtpEditLMPT_Unknown     = 0,    // unknown refresh state
-	xtpEditLMPT_DWORD       = 1,
-	xtpEditLMPT_double      = 2,
-	xtpEditLMPT_Ptr         = 3,
+	xtpEditLMPT_Unknown = 0, // unknown refresh state
+	xtpEditLMPT_DWORD   = 1,
+	xtpEditLMPT_double  = 2,
+	xtpEditLMPT_Ptr		= 3,
 };
 
 struct _XTP_EXT_CLASS XTP_EDIT_LMPARAM
 {
 	// Data type
-	XTPSyntaxEditLMParamType    m_eType;
+	XTPSyntaxEditLMParamType m_eType;
 
 	// Data
-	union
-	{
-		DWORD       m_dwValue;  // xtpEditLMPT_DWORD
-		double      m_dblValue; // xtpEditLMPT_double
+	union {
+		DWORD m_dwValue;   // xtpEditLMPT_DWORD
+		double m_dblValue; // xtpEditLMPT_double
 	};
 
 protected:
-	CXTPSyntaxEditVoidObjPtr    m_Ptr;
+	CXTPSyntaxEditVoidObjPtr m_Ptr;
+
 public:
 	// END Data
 
@@ -176,8 +178,8 @@ public:
 //===========================================================================
 struct _XTP_EXT_CLASS XTP_EDIT_LMDATA
 {
-	int         m_nRow;
-	XTP_EDIT_LMPARAM   m_Param;
+	int m_nRow;
+	XTP_EDIT_LMPARAM m_Param;
 
 	//-------------------------------
 	XTP_EDIT_LMDATA();
@@ -201,7 +203,6 @@ class _XTP_EXT_CLASS CXTPSyntaxEditLineMarksManager : public CXTPCmdTarget
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Default object constructor.
@@ -214,7 +215,6 @@ public:
 	//      cleanup and de-allocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPSyntaxEditLineMarksManager();
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -231,7 +231,7 @@ public:
 	//      struct XTP_EDIT_LMPARAM.
 	//-----------------------------------------------------------------------
 	void AddRemoveLineMark(int nRow, const XTP_EDIT_LINEMARKTYPE lmType,
-											 XTP_EDIT_LMPARAM* pParam = NULL);
+						   XTP_EDIT_LMPARAM* pParam = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -245,8 +245,7 @@ public:
 	// See also:
 	//      struct XTP_EDIT_LMPARAM.
 	//-----------------------------------------------------------------------
-	void SetLineMark(int nRow, const XTP_EDIT_LINEMARKTYPE lmType,
-									   XTP_EDIT_LMPARAM* pParam = NULL);
+	void SetLineMark(int nRow, const XTP_EDIT_LINEMARKTYPE lmType, XTP_EDIT_LMPARAM* pParam = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -275,7 +274,7 @@ public:
 	//      otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL HasRowMark(int nRow, const XTP_EDIT_LINEMARKTYPE& lmType,
-									  XTP_EDIT_LMPARAM* pParam = NULL);
+					XTP_EDIT_LMPARAM* pParam = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -289,7 +288,7 @@ public:
 	// Returns:
 	//      Number identifier of the marked line.
 	//-----------------------------------------------------------------------
-	POSITION FindPrevLineMark(int& nRow, const XTP_EDIT_LINEMARKTYPE lmType);
+	POSITION FindPrevLineMark(int& nRow, const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -303,7 +302,7 @@ public:
 	// Returns:
 	//      Number identifier of the marked line.
 	//-----------------------------------------------------------------------
-	POSITION FindNextLineMark(int& nRow, const XTP_EDIT_LINEMARKTYPE lmType);
+	POSITION FindNextLineMark(int& nRow, const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -317,7 +316,7 @@ public:
 	// Returns:
 	//      Number identifier of the marked line.
 	//-----------------------------------------------------------------------
-	POSITION GetLastLineMark(const XTP_EDIT_LINEMARKTYPE lmType);
+	POSITION GetLastLineMark(const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -331,7 +330,7 @@ public:
 	// Returns:
 	//      Number identifier of the marked line;
 	//-----------------------------------------------------------------------
-	POSITION GetFirstLineMark(const XTP_EDIT_LINEMARKTYPE lmType);
+	POSITION GetFirstLineMark(const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -348,7 +347,7 @@ public:
 	// See also:
 	//      struct XTP_EDIT_LMDATA.
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LMDATA* GetNextLineMark(POSITION& pos, const XTP_EDIT_LINEMARKTYPE lmType);
+	XTP_EDIT_LMDATA* GetNextLineMark(POSITION& pos, const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -362,7 +361,7 @@ public:
 	// Returns:
 	//      Number identifier of the marked line.
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LMDATA* GetLineMarkAt(const POSITION pos, const XTP_EDIT_LINEMARKTYPE lmType);
+	XTP_EDIT_LMDATA* GetLineMarkAt(const POSITION pos, const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -392,7 +391,7 @@ public:
 	// Returns:
 	//      Count of line marks as integer value.
 	//-----------------------------------------------------------------------
-	int GetCount(const XTP_EDIT_LINEMARKTYPE lmType);
+	int GetCount(const XTP_EDIT_LINEMARKTYPE lmType) const;
 
 private:
 	//-----------------------------------------------------------------------
@@ -405,7 +404,6 @@ private:
 	class CLineMarksList : public CXTPCmdTarget
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//      Default object destructor.
@@ -441,7 +439,7 @@ private:
 		//      Returns count of line marks of the specified type.
 		// Returns:
 		//-----------------------------------------------------------------------
-		int GetCount();
+		int GetCount() const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -451,7 +449,7 @@ private:
 		// Returns:
 		//      POSITION value  for an element.
 		//-----------------------------------------------------------------------
-		POSITION FindAt(int nKey);
+		POSITION FindAt(int nKey) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -462,7 +460,7 @@ private:
 		// Returns:
 		//      POSITION value  for an element.
 		//-----------------------------------------------------------------------
-		POSITION FindNext(int nKey);
+		POSITION FindNext(int nKey) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -473,7 +471,7 @@ private:
 		// Returns:
 		//      POSITION value  for an element.
 		//-----------------------------------------------------------------------
-		POSITION FindPrev(int nKey);
+		POSITION FindPrev(int nKey) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -498,7 +496,7 @@ private:
 		// Returns:
 		//      Number identifier of the marked line.
 		//-----------------------------------------------------------------------
-		XTP_EDIT_LMDATA* GetLineMarkAt(const POSITION pos);
+		XTP_EDIT_LMDATA* GetLineMarkAt(const POSITION pos) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -509,7 +507,7 @@ private:
 		// Returns:
 		//      Number identifier of the marked line.
 		//-----------------------------------------------------------------------
-		POSITION GetFirstLineMark();
+		POSITION GetFirstLineMark() const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -522,7 +520,7 @@ private:
 		// Returns:
 		//      Number identifier of the marked line.
 		//-----------------------------------------------------------------------
-		XTP_EDIT_LMDATA* GetNextLineMark(POSITION& pos);
+		XTP_EDIT_LMDATA* GetNextLineMark(POSITION& pos) const;
 
 	private:
 		//-----------------------------------------------------------------------
@@ -533,7 +531,7 @@ private:
 		// Returns:
 		//      -1 if key was not found.
 		//-----------------------------------------------------------------------
-		int FindIndex(const int nKey);
+		int FindIndex(const int nKey) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -543,7 +541,7 @@ private:
 		// Returns:
 		//      -1 if key was not found.
 		//-----------------------------------------------------------------------
-		int FindLowerIndex(const int nKey);
+		int FindLowerIndex(const int nKey) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -553,16 +551,16 @@ private:
 		// Returns:
 		//      -1 if key was not found.
 		//-----------------------------------------------------------------------
-		int FindUpperIndex(const int nKey);
+		int FindUpperIndex(const int nKey) const;
 
 	private:
 		typedef CArray<XTP_EDIT_LMDATA*, XTP_EDIT_LMDATA*> CXTPSyntaxEditLineMarkPointersArray;
 		CXTPSyntaxEditLineMarkPointersArray m_array; // The array with the actual line data.
 	};
+
 public:
 	typedef CXTPSmartPtrInternalT<CLineMarksList> CLineMarksListPtr; // SmartPointer for the class.
 private:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      This class contains a map of line marks lists corresponding to the
@@ -574,7 +572,6 @@ private:
 	class CLineMarksListsMap
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//      Returns list associated with the specified mark type string.
@@ -583,7 +580,7 @@ private:
 		// See also:
 		//      CLineMarksListPtr
 		//-----------------------------------------------------------------------
-		CLineMarksListPtr GetList(LPCTSTR szMarkType);
+		CLineMarksListPtr GetList(LPCTSTR szMarkType) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -610,11 +607,13 @@ private:
 		void RefreshLineMarks(int nRowFrom, int nRowTo, int nRefreshType);
 
 	private:
-		CMap<CString, LPCTSTR, CLineMarksListPtr, CLineMarksListPtr&> m_map; // A map containing line marks lists for every mark type.
-
+		CMap<CString, LPCTSTR, CLineMarksListPtr, CLineMarksListPtr&> m_map; // A map containing
+																			 // line marks lists for
+																			 // every mark type.
 	};
 
 	CLineMarksListsMap m_mapLists; // A collection of line marks lists for all line mark types.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITLINEMARKSMANAGER_H__)

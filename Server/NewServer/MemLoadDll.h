@@ -7,6 +7,12 @@
 #include <TCHAR.H>
 typedef void *HMEMORYMODULE;
 
+#ifndef IMAGE_SIZEOF_BASE_RELOCATION
+// Vista SDKs no longer define IMAGE_SIZEOF_BASE_RELOCATION!?
+#define IMAGE_SIZEOF_BASE_RELOCATION (sizeof(IMAGE_BASE_RELOCATION))
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif

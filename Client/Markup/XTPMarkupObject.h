@@ -1,7 +1,6 @@
 // XTPMarkupObject.h: interface for the CXTPMarkupObject class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMARKUPOBJECT_H__)
-#define __XTPMARKUPOBJECT_H__
+#	define __XTPMARKUPOBJECT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupDrawingContext;
 class CXTPMarkupDependencyProperty;
@@ -38,6 +39,13 @@ class CXTPMarkupProperties;
 class CXTPMarkupType;
 class CXTPMarkupStyle;
 class CXTPMarkupBuilder;
+class CXTPMarkupExtension;
+class CXTPComInitializer;
+
+namespace XTPXML
+{
+struct IXMLDOMElement;
+}
 
 enum XTPMarkupTextAlignment
 {
@@ -83,8 +91,8 @@ enum XTPMarkupBaselineAlignment
 
 enum XTPMarkupVisibility
 {
-	xtpMarkupVisibilityVisible = 0,
-	xtpMarkupVisibilityHidden = 1,
+	xtpMarkupVisibilityVisible   = 0,
+	xtpMarkupVisibilityHidden	= 1,
 	xtpMarkupVisibilityCollapsed = 2
 };
 
@@ -103,8 +111,18 @@ enum XTPMarkupLineJoin
 	xtpMarkupLineJoinRound
 };
 
+enum XTPMarkupSmoothingMode
+{
+	xtpMarkupSmoothingDefault,
+	xtpMarkupSmoothingNone,
+	xtpMarkupSmoothingHighSpeed,
+	xtpMarkupSmoothingHighQuality,
+	xtpMarkupSmoothingAntiAlias,
+};
 
-typedef CXTPMarkupObject* (*PFNCONVERTFROM)(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject);
+typedef CXTPMarkupObject* (*PFNCONVERTFROM)(
+	CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject,
+	CXTPMarkupDependencyProperty* pAssociatedProperty /*= NULL*/);
 typedef void (*PFNPROPERTYCHANGED)(CXTPMarkupObject* d, CXTPMarkupPropertyChangedEventArgs* e);
 
 class _XTP_EXT_CLASS CXTPMarkupPropertyMetadata
@@ -112,19 +130,25 @@ class _XTP_EXT_CLASS CXTPMarkupPropertyMetadata
 public:
 	enum MetadataFlags
 	{
-		flagInherited = 1,
-		flagAffectsArrange = 2,
-		flagAffectsMeasure = 4,
+		flagInherited			 = 1,
+		flagAffectsArrange		 = 2,
+		flagAffectsMeasure		 = 4,
 		flagAffectsParentArrange = 8,
 		flagAffectsParentMeasure = 16,
-		flagAffectsRender = 32,
+		flagAffectsRender		 = 32,
+		flagDpiSensible			 = 64,
+		flagHorzDpiSensible		 = flagDpiSensible,
+		flagVertDpiSensible		 = 128,
 	};
 
 public:
 	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, DWORD dwFlags = 0);
-	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNCONVERTFROM pConverter, DWORD dwFlags = 0);
-	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNPROPERTYCHANGED pPropertyChanged, DWORD dwFlags = 0);
-	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNCONVERTFROM pConverter, PFNPROPERTYCHANGED pPropertyChanged, DWORD dwFlags = 0);
+	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNCONVERTFROM pConverter,
+							   DWORD dwFlags = 0);
+	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNPROPERTYCHANGED pPropertyChanged,
+							   DWORD dwFlags = 0);
+	CXTPMarkupPropertyMetadata(CXTPMarkupObject* pDefaultValue, PFNCONVERTFROM pConverter,
+							   PFNPROPERTYCHANGED pPropertyChanged, DWORD dwFlags = 0);
 	virtual ~CXTPMarkupPropertyMetadata();
 
 public:
@@ -136,49 +160,79 @@ public:
 	friend class CXTPMarkupObject;
 };
 
+#	define MARKUP_RELEASE(x)                                                                      \
+		if (x)                                                                                     \
+		{                                                                                          \
+			x->Release();                                                                          \
+			x = 0;                                                                                 \
+		}
+#	define MARKUP_ADDREF(x)                                                                       \
+		if (x)                                                                                     \
+		{                                                                                          \
+			x->AddRef();                                                                           \
+		}
 
-#define MARKUP_RELEASE(x) if (x) { x->Release(); x = 0;}
-#define MARKUP_ADDREF(x) if (x) { x->AddRef(); }
+#	define MARKUP_TYPE(class_name) ((CXTPMarkupType*)(class_name::Get##class_name##Type()))
 
-#define MARKUP_TYPE(class_name) ((CXTPMarkupType*)(class_name::type##class_name))
+#	define DECLARE_MARKUPCLASS(class_name)                                                        \
+		DECLARE_DYNAMIC(class_name)                                                                \
+	public:                                                                                        \
+		static CXTPMarkupType* AFX_CDECL GetMarkupBaseType();                                      \
+		static CXTPMarkupObject* AFX_CDECL CreateMarkupObject(CXTPMarkupContext* pContext);        \
+		static void AFX_CDECL RegisterMarkupClass();                                               \
+		virtual CXTPMarkupType* GetType() const;                                                   \
+		static void AFX_CDECL RegisterType();                                                      \
+		static CXTPMarkupType* Get##class_name##Type();                                            \
+		static void* markupTypeEntry##class_name;
 
-#define  DECLARE_MARKUPCLASS(class_name) \
-	public: \
-	static CXTPMarkupType* AFX_CDECL GetMarkupBaseType(); \
-	static CXTPMarkupObject* AFX_CDECL CreateMarkupObject();\
-	static void AFX_CDECL RegisterMarkupClass(); \
-	virtual CXTPMarkupType* GetType() const; \
-	static void AFX_CDECL RegisterType(); \
-	static const CXTPMarkupType* type##class_name; \
+#	define IMPLEMENT_MARKUPCLASS(class_tag, class_name, base_class_name)                          \
+		IMPLEMENT_DYNAMIC(class_name, base_class_name);                                            \
+		void* class_name::markupTypeEntry##class_name =                                            \
+			CXTPMarkupType::RegisterTypeEntry(class_tag, class_name::Get##class_name##Type);       \
+		CXTPMarkupObject* AFX_CDECL class_name::CreateMarkupObject(CXTPMarkupContext* pContext)    \
+		{                                                                                          \
+			class_name* obj = new class_name;                                                      \
+			if (obj)                                                                               \
+				obj->m_pMarkupContext = pContext;                                                  \
+			return obj;                                                                            \
+		}                                                                                          \
+		CXTPMarkupType* AFX_CDECL class_name::GetMarkupBaseType()                                  \
+		{                                                                                          \
+			return MARKUP_TYPE(base_class_name);                                                   \
+		}                                                                                          \
+		CXTPMarkupType* class_name::Get##class_name##Type()                                        \
+		{                                                                                          \
+			static CXTPMarkupType* type = new CXTPMarkupType(class_tag, L#class_name,              \
+															 &class_name::CreateMarkupObject,      \
+															 &class_name::GetMarkupBaseType,       \
+															 &class_name::RegisterMarkupClass);    \
+			return type;                                                                           \
+		}                                                                                          \
+		CXTPMarkupType* class_name::GetType() const                                                \
+		{                                                                                          \
+			return MARKUP_TYPE(class_name);                                                        \
+		}                                                                                          \
+		void AFX_CDECL class_name::RegisterType()                                                  \
+		{                                                                                          \
+			CXTPMarkupType::ResolveTypeEntry(markupTypeEntry##class_name);                         \
+			MARKUP_TYPE(class_name)->Register();                                                   \
+		}
 
-#define  IMPLEMENT_MARKUPCLASS(class_tag, class_name, base_class_name) \
-	CXTPMarkupObject* AFX_CDECL class_name::CreateMarkupObject() \
-		{ return new class_name; } \
-	CXTPMarkupType* AFX_CDECL class_name::GetMarkupBaseType() \
-		{ return MARKUP_TYPE(base_class_name); } \
-	const CXTPMarkupType* class_name::type##class_name = new CXTPMarkupType( \
-	class_tag, L#class_name, &class_name::CreateMarkupObject, &class_name::GetMarkupBaseType, &class_name::RegisterMarkupClass); \
-	CXTPMarkupType* class_name::GetType() const \
-		{ return MARKUP_TYPE(class_name); } \
-	void AFX_CDECL class_name::RegisterType() { MARKUP_TYPE(class_name)->Register(); }
+#	ifdef _DEBUG
+#		define MARKUP_STATICCAST(class_name, object)                                              \
+			((class_name*)CXTPMarkupType::StaticDownCast(MARKUP_TYPE(class_name), object))
+#	else
+#		define MARKUP_STATICCAST(class_name, object) ((class_name*)object)
+#	endif
 
+#	undef MARKUP_DYNAMICCAST
+#	define MARKUP_DYNAMICCAST(class_name, object)                                                 \
+		(class_name*)CXTPMarkupType::DynamicDownCast(MARKUP_TYPE(class_name), object)
 
-#ifdef _DEBUG
-#define MARKUP_STATICCAST(class_name, object) \
-	((class_name*)CXTPMarkupType::StaticDownCast(MARKUP_TYPE(class_name), object))
-#else
-#define MARKUP_STATICCAST(class_name, object) ((class_name*)object)
-#endif
-
-#undef MARKUP_DYNAMICCAST
-#define MARKUP_DYNAMICCAST(class_name, object) \
-	(class_name*)CXTPMarkupType::DynamicDownCast(MARKUP_TYPE(class_name), object)
-
-
-
-class _XTP_EXT_CLASS CXTPMarkupObject
+class _XTP_EXT_CLASS CXTPMarkupObject : public CXTPCmdTarget
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupObject);
+
 public:
 	CXTPMarkupObject();
 
@@ -186,6 +240,17 @@ protected:
 	virtual ~CXTPMarkupObject();
 
 public:
+	CXTPMarkupContext* GetMarkupContext() const;
+
+	XTPXML::IXMLDOMElement* GetSourceMarkupElement() const;
+	void SetSourceMarkupElement(XTPXML::IXMLDOMElement* pElement);
+
+	LPCWSTR GetKey() const;
+	void SetKey(LPCWSTR lpszKey);
+
+	LPCWSTR GetName() const;
+	void SetName(LPCWSTR lpszName);
+
 	void SetValue(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pValue);
 	CXTPMarkupObject* GetValue(CXTPMarkupDependencyProperty* pProperty) const;
 
@@ -193,8 +258,16 @@ public:
 
 	virtual CXTPMarkupObject* GetValueCore(CXTPMarkupDependencyProperty* pProperty) const;
 
+	CXTPMarkupDependencyProperty* GetAssociatedProperty() const;
+	void SetAssociatedProperty(CXTPMarkupDependencyProperty* pAssociatedProperty);
+
 	void SetLogicalParent(CXTPMarkupObject* pObject);
 	CXTPMarkupObject* GetLogicalParent() const;
+
+	void AddExtension(CXTPMarkupExtension* pExtension);
+	CXTPMarkupExtension* GetNextExtension(const CXTPMarkupType* pClass = NULL);
+	const CXTPMarkupExtension* GetNextExtension(const CXTPMarkupType* pClass = NULL) const;
+	void ResetExtensionEnumerator();
 
 	BOOL IsKindOf(const CXTPMarkupType* pClass) const;
 
@@ -209,33 +282,71 @@ public:
 	BOOL operator==(const CXTPMarkupObject* pObject) const;
 
 public:
+	void SetTagName(LPCWSTR lpszTagName);
+	LPCWSTR GetTagName() const;
+
+	CXTPMarkupObject* FindKey(LPCWSTR lpszKey);
 	CXTPMarkupObject* FindName(LPCWSTR lpszName);
+
 	virtual int GetLogicalChildrenCount() const;
 	virtual CXTPMarkupObject* GetLogicalChild(int nIndex) const;
 
 public:
 	virtual void SetContentObject(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pContent);
-	virtual void SetPropertyObject(CXTPMarkupBuilder* pBuilder, CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pValue);
-	virtual CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
+	virtual void SetPropertyObject(CXTPMarkupBuilder* pBuilder,
+								   CXTPMarkupDependencyProperty* pProperty,
+								   CXTPMarkupObject* pValue);
+	virtual CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder,
+										  CXTPMarkupObject* pObject) const;
 	virtual BOOL HasContentObject() const;
 	virtual BOOL AllowWhiteSpaceContent() const;
 
 protected:
-	virtual void OnPropertyChanged(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
+	virtual void OnPropertyChanged(CXTPMarkupDependencyProperty* pProperty,
+								   CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
+	virtual void OnSetAsProperty(CXTPMarkupDependencyProperty* pProperty,
+								 CXTPMarkupObject* pTargetObject);
+	virtual void OnLoaded(CXTPMarkupBuilder* pBuilder);
 
-	void RecursePropertyChanged(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
+	void RecursePropertyChanged(CXTPMarkupDependencyProperty* pProperty,
+								CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
 
 protected:
 	virtual void OnFinalRelease();
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_DISPATCH_MAP()
+#	ifdef _XTP_ACTIVEX
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMarkupObject);
+#	endif
+	CXTPMarkupObject* FromDispatch(LPDISPATCH lpElementDisp, BOOL bAddRef = TRUE);
+
+	void SetBeingLoaded(BOOL bBeingLoaded = TRUE);
+	BOOL IsBeingLoaded() const;
+
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+	CXTPComInitializer* m_pComInitializer;
+
 	CXTPMarkupObject* m_pLogicalParent;
 
 	CXTPMarkupProperties* m_pProperties;
+	CXTPMarkupDependencyProperty* m_pAssociatedProperty;
 
-	LPWSTR m_lpMarkupTag;
+	CList<CXTPMarkupExtension*, CXTPMarkupExtension*> m_Extensions;
+	POSITION m_posExtension;
+
+	CXTPMarkupContext* m_pMarkupContext;
+
+	XTPXML::IXMLDOMElement* m_pMarkupElement;
+	LPWSTR m_lpszMarkupTag;
 	long m_dwRef;
+
+private:
+	BOOL m_bBeingLoaded;
 
 protected:
 	friend class CXTPMarkupBuilder;
@@ -246,11 +357,33 @@ protected:
 	friend class CXTPMarkupProperties;
 };
 
+AFX_INLINE CXTPMarkupDependencyProperty* CXTPMarkupObject::GetAssociatedProperty() const
+{
+	return m_pAssociatedProperty;
+}
+
+AFX_INLINE void
+	CXTPMarkupObject::SetAssociatedProperty(CXTPMarkupDependencyProperty* pAssociatedProperty)
+{
+	m_pAssociatedProperty = pAssociatedProperty;
+}
+
+AFX_INLINE void CXTPMarkupObject::SetBeingLoaded(BOOL bBeingLoaded /*= TRUE*/)
+{
+	m_bBeingLoaded = bBeingLoaded;
+}
+
+AFX_INLINE BOOL CXTPMarkupObject::IsBeingLoaded() const
+{
+	return m_bBeingLoaded;
+}
+
 typedef CXTPMarkupObject* CXTPMarkupObjectPtr;
 
 class _XTP_EXT_CLASS CXTPMarkupDependencyProperty : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupDependencyProperty);
+
 protected:
 	CXTPMarkupDependencyProperty();
 
@@ -258,8 +391,12 @@ public:
 	virtual ~CXTPMarkupDependencyProperty();
 
 public:
-	static CXTPMarkupDependencyProperty* Register(LPCWSTR lpszName, CXTPMarkupType* pPropetyType, CXTPMarkupType* pOwnerType, CXTPMarkupPropertyMetadata* pMetadata = NULL);
-	static CXTPMarkupDependencyProperty* RegisterAttached(LPCWSTR lpszName, CXTPMarkupType* pPropetyType, CXTPMarkupType* pOwnerType, CXTPMarkupPropertyMetadata* pMetadata = NULL);
+	static CXTPMarkupDependencyProperty* AFX_CDECL
+		Register(LPCWSTR lpszName, CXTPMarkupType* pPropetyType, CXTPMarkupType* pOwnerType,
+				 CXTPMarkupPropertyMetadata* pMetadata = NULL);
+	static CXTPMarkupDependencyProperty* AFX_CDECL
+		RegisterAttached(LPCWSTR lpszName, CXTPMarkupType* pPropetyType, CXTPMarkupType* pOwnerType,
+						 CXTPMarkupPropertyMetadata* pMetadata = NULL);
 	CXTPMarkupDependencyProperty* AddOwner(CXTPMarkupType* pOwnerType);
 
 public:
@@ -273,11 +410,16 @@ public:
 	DWORD GetFlags() const;
 
 public:
-	static CXTPMarkupDependencyProperty* AFX_CDECL FindProperty(CXTPMarkupType* pRuntimeClass, LPCWSTR lpszAttribute);
+	static CXTPMarkupDependencyProperty* AFX_CDECL FindProperty(CXTPMarkupType* pRuntimeClass,
+																LPCWSTR lpszAttribute);
 
 protected:
-	static CXTPMarkupPropertyFromNameMap* GetPropertyMap();
-	static CXTPMarkupDependencyProperty* RegisterCommon(CXTPMarkupDependencyProperty* dp, LPCWSTR lpszName, CXTPMarkupType* pPropetyType, CXTPMarkupType* pOwnerType, BOOL bAttached);
+	static CXTPMarkupPropertyFromNameMap* AFX_CDECL GetPropertyMap();
+	static CXTPMarkupDependencyProperty* AFX_CDECL RegisterCommon(CXTPMarkupDependencyProperty* dp,
+																  LPCWSTR lpszName,
+																  CXTPMarkupType* pPropetyType,
+																  CXTPMarkupType* pOwnerType,
+																  BOOL bAttached);
 
 private:
 	LPCWSTR m_lpszName;
@@ -297,7 +439,8 @@ private:
 class _XTP_EXT_CLASS CXTPMarkupPropertyChangedEventArgs
 {
 public:
-	CXTPMarkupPropertyChangedEventArgs(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
+	CXTPMarkupPropertyChangedEventArgs(CXTPMarkupDependencyProperty* pProperty,
+									   CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
 
 public:
 	CXTPMarkupDependencyProperty* m_pProperty;
@@ -305,53 +448,20 @@ public:
 	CXTPMarkupObject* m_pNewValue;
 };
 
-class _XTP_EXT_CLASS CXTPMarkupThickness : public CXTPMarkupObject
-{
-	DECLARE_MARKUPCLASS(CXTPMarkupThickness);
-public:
-	CXTPMarkupThickness(long uniformLength = 0);
-
-	CXTPMarkupThickness(long l, long t, long r, long b);
-
-public:
-	static CXTPMarkupThickness* AFX_CDECL CreateValue();
-
-public:
-	SIZE Size()
-	{
-		SIZE sz = {left + right, top + bottom};
-		return sz;
-	}
-
-	BOOL IsZero() const
-	{
-		return left == 0 && right == 0 && top == 0 && bottom == 0;
-	}
-
-	static CRect AFX_CDECL HelperDeflateRect(CRect rt, CXTPMarkupThickness* thick);
-
-public:
-	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
-
-public:
-	virtual BOOL IsEqual(const CXTPMarkupObject* pObject) const;
-
-
-
-public:
-	LONG left;
-	LONG top;
-	LONG right;
-	LONG bottom;
-};
-
 class _XTP_EXT_CLASS CXTPMarkupInt : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupInt);
+
 public:
 	CXTPMarkupInt(int nValue = 0);
 
-	operator int() const {
+	operator int() const
+	{
+		return m_nValue;
+	}
+
+	int GetValue() const
+	{
 		return m_nValue;
 	}
 
@@ -368,10 +478,12 @@ protected:
 class _XTP_EXT_CLASS CXTPMarkupDouble : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupDouble);
+
 public:
 	CXTPMarkupDouble(double dValue = 0);
 
-	operator double() const {
+	operator double() const
+	{
 		return m_dValue;
 	}
 
@@ -388,16 +500,21 @@ protected:
 class _XTP_EXT_CLASS CXTPMarkupEnum : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupEnum);
+
+	struct EnumMapTag
+	{
+	};
+
 public:
 	CXTPMarkupEnum(int nValue = 0);
 
-	operator int() const {
+	operator int() const
+	{
 		return m_nValue;
 	}
 
 public:
 	static CXTPMarkupEnum* AFX_CDECL CreateValue(int nValue);
-
 
 public:
 	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
@@ -412,10 +529,12 @@ protected:
 class _XTP_EXT_CLASS CXTPMarkupBool : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupBool);
+
 public:
 	CXTPMarkupBool(BOOL bValue = FALSE);
 
-	operator BOOL() const {
+	operator BOOL() const
+	{
 		return m_bValue;
 	}
 
@@ -423,7 +542,6 @@ public:
 	static CXTPMarkupBool* AFX_CDECL CreateTrueValue();
 	static CXTPMarkupBool* AFX_CDECL CreateFalseValue();
 	static CXTPMarkupBool* AFX_CDECL CreateValue(BOOL bValue);
-
 
 public:
 	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
@@ -439,13 +557,16 @@ protected:
 class _XTP_EXT_CLASS CXTPMarkupColor : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupColor);
+
 public:
 	CXTPMarkupColor(COLORREF nValue = 0);
 	CXTPMarkupColor(BYTE bAlpha, COLORREF nValue);
 
-	operator COLORREF() const {
-		return m_nValue;
-	}
+	operator COLORREF() const;
+
+	COLORREF GetCOLORREF() const;
+	DWORD GetARGB() const;
+	BYTE GetAlpha() const;
 
 	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
 
@@ -458,43 +579,43 @@ public:
 protected:
 	void SetContentObject(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* /*pContent*/);
 
-
 protected:
 	COLORREF m_nValue;
 };
 
-class _XTP_EXT_CLASS CXTPMarkupString : public CXTPMarkupObject
+AFX_INLINE CXTPMarkupColor::operator COLORREF() const
 {
-	DECLARE_MARKUPCLASS(CXTPMarkupString);
+	return m_nValue;
+}
+
+AFX_INLINE COLORREF CXTPMarkupColor::GetCOLORREF() const
+{
+	return m_nValue & 0xFFFFFF;
+}
+
+AFX_INLINE DWORD CXTPMarkupColor::GetARGB() const
+{
+	return (m_nValue & 0xFF000000)
+		   | RGB(GetBValue(m_nValue), GetGValue(m_nValue), GetRValue(m_nValue));
+}
+
+AFX_INLINE BYTE CXTPMarkupColor::GetAlpha() const
+{
+	return static_cast<BYTE>(m_nValue >> 24);
+}
+
+class _XTP_EXT_CLASS CXTPMarkupColorKey : public CXTPMarkupObject
+{
+	DECLARE_MARKUPCLASS(CXTPMarkupColorKey);
 
 public:
-	CXTPMarkupString(LPCSTR lpszValue);
-	CXTPMarkupString(LPCWSTR lpszValue = NULL, int nLength = -1);
-
-private:
-	~CXTPMarkupString();
-
-public:
-	operator LPCWSTR() const {
-		return m_lpszValue;
+	CXTPMarkupColorKey(int nIndex = 0)
+		: m_nIndex(nIndex)
+	{
 	}
-	int GetLength() const {
-		return m_nLength;
-	}
 
 public:
-	static CXTPMarkupString* AFX_CDECL CreateValue(LPCWSTR lpszString, int nLength = -1);
-
-public:
-	virtual UINT GetHashKey() const;
-	virtual BOOL IsEqual(const CXTPMarkupObject* pObject) const;
-
-private:
-	void Init(LPCWSTR lpszValue, int nLength);
-
-protected:
-	LPWSTR m_lpszValue;
-	int m_nLength;
+	int m_nIndex;
 };
 
 class _XTP_EXT_CLASS CXTPMarkupType : public CXTPMarkupObject
@@ -503,27 +624,36 @@ class _XTP_EXT_CLASS CXTPMarkupType : public CXTPMarkupObject
 
 protected:
 	class CClassList;
-	static CClassList* GetClassList();
+	static CClassList* AFX_CDECL GetClassList();
 
 public:
-	typedef CXTPMarkupObject* (AFX_CDECL* PFNCREATEOBJECT)();
-	typedef CXTPMarkupType* (AFX_CDECL* PFNGETBASETYPE)();
-	typedef void (AFX_CDECL* PFNREGISTERMARKUPCLASS)();
+	typedef CXTPMarkupObject*(AFX_CDECL* PFNCREATEOBJECT)(CXTPMarkupContext*);
+	typedef CXTPMarkupType*(AFX_CDECL* PFNGETBASETYPE)();
+	typedef void(AFX_CDECL* PFNREGISTERMARKUPCLASS)();
 
-	CXTPMarkupObject* CreateObject() const;
+	CXTPMarkupObject* CreateObject(CXTPMarkupContext* pContext) const;
 
 	static void AFX_CDECL RegisterAll();
 
+	//{{AFX_CODEJOCK_PRIVATE
+	static void* AFX_CDECL RegisterTypeEntry(LPCWSTR lpTag, PFNGETBASETYPE pfnGetType);
+	static void AFX_CDECL ResolveTypeEntry(void* pTypeEntry);
+	//}}AFX_CODEJOCK_PRIVATE
+
 public:
 	CXTPMarkupType();
-	CXTPMarkupType(LPCWSTR lpszTag, LPCWSTR lpszClassName, PFNCREATEOBJECT pfnCreateObject, PFNGETBASETYPE pfnGetBaseType, PFNREGISTERMARKUPCLASS pfnRegisterMarkupClass);
+	CXTPMarkupType(LPCWSTR lpszTag, LPCWSTR lpszClassName, PFNCREATEOBJECT pfnCreateObject,
+				   PFNGETBASETYPE pfnGetBaseType, PFNREGISTERMARKUPCLASS pfnRegisterMarkupClass);
+
 private:
-	~CXTPMarkupType();
+	virtual ~CXTPMarkupType();
 
 public:
 	BOOL IsDerivedFrom(const CXTPMarkupType* pBaseClass) const;
-	static CXTPMarkupObject* AFX_CDECL DynamicDownCast(CXTPMarkupType* pType, CXTPMarkupObject* pObject);
-	static CXTPMarkupObject* AFX_CDECL StaticDownCast(CXTPMarkupType* pType, CXTPMarkupObject* pObject);
+	static CXTPMarkupObject* AFX_CDECL DynamicDownCast(CXTPMarkupType* pType,
+													   CXTPMarkupObject* pObject);
+	static CXTPMarkupObject* AFX_CDECL StaticDownCast(CXTPMarkupType* pType,
+													  CXTPMarkupObject* pObject);
 
 	static CXTPMarkupType* AFX_CDECL LookupTag(LPCWSTR lpszTag);
 
@@ -540,7 +670,11 @@ protected:
 public:
 	LPCWSTR m_lpszTag;
 	LPCWSTR m_lpszClassName;
+
+	_XTP_DEPRECATE("m_pNextType is no longer used, its value is undefined and it will be removed "
+				   "in the future updates")
 	CXTPMarkupType* m_pNextType;
+
 protected:
 	BOOL m_bRegister;
 	PFNCREATEOBJECT m_pfnCreateObject;
@@ -549,17 +683,13 @@ protected:
 	CXTPMarkupStyle* m_pTypeStyle;
 };
 
-AFX_INLINE BOOL IsStringObject(CXTPMarkupObject* pObject)
-{
-	return pObject && pObject->GetType() == MARKUP_TYPE(CXTPMarkupString);
-}
-
 class _XTP_EXT_CLASS CXTPMarkupCollection : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupCollection);
+
 public:
 	CXTPMarkupCollection();
-	~CXTPMarkupCollection();
+	virtual ~CXTPMarkupCollection();
 
 public:
 	int GetCount() const;
@@ -588,12 +718,11 @@ protected:
 	BOOL m_bLogicalParent;
 };
 
-
-class CXTPMarkupProperties : public CXTPMarkupObject
+class _XTP_EXT_CLASS CXTPMarkupProperties : public CXTPMarkupObject
 {
 public:
 	CXTPMarkupProperties(CXTPMarkupObject* pOwner);
-	~CXTPMarkupProperties();
+	virtual ~CXTPMarkupProperties();
 
 public:
 	BOOL IsPropertyValid(CXTPMarkupDependencyProperty* pProperty) const;
@@ -604,33 +733,36 @@ public:
 
 	void Set(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pValue);
 
+	void Remove(CXTPMarkupDependencyProperty* pProperty);
+
 protected:
 	CXTPMarkupObject** m_pTable;
 	int m_nTableSize;
 	CXTPMarkupObject* m_pOwner;
 };
 
-
-class CXTPMarkupAutoPtr
+class _XTP_EXT_CLASS CXTPMarkupAutoPtr
 {
 public:
 	CXTPMarkupAutoPtr(CXTPMarkupObject* pObject = NULL);
-	~CXTPMarkupAutoPtr();
+	virtual ~CXTPMarkupAutoPtr();
 
 public:
-	CXTPMarkupObject* AddRef() const;
-	CXTPMarkupObject* operator->() const;
+	void Assign(CXTPMarkupObject* pObject);
+	CXTPMarkupObject* AddRef();
+	CXTPMarkupObject* operator->();
+	const CXTPMarkupObject* operator->() const;
 
 public:
 	CXTPMarkupObject* m_pObject;
 };
-
 
 class _XTP_EXT_CLASS CXTPMarkupDoubleCollection : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupDoubleCollection)
 public:
 	typedef CArray<float, float&> CDoubleArray;
+
 public:
 	CXTPMarkupDoubleCollection();
 	CXTPMarkupDoubleCollection(CDoubleArray& arr);
@@ -643,7 +775,6 @@ public:
 	void Remove(int nIndex);
 	void Add(float fValue);
 
-
 protected:
 	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
 	static BOOL AFX_CDECL ConvertFromString(LPCWSTR lpszValue, CDoubleArray& arr);
@@ -652,69 +783,108 @@ protected:
 protected:
 	CDoubleArray m_arr;
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_DISPATCH_MAP()
+#	ifdef _XTP_ACTIVEX
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMarkupDoubleCollection);
+#	endif
 
-
+	afx_msg long OleGetItemCount();
+	afx_msg void OleAdd(double dValue);
+	afx_msg double OleGetItem(long nIndex);
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-AFX_INLINE CXTPMarkupStyle* CXTPMarkupType::GetTypeStyle() const {
+AFX_INLINE CXTPMarkupStyle* CXTPMarkupType::GetTypeStyle() const
+{
 	return m_pTypeStyle;
 }
-AFX_INLINE int CXTPMarkupCollection::GetCount() const {
+AFX_INLINE int CXTPMarkupCollection::GetCount() const
+{
 	return (int)m_arrItems.GetSize();
 }
-AFX_INLINE CXTPMarkupType* CXTPMarkupCollection::GetElementType() const {
+AFX_INLINE CXTPMarkupType* CXTPMarkupCollection::GetElementType() const
+{
 	return m_pElementType;
 }
-AFX_INLINE  LPCWSTR CXTPMarkupDependencyProperty::GetName() const {
+AFX_INLINE LPCWSTR CXTPMarkupDependencyProperty::GetName() const
+{
 	return m_lpszName;
 }
-AFX_INLINE CXTPMarkupType* CXTPMarkupDependencyProperty::GetPropetyType() const {
+AFX_INLINE CXTPMarkupType* CXTPMarkupDependencyProperty::GetPropetyType() const
+{
 	return m_pPropetyType;
 }
-AFX_INLINE CXTPMarkupType* CXTPMarkupDependencyProperty::GetOwnerType() const {
+AFX_INLINE CXTPMarkupType* CXTPMarkupDependencyProperty::GetOwnerType() const
+{
 	return m_pOwnerType;
 }
-AFX_INLINE CXTPMarkupPropertyMetadata* CXTPMarkupDependencyProperty::GetMetadata() const {
+AFX_INLINE CXTPMarkupPropertyMetadata* CXTPMarkupDependencyProperty::GetMetadata() const
+{
 	return m_pMetadata;
 }
-AFX_INLINE BOOL CXTPMarkupDependencyProperty::IsAttached() const {
+AFX_INLINE BOOL CXTPMarkupDependencyProperty::IsAttached() const
+{
 	return m_bAttached;
 }
-AFX_INLINE BOOL CXTPMarkupDependencyProperty::IsEvent() const {
+AFX_INLINE BOOL CXTPMarkupDependencyProperty::IsEvent() const
+{
 	return FALSE;
 }
-AFX_INLINE DWORD CXTPMarkupDependencyProperty::GetFlags() const {
+AFX_INLINE DWORD CXTPMarkupDependencyProperty::GetFlags() const
+{
 	return m_pMetadata ? m_pMetadata->m_dwFlags : 0;
 }
-AFX_INLINE UINT CXTPMarkupObject::GetHashKey() const {
+AFX_INLINE CXTPMarkupContext* CXTPMarkupObject::GetMarkupContext() const
+{
+	return m_pMarkupContext;
+}
+AFX_INLINE UINT CXTPMarkupObject::GetHashKey() const
+{
 	return (UINT)(UINT_PTR)this;
 }
-AFX_INLINE BOOL CXTPMarkupObject::IsEqual(const CXTPMarkupObject* pObject) const {
+AFX_INLINE BOOL CXTPMarkupObject::IsEqual(const CXTPMarkupObject* pObject) const
+{
 	return pObject == this;
 }
-AFX_INLINE BOOL CXTPMarkupObject::operator==(const CXTPMarkupObject* pObject) const {
+AFX_INLINE BOOL CXTPMarkupObject::operator==(const CXTPMarkupObject* pObject) const
+{
 	return IsEqual(pObject);
 }
-AFX_INLINE bool AFXAPI operator==(const CXTPMarkupObject& s1, const CXTPMarkupObject& s2) {
+AFX_INLINE bool AFXAPI operator==(const CXTPMarkupObject& s1, const CXTPMarkupObject& s2)
+{
 	return s1.IsEqual(&s2) ? true : false;
 }
-template<> AFX_INLINE UINT AFXAPI HashKey(CXTPMarkupObject* key)
+template<>
+AFX_INLINE UINT AFXAPI HashKey(CXTPMarkupObject* key)
 {
+	ASSERT(NULL != key);
+
 	return key->GetHashKey();
 }
-template<> AFX_INLINE BOOL AFXAPI CompareElements(const CXTPMarkupObjectPtr* pElement1, const CXTPMarkupObjectPtr* pElement2)
+template<>
+AFX_INLINE BOOL AFXAPI CompareElements(const CXTPMarkupObjectPtr* pElement1,
+									   const CXTPMarkupObjectPtr* pElement2)
 {
+	ASSERT(NULL != pElement1);
+	ASSERT(NULL != *pElement1);
+	ASSERT(NULL != pElement2);
+
 	return (*pElement1)->IsEqual(*pElement2);
 }
 
-AFX_INLINE BOOL IsEqual(CXTPMarkupObject* pNewValue, CXTPMarkupObject* pOldValue) {
+AFX_INLINE BOOL IsEqual(CXTPMarkupObject* pNewValue, CXTPMarkupObject* pOldValue)
+{
 	if (pNewValue == NULL && pOldValue == NULL)
 		return TRUE;
 
-	if (pNewValue != NULL || pOldValue != NULL)
-		return FALSE;
+	if (pNewValue != NULL && pOldValue != NULL)
+		return pNewValue->IsEqual(pOldValue);
 
-	return pNewValue->IsEqual(pOldValue);
+	return FALSE;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMARKUPOBJECT_H__)

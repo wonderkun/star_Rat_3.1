@@ -1,7 +1,6 @@
 // XTPChartPointSeriesLabel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPOINTSERIESLABEL_H__)
-#define __XTPCHARTPOINTSERIESLABEL_H__
+#	define __XTPCHARTPOINTSERIESLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "XTPChartDiagram2DSeriesLabel.h"
 
 //===========================================================================
 // Summary:
@@ -41,6 +40,7 @@ class CXTPChartSeriesView;
 class _XTP_EXT_CLASS CXTPChartPointSeriesLabel : public CXTPChartDiagram2DSeriesLabel
 {
 	DECLARE_SERIAL(CXTPChartPointSeriesLabel);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -86,61 +86,32 @@ public:
 	//     pPointView - A pointer to the series point view object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartSeriesPointView* pPointView,
+											 CXTPChartElementView* pParentView);
 
 protected:
-	int m_nAngle;       //The stem angle.
+	int m_nAngle; // The stem angle.
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartPointSeriesLabel);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
-//===========================================================================
-// Summary:
-//     This class abstracts the view of  the label of a point series, it is a kind of chart
-//     series label view.
-// Remarks:
-// See Also:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartPointSeriesLabelView : public CXTPChartDiagram2DSeriesLabelView
+AFX_INLINE void CXTPChartPointSeriesLabel::SetAngle(int nAngle)
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartPointSeriesLabelView object.
-	// Parameters:
-	//     pLabel - The pointer to chart series label object.
-	//     pPointView - A pointer to chart series view.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This function calculates the anchor point of the label stem.
-	// Returns:
-	//     A CXTPChartPointF object denoting the anchor point.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	virtual CXTPChartPointF GetAnchorPoint() const;
-	virtual double GetAnchorAngle() const;
-};
-
-
-
-AFX_INLINE void CXTPChartPointSeriesLabel::SetAngle(int nAngle) {
 	m_nAngle = nAngle;
 	OnChartChanged();
 }
-AFX_INLINE int CXTPChartPointSeriesLabel::GetAngle() const {
+AFX_INLINE int CXTPChartPointSeriesLabel::GetAngle() const
+{
 	return m_nAngle;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPOINTSERIESLABEL_H__)

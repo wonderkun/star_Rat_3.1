@@ -1,7 +1,6 @@
 // XTPFlowGraphNode.h: interface for the CXTPFlowGraphNode class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHNODE_H__)
-#define __XTPFLOWGRAPHNODE_H__
+#	define __XTPFLOWGRAPHNODE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPFlowGraphElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPage;
 class CXTPFlowGraphDrawContext;
@@ -37,7 +36,66 @@ class CXTPFlowGraphConnectionPoint;
 class CXTPFlowGraphNodeGroup;
 class CXTPPropExchange;
 class CXTPFlowGraphImage;
+class CXTPFlowGraphSelectionRect;
+
 class CXTPMarkupUIElement;
+class CXTPMarkupObject;
+class CXTPMarkupUIElementCollection;
+class CXTPMarkupVisual;
+class CXTPMarkupTextBlock;
+
+#	define XAML_MARKUP_PROPERTY_CPNAME L"CPName"
+#	define XAML_MARKUP_PROPERTY_CPTYPE L"CPType"
+#	define XAML_MARKUP_PROPERTY_CANSETCOLOR L"CanSetColor"
+#	define XAML_MARKUP_PROPERTY_CPOINTS_IN L"ConnectionPointsIn"
+#	define XAML_MARKUP_PROPERTY_RESIZABLE L"Resizable"
+
+#	define XAML_MARKUP_TAG_ITEMSCOLLECTION L"nodeItemsCollection"
+#	define XAML_MARKUP_TAG_CUSTOMCONTROL L"nodeCustomControl"
+#	define XAML_MARKUP_TAG_NODECAPTION L"nodeCaption"
+#	define XAML_MARKUP_TAG_NODECAPTIONBORDER L"nodeCaptionBorder"
+#	define XAML_MARKUP_TAG_NODE_ITEM_CAPTION L"nodeItemCaption"
+#	define XAML_MARKUP_TAG_NODE_ITEM_IMAGE L"nodeItemImage"
+#	define XAML_MARKUP_TAG_NODEIMAGE L"nodeImage"
+#	define XAML_MARKUP_TAG_NODECONTENT L"nodeContent"
+
+#	define XAML_MARKUP_CPNAME_PLACEHOLDER _T("%CPNAME%")
+#	define XAML_MARKUP_CPCAPTION_PLACEHOLDER _T("%CPCAPTION%")
+
+#	define XAML_MARKUP_RESOURCENAME_NODE _T("FLOWGRAPH_XAML_NODE")
+#	define XAML_MARKUP_RESOURCENAME_NODE_ITEM _T("FLOWGRAPH_XAML_NODE_ITEM")
+#	define XAML_MARKUP_RESOURCENAME_NODE_ITEM_IN _T("FLOWGRAPH_XAML_NODE_ITEM_IN")
+#	define XAML_MARKUP_RESOURCENAME_NODE_ITEM_OUT _T("FLOWGRAPH_XAML_NODE_ITEM_OUT")
+#	define XAML_MARKUP_RESOURCENAME_NODE_ITEM_INOUT _T("FLOWGRAPH_XAML_NODE_ITEM_INOUT")
+
+// ------------------------------------------------------------------------------
+// Summary:
+//     Node Connection Point types (input\\output).
+// Remarks:
+//     The xtpFlowGraphConnectionPointType is used to specify whether a
+//     CXTPFlowGraphConnection will have any connection points.
+//     Connection Points are used to make connections between a
+//     connection in different nodes.
+// See Also:
+//     CXTPFlowGraphConnectionPoint::SetType@XTPFlowGraphConnectionPointType
+//
+// ------------------------------------------------------------------------------
+enum XTPFlowGraphConnectionPointType
+{
+	xtpFlowGraphPointNone   = 0, // Connection has no connection points.
+	xtpFlowGraphPointInput  = 1, // Connection only has an input point.
+	xtpFlowGraphPointOutput = 2, // Connection only has an output point.
+
+	// Connection has both input and output points. For the default node type.
+	// When iterating connection points you will never find a connection point of this type
+	// It's used to add a table row with actual 2 connection points: xtpFlowGraphPointInput and
+	// xtpFlowGraphPointOutput
+	xtpFlowGraphPointInputAndOutput = 3,
+
+	// a new connection point type for other shapes
+	xtpFlowGraphPointBoth = 4
+
+};
 
 // -----------------------------------------------------------------------
 //
@@ -54,6 +112,7 @@ class CXTPMarkupUIElement;
 class _XTP_EXT_CLASS CXTPFlowGraphNode : public CXTPFlowGraphElement
 {
 	DECLARE_SERIAL(CXTPFlowGraphNode);
+
 public:
 	// ------------------------------------------
 	// Summary:
@@ -122,7 +181,7 @@ public:
 	//     clr :  Color to make the node.
 	//
 	// ----------------------------------
-	void SetColor(COLORREF clr);
+	virtual void SetColor(COLORREF clr, BYTE bAlpha = 255);
 	// -----------------------------------
 	// Summary:
 	//     Gets the color of the node.
@@ -190,7 +249,7 @@ public:
 	// Parameters:
 	//     hWnd :  HWND of object that should be displayed in this node.
 	// --------------------------------------------------------------------
-	void SetWindowHandle(HWND hWnd);
+	virtual void SetWindowHandle(HWND hWnd);
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the HWND of the object associated with the
@@ -212,7 +271,7 @@ public:
 	//     a tree control is attached to the node). You would attach the
 	//     external control using the SetWindowHandle method.
 	// ---------------------------------------------------------------------
-	void SetWindowSize(CSize sz);
+	virtual void SetWindowSize(CSize sz);
 	// ---------------------------------------------------------------------
 	// Summary:
 	//     Gets the size of the window for the external control that is
@@ -271,6 +330,25 @@ public:
 	// ----------------------------------------------------------------
 	BOOL IsLocked() const;
 
+	// ---------------------------------------------------------------------
+	//
+	// Summary:
+	//     Specifies whether the node is visible.
+	// Parameters:
+	//     bVisible :  True if the nodes are to be visible, False otherwise
+	// Remarks:
+	//     If False, any connections to/from this node become invisible as well
+	// ---------------------------------------------------------------------
+	void SetVisible(BOOL bVisible = TRUE);
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Gets whether the node and its connections are visible.
+	// Returns:
+	//     True if the node is visible, False otherwise
+	// ----------------------------------------------------------------
+	BOOL IsVisible() const;
+
 public:
 	// ------------------------------------------------------------------------
 	// Summary:
@@ -290,11 +368,19 @@ public:
 
 	// ---------------------------------------
 	// Summary:
+	//     Sets the width\\height of the node (node's markup!)
+	// Parameters:
+	//     sz :  New size for the node.
+	// ---------------------------------------
+	virtual void SetSize(CSize sz);
+
+	// ---------------------------------------
+	// Summary:
 	//     Sets the width\\height of the node.
 	// Parameters:
 	//     sz :  New size for the node.
 	// ---------------------------------------
-	void SetSize(CSize sz);
+	void SetSizeCore(CSize sz);
 
 	// --------------------------------------
 	// Summary:
@@ -303,13 +389,44 @@ public:
 	//     The size of the node.
 	// --------------------------------------
 	CSize GetSize() const;
+
+	// --------------------------------------
+	// Summary:
+	//     Gets the current size of the node (including user resizing)
+	// Returns:
+	//     The size of the node.
+	// --------------------------------------
+	CSize GetUserSize() const;
+
+	// --------------------------------------
+	// Summary:
+	//     Returns if the node is resizable or not
+	// --------------------------------------
+	BOOL IsResizable() const;
+
+	// --------------------------------------
+	// Summary:
+	//     Gets minimum size of the node, calculated in CalcMinSize method
+	// Returns:
+	//     The minimum size of the node
+	// --------------------------------------
+	CSize GetMinSize() const;
+
+	// --------------------------------------
+	// Summary:
+	//     Sets minimum size of the node
+	// --------------------------------------
+	void SetMinSize(CSize sz);
+
 	// ---------------------------------------------
 	// Summary:
 	//     Gets the screen coordinates for the node.
 	// Returns:
 	//     The screen coordinates for the node.
 	// ---------------------------------------------
-	CRect GetScreenRect() const;
+	CRect GetScreenRect(BOOL bIncludeConnectionPointsEllipses = TRUE) const;
+
+	virtual CRect GetBoundingRectangle(BOOL bIncludeConnectionPointsEllipses = TRUE) const;
 
 public:
 	// -------------------------------------------------------------------
@@ -368,7 +485,6 @@ public:
 	void Remove();
 
 public:
-
 	// ------------------------------------------------------------------
 	// Summary:
 	//     Determines if the specified point is within the node.
@@ -400,7 +516,7 @@ public:
 	// Summary:
 	//     Specifies whether the node is currently selected.
 	// -----------------------------------------------------
-	virtual void Select();
+	virtual void Select(BOOL bSelect = TRUE);
 
 public:
 	// ------------------------------------------------------------------------
@@ -415,6 +531,14 @@ public:
 	// ------------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
+	// ----------------------------------------------------------------------
+	// Remarks:
+	//     Store/Load node common properties (for both default and derived nodes)
+	// Remarks:
+	//     This functions is called automatically in default node and custom
+	// ----------------------------------------------------------------------
+	void DoCommonPropExchange(CXTPPropExchange* pPX);
+
 public:
 	// ----------------------------------------------------------------------
 	// Remarks:
@@ -424,7 +548,7 @@ public:
 	//     the node. This also will readjust the layout when the size or
 	//     caption has changed.
 	// ----------------------------------------------------------------------
-	virtual void RecalLayout(CXTPFlowGraphDrawContext* pDC);
+	virtual void RecalLayout();
 	// ---------------------------------------------
 	// Summary:
 	//     This method is called to draw the node.
@@ -433,15 +557,211 @@ public:
 	// ---------------------------------------------
 	virtual void Draw(CXTPFlowGraphDrawContext* pDC);
 
-public:
-	// ----------------------------------------------------------------------
+	CRect GetSelectionRect() const;
+
+	// ---------------------------------------------
 	// Summary:
-	//     Call this method to get Markup element that renders caption of the
-	//     control.
-	// Returns:
-	//     Pointer to CXTPMarkupUIElement element.
+	//     This virtual method is called to draw a node's selection rectangle
+	// Parameters:
+	//     pDC :  Pointer to a valid device context.
+	// ---------------------------------------------
+	virtual void DrawSelectionRect(CXTPFlowGraphDrawContext* pDC);
+
+	// ---------------------------------------------
+	// Summary:
+	//     A virtual method that draws node's connection points (circles) in their placeholders
+	// Parameters:
+	//     pDC :  Pointer to a valid device context.
+	// ---------------------------------------------
+	virtual void DrawConnectionPoints(CXTPFlowGraphDrawContext* pDC);
+
+	// ---------------------------------------------
+	// Summary:
+	//     A virtual method that calculates minimum size of a node (used in resizing mechanism)
+	// ---------------------------------------------
+	virtual void CalcMinSize();
+
+	// Default Markup support:
+
+public:
+	// ---------------------------------------------
+	// Summary:
+	//     Adds a table row to the node (of default type), with none, one or two real connection
+	//     points
 	// ----------------------------------------------------------------------
-	CXTPMarkupUIElement* GetMarkupUIElement() const;
+	// Parameters:
+	//     szName :  unique name
+	//     szCaption :  caption of table row. When not specified - uses szName
+	//     type : type
+	// Remarks:
+	//     xtpFlowGraphPointNone             - no actual connection points
+	//     xtpFlowGraphPointInput            - 1 connection point:  in the left of the row
+	//     xtpFlowGraphPointOutput           - 1 connection point:  in the right of the row
+	//     xtpFlowGraphPointInputAndOutput   - 2 connection points: in the left & right of the row
+	// ---------------------------------------------
+	virtual void AddNamedConnectionPoints(
+		LPCTSTR szName, XTPFlowGraphConnectionPointType type = xtpFlowGraphPointNone,
+		LPCTSTR szCaption = NULL);
+
+	// ---------------------------------------------
+	// Summary:
+	//     An important common method used to get a rectangle of any visual markup element
+	// Remarks:
+	//    A rectangle coordinates are relative to markup root element (<Border> for example)
+	// Parameters:
+	//     pElementVisual :  a pointer to a valid visual element
+	// ---------------------------------------------
+	CRect GetMarkupVisualElementRect(const CXTPMarkupVisual* pElementVisual) const;
+
+	// ---------------------------------------------
+	// Summary:
+	//     Returns an index of the table row in the list (to insert a new one)
+	// Parameters:
+	//     pPoint    :  Pointer to a connection point that is located in this row
+	//     pChildren :  Pointer to a connection point that is located in this rot
+	// ---------------------------------------------
+	int GetMarkupTableRowIndex(CXTPFlowGraphConnectionPoint* pPoint,
+							   CXTPMarkupUIElementCollection* pChildren);
+
+	// ---------------------------------------------
+	// Summary:
+	//     Removes a table row (with it's connection points) of a default node
+	// Returns:
+	//      an index in the table rows list
+	// Parameters:
+	//     pPoint    :  Pointer to a connection point that is located in the table row
+	// ----------------------------------------------------------------------
+	int RemoveMarkupTableRow(CXTPFlowGraphConnectionPoint* pPoint);
+
+	// ---------------------------------------------
+	// Summary:
+	//     Gets XAML TextBlock element for a table row of a default node
+	// Returns:
+	//      a pointer to CXTPMarkupTextBlock element
+	// Parameters:
+	//     strConnectionPointName :  a connection point's name, this connection point is supposed to
+	//     be in this table row
+	// ----------------------------------------------------------------------
+	CXTPMarkupTextBlock* GetTableRowTextBlock(const CString& strConnectionPointName) const;
+
+	// ---------------------------------------------
+	// Summary:
+	//     Gets XAML TextBlock element's rectangle of a table row of a default node
+	// Returns:
+	//      a rectangle of CXTPMarkupTextBlock element. Coordinates are relative to node's location!
+	// Parameters:
+	//     strConnectionPointCaption :  a connection point's name, this connection point is supposed
+	//     to be in this table row
+	// ----------------------------------------------------------------------
+	CRect GetTableRowCaptionRect(CXTPFlowGraphConnectionPoint* pPoint) const;
+
+	// ---------------------------------------------
+	// Summary:
+	//     Sets default XAML markup for a default node with zero table rows
+	// ----------------------------------------------------------------------
+	virtual void SetDefaultMarkup();
+
+	// ---------------------------------------------
+	// Summary:
+	//     updates the markup point caption (when changed or restoring using DoPropExchange)
+	// ----------------------------------------------------------------------
+	void UpdateMarkupPointCaption(CXTPFlowGraphConnectionPoint* pPoint);
+
+	void UpdateMarkupPointName(CXTPFlowGraphConnectionPoint* pPoint);
+
+	// ---------------------------------------------
+	// Summary:
+	//     updates the markup point color (when changed or restoring using DoPropExchange)
+	// ----------------------------------------------------------------------
+	virtual void UpdateMarkupPointColor(CXTPFlowGraphConnectionPoint* pPoint);
+
+	// ---------------------------------------------
+	// Summary:
+	//     updates the markup point image (when changed or restoring using DoPropExchange)
+	// ----------------------------------------------------------------------
+	void UpdateMarkupPointImage(CXTPFlowGraphConnectionPoint* pPoint);
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Sets markup for the node (for custom node)
+	// Returns:
+	//     True if the markup is valid and the operation is success
+	// ----------------------------------------------------------------
+	BOOL SetMarkupText(LPCTSTR szMarkupText);
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     A virtual function that returns TRUE only for custom nodes (nodes with custom XAML
+	//     markup)
+	// ----------------------------------------------------------------
+	virtual BOOL IsCustomMarkup() const
+	{
+		return FALSE;
+	}
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     A virtual method that finds and updates real connection points in the markup
+	// Remarks:
+	//     Implementation of this method for default nodes is recursive.
+	//     Rectangle for a connection point is defined by <Rectangle/> element in XAML for default
+	//     nodes. Implementation of this methods for custom nodes uses absolutely different approach
+	//     (see CXTPFlowGraphNodeCustom::UpdateConnectionPoints)
+	// Parameters:
+	//     pRootElement: an XAML element used to search for connection points in its children
+	// ----------------------------------------------------------------
+	virtual void UpdateConnectionPoints(CXTPMarkupObject* pRootElement);
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     A recursive method to update/set color of a node
+	// Parameters:
+	//     pRootElement: an XAML element used to search for XAML elements that can have a color
+	//     property (see XAML_MARKUP_PROPERTY_CANSETCOLOR)
+	// ----------------------------------------------------------------
+	virtual void UpdateColorRecursive(CXTPMarkupObject* pRootElement, COLORREF clrColor);
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Updates foreground of CXTPMarkupTextBlock element of node's caption
+	// ----------------------------------------------------------------
+	virtual void UpdateCaptionColor();
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Updates node's image, image index is defined as m_nImageIndex
+	// ----------------------------------------------------------------
+	virtual void UpdateMarkupImage();
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Updates node's caption <TextBlock/> element with node's caption text (m_strCaption)
+	// Returns:
+	//     a pointer to CXTPMarkupTextBlock element
+	// ----------------------------------------------------------------
+	virtual CXTPMarkupTextBlock* UpdateMarkupCaption();
+
+	// ---------------------------------------------
+	// Summary:
+	//     Get node's caption <TextBlock> elements
+	// Returns:
+	//     A pointer to CXTPMarkupTextBlock element
+	// ---------------------------------------------
+	CXTPMarkupTextBlock* GetCaptionTextBlock() const;
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Get node's caption <TexbBlock> rectangle
+	// Returns:
+	//     a rectangle of the TextBlock element. Coordinates are relative to node's location!
+	// ----------------------------------------------------------------
+	CRect GetCaptionRect() const;
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Updates the default font define in Paint Manager, used in Markup drawing
+	// ----------------------------------------------------------------
+	virtual void UpdateMarkupFont();
 
 protected:
 	// ---------------------------------------------------
@@ -450,36 +770,64 @@ protected:
 	// ---------------------------------------------------
 	virtual void OnRemoved();
 
+	static LRESULT CALLBACK ControlWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
+											  LPARAM lParam); // new window procedure
+
+	void SetCustomWndProc();
+	void ResetCustomWndProc();
+
 protected:
-	CXTPFlowGraphPage* m_pPage;  // Pointer to the page this node is displayed on.
+	CXTPFlowGraphPage* m_pPage; // Pointer to the page this node is displayed on.
 
 	CXTPFlowGraphNode* m_pNextVisibleNode; // Pointer to the next visible node.
 
-	CString m_strCaption;  // Caption displayed for this node.
-	CXTPMarkupUIElement* m_pMarkupUIElement;  // Markup element that renders caption.
+	CString m_strCaption; // Caption displayed for this node.
 
-	CPoint m_ptLocation;  // Point that contains the coordinates of the node.
+	CString m_strMarkup;
 
-	CSize m_szUserSize; // Current size of the node.  Including user resizing.
+	CXTPMarkupUIElement* m_pMarkup; // Markup that is responsible for drawing this node
+
+	CPoint m_ptLocation; // Point that contains the coordinates of the node.
+
+	CSize m_szUserSize;   // Current size of the node.  Including user resizing.
 	CSize m_szActualSize; // Real size of the node before the user might have resized it.
+	CSize m_szMinSize;
+	CSize m_szUserMinSize; // manually set minimum size
+
+	BOOL m_bResizable;
 
 	CString m_strTooltip; // Tooltip of the item.
-	COLORREF m_clrNode; // Color of the node.
+	COLORREF m_clrNode;   // Color of the node.
+
+	BYTE m_bAlpha; // alpha channel 0-255
+
 	int m_nStyle; // Reserved for future use. Currently can be used as a "tag" property if needed.
 	DWORD_PTR m_dwTag; // The 32-bit value associated with the item.
-	int m_nId; // Id of the node.
+	int m_nId;		   // Id of the node.
 
-	HWND m_hWnd; // Handle of the node.
-	CSize m_szWindow; // Size of the window of the attached control (if applicable).  For example, if a tree control was attached to the node, this would be it's window size.
+	HWND m_hWnd;				   // Handle of the window inside the node
+	WNDPROC m_pOriginalWindowProc; // Window procedure pointer
+	CSize m_szWindow; // Size of the window of the attached control (if applicable).  For example,
+					  // if a tree control was attached to the node, this would be it's window size.
 
-	int m_nGroupId;  // Id of the group this node belongs to (if any).
+	static CMap<HWND, HWND, CXTPFlowGraphNode*, CXTPFlowGraphNode*>
+		m_WindowToNodeHash; // used in the custom window 'ControlWindowProc'
+
+	CXTPFlowGraphSelectionRect* m_pSelectionRect;
+
+	int m_nGroupId; // Id of the group this node belongs to (if any).
 
 	int m_nImageIndex; // Index of an image to display next to the caption text of the node.
 
-	BOOL m_bLocked; // Specifies whether the node is locked.  True if the node if locked, False otherwise.
+	BOOL m_bLocked; // Specifies whether the node is locked.  True if the node if locked, False
+					// otherwise.
 
-	CXTPFlowGraphConnectionPoints* m_pConnectionPoints;  // Collection of connection points that are displayed for this node.
-	CXTPFlowGraphNodeGroup* m_pGroup;  // Pointer to the group this node belongs to (if any).
+	BOOL m_bVisible; // Specifies whether the node is visible.  True if the node if visible, False
+					 // otherwise.
+
+	CXTPFlowGraphConnectionPoints* m_pConnectionPoints; // Collection of connection points that are
+														// displayed for this node.
+	CXTPFlowGraphNodeGroup* m_pGroup; // Pointer to the group this node belongs to (if any).
 
 	friend class CXTPFlowGraphNodes;
 	friend class CXTPFlowGraphNodeGroup;
@@ -487,100 +835,156 @@ protected:
 	friend class CXTPFlowGraphPage;
 	friend class CXTPFlowGraphControl;
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 private:
 	int m_nArrangeIndex;
 	int m_nArrangeLevel;
 	int m_nArrangeComponent;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
-// Paint Manager Properties:
+	//{{AFX_CODEJOCK_PRIVATE
+	// Paint Manager Properties:
 public:
-	CRect m_rcCaption;
 	CRect m_rcWindow;
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphNode)
+
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleSetTooltip(LPCTSTR lpszTooltip);
+	afx_msg BSTR OleGetTooltip();
+	afx_msg void OleSetColor(OLE_COLOR clr);
+	afx_msg OLE_COLOR OleGetColor();
+	afx_msg void OleSetStyle(int nStyle);
+	afx_msg int OleGetStyle();
+	afx_msg LPDISPATCH OleGetConnectionPoints();
+
+	afx_msg int OleGetLeft();
+	afx_msg void OleSetLeft(int nLeft);
+	afx_msg int OleGetTop();
+	afx_msg void OleSetTop(int nTop);
+	afx_msg int OleGetWidth();
+	afx_msg int OleGetHeight();
+
+	afx_msg LPDISPATCH OleGetPage();
+	afx_msg BOOL OleGetSelected();
+	afx_msg void OleSetSelected(BOOL bSelected);
+
+	afx_msg LPDISPATCH OleGetGroup();
+	afx_msg LPDISPATCH OleHitTestConnectionPoint(long x, long y);
+
+	afx_msg void OleAddNamedConnectionPoints(LPCTSTR lpszName, long type);
+	afx_msg void OleAddNamedConnectionPointsWithCaption(LPCTSTR lpszName, long type,
+														LPCTSTR lpszCaption);
+
+	afx_msg void OleSetWindowHandle(HWND hWnd);
+	afx_msg HWND OleGetWindowHandle();
+
+	afx_msg int OleGetWindowWidth();
+	afx_msg void OleSetWindowWidth(int nWidth);
+
+	afx_msg int OleGetWindowHeight();
+	afx_msg void OleSetWindowHeight(int nHeight);
+
+	afx_msg void OleSetWidth(int nWidth);
+	afx_msg void OleSetHeight(int nHeight);
+
 //}}AFX_CODEJOCK_PRIVATE
-
-
+#	endif
 };
 
-
-AFX_INLINE  CString CXTPFlowGraphNode::GetCaption() const {
+AFX_INLINE CString CXTPFlowGraphNode::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE CPoint CXTPFlowGraphNode::GetLocation() const {
+AFX_INLINE CPoint CXTPFlowGraphNode::GetLocation() const
+{
 	return m_ptLocation;
 }
-AFX_INLINE CXTPFlowGraphConnectionPoints* CXTPFlowGraphNode::GetConnectionPoints() const {
+AFX_INLINE CXTPFlowGraphConnectionPoints* CXTPFlowGraphNode::GetConnectionPoints() const
+{
 	return m_pConnectionPoints;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPFlowGraphNode::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltip = lpszTooltip;
 }
-AFX_INLINE CString CXTPFlowGraphNode::GetTooltip() const {
+AFX_INLINE CString CXTPFlowGraphNode::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetColor(COLORREF clr) {
-	m_clrNode = clr;
-	OnGraphChanged();
-}
-AFX_INLINE COLORREF CXTPFlowGraphNode::GetColor() const {
+AFX_INLINE COLORREF CXTPFlowGraphNode::GetColor() const
+{
 	return m_clrNode;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetStyle(int nStyle) {
+AFX_INLINE void CXTPFlowGraphNode::SetStyle(int nStyle)
+{
 	m_nStyle = nStyle;
 	OnGraphChanged();
 }
-AFX_INLINE int CXTPFlowGraphNode::GetStyle() const {
+AFX_INLINE int CXTPFlowGraphNode::GetStyle() const
+{
 	return m_nStyle;
 }
-AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphNode::GetPage() const {
+AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphNode::GetPage() const
+{
 	return m_pPage;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetTag(DWORD_PTR dwTag) {
+AFX_INLINE void CXTPFlowGraphNode::SetTag(DWORD_PTR dwTag)
+{
 	m_dwTag = dwTag;
 }
-AFX_INLINE DWORD_PTR CXTPFlowGraphNode::GetTag() const {
+AFX_INLINE DWORD_PTR CXTPFlowGraphNode::GetTag() const
+{
 	return m_dwTag;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetID(int nId) {
+AFX_INLINE void CXTPFlowGraphNode::SetID(int nId)
+{
 	m_nId = nId;
 }
-AFX_INLINE int CXTPFlowGraphNode::GetID() const {
+AFX_INLINE int CXTPFlowGraphNode::GetID() const
+{
 	return m_nId;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetWindowHandle(HWND hWnd) {
-	m_hWnd = hWnd;
-	OnGraphChanged();
-}
-AFX_INLINE HWND CXTPFlowGraphNode::GetWindowHandle() const {
+AFX_INLINE HWND CXTPFlowGraphNode::GetWindowHandle() const
+{
 	return m_hWnd;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetWindowSize(CSize sz) {
-	m_szWindow = sz;
-	OnGraphChanged();
-}
-AFX_INLINE CSize CXTPFlowGraphNode::GetWindowSize() const{
+AFX_INLINE CSize CXTPFlowGraphNode::GetWindowSize() const
+{
 	return m_szWindow;
 }
-AFX_INLINE CXTPFlowGraphNodeGroup* CXTPFlowGraphNode::GetGroup() const {
+AFX_INLINE CXTPFlowGraphNodeGroup* CXTPFlowGraphNode::GetGroup() const
+{
 	return m_pGroup;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetImageIndex(int nImageIndex) {
-	m_nImageIndex = nImageIndex;
-}
-AFX_INLINE int CXTPFlowGraphNode::GetImageIndex() const {
+AFX_INLINE int CXTPFlowGraphNode::GetImageIndex() const
+{
 	return m_nImageIndex;
 }
-AFX_INLINE void CXTPFlowGraphNode::SetLocked(BOOL bLocked) {
+AFX_INLINE void CXTPFlowGraphNode::SetLocked(BOOL bLocked)
+{
 	m_bLocked = bLocked;
 }
-AFX_INLINE BOOL CXTPFlowGraphNode::IsLocked() const {
+AFX_INLINE BOOL CXTPFlowGraphNode::IsLocked() const
+{
 	return m_bLocked;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPFlowGraphNode::GetMarkupUIElement() const {
-	return m_pMarkupUIElement;
+AFX_INLINE BOOL CXTPFlowGraphNode::IsVisible() const
+{
+	return m_bVisible;
+}
+AFX_INLINE BOOL CXTPFlowGraphNode::IsResizable() const
+{
+	return m_bResizable;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHNODE_H__)

@@ -1,7 +1,6 @@
 // XTPSyntaxEditLexPtrs.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,54 +19,46 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITLEXPTRS_H__)
-#define __XTPSYNTAXEDITLEXPTRS_H__
+#	define __XTPSYNTAXEDITLEXPTRS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-//===========================================================================
-#define XTP_EDIT_SYNTAXEDIT_DECLARE_SMART_PTR(_TClassName) class _TClassName; \
-	typedef CXTPSmartPtrInternalT<_TClassName> _TClassName##Ptr;
-//===========================================================================
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditTextIterator;
-
-XTP_EDIT_SYNTAXEDIT_DECLARE_SMART_PTR(CXTPSyntaxEditConfigurationManager)
-
 
 ////////////////////////////////////////////////////////////////////////////
 namespace XTPSyntaxEditLexAnalyser
 {
-	//===========================================================================
-	typedef CXTPSyntaxEditTextIterator CTextIter;
+//===========================================================================
+typedef CXTPSyntaxEditTextIterator CTextIter;
 
-	//===========================================================================
-	class CXTPSyntaxEditLexVariant;
-	class CXTPSyntaxEditLexTextSchema;
-	class CXTPSyntaxEditLexParser;
-	class CXTPSyntaxEditLexParserSchemaOptions;
-	class CXTPSyntaxEditLexClass;
-	class CXTPSyntaxEditLexClass_file;
-	class CXTPSyntaxEditLexTextBlock;
+//===========================================================================
+class CXTPSyntaxEditLexVariant;
+class CXTPSyntaxEditLexTextSchema;
+class CXTPSyntaxEditLexParser;
+class CXTPSyntaxEditLexParserSchemaOptions;
+class CXTPSyntaxEditLexClass;
+class CXTPSyntaxEditLexClass_file;
+class CXTPSyntaxEditLexTextBlock;
 
-	typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexVariant> CXTPSyntaxEditLexVariantPtr;
-	typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexClass> CXTPSyntaxEditLexClassPtr;
-	typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexTextBlock> CXTPSyntaxEditLexTextBlockPtr;
-	typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexParser> CXTPSyntaxEditLexParserPtr;
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexVariant> CXTPSyntaxEditLexVariantPtr;
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexClass> CXTPSyntaxEditLexClassPtr;
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexTextBlock> CXTPSyntaxEditLexTextBlockPtr;
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexParser> CXTPSyntaxEditLexParserPtr;
 
-	typedef CXTPInternalCollectionT<CXTPSyntaxEditLexTextBlock> CXTPSyntaxEditLexTextBlockPtrArray;
-	typedef CXTPInternalCollectionT<CXTPSyntaxEditLexVariant> CXTPSyntaxEditLexVariantPtrArray;
-	typedef CXTPInternalCollectionT<CXTPSyntaxEditLexClass> CXTPSyntaxEditLexClassPtrArray;
+typedef CXTPInternalCollectionT<CXTPSyntaxEditLexTextBlock> CXTPSyntaxEditLexTextBlockPtrArray;
+typedef CXTPInternalCollectionT<CXTPSyntaxEditLexVariant> CXTPSyntaxEditLexVariantPtrArray;
+typedef CXTPInternalCollectionT<CXTPSyntaxEditLexClass> CXTPSyntaxEditLexClassPtrArray;
 
-	typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexVariantPtrArray> CXTPSyntaxEditLexVariantPtrArrayPtr;
-
-
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexVariantPtrArray> CXTPSyntaxEditLexVariantPtrArrayPtr;
 
 } // END namespace XTPSyntaxEditLexAnalyser
 
 //////////////////////////////////////////////////////////////////////////////
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITLEXPTRS_H__)

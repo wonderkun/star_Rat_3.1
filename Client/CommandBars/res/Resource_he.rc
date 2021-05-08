@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB)
 #ifdef _WIN32
 LANGUAGE LANG_HEBREW, SUBLANG_DEFAULT
 #pragma code_page(1255)
@@ -145,19 +144,19 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "&תפריטים"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "תפריטי יישום",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "תפריטים תלויי-הקשר",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "הצגת תפריט:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,149,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "איפוס",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "תפריט ברירת המחדל\nתפריט היישום המוגדר כברירת מחדל",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "בחר תפריט תלוי-הקשר:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,120,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "איפוס",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -260,7 +259,7 @@ BEGIN
                             "קיצור דרך זה מוקצה.\nהאם ברצונך להקצות מחדש קיצור דרך זה?"
     XTP_IDS_CONFIRM_UPDATE  "בעיקבות עידכון התוכנה '%s' השתנה. האם ברצונך לאפס את השינויים ?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "כל קבצי התמונה|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|All Files(*.*)|*.*||"
+                            "כל התמונות של קבצים|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|מפות סיביות (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|קבצי Metafile (*.wmf;*.emf)|*.wmf;*.emf|סמלים (*.ico;*.cur)|*.ico;*.cur|כל הקבצים  (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nאפשרויות סרגל כלים"
     XTP_ID_TOOLBAR_HIDE     "\nסגור"
     XTP_ID_POPUPBAR_EXPAND  "\nהרחב"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nשחזר חלון"
     XTP_ID_MENUBAR_MINIMIZE "\nמזער חלון"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) היה לחוץ. מחכה המפתח השני של אקורד..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nלך אל לשונית הבאה"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nלשונית אנכית חדשה"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nלשונית אופקית חדשה"
-    XTP_ID_WORKSPACE_CANCEL "ביטול"
+    XTP_ID_WORKSPACE_CANCEL "\nביטול"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "קבצים פעילים"
 END
 
@@ -314,11 +313,13 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "לך אל דף הבא\nדף הבא"
     XTP_ID_PREVIEW_ZOOMIN   "הגדל תצוגה\nהגדל"
     XTP_ID_PREVIEW_ZOOMOUT  "הקטן תצוגה\nהקטן"
+    XTP_ID_PREVIEW_ONEPAGE  "עמוד יחיד"
+    XTP_ID_PREVIEW_TWOPAGE  "דפים מרובים"
     XTP_ID_PREVIEW_CLOSE    "סגור את חלון תצוגה מקדימה\nסגור תצוגה מקדימה"
     XTP_IDS_PREVIEW_WHOLEPAGE "דף שלם"
     XTP_IDS_PREVIEW_PAGEWIDTH "רוחב דף"
-    XTP_IDS_PREVIEW_PAGEI     "דף %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "דף %i מ %i"
+    XTP_IDS_PREVIEW_PAGEI     " %i דף"
+    XTP_IDS_PREVIEW_PAGEIOFI  "%i מ %i דף"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB)

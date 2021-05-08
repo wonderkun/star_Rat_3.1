@@ -1,7 +1,6 @@
 // XTPCalendarControl.h: interface for the CXTPCalendarControl class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARCONTROL_H__)
-#define _XTPCALENDARCONTROL_H__
+#	define _XTPCALENDARCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarView;
 class CXTPCalendarPaintManager;
@@ -36,6 +37,7 @@ class CXTPCalendarMonthView;
 class CXTPCalendarTimeLineView;
 class CXTPCalendarOptions;
 class CXTPNotifyConnection;
+class CXTPNotifySink;
 class CXTPCalendarRemindersManager;
 class CXTPCalendarResources;
 class CXTPCalendarResourcesNf;
@@ -43,10 +45,9 @@ class CXTPCalendarTheme;
 
 class CXTPMarkupContext;
 class CXTPMarkupUIElement;
+class CXTPCalendarTip;
 
-#include "Common/XTPNotifyConnection.h"
-#include "XTPCalendarTip.h"
-#include "XTPCalendarDefines.h"
+typedef DWORD_PTR XTP_CONNECTION_ID;
 
 //===========================================================================
 // Summary:
@@ -148,7 +149,8 @@ public:
 	// CXTPCalendarControl* pMyCalendar = new CXTPCalendarControl();
 	//
 	// // Create a window
-	// if (!myCalendar.Create(WS_CHILD | WS_TABSTOP | WS_VISIBLE, rcRect, this, ID_CALENDAR_CONTROL))
+	// if (!myCalendar.Create(WS_CHILD | WS_TABSTOP | WS_VISIBLE, rcRect, this,
+	// ID_CALENDAR_CONTROL))
 	// {
 	//     TRACE(_T("Failed to create calendar control window\n"));
 	// }
@@ -188,9 +190,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void Populate();
 
-// Operations
+	// Operations
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain current paint theme.
@@ -204,8 +205,20 @@ public:
 	//     This member function is used to set current paint theme.
 	// Parameters:
 	//     ePaintTheme - A paint theme ID from enum XTPCalendarTheme.
+	//     pPaintManager - A valid pointer to a CXTPCalendarPaintManager object.
+	//     pTheme - Pointer to a CXTPCalendarTheme object when using resource DLL otherwise NULL.
 	//-----------------------------------------------------------------------
 	virtual void SetPaintTheme(XTPCalendarTheme ePaintTheme);
+	virtual void SetPaintTheme(CXTPCalendarPaintManager* pPaintManager, CXTPCalendarTheme* pTheme);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to obtain current theme ID. Basically
+	//     this can be used to check if 2010 of 2007 theme is used.
+	// Returns:
+	//     A theme version ID from enum XTPCalendarThemeVersion.
+	//-----------------------------------------------------------------------
+	XTPCalendarThemeVersion GetThemeVersion() const;
 
 	/////////////////////////////////////////////////////////////////////////
 	// drawing related
@@ -221,7 +234,7 @@ public:
 	//     A CXTPCalendarPaintManager pointer to the associated paint manager object.
 	// See Also:
 	//-----------------------------------------------------------------------
-	CXTPCalendarPaintManager* GetPaintManager();
+	CXTPCalendarPaintManager* GetPaintManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -243,7 +256,7 @@ public:
 	// See Also:
 	//     CXTPCalendarView::GetTheme, GetPaintManager
 	//-----------------------------------------------------------------------
-	CXTPCalendarTheme* GetTheme();
+	CXTPCalendarTheme* GetTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -281,7 +294,7 @@ public:
 	// See Also:
 	//     CXTPCalendarResources overview
 	//-----------------------------------------------------------------------
-	CXTPCalendarResources* GetResources();
+	CXTPCalendarResources* GetResources() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -294,7 +307,8 @@ public:
 	//     Call this member function to programmatically set the new
 	//     Resources collection for the control.
 	//-----------------------------------------------------------------------
-	void SetResources(CXTPCalendarResources* pResources, CXTPCalendarData* pOptionsDataProvider = NULL);
+	void SetResources(CXTPCalendarResources* pResources,
+					  CXTPCalendarData* pOptionsDataProvider = NULL);
 
 	/////////////////////////////////////////////////////////////////////////
 	// data provider related
@@ -327,7 +341,8 @@ public:
 	// See Also:
 	//     CXTPCalendarData, XTPCalendarDataProvider, GetDataProvider
 	//-----------------------------------------------------------------------
-	void SetDataProvider(CXTPCalendarData* pDataProvider, BOOL bCloseDataProviderWhenDestroy = TRUE);
+	void SetDataProvider(CXTPCalendarData* pDataProvider,
+						 BOOL bCloseDataProviderWhenDestroy = TRUE);
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function sets the custom data provider for the control.
@@ -341,7 +356,8 @@ public:
 	// See Also:
 	//     CXTPCalendarData, XTPCalendarDataProvider, GetDataProvider
 	//-----------------------------------------------------------------------
-	void SetDataProvider(XTPCalendarDataProvider eDataProvider, LPCTSTR lpszConnectionString = NULL);
+	void SetDataProvider(XTPCalendarDataProvider eDataProvider,
+						 LPCTSTR lpszConnectionString = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -350,7 +366,7 @@ public:
 	//     A pointer to the common data provider if it was previously set;
 	//     otherwise, returns NULL.
 	//-----------------------------------------------------------------------
-	CXTPCalendarData* GetDataProvider();
+	CXTPCalendarData* GetDataProvider() const;
 
 	/////////////////////////////////////////////////////////////////////////
 	// view related
@@ -367,7 +383,7 @@ public:
 	//     CXTPCalendarView overview, SetActiveView,
 	//     GetViewDay, GetWeekView, GetMonthView
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarView* GetActiveView();
+	virtual CXTPCalendarView* GetActiveView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -380,7 +396,7 @@ public:
 	// See Also:
 	//     CXTPCalendarView overview, GetActiveView, GetWeekView, GetMonthView
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarView* GetDayView();
+	CXTPCalendarDayView* GetDayView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -393,7 +409,7 @@ public:
 	// See Also:
 	//     CXTPCalendarView overview, GetActiveView, GetDayView, GetMonthView
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarView* GetWeekView();
+	CXTPCalendarWeekView* GetWeekView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -406,7 +422,7 @@ public:
 	// See Also:
 	//     CXTPCalendarView overview, GetActiveView, GetWeekView, GetDayView
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarView* GetMonthView();
+	CXTPCalendarMonthView* GetMonthView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -419,7 +435,7 @@ public:
 	// See Also:
 	//     CXTPCalendarView overview, GetActiveView, GetWeekView, GetDayView, GetMonthView
 	//------------------------------------------------------------------------------------
-	virtual CXTPCalendarView* GetTimeLineView();
+	CXTPCalendarTimeLineView* GetTimeLineView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -433,7 +449,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SwitchActiveView(XTPCalendarViewType eView);
 
-// Implementation
+	// Implementation
 public:
 	/////////////////////////////////////////////////////////////////////////
 	// drawing related
@@ -448,6 +464,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member to determine if right-to-left mode is active
+	// Returns:
+	//     TRUE if right-to-left mode is enabled and FALSE otherwise
+	//-----------------------------------------------------------------------
+	BOOL IsLayoutRTL() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to get current TimeLine mode.
 	// Returns:
 	//     An integer representing one of the following values.
@@ -457,7 +481,7 @@ public:
 	//     xtpTSPID_Month    = 3,
 	//     xtpTSPID_WorkWeek = 4,
 	//-----------------------------------------------------------------------
-	int GetTimeLineScale();
+	int GetTimeLineScale() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -507,7 +531,7 @@ public:
 	void OnCalendarTimeline();
 
 private:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// Always updates the screen on exit block
 	void BeginUpdate();
 	void EndUpdate();
@@ -519,10 +543,9 @@ private:
 	// Adjusts layout on exit block
 	void BeginAdjust(BOOL bWithScrollBar = FALSE);
 	void EndAdjust(BOOL bWithScrollBar = FALSE);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	/////////////////////////////////////////////////////////////////////////
 	// managing calendar settings
 
@@ -591,8 +614,9 @@ public:
 	//     nSec  - An int. A reference to the seconds part of the result.
 	// See Also: SetWorkDayStartTime, GetWorkDayEndTime, SetWorkDayEndTime
 	//-----------------------------------------------------------------------
-	void GetWorkDayStartTime(COleDateTime& dtTime);
-	void GetWorkDayStartTime(int& nHour, int& nMin, int& nSec); // <COMBINE CXTPCalendarControl::GetWorkDayStartTime@COleDateTime&>
+	void GetWorkDayStartTime(COleDateTime& dtTime) const;
+	void GetWorkDayStartTime(int& nHour, int& nMin, int& nSec)
+		const; // <COMBINE CXTPCalendarControl::GetWorkDayStartTime@COleDateTime&@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -604,8 +628,9 @@ public:
 	//     nSec  - An int. A reference to the seconds part of the result.
 	// See Also: SetWorkDayEndTime, GetWorkDayStartTime, SetWorkDayStartTime
 	//-----------------------------------------------------------------------
-	void GetWorkDayEndTime(COleDateTime& dtTime);
-	void GetWorkDayEndTime(int& nHour, int& nMin, int& nSec); // <COMBINE CXTPCalendarControl::GetWorkDayEndTime@COleDateTime&>
+	void GetWorkDayEndTime(COleDateTime& dtTime) const;
+	void GetWorkDayEndTime(int& nHour, int& nMin, int& nSec)
+		const; // <COMBINE CXTPCalendarControl::GetWorkDayEndTime@COleDateTime&@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -662,6 +687,19 @@ public:
 	// See Also: GetWorkDayEndTime, GetWorkDayStartTime, SetWorkDayStartTime
 	//-----------------------------------------------------------------------
 	void SetWorkDayEndTime(int nHour, int nMin, int nSec);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function adds custom time interval for an event to choose in the event
+	//     properties dialog
+	// Parameters:
+	//     nMin                  - An int. Custom reminder interval in minutes
+	//     szCustomMeaning       - A string that describes this interval (e.g. hour, day). Default
+	//     string is CXTPCalendarUtils::FormatTimeDuration(nMin) bIgnoreDefaultValues  - Tells the
+	//     event properties dialog to ignore default reminder time intervals (1,5,10,15 minutes)
+	//-----------------------------------------------------------------------
+	void AddCustomTimeIntervalForReminder(int nMin, LPCTSTR szCustomMeaning = NULL,
+										  BOOL bIgnoreDefaultValues = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -745,7 +783,7 @@ public:
 	// See Also:
 	//     MonthView_IsShowTimeAsClocks
 	// --------------------------------------------------------------------------
-	void MonthView_SetShowTimeAsClocks(BOOL bShowClocks= TRUE);
+	void MonthView_SetShowTimeAsClocks(BOOL bShowClocks = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -813,6 +851,56 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL UpdateMouseCursor();
 
+	//---- Time Management functions ----------------------------------------
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine if the provided date is "today"
+	//     The today date may be overriden with SetTodayDateOverride() call or with custom time
+	//     provider
+	// Returns:
+	//     A BOOL. TRUE if the provided date is "today" for this calendar control instance, FALSE
+	//     otherwise
+	//-----------------------------------------------------------------------
+	virtual BOOL IsToday(const COleDateTime& dtDate) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine the "today" date
+	//     The today date may be overriden with SetTodayDateOverride() call or with custom time
+	//     provider
+	// Returns:
+	//     COleDateTime with "today" date for this calendar control instance
+	//-----------------------------------------------------------------------
+	COleDateTime GetTodayDate() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to override the "today" date. Calendar control will assume
+	//     the date provided as "today" The today date is used to draw highlight border for day
+	//     views (mark them as today)
+	// Parameters:
+	//     COleDateTime object with date which you want to highlight in calendar as "today"
+	//-----------------------------------------------------------------------
+	void SetTodayDateOverride(const COleDateTime& dtTodayOverride);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function returns override for "today" date is it was set with
+	//     SetTodayDateOverride() call. If the GetState() member function of COleDateTime returns
+	//     invalid flag for returned date, then no override was applied
+	// Returns:
+	//     COleDateTime object with override today date
+	//-----------------------------------------------------------------------
+	COleDateTime GetTodayDateOverride() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function resets override for "today" date to the current date. If no override
+	//     is applied the calls to GetTodayDate() and IsToday() will use the
+	//     CXTPCalendarUtils::GetCurrentTime() to determine the current time on user machine
+	//-----------------------------------------------------------------------
+	void ResetTodayDateOverride();
 
 public:
 	//{{AFX_CODEJOCK_PRIVATE
@@ -843,9 +931,8 @@ public:
 	//     TRUE if the window class was successfully registered.  FALSE otherwise.
 	//-----------------------------------------------------------------------
 	virtual BOOL RegisterWindowClass(HINSTANCE hInstance = NULL);
+
 protected:
-
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function performs all of the drawing logic of the
@@ -917,7 +1004,6 @@ protected:
 	virtual void _SetDataProvider(CXTPCalendarData* pDataProvider,
 								  BOOL bCloseDataProviderWhenDestroy = TRUE);
 
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -930,7 +1016,7 @@ public:
 	// See Also: CXTPNotifyConnection overview,
 	//           IXTPNotificationSink overview
 	//-----------------------------------------------------------------------
-	virtual CXTPNotifyConnection* GetConnection();
+	CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -950,7 +1036,7 @@ public:
 	//     SendNotificationAlways - Performs send in any case.
 	// See Also: XTP_NOTIFY_CODE, GetConnection
 	//-----------------------------------------------------------------------
-	virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam , LPARAM lParam);
+	virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam, LPARAM lParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -970,7 +1056,8 @@ public:
 	//     SendNotificationAlways - Performs send in any case.
 	// See Also: XTP_NOTIFY_CODE, GetConnection
 	//-----------------------------------------------------------------------
-	virtual void SendNotificationAlways(XTP_NOTIFY_CODE EventCode, WPARAM wParam , LPARAM lParam); // <COMBINE SendNotification>
+	virtual void SendNotificationAlways(XTP_NOTIFY_CODE EventCode, WPARAM wParam,
+										LPARAM lParam); // <COMBINE SendNotification>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -995,8 +1082,7 @@ public:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarRemindersManager* GetRemindersManager();
-
+	virtual CXTPCalendarRemindersManager* GetRemindersManager() const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -1089,6 +1175,20 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//      This member function is called by WindowProc, or is called during
+	//      message reflection.
+	// Parameters:
+	//      message - Specifies the message to be sent.
+	//      wParam - Specifies additional message-dependent information.
+	//      lParam - Specifies additional message-dependent information.
+	//      pResult - The return value of WindowProc. Depends on the message; may be NULL.
+	// Returns:
+	//      TRUE if the message is handled properly, FALSE else.
+	//-----------------------------------------------------------------------
+	afx_msg virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function is used to catch messages before child
 	//     windows (like Subject editor).
 	// Remarks:
@@ -1107,8 +1207,7 @@ public:
 	//      TRUE if message was handled; otherwise FALSE.
 	// See Also: CXTPCalendarViewEventSubjectEditor, OnWndMsg().
 	//-----------------------------------------------------------------------
-	virtual BOOL OnWndMsg_Children(UINT message, WPARAM wParam, LPARAM lParam,
-									LRESULT* pResult);
+	virtual BOOL OnWndMsg_Children(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1153,14 +1252,15 @@ public:
 	// See Also:
 	//      CXTPCalendarOptions,  CXTPCalendarData::GetCalendarOptions().
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarOptions* GetCalendarOptions() const;
+	CXTPCalendarOptions* GetCalendarOptions() const;
 
 	// -----------------------------
 	// Summary:
 	//     This member function is making attempt to select event by passed event ID
 	// Parameters:
 	//      dEventID :  DWORD of event id
-	//      bSelect : BOOL - EnsureVisible && Select if bSelect = TRUE, EnsureVisible only if bSelect = FALSE
+	//      bSelect : BOOL - EnsureVisible && Select if bSelect = TRUE, EnsureVisible only if
+	//      bSelect = FALSE
 	// Returns:
 	//     TRUE is Success
 	// -----------------------------
@@ -1168,23 +1268,47 @@ public:
 
 	// -----------------------------
 	// Summary:
-	//     This member function is making attempt to select view event by passed Schedule ID and event ID
+	//     This member function is making attempt to select view event by passed Schedule ID and
+	//     event ID
 	// Parameters:
 	//      nScheduleID: Schedule ID - used in case with multiple links
 	//      dEventID :  DWORD of event id
-	//      bSelect : BOOL - EnsureVisible && Select if bSelect = TRUE, EnsureVisible only if bSelect = FALSE
+	//      bSelect : BOOL - EnsureVisible && Select if bSelect = TRUE, EnsureVisible only if
+	//      bSelect = FALSE
 	// Returns:
 	//     TRUE is Success
 	// -----------------------------
 	BOOL SelectViewEventByIdAndGroup(int nScheduleID, DWORD dEventID, BOOL bSelect = TRUE);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to adjust the object's layout depending
+	//     on the provided bounding rectangle.
+	// Parameters:
+	//  nLeft - rectange data
+	//  nTop - rectange data
+	//  nRight - rectange data
+	//  nBottom - rectange data
+	//-----------------------------------------------------------------------
+	virtual void SetBorders(int nLeft, int nTop, int nRight, int nBottom);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to adjust the object's layout depending
+	//     on the provided bounding rectangle.
+	//-----------------------------------------------------------------------
+	virtual void UpdateBorders();
+
+protected:
+	CRect m_Borders; // Store options to draw border lines;
+
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//## Generated message map functions
 	//{{AFX_MSG(CXTPCalendarControl)
+	afx_msg void OnNcPaint();
+	afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
 	afx_msg void OnPaint();
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM /*lParam*/);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -1220,20 +1344,20 @@ protected:
 	afx_msg void OnEnable(BOOL bEnable);
 
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK(CXTPCalendarControl, m_Sink_DP)
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPNotifySink* m_pSink;
 
-	virtual void OnEvent_FromDataProvider(XTP_NOTIFY_CODE Event, WPARAM wParam , LPARAM lParam);
-	virtual void OnEvent_Reminders(XTP_NOTIFY_CODE Event, WPARAM wParam , LPARAM lParam);
+	virtual void OnEvent_FromDataProvider(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
+	virtual void OnEvent_Reminders(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
 
 	virtual void OnFinalRelease();
 	virtual CScrollBar* GetScrollBarCtrl(int nBar) const;
 	virtual void PreSubclassWindow();
 
 	virtual void _InitCalendarView();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1275,8 +1399,8 @@ public:
 	//      pFont       - Font for to draw tooltip text.
 	//      bAdvanced   - TRUE for advanced processing (Office2007 theme "add new appt")
 	//-----------------------------------------------------------------------
-	virtual void ShowToolTip(const CString& strText, const CRect rcToolTip,
-		CFont* pFont, BOOL bAdvanced = FALSE);
+	virtual void ShowToolTip(const CString& strText, const CRect rcToolTip, CFont* pFont,
+							 BOOL bAdvanced = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1352,12 +1476,12 @@ public:
 	//     Set of flags from enums XTPCalendarGetItemText, XTPCalendarGetItemTextEx.
 	// See Also:
 	//     XTPCalendarGetItemText, XTPCalendarGetItemTextEx,
-	//     CXTPCalendarControlPaintManager::GetAskItemTextFlags,
-	//     CXTPCalendarControlPaintManager::SetAskItemTextFlags,
+	//     CXTPCalendarPaintManager::GetAskItemTextFlags,
+	//     CXTPCalendarPaintManager::SetAskItemTextFlags,
 	//     CXTPCalendarTheme::GetAskItemTextFlags,
 	//     CXTPCalendarTheme::SetAskItemTextFlags, XTP_NC_CALENDAR_GETITEMTEXT
 	//-----------------------------------------------------------------------
-	virtual DWORD GetAskItemTextFlags();
+	virtual DWORD GetAskItemTextFlags() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1393,7 +1517,7 @@ public:
 	// Returns:
 	// A pointer to the markup context object.
 	//-----------------------------------------------------------------------
-	CXTPMarkupContext* GetMarkupContext();
+	CXTPMarkupContext* GetMarkupContext() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1403,7 +1527,8 @@ public:
 
 private:
 	//{{AFX_CODEJOCK_PRIVATE
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
@@ -1430,12 +1555,15 @@ public:
 		//     redrawing.
 		// See Also: XTPCalendarUpdateOptions
 		//-------------------------------------------------------------------
-		CUpdateContext(CXTPCalendarControl* pControl, int nOptions = xtpCalendarUpdateLayout | xtpCalendarUpdateRedraw) :
-			m_pControl(pControl)
+		CUpdateContext(CXTPCalendarControl* pControl,
+					   int nOptions = xtpCalendarUpdateLayout | xtpCalendarUpdateRedraw)
+			: m_pControl(pControl)
 		{
 			// WARNING. (no error)
-			// There is no need to use xtpCalendarUpdateRedraw and xtpCalendarUpdateRedrawIfNeed together
-			ASSERT(!((nOptions & xtpCalendarUpdateRedraw) && (nOptions & xtpCalendarUpdateRedrawIfNeed)));
+			// There is no need to use xtpCalendarUpdateRedraw and xtpCalendarUpdateRedrawIfNeed
+			// together
+			ASSERT(!((nOptions & xtpCalendarUpdateRedraw)
+					 && (nOptions & xtpCalendarUpdateRedrawIfNeed)));
 
 			m_nOptions = nOptions;
 
@@ -1488,7 +1616,7 @@ public:
 	//      Class CViewChangedContext used to avoid multiple sending of
 	//      XTP_NC_CALENDARVIEWWASCHANGED notification for one action.
 	//=======================================================================
-	class CViewChangedContext
+	class _XTP_EXT_CLASS CViewChangedContext
 	{
 	public:
 		//-------------------------------------------------------------------
@@ -1501,7 +1629,11 @@ public:
 		// See Also: XTP_NC_CALENDARVIEWWASCHANGED
 		//-------------------------------------------------------------------
 		CViewChangedContext(CXTPCalendarView* pView, int eType = xtpCalendarViewChangedSend);
-		CViewChangedContext(CXTPCalendarControl* pControl, int eType = xtpCalendarViewChangedSend); //<COMBINE CXTPCalendarControl::CViewChangedContext::CViewChangedContext@CXTPCalendarView*@int>
+		CViewChangedContext(
+			CXTPCalendarControl* pControl,
+			int eType =
+				xtpCalendarViewChangedSend); //<COMBINE
+											 // CXTPCalendarControl::CViewChangedContext::CViewChangedContext@CXTPCalendarView*@int>
 
 		//-------------------------------------------------------------------
 		// Summary:
@@ -1523,7 +1655,6 @@ public:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//=======================================================================
 	// Summary:
 	//      Class CViewChanged_ContextData is used as locker context for
@@ -1538,19 +1669,20 @@ protected:
 		//-------------------------------------------------------------------
 		CViewChanged_ContextData();
 
-		int m_nLockCount;     // View change notification lock counter.
-		BOOL m_bRequest;      // View change send notification request.
+		int m_nLockCount; // View change notification lock counter.
+		BOOL m_bRequest;  // View change send notification request.
 	};
 
-	CViewChanged_ContextData    m_cntViewChanged;   // Locker context for CViewChangedContext.
+	CViewChanged_ContextData m_cntViewChanged; // Locker context for CViewChangedContext.
 
-	int m_nRowsPerWheel;                            // Amount of rows to scroll when using the mouse wheel.
+	int m_nRowsPerWheel; // Amount of rows to scroll when using the mouse wheel.
 
-	CString m_strUndoUIText;                        // Text label for the Undo UI command.
-	CString m_strRedoUIText;                        // Text label for the Redo UI command.
-	BOOL m_bUpdateWhenEventChangedNotify;           // Whether to update control when notification comes about an event change.
-	CXTPCalendarRemindersManager*   m_pRemindersManager; // Stores reminders manager object.
-	CXTPMarkupContext* m_pMarkupContext;            //The markup context.
+	CString m_strUndoUIText;			  // Text label for the Undo UI command.
+	CString m_strRedoUIText;			  // Text label for the Redo UI command.
+	BOOL m_bUpdateWhenEventChangedNotify; // Whether to update control when notification comes about
+										  // an event change.
+	CXTPCalendarRemindersManager* m_pRemindersManager; // Stores reminders manager object.
+	CXTPMarkupContext* m_pMarkupContext;			   // The markup context.
 
 private:
 	//{{AFX_CODEJOCK_PRIVATE
@@ -1561,24 +1693,24 @@ private:
 	int m_nLockAdjustCount;
 	BOOL m_bAdjustScrollBar;
 
-	CXTPCalendarView*       m_pActiveView;
+	CXTPCalendarView* m_pActiveView;
 
-	CXTPCalendarDayView*    m_pDayView;
-	CXTPCalendarMonthView*  m_pMonthView;
-	CXTPCalendarWeekView*   m_pWeekView;
-	CXTPCalendarTimeLineView*   m_pTimeLineView;
+	CXTPCalendarDayView* m_pDayView;
+	CXTPCalendarMonthView* m_pMonthView;
+	CXTPCalendarWeekView* m_pWeekView;
+	CXTPCalendarTimeLineView* m_pTimeLineView;
 
-	CXTPCalendarResourcesNf*    m_pResourcesNf; // Resources array
+	CXTPCalendarResourcesNf* m_pResourcesNf; // Resources array
 
-	CXTPCalendarTheme*              m_pTheme;
-	CXTPCalendarPaintManager*       m_pPaintManager;
-	CXTPNotifyConnection*           m_pConnect;
+	CXTPCalendarTheme* m_pTheme;
+	CXTPCalendarPaintManager* m_pPaintManager;
+	CXTPNotifyConnection* m_pConnection;
 
-	CXTPCalendarOptions* m_pOptions;    // This member stores user's calendar view options.
+	CXTPCalendarOptions* m_pOptions; // This member stores user's calendar view options.
 
 	CBitmap m_bmpCache; // Current view cached picture
 
-	CXTPCalendarTip m_wndTip;
+	CXTPCalendarTip* m_pWndTip;
 
 	UINT m_uNextTimerID;
 
@@ -1591,84 +1723,63 @@ private:
 	COleDateTimeSpan m_spRemindersUpdatePeriod;
 
 	LCID m_lcidActiveLocale;
-	int m_nFirstWeekOfYearDays;         // This member shows the first Week Of Year Days.
+	int m_nFirstWeekOfYearDays; // This member shows the first Week Of Year Days.
+
+	COleDateTime m_dtTodayOverride;
+
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to get state of Read-only mode
 	// Returns:
 	//     TRUE if current mode is Read-only.
 	//-------------------------------------------------------------------
-	BOOL IsReadonlyMode();
+	BOOL IsReadonlyMode() const;
 
-	XTPCalendarMouseMode m_mouseMode;          // Current mouse operation mode.
-	BOOL m_bDeleteOnFinalRelease;   // If TRUE - Delete self OnFinalRelease() call.
-	BOOL m_bDisableRedraw;  // If TRUE - control window is not redraw, it is draw last window content (draw cached bitmap). FALSE by default.
-	BOOL m_bTimelineMode; // flag to separate timeline (if TRUE) and other calendar modes
+	XTPCalendarMouseMode m_mouseMode; // Current mouse operation mode.
+	BOOL m_bDeleteOnFinalRelease;	 // If TRUE - Delete self OnFinalRelease() call.
+	BOOL m_bDisableRedraw; // If TRUE - control window is not redraw, it is draw last window content
+						   // (draw cached bitmap). FALSE by default.
+	BOOL m_bTimelineMode;  // flag to separate timeline (if TRUE) and other calendar modes
 	XTPCalendarViewType m_eViewType; // current view type
-	int m_nTimelineScale; // current timeline scale type
-	int m_nCaptionHeight; // height param - can be used for custom layout adjustment
-	BOOL m_bPreventAutoAllDayMode; // Flag to prevent dragging event into AllDay zone
-	BOOL m_bMultiColorScheduleMode; // Flag to show Schedules titles in different colors
-	BOOL m_bMultiColumnWeekMode; // Flag to select Outlook2007 and Outlook2003 behavior
-	BOOL m_bHideCaptionBar; // Flag to Hide Caption Bar when TimeLine mode used
-	BOOL m_bReadOnlyMode; // View- and Print-only mode to use Calendar
+	int m_nTimelineScale;			 // current timeline scale type
+	int m_nCaptionHeight;			 // height param - can be used for custom layout adjustment
+	BOOL m_bPreventAutoAllDayMode;   // Flag to prevent dragging event into AllDay zone
+	BOOL m_bMultiColorScheduleMode;  // Flag to show Schedules titles in different colors
+	BOOL m_bMultiColumnWeekMode;	 // Flag to select Outlook2007 and Outlook2003 behavior
+	BOOL m_bHideCaptionBar;			 // Flag to Hide Caption Bar when TimeLine mode used
+	BOOL m_bReadOnlyMode;			 // View- and Print-only mode to use Calendar
 	BOOL m_bFullDateMode; // Useful for Multi-schedules case flag to use DayHeader special format
-	BOOL m_bTooltipUnderMouse; // 2-way tooltip positioning - TRUE - under mouse cursor, FALSE - on the top of mouse cursor
+	BOOL m_bTooltipUnderMouse; // 2-way tooltip positioning - TRUE - under mouse cursor, FALSE - on
+							   // the top of mouse cursor
 
-	BOOL m_bShowLinks; //flag to show or hide 'virtual' view events
-	BOOL m_bHideLinkContainer; //flag to hide or show 'virtual' view events container column
-	BOOL m_bPromptToDeleteRecurrentEvent; //flag to use Ocurrence or Master case selector (default = TRUE)
-	BOOL m_bDeleteOcurrenceEventIfNoPrompt; //True to delete Ocurrence event, False - delete Master (default = TRUE)
+	BOOL m_bShowLinks;		   // flag to show or hide 'virtual' view events
+	BOOL m_bHideLinkContainer; // flag to hide or show 'virtual' view events container column
+	BOOL m_bPromptToDeleteRecurrentEvent; // flag to use Ocurrence or Master case selector (default
+										  // = TRUE)
+	BOOL m_bDeleteOcurrenceEventIfNoPrompt; // True to delete Ocurrence event, False - delete Master
+											// (default = TRUE)
 
-	CString m_OwnerUser;  // string as current user name place holder
-	CString m_sCustomFormat4Tooltip; // Free-styled tooltip tag-based way to fill tooltip string used tags &lt;BODY&gt;,&lt;LOC&gt;,&lt;SUBJ&gt;,&lt;TIME&gt; in any combination with fillers
-	CString m_sCustomTitle; //used for unique title - e.g. for PrintJob name
-	BOOL m_bForcePagination; //flag to Force Pagination during PrintPreview
-	BOOL m_bShowTooltipForNotFocused; //flag to Show Tooltip For Not Focused Control
-	BOOL m_bShowTooltipForAllDayEvents; //flag to Show Tooltip For All Day Events
-	BOOL m_bSwitchToDayViewIfPickedSingleDay; //flag to switch to DatView on DatePicker one day selection (if TRUE) or keep previous view (FALSE)
-	BOOL m_bMultipleSchedulesMode; //flag to use MutilpleSchedulesModel (one event - many view events case)
-	BOOL m_bMultipleSchedulesNoSelfLinks; //flag to use MutilpleSchedulesModel (one event - many view events case - allow to eliminate selflinks)
+	CString m_OwnerUser;			 // string as current user name place holder
+	CString m_sCustomFormat4Tooltip; // Free-styled tooltip tag-based way to fill tooltip string
+									 // used tags &lt;BODY&gt;,&lt;LOC&gt;,&lt;SUBJ&gt;,&lt;TIME&gt;
+									 // in any combination with fillers
+	CString m_sCustomTitle;			 // used for unique title - e.g. for PrintJob name
+	BOOL m_bForcePagination;		 // flag to Force Pagination during PrintPreview
+	BOOL m_bShowTooltipForNotFocused;		  // flag to Show Tooltip For Not Focused Control
+	BOOL m_bShowTooltipForAllDayEvents;		  // flag to Show Tooltip For All Day Events
+	BOOL m_bSwitchToDayViewIfPickedSingleDay; // flag to switch to DatView on DatePicker one day
+											  // selection (if TRUE) or keep previous view (FALSE)
+	BOOL m_bMultipleSchedulesMode; // flag to use MutilpleSchedulesModel (one event - many view
+								   // events case)
+	BOOL m_bMultipleSchedulesNoSelfLinks; // flag to use MutilpleSchedulesModel (one event - many
+										  // view events case - allow to eliminate selflinks)
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to retrieve a type of the data provider from
-	//     its connection string.
-	// Parameters:
-	//     lpszConnectionString - A text Calendar connection string.
-	//     eDPDefault           - Default data provider type to be returned if
-	//                            it can't be determined from the string.
-	// Remarks:
-	//     This is a helper method which parses a connection string and
-	//     identifies a type of the data provider which is specified there.
-	// Returns:
-	//     One of the values from XTPCalendarDataProvider enumeration.
-	// See Also:
-	//     DataSourceFromConStr(), CreateDataProvider()
-	//-----------------------------------------------------------------------
-	static XTPCalendarDataProvider AFX_CDECL DataProviderTypeFromConStr(
-										LPCTSTR lpszConnectionString,
-										XTPCalendarDataProvider eDPDefault = xtpCalendarDataProviderUnknown);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to retrieve a data source connection string from
-	//     a regular Calendar connection string.
-	// Parameters:
-	//     lpszConnectionString - A text Calendar connection string.
-	// Remarks:
-	//     This is a helper method which parses a connection string and
-	//     identifies a data source connection string there.
-	// Returns:
-	//     Identified data source connection string.
-	// See Also:
-	//     DataProviderTypeFromConStr(), CreateDataProvider()
-	//-----------------------------------------------------------------------
-	static CString AFX_CDECL DataSourceFromConStr(LPCTSTR lpszConnectionString);
+	// custom time intervals for reminder
+	CMap<int, int, CString, CString&> m_mapCustomReminderValues;
+	BOOL m_bIgnoreDefaultReminderValues;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1698,44 +1809,76 @@ public:
 	//     Pointer to the created Calendar Data Provider object.
 	//-----------------------------------------------------------------------
 	static CXTPCalendarData* AFX_CDECL CreateDataProvider(XTPCalendarDataProvider eDataProvider);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve a type of the data provider from
+	//     its connection string.
+	// Parameters:
+	//     lpszConnectionString - A text Calendar connection string.
+	//     eDPDefault           - Default data provider type to be returned if
+	//                            it can't be determined from the string.
+	// Remarks:
+	//     This is a helper method which parses a connection string and
+	//     identifies a type of the data provider which is specified there.
+	// Returns:
+	//     One of the values from XTPCalendarDataProvider enumeration.
+	// See Also:
+	//     DataSourceFromConStr(), CreateDataProvider()
+	//-----------------------------------------------------------------------
+	static XTPCalendarDataProvider AFX_CDECL DataProviderTypeFromConStr(
+		LPCTSTR lpszConnectionString,
+		XTPCalendarDataProvider eDPDefault = xtpCalendarDataProviderUnknown);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve a data source connection string from
+	//     a regular Calendar connection string.
+	// Parameters:
+	//     lpszConnectionString - A text Calendar connection string.
+	// Remarks:
+	//     This is a helper method which parses a connection string and
+	//     identifies a data source connection string there.
+	// Returns:
+	//     Identified data source connection string.
+	// See Also:
+	//     DataProviderTypeFromConStr(), CreateDataProvider()
+	//-----------------------------------------------------------------------
+	static CString AFX_CDECL DataSourceFromConStr(LPCTSTR lpszConnectionString);
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPCalendarControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPCalendarControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											UINT nID, CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-
-AFX_INLINE CXTPCalendarPaintManager* CXTPCalendarControl::GetPaintManager()
+AFX_INLINE CXTPCalendarPaintManager* CXTPCalendarControl::GetPaintManager() const
 {
 	ASSERT(this);
 	return this ? m_pPaintManager : NULL;
 }
-
-AFX_INLINE CXTPCalendarTheme* CXTPCalendarControl::GetTheme()
+AFX_INLINE CXTPCalendarTheme* CXTPCalendarControl::GetTheme() const
 {
 	ASSERT(this);
 	return this ? m_pTheme : NULL;
 }
-
-AFX_INLINE CXTPNotifyConnection* CXTPCalendarControl::GetConnection()
+AFX_INLINE CXTPNotifyConnection* CXTPCalendarControl::GetConnection() const
 {
 	ASSERT(this);
-	return this ? m_pConnect : NULL;
+	return this ? m_pConnection : NULL;
 }
-
-AFX_INLINE CXTPCalendarRemindersManager* CXTPCalendarControl::GetRemindersManager()
+AFX_INLINE CXTPCalendarRemindersManager* CXTPCalendarControl::GetRemindersManager() const
 {
 	ASSERT(this);
 	return this ? m_pRemindersManager : NULL;
 }
-
 AFX_INLINE BOOL CXTPCalendarControl::IsToolTipsEnabled() const
 {
 	return m_bEnableToolTips;
 }
-
 AFX_INLINE void CXTPCalendarControl::EnableToolTips(BOOL bEnable)
 {
 	if (!bEnable && IsToolTipVisible())
@@ -1744,20 +1887,42 @@ AFX_INLINE void CXTPCalendarControl::EnableToolTips(BOOL bEnable)
 	}
 	m_bEnableToolTips = bEnable;
 }
-
 AFX_INLINE void CXTPCalendarControl::EnableSendNotifications(BOOL bEnable)
 {
 	m_bEnableSendNotifications = bEnable;
 }
-
 AFX_INLINE BOOL CXTPCalendarControl::IsMarkupEnabled() const
 {
 	return m_pMarkupContext != NULL;
 }
-
-AFX_INLINE CXTPMarkupContext* CXTPCalendarControl::GetMarkupContext()
+AFX_INLINE CXTPMarkupContext* CXTPCalendarControl::GetMarkupContext() const
 {
 	return m_pMarkupContext;
 }
+AFX_INLINE CXTPCalendarView* CXTPCalendarControl::GetActiveView() const
+{
+	return m_pActiveView;
+}
+AFX_INLINE CXTPCalendarDayView* CXTPCalendarControl::GetDayView() const
+{
+	return m_pDayView;
+}
+AFX_INLINE CXTPCalendarWeekView* CXTPCalendarControl::GetWeekView() const
+{
+	return m_pWeekView;
+}
+AFX_INLINE CXTPCalendarMonthView* CXTPCalendarControl::GetMonthView() const
+{
+	return m_pMonthView;
+}
+AFX_INLINE CXTPCalendarTimeLineView* CXTPCalendarControl::GetTimeLineView() const
+{
+	return m_pTimeLineView;
+}
+AFX_INLINE CXTPCalendarOptions* CXTPCalendarControl::GetCalendarOptions() const
+{
+	return m_pOptions;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARCONTROL_H__)

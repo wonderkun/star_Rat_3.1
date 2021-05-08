@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR))
 #ifdef _WIN32
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 #pragma code_page(949)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "표준 색"
+	XTP_IDS_RECENT_COLORS    "최근 색상"
+	XTP_IDS_THEME_COLORS     "테마 색"
+	XTP_IDS_TAGCLOUD_TIP     "태그 %s, %d 점수"
     XTP_IDS_TIPTEXT          "팁 내용"
     XTP_IDS_DIDYOUKNOW       "알고 계십니까..."
     XTP_IDS_FILE_ABSENT      "파일이 존재하지 않습니다."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "자세한 정보 숨기기"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "배경 1"
+    XTP_IDS_BACKGROUND2        "배경 2"
+    XTP_IDS_TEXT1              "텍스트 1"
+    XTP_IDS_TEXT2              "텍스트 2"
+    XTP_IDS_ACCENT1            "악센트 1"
+    XTP_IDS_ACCENT2            "악센트 2"
+    XTP_IDS_ACCENT3            "악센트 3"
+    XTP_IDS_ACCENT4            "악센트 4"
+    XTP_IDS_ACCENT5            "악센트 5"
+    XTP_IDS_ACCENT6            "악센트 6"
+    XTP_IDS_LIGHTER            "거룻배"
+    XTP_IDS_DARKER             "어두운"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR))

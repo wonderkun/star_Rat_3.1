@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ARA)
 #ifdef _WIN32
 LANGUAGE LANG_ARABIC, SUBLANG_ARABIC_SAUDI_ARABIA
 #pragma code_page(1256)
@@ -145,22 +144,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "«·ﬁÊ«∆„"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "«·ﬁÊ«∆„ «· ÿ»Ìﬁ",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "”Ì«ﬁ «·ﬁÊ«∆„",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           ": ŸÂ— «·ﬁ«∆„…",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "≈⁄«œ…  ⁄ÌÌ‰",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "«·ﬁ«∆„… «·«› —«÷Ì…\n«·ﬁ«∆„… «·«› —«÷Ì…",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           ":«Œ Ì«— ﬁ«∆„… «·”Ì«ﬁ",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "≈⁄«œ…  ⁄ÌÌ‰",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -225,7 +224,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       " Œ’Ì’"
     XTP_IDS_NEWMENU         "ﬁ«∆„… ÃœÌœ…"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR " Œ’Ì’ ‘—Ìÿ «·Õ«·…"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -264,7 +263,7 @@ BEGIN
                             "Â–« «·«Œ ’«— „⁄Ì‰ Õ«·Ì«.\nÂ·  —Ìœ √⁄«œ…  ⁄ÌÌ‰Âø"
     XTP_IDS_CONFIRM_UPDATE  "”»»  ÕœÌÀ «·»—«„Ã  €Ì— ›Ì ‘—Ìÿ «·√œÊ«  '%s' . Â·  —€» »≈⁄«œ…  ⁄ÌÌ‰ ‘—Ìÿ «·√œÊ«  «·„Œ’’ Ê Õ„Ì·Â „‰ ÃœÌœø"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "ﬂ«›… „·›«  «·’Ê—|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|All Files(*.*)|*.*||"
+                            "Ã„Ì⁄ «·„·›«  ’Ê—… | * bmp∫. * wmf∫ * emf∫ * ico∫ * dib∫ * png∫ * cur∫ * gif∫ * jpg | «·’Ê— «·‰ﬁÿÌ… (* bmp∫... * dib∫ . * png∫ * gif∫ * jpg) | * bmp∫.. * dib∫ * png∫ * gif∫ * jpg | „·›«  «· ⁄—Ì› (* wmf∫. * emf) | * wmf∫ *. emf | √ÌﬁÊ‰«  (*ico∫. * cur) | * ico∫. | (* *). * cur ﬂ«›… «·„·›«  | * * | |"
     XTP_ID_TOOLBAR_EXPAND   "\nŒÌ«—«  ‘—Ìÿ «·√œÊ« "
     XTP_ID_TOOLBAR_HIDE     "\n≈€·«ﬁ"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -272,7 +271,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\n«” ⁄«œ… «·≈ÿ«—"
     XTP_ID_MENUBAR_MINIMIZE "\n ’€Ì— «·≈ÿ«—"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY " „ «·÷€ÿ (%s). ›Ì «‰ Ÿ«— «·„› «Õ «·À«‰Ì „‰ Ê — ..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -307,22 +306,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\n≈‰ ﬁ· ≈·Ï „ﬁ»÷ «·„Ã„Ê⁄… «·À«‰Ì…"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\n„ﬁ»÷ „Ã„Ê⁄… «›ﬁÌ ÃœÌœ"
     XTP_ID_WORKSPACE_NEWVERTICAL "\n„ﬁ»÷ „Ã„Ê⁄… ⁄„ÊœÌ ÃœÌœ"
-    XTP_ID_WORKSPACE_CANCEL "≈·€«¡ «·√„—"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_CANCEL "\n≈·€«¡ «·√„—"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "«·„·›«  «·‰‘ÿ…"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "ÿ»«⁄… Â–« «·»‰œ „⁄«Ì‰ Â«\nÿ»«⁄…"
+    XTP_ID_PREVIEW_PREV     "«‰ ﬁ· ≈·Ï «·’›Õ… «·”«»ﬁ…\n«·’›Õ… «·”«»ﬁ…"
+    XTP_ID_PREVIEW_NEXT     "«‰ ﬁ· ≈·Ï «·’›Õ… «· «·Ì…\n«·’›Õ… «· «·Ì…"
+    XTP_ID_PREVIEW_ZOOMIN   "“Ì«œ… «· ﬂ»Ì— „‰ ’›Õ… «·„⁄«Ì‰…\n«· ﬂ»Ì— ›Ì"
+    XTP_ID_PREVIEW_ZOOMOUT  " ﬁ·Ì· «· ﬂ»Ì— „‰ ’›Õ… «·„⁄«Ì‰…\n ’€Ì—"
+    XTP_ID_PREVIEW_ONEPAGE  "’›Õ… Ê«Õœ…"
+    XTP_ID_PREVIEW_TWOPAGE  "’›Õ«  „ ⁄œœ…"
+    XTP_ID_PREVIEW_CLOSE    "≈€·«ﬁ «·„⁄«Ì‰…\nÊÀÌﬁ… „⁄«Ì‰…"
+    XTP_IDS_PREVIEW_WHOLEPAGE "ﬂ«„· «·’›Õ…"
+    XTP_IDS_PREVIEW_PAGEWIDTH "«·’›Õ… «·⁄—÷"
+    XTP_IDS_PREVIEW_PAGEI     "%i ’›Õ…"
+    XTP_IDS_PREVIEW_PAGEIOFI  "%i „‰ %i ’›Õ…"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ARA)

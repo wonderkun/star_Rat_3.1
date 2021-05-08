@@ -1,7 +1,6 @@
 // XTPControl.h : interface for the CXTPControl class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROL_H__)
-#define __XTPCONTROL_H__
+#	define __XTPCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Common/XTPSystemHelpers.h"
-#include "XTPCommandBarsDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControl;
 class CXTPControls;
@@ -46,7 +44,8 @@ class CXTPControlActions;
 
 //===========================================================================
 // Summary:
-//     CXTPControlAction is a CCmdTarget derived class. It represents the single action of controls.
+//     CXTPControlAction is a CXTPCmdTarget derived class. It represents the single action of
+//     controls.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPControlAction : public CXTPCmdTarget
 {
@@ -76,7 +75,7 @@ public:
 	// See Also: SetPrompt, SetDescription, SetTooltip
 	//-----------------------------------------------------------------------
 	void SetCaption(LPCTSTR lpszCaption);
-	void SetCaption(UINT nIDCaption);// <combine CXTPControl::SetCaption@LPCTSTR>
+	void SetCaption(UINT nIDCaption); // <combine CXTPControl::SetCaption@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -282,6 +281,22 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member to set the custom shortcut string to the action.
+	// Parameters:
+	//     lpszCustomShortcutText - Shortcut to be set.
+	//-----------------------------------------------------------------------
+	void SetCustomShortcutText(LPCTSTR lpszCustomShortcutText);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the action's custom shortcut text.
+	// Returns:
+	//     The shortcut of the control.
+	//-----------------------------------------------------------------------
+	CString GetCustomShortcutText() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to set the keyboard tip to the action.
 	// Parameters:
 	//     lpszKeyboardTip - Keyboard tip to be set.
@@ -336,7 +351,8 @@ public:
 	//          1. In the Designer add all actions you need to the
 	//             ActionLibrary pane ( and Save them).
 	//
-	//          Note:  The Actions Pane is a way to save and "Re-use" commands.  Always add controls to this library first so they can be re-used in other xcb or xml files.
+	//          Note:  The Actions Pane is a way to save and "Re-use" commands.  Always add controls
+	//          to this library first so they can be re-used in other xcb or xml files.
 	//          2. Now you need to drag the actions from the ActionLibrary
 	//             pane to the Controls pane and then from the Controls pane
 	//             to the Toolbars and Menus.
@@ -366,7 +382,8 @@ public:
 	//          1. In the Designer add all actions you need to the
 	//             ActionLibrary pane ( and Save them).
 	//
-	//          Note:  The Actions Pane is a way to save and "Re-use" commands.  Always add controls to this library first so they can be re-used in other xcb or xml files.
+	//          Note:  The Actions Pane is a way to save and "Re-use" commands.  Always add controls
+	//          to this library first so they can be re-used in other xcb or xml files.
 	//          2. Now you need to drag the actions from the ActionLibrary
 	//             pane to the Controls pane and then from the Controls pane
 	//             to the Toolbars and Menus.
@@ -428,7 +445,6 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when new control attached to the Action
@@ -471,30 +487,59 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnChanging(int nProperty);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlAction);
+
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+	BSTR OleGetEditHint();
+	COleVariant m_oleTag;
+
+	enum
+	{
+		dispidCaption		  = 4L,
+		dispidDescriptionText = 5L,
+		dispidId			  = 6L,
+		dispidParameter		  = 8L,
+		dispidShortcutText	= 9L,
+		dispidTooltipText	 = 10L,
+		dispidVisible		  = 12L,
+		dispidEnabled		  = 13L,
+		dispidChecked		  = 14L,
+		dispidIconId		  = 15L,
+		dispidCategory		  = 19L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 public:
-	CCmdTarget* m_pTarget;          // Parameter of action
+	CCmdTarget* m_pTarget; // Parameter of action
 
 protected:
-	DWORD_PTR m_nTag;               // Action tag.
-	int m_nId;                      // Identifier of the action.
-	int m_nIconId;                  // Identifier of the action's image.
-	int m_nHelpId;                  // Help identifier
-	BOOL m_bEnabled;                // TRUE if the action is enabled.
-	BOOL m_bChecked;                // TRUE if the action is checked.
-	BOOL m_bVisible;                // TRUE if action is visible
-	CString m_strCaption;           // Caption of the action.
-	CString m_strTooltipText;       // Tooltip text.
-	CString m_strDescriptionText;   // Description text.
-	CString m_strCategory;          // Category of the action.
-	CString m_strShortcutText;      // Shortcut text
-	CString m_strEditHint;          // Edit Hint for Combo and Edit Controls
-	CString m_strKeyboardTip;       // Keyboard tip
-	CString m_strKey;               // Key
+	DWORD_PTR m_nTag;				 // Action tag.
+	int m_nId;						 // Identifier of the action.
+	int m_nIconId;					 // Identifier of the action's image.
+	int m_nHelpId;					 // Help identifier
+	BOOL m_bEnabled;				 // TRUE if the action is enabled.
+	BOOL m_bChecked;				 // TRUE if the action is checked.
+	BOOL m_bVisible;				 // TRUE if action is visible
+	CString m_strCaption;			 // Caption of the action.
+	CString m_strTooltipText;		 // Tooltip text.
+	CString m_strDescriptionText;	// Description text.
+	CString m_strCategory;			 // Category of the action.
+	CString m_strShortcutText;		 // Shortcut text
+	CString m_strEditHint;			 // Edit Hint for Combo and Edit Controls
+	CString m_strKeyboardTip;		 // Keyboard tip
+	CString m_strKey;				 // Key
+	CString m_strCustomShortcutText; // Custom Shortcut Text
 
-	CArray<CXTPControl*, CXTPControl*> m_arrControls;   // Associated controls
-	CXTPControlActions* m_pActions; // Parent actions object
+	CArray<CXTPControl*, CXTPControl*> m_arrControls; // Associated controls
+	CXTPControlActions* m_pActions;					  // Parent actions object
 
 private:
 	friend class CXTPControl;
@@ -502,92 +547,142 @@ private:
 	friend class CXTPControlActions;
 };
 
-
-AFX_INLINE void CXTPControlAction::SetShortcutText(LPCTSTR lpszShortcutText) {
+AFX_INLINE void CXTPControlAction::SetShortcutText(LPCTSTR lpszShortcutText)
+{
 	m_strShortcutText = lpszShortcutText;
 }
-AFX_INLINE CString CXTPControlAction::GetShortcutText() const {
+AFX_INLINE CString CXTPControlAction::GetShortcutText() const
+{
 	return m_strShortcutText;
 }
-AFX_INLINE void CXTPControlAction::SetDescription(LPCTSTR lpszDescription) {
+AFX_INLINE void CXTPControlAction::SetCustomShortcutText(LPCTSTR lpszCustomShortcutText)
+{
+	m_strCustomShortcutText = lpszCustomShortcutText;
+}
+AFX_INLINE CString CXTPControlAction::GetCustomShortcutText() const
+{
+	return m_strCustomShortcutText;
+}
+AFX_INLINE void CXTPControlAction::SetDescription(LPCTSTR lpszDescription)
+{
 	m_strDescriptionText = lpszDescription;
 }
-AFX_INLINE CString CXTPControlAction::GetDescription() const {
+AFX_INLINE CString CXTPControlAction::GetDescription() const
+{
 	return m_strDescriptionText;
 }
-AFX_INLINE CString CXTPControlAction::GetTooltip() const {
+AFX_INLINE CString CXTPControlAction::GetTooltip() const
+{
 	return m_strTooltipText;
 }
-AFX_INLINE void CXTPControlAction::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPControlAction::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltipText = lpszTooltip;
 }
-AFX_INLINE CString CXTPControlAction::GetKey() const {
+AFX_INLINE CString CXTPControlAction::GetKey() const
+{
 	return m_strKey;
 }
-AFX_INLINE void CXTPControlAction::SetKey(LPCTSTR lpszKey) {
+AFX_INLINE void CXTPControlAction::SetKey(LPCTSTR lpszKey)
+{
 	m_strKey = lpszKey;
 }
-AFX_INLINE CString CXTPControlAction::GetCaption() const {
+AFX_INLINE CString CXTPControlAction::GetCaption() const
+{
 	return m_strCaption.IsEmpty() ? m_strTooltipText : m_strCaption;
 }
-AFX_INLINE CString CXTPControlAction::GetEditHint() const {
+AFX_INLINE CString CXTPControlAction::GetEditHint() const
+{
 	return m_strEditHint;
 }
-AFX_INLINE int CXTPControlAction::GetID () const {
+AFX_INLINE int CXTPControlAction::GetID() const
+{
 	return m_nId;
 }
-AFX_INLINE void CXTPControlAction::SetIconId(int nId) {
-	if (m_nIconId != nId) {m_nIconId = nId; RedrawControls();}
+AFX_INLINE void CXTPControlAction::SetIconId(int nId)
+{
+	if (m_nIconId != nId)
+	{
+		m_nIconId = nId;
+		RedrawControls();
+	}
 }
-AFX_INLINE int CXTPControlAction::GetIconId() const {
+AFX_INLINE int CXTPControlAction::GetIconId() const
+{
 	return m_nIconId <= 0 ? m_nId : m_nIconId;
 }
-AFX_INLINE void CXTPControlAction::SetHelpId(int nId) {
+AFX_INLINE void CXTPControlAction::SetHelpId(int nId)
+{
 	m_nHelpId = nId;
 }
-AFX_INLINE int CXTPControlAction::GetHelpId() const {
+AFX_INLINE int CXTPControlAction::GetHelpId() const
+{
 	return m_nHelpId <= 0 ? m_nId : m_nHelpId;
 }
 
-AFX_INLINE void CXTPControlAction::SetEnabled(BOOL bEnabled) {
-	if (m_bEnabled != bEnabled) {m_bEnabled = bEnabled; OnChanged(0); RedrawControls();}
+AFX_INLINE void CXTPControlAction::SetEnabled(BOOL bEnabled)
+{
+	if (m_bEnabled != bEnabled)
+	{
+		m_bEnabled = bEnabled;
+		OnChanged(0);
+		RedrawControls();
+	}
 }
-AFX_INLINE BOOL CXTPControlAction::GetChecked() const {
+AFX_INLINE BOOL CXTPControlAction::GetChecked() const
+{
 	return m_bChecked;
 }
-AFX_INLINE void CXTPControlAction::SetChecked(BOOL bChecked) {
-	if (m_bChecked != bChecked) {m_bChecked = bChecked; OnChanged(1); RedrawControls();}
+AFX_INLINE void CXTPControlAction::SetChecked(BOOL bChecked)
+{
+	if (m_bChecked != bChecked)
+	{
+		m_bChecked = bChecked;
+		OnChanged(1);
+		RedrawControls();
+	}
 }
-AFX_INLINE BOOL CXTPControlAction::IsVisible() const {
+AFX_INLINE BOOL CXTPControlAction::IsVisible() const
+{
 	return m_bVisible;
 }
-AFX_INLINE void CXTPControlAction::SetVisible(BOOL bVisible) {
-	if (m_bVisible != bVisible) { m_bVisible = bVisible; OnChanged(2); RepositionControls();}
+AFX_INLINE void CXTPControlAction::SetVisible(BOOL bVisible)
+{
+	if (m_bVisible != bVisible)
+	{
+		m_bVisible = bVisible;
+		OnChanged(2);
+		RepositionControls();
+	}
 }
-AFX_INLINE void CXTPControlAction::SetCategory(LPCTSTR lpszCategory) {
+AFX_INLINE void CXTPControlAction::SetCategory(LPCTSTR lpszCategory)
+{
 	m_strCategory = lpszCategory;
 }
-AFX_INLINE CString CXTPControlAction::GetCategory() const {
+AFX_INLINE CString CXTPControlAction::GetCategory() const
+{
 	return m_strCategory;
 }
-AFX_INLINE void CXTPControlAction::SetTag(DWORD_PTR dwTag) {
+AFX_INLINE void CXTPControlAction::SetTag(DWORD_PTR dwTag)
+{
 	m_nTag = dwTag;
 }
-AFX_INLINE DWORD_PTR CXTPControlAction::GetTag() const {
+AFX_INLINE DWORD_PTR CXTPControlAction::GetTag() const
+{
 	return m_nTag;
 }
-AFX_INLINE void CXTPControlAction::SetKeyboardTip(LPCTSTR lpszKeyboardTip) {
+AFX_INLINE void CXTPControlAction::SetKeyboardTip(LPCTSTR lpszKeyboardTip)
+{
 	m_strKeyboardTip = lpszKeyboardTip;
 }
-AFX_INLINE CString CXTPControlAction::GetKeyboardTip() const {
+AFX_INLINE CString CXTPControlAction::GetKeyboardTip() const
+{
 	return m_strKeyboardTip;
 }
 
-
-
 //===========================================================================
 // Summary:
-//     CXTPControlActions is a CCmdTarget derived class. It represents a collection
+//     CXTPControlActions is a CXTPCmdTarget derived class. It represents a collection
 //     of the actions.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPControlActions : public CXTPCmdTarget
@@ -646,7 +741,8 @@ public:
 	//     A pointer to the added action.
 	//-----------------------------------------------------------------------
 	CXTPControlAction* Add(int nId);
-	CXTPControlAction* Add(int nId, CXTPControlAction* pAction); // <combine CXTPControlActions::Add@int>
+	CXTPControlAction* Add(int nId,
+						   CXTPControlAction* pAction); // <combine CXTPControlActions::Add@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -678,10 +774,35 @@ public:
 	void CreateFromMenu(CMenu* pMenu);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlActions);
+	DECLARE_ENUM_VARIANT(CXTPControlActions);
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg LPDISPATCH OleAdd(int nId, LPCTSTR lpszCaption, LPCTSTR lpszTooltipText,
+							  LPCTSTR lpszDescriptionText, LPCTSTR lpszCategory);
+
+	afx_msg LPDISPATCH OleFind(int nId);
+	afx_msg VOID OleRemove(int nId);
+
+	enum
+	{
+		dispidCount		  = 1L,
+		dispidAdd		  = 2L,
+		dispidFindControl = 4L,
+		dispidRemove	  = 6L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Input:   pAction - Reference to the action to add to the collection
 	//                    of actions
@@ -697,10 +818,9 @@ protected:
 	//-----------------------------------------------------------------------
 	void SetActionId(CXTPControlAction* pAction, int nId);
 
-
 protected:
-	CArray<CXTPControlAction*, CXTPControlAction*> m_arrActions;    // Actions array
-	CXTPCommandBars* m_pCommandBars;        // Parent CommandBars object
+	CArray<CXTPControlAction*, CXTPControlAction*> m_arrActions; // Actions array
+	CXTPCommandBars* m_pCommandBars;							 // Parent CommandBars object
 
 	friend class CXTPCommandBars;
 	friend class CXTPControlAction;
@@ -708,10 +828,12 @@ protected:
 
 //===========================================================================
 // Summary:
-//     CXTPControl is a CCmdTarget derived class. It represents the parent
+//     CXTPControl is a CXTPCmdTarget derived class. It represents the parent
 //     class for the command bar's controls.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControl : public CXTPCmdTarget, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPControl
+	: public CXTPCmdTarget
+	, public CXTPAccessible
 {
 private:
 	class CDocTemplateMap : public CMap<UINT, UINT, BOOL, BOOL>
@@ -719,7 +841,6 @@ private:
 	public:
 		void Copy(CDocTemplateMap& map);
 	};
-
 
 protected:
 	//-----------------------------------------------------------------------
@@ -739,7 +860,8 @@ public:
 	// Summary:
 	//     Call this member to set the style of the control.
 	// Parameters:
-	//     buttonStyle - The style to be set. Can be any of the values listed in the Remarks section.
+	//     buttonStyle - The style to be set. Can be any of the values listed in the Remarks
+	//     section.
 	// Remarks:
 	//     buttonStyle parameter can be one of the following:
 	//         * <b>xtpButtonAutomatic</b> Indicates the default style.
@@ -755,10 +877,9 @@ public:
 	// Returns:
 	//     The style of the control.
 	//-----------------------------------------------------------------------
-	XTPButtonStyle GetStyle()  const;
+	XTPButtonStyle GetStyle() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to set the caption of the control.
@@ -768,7 +889,7 @@ public:
 	// See Also: SetPrompt, SetDescription, SetTooltip
 	//-----------------------------------------------------------------------
 	void SetCaption(LPCTSTR lpszCaption);
-	void SetCaption(UINT nIDCaption);// <combine CXTPControl::SetCaption@LPCTSTR>
+	void SetCaption(UINT nIDCaption); // <combine CXTPControl::SetCaption@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -846,11 +967,28 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member to set the text displayed for the shortcut in a popup menu.
+	// Parameters:
+	//     lpszCustomShortcutText - Keyboard tip to be set.
+	//-----------------------------------------------------------------------
+	void SetCustomShortcutText(LPCTSTR lpszCustomShortcutText);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the contol's text displayed for the shortcut in a popup menu.
+	// Returns:
+	//     The  keyboard tip of the control.
+	//-----------------------------------------------------------------------
+	CString GetCustomShortcutText() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to set the parameter of the control.
 	// Parameters:
 	//     lpszParameter - Parameter to be set.
 	// Remarks:
-	//     This method sets CString value associated with the control, use SetTag to set numeric parameter.
+	//     This method sets CString value associated with the control, use SetTag to set numeric
+	//     parameter.
 	// See Also: SetTag, GetParameter
 	//-----------------------------------------------------------------------
 	void SetParameter(LPCTSTR lpszParameter);
@@ -955,7 +1093,6 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL GetEnabled() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when control enable state was changed
@@ -989,6 +1126,21 @@ public:
 	//-----------------------------------------------------------------------
 	virtual int GetSelected() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to set whether the control is a part of Quick access panel.
+	// Parameters:
+	//     bFocused - TRUE to set that the control is a part of Quick access panel
+	//-----------------------------------------------------------------------
+	void SetOnQuickAccess(BOOL bOnQuicAccess = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get whether the control is a part of Quick access panel.
+	// Returns:
+	//     TRUE if the control is a part of Quick access panel; otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsOnQuickAccess() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1087,9 +1239,12 @@ public:
 	// Returns:
 	//     The type of the control. It can be one of the following:
 	//         * <b>xtpControlButton</b> Indicates the control is simple button (CXTPControlButton)
-	//         * <b>xtpControlPopup</b> Indicates the control is simple popup button. (CXTPControlPopup)
-	//         * <b>xtpControlButtonPopup</b> Indicates the control is popup button with icon (CXTPControlPopup)
-	//         * <b>xtpControlSplitButtonPopup</b> Indicates the control is split button popup.(CXTPControlPopup)
+	//         * <b>xtpControlPopup</b> Indicates the control is simple popup button.
+	//         (CXTPControlPopup)
+	//         * <b>xtpControlButtonPopup</b> Indicates the control is popup button with icon
+	//         (CXTPControlPopup)
+	//         * <b>xtpControlSplitButtonPopup</b> Indicates the control is split button
+	//         popup.(CXTPControlPopup)
 	//         * <b>xtpControlComboBox</b> Indicates the control is combo box (CXTPControlComboBox)
 	//         * <b>xtpControlEdit</b> Indicates the control is edit control (CXTPControlEdit)
 	//         * <b>xtpControlLabel</b> Indicates the control is label (CXTPControlLabel)
@@ -1109,7 +1264,8 @@ public:
 	//         * <b>xtpFlagLeftPopup</b> Indicates the child bar should pop-up on the left.
 	//         * <b>xtpFlagManualUpdate</b> Indicates the control is manually updated.
 	//         * <b>xtpFlagNoMovable</b> Indicates the control's customization is disabled.
-	//         * <b>xtpFlagControlStretched</b> Indicates the control is stretched in the parent command bar.
+	//         * <b>xtpFlagControlStretched</b> Indicates the control is stretched in the parent
+	//         command bar.
 	// See Also: GetFlags, XTPControlFlags
 	//-----------------------------------------------------------------------
 	void SetFlags(DWORD dwFlags);
@@ -1211,10 +1367,12 @@ public:
 	// Returns:
 	//     TRUE if paint manager must skip filling background of control
 	//-----------------------------------------------------------------------
-	virtual BOOL IsTransparent() const { return FALSE;}
+	virtual BOOL IsTransparent() const
+	{
+		return FALSE;
+	}
 
 public:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to hide the control.
@@ -1259,7 +1417,6 @@ public:
 	// See Also: XTPControlHideFlags, SetHideFlags
 	//----------------------------------------------------------------------
 	BOOL SetHideFlag(XTPControlHideFlags dwFlag, BOOL bSet);
-
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1494,7 +1651,7 @@ public:
 	//     TRUE if control is default menu item.
 	// See Also: SetItemDefault
 	//----------------------------------------------------------------------
-	BOOL IsItemDefault()  const;
+	BOOL IsItemDefault() const;
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1611,7 +1768,8 @@ public:
 	//----------------------------------------------------------------------
 	LRESULT NotifySite(UINT code);
 	LRESULT NotifySite(UINT code, NMXTPCONTROL* pNM); // <combine CXTPControl::NotifySite@UINT>
-	LRESULT NotifySite(CWnd* pSite, UINT code, NMXTPCONTROL* pNM); // <combine CXTPControl::NotifySite@UINT>
+	LRESULT NotifySite(CWnd* pSite, UINT code,
+					   NMXTPCONTROL* pNM); // <combine CXTPControl::NotifySite@UINT>
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1630,7 +1788,6 @@ public:
 	//     CXTPControlAction, SetAction
 	//----------------------------------------------------------------------
 	CXTPControlAction* GetAction() const;
-
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -1731,7 +1888,6 @@ public:
 	virtual BOOL IsCustomizeMovable() const;
 
 protected:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to check if control accept focus
@@ -1746,7 +1902,10 @@ protected:
 	// Parameters:
 	//     nIndex - Index of the control.
 	//----------------------------------------------------------------------
-	void SetIndex(int nIndex) { m_nIndex = nIndex; }
+	void SetIndex(int nIndex)
+	{
+		m_nIndex = nIndex;
+	}
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1785,7 +1944,10 @@ protected:
 	// Parameters:
 	//     pParent - Points to a CXTPCommandBar object
 	//----------------------------------------------------------------------
-	virtual void SetParent(CXTPCommandBar* pParent) { m_pParent = pParent;}
+	virtual void SetParent(CXTPCommandBar* pParent)
+	{
+		m_pParent = pParent;
+	}
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1921,7 +2083,8 @@ protected:
 	//     point       - Mouse position.
 	//     dropEffect  - DROPEFFECT enumerator.
 	//----------------------------------------------------------------------
-	virtual void OnCustomizeDragOver(CXTPControl* pDataObject, CPoint point, DROPEFFECT& dropEffect);
+	virtual void OnCustomizeDragOver(CXTPControl* pDataObject, CPoint point,
+									 DROPEFFECT& dropEffect);
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1933,7 +2096,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 	//----------------------------------------------------------------------
 	// Summary:
@@ -1947,8 +2111,8 @@ protected:
 	// Summary:
 	//     Retrieves available minimum width of control.
 	// Remarks:
-	//     This method is called in CustomizeStartResize to retrieve dimension of available rectangles
-	//     of resized control.
+	//     This method is called in CustomizeStartResize to retrieve dimension of available
+	//     rectangles of resized control.
 	// Returns:
 	//     Returns zero by default.
 	// See Also: CXTPControlComboBox::GetCustomizeMinWidth, CXTPControlEdit::GetCustomizeMinWidth
@@ -1959,8 +2123,8 @@ protected:
 	// Summary:
 	//     Retrieves available minimum height of the control.
 	// Remarks:
-	//     This method is called in CustomizeStartResize to retrieve dimension of available rectangles
-	//     of resized control.
+	//     This method is called in CustomizeStartResize to retrieve dimension of available
+	//     rectangles of resized control.
 	// Returns:
 	//     Returns zero by default.
 	// See Also: CXTPControlComboBox::GetCustomizeMinHeight, CXTPControlEdit::GetCustomizeMinHeight
@@ -2001,7 +2165,6 @@ protected:
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called from LoadCommandBars
@@ -2022,7 +2185,8 @@ protected:
 	//      pParam - Serialize parameters.
 	// See Also: RestoreCommandBarList
 	//-----------------------------------------------------------------------
-	virtual void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	virtual void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList,
+										XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2043,96 +2207,191 @@ protected:
 	virtual void OnActionChanging(int nProperty);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary: This method is called when the control's caption is changed
 	//-------------------------------------------------------------------------
 	virtual void OnCaptionChanged();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if right-to-left mode is active
+	// Returns:
+	//     TRUE if right-to-left mode is enabled and FALSE otherwise
+	//-----------------------------------------------------------------------
+	BOOL IsLayoutRTL() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determined if layout is changed (RTL to LTR or LTR to RLT)
+	// Returns:
+	//     TRUE if layout is changed
+	//-----------------------------------------------------------------------
+	BOOL IsLayoutChanged();
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleDescription(VARIANT varChild, BSTR* pszDescription);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
 	virtual HRESULT AccessibleDoDefaultAction(VARIANT varChild);
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
-	virtual HRESULT GetAccessibleKeyboardShortcut(VARIANT /*varChild*/, BSTR* /*pszKeyboardShortcut*/);
+	virtual HRESULT GetAccessibleKeyboardShortcut(VARIANT /*varChild*/,
+												  BSTR* /*pszKeyboardShortcut*/);
 
 	DECLARE_INTERFACE_MAP()
 
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void OnInvertTracker(CDC* pDC, CRect rect);
 	BOOL NeedPressOnExecute() const;
 
 protected:
-	DWORD_PTR m_nTag;               // Control tag.
-	int m_nIndex;                   // Index of the control.
-	int m_nId;                      // Identifier of the control.
-	int m_nIconId;                  // Identifier of the control's image.
-	int m_nHelpId;                  // Help identifier
-	int m_nCustomIconId;            // Identifier of the control's custom image.
-	BOOL m_bWrap;                   // TRUE if the control is wrapped.
-	BOOL m_bBeginGroup;             // TRUE if the control starts new group.
-	BOOL m_bEnabled;                // TRUE if the control is enabled.
-	BOOL m_bChecked;                // TRUE if the control is checked.
-	BOOL m_bSelected;               // TRUE if the control is selected.
-	BOOL m_bPressed;                // TRUE if the control is pushed.
-	BOOL m_bTemporary;              // TRUE if the control is temporary.
-	CRect m_rcRow;                  // Bounding rectangle of the control's row.
-	CRect m_rcControl;              // Bounding rectangle of the control.
-	DWORD m_dwHideFlags;            // Hidden flags.
-	DWORD m_dwFlags;                // Flags of the control.
-	CString m_strCaption;           // Caption of the control.
-	CString m_strCustomCaption;     // User defined caption.
-	CString m_strShortcutText;      // Shortcut text.
-	CString m_strShortcutTextAuto;  // Shortcut text.
-	CString m_strTooltipText;       // Tooltip text.
-	CString m_strDescriptionText;   // Description text.
-	CString m_strParameter;         // Parameter text.
-	CString m_strKeyboardTip;       // Keyboard tip
-	CXTPControls* m_pControls;      // Parent control collection
-	XTPControlType m_controlType;   // Type of the control.
-	CXTPCommandBar* m_pParent;      // The Parent command bar.
-	BOOL m_bExpanded;               // TRUE if the control is expanded.
+	DWORD_PTR m_nTag;			   // Control tag.
+	int m_nIndex;				   // Index of the control.
+	int m_nId;					   // Identifier of the control.
+	int m_nIconId;				   // Identifier of the control's image.
+	int m_nHelpId;				   // Help identifier
+	int m_nCustomIconId;		   // Identifier of the control's custom image.
+	BOOL m_bWrap;				   // TRUE if the control is wrapped.
+	BOOL m_bBeginGroup;			   // TRUE if the control starts new group.
+	BOOL m_bEnabled;			   // TRUE if the control is enabled.
+	BOOL m_bChecked;			   // TRUE if the control is checked.
+	BOOL m_bSelected;			   // TRUE if the control is selected.
+	BOOL m_bPressed;			   // TRUE if the control is pushed.
+	BOOL m_bTemporary;			   // TRUE if the control is temporary.
+	BOOL m_bOnQuickAccess;		   // TRUE if the control is a part of quick access panel.
+	CRect m_rcRow;				   // Bounding rectangle of the control's row.
+	CRect m_rcControl;			   // Bounding rectangle of the control.
+	DWORD m_dwHideFlags;		   // Hidden flags.
+	DWORD m_dwFlags;			   // Flags of the control.
+	CString m_strCaption;		   // Caption of the control.
+	CString m_strCustomCaption;	// User defined caption.
+	CString m_strShortcutText;	 // Shortcut text.
+	CString m_strShortcutTextAuto; // Shortcut text.
+	CString m_strTooltipText;	  // Tooltip text.
+	CString m_strDescriptionText;  // Description text.
+	CString m_strParameter;		   // Parameter text.
+	CString m_strKeyboardTip;	  // Keyboard tip
+	CXTPControls* m_pControls;	 // Parent control collection
+	XTPControlType m_controlType;  // Type of the control.
+	CXTPCommandBar* m_pParent;	 // The Parent command bar.
+	BOOL m_bExpanded;			   // TRUE if the control is expanded.
+	CString m_strCustomShortcutText;
 
-	CString m_strCategory;          // Category of the control.
-	BOOL m_bDefaultItem;            // TRUE if the item is default popup item;
+	CString m_strCategory; // Category of the control.
+	BOOL m_bDefaultItem;   // TRUE if the item is default popup item;
 
-	CDocTemplateMap m_mapDocTemplatesAssigned;  // Assigned templates.
-	CDocTemplateMap m_mapDocTemplatesExcluded;  // Excluded templates.
+	CDocTemplateMap m_mapDocTemplatesAssigned; // Assigned templates.
+	CDocTemplateMap m_mapDocTemplatesExcluded; // Excluded templates.
 
-	XTPButtonStyle m_buttonStyle;   // Button Style.
-	XTPButtonStyle m_buttonCustomStyle;         // User defined style of button.
-	XTPButtonStyle m_buttonRibbonStyle;         // User defined style of button.
+	XTPButtonStyle m_buttonStyle;		// Button Style.
+	XTPButtonStyle m_buttonCustomStyle; // User defined style of button.
+	XTPButtonStyle m_buttonRibbonStyle; // User defined style of button.
 
-	BOOL m_bCloseSubMenuOnClick;        // TRUE is sub-menus are closed as soon as a control is clicked.
-	CXTPRibbonGroup* m_pRibbonGroup;    // Ribbon group of control
+	BOOL m_bCloseSubMenuOnClick; // TRUE is sub-menus are closed as soon as a control is clicked.
+	CXTPRibbonGroup* m_pRibbonGroup; // Ribbon group of control
 
-	CXTPControlAction* m_pAction;       // Action of the control.
-	int m_nWidth;                       // Width of the control.
-	int m_nHeight;                      // Height of the control.
+	CXTPControlAction* m_pAction; // Action of the control.
+	int m_nWidth;				  // Width of the control.
+	int m_nHeight;				  // Height of the control.
 
-	int m_nExecuteOnPressInterval;      // Delay between each message when control is pressed.
+	int m_nExecuteOnPressInterval; // Delay between each message when control is pressed.
 
-	CSize m_szIcon;         // The size of the icon used for the control.
+	CSize m_szIcon; // The size of the icon used for the control.
 
+	BOOL m_bLayoutRTL; // Indicate does last layout is RTL
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControl);
+
+	afx_msg LPDISPATCH OleControls();
+	afx_msg LPDISPATCH OleParent();
+	afx_msg long OleGetIndex();
+	afx_msg long OleGetType();
+	afx_msg void OleDelete();
+	afx_msg LPDISPATCH OleCopy(LPDISPATCH lpDispBar, const VARIANT& varBefore);
+	afx_msg LPDISPATCH OleClone(const VARIANT& varBefore);
+
+	afx_msg void OleSetFocus();
+	afx_msg void OleExecute();
+
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleGetRect(long* pLeft, long* pTop, long* pRight, long* pBottom);
+	afx_msg LPDISPATCH OleGetRibbonGroup();
+	afx_msg void OleSetIconSize(long cx, long cy);
+	afx_msg LPDISPATCH OleGetCommandBar();
+
+	afx_msg int OleGetStyle();
+	afx_msg void OleSetStyle(int nStyle);
+	afx_msg void OleSetDescription(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetDescription();
+	afx_msg BSTR OleGetTooltipText();
+	afx_msg void OleSetTooltipText(LPCTSTR lpszCaption);
+	afx_msg void OleSetCategory(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCategory();
+	afx_msg void OleSetShortcutText(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetShortcutText();
+	afx_msg void OleSetCustomShortcutText(LPCTSTR lpszCustomShortcutText);
+	afx_msg BSTR OleGetCustomShortcutText();
+	afx_msg LPDISPATCH OleGetAction();
+	afx_msg void OleSetAction(LPDISPATCH lpDisp);
+	afx_msg BOOL OleGetVisible();
+	afx_msg int OleGetWidth();
+	afx_msg void OleSetWidth(int nWidth);
+	afx_msg int OleGetHeight();
+	afx_msg void OleSetHeight(int nHeight);
+	afx_msg int OleGetTop();
+	afx_msg int OleGetLeft();
+	enum
+	{
+		dispidControls		  = 1L,
+		dispidParent		  = 2L,
+		dispidBeginGroup	  = 3L,
+		dispidCaption		  = 4L,
+		dispidDescriptionText = 5L,
+		dispidId			  = 6L,
+		dispidIndex			  = 7L,
+		dispidParameter		  = 8L,
+		dispidShortcutText	= 9L,
+		dispidTooltipText	 = 10L,
+		dispidType			  = 11,
+		dispidVisible		  = 12L,
+		dispidEnabled		  = 13L,
+		dispidChecked		  = 14L,
+		dispidIconId		  = 15L,
+		dispidDelete		  = 16L,
+		dispidDefaultItem	 = 17L,
+		dispidFalgs			  = 18L,
+		dispidCategory		  = 19L,
+		dispidCopy			  = 20L,
+		dispidSetFocus		  = 21L,
+		dispidExecute		  = 22L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 private:
-
 	DECLARE_XTP_CONTROL(CXTPControl)
 
+	friend class CXTPRibbonBuilder;
 	friend class CXTPControls;
 	friend class CXTPCommandBar;
 	friend class CXTPToolBar;
@@ -2149,262 +2408,394 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
+AFX_INLINE BOOL CXTPControl::IsOnQuickAccess() const
+{
+	return m_bOnQuickAccess;
+}
 
-AFX_INLINE long CXTPControl::GetIndex() const {
+AFX_INLINE void CXTPControl::SetOnQuickAccess(BOOL bOnQuickAccess)
+{
+	m_bOnQuickAccess = bOnQuickAccess;
+}
+
+AFX_INLINE long CXTPControl::GetIndex() const
+{
 	return m_nIndex;
 }
-AFX_INLINE void CXTPControl::SetShortcutText(LPCTSTR lpszShortcutText) {
+AFX_INLINE void CXTPControl::SetShortcutText(LPCTSTR lpszShortcutText)
+{
 	m_strShortcutText = lpszShortcutText;
 }
-AFX_INLINE CString CXTPControl::GetShortcutText() const {
-	return !m_strShortcutText.IsEmpty() ? m_strShortcutText :
-	m_pAction && !m_pAction->GetShortcutText().IsEmpty()  ? m_pAction->GetShortcutText() : m_strShortcutTextAuto;
+AFX_INLINE CString CXTPControl::GetShortcutText() const
+{
+	return !m_strShortcutText.IsEmpty()
+			   ? m_strShortcutText
+			   : m_pAction && !m_pAction->GetShortcutText().IsEmpty() ? m_pAction->GetShortcutText()
+																	  : m_strShortcutTextAuto;
 }
-AFX_INLINE void CXTPControl::SetDescription(LPCTSTR lpszDescription) {
+AFX_INLINE void CXTPControl::SetCustomShortcutText(LPCTSTR lpszCustomShortcutText)
+{
+	m_strCustomShortcutText = lpszCustomShortcutText;
+}
+AFX_INLINE CString CXTPControl::GetCustomShortcutText() const
+{
+	return !m_strCustomShortcutText.IsEmpty()
+			   ? m_strCustomShortcutText
+			   : m_pAction && !m_pAction->GetCustomShortcutText().IsEmpty()
+					 ? m_pAction->GetCustomShortcutText()
+					 : m_strShortcutTextAuto;
+}
+AFX_INLINE void CXTPControl::SetDescription(LPCTSTR lpszDescription)
+{
 	m_strDescriptionText = lpszDescription;
 }
-AFX_INLINE CString CXTPControl::GetDescription() const {
-	return !m_strDescriptionText.IsEmpty() ? m_strDescriptionText : m_pAction ? m_pAction->GetDescription() : _T("");
+AFX_INLINE CString CXTPControl::GetDescription() const
+{
+	return !m_strDescriptionText.IsEmpty() ? m_strDescriptionText
+										   : m_pAction ? m_pAction->GetDescription() : _T("");
 }
-AFX_INLINE CString CXTPControl::GetTooltip() const {
-	return !m_strTooltipText.IsEmpty() ? m_strTooltipText : m_pAction ? m_pAction->GetTooltip() : _T("");
+AFX_INLINE CString CXTPControl::GetTooltip() const
+{
+	return !m_strTooltipText.IsEmpty() ? m_strTooltipText
+									   : m_pAction ? m_pAction->GetTooltip() : _T("");
 }
-AFX_INLINE void CXTPControl::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPControl::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltipText = lpszTooltip;
 }
-AFX_INLINE CString CXTPControl::GetCaption() const {
-	return !m_strCustomCaption.IsEmpty() ? m_strCustomCaption : !m_strCaption.IsEmpty() ? m_strCaption : m_pAction ? m_pAction->GetCaption() : _T("");
+AFX_INLINE CString CXTPControl::GetCaption() const
+{
+	return !m_strCustomCaption.IsEmpty()
+			   ? m_strCustomCaption
+			   : !m_strCaption.IsEmpty() ? m_strCaption
+										 : m_pAction ? m_pAction->GetCaption() : _T("");
 }
-AFX_INLINE void CXTPControl::SetParameter(LPCTSTR lpszParameter) {
+AFX_INLINE void CXTPControl::SetParameter(LPCTSTR lpszParameter)
+{
 	m_strParameter = lpszParameter;
 }
-AFX_INLINE CString CXTPControl::GetParameter() const {
+AFX_INLINE CString CXTPControl::GetParameter() const
+{
 	return m_strParameter;
 }
-AFX_INLINE int CXTPControl::GetID () const {
+AFX_INLINE int CXTPControl::GetID() const
+{
 	return m_nId;
 }
-AFX_INLINE void CXTPControl::SetIconId(int nId) {
-	if (m_nIconId != nId) {m_nIconId = nId; RedrawParent(FALSE);}
+AFX_INLINE void CXTPControl::SetIconId(int nId)
+{
+	if (m_nIconId != nId)
+	{
+		m_nIconId = nId;
+		RedrawParent(FALSE);
+	}
 }
-AFX_INLINE int CXTPControl::GetIconId() const {
-	return m_nCustomIconId != 0 ? m_nCustomIconId : m_nIconId > 0 ? m_nIconId : m_pAction ? m_pAction->GetIconId() : m_nId;
+AFX_INLINE int CXTPControl::GetIconId() const
+{
+	return m_nCustomIconId != 0
+			   ? m_nCustomIconId
+			   : m_nIconId > 0 ? m_nIconId : m_pAction ? m_pAction->GetIconId() : m_nId;
 }
-AFX_INLINE void CXTPControl::SetHelpId(int nId) {
+AFX_INLINE void CXTPControl::SetHelpId(int nId)
+{
 	m_nHelpId = nId;
 }
-AFX_INLINE int CXTPControl::GetHelpId() const {
+AFX_INLINE int CXTPControl::GetHelpId() const
+{
 	return m_nHelpId > 0 ? m_nHelpId : m_pAction ? m_pAction->GetHelpId() : m_nId;
 }
-AFX_INLINE void CXTPControl::SetBeginGroup(BOOL bBeginGroup) {
-	if (m_bBeginGroup != bBeginGroup) {m_bBeginGroup = bBeginGroup; DelayLayoutParent();}
+AFX_INLINE void CXTPControl::SetBeginGroup(BOOL bBeginGroup)
+{
+	if (m_bBeginGroup != bBeginGroup)
+	{
+		m_bBeginGroup = bBeginGroup;
+		DelayLayoutParent();
+	}
 }
-AFX_INLINE BOOL CXTPControl::GetBeginGroup() const {
+AFX_INLINE BOOL CXTPControl::GetBeginGroup() const
+{
 	return m_bBeginGroup;
 }
-AFX_INLINE void CXTPControl::OnEnabledChanged() {
-
+AFX_INLINE void CXTPControl::OnEnabledChanged()
+{
 }
-AFX_INLINE void CXTPControl::SetEnabled(BOOL bEnabled) {
-	if (m_bEnabled != bEnabled) {m_bEnabled = bEnabled; OnEnabledChanged(); RedrawParent();}
+AFX_INLINE void CXTPControl::SetEnabled(BOOL bEnabled)
+{
+	if (m_bEnabled != bEnabled)
+	{
+		m_bEnabled = bEnabled;
+		OnEnabledChanged();
+		RedrawParent();
+	}
 }
-AFX_INLINE BOOL CXTPControl::GetChecked() const {
+AFX_INLINE BOOL CXTPControl::GetChecked() const
+{
 	return m_bChecked == -1 && m_pAction ? m_pAction->GetChecked() : m_bChecked;
 }
-AFX_INLINE void CXTPControl::SetChecked(BOOL bChecked) {
-	if (m_bChecked != bChecked) {m_bChecked = bChecked; RedrawParent();}
+AFX_INLINE void CXTPControl::SetChecked(BOOL bChecked)
+{
+	if (m_bChecked != bChecked)
+	{
+		m_bChecked = bChecked;
+		RedrawParent();
+	}
 }
-AFX_INLINE int CXTPControl::GetSelected() const {
+AFX_INLINE int CXTPControl::GetSelected() const
+{
 	return m_bSelected;
 }
-AFX_INLINE BOOL CXTPControl::GetPressed() const {
+AFX_INLINE BOOL CXTPControl::GetPressed() const
+{
 	return m_bPressed;
 }
-AFX_INLINE void CXTPControl::SetPressed(BOOL bPressed) {
+AFX_INLINE void CXTPControl::SetPressed(BOOL bPressed)
+{
 	m_bPressed = bPressed;
 }
-AFX_INLINE void CXTPControl::SetRect(CRect rcControl) {
+AFX_INLINE void CXTPControl::SetRect(CRect rcControl)
+{
 	m_rcControl = rcControl;
 }
-AFX_INLINE CRect CXTPControl::GetRect() const {
+AFX_INLINE CRect CXTPControl::GetRect() const
+{
 	return m_rcControl;
 }
-AFX_INLINE CXTPCommandBar* CXTPControl::GetParent() const {
+AFX_INLINE CXTPCommandBar* CXTPControl::GetParent() const
+{
 	return m_pParent;
 }
-AFX_INLINE BOOL CXTPControl::IsVisible(DWORD dwSkipFlags) const {
-	if (m_pAction && !m_pAction->IsVisible()) return FALSE;
+AFX_INLINE BOOL CXTPControl::IsVisible(DWORD dwSkipFlags) const
+{
+	if (m_pAction && !m_pAction->IsVisible())
+		return FALSE;
 	return (m_dwHideFlags & ~dwSkipFlags) == xtpNoHide;
 }
-AFX_INLINE void CXTPControl::SetHideFlags(DWORD dwFlags) {
+AFX_INLINE void CXTPControl::SetHideFlags(DWORD dwFlags)
+{
 	m_dwHideFlags = dwFlags;
 }
-AFX_INLINE BOOL CXTPControl::SetHideFlag(XTPControlHideFlags dwFlag, BOOL bHide) {
+AFX_INLINE BOOL CXTPControl::SetHideFlag(XTPControlHideFlags dwFlag, BOOL bHide)
+{
 	DWORD dwHideFlags = m_dwHideFlags;
-	if (bHide) SetHideFlags (m_dwHideFlags | dwFlag); else SetHideFlags(m_dwHideFlags & ~dwFlag);
+	if (bHide)
+		SetHideFlags(m_dwHideFlags | dwFlag);
+	else
+		SetHideFlags(m_dwHideFlags & ~dwFlag);
 	return dwHideFlags != m_dwHideFlags;
 }
 
-AFX_INLINE void CXTPControl::SetHideWrap(BOOL bHide) {
+AFX_INLINE void CXTPControl::SetHideWrap(BOOL bHide)
+{
 	SetHideFlag(xtpHideWrap, bHide);
 }
-AFX_INLINE DWORD CXTPControl::GetHideFlags() const {
+AFX_INLINE DWORD CXTPControl::GetHideFlags() const
+{
 	return m_dwHideFlags;
 }
-AFX_INLINE CRect CXTPControl::GetRowRect() const {
+AFX_INLINE CRect CXTPControl::GetRowRect() const
+{
 	return m_rcRow;
 }
-AFX_INLINE void CXTPControl::SetRowRect(CRect rcRow) {
+AFX_INLINE void CXTPControl::SetRowRect(CRect rcRow)
+{
 	m_rcRow = rcRow;
 }
-AFX_INLINE BOOL CXTPControl::GetWrap() const {
+AFX_INLINE BOOL CXTPControl::GetWrap() const
+{
 	return m_bWrap;
 }
-AFX_INLINE void CXTPControl::SetWrap(BOOL bWrap) {
+AFX_INLINE void CXTPControl::SetWrap(BOOL bWrap)
+{
 	m_bWrap = bWrap;
 }
-AFX_INLINE CXTPControls* CXTPControl::GetControls() const {
+AFX_INLINE CXTPControls* CXTPControl::GetControls() const
+{
 	return m_pControls;
 }
 
-AFX_INLINE BOOL CXTPControl::IsTemporary() const {
+AFX_INLINE BOOL CXTPControl::IsTemporary() const
+{
 	return m_bTemporary;
 }
-AFX_INLINE XTPControlType CXTPControl::GetType() const {
+AFX_INLINE XTPControlType CXTPControl::GetType() const
+{
 	return m_controlType;
 }
-AFX_INLINE BOOL CXTPControl::GetExpanded() const {
+AFX_INLINE BOOL CXTPControl::GetExpanded() const
+{
 	return m_bExpanded;
 }
-AFX_INLINE void CXTPControl::SetCategory(LPCTSTR lpszCategory) {
+AFX_INLINE void CXTPControl::SetCategory(LPCTSTR lpszCategory)
+{
 	m_strCategory = lpszCategory;
 }
-AFX_INLINE CString CXTPControl::GetCategory() const {
+AFX_INLINE CString CXTPControl::GetCategory() const
+{
 	return !m_strCategory.IsEmpty() ? m_strCategory : m_pAction ? m_pAction->GetCategory() : _T("");
 }
-AFX_INLINE void CXTPControl::SetTag(DWORD_PTR dwTag) {
+AFX_INLINE void CXTPControl::SetTag(DWORD_PTR dwTag)
+{
 	m_nTag = dwTag;
 }
-AFX_INLINE DWORD_PTR CXTPControl::GetTag() const {
+AFX_INLINE DWORD_PTR CXTPControl::GetTag() const
+{
 	return m_nTag;
 }
-AFX_INLINE void CXTPControl::AssignDocTemplate(UINT nIDResource) {
+AFX_INLINE void CXTPControl::AssignDocTemplate(UINT nIDResource)
+{
 	m_mapDocTemplatesAssigned.SetAt(nIDResource, TRUE);
 }
-AFX_INLINE void CXTPControl::ExcludeDocTemplate(UINT nIDResource) {
+AFX_INLINE void CXTPControl::ExcludeDocTemplate(UINT nIDResource)
+{
 	m_mapDocTemplatesExcluded.SetAt(nIDResource, TRUE);
 }
-AFX_INLINE void CXTPControl::OnClick(BOOL /*bKeyboard = FALSE*/, CPoint /*pt = CPoint(0, 0)*/) {
+AFX_INLINE void CXTPControl::OnClick(BOOL /*bKeyboard = FALSE*/, CPoint /*pt = CPoint(0, 0)*/)
+{
 }
-AFX_INLINE void CXTPControl::SetStyle(XTPButtonStyle buttonStyle) {
+AFX_INLINE void CXTPControl::SetStyle(XTPButtonStyle buttonStyle)
+{
 	if (m_buttonStyle != buttonStyle)
 	{
 		m_buttonStyle = buttonStyle;
 		DelayLayoutParent();
 	}
 }
-AFX_INLINE CXTPCommandBar* CXTPControl::GetCommandBar() const {
+AFX_INLINE CXTPCommandBar* CXTPControl::GetCommandBar() const
+{
 	return NULL;
 }
-AFX_INLINE void CXTPControl::SetCloseSubMenuOnClick(BOOL bCloseOnClick) {
+AFX_INLINE void CXTPControl::SetCloseSubMenuOnClick(BOOL bCloseOnClick)
+{
 	m_bCloseSubMenuOnClick = bCloseOnClick;
 }
 
-AFX_INLINE BOOL CXTPControl::GetCloseSubMenuOnClick() const {
+AFX_INLINE BOOL CXTPControl::GetCloseSubMenuOnClick() const
+{
 	return m_bCloseSubMenuOnClick;
 }
-AFX_INLINE int CXTPControl::GetCustomizeMinWidth() const {
+AFX_INLINE int CXTPControl::GetCustomizeMinWidth() const
+{
 	return 0;
 }
-AFX_INLINE int CXTPControl::GetCustomizeMinHeight() const {
+AFX_INLINE int CXTPControl::GetCustomizeMinHeight() const
+{
 	return 0;
 }
-AFX_INLINE void CXTPControl::SetWidth(int nWidth) {
-	if (m_nWidth != nWidth) {
+AFX_INLINE void CXTPControl::SetWidth(int nWidth)
+{
+	if (m_nWidth != nWidth)
+	{
 		m_nWidth = nWidth;
 		DelayLayoutParent();
 	}
 }
-AFX_INLINE void CXTPControl::SetHeight(int nHeight) {
-	if (m_nHeight != nHeight) {
+AFX_INLINE void CXTPControl::SetHeight(int nHeight)
+{
+	if (m_nHeight != nHeight)
+	{
 		m_nHeight = nHeight;
 		DelayLayoutParent();
 	}
 }
-AFX_INLINE BOOL CXTPControl::OnHookKeyDown(UINT /*nChar*/, LPARAM /*lParam*/) {
+AFX_INLINE BOOL CXTPControl::OnHookKeyDown(UINT /*nChar*/, LPARAM /*lParam*/)
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPControl::OnSetPopup(BOOL /*bPopup*/) {
+AFX_INLINE BOOL CXTPControl::OnSetPopup(BOOL /*bPopup*/)
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPControl::OnLButtonUp(CPoint /*point*/) {
+AFX_INLINE void CXTPControl::OnLButtonUp(CPoint /*point*/)
+{
 }
-AFX_INLINE BOOL CXTPControl::OnRButtonDown(CPoint /*point*/) {
+AFX_INLINE BOOL CXTPControl::OnRButtonDown(CPoint /*point*/)
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPControl::OnRButtonUp(CPoint /*point*/) {
+AFX_INLINE BOOL CXTPControl::OnRButtonUp(CPoint /*point*/)
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPControl::OnMouseMove(CPoint /*point*/) {
+AFX_INLINE void CXTPControl::OnMouseMove(CPoint /*point*/)
+{
 }
-AFX_INLINE BOOL CXTPControl::IsFocusable() const {
+AFX_INLINE BOOL CXTPControl::IsFocusable() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPControl::SetFocused(BOOL /*bFocused*/) {
+AFX_INLINE void CXTPControl::SetFocused(BOOL /*bFocused*/)
+{
 }
-AFX_INLINE BOOL CXTPControl::IsFocused() const{
+AFX_INLINE BOOL CXTPControl::IsFocused() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPControl::OnCalcDynamicSize(DWORD /*dwMode*/) {
+AFX_INLINE void CXTPControl::OnCalcDynamicSize(DWORD /*dwMode*/)
+{
 }
 
-AFX_INLINE CXTPRibbonGroup* CXTPControl::GetRibbonGroup() const {
+AFX_INLINE CXTPRibbonGroup* CXTPControl::GetRibbonGroup() const
+{
 	return m_pRibbonGroup;
 }
-AFX_INLINE BOOL CXTPControl::OnHookMouseWheel(UINT /*nFlags*/, short /*zDelta*/, CPoint /*pt*/) {
+AFX_INLINE BOOL CXTPControl::OnHookMouseWheel(UINT /*nFlags*/, short /*zDelta*/, CPoint /*pt*/)
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPControl::GetPopuped() const {
+AFX_INLINE BOOL CXTPControl::GetPopuped() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPControl::OnIdleUpdate() {
-
+AFX_INLINE void CXTPControl::OnIdleUpdate()
+{
 }
-AFX_INLINE CXTPControlAction* CXTPControl::GetAction() const {
+AFX_INLINE CXTPControlAction* CXTPControl::GetAction() const
+{
 	return m_pAction;
 }
-AFX_INLINE void CXTPControl::OnThemeChanged() {
-
+AFX_INLINE void CXTPControl::OnThemeChanged()
+{
 }
-AFX_INLINE int CXTPControl::GetWidth() const {
+AFX_INLINE int CXTPControl::GetWidth() const
+{
 	return m_nWidth;
 }
-AFX_INLINE int CXTPControl::GetHeight() const {
+AFX_INLINE int CXTPControl::GetHeight() const
+{
 	return m_nHeight;
 }
-AFX_INLINE void CXTPControl::OnActionChanging(int /*nProperty*/) {
-
+AFX_INLINE void CXTPControl::OnActionChanging(int /*nProperty*/)
+{
 }
-AFX_INLINE void CXTPControl::SetExecuteOnPressInterval(int nExecuteOnPressInterval) {
+AFX_INLINE void CXTPControl::SetExecuteOnPressInterval(int nExecuteOnPressInterval)
+{
 	m_nExecuteOnPressInterval = nExecuteOnPressInterval;
 }
-AFX_INLINE int CXTPControl::GetExecuteOnPressInterval() const {
+AFX_INLINE int CXTPControl::GetExecuteOnPressInterval() const
+{
 	return m_nExecuteOnPressInterval;
 }
-AFX_INLINE void CXTPControl::SetKeyboardTip(LPCTSTR lpszKeyboardTip) {
+AFX_INLINE void CXTPControl::SetKeyboardTip(LPCTSTR lpszKeyboardTip)
+{
 	m_strKeyboardTip = lpszKeyboardTip;
 }
-AFX_INLINE CString CXTPControl::GetKeyboardTip() const {
-	return !m_strKeyboardTip.IsEmpty() ? m_strKeyboardTip : m_pAction ? m_pAction->GetKeyboardTip() : _T("");
+AFX_INLINE CString CXTPControl::GetKeyboardTip() const
+{
+	return !m_strKeyboardTip.IsEmpty() ? m_strKeyboardTip
+									   : m_pAction ? m_pAction->GetKeyboardTip() : _T("");
 }
-AFX_INLINE INT_PTR CXTPControl::OnToolHitTest(CPoint /*point*/, TOOLINFO* /*pTI*/) const {
+AFX_INLINE INT_PTR CXTPControl::OnToolHitTest(CPoint /*point*/, TOOLINFO* /*pTI*/) const
+{
 	return -1;
 }
-AFX_INLINE void CXTPControl::SetIconSize(CSize szIcon) {
-	m_szIcon = szIcon; RedrawParent(FALSE);
+AFX_INLINE void CXTPControl::SetIconSize(CSize szIcon)
+{
+	m_szIcon = szIcon;
+	RedrawParent(FALSE);
 }
-AFX_INLINE void CXTPControl::OnCaptionChanged() {
-
+AFX_INLINE void CXTPControl::OnCaptionChanged()
+{
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROL_H__)

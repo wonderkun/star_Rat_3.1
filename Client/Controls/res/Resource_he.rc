@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB))
 #ifdef _WIN32
 LANGUAGE LANG_HEBREW, SUBLANG_DEFAULT
 #pragma code_page(1255)
@@ -39,7 +38,7 @@ FONT 8, "MS Shell Dlg"
 BEGIN
     DEFPUSHBUTTON   "סגור ",IDOK,224,108,50,14
     CONTROL         "הצג עצות אודות",XTP_IDC_CHK_DAYTIP_SHOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,140,10
-    PUSHBUTTON      "חפש את הבא",XTP_IDC_BTN_DAYTIP_NEXT,170,108,50,14
+    PUSHBUTTON      "חפש את הבא",XTP_IDC_BTN_DAYTIP_NEXT,160,108,60,14
     CONTROL         "",XTP_IDC_BTN_DAYTIP_BORDER,"Static",SS_GRAYFRAME | NOT WS_VISIBLE,0,0,279,103
 END
 
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "צבעים רגילים"
+	XTP_IDS_RECENT_COLORS    "צבעים האחרונות"
+	XTP_IDS_THEME_COLORS     "צבעי ערכת נושא"
+	XTP_IDS_TAGCLOUD_TIP     "תג %s, ציון %d"
     XTP_IDS_TIPTEXT          "טקסט עצה"
     XTP_IDS_DIDYOUKNOW       "הידעת..."
     XTP_IDS_FILE_ABSENT      "‏‏הקובץ שצוין אינו קיים."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "הסתר פרטים"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "רקע 1"
+    XTP_IDS_BACKGROUND2        "רקע 2"
+    XTP_IDS_TEXT1              "טקסט 1"
+    XTP_IDS_TEXT2              "טקסט 2"
+    XTP_IDS_ACCENT1            "הדגשת 1"
+    XTP_IDS_ACCENT2            "הדגשת 2"
+    XTP_IDS_ACCENT3            "הדגשת 3"
+    XTP_IDS_ACCENT4            "הדגשת 4"
+    XTP_IDS_ACCENT5            "הדגשת 5"
+    XTP_IDS_ACCENT6            "הדגשת 6"
+    XTP_IDS_LIGHTER            "מצית"
+    XTP_IDS_DARKER             "כהה"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB))

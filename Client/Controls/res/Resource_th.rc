@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA))
 #ifdef _WIN32
 LANGUAGE LANG_THAI, SUBLANG_DEFAULT
 #pragma code_page(874)
@@ -182,29 +181,29 @@ BEGIN
     XTP_IDS_DEFFILT          "ทุกแฟ้ม (*.*)|*.*||"
     XTP_IDS_DEFTITLE         "ชื่อไดเรกทอรี:"
     XTP_IDS_CLICKKEEPOPEN    "คลิกหมุดยึดเพื่อให้เปิดค้างไว้"
-    XTP_IDS_SE_0             "The operating system is out of memory or resources."
-    XTP_IDS_SE_ERR_FNF       "The specified file was not found."
-    XTP_IDS_SE_ERR_PNF       "The specified path was not found."
+    XTP_IDS_SE_0             "ระบบปฏิบัติการจากหน่วยความจำหรือทรัพยากร"
+    XTP_IDS_SE_ERR_FNF       "ไฟล์ที่ระบุไม่พบ"
+    XTP_IDS_SE_ERR_PNF       "เส้นทางที่ระบุไม่พบ"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_SE_ERR_ACCESSDENIED 
-                            "The operating system denied access to the specified file."
-    XTP_IDS_SE_ERR_OOM       "There was not enough memory to complete the operation."
+                            "ระบบปฏิบัติการปฏิเสธการเข้าถึงไฟล์ที่ระบุ"
+    XTP_IDS_SE_ERR_OOM       "มีหน่วยความจำไม่เพียงพอที่จะเสร็จสิ้นการดำเนินการ"
     XTP_IDS_SE_ERR_BAD_FORMAT 
-                            "The .exe file is invalid (non-Win32ฎ .exe or error in .exe image)."
-    XTP_IDS_SE_ERR_SHARE     "A sharing violation occurred."
+                            "ไฟล์ที่ exe ไม่ถูกต้อง (ที่ไม่ใช่Win32? .exe หรือผิดพลาดในภาพ exe)"
+    XTP_IDS_SE_ERR_SHARE     "ละเมิดที่เกิดขึ้นร่วมกัน"
     XTP_IDS_SE_ERR_ASSOCINCOMPLETE 
-                            "The file name association is incomplete or invalid."
+                            "สมาคมชื่อไฟล์ไม่สมบูรณ์หรือไม่ถูกต้อง"
     XTP_IDS_SE_ERR_DDETIMEOUT 
-                            "The DDE transaction could not be completed because the request timed out."
-    XTP_IDS_SE_ERR_DDEFAIL   "The DDE transaction failed."
-    XTP_IDS_SE_ERR_DDEBUSY   "The DDE transaction could not be completed because other DDE transactions were being processed."
-    XTP_IDS_SE_ERR_NOASSOC   "There is no application associated with the given file name extension."
+                            "การทำธุรกรรม DDE ไม่สามารถเสร็จสมบูรณ์เนื่องจากคำขอหมดเวลา"
+    XTP_IDS_SE_ERR_DDEFAIL   "การทำธุรกรรม DDE ล้มเหลว"
+    XTP_IDS_SE_ERR_DDEBUSY   "การทำธุรกรรม DDE ไม่สามารถดำเนินการเพราะการทำธุรกรรม DDE อื่น ๆ ที่มีการประมวลผล"
+    XTP_IDS_SE_ERR_NOASSOC   "มีแอพลิเคชันที่เกี่ยวข้องกับนามสกุลของไฟล์ที่กำหนดคือ"
     XTP_IDS_SE_ERR_DLLNOTFOUND 
-                            "The specified dynamic-link library was not found."
-    XTP_IDS_SE_ERR_UNKOWN    "An unknown error number %d occured."
+                            "ห้องสมุดเชื่อมโยง dynamic ระบุไม่พบ"
+    XTP_IDS_SE_ERR_UNKOWN    "เกิดข้อผิดพลาดที่ไม่รู้จักจำนวน %d ที่เกิดขึ้น"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "สีมาตรฐาน"
+	XTP_IDS_RECENT_COLORS    "สีล่าสุด"
+	XTP_IDS_THEME_COLORS     "ชุดรูปแบบสี"
+	XTP_IDS_TAGCLOUD_TIP     "แท็ก %s คะแนน %d"
     XTP_IDS_TIPTEXT          "ข้อความเคล็ดลับ"
     XTP_IDS_DIDYOUKNOW       "คุณทราบไหมว่า..."
     XTP_IDS_FILE_ABSENT      "ไม่พบแฟ้มที่ระบุ"
@@ -250,9 +252,25 @@ BEGIN
     XTP_IDS_TASK_CANCEL       "ยกเลิก"
     XTP_IDS_TASK_CLOSE        "ปิด"
     XTP_IDS_TASK_APPLY        "&Apply"
-    XTP_IDS_TASK_HELP         "Help"
+    XTP_IDS_TASK_HELP         "ช่วยด้วย"
     XTP_IDS_TASK_SEE_DETAILS  "แสดงรายละเอียด"
     XTP_IDS_TASK_HIDE_DETAILS "ซ่อนรายละเอียด"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "พื้นหลัง 1"
+    XTP_IDS_BACKGROUND2        "พื้นหลัง 2"
+    XTP_IDS_TEXT1              "ข้อความ 1"
+    XTP_IDS_TEXT2              "ข้อความ 2"
+    XTP_IDS_ACCENT1            "สำเนียง 1"
+    XTP_IDS_ACCENT2            "สำเนียง 2"
+    XTP_IDS_ACCENT3            "สำเนียง 3"
+    XTP_IDS_ACCENT4            "สำเนียง 4"
+    XTP_IDS_ACCENT5            "สำเนียง 5"
+    XTP_IDS_ACCENT6            "สำเนียง 6"
+    XTP_IDS_LIGHTER            "เบา"
+    XTP_IDS_DARKER             "สีเข้ม"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA))

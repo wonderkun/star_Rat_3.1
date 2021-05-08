@@ -2,8 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by XTResource.rc
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,8 +19,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#define XTP_TASKPANEL_RESOURCE_FIRST         9850
-#define XTP_TASKPANEL_RESOURCE_LAST          9899
+#define XTP_TASKPANEL_RESOURCE_FIRST 9850
+#define XTP_TASKPANEL_RESOURCE_LAST 9899
 
-#define XTP_IDB_TASKPANEL_GRIPPER            9850
-#define XTP_IDB_TASKPANEL_GRIPPER_SPECIAL    9851
+#define XTP_IDB_TASKPANEL_GRIPPER 9850
+#define XTP_IDB_TASKPANEL_GRIPPER_SPECIAL 9851

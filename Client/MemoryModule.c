@@ -35,6 +35,11 @@
 
 #include "MemoryModule.h"
 
+#ifndef IMAGE_SIZEOF_BASE_RELOCATION
+// Vista SDKs no longer define IMAGE_SIZEOF_BASE_RELOCATION!?
+#define IMAGE_SIZEOF_BASE_RELOCATION (sizeof(IMAGE_BASE_RELOCATION))
+#endif
+
 typedef struct {
 	PIMAGE_NT_HEADERS headers;
 	unsigned char *codeBase;

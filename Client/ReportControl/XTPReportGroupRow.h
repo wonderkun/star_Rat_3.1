@@ -1,7 +1,6 @@
 // XTPReportGroupRow.h: interface for the CXTPReportGroupItem class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTGROUPROW_H__)
-#define __XTPREPORTGROUPROW_H__
+#	define __XTPREPORTGROUPROW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportRow.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupContext;
 class CXTPMarkupUIElement;
@@ -47,6 +46,8 @@ class CXTPMarkupUIElement;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportGroupRow : public CXTPReportRow
 {
+	DECLARE_DYNAMIC(CXTPReportGroupRow);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -70,7 +71,19 @@ public:
 	//     Group text caption.
 	// See Also: CXTPReportGroupRow::CXTPReportGroupRow
 	//-----------------------------------------------------------------------
-	virtual CString GetCaption();
+	virtual CString GetCaption() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns an optional native group caption value.
+	// Remarks:
+	//     Call this member function to retrieve an optional native group
+	//     caption value of this group row item.
+	// Returns:
+	//     Group text caption.
+	// See Also: CXTPReportGroupRow::CXTPReportGroupRow
+	//-----------------------------------------------------------------------
+	virtual COleVariant GetCaptionValue() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -81,7 +94,7 @@ public:
 	// Returns:
 	//     Tool tip Text for this row.
 	//-----------------------------------------------------------------------
-	virtual CString GetTooltip();
+	virtual CString GetTooltip() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,6 +102,7 @@ public:
 	//     caption when the column that the ReportRecordItem is in has been grouped.
 	// Parameters:
 	//     lpszCaption - Caption to be set
+	//     vtValue - Optional group caption value.
 	// Remarks:
 	//     When a column that the ReportRecordItem belong to has been grouped,
 	//     the caption of the column is displayed as
@@ -101,6 +115,8 @@ public:
 	//     column they belong to is grouped.
 	//-----------------------------------------------------------------------
 	void SetCaption(LPCTSTR lpszCaption);
+	void SetCaption(LPCTSTR lpszCaption,
+					COleVariant vtValue); // <combine CXTPReportGroupRow::SetCaption@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -108,7 +124,7 @@ public:
 	// Returns:
 	//     String object, containing current Formula
 	//-----------------------------------------------------------------------
-	virtual CString GetFormula();
+	virtual CString GetFormula() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -123,7 +139,7 @@ public:
 	// Returns:
 	//     String object, containing current format string
 	//-----------------------------------------------------------------------
-	virtual CString GetFormatString();
+	virtual CString GetFormatString() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -139,10 +155,12 @@ public:
 	// Parameters:
 	//     pDC     - A pointer to the device context in which the drawing occurs.
 	//     rcRow   - Position of the row in client window coordinates.
+	//     rcClip  - Position of the row in client window coordinates.
 	//     nLeftOffset - Start drawing left offset in pixels (Horizontal scroll position).
 	// See Also: CXTPReportRow::Draw
 	//-----------------------------------------------------------------------
-	virtual void Draw(CDC* pDC, CRect rcRow, int nLeftOffset);
+	virtual void Draw(CDC* pDC, CRect rcRow, CRect rcClip, int nLeftOffset,
+					  CXTPReportRecordMergeItems& mergeItems, int nColumnFrom, int nColumnTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -174,36 +192,40 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL IsGroupRow() const;
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     SetSelectedChilds flag ON if Child selected and OFF if not
-	//-----------------------------------------------------------------------
-	void SetSelectedChilds();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Select Child if Child had flag set ON
-	//-----------------------------------------------------------------------
-	void UpdateSelectedChilds();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     SetSelectedMostDeepChilds flag ON if MostDeepChild selected and OFF if not
-	//-----------------------------------------------------------------------
-	void SetSelectedMostDeepChilds();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Select MostDeepChild if MostDeepChild had flag set ON
-	//-----------------------------------------------------------------------
-	void UpdateSelectedMostDeepChilds();
 	//{{AFX_CODEJOCK_PRIVATE
-	BOOL CalculateByChilds(CXTPReportRow* pPassedRow, int col_start, int col_end, double& dPassedValue);
+	BOOL CalculateByChilds(CXTPReportRow* pPassedRow, int col_start, int col_end,
+						   double& dPassedValue);
 	//}}AFX_CODEJOCK_PRIVATE
-	CXTPMarkupUIElement* m_pMarkupUIElement;// Store Markup Object
+	CXTPMarkupUIElement* m_pMarkupUIElement; // Store Markup Object
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this method to reset Markup element
+	// See Also:
+	//      CXTPReportControl::EnableMarkup
+	//-----------------------------------------------------------------------
+	virtual void ResetMarkupUIElement();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets a pointer to the parent report control.
+	// Remarks:
+	//     Call this member function to set a pointer to the
+	//     CXTPReportControl which this item belongs to.
+	// See Also: CXTPReportControl overview
+	//-----------------------------------------------------------------------
+	virtual void SetControl(CXTPReportControl* pControl);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets information that defines the format of a currency string.
+	// Remarks:
+	//     Call this member function to set a pointer to the
+	//     LPCURRENCYFMT.
+	//-----------------------------------------------------------------------
+	void SetCurrencyFormat(LPCURRENCYFMT fmt);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The framework calls this member function to determine whether a
@@ -218,14 +240,44 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Gets formatted string with m_lpCurrencyFmt.
+	// Parameters:
+	//     value - value which will be formatted.
+	// Returns:
+	//     String object, containing string.
+	//-----------------------------------------------------------------------
+	CString GetCurrencyString(double value);
+
 protected:
-	CString m_strGroupText;     // group text label
-	CString m_strGroupLabel;    // group text label - used as formula prefix
-	CString m_strFormula;       //The formula.
-	CString m_strFormatString;  //The format string.
+	CString m_strGroupText;		   // Group text label
+	CString m_strGroupLabel;	   // Group text label - used as formula prefix
+	CString m_strFormula;		   // The formula.
+	CString m_strFormat;		   // The format string.
+	COleVariant m_vtCaptionValue;  // Native caption value.
+	LPCURRENCYFMT m_lpCurrencyFmt; // Contains information that defines the format of a currency
+								   // string
 
-friend class CXTPReportPaintManager;
+	friend class CXTPReportPaintManager;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportGroupRow);
+	BSTR OleGetCaption();
+	void OleSetCaption(LPCTSTR pcszCaption);
+
+	BSTR OleGetFormat();
+	void OleSetFormat(LPCTSTR pcszFormat);
+
+	BSTR OleGetFormula();
+	void OleSetFormula(LPCTSTR pcszFormula);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 AFX_INLINE BOOL CXTPReportGroupRow::IsGroupRow() const
@@ -233,12 +285,12 @@ AFX_INLINE BOOL CXTPReportGroupRow::IsGroupRow() const
 	return TRUE;
 }
 
-AFX_INLINE CString CXTPReportGroupRow::GetTooltip()
+AFX_INLINE CString CXTPReportGroupRow::GetTooltip() const
 {
 	return GetCaption();
 }
 
-AFX_INLINE CString CXTPReportGroupRow::GetFormula()
+AFX_INLINE CString CXTPReportGroupRow::GetFormula() const
 {
 	return m_strFormula;
 }
@@ -248,14 +300,26 @@ AFX_INLINE void CXTPReportGroupRow::SetFormula(LPCTSTR sFormula)
 	m_strFormula = sFormula;
 }
 
-AFX_INLINE CString CXTPReportGroupRow::GetFormatString()
+AFX_INLINE CString CXTPReportGroupRow::GetFormatString() const
 {
-	return m_strFormatString;
+	return m_strFormat;
 }
 
 AFX_INLINE void CXTPReportGroupRow::SetFormatString(LPCTSTR strFormat)
 {
-	m_strFormatString = strFormat;
+	m_strFormat = strFormat;
 }
 
+AFX_INLINE void CXTPReportGroupRow::SetControl(CXTPReportControl* pControl)
+{
+	CXTPReportRow::SetControl(pControl);
+	ResetMarkupUIElement();
+}
+
+AFX_INLINE void CXTPReportGroupRow::SetCurrencyFormat(LPCURRENCYFMT fmt)
+{
+	m_lpCurrencyFmt = fmt;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTGROUPROW_H__)

@@ -1,7 +1,6 @@
 // ReportControl resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -33,7 +32,26 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Bitmap
 //
 
-XTP_IDB_REPORT_GLYPHS	    BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs.bmp"
+XTP_IDB_REPORT_GLYPHS_12	           BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs_12.bmp"
+XTP_IDB_REPORT_GLYPHS_15	           BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs_15.bmp"
+XTP_IDB_REPORT_GLYPHS_18	           BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs_18.bmp"
+XTP_IDB_REPORT_GLYPHS_24	           BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs_24.bmp"
+XTP_IDB_REPORT_GLYPHS_2013_12      BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs2013_12.bmp"
+XTP_IDB_REPORT_GLYPHS_2013_15      BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs2013_15.bmp"
+XTP_IDB_REPORT_GLYPHS_2013_18      BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs2013_18.bmp"
+XTP_IDB_REPORT_GLYPHS_2013_24      BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphs2013_24.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_LIGHT_12 BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Light_12.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_LIGHT_15 BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Light_15.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_LIGHT_18 BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Light_18.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_LIGHT_24 BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Light_24.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_DARK_12  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Dark_12.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_DARK_15  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Dark_15.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_DARK_18  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Dark_18.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_DARK_24  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Dark_24.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_BLUE_12  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Blue_12.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_BLUE_15  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Blue_15.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_BLUE_18  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Blue_18.bmp"
+XTP_IDB_REPORT_GLYPHS_VS2012_BLUE_24  BITMAP  DISCARDABLE     "ReportControl/res/ReportGlyphsVS2012Blue_24.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -1,7 +1,6 @@
 // XTPReportDefines.h
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,284 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTDEFINES_H__)
-#define __XTPREPORTDEFINES_H__
+#	define __XTPREPORTDEFINES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPCustomHeap.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+#	ifdef _XTP_ACTIVEX
+enum XTPEnumReportCustomDraw
+{
+	xtpCustomDrawItem			= 0x01,
+	xtpCustomMeasureRow			= 0x02,
+	xtpCustomBeforeDrawRow		= 0x04,
+	xtpCustomDrawPreviewItem	= 0x08,
+	xtpCustomMeasurePreviewItem = 0x10,
+};
+#	endif
+
+//-----------------------------------------------------------------------
+// Summary:
+//      This enum defines the shell icons.
+//-----------------------------------------------------------------------
+enum XTPReportShellIcon
+{
+	xtpReportShellIconLock = 47
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//      This enum defines the index of the glyphs.
+//-----------------------------------------------------------------------
+enum XTPReportGlyph
+{
+	xtpReportGlyphInvalid			= -1,
+	xtpReportGlyphRowCollapse		= 0,
+	xtpReportGlyphRowExpand			= 1,
+	xtpReportGlyphEnabledUnchecked  = 2,
+	xtpReportGlyphEnabledChecked	= 3,
+	xtpReportGlyphDisabledUnchecked = 4,
+	xtpReportGlyphDisabledChecked   = 5,
+	xtpReportGlyphColumnExpand		= 6,
+	xtpReportGlyphColumnRestore		= 7,
+	xtpReportGlyphEnabledTristate   = 8,
+	xtpReportGlyphItemLocked		= 9,
+	xtpReportGlyphItemUnlocked		= 10,
+	xtpReportGlyphCount
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//      This enum defines the possible checkbox states.
+//-----------------------------------------------------------------------
+enum XTPReportCheckState
+{
+	xtpReportCheckStateInvalid		 = -1, // The checkbox state is invalid
+	xtpReportCheckStateUnchecked	 = 0,  // The checkbox is in an unchecked state
+	xtpReportCheckStateChecked		 = 1,  // The checkbox is in an checked state
+	xtpReportCheckStateIndeterminate = 2,  // The checkbox is in an indeterminate state
+	xtpReportCheckStateCount		 = 3   // Number of checkbox states
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//      This enum defines body, header, and footer rows.
+// See Also:
+//      CXTPReportRow::m_nRowType
+//-----------------------------------------------------------------------
+enum XTPReportRowType
+{
+	xtpRowTypeInvalid = -1, // Indicates an invalid row type
+	xtpRowTypeBody	= 0,  // The row is in body rows collection.
+	xtpRowTypeHeader  = 1,  // The row is in Headers rows collection.
+	xtpRowTypeFooter  = 2   // The row is in Footers rows collection.
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Enumeration of orientations.
+// See Also: SetGridStyle
+//-----------------------------------------------------------------------
+enum XTPReportOrientation
+{
+	xtpReportOrientationHorizontal = 0,
+	xtpReportOrientationVertical   = 1,
+	xtpReportOrientationAll		   = 2
+};
+
+//===========================================================================
+// Summary:
+//     Represents predefined grid line styles:
+// Example:
+//     <code>m_wndReport.SetGridStyle(FALSE, xtpReportGridLargeDots);</code>
+// See Also: CXTPReportControl::SetGridStyle
+//
+// <KEYWORDS xtpReportGridNoLines, xtpReportGridSmallDots, xtpReportGridLargeDots,
+// xtpReportGridDashes, xtpReportGridSolid>
+//===========================================================================
+enum XTPReportLineStyle
+{
+	xtpReportLineStyleNone	 = 0, // No line
+	xtpReportLineStyleDotSmall = 1, // Line is drawn with small dots
+	xtpReportLineStyleDotLarge = 2, // Line is drawn with large dots
+	xtpReportLineStyleDash	 = 3, // Line is drawn with dashes
+	xtpReportLineStyleSolid	= 4, // Solid line
+	xtpReportLineStyleCount	= 5, // Number of line styles
+
+	// Old names
+	xtpReportGridNoLines   = xtpReportLineStyleNone,
+	xtpReportGridSmallDots = xtpReportLineStyleDotSmall,
+	xtpReportGridLargeDots = xtpReportLineStyleDotLarge,
+	xtpReportGridDashes	= xtpReportLineStyleDash,
+	xtpReportGridSolid	 = xtpReportLineStyleSolid
+};
+
+typedef XTPReportLineStyle XTPReportGridStyle;
+
+//===========================================================================
+// Summary:
+//     Represents predefined freeze column line styles:
+//===========================================================================
+enum XTPReportFreezeColsDividerStyle
+{
+	xtpReportFreezeColsDividerThin		 = 0x01, // thin line style
+	xtpReportFreezeColsDividerBold		 = 0x02, // bold line style
+	xtpReportFreezeColsDividerHeader	 = 0x04, // header line style
+	xtpReportFreezeColsDividerShade		 = 0x08, // shade line style
+	xtpReportFreezeColsDividerShowAlways = 0x10, // show event if AutoColumnSizing is On
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+
+// deprecated
+#	define xtpGridNoLines xtpReportGridNoLines
+#	define xtpGridSmallDots xtpReportGridSmallDots
+#	define xtpGridLargeDots xtpReportGridLargeDots
+#	define xtpGridDashes xtpReportGridDashes
+#	define xtpGridSolid xtpReportGridSolid
+
+//}}AFX_CODEJOCK_PRIVATE
+
+//===========================================================================
+// Summary:
+//     Represents predefined column styles.
+// Example:
+//     <code>m_wndReport.GetPaintManager()->m_columnStyle = xtpReportColumnFlat;</code>
+// See Also: CXTPReportPaintManager::m_columnStyle, CXTPReportPaintManager
+//
+// <KEYWORDS xtpReportColumnShaded, xtpReportColumnFlat>
+//===========================================================================
+enum XTPReportColumnStyle
+{
+	xtpReportColumnShaded,	 // Columns are gray shaded.
+	xtpReportColumnFlat,	   // Flat style for drawing columns.
+	xtpReportColumnExplorer,   // Explorer column style
+	xtpReportColumnOffice2003, // Gradient column style
+	xtpReportColumnResource	// Office 2007/2010 column style
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+
+// deprecated
+#	define xtpColumnShaded xtpReportColumnShaded
+#	define xtpColumnFlat xtpReportColumnFlat
+#	define xtpReportColumnOffice2007 xtpReportColumnResource
+
+//}}AFX_CODEJOCK_PRIVATE
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Represent the style of lines used to draw a hierarchical tree structure.
+// Example:
+//     <code>m_wndReport.GetPaintManager()->m_treeStructureStyle =
+//     xtpReportTreeStructureSolid;</code>
+// See Also: CXTPReportPaintManager::m_treeStructureStyle, CXTPReportPaintManager
+//
+// <KEYWORDS xtpReportTreeStructureNone, xtpReportTreeStructureSolid>
+//-----------------------------------------------------------------------
+enum XTPReportTreeStructureStyle
+{
+	xtpReportTreeStructureNone,  // No lines will be drawn from the parent node to each child node.
+	xtpReportTreeStructureSolid, // Lines will be drawn from the parent node to each child node at
+								 // the next level.
+	xtpReportTreeStructureDots // Dots will be drawn from the parent node to each child node at the
+							   // next level.
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Represent the Header/Footer rows divider style.
+//-----------------------------------------------------------------------
+enum XTPReportSectionDividerStyle
+{
+	xtpReportSectionDividerStyleNone	= 0x00, // no line
+	xtpReportSectionDividerStyleThin	= 0x01, // thin style
+	xtpReportSectionDividerStyleBold	= 0x02, // bold style
+	xtpReportSectionDividerStyleShade   = 0x04, // shaded line style
+	xtpReportSectionDividerStyleOutlook = 0x08, // outlook line style
+
+	//{{AFX_CODEJOCK_PRIVATE
+	// Deprecated
+	xtpReportFixedRowsDividerNone	= xtpReportSectionDividerStyleNone,
+	xtpReportFixedRowsDividerThin	= xtpReportSectionDividerStyleThin,
+	xtpReportFixedRowsDividerBold	= xtpReportSectionDividerStyleBold,
+	xtpReportFixedRowsDividerShade   = xtpReportSectionDividerStyleShade,
+	xtpReportFixedRowsDividerOutlook = xtpReportSectionDividerStyleOutlook
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+// Old enum name
+typedef XTPReportSectionDividerStyle XTPReportFixedRowsDividerStyle;
+//}}AFX_CODEJOCK_PRIVATE
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Section divider position.
+//-----------------------------------------------------------------------
+enum XTPReportSectionDividerPosition
+{
+	xtpReportSectionDividerPositionTop	= 0, // Divider above the section
+	xtpReportSectionDividerPositionBottom = 1  // Divider below the section
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Represent the Report Draw Sort Triangle logic
+//-----------------------------------------------------------------------
+enum XTPReportDrawSortTriangleStyle
+{
+	xtpReportDrawSortTriangleDefault = 0, // The triangle will be removed when the column size is
+										  // too small to display the full caption and triangle
+	xtpReportDrawSortTriangleAlways = 1,  // The sort triangle displayed in column header when a
+										  // column is sorted and the caption will be cut with
+										  // ellipsis
+	xtpReportDrawSortTriangleNever = 2	// Never draw the triangle.
+};
+
+//===========================================================================
+// Summary:
+//     Enumeration of hyperlink text decoration.
+//
+// <KEYWORDS xtpReportTextDecorationNone, xtpReportTextDecorationUnderline>
+//===========================================================================
+enum XTPReportTextDecoration
+{
+	xtpReportTextDecorationNone		 = 0, // Text has no decoration
+	xtpReportTextDecorationUnderline = 1  // Text is underlined
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Visual theme enumeration
+// Example:
+//     <code> m_wndReportControl.SetTheme(xtpReportThemeOffice2013); </code>
+// See Also: CXTPReportControl::SetTheme, CXTPReportControl::GetCurrentTheme
+//
+// <KEYWORDS xtpReportThemeDefault, xtpReportThemeOfficeXP, xtpReportThemeOffice2003,
+// xtpReportThemeOffice2003Luna, xtpReportThemeOffice2013, xtpReportThemeVisual2012StudioLight,
+// xtpReportThemeVisual2012StudioDark, xtpReportThemeVisual2012StudioBlue, xtpReportThemeExplorer,
+// xtpReportThemeResource>
+//-----------------------------------------------------------------------
+enum XTPReportPaintTheme
+{
+	xtpReportThemeDefault,		  // Default theme.
+	xtpReportThemeOfficeXP,		  // Office XP style theme.
+	xtpReportThemeOffice2003,	 // Office 2003 style theme.
+	xtpReportThemeOffice2003Luna, // Office 2003 style theme with luna colors.
+	xtpReportThemeOffice2013,	 // Office 2013 style theme.
+	xtpReportThemeOffice2016 = xtpReportThemeOffice2013, // Office 2016 style theme.
+	xtpReportThemeVisualStudio2012Light,				 // Visual Studio 2012 Light style theme.
+	xtpReportThemeVisualStudio2012Dark,					 // Visual Studio 2012 Dark style theme.
+	xtpReportThemeVisualStudio2012Blue,					 // Visual Studio 2012 Blue style theme.
+	xtpReportThemeVisualStudio2015,						 // Visual Studio 2015 style theme.
+	xtpReportThemeExplorer,								 // Windows Explorer theme.
+	xtpReportThemeResource,								 // Resource DLL style theme.
+};
 
 //{{AFX_CODEJOCK_PRIVATE
 
@@ -51,7 +320,7 @@ XTP_DECLARE_BATCH_ALLOC_OBJ_DATA_(CXTPReportGroupRow_BatchData, _XTP_EXT_CLASS);
 // BOOL CXTPReportControl::RegisterWindowClass()
 // {
 //     WNDCLASS wndcls;
-//     HINSTANCE hInst = AfxGetInstanceHandle();
+//     HINSTANCE hInst = XTPGetInstanceHandle();
 //
 //     if (!(::GetClassInfo(hInst, XTPREPORTCTRL_CLASSNAME, &wndcls)))
 //     {
@@ -80,13 +349,13 @@ XTP_DECLARE_BATCH_ALLOC_OBJ_DATA_(CXTPReportGroupRow_BatchData, _XTP_EXT_CLASS);
 //     CXTPReportControl::RegisterWindowClass
 //-----------------------------------------------------------------------
 const TCHAR XTPREPORTCTRL_CLASSNAME[] = _T("XTPReport");
+const TCHAR XTPTRACKCTRL_CLASSNAME[]  = _T("XTPTrackControl");
 
 //===========================================================================
 // Summary:
 //     Report control records clipboard format name.
 //===========================================================================
 static const LPCTSTR XTPREPORTCTRL_CF_RECORDS = _T("XTPReport_CF_Records");
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -163,7 +432,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_HEADER_RCLICK         (NM_FIRST-51)
+#	define XTP_NM_REPORT_HEADER_RCLICK (NM_FIRST - 51)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -194,7 +463,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_SELCHANGED            (NM_FIRST-52)
+#	define XTP_NM_REPORT_SELCHANGED (NM_FIRST - 52)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -228,7 +497,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_CHECKED               (NM_FIRST-53)
+#	define XTP_NM_REPORT_CHECKED (NM_FIRST - 53)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -271,7 +540,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_HYPERLINK             (NM_FIRST-54)
+#	define XTP_NM_REPORT_HYPERLINK (NM_FIRST - 54)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -288,13 +557,14 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     Here is an example of how an application would handle this message.
 // <code>
 // BEGIN_MESSAGE_MAP(CReportSampleView, CXTPReportView)
-//     ON_NOTIFY(XTP_NM_REPORT_COLUMNORDERCHANGED, XTP_ID_REPORT_CONTROL, OnReportColumnOrderChanged)
+//     ON_NOTIFY(XTP_NM_REPORT_COLUMNORDERCHANGED, XTP_ID_REPORT_CONTROL,
+//     OnReportColumnOrderChanged)
 // END_MESSAGE_MAP()
 //
 // void CReportSampleView::OnReportColumnOrderChanged(NMHDR*  pNotifyStruct, LRESULT* /*result*/)
 // {
-//     XTP_NM_REPORTCOLUMNORDERCHANGED* pItemNotify = (XTP_NM_REPORTCOLUMNORDERCHANGED*) pNotifyStruct;
-//     ASSERT(pItemNotify != NULL);
+//     XTP_NM_REPORTCOLUMNORDERCHANGED* pItemNotify = (XTP_NM_REPORTCOLUMNORDERCHANGED*)
+//     pNotifyStruct; ASSERT(pItemNotify != NULL);
 //
 //     // TODO: Handle command.
 // }
@@ -305,7 +575,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_GROUPORDERCHANGED, XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_COLUMNORDERCHANGED    (NM_FIRST-55)
+#	define XTP_NM_REPORT_COLUMNORDERCHANGED (NM_FIRST - 55)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -327,8 +597,8 @@ const int XTP_REPORT_NOICON = (int)-1;
 //
 // void CReportSampleView::OnReportSortOrderChanged(NMHDR*  pNotifyStruct, LRESULT* /*result*/)
 // {
-//     XTP_NM_REPORTRECORDITEM* pItemNotify = (XTP_NM_REPORTRECORDITEM*) pNotifyStruct;
-//     ASSERT(pItemNotify != NULL);
+//     //pNotifyStruct doesn't consist information about column which was clicked.
+//     //To get column use XTP_NM_REPORT_COLUMNORDERCHANGED notification.
 //
 //     // TODO: Handle command.
 // }
@@ -339,7 +609,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_SORTORDERCHANGED      (NM_FIRST-56)
+#	define XTP_NM_REPORT_SORTORDERCHANGED (NM_FIRST - 56)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -352,18 +622,17 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     The XTP_NM_REPORT_PRESORTORDERCHANGED notification message is sent to inform
 //     the owner window that the user change click header of report control the sort order will
 //     change. XTP_NM_REPORT_PRESORTORDERCHANGED is send BEFORE CXTPReportControl::Populate has been
-//     called, so the order of the rows has not yet been visibly changed.  After CXTPReportControl::Populate is called,
-//     the XTP_NM_REPORT_SORTORDERCHANGED notification is send to inform that the order has actually
-//     changed.
-//     The owner window of the report control receives this notification
-//     threw the WM_COMMAND message.
+//     called, so the order of the rows has not yet been visibly changed.  After
+//     CXTPReportControl::Populate is called, the XTP_NM_REPORT_SORTORDERCHANGED notification is
+//     send to inform that the order has actually changed. The owner window of the report control
+//     receives this notification threw the WM_COMMAND message.
 // See Also:
 //     XTP_NM_REPORT_CHECKED, XTP_NM_REPORT_COLUMNORDERCHANGED, XTP_NM_REPORT_HEADER_RCLICK,
 //     XTP_NM_REPORT_HYPERLINK, XTP_NM_REPORT_INPLACEBUTTONDOWN, XTP_NM_REPORT_SELCHANGED,
 //     XTP_NM_REPORT_VALUECHANGED, XTP_NM_REPORT_SORTORDERCHANGED
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_PRESORTORDERCHANGED   (NM_FIRST-67)
+#	define XTP_NM_REPORT_PRESORTORDERCHANGED (NM_FIRST - 67)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -419,7 +688,8 @@ const int XTP_REPORT_NOICON = (int)-1;
 //             break;
 //         case ID_PROPERTY_FLATHEADER:
 //             GetTargetReport()->GetPaintManager()->m_columnStyle =
-//                 (CRecordPropertyBool::GetValue(pItemNotify)) ? xtpReportColumnFlat : xtpReportColumnShaded;
+//                 (CRecordPropertyBool::GetValue(pItemNotify)) ? xtpReportColumnFlat :
+//                 xtpReportColumnShaded;
 //             break;
 //         case ID_PROPERTY_HIDESELECTION:
 //             GetTargetReport()->GetPaintManager()->m_bHideSelection =
@@ -439,7 +709,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_VALUECHANGED          (NM_FIRST-57)
+#	define XTP_NM_REPORT_VALUECHANGED (NM_FIRST - 57)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -475,8 +745,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_INPLACEBUTTONDOWN     (NM_FIRST-58)
-
+#	define XTP_NM_REPORT_INPLACEBUTTONDOWN (NM_FIRST - 58)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -508,8 +777,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_ROWEXPANDED           (NM_FIRST-59)
-
+#	define XTP_NM_REPORT_ROWEXPANDED (NM_FIRST - 59)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -541,7 +809,8 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_LBUTTONDOWN           (NM_FIRST-60)
+#	define XTP_NM_REPORT_LBUTTONDOWN (NM_FIRST - 60)
+#	define XTP_NM_REPORT_LBUTTONUP (NM_FIRST - 89)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -580,7 +849,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl, CXTPReportControl::GetItemMetrics()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_GETITEMMETRICS        (NM_FIRST-61)
+#	define XTP_NM_REPORT_GETITEMMETRICS (NM_FIRST - 61)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -595,7 +864,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl, CXTPReportControl::OnRequestEdit()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_REQUESTEDIT           (NM_FIRST-62)
+#	define XTP_NM_REPORT_REQUESTEDIT (NM_FIRST - 62)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -636,7 +905,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl, CXTPReportControl::OnBeforeCopyToText()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_BEFORE_COPY_TOTEXT    (NM_FIRST-63)
+#	define XTP_NM_REPORT_BEFORE_COPY_TOTEXT (NM_FIRST - 63)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -651,14 +920,16 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     Here is an example of how an application would handle this message.
 // <code>
 // BEGIN_MESSAGE_MAP(CReportSampleView, CXTPReportView)
-//     ON_NOTIFY(XTP_NM_REPORT_BEFORE_PASTE_FROMTEXT, XTP_ID_REPORT_CONTROL, OnReportBeforePasteFromText)
+//     ON_NOTIFY(XTP_NM_REPORT_BEFORE_PASTE_FROMTEXT, XTP_ID_REPORT_CONTROL,
+//     OnReportBeforePasteFromText)
 // END_MESSAGE_MAP()
 //
 //  void CReportSampleView::OnReportBeforePasteFromText(NMHDR*  pNotifyStruct, LRESULT* result)
 //  {
 //      ASSERT(pNotifyStruct);
 //
-//      XTP_NM_REPORT_BEFORE_COPYPASTE* pnmCopyPaste = (XTP_NM_REPORT_BEFORE_COPYPASTE*)pNotifyStruct;
+//      XTP_NM_REPORT_BEFORE_COPYPASTE* pnmCopyPaste =
+//      (XTP_NM_REPORT_BEFORE_COPYPASTE*)pNotifyStruct;
 //
 //      if (!pnmCopyPaste || !pnmCopyPaste->ppRecord || !pnmCopyPaste->parStrings) {
 //          ASSERT(FALSE);
@@ -702,7 +973,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl, CXTPReportControl::OnBeforePasteFromText()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_BEFORE_PASTE_FROMTEXT (NM_FIRST-64)
+#	define XTP_NM_REPORT_BEFORE_PASTE_FROMTEXT (NM_FIRST - 64)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -741,14 +1012,18 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl, CXTPReportControl::OnBeforePaste()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_BEFORE_PASTE          (NM_FIRST-65)
+#	define XTP_NM_REPORT_BEFORE_PASTE (NM_FIRST - 65)
 
 //{{AFX_CODEJOCK_PRIVATE
 // Internal Trace operation
-#define XTP_TRACE
+#	define XTP_TRACE
 //}}AFX_CODEJOCK_PRIVATE
 
-
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+#		define XTP_NM_REPORT_VALUECHANGING (NM_FIRST - 66)
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -764,7 +1039,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportHeader, CXTPReportHeader::AdjustColumnsWidth
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_COLUMNWIDTHCHANGED    (NM_FIRST-68)
+#	define XTP_NM_REPORT_COLUMNWIDTHCHANGED (NM_FIRST - 68)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -779,7 +1054,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     CXTPReportControl::OnPreviewKeyDown, XTP_NM_REPORTPREVIEWKEYDOWN,
 //     CXTPReportControl::OnKeyDown, CWnd::OnKeyDown.
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_PREVIEWKEYDOWN        (NM_FIRST-69)
+#	define XTP_NM_REPORT_PREVIEWKEYDOWN (NM_FIRST - 69)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -793,7 +1068,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTDRAGDROP, XTP_NM_REPORT_BEGINDRAG, XTP_NM_REPORT_DROP,
 //     XTP_NM_REPORT_RECORDS_DROPPED, XTP_NM_REPORT_DRAGDROP_COMPLETED
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_BEGINDRAG             (NM_FIRST-70)
+#	define XTP_NM_REPORT_BEGINDRAG (NM_FIRST - 70)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -807,9 +1082,9 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTDRAGDROP, XTP_NM_REPORT_BEGINDRAG,
 //     XTP_NM_REPORT_RECORDS_DROPPED, XTP_NM_REPORT_DRAGDROP_COMPLETED
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_DROP                  (NM_FIRST-71)
-#define XTP_NM_REPORT_HASVALIDDROPTYPE      (NM_FIRST-85)
-#define XTP_NM_REPORT_VALIDDROPTARGET       (NM_FIRST-86)
+#	define XTP_NM_REPORT_DROP (NM_FIRST - 71)
+#	define XTP_NM_REPORT_HASVALIDDROPTYPE (NM_FIRST - 85)
+#	define XTP_NM_REPORT_VALIDDROPTARGET (NM_FIRST - 86)
 //-----------------------------------------------------------------------
 // Summary:
 //     Defines message for in-place editing is canceled and value is not
@@ -823,7 +1098,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTRECORDITEM, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportRecordItem::OnEditCanceled
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_EDIT_CANCELED         (NM_FIRST-72)
+#	define XTP_NM_REPORT_EDIT_CANCELED (NM_FIRST - 72)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -834,7 +1109,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl::OnConstraintSelecting()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_CONSTRAINT_SELECTING          (NM_FIRST-73)
+#	define XTP_NM_REPORT_CONSTRAINT_SELECTING (NM_FIRST - 73)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -845,7 +1120,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     CXTPReportControl::OnGetToolTipInfo()
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_GETTOOLTIPINFO          (NM_FIRST-74)
+#	define XTP_NM_REPORT_GETTOOLTIPINFO (NM_FIRST - 74)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -859,7 +1134,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTDRAGDROP, XTP_NM_REPORT_BEGINDRAG, XTP_NM_REPORT_DROP,
 //     XTP_NM_REPORT_DRAGDROP_COMPLETED
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_RECORDS_DROPPED          (NM_FIRST-75)
+#	define XTP_NM_REPORT_RECORDS_DROPPED (NM_FIRST - 75)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -891,7 +1166,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_FOCUS_CHANGED
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_FOCUS_CHANGING         (NM_FIRST-76)
+#	define XTP_NM_REPORT_FOCUS_CHANGING (NM_FIRST - 76)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -905,7 +1180,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTDRAGDROP, XTP_NM_REPORT_BEGINDRAG, XTP_NM_REPORT_DROP,
 //     XTP_NM_REPORT_RECORDS_DROPPED
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_DRAGDROP_COMPLETED     (NM_FIRST-77)
+#	define XTP_NM_REPORT_DRAGDROP_COMPLETED (NM_FIRST - 77)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -922,8 +1197,13 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_REQUESTEDIT,
 //     CXTPReportRecordItem::OnEditCanceled
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_BEGINEDIT              (NM_FIRST-78)
+#	define XTP_NM_REPORT_BEGINEDIT (NM_FIRST - 78)
 
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+#		define XTP_NM_REPORT_EDIT_CHANGING (NM_FIRST - 79)
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -937,7 +1217,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // See Also:
 //     XTP_NM_SELECTION_CHANGING
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_SELCHANGING           (NM_FIRST-80)
+#	define XTP_NM_REPORT_SELCHANGING (NM_FIRST - 80)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -951,7 +1231,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTDRAGDROP, XTP_NM_REPORT_BEGINDRAG, XTP_NM_REPORT_DROP,
 //     XTP_NM_REPORT_RECORDS_DROPPED, XTP_NM_REPORT_DRAGDROP_COMPLETED
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_DRAGOVER               (NM_FIRST-81)
+#	define XTP_NM_REPORT_DRAGOVER (NM_FIRST - 81)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -973,8 +1253,8 @@ const int XTP_REPORT_NOICON = (int)-1;
 //
 // void CReportSampleView::OnReportGroupOrderChanged(NMHDR*  pNotifyStruct, LRESULT* /*result*/)
 // {
-//     XTP_NM_REPORTCOLUMNORDERCHANGED* pItemNotify = (XTP_NM_REPORTCOLUMNORDERCHANGED*) pNotifyStruct;
-//     ASSERT(pItemNotify != NULL);
+//     XTP_NM_REPORTCOLUMNORDERCHANGED* pItemNotify = (XTP_NM_REPORTCOLUMNORDERCHANGED*)
+//     pNotifyStruct; ASSERT(pItemNotify != NULL);
 //
 //     // TODO: Handle command.
 // }
@@ -985,7 +1265,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORT_COLUMNORDERCHANGED, XTP_NM_REPORT_SORTORDERCHANGED, XTP_NM_REPORT_VALUECHANGED,
 //     CXTPReportControl, CXTPReportHeader
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_GROUPORDERCHANGED      (NM_FIRST-82)
+#	define XTP_NM_REPORT_GROUPORDERCHANGED (NM_FIRST - 82)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -1019,7 +1299,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 //     XTP_NM_REPORTITEMCONTROL
 //     CXTPReportRecordItemControl, CXTPReportRecordItemButton
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_ITEMBUTTONCLICK     (NM_FIRST-83)
+#	define XTP_NM_REPORT_ITEMBUTTONCLICK (NM_FIRST - 83)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -1052,14 +1332,7 @@ const int XTP_REPORT_NOICON = (int)-1;
 // }
 // </code>
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_PLUSMINUSCLICK     (NM_FIRST-84)
-
-// NEEDS COMMENT
-#define XTP_NM_REPORT_TRACK_CLIP_CHANGED (NM_FIRST-85)
-// NEEDS COMMENT
-#define XTP_NM_REPORT_TRACK_MARKER_CHANGED (NM_FIRST-86)
-// NEEDS COMMENT
-#define XTP_NM_REPORT_TRACK_SNAP2MARKER (NM_FIRST-87)
+#	define XTP_NM_REPORT_PLUSMINUSCLICK (NM_FIRST - 84)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -1090,6 +1363,85 @@ const int XTP_REPORT_NOICON = (int)-1;
 // }
 // </code>
 //-----------------------------------------------------------------------
-#define XTP_NM_REPORT_STATECHANGED (NM_FIRST-88)
+#	define XTP_NM_REPORT_STATECHANGED (NM_FIRST - 88)
 
+//-----------------------------------------------------------------------
+// Summary:
+//     The XTP_NM_REPORT_HSCROLL message is sent when the horizontal
+//     scrolling position has changed.
+//-----------------------------------------------------------------------
+#	define XTP_NM_REPORT_HSCROLL (NM_FIRST - 90)
+
+//-----------------------------------------------------------------------
+// Summary:
+//     The XTP_NM_REPORT_VSCROLL message is sent when the vertical
+//     scrolling position has changed.
+//-----------------------------------------------------------------------
+#	define XTP_NM_REPORT_VSCROLL (NM_FIRST - 91)
+
+//-----------------------------------------------------------------------
+// Summary:
+//     The XTP_NM_REPORT_MOUSEMOVE message is sent when the
+//     mouse is moved over the control.
+//-----------------------------------------------------------------------
+#	define XTP_NM_REPORT_MOUSEMOVE (NM_FIRST - 92)
+
+#	define XTP_NM_REPORT_GIVEFEEDBACK (NM_FIRST - 93)
+
+//-----------------------------------------------------------------------
+// Summary:
+//     The XTP_NM_REPORT_ROWHEIHGTCHANGED notification message is sent
+//     when the height of a row has changed. This can happen when the user
+//     changes the height.
+//-----------------------------------------------------------------------
+#	define XTP_NM_REPORT_ROWHEIHGTCHANGED (NM_FIRST - 94)
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Enables deprecated report control methods
+//-----------------------------------------------------------------------
+#	define XTP_REPORT_DEPRECATED() (1)
+
+class CXTPReportRow;
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Define a function pointer for comparing events.
+// Remarks:
+//     This function pointer is used in the SortEx method.
+// See Also:
+//     Sort, SortEx, CXTPReportControl::SetRowsCompareFunc
+//-----------------------------------------------------------------------
+typedef int(AFX_CDECL* XTPReportRowsCompareFunc)(const CXTPReportRow** pRow1,
+												 const CXTPReportRow** pRow2);
+
+#	define XTP_DECLARE_PROPERTY(property, type)                                                   \
+		afx_msg type OleGet##property();                                                           \
+		afx_msg void OleSet##property(type);
+
+#	define XTP_DISP_PROPERTY_EX_ID(theClass, szExternalName, dispid, vtPropType)                  \
+		DISP_PROPERTY_EX_ID(theClass, #szExternalName, dispid, OleGet##szExternalName,             \
+							OleSet##szExternalName, vtPropType)
+
+#	define XTP_IMPLEMENT_PROPERTY(theClass, theProperty, theMember, theType)                      \
+		theType theClass::OleGet##theProperty()                                                    \
+		{                                                                                          \
+			return theMember;                                                                      \
+		}                                                                                          \
+		void theClass::OleSet##theProperty(theType set)                                            \
+		{                                                                                          \
+			theMember = set;                                                                       \
+		}
+
+#	define XTP_IMPLEMENT_PROPERTY_COLOR(theClass, theProperty, theMember)                         \
+		COLORREF theClass::OleGet##theProperty()                                                   \
+		{                                                                                          \
+			return theMember;                                                                      \
+		}                                                                                          \
+		void theClass::OleSet##theProperty(COLORREF oleColor)                                      \
+		{                                                                                          \
+			theMember = AxTranslateColor(oleColor);                                                \
+		}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTDEFINES_H__)

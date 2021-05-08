@@ -1,7 +1,6 @@
 // XTPControlPopupColor.h : interface for the CXTPControlPopupColor class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLPOPUPCOLOR_H__)
-#define __XTPCONTROLPOPUPCOLOR_H__
+#	define __XTPCONTROLPOPUPCOLOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManagerIcon;
 class CXTPImageManagerIconHandle;
@@ -38,12 +38,11 @@ class CXTPImageManagerIconHandle;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPControlPopupColor : public CXTPControlPopup
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_XTP_CONTROL(CXTPControlPopupColor)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlPopupColor object
@@ -74,7 +73,6 @@ public:
 	COLORREF GetColor() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to copy the control.
@@ -85,36 +83,40 @@ protected:
 	void Copy(CXTPControl* pControl, BOOL bRecursive = FALSE);
 
 private:
-
 	void RedrawIcon(CXTPImageManagerIcon* pImage, CXTPImageManagerIconHandle& hIcon);
 
 private:
-
 	COLORREF m_clr;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlPopupColor);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
-
 
 //===========================================================================
 // Summary:
 //     CXTPControlButtonColor is a CXTPControlButton derived class.
 //     It represents a text button in the color picker popup.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlButtonColor: public CXTPControlButton
+class _XTP_EXT_CLASS CXTPControlButtonColor : public CXTPControlButton
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_XTP_CONTROL(CXTPControlButtonColor)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlButtonColor object
 	//-----------------------------------------------------------------------
 	CXTPControlButtonColor();
 
-		//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to retrieve the color of the control.
 	// Returns:
@@ -129,8 +131,8 @@ public:
 	//     clr - Color to set.
 	//-----------------------------------------------------------------------
 	void SetColor(COLORREF clr);
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to copy the control.
@@ -167,20 +169,19 @@ protected:
 	void Draw(CDC* pDC);
 
 protected:
-	COLORREF m_clr;         // Color of the color bar displayed in the color button under the "pin" icon.
+	COLORREF m_clr; // Color of the color bar displayed in the color button under the "pin" icon.
 };
-
 
 //===========================================================================
 // Summary:
 //     CXTPControlColorSelector is a CXTPControl derived class.
 //     It represents a color selector control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlColorSelector: public CXTPControl
+class _XTP_EXT_CLASS CXTPControlColorSelector : public CXTPControl
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_XTP_CONTROL(CXTPControlColorSelector)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -189,7 +190,6 @@ class _XTP_EXT_CLASS CXTPControlColorSelector: public CXTPControl
 	struct CColorInfo;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlColorSelector object
@@ -213,7 +213,6 @@ public:
 	void SetColor(COLORREF clr);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to determine the size of the control.
@@ -274,7 +273,6 @@ protected:
 	void OnLButtonUp(CPoint point);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Input:   point - Specifies the x- and y coordinate of the cursor.
 	//                  These coordinates are always relative to the
@@ -289,7 +287,6 @@ protected:
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 
 private:
-
 	CRect GetRect(int nIndex) const;
 	int HitTest(CPoint point) const;
 
@@ -299,16 +296,24 @@ private:
 	int GetItemCount() const;
 
 private:
-
 	int m_nSelected;
 	int m_nPressed;
 	COLORREF m_clr;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlPopupColor);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 // Obsolete define
-#define XTP_IDS_AUTOMATIC XTP_IDS_CLR_AUTOMATIC
-#define XTP_IDS_MORE_COLORS XTP_IDS_CLR_MORE
+#	define XTP_IDS_AUTOMATIC XTP_IDS_CLR_AUTOMATIC
+#	define XTP_IDS_MORE_COLORS XTP_IDS_CLR_MORE
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLPOPUPCOLOR_H__)

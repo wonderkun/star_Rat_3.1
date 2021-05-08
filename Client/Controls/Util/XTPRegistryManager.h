@@ -1,7 +1,6 @@
-// XTRegistryManager.h : header file
+// XTPRegistryManager.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREGISTRYMANAGER_H__)
-#define __XTPREGISTRYMANAGER_H__
+#	define __XTPREGISTRYMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -41,7 +42,6 @@ private:
 	class CHKey;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRegistryManager object
@@ -61,8 +61,8 @@ public:
 	// Summary:
 	//     This member function will set a registry key.
 	// Parameters:
-	//     lpszRegistryKey - Used to determine the full registry key for storing application profile settings.
-	//     lpszProfileName - The application's .INI filename.
+	//     lpszRegistryKey - Used to determine the full registry key for storing application profile
+	//     settings. lpszProfileName - The application's .INI filename.
 	// Remarks:
 	//     Calling SetRegistryKey will initialize m_pszProfileName and
 	//     m_pszRegistryKey for CWinApp.
@@ -70,15 +70,14 @@ public:
 	void SetRegistryKey(LPCTSTR lpszRegistryKey, LPCTSTR lpszProfileName);
 
 protected:
+	HKEY m_hKeyBase; // Handle to the registry key to use. The default is HKEY_CURRENT_USER.
+	CString m_strRegistryKey; // Used to determine the full registry key for storing application
+							  // profile settings.
+	CString m_strProfileName; // The application's .INI filename.
 
-	HKEY     m_hKeyBase;        // Handle to the registry key to use. The default is HKEY_CURRENT_USER.
-	CString m_strRegistryKey;  // Used to determine the full registry key for storing application profile settings.
-	CString m_strProfileName;  // The application's .INI filename.
-
-	static CString m_strINIFileName;  // Name of an .INI file for registry settings.
+	static CString m_strINIFileName; // Name of an .INI file for registry settings.
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will set the .INI file name for the registry
@@ -534,7 +533,8 @@ public:
 	//     Zero if the section is empty; otherwise it returns the number of
 	//     values present.
 	// -----------------------------------------------------------------------------
-	int EnumValues(LPCTSTR lpszSection, CMap<CString, LPCTSTR, DWORD, DWORD&>*  mapItems, CStringArray* arrayNames);
+	int EnumValues(LPCTSTR lpszSection, CMap<CString, LPCTSTR, DWORD, DWORD&>* mapItems,
+				   CStringArray* arrayNames);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -551,7 +551,7 @@ public:
 	//     arrayKeys   - A reference to a CStringArray, which will contain the keys in the
 	//                   registry under the above key.
 	//-----------------------------------------------------------------------
-	int EnumKeys(LPCTSTR lpszSection, CStringArray & arrayKeys);
+	int EnumKeys(LPCTSTR lpszSection, CStringArray& arrayKeys);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -599,7 +599,6 @@ public:
 	CString GetErrorMessage() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Called to get a handle to the CWinApp's registry key.
@@ -632,14 +631,18 @@ private:
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPRegistryManager::SetINIFileName(LPCTSTR strINIFileName) {
+AFX_INLINE void CXTPRegistryManager::SetINIFileName(LPCTSTR strINIFileName)
+{
 	m_strINIFileName = strINIFileName;
 }
-AFX_INLINE CString& CXTPRegistryManager::GetINIFileName() {
+AFX_INLINE CString& CXTPRegistryManager::GetINIFileName()
+{
 	return m_strINIFileName;
 }
-AFX_INLINE LONG CXTPRegistryManager::GetErrorCode() const {
+AFX_INLINE LONG CXTPRegistryManager::GetErrorCode() const
+{
 	return m_lResult;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTPREGISTRYMANAGER_H__

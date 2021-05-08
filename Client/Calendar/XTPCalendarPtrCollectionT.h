@@ -1,7 +1,6 @@
 // XTPCalendarPtrCollectionT.h: CXTPCalendarPtrCollectionT template.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARCOLLECTIONT_H__)
-#define _XTPCALENDARCOLLECTIONT_H__
+#	define _XTPCALENDARCOLLECTIONT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#pragma warning(disable: 4097)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "Common/XTPSmartPtrInternalT.h"
+#	pragma warning(disable : 4097)
 
 //===========================================================================
 // Summary:
@@ -140,7 +139,8 @@ public:
 	//           GetCount
 	//-----------------------------------------------------------------------
 	virtual void Add(_TObject* pNewElement);
-	virtual void Add(_TObject* pNewElement, BOOL bWithAddRef); // <combine CXTPCalendarPtrCollectionT::Add@_TObject*>
+	virtual void Add(_TObject* pNewElement,
+					 BOOL bWithAddRef); // <combine CXTPCalendarPtrCollectionT::Add@_TObject*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -180,7 +180,7 @@ public:
 	//      greater than or equal to 0 and less than the value returned
 	//      by GetCount. The specified element currently at this index.
 	//-----------------------------------------------------------------------
-	virtual int Find(const _TObject* pElement);
+	virtual int Find(const _TObject* pElement) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -227,7 +227,7 @@ public:
 	// </code>
 	// See Also: GetAt, Add, InsertAt, SetAt
 	//-----------------------------------------------------------------------
-	virtual void Append(CXTPCalendarPtrCollectionT<_TObject>* pElementsArray);
+	virtual void Append(const CXTPCalendarPtrCollectionT<_TObject>* pElementsArray);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -257,7 +257,9 @@ public:
 	//     A pointer to a _TObject object. The element currently at this index.
 	//-----------------------------------------------------------------------
 	virtual _TObject* GetAt(int nIndex) const;
-	virtual _TObject* GetAt(int nIndex, BOOL bWithAddRef) const; // <combine CXTPCalendarPtrCollectionT::GetAt@int@const>
+	virtual _TObject* GetAt(int nIndex,
+							BOOL bWithAddRef) const; // <combine
+													 // CXTPCalendarPtrCollectionT::GetAt@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -299,11 +301,19 @@ public:
 	virtual void RemoveAll();
 
 protected:
-	typedef CXTPSmartPtrInternalT<_TObject> TObjectPtr;  // Smart pointer type for stored objects.
-	CArray<TObjectPtr, TObjectPtr&> m_arElements;        // Objects storage.
+	typedef CXTPSmartPtrInternalT<_TObject> TObjectPtr; // Smart pointer type for stored objects.
+	CArray<TObjectPtr, TObjectPtr&> m_arElements;		// Objects storage.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual long OleGetItemCount();
+	virtual LPDISPATCH OleGetItem(long nIndex);
 
+	virtual void OleRemove(long nIndex);
+	// virtual void OleRemoveAll();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 ////////////////////////////////////////////////////////////////////////////
 
@@ -344,7 +354,7 @@ public:
 	// Summary:
 	//     Default object constructor.
 	//-----------------------------------------------------------------------
-	CXTPCalendarTypedPtrAutoDeleteArray() {};
+	CXTPCalendarTypedPtrAutoDeleteArray(){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,7 +362,8 @@ public:
 	// Remarks:
 	//     Handles member items deallocation.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarTypedPtrAutoDeleteArray() {
+	virtual ~CXTPCalendarTypedPtrAutoDeleteArray()
+	{
 		RemoveAll();
 	}
 
@@ -365,10 +376,11 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void RemoveAll()
 	{
-		for(int i = 0; i < GetSize(); i++)
+		for (int i = 0; i < GetSize(); i++)
 		{
 			PTR_TYPE pObj = GetAt(i);
-			if (pObj) {
+			if (pObj)
+			{
 				delete pObj;
 				SetAt(i, NULL);
 			}
@@ -399,9 +411,9 @@ public:
 template<class KEY, class TPtr>
 class CXTPCalendarTypedPtrAutoDeleteMap : public CMap<KEY, KEY, TPtr, TPtr>
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	typedef CMap<KEY, KEY, TPtr, TPtr> TBase;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -497,8 +509,6 @@ private:
 	}
 };
 
-
-
 /////////////////////////////////////////////////////////////////////////////
 template<class _TObject>
 AFX_INLINE CXTPCalendarPtrCollectionT<_TObject>::CXTPCalendarPtrCollectionT()
@@ -527,8 +537,9 @@ template<class _TObject>
 AFX_INLINE _TObject* CXTPCalendarPtrCollectionT<_TObject>::GetAt(int nIndex, BOOL bWithAddRef) const
 {
 	_TObject* pElement = m_arElements[nIndex];
-	if (bWithAddRef && pElement) {
-		pElement->InternalAddRef();
+	if (bWithAddRef && pElement)
+	{
+		((CCmdTarget*)pElement)->InternalAddRef();
 	}
 	return pElement;
 }
@@ -536,8 +547,9 @@ AFX_INLINE _TObject* CXTPCalendarPtrCollectionT<_TObject>::GetAt(int nIndex, BOO
 template<class _TObject>
 AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::Add(_TObject* pNewElement, BOOL bWithAddRef)
 {
-	if (bWithAddRef && pNewElement) {
-		pNewElement->InternalAddRef();
+	if (bWithAddRef && pNewElement)
+	{
+		((CCmdTarget*)pNewElement)->InternalAddRef();
 	}
 	TObjectPtr ptrNewElement(pNewElement);
 	m_arElements.Add(ptrNewElement);
@@ -551,9 +563,11 @@ AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::Add(_TObject* pNewElement)
 }
 
 template<class _TObject>
-AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::Append(CXTPCalendarPtrCollectionT<_TObject>* pElementsArray)
+AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::Append(
+	const CXTPCalendarPtrCollectionT<_TObject>* pElementsArray)
 {
-	if (!pElementsArray) {
+	if (!pElementsArray)
+	{
 		ASSERT(FALSE);
 		return;
 	}
@@ -567,7 +581,7 @@ AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::Append(CXTPCalendarPtrColl
 }
 
 template<class _TObject>
-AFX_INLINE int CXTPCalendarPtrCollectionT<_TObject>::Find(const _TObject* pElement)
+AFX_INLINE int CXTPCalendarPtrCollectionT<_TObject>::Find(const _TObject* pElement) const
 {
 	int nCount = GetCount();
 	for (int i = 0; i < nCount; i++)
@@ -613,7 +627,7 @@ AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::InsertAt(int nIndex, _TObj
 }
 
 template<class _TObject>
-AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::RemoveAt(int nIndex/*, BOOL bWithRelease*/)
+AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::RemoveAt(int nIndex /*, BOOL bWithRelease*/)
 {
 	m_arElements.RemoveAt(nIndex);
 }
@@ -625,5 +639,34 @@ AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::RemoveAll(/*BOOL bWithRele
 }
 
 //===========================================================================
+#	ifdef _XTP_ACTIVEX
 
+template<class _TObject>
+AFX_INLINE long CXTPCalendarPtrCollectionT<_TObject>::OleGetItemCount()
+{
+	return (long)GetCount();
+}
+
+template<class _TObject>
+AFX_INLINE LPDISPATCH CXTPCalendarPtrCollectionT<_TObject>::OleGetItem(long nIndex)
+{
+	if (nIndex < 0 || nIndex >= (long)OleGetItemCount())
+		AfxThrowOleException(DISP_E_BADINDEX);
+
+	CCmdTarget* pObj = (CXTPCmdTarget*)GetAt(nIndex);
+	return pObj ? pObj->GetIDispatch(TRUE) : NULL;
+}
+
+template<class _TObject>
+AFX_INLINE void CXTPCalendarPtrCollectionT<_TObject>::OleRemove(long nIndex)
+{
+	if (nIndex < 0 || nIndex >= (long)OleGetItemCount())
+		AfxThrowOleException(DISP_E_BADINDEX);
+
+	RemoveAt(nIndex);
+}
+
+#	endif // _XTP_ACTIVEX
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARCOLLECTIONT_H__)

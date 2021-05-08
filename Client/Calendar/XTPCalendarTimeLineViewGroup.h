@@ -1,7 +1,6 @@
 // XTPCalendarTimeLineViewGroup.h: interface for the CXTPCalendarTimeLineViewGroup class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,27 +19,23 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCALENDARTIMELINEVIEWGROUP_H__)
-#define __XTPCALENDARTIMELINEVIEWGROUP_H__
+#	define __XTPCALENDARTIMELINEVIEWGROUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#pragma warning (disable: 4100)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "Common/XTPDrawHelpers.h"
-
-#include "XTPCalendarView.h"
-#include "XTPCalendarViewEvent.h"
-#include "XTPCalendarViewDay.h"
-//#include "XTPCalendarTimeLineViewTimeScale.h"
+#	pragma warning(disable : 4100)
 
 class CXTPCalendarEvent;
 class CXTPCalendarTimeLineView;
 class CXTPCalendarTimeLineViewGroup;
 class CXTPCalendarTimeLineViewGroups;
 class CXTPCalendarTimeLineViewEvent;
+class CXTPCalendarTimeLineViewPart;
 
 //===========================================================================
 // Summary:
@@ -54,7 +49,6 @@ class CXTPCalendarTimeLineViewEvent;
 class _XTP_EXT_CLASS CXTPCalendarTimeLineViewEvent : public CXTPCalendarViewEvent
 {
 public:
-
 	// -----------------------------
 	// Summary:
 	//     Default object constructor.
@@ -78,7 +72,7 @@ public:
 	// Returns:
 	//     A CXTPCalendarTimeLineView pointer to the owner view object.
 	// -----------------------------
-	CXTPCalendarTimeLineView* GetView();
+	CXTPCalendarTimeLineView* GetView() const;
 
 	// -----------------------------
 	// Summary:
@@ -113,7 +107,14 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) { return FALSE; };
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const
+	{
+		return FALSE;
+	};
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const
+	{
+		return FALSE;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -121,7 +122,10 @@ public:
 	// Returns:
 	//     TRUE if object is visible, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible() { return NULL; };
+	virtual BOOL IsVisible() const
+	{
+		return FALSE;
+	};
 
 	// -----------------
 	// Summary:
@@ -177,7 +181,7 @@ public:
 	// Returns:
 	//  pointer to CXTPCalendarTimeLineViewPart object
 	// -----------------
-	virtual CXTPCalendarTimeLineViewPart* GetPart();
+	virtual CXTPCalendarTimeLineViewPart* GetPart() const;
 
 	// -----------------
 	// Summary:
@@ -185,11 +189,35 @@ public:
 	// Returns:
 	//     event duration in pixels as int
 	// -----------------
-	virtual int GetEventDurationInPixels();
+	virtual int GetEventDurationInPixels() const;
+
+	// -----------------
+	// Summary:
+	//  Returns the rect in client coordinates into which the event was drawn last time
+	// Note
+	//  GetLastVisibleRect and SetLastVisibleRect are workaround functions for HitTest in Timeline
+	//  view The SetLastVisibleRects called by draw operation each time the event is drawn in
+	//  timeline view The GetLastVisibleRect is used in HitTest function to determine the hittest
+	//  info
+	// -----------------
+	const CRect& GetLastVisibleRect() const;
+
+	// -----------------
+	// Summary:
+	//  Sets the rect in client coordinates into which the event was drawn last time
+	// Note
+	//  GetLastVisibleRect and SetLastVisibleRect are workaround functions for HitTest in timeline
+	//  view The SetLastVisibleRects called by draw operation each time the event is drawn in
+	//  timeline view The GetLastVisibleRect is used in HitTest function to determine the hittest
+	//  info
+	// -----------------
+	void SetLastVisibleRect(const CRect& rc);
 
 protected:
-	CXTPCalendarTimeLineViewGroup * m_pGroup;   // internal nmember to keep pointer to CXTPCalendarTimeLineViewGroup
-	int m_nEventDurationInPixels;               // internal nmember to keep event duration in pixels value
+	CXTPCalendarTimeLineViewGroup* m_pGroup; // internal nmember to keep pointer to
+											 // CXTPCalendarTimeLineViewGroup
+	int m_nEventDurationInPixels; // internal nmember to keep event duration in pixels value
+	CRect m_rcLastVisible;
 };
 
 //===========================================================================
@@ -236,7 +264,7 @@ public:
 	//     This function provides common functionality for all CXTPCalendarViewGroup -
 	//     derived classes.
 	//-----------------------------------------------------------------------
-	virtual void Populate(COleDateTime dtDayDate) {};
+	virtual void Populate(COleDateTime dtDayDate){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -266,7 +294,8 @@ public:
 	//     pDC :      A pointer to a valid device context.
 	//     nOffset :  Vertical offset to draw.
 	// ----------------------------------------------------------------------
-	virtual void Draw(CDC* pDC, int nOffset = 0);
+	virtual void Draw(CDC* pDC, int nOffset);
+	virtual void Draw(CDC* pDC); // <combine CXTPCalendarTimeLineViewGroup::Draw@CDC*@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -282,7 +311,13 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) {return 0; };
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const
+	{
+		return FALSE;
+	};
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const
+	{
+	}
 
 	// Summary:
 	//     This member function is used to obtain the owner view object.
@@ -291,31 +326,7 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPCalendarTimeLineView* GetView() const
 	{
-		return m_pView;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to obtain the number of event groups
-	// Returns:
-	//     An int that contains the number of event groups
-	//-----------------------------------------------------------------------
-	virtual int GetViewEventsCount()
-	{
-		return m_arEvents.GetCount();
-	}
-
-	// Summary:
-	//     Call this member function to obtain a pointer to the base CXTPCalendarViewEvent*
-	//     object that corresponds to the event's index.
-	// Parameters:
-	//     nIndex :  index of event in m_arEvents
-	// Returns:
-	//     pointer to CXTPCalendarViewEvent object
-	// ---------------------------
-	virtual CXTPCalendarViewEvent* GetViewEvent_(int nIndex)
-	{
-		return m_arEvents.GetAt(nIndex);
+		return (CXTPCalendarTimeLineView*)m_pView;
 	}
 
 	// ---------------------------
@@ -327,9 +338,9 @@ public:
 	// Returns:
 	//     pointer to CXTPCalendarViewEvent object
 	// ---------------------------
-	virtual CXTPCalendarTimeLineViewEvent* GetViewEvent(int nIndex)
+	virtual CXTPCalendarTimeLineViewEvent* GetViewEvent(int nIndex) const
 	{
-		return m_arEvents.GetAt(nIndex);
+		return (CXTPCalendarTimeLineViewEvent*)m_arEvents.GetAt(nIndex);
 	}
 
 	//-----------------------------------------------------------------------
@@ -362,6 +373,10 @@ public:
 	// ---------------------------
 	int GetGroupHeight();
 
+	void AddViewEvent(CXTPCalendarEvent* pEvent);
+
+	virtual CXTPCalendarViewEvent* CreateViewEvent(CXTPCalendarEvent* pEvent);
+
 protected:
 	//------------------------------------------------------------------------
 	// Remarks:
@@ -369,18 +384,19 @@ protected:
 	//------------------------------------------------------------------------
 	typedef CXTPCalendarPtrCollectionT<CXTPCalendarTimeLineViewEvent> TViewEventsCollection;
 
-	CXTPCalendarTimeLineView* m_pView; // internal pointer to the owner view object
 	CXTPCalendarTimeLineViewGroup* m_pParentGroup; // pointer to the owner view group object
 
-	TViewEventsCollection m_arEvents; // Storage for events views.
 	CXTPCalendarTimeLineViewGroups* m_pChildren; // not used in current version - always NULL
+
+	CXTPCalendarTimeLineView* m_pView;
 };
 
 //===========================================================================
 // Summary:
 //  This class represents an collection of CXTPCalendarTimeLineViewGroup objects
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarTimeLineViewGroups : public CXTPCalendarPtrCollectionT<CXTPCalendarTimeLineViewGroup>
+class _XTP_EXT_CLASS CXTPCalendarTimeLineViewGroups
+	: public CXTPCalendarPtrCollectionT<CXTPCalendarTimeLineViewGroup>
 {
 };
 
@@ -390,10 +406,28 @@ AFX_INLINE CXTPCalendarViewGroup* CXTPCalendarTimeLineViewEvent::GetViewGroup_()
 	return m_pGroup;
 }
 
-AFX_INLINE int CXTPCalendarTimeLineViewEvent::GetEventDurationInPixels()
+AFX_INLINE int CXTPCalendarTimeLineViewEvent::GetEventDurationInPixels() const
 {
 	return m_nEventDurationInPixels;
 }
+AFX_INLINE const CRect& CXTPCalendarTimeLineViewEvent::GetLastVisibleRect() const
+{
+	return m_rcLastVisible;
+}
+
+AFX_INLINE void CXTPCalendarTimeLineViewEvent::SetLastVisibleRect(const CRect& rc)
+{
+	m_rcLastVisible = rc;
+}
+
 //===========================================================================
 
+AFX_INLINE void CXTPCalendarTimeLineViewGroup::AddViewEvent(CXTPCalendarEvent* /*pEvent*/)
+{
+	ASSERT(FALSE);
+}
+
+//===========================================================================
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCALENDARTIMELINEVIEWGROUP_H__)

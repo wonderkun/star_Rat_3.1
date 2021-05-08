@@ -1,7 +1,6 @@
 // XTPFlowGraphConnection.h: interface for the CXTPFlowGraphConnection class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHCONNECTION_H__)
-#define __XTPFLOWGRAPHCONNECTION_H__
+#	define __XTPFLOWGRAPHCONNECTION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPage;
 class CXTPFlowGraphConnectionPoint;
@@ -34,11 +35,8 @@ class CXTPFlowGraphNode;
 
 namespace Gdiplus
 {
-	class GraphicsPath;
-};
-
-#include "XTPFlowGraphElement.h"
-
+class GraphicsPath;
+}
 
 // -------------------------------------------------------------------
 // Summary:
@@ -131,10 +129,6 @@ public:
 	//     Sets the caption of the connection.
 	// Parameters:
 	//     lpszCaption :  Caption of the connection.
-	//
-	//     <b>Remarks</b>
-	//     The connection's caption is not visible in the graph, it can be
-	//     used like a tag property.
 	// -------------------------------------------------------------------
 	void SetCaption(LPCTSTR lpszCaption);
 	// -------------------------------------------------------------------
@@ -168,6 +162,10 @@ public:
 	//     The tooltip for this connection.
 	// ---------------------------------------------------------------------
 	CString GetTooltip() const;
+
+	void SetTag(LPCTSTR lpszTag);
+
+	CString GetTag() const;
 
 	// ------------------------------------------
 	// Summary:
@@ -207,6 +205,44 @@ public:
 	//     The style of the connector.
 	// ---------------------------------------------------------------
 	int GetStyle() const;
+
+	// --------------------------------------------------------------------
+	// Summary:
+	//     Sets the width of the connector.
+	// Parameters:
+	//     nWidth :  Width of the connector line
+	// Remarks:
+	//     Use to set the width of the connector line.
+	// --------------------------------------------------------------------
+	void SetWidth(int nWidth);
+	// --------------------------------------------------------------------
+	// Summary:
+	//     Gets the width of the connector.
+	// Remarks:
+	//     This will return a value for a width of connector line
+	// Returns:
+	//     The width of the connector.
+	// ---------------------------------------------------------------
+	int GetWidth() const;
+
+	// --------------------------------------------------------------------
+	// Summary:
+	//     Sets the dashed style line of the connector.
+	// Parameters:
+	//     bDashed :  Dashed style connector line
+	// Remarks:
+	//     Use to set the dashed style connector line.
+	// --------------------------------------------------------------------
+	void SetDashed(BOOL bDashed);
+	// --------------------------------------------------------------------
+	// Summary:
+	//     Gets the dashed type.
+	// Remarks:
+	//     This will return a value for a dashed style connector line
+	// Returns:
+	//     The dashed style connector.
+	// ---------------------------------------------------------------
+	BOOL GetDashed() const;
 
 public:
 	// -------------------------------------------------
@@ -280,6 +316,10 @@ public:
 	// ---------------------------------------------------------
 	virtual void OnRemoved();
 
+	void SetPathReversed(BOOL bReversed);
+
+	BOOL IsPathReversed() const;
+
 public:
 	// ------------------------------------------------------------------------
 	// Summary:
@@ -293,7 +333,6 @@ public:
 	// ------------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
-
 protected:
 	// ----------------------------------------------------------------
 	// Summary:
@@ -302,73 +341,169 @@ protected:
 	// ----------------------------------------------------------------
 	virtual void RestoreConnection();
 
+	int GetConnectionPointIndex(CXTPFlowGraphConnectionPoint* pPoint) const;
+
 protected:
-	CXTPFlowGraphPage* m_pPage; // The page that this connection belongs to.
-	CXTPFlowGraphConnectionPoint* m_pInputPoint; // The input ConnectionPoint this connection line is connected to.
-	CXTPFlowGraphConnectionPoint* m_pOutputPoint; // The output ConnectionPoint this connection line is connected to.
+	CXTPFlowGraphPage* m_pPage;					  // The page that this connection belongs to.
+	CXTPFlowGraphConnectionPoint* m_pInputPoint;  // The input ConnectionPoint this connection line
+												  // is connected to.
+	CXTPFlowGraphConnectionPoint* m_pOutputPoint; // The output ConnectionPoint this connection line
+												  // is connected to.
 	CXTPFlowGraphConnection* m_pNextVisibleConnection; // Reference to the next visible connection.
 
-	CPoint m_ptInputPoint; //  Stores the coordinates of the Input conection point (if any), also is used internally for drag\drop.
-	CPoint m_ptOutputPoint; //  Stores the coordinates of the Output conection point (if any), also is used internally for drag\drop.
-	CPoint m_ptControlPoint; // Middle point for the connection.  This is the point that is set when a connection is clieck and dragged my the mouse.
+	CPoint m_ptInputPoint;  //  Stores the coordinates of the Input connection point (if any), also
+							//  is used internally for drag\drop.
+	CPoint m_ptOutputPoint; //  Stores the coordinates of the Output connection point (if any), also
+							//  is used internally for drag\drop.
+	CPoint m_ptControlPoint; // Middle point for the connection.  This is the point that is set when
+							 // a connection is clicked and dragged by a mouse.
 
 	CString m_strCaption; // The caption of the connection.
 	CString m_strTooltip; // Tooltip text for the item.
+	CString m_strTag;	 // A tag property to define a connection
+
 	COLORREF m_clrConnection; // Color of the connection.
-	int m_nStyle;  // Style of the connection. It uses a value from the XTPFlowGraphConnectorType enumeration.
+	int m_nStyle; // Style of the connection. It uses a value from the XTPFlowGraphConnectorType
+				  // enumeration.
 
 	int m_nInputId;  // Used internally to store the ID of the Input connection point.
 	int m_nOutputId; // Used internally to store the ID of the Output connection point.
 
-	CRect m_rcBoundingRect;  // The bounding rectangle for this element.
+	int m_nInputPointIndex;
+	int m_nOutputPointIndex;
 
-	Gdiplus::GraphicsPath* m_pPath;  // Path to the GDI Plus graphics used to draw the conneciton.
+	int m_nInputPointConnectionIndex;
+	int m_nOutputPointConnectionIndex;
+	int m_nConnectionIndex;
+
+	CRect m_rcBoundingRect; // The bounding rectangle for this element.
+
+	Gdiplus::GraphicsPath* m_pPath; // Path to the GDI Plus graphics used to draw the conneciton.
+	BOOL m_bPathReversed;
+	int m_nWidth;
+	BOOL m_bDashed;
 
 	friend class CXTPFlowGraphPaintManager;
 	friend class CXTPFlowGraphConnections;
 	friend class CXTPFlowGraphControl;
 	friend class CXTPFlowGraphPage;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphConnection)
+
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleSetTooltip(LPCTSTR lpszTooltip);
+	afx_msg BSTR OleGetTooltip();
+
+	afx_msg void OleSetTag(LPCTSTR lpszTag);
+	afx_msg BSTR OleGetTag();
+
+	afx_msg void OleSetColor(OLE_COLOR clr);
+	afx_msg OLE_COLOR OleGetColor();
+	afx_msg void OleSetStyle(int nStyle);
+	afx_msg int OleGetStyle();
+	afx_msg LPDISPATCH OleGetOutputPoint();
+	afx_msg void OleSetOutputPoint(LPDISPATCH lpDisp);
+	afx_msg LPDISPATCH OleGetInputPoint();
+	afx_msg void OleSetInputPoint(LPDISPATCH lpDisp);
+	afx_msg void OleSetWidth(int nWidth);
+	afx_msg int OleGetWidth();
+	afx_msg void OleSetDashed(BOOL bDashed);
+	afx_msg BOOL OleGetDashed();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnection::GetInputPoint() const {
+AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnection::GetInputPoint() const
+{
 	return m_pInputPoint;
 }
 
-AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnection::GetOutputPoint() const {
+AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnection::GetOutputPoint() const
+{
 	return m_pOutputPoint;
 }
-AFX_INLINE void CXTPFlowGraphConnection::SetCaption(LPCTSTR lpszCaption) {
-	m_strCaption = lpszCaption;
-}
-AFX_INLINE CString CXTPFlowGraphConnection::GetCaption() const {
+AFX_INLINE CString CXTPFlowGraphConnection::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE void CXTPFlowGraphConnection::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPFlowGraphConnection::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltip = lpszTooltip;
 }
-AFX_INLINE CString CXTPFlowGraphConnection::GetTooltip() const {
+AFX_INLINE CString CXTPFlowGraphConnection::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE void CXTPFlowGraphConnection::SetColor(COLORREF clr) {
+AFX_INLINE void CXTPFlowGraphConnection::SetTag(LPCTSTR lpszTag)
+{
+	m_strTag = lpszTag;
+}
+AFX_INLINE CString CXTPFlowGraphConnection::GetTag() const
+{
+	return m_strTag;
+}
+AFX_INLINE void CXTPFlowGraphConnection::SetColor(COLORREF clr)
+{
 	m_clrConnection = clr;
 }
-AFX_INLINE COLORREF CXTPFlowGraphConnection::GetColor() const {
+AFX_INLINE COLORREF CXTPFlowGraphConnection::GetColor() const
+{
 	return m_clrConnection;
 }
-AFX_INLINE void CXTPFlowGraphConnection::SetStyle(int nStyle) {
+AFX_INLINE void CXTPFlowGraphConnection::SetStyle(int nStyle)
+{
 	m_nStyle = nStyle;
 	OnGraphChanged();
 }
-AFX_INLINE int CXTPFlowGraphConnection::GetStyle() const {
+AFX_INLINE int CXTPFlowGraphConnection::GetStyle() const
+{
 	return m_nStyle;
 }
-AFX_INLINE CPoint CXTPFlowGraphConnection::GetControlPoint() const {
+
+AFX_INLINE void CXTPFlowGraphConnection::SetPathReversed(BOOL bReversed)
+{
+	m_bPathReversed = bReversed;
+}
+
+AFX_INLINE BOOL CXTPFlowGraphConnection::IsPathReversed() const
+{
+	return m_bPathReversed;
+}
+
+AFX_INLINE CPoint CXTPFlowGraphConnection::GetControlPoint() const
+{
 	return m_ptControlPoint;
 }
-AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphConnection::GetPage() const {
+AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphConnection::GetPage() const
+{
 	return m_pPage;
 }
 
+AFX_INLINE void CXTPFlowGraphConnection::SetWidth(int nWidth)
+{
+	m_nWidth = nWidth;
+}
+AFX_INLINE int CXTPFlowGraphConnection::GetWidth() const
+{
+	return m_nWidth;
+}
+
+AFX_INLINE void CXTPFlowGraphConnection::SetDashed(BOOL bDashed)
+{
+	m_bDashed = bDashed;
+}
+AFX_INLINE BOOL CXTPFlowGraphConnection::GetDashed() const
+{
+	return m_bDashed;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHCONNECTION_H__)

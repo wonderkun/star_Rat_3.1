@@ -1,7 +1,6 @@
 // XTPFlowGraphElement.h: interface for the CXTPFlowGraphElement class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHELEMENT_H__)
-#define __XTPFLOWGRAPHELEMENT_H__
+#	define __XTPFLOWGRAPHELEMENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphPage;
@@ -121,12 +122,24 @@ public:
 	virtual CString GetCaption() const = 0;
 
 public:
-	BOOL m_bDirty;  // Internally used to tell the flow graph that the element has changed.  This will tell Reposition to handle the element.
+	BOOL m_bDirty; // Internally used to tell the flow graph that the element has changed.  This
+				   // will tell Reposition to handle the element.
 protected:
-	BOOL m_bSelected;  // Specifies whether the element is selected.  True if selected, False otherwise.
+	BOOL m_bSelected; // Specifies whether the element is selected.  True if selected, False
+					  // otherwise.
 	friend class CXTPFlowGraphSelectedElements;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphElement)
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHELEMENT_H__)

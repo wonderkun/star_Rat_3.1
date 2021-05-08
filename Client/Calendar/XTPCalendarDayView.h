@@ -1,7 +1,6 @@
 // XTPCalendarDayView.h: interface for the CXTPCalendarDayView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARDAYVIEW_H__)
-#define _XTPCALENDARDAYVIEW_H__
+#	define _XTPCALENDARDAYVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarDayViewTimeScale;
+class CXTPCalendarDayViewDay;
+class CXTPCalendarTimeZone;
 
-#include "XTPCalendarView.h"
-#include "XTPCalendarDayViewDay.h"
-#include "XTPCalendarTimeZoneHelper.h"
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarTimeZone)
 
 //===========================================================================
 // Summary:
@@ -53,8 +54,7 @@ class CXTPCalendarDayViewTimeScale;
 // See Also: CXTPCalendarView, CXTPCalendarWeekView, CXTPCalendarMonthView,
 //          CXTPCalendarDayViewDay, CXTPCalendarDayViewEvent
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarDayView : public CXTPCalendarViewT<CXTPCalendarDayViewDay,
-													 XTP_CALENDAR_HITTESTINFO_DAY_VIEW>
+class _XTP_EXT_CLASS CXTPCalendarDayView : public CXTPCalendarViewT<CXTPCalendarDayViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarDayViewDay;
@@ -68,15 +68,12 @@ class _XTP_EXT_CLASS CXTPCalendarDayView : public CXTPCalendarViewT<CXTPCalendar
 	DECLARE_DYNAMIC(CXTPCalendarDayView)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Remarks:
 	//     Base class type definition
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewT< CXTPCalendarDayViewDay,
-								XTP_CALENDAR_HITTESTINFO_DAY_VIEW> TBase;
+	typedef CXTPCalendarViewT<CXTPCalendarDayViewDay> TBase;
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -94,7 +91,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarDayView();
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to obtain the view type flag.
@@ -102,7 +98,7 @@ public:
 	//     An XTPCalendarViewType object that contains the view type flag.
 	// See Also: XTPCalendarViewType
 	//-----------------------------------------------------------------------
-	virtual XTPCalendarViewType GetViewType();
+	virtual XTPCalendarViewType GetViewType() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -120,7 +116,8 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView,
+							   BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -133,8 +130,9 @@ public:
 	//          TRUE if the visible row count is not the same as the actual row count.
 	//          FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI);
-	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL); //<COMBINE CXTPCalendarDayView::GetScrollBarInfoV@SCROLLINFO*>
+	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI) const;
+	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL)
+		const; //<COMBINE CXTPCalendarDayView::GetScrollBarInfoV@SCROLLINFO*@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -290,21 +288,21 @@ public:
 	//     Index number starts at 0 and cannot be negative.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetViewDayDate(int nIndex);
+	virtual COleDateTime GetViewDayDate(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to determine which view item,
 	//     if any, is at a specified position index, and returns
-	//     additional info in a XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     additional info in a XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
 	//     pt       - Coordinates of point to test.
-	//     pHitTest - Pointer to a XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     pHitTest - Pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Returns:
 	//     TRUE if item found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pHitTest);
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -330,9 +328,6 @@ public:
 	//     An int containing the total count of rows on the view.
 	//-----------------------------------------------------------------------
 	int GetRowCount() const;
-
-	/////////////////////////////////////////////////////////////////////////
-	// time scale related
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -413,7 +408,7 @@ public:
 	// Returns:
 	//     A CString object that contains the default time scale text label.
 	//-----------------------------------------------------------------------
-	CString GetScaleText();
+	CString GetScaleText() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -431,7 +426,7 @@ public:
 	// Returns:
 	//     A CString object that contains the alternative time scale text label.
 	//-----------------------------------------------------------------------
-	CString GetScale2Text();
+	CString GetScale2Text() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -457,7 +452,7 @@ public:
 	// Returns:
 	//     A reference to time zone information structure.
 	//-----------------------------------------------------------------------
-	const TIME_ZONE_INFORMATION& GetScale2TimeZone();
+	const TIME_ZONE_INFORMATION& GetScale2TimeZone() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -469,7 +464,7 @@ public:
 	// See Also:
 	//      GetTimeZoneInformation(), CXTPCalendarTimeZone::GetTimeZoneInfo()
 	//-----------------------------------------------------------------------
-	CXTPCalendarTimeZonePtr GetCurrentTimeZoneInfo();
+	CXTPCalendarTimeZonePtr GetCurrentTimeZoneInfo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -481,7 +476,7 @@ public:
 	// See Also:
 	//      GetTimeZoneInformation(), CXTPCalendarTimeZone::GetTimeZoneInfo()
 	//-----------------------------------------------------------------------
-	CXTPCalendarTimeZonePtr GetScale2TimeZoneInfo();  // scale 2
+	CXTPCalendarTimeZonePtr GetScale2TimeZoneInfo() const; // scale 2
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -503,7 +498,7 @@ public:
 	//     TRUE - If the alternative time scale is visible.
 	//     FALSE - If the alternative time scale is not visible.
 	//-----------------------------------------------------------------------
-	BOOL IsScale2Visible();
+	BOOL IsScale2Visible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -514,7 +509,7 @@ public:
 	//         TRUE  - If the Expand Up glyph is visible.
 	//         FALSE - If the Expand Up glyph is not visible.
 	//-----------------------------------------------------------------------
-	BOOL IsExpandUp();
+	BOOL IsExpandUp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -525,10 +520,7 @@ public:
 	//     TRUE  - If the Expand Down glyph is visible.
 	//     FALSE - If the Expand Down glyph is not visible.
 	//-----------------------------------------------------------------------
-	BOOL IsExpandDown();
-
-	/////////////////////////////////////////////////////////////////////////
-	// cells related
+	BOOL IsExpandDown() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -586,9 +578,6 @@ public:
 	//-----------------------------------------------------------------------
 	int GetCellNumber(int nHour, int nMin, int nSec, BOOL bForEndTime) const;
 
-	/////////////////////////////////////////////////////////////////////////
-	// selection related
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the view selection.
@@ -614,10 +603,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL GetSelection(COleDateTime* pBegin = NULL, COleDateTime* pEnd = NULL,
 							  BOOL* pbAllDayEvent = NULL, int* pnGroupIndex = NULL,
-							  COleDateTimeSpan* pspSelectionResolution = NULL);
-
-	/////////////////////////////////////////////////////////////////////////
-	// day manipulations
+							  COleDateTimeSpan* pspSelectionResolution = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -712,7 +698,7 @@ public:
 	// Returns:
 	//     TRUE when visible; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsGroupHeaderVisible();
+	virtual BOOL IsGroupHeaderVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -727,7 +713,7 @@ public:
 	// Returns:
 	//     Pointer to the CXTPCalendarDayViewTimeScale object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarDayViewTimeScale* GetTimeScale(int nNumber = 1);
+	virtual CXTPCalendarDayViewTimeScale* GetTimeScale(int nNumber = 1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -780,6 +766,59 @@ public:
 	//-----------------------------------------------------------------------
 	void ScrollToColumn(long lColumn);
 
+	COleDateTime GetDateTimeDay(const COleDateTime& dt) const;
+	COleDateTime GetDateTimeTime(const COleDateTime& dt) const;
+
+	COleDateTime m_dtTimeScaleMin; // Time scale minimum value.
+	COleDateTime m_dtTimeScaleMax; // Time scale maximum value.
+
+	BOOL m_bDraftMode; // flag to set printout to print in B/W without Header and Footer
+					   // to maximize main information space and simplify params set (default =
+					   // FALSE)
+
+	BOOL m_bPrintRepeatHeaderFooterMode; // flag to set printout to print Header and Footer only on
+										 // first page to maximize main information space (default =
+										 // TRUE)
+
+	BOOL m_bDF_mode; // Last page print mode flag (FALSE - print last page same size as other,
+					 // TRUE (default) - can be shorter then others)
+
+	BOOL m_bPrintFullScale; // print timescale range - if FALSE - print working hours range
+
+	int m_nDayViewPrintInterval; // interval to use in DayView Printing: 60 or 45 or 30 or 15
+
+	BOOL m_bEcoAllDayMode; // If True use short AllDay area height
+
+	BOOL m_bPreventDragAllDayEventInDayView; // default FALSE If True it will be impossible to Drag
+											 // All Day Event In DayView
+
+	int m_nDayHeaderPeriod; // interval between in multi-scheduled mode Day Header for same date
+							// repeated - need for scrolling in very many - schedules case when one
+							// day can use few screens
+
+	int m_nCurPage; // for AllDay event printing control by CXTPCalendarControlView
+
+	BOOL m_bUseNewHitTestCode; // Tells whether to use new hit test code or not.
+
+	BOOL m_bShowLinks;		   // flag to show or hide 'virtual' view events
+	BOOL m_bHideLinkContainer; // flag to hide or show 'virtual' view events container column
+
+	BOOL m_bShowAllDayEventsOnly; // flag that enables showing all-day events only
+
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual void AdjustAllDayEvents();
+
+	CRect GetDayHeaderRectangle() const;
+	CRect GetAllDayEventsRectangle() const;
+
+	void SetIsHideAllDayEventsArea(BOOL bHide);
+	BOOL GetIsHideAllDayEventsArea() const;
+
+	virtual int GetAllDayEventsMaxCount() const;
+	virtual int GetTotalGroupsCount() const;
+	virtual int RecalcMinColumnWidth() const;
+	//}}AFX_CODEJOCK_PRIVATE
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -798,6 +837,20 @@ protected:
 	//     this member function stops the v scrolling.
 	//-----------------------------------------------------------------------
 	virtual void StopHorzEventScroll();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is an utility function used by OnKeyDown
+	//     It determines if we can scroll groups left if hscroll is disabled
+	//-----------------------------------------------------------------------
+	BOOL GetIsCanHScrollGroupsLeft(COleDateTime dtNewSelEnd, BOOL bVKShift);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is an utility function used by OnKeyDown
+	//     It determines if we can scroll groups right if hscroll is disabled
+	//-----------------------------------------------------------------------
+	BOOL GetIsCanHScrollGroupsRight(COleDateTime dtNewSelEnd, BOOL bVKShift);
 
 	// ----------------------------------------------------------------------
 	// Summary:
@@ -818,12 +871,12 @@ protected:
 	//     the drag able rectangle.
 	// Parameters:
 	//     pnt      - A CPoint object that contains the point to test.
-	//     pHitInfo - Pointer to the XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure,
+	//     pHitInfo - Pointer to the XTP_CALENDAR_HITTESTINFO structure,
 	//                which helps to determine the client rectangle.
 	// Returns:
 	//     TRUE if the point is out of the drag able rectangle, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsOutOfClientRect(CPoint pnt, XTP_CALENDAR_HITTESTINFO_DAY_VIEW *pHitInfo);
+	virtual BOOL IsOutOfClientRect(CPoint pnt, XTP_CALENDAR_HITTESTINFO* pHitInfo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -837,7 +890,7 @@ protected:
 	//     xtpCalendarDayViewScrollUp/xtpCalendarDayViewScrollDown if scrolling up/down is needed.
 	//     xtpCalendarDayViewScrollNotNeeded if scrolling is not needed.
 	//-----------------------------------------------------------------------
-	virtual XTPCalendarDayViewScrollDirection GetNeededScrollDirection(CPoint pnt);
+	virtual XTPCalendarDayViewScrollDirection GetNeededScrollDirection(CPoint pnt) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -881,9 +934,13 @@ protected:
 	//     day, including all of the day's events.
 	// Parameters:
 	//     pDay    - A pointer to a CXTPCalendarViewDay object.
+	//     nGroupIndex  - A group index to select.
 	// See Also: CXTPCalendarViewDay, SelectDay(COleDateTime dtSelDay, BOOL bSelect)
 	//-----------------------------------------------------------------------
+	virtual void SelectDay(CXTPCalendarViewDay* pDay, int nGroupIndex);
 	virtual void SelectDay(CXTPCalendarViewDay* pDay);
+
+	using CXTPCalendarViewT<CXTPCalendarDayViewDay>::SelectDay;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -902,144 +959,12 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void _ScrollV(int nIndex, int nPos_raw);
 
-public:
-	COleDateTime GetDateTimeDay(const COleDateTime& dt) const;
-	COleDateTime GetDateTimeTime(const COleDateTime& dt) const;
+	int m_nScrollOffsetX; // Stores horizontal left offset of visible day view part.
 
-private:
-	virtual void OnStartDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitTest);
-	virtual BOOL OnDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitTest);
-	virtual BOOL OnEndDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitInfo);
-
-	virtual void ClearDays();
-
-	virtual void _ScrollDays(int nScrollDaysCount, BOOL bPrev);
-	virtual void ProcessCellSelection(COleDateTime dtNewSelBegin, BOOL bFixSelEnd,
-		BOOL bAllDayEventSel, int nGroupIndex);
-
-	virtual void ProcessDaySelection(XTP_CALENDAR_HITTESTINFO* pInfo, UINT nFlags);
-
-	virtual CXTPCalendarViewEvent* FindEventToEditByTAB(COleDateTime dtMinStart,
-														BOOL bReverse,
-														CXTPCalendarEvent* pAfterEvent = NULL);
-	virtual COleDateTime GetNextTimeEditByTAB();
-	virtual void UpdateNextTimeEditByTAB(COleDateTime dtNext, BOOL bReverse,
-										 BOOL bReset = FALSE);
-
-	virtual BOOL OnTimer(UINT_PTR uTimerID);
-	virtual void OnActivateView(BOOL bActivate, CXTPCalendarView* pActivateView,
-								CXTPCalendarView* pInactiveView);
-
-	void _AddDay(const COleDateTime& date);
-	int CalculateHeaderFormatAndHeight(CDC* pDC, int nCellWidth);
-
-	virtual CXTPCalendarData* _GetDataProviderByConnStr(LPCTSTR pcszConnStr, BOOL bCompareNoCase = TRUE);
-
-public:
-	COleDateTime m_dtTimeScaleMin;  //Time scale minimum value.
-	COleDateTime m_dtTimeScaleMax;  //Time scale maximum value.
-
-	//BOOL m_bEcoMode;                //flag to use on screen drawing instead of memory bitmap manipulation
-									//(which restricted by 64K - sometimes it is not enough fo very many schedules case -
-									//and use too much memory on low-end PC)
-
-	BOOL m_bDraftMode;              //flag to set printout to print in B/W without Header and Footer
-	                                //to maximize main information space and simplify params set (default = FALSE)
-
-	BOOL m_bPrintRepeatHeaderFooterMode;    //flag to set printout to print Header and Footer only on first page
-	                                        //to maximize main information space (default = TRUE)
-
-	BOOL m_bDF_mode;            // Last page print mode flag (FALSE - print last page same size as other,
-	                            // TRUE (default) - can be shorter then others)
-
-	BOOL m_bPrintFullScale;     //print timescale range - if FALSE - print working hours range
-
-	int m_nDayViewPrintInterval;//interval to use in DayView Printing: 60 or 45 or 30 or 15
-
-	BOOL m_bEcoAllDayMode;      // If True use short AllDay area height
-
-	BOOL m_bPreventDragAllDayEventInDayView; //default FALSE If True it will be impossible to Drag All Day Event In DayView
-
-	int m_nDayHeaderPeriod;     //interval between in multi-scheduled mode Day Header for same date repeated -
-	                            //need for scrolling in very many - schedules case when one day can use few screens
-
-	int m_nCurPage;             // for AllDay event printing control by CXTPCalendarControlView
-
-	BOOL m_bUseNewHitTestCode;  //Tells whether to use new hit test code or not.
-
-	BOOL m_bShowLinks; //flag to show or hide 'virtual' view events
-	BOOL m_bHideLinkContainer; //flag to hide or show 'virtual' view events container column
-
-	BOOL m_bShowAllDayEventsOnly;
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual void AdjustAllDayEvents();
-
-	virtual CRect GetDayHeaderRectangle();
-	virtual CRect GetAllDayEventsRectangle();
-
-	virtual int GetAllDayEventsMaxCount();
-	virtual int GetTotalGroupsCount();
-	virtual int RecalcMinColumnWidth();
-
-	struct XTP_DAY_VIEW_LAYOUT
-	{
-		int m_nVisibleRowCount; // Visible rows count on the day view.
-
-		CRect m_rcDayHeader;
-		CRect m_rcAllDayEvents;
-
-		int  m_nRowCount;        // Total rows count on the day view.
-		int  m_nTopRow;          // Top visible row on the day view.
-
-		int  m_nAllDayEventsCountMax; // Reserved amount of all day events area to avoid area 'blinking' when dragging.
-		int  m_nAllDayEventHeight;    // The height of one event in all day events area.
-
-		int  m_nVisibleAllDayCount;
-		int  m_nTopAllDayRow;
-	};
-	//}}AFX_CODEJOCK_PRIVATE
-	CPoint m_ptLBtnUpMousePos;
-
-protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_DAY_VIEW_LAYOUT& GetLayout();
-	virtual BOOL IsUseCellAlignedDraggingInTimeArea();
-	//}}AFX_CODEJOCK_PRIVATE
-private:
-
-	XTP_DAY_VIEW_LAYOUT m_LayoutX; // Layout data.
-
-	CXTPCalendarDayViewTimeScale* m_pTimeScaleHeader;   // Pointer to the main time scale object.
-	CXTPCalendarDayViewTimeScale* m_pTimeScaleHeader2;  // Pointer to the alternative time scale object.
-
-	int m_nAllDayEventsCountMin_WhenDrag;
-
-	COleDateTimeSpan m_spDraggingStartOffset_Time;
-
-	COleDateTime m_dtSelectionStart;
-
-	DWORD m_dwScrollingEventTimerID;
-	DWORD m_dwScrollingEventTimerHorID;
-
-	BOOL m_bScrollingEventUp;
-	BOOL m_bScrollingEventLeft;
-
-	BOOL m_bMouseOutOfDragArea;
-	COleDateTime m_dtDraggingStartPoint;
-	CPoint m_ptLastMousePos;
-	CPoint m_ptLBtnDownMousePos;
-
-	DWORD m_dwRedrawNowLineTimerID;
-	COleDateTime m_dtLastRedrawTime;
-
-protected:
-
-	int m_nScrollOffsetX;   // Stores horizontal left offset of visible day view part.
-
-	int m_nMinColumnWidth;  //  0 means disabled;
-	                        // -1 use some default width for multiresources only;
-	                        // -N use for multiresources only (internally converted to +N);
-	                        // +N used always (in single and multi resources mode).
+	int m_nMinColumnWidth; //  0 means disabled;
+						   // -1 use some default width for multiresources only;
+						   // -N use for multiresources only (internally converted to +N);
+						   // +N used always (in single and multi resources mode).
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1047,7 +972,7 @@ protected:
 	// Returns:
 	//     Time scales area width in pixels.
 	//-----------------------------------------------------------------------
-	int _GetTimeScaleWith();
+	int _GetTimeScaleWith() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1055,7 +980,7 @@ protected:
 	// Returns:
 	//     Horizontal scroll area rect.
 	//-----------------------------------------------------------------------
-	CRect _GetScrollRectClient();
+	CRect _GetScrollRectClient() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1102,18 +1027,123 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL _EnsureVisibleSelectionH();
 
+	//{{AFX_CODEJOCK_PRIVATE
+	XTP_DAY_VIEW_LAYOUT& GetLayout();
+	virtual BOOL IsUseCellAlignedDraggingInTimeArea() const;
+
+	virtual void OnStartDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitTest);
+	virtual BOOL OnDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitTest);
+	virtual BOOL OnEndDragging(CPoint point, XTP_CALENDAR_HITTESTINFO* pHitInfo);
+
+	virtual void ClearDays();
+
+	virtual void _ScrollDays(int nScrollDaysCount, BOOL bPrev);
+	virtual void ProcessCellSelection(COleDateTime dtNewSelBegin, BOOL bFixSelEnd,
+									  BOOL bAllDayEventSel, int nGroupIndex);
+
+	virtual void ProcessDaySelection(XTP_CALENDAR_HITTESTINFO* pInfo, UINT nFlags);
+
+	virtual CXTPCalendarViewEvent* FindEventToEditByTAB(COleDateTime dtMinStart, BOOL bReverse,
+														CXTPCalendarEvent* pAfterEvent = NULL);
+	virtual COleDateTime GetNextTimeEditByTAB() const;
+	virtual void UpdateNextTimeEditByTAB(COleDateTime dtNext, BOOL bReverse, BOOL bReset = FALSE);
+
+	virtual BOOL OnTimer(UINT_PTR uTimerID);
+	virtual void OnActivateView(BOOL bActivate, CXTPCalendarView* pActivateView,
+								CXTPCalendarView* pInactiveView);
+
+	void _AddDay(const COleDateTime& date);
+	int CalculateHeaderFormatAndHeight(CDC* pDC, int nCellWidth);
+
+	virtual CXTPCalendarData* _GetDataProviderByConnStr(LPCTSTR pcszConnStr,
+														BOOL bCompareNoCase = TRUE);
+
+	XTP_DAY_VIEW_LAYOUT m_LayoutX; // Layout data.
+
+	CXTPCalendarDayViewTimeScale* m_pTimeScaleHeader;  // Pointer to the main time scale object.
+	CXTPCalendarDayViewTimeScale* m_pTimeScaleHeader2; // Pointer to the alternative time scale
+													   // object.
+
+	int m_nAllDayEventsCountMin_WhenDrag;
+
+	COleDateTimeSpan m_spDraggingStartOffset_Time;
+
+	COleDateTime m_dtSelectionStart;
+
+	DWORD m_dwScrollingEventTimerID;
+	DWORD m_dwScrollingEventTimerHorID;
+
+	BOOL m_bScrollingEventUp;
+	BOOL m_bScrollingEventLeft;
+
+	BOOL m_bMouseOutOfDragArea;
+	COleDateTime m_dtDraggingStartPoint;
+	CPoint m_ptLastMousePos;
+
+	DWORD m_dwRedrawNowLineTimerID;
+	COleDateTime m_dtLastRedrawTime;
+
+	BOOL m_bHideAllDayEventsArea;
+
+#	ifdef _XTP_ACTIVEX
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarDayView);
+
+	void OleShowDays(DATE dtBegin, DATE dtEnd);
+	void OleAddDay(DATE dtDay);
+
+	long OleGetScaleInterval();
+	void OleSetScaleInterval(long nScalInterval);
+
+	DATE OleGetTimeScaleMinTime();
+	void OleSetTimeScaleMinTime(DATE dtNewScaleMinTime);
+
+	DATE OleGetTimeScaleMaxTime();
+	void OleSetTimeScaleMaxTime(DATE dtNewScaleMaxTime);
+
+	BSTR OleGetScaleText();
+	BSTR OleGetScale2Text();
+
+	BOOL OleIsScale2Visible();
+	void OleShowScale2(BOOL bShow);
+
+	BOOL OleGetPreventAutoDropAllDayMode();
+	void OleSetPreventAutoDropAllDayMode(BOOL bSet);
+
+	long OleGetCellNumber(DATE dtTime);
+	void OleScrollV(long lCell);
+	void OleScrollToColumn(long lColumn);
+	void OleScrollToWorkDayBegin();
+
+	BOOL OleEnsureVisible(LPDISPATCH pdispViewEvent);
+	BOOL OleEnsureVisibleGroup(LPDISPATCH pdispViewGroup);
+
+	int OleGetDayHeaderPeriod();
+	void OleSetDayHeaderPeriod(int nDayHeaderPeriod);
+
+	int OleGetDayViewPrintInterval();
+	void OleSetDayViewPrintInterval(int nDayViewPrintInterval);
+#	endif
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //================================================================
 
-AFX_INLINE CRect CXTPCalendarDayView::GetDayHeaderRectangle()
+AFX_INLINE CRect CXTPCalendarDayView::GetDayHeaderRectangle() const
 {
 	return m_LayoutX.m_rcDayHeader;
 }
 
-AFX_INLINE CRect CXTPCalendarDayView::GetAllDayEventsRectangle()
+AFX_INLINE CRect CXTPCalendarDayView::GetAllDayEventsRectangle() const
 {
 	return m_LayoutX.m_rcAllDayEvents;
+}
+
+AFX_INLINE BOOL CXTPCalendarDayView::GetIsHideAllDayEventsArea() const
+{
+	return m_bHideAllDayEventsArea;
 }
 
 AFX_INLINE int CXTPCalendarDayView::GetRowCount() const
@@ -1131,23 +1161,19 @@ AFX_INLINE int CXTPCalendarDayView::GetTopRow() const
 	return m_LayoutX.m_nTopRow;
 }
 
-AFX_INLINE void CXTPCalendarDayView::ProcessDaySelection(XTP_CALENDAR_HITTESTINFO* /*pInfo*/, UINT /*nFlags*/)
+AFX_INLINE void CXTPCalendarDayView::ProcessDaySelection(XTP_CALENDAR_HITTESTINFO* /*pInfo*/,
+														 UINT /*nFlags*/)
 {
 	UnselectAllEvents();
 }
 
-AFX_INLINE void CXTPCalendarDayView::SelectDay(CXTPCalendarViewDay* /*pDay*/)
-{
-	// Do nothing for day view.
-}
-
-AFX_INLINE CXTPCalendarDayViewTimeScale* CXTPCalendarDayView::GetTimeScale(int nNumber)
+AFX_INLINE CXTPCalendarDayViewTimeScale* CXTPCalendarDayView::GetTimeScale(int nNumber) const
 {
 	ASSERT(nNumber == 1 || nNumber == 2);
 	return nNumber <= 1 ? m_pTimeScaleHeader : m_pTimeScaleHeader2;
 }
 
-AFX_INLINE CXTPCalendarDayView::XTP_DAY_VIEW_LAYOUT& CXTPCalendarDayView::GetLayout()
+AFX_INLINE XTP_DAY_VIEW_LAYOUT& CXTPCalendarDayView::GetLayout()
 {
 	return m_LayoutX;
 }
@@ -1162,4 +1188,5 @@ AFX_INLINE void CXTPCalendarDayView::SetMinColumnWidth(int nWidth)
 	m_nMinColumnWidth = nWidth;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARDAYVIEW_H__)

@@ -1,8 +1,7 @@
 // XTPCalendarNotifications.h: unique notifications identifiers for
 // CXTPCalendarControl class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,19 @@
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(_XTPCalendarNotifications_H__)
-#define _XTPCalendarNotifications_H__
+#if !defined(_XTPCALENDARNOTIFICATIONS_H__)
+#	define _XTPCALENDARNOTIFICATIONS_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-/////////////////////////////////////////////////////////////////////////////
-#include "Common/XTPNotifyConnection.h"
-#include "XTPCalendarDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
 class CXTPCalendarViewEvents;
 class CXTPCalendarDayViewGroup;
+typedef DWORD XTP_NOTIFY_CODE;
 
 //## *** CXTPCalendarData notification IDs ***
 
@@ -41,21 +40,21 @@ class CXTPCalendarDayViewGroup;
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = EventID, lParam = CXTPCalendarEvent*
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAREVENTWASADDED    = (WM_XTP_CALENDAR_BASE + 1);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAREVENTWASADDED = (WM_XTP_CALENDAR_BASE + 1);
 
 //---------------------------------------------------------------------------
 // Summary: Event has just been deleted from the data provider.
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = EventID, lParam = CXTPCalendarEvent*
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAREVENTWASDELETED = (WM_XTP_CALENDAR_BASE + 2);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAREVENTWASDELETED = (WM_XTP_CALENDAR_BASE + 2);
 
 //---------------------------------------------------------------------------
 // Summary: Event has just been changed in the data provider.
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = EventID, lParam = CXTPCalendarEvent*
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAREVENTWASCHANGED = (WM_XTP_CALENDAR_BASE + 3);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAREVENTWASCHANGED = (WM_XTP_CALENDAR_BASE + 3);
 
 //{{AFX_CODEJOCK_PRIVATE
 //
@@ -70,21 +69,21 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAREVENTWASCHANGED = (WM_XTP_CALENDAR
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b>   - wParam = RatternID, lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARPATTERNWASADDED   = (WM_XTP_CALENDAR_BASE + 4);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARPATTERNWASADDED = (WM_XTP_CALENDAR_BASE + 4);
 
 //---------------------------------------------------------------------------
 // Summary: Recurrence pattern has just been deleted from the data provider.
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b>   - wParam = RatternID, lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARPATTERNWASDELETED = (WM_XTP_CALENDAR_BASE + 5);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARPATTERNWASDELETED = (WM_XTP_CALENDAR_BASE + 5);
 
 //---------------------------------------------------------------------------
 // Summary: Recurrence pattern has just been changed in the data provider.
 //          <b>Sender</b> - CXTPCalendarData, CXTPCalendarControl
 // Remarks: <b>Parameters</b>   - wParam = RatternID, lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARPATTERNWASCHANGED = (WM_XTP_CALENDAR_BASE + 6);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARPATTERNWASCHANGED = (WM_XTP_CALENDAR_BASE + 6);
 //}}AFX_CODEJOCK_PRIVATE
 
 //---------------------------------------------------------------------------
@@ -93,63 +92,63 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDARPATTERNWASCHANGED = (WM_XTP_CALEND
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b>   - wParam = 0, lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARVIEWWASCHANGED = (WM_XTP_CALENDAR_BASE + 7);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARVIEWWASCHANGED = (WM_XTP_CALENDAR_BASE + 7);
 
 //---------------------------------------------------------------------------
 // Summary: A Context Menu should be displayed for the Calendar Control.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARCONTEXTMENU  = (WM_XTP_CALENDAR_BASE + 8);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARCONTEXTMENU = (WM_XTP_CALENDAR_BASE + 8);
 
 //---------------------------------------------------------------------------
 // Summary: On LButtonDown event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARLBUTTONDOWN  = (WM_XTP_CALENDAR_BASE + 9);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARLBUTTONDOWN = (WM_XTP_CALENDAR_BASE + 9);
 
 //---------------------------------------------------------------------------
 // Summary: On LButtonDblClick event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARLBUTTONDBLCLICK = (WM_XTP_CALENDAR_BASE + 10);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARLBUTTONDBLCLICK = (WM_XTP_CALENDAR_BASE + 10);
 
 //---------------------------------------------------------------------------
 // Summary: On LButtonUp event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARLBUTTONUP    = (WM_XTP_CALENDAR_BASE + 11);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARLBUTTONUP = (WM_XTP_CALENDAR_BASE + 11);
 
 //---------------------------------------------------------------------------
 // Summary: On MouseMove event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARMOUSEMOVE    = (WM_XTP_CALENDAR_BASE + 12);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARMOUSEMOVE = (WM_XTP_CALENDAR_BASE + 12);
 
 //---------------------------------------------------------------------------
 // Summary: On KeyDown event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'key was pressed', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARKEYDOWN    = (WM_XTP_CALENDAR_BASE + 13);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARKEYDOWN = (WM_XTP_CALENDAR_BASE + 13);
 
 //---------------------------------------------------------------------------
 // Summary: On RButtonDown event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARRBUTTONDOWN  = (WM_XTP_CALENDAR_BASE + 14);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARRBUTTONDOWN = (WM_XTP_CALENDAR_BASE + 14);
 
 //---------------------------------------------------------------------------
 // Summary: Calendar Control Day view time scale was changed.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b>   - wParam = 0, lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARVIEWTIMESCALEWASCHANGED = (WM_XTP_CALENDAR_BASE + 15);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARVIEWTIMESCALEWASCHANGED = (WM_XTP_CALENDAR_BASE + 15);
 
 //---------------------------------------------------------------------------
 // Summary: Calendar Control options was changed.
@@ -160,7 +159,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDARVIEWTIMESCALEWASCHANGED = (WM_XTP_
 //                           changed option is related.
 //                  lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAROPTIONSWASCHANGED = (WM_XTP_CALENDAR_BASE + 16);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAROPTIONSWASCHANGED = (WM_XTP_CALENDAR_BASE + 16);
 
 //---------------------------------------------------------------------------
 // Summary: Calendar Control data provider (resources) where changed.
@@ -173,12 +172,13 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAROPTIONSWASCHANGED = (WM_XTP_CALEND
 //                                       CXTPCalendarView*    if wParam == 1,
 //                                       CXTPCalendarViewDay* if wParam == 2.
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARDATAPROVIDERWASCHANGED = (WM_XTP_CALENDAR_BASE + 17);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARDATAPROVIDERWASCHANGED = (WM_XTP_CALENDAR_BASE + 17);
 
 //---------------------------------------------------------------------------
 // Summary: alias of XTP_NC_CALENDARDATAPROVIDERWASCHANGED notification code
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_RESOURCES_WHERE_CHANGED  = XTP_NC_CALENDARDATAPROVIDERWASCHANGED;
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_RESOURCES_WHERE_CHANGED =
+	XTP_NC_CALENDARDATAPROVIDERWASCHANGED;
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent to determine is specified editing operation
@@ -202,7 +202,8 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_RESOURCES_WHERE_CHANGED  = XTP_NC
 //           XTP_EVENT_EDIT_OPERATION_PARAMS, XTP_EVENT_PASTE_OPERATION_PARAMS,
 //           XTP_EVENT_IN_PLACE_CREATE_EVENT_OPERATION_PARAMS
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_IS_EVENT_EDIT_OPERATION_DISABLED = (WM_XTP_CALENDAR_BASE + 18);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_IS_EVENT_EDIT_OPERATION_DISABLED =
+	(WM_XTP_CALENDAR_BASE + 18);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent to customize or disable specified editing
@@ -224,36 +225,8 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_IS_EVENT_EDIT_OPERATION_DISABLED 
 //           XTP_EVENT_EDIT_OPERATION_PARAMS, XTP_EVENT_PASTE_OPERATION_PARAMS,
 //           XTP_EVENT_IN_PLACE_CREATE_EVENT_OPERATION_PARAMS
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_BEFORE_EVENT_EDIT_OPERATION = (WM_XTP_CALENDAR_BASE + 19);
-
-
-//===========================================================================
-// Summary:
-//     Enumerates customizable event edit operations.
-//===========================================================================
-enum XTPCalendarEditOperation
-{
-	xtpCalendarEO_Unknown           = 0,    // Unknown operation value.
-
-	xtpCalendarEO_DragCopy          = xtpCalendaDragModeCopy,       // Drag copy event.
-	xtpCalendarEO_DragMove          = xtpCalendaDragModeMove,       // Drag move event
-	xtpCalendarEO_DragResizeBegin   = xtpCalendaDragModeResizeBegin, // Drag Resizing event begin.
-	xtpCalendarEO_DragResizeEnd     = xtpCalendaDragModeResizeEnd,  // Drag Resizing event end.
-
-	xtpCalendarEO_EditSubject_ByF2,             // In-place edit event subject by F2.
-	xtpCalendarEO_EditSubject_ByMouseClick,     // In-place edit event subject by Mouse Click.
-	xtpCalendarEO_EditSubject_ByTab,            // In-place edit event subject by TAB.
-	xtpCalendarEO_EditSubject_AfterEventResize, // In-place edit event subject after event resize.
-
-	xtpCalendarEO_Cut,      // Cut events
-	xtpCalendarEO_Copy,     // Copy events
-	xtpCalendarEO_Paste,    // Paste event. wParam = XTP_EVENT_PASTE_OPERATION_PARAMS*. pEventViews member is NULL.
-
-	xtpCalendarEO_DeleteSelectedEvents, // Delete selected events.
-	xtpCalendarEO_DeleteEvent,          // Delete event. Sent for a single event or for each selected event.
-
-	xtpCalendarEO_InPlaceCreateEvent    // In-place event creation.
-};
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_BEFORE_EVENT_EDIT_OPERATION = (WM_XTP_CALENDAR_BASE
+																			+ 19);
 
 //---------------------------------------------------------------------------
 // Summary: This structure is used as a generic and base class for customize
@@ -266,8 +239,9 @@ enum XTPCalendarEditOperation
 //---------------------------------------------------------------------------
 struct XTP_EVENT_EDIT_OPERATION_PARAMS
 {
-	XTPCalendarEditOperation    eOperation;     // Edit operation.
-	CXTPCalendarViewEvents* pEventViews;    // Event views array with events set for edit operation.
+	XTPCalendarEditOperation eOperation; // Edit operation.
+	CXTPCalendarViewEvents* pEventViews; // Event views array with events set for edit operation.
+	int nRefCounter;					 // Reserved. For internal use only.
 };
 
 //---------------------------------------------------------------------------
@@ -280,8 +254,10 @@ struct XTP_EVENT_EDIT_OPERATION_PARAMS
 //---------------------------------------------------------------------------
 struct XTP_EVENT_PASTE_OPERATION_PARAMS : public XTP_EVENT_EDIT_OPERATION_PARAMS
 {
-	CXTPCalendarEvent*  pEvent;                         // A pointer to event prepared for paste.
-	BOOL                bPasteWillChangeExistingEvent;  // If this member is TRUE, the new event will not be added, just existing event will be updated. Used for creating recurrence event exceptions by cut operation.
+	CXTPCalendarEvent* pEvent;			// A pointer to event prepared for paste.
+	BOOL bPasteWillChangeExistingEvent; // If this member is TRUE, the new event will not be added,
+										// just existing event will be updated. Used for creating
+										// recurrence event exceptions by cut operation.
 };
 
 //---------------------------------------------------------------------------
@@ -294,7 +270,8 @@ struct XTP_EVENT_PASTE_OPERATION_PARAMS : public XTP_EVENT_EDIT_OPERATION_PARAMS
 //---------------------------------------------------------------------------
 struct XTP_EVENT_IN_PLACE_CREATE_EVENT_OPERATION_PARAMS : public XTP_EVENT_EDIT_OPERATION_PARAMS
 {
-	LPCTSTR pcszInitialSubject; // A pointer to the string which contains initial subject value for new event (generally initial char).
+	LPCTSTR pcszInitialSubject; // A pointer to the string which contains initial subject value for
+								// new event (generally initial char).
 };
 
 //---------------------------------------------------------------------------
@@ -309,20 +286,9 @@ struct XTP_EVENT_IN_PLACE_CREATE_EVENT_OPERATION_PARAMS : public XTP_EVENT_EDIT_
 //---------------------------------------------------------------------------
 struct XTP_EVENT_DRAG_OPERATION_PARAMS : public XTP_EVENT_EDIT_OPERATION_PARAMS
 {
-	CXTPCalendarEvent* pDraggingEvent;      // A pointer to event before dragging operation.
-	CXTPCalendarEvent* pDraggingEventNew;   // A pointer to event after dragging operation.
-};
-
-//===========================================================================
-// Summary:
-//     Enumerates calendar selection types.
-//===========================================================================
-enum XTPCalendarSelectionChanged
-{
-	xtpCalendarSelectionUnknown = 0,    // Unknown selection value.
-
-	xtpCalendarSelectionDays    = 1,    // Days (or day hours for day view) selection. Use GetSelection() method to retrieve current selection.
-	xtpCalendarSelectionEvents  = 2     // Events selection. Use GetSelectedViewEvents() and GetSelectedEvents() methods to retrieve currently selected events.
+	CXTPCalendarEvent* pDraggingEventOriginal; // A pointer to original dragging event
+	CXTPCalendarEvent* pDraggingEvent;		   // A pointer to event before dragging operation.
+	CXTPCalendarEvent* pDraggingEventNew;	  // A pointer to event after dragging operation.
 };
 
 //---------------------------------------------------------------------------
@@ -335,14 +301,14 @@ enum XTPCalendarSelectionChanged
 //              lParam - unused
 // See Also: XTPCalendarSelectionChanged
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_SELECTION_CHANGED = (WM_XTP_CALENDAR_BASE + 20);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_SELECTION_CHANGED = (WM_XTP_CALENDAR_BASE + 20);
 
 //---------------------------------------------------------------------------
 // Summary: On RButtonUp event.
 //          <b>Sender</b> - CXTPCalendarControl
 // Remarks: <b>Parameters</b> - wParam = 'Clicked Point', lParam = 0
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDARRBUTTONUP  = (WM_XTP_CALENDAR_BASE + 21);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDARRBUTTONUP = (WM_XTP_CALENDAR_BASE + 21);
 
 //---------------------------------------------------------------------------
 // Summary: Enumeration of possible Calendar Reminder notification actions.
@@ -352,21 +318,27 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDARRBUTTONUP  = (WM_XTP_CALENDAR_BASE
 //---------------------------------------------------------------------------
 enum XTPCalendarRemindersAction
 {
-	xtpCalendarRemindersMonitoringStarted   = 1, // Sends after monitoring has started (end of executing CXTPCalendarRemindersManager::StartMonitoring)
-	xtpCalendarRemindersMonitoringStopped   = 2, // Sends when monitoring has stopped (CXTPCalendarRemindersManager::StopMonitoring)
-	xtpCalendarRemindersFire                = 3, // Main notification, when reminder is executed.
+	xtpCalendarRemindersMonitoringStarted = 1, // Sends after monitoring has started (end of
+											   // executing
+											   // CXTPCalendarRemindersManager::StartMonitoring)
+	xtpCalendarRemindersMonitoringStopped = 2, // Sends when monitoring has stopped
+											   // (CXTPCalendarRemindersManager::StopMonitoring)
+	xtpCalendarRemindersFire = 3,			   // Main notification, when reminder is executed.
 
-	xtpCalendarReminderSnoozed              = 4, // When 1 pending reminder was snoozed. lParam = CXTPCalendarReminder*
-	xtpCalendarReminderDismissed            = 5, // When 1 pending reminder was dismissed. lParam = CXTPCalendarReminder*
-	xtpCalendarReminderDismissedAll         = 6  // When all pending reminders were dismissed.
+	xtpCalendarReminderSnoozed = 4,		// When 1 pending reminder was snoozed. lParam =
+										// CXTPCalendarReminder*
+	xtpCalendarReminderDismissed = 5,   // When 1 pending reminder was dismissed. lParam =
+										// CXTPCalendarReminder*
+	xtpCalendarReminderDismissedAll = 6 // When all pending reminders were dismissed.
 };
 
 //---------------------------------------------------------------------------
 // Summary: On RButtonUp event.
 //          <b>Sender</b> - CXTPCalendarRemindersManager
-// Remarks: <b>Parameters</b> - wParam = XTPCalendarRemindersAction, lParam = 0 or CXTPCalendarReminder*. See XTPCalendarRemindersAction.
+// Remarks: <b>Parameters</b> - wParam = XTPCalendarRemindersAction, lParam = 0 or
+// CXTPCalendarReminder*. See XTPCalendarRemindersAction.
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_ON_REMINDERS = (WM_XTP_CALENDAR_BASE + 22);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_ON_REMINDERS = (WM_XTP_CALENDAR_BASE + 22);
 
 //---------------------------------------------------------------------------
 // Summary: Doubled custom parameter for notifications.
@@ -375,8 +347,8 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_ON_REMINDERS = (WM_XTP_CALENDAR_B
 //---------------------------------------------------------------------------
 struct XTP_CALENDAR_WPARAM2
 {
-	WPARAM wParam1;         // First custom parameter
-	WPARAM wParam2;         // Second custom parameter
+	WPARAM wParam1; // First custom parameter
+	WPARAM wParam2; // Second custom parameter
 };
 
 //---------------------------------------------------------------------------
@@ -393,7 +365,7 @@ struct XTP_CALENDAR_WPARAM2
 //
 // See Also: CXTPCalendarCustomDataProvider::DoRetrieveDayEvents
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRetrieveDayEvents = (WM_XTP_CALENDAR_BASE + 23);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoRetrieveDayEvents = (WM_XTP_CALENDAR_BASE + 23);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -405,7 +377,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRetrieveDayEvents = (WM_XTP_CAL
 //
 // See Also: CXTPCalendarCustomDataProvider::DoRemoveAllEvents
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRemoveAllEvents = (WM_XTP_CALENDAR_BASE + 24);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoRemoveAllEvents = (WM_XTP_CALENDAR_BASE + 24);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -421,7 +393,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRemoveAllEvents = (WM_XTP_CALEN
 //
 // See Also: CXTPCalendarCustomDataProvider::DoRead_Event
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRead_Event = (WM_XTP_CALENDAR_BASE + 25);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoRead_Event = (WM_XTP_CALENDAR_BASE + 25);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -437,7 +409,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRead_Event = (WM_XTP_CALENDAR_B
 //
 // See Also: CXTPCalendarCustomDataProvider::DoRead_RPattern
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRead_RPattern = (WM_XTP_CALENDAR_BASE + 26);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoRead_RPattern = (WM_XTP_CALENDAR_BASE + 26);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -455,7 +427,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoRead_RPattern = (WM_XTP_CALENDA
 //
 // See Also: CXTPCalendarCustomDataProvider::DoCreate_Event
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoCreate_Event = (WM_XTP_CALENDAR_BASE + 27);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoCreate_Event = (WM_XTP_CALENDAR_BASE + 27);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -470,7 +442,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoCreate_Event = (WM_XTP_CALENDAR
 //
 // See Also: CXTPCalendarCustomDataProvider::DoUpdate_Event
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoUpdate_Event = (WM_XTP_CALENDAR_BASE + 28);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoUpdate_Event = (WM_XTP_CALENDAR_BASE + 28);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -485,7 +457,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoUpdate_Event = (WM_XTP_CALENDAR
 //
 // See Also: CXTPCalendarCustomDataProvider::DoDelete_Event
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoDelete_Event = (WM_XTP_CALENDAR_BASE + 29);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoDelete_Event = (WM_XTP_CALENDAR_BASE + 29);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -504,7 +476,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoDelete_Event = (WM_XTP_CALENDAR
 //
 // See Also: CXTPCalendarCustomDataProvider::DoCreate_RPattern
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoCreate_RPattern = (WM_XTP_CALENDAR_BASE + 30);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoCreate_RPattern = (WM_XTP_CALENDAR_BASE + 30);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -520,7 +492,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoCreate_RPattern = (WM_XTP_CALEN
 //
 // See Also: CXTPCalendarCustomDataProvider::DoUpdate_RPattern
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoUpdate_RPattern = (WM_XTP_CALENDAR_BASE + 31);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoUpdate_RPattern = (WM_XTP_CALENDAR_BASE + 31);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -536,7 +508,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoUpdate_RPattern = (WM_XTP_CALEN
 //
 // See Also: CXTPCalendarCustomDataProvider::DoDelete_RPattern
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoDelete_RPattern = (WM_XTP_CALENDAR_BASE + 32);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoDelete_RPattern = (WM_XTP_CALENDAR_BASE + 32);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -552,7 +524,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoDelete_RPattern = (WM_XTP_CALEN
 //
 // See Also: CXTPCalendarCustomDataProvider::DoGetAllEvents_raw
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoGetAllEvents_raw = (WM_XTP_CALENDAR_BASE + 33);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoGetAllEvents_raw = (WM_XTP_CALENDAR_BASE + 33);
 
 //---------------------------------------------------------------------------
 // Summary:  This notification is used as analog of overridable method
@@ -572,7 +544,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoGetAllEvents_raw = (WM_XTP_CALE
 //
 // See Also: CXTPCalendarCustomDataProvider::DoGetUpcomingEvents
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoGetUpcomingEvents = (WM_XTP_CALENDAR_BASE + 34);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_DoGetUpcomingEvents = (WM_XTP_CALENDAR_BASE + 34);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent when selection is changed.
@@ -583,7 +555,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_DoGetUpcomingEvents = (WM_XTP_CAL
 //              lParam - [in/out] CString* pointer to caption string.
 // See Also: CXTPCalendarViewGroup::GetCaption
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_GETGROPVIEWCAPTION = (WM_XTP_CALENDAR_BASE + 35);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_GETGROPVIEWCAPTION = (WM_XTP_CALENDAR_BASE + 35);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent when calendar is populating.
@@ -599,7 +571,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_GETGROPVIEWCAPTION = (WM_XTP_CALE
 //              lParam - [in/out] CXTPCalendarEvents* - A pointer to events array to draw.
 // See Also: CXTPCalendarControl::Populate, XTP_NC_CALENDAR_PREPOPULATE_DAY.
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_PREPOPULATE = (WM_XTP_CALENDAR_BASE + 36);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_PREPOPULATE = (WM_XTP_CALENDAR_BASE + 36);
 
 //===========================================================================
 // Summary:
@@ -612,11 +584,11 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_PREPOPULATE = (WM_XTP_CALENDAR_BA
 //===========================================================================
 struct XTP_CALENDAR_DAYVIEWCELL_PARAMS
 {
-	int         nIndex;      // [in] Cell index.
-	DATE        dtBeginTime; // [in] Begin cell date and time.
-	BOOL        bSelected;   // [in] Is cell selected.
+	int nIndex;		  // [in] Cell index.
+	DATE dtBeginTime; // [in] Begin cell date and time.
+	BOOL bSelected;   // [in] Is cell selected.
 
-	COLORREF    clrBackgroundColor; // [in/out] Background cell color.
+	COLORREF clrBackgroundColor; // [in/out] Background cell color.
 };
 
 //---------------------------------------------------------------------------
@@ -630,7 +602,7 @@ struct XTP_CALENDAR_DAYVIEWCELL_PARAMS
 //              lParam - [in/out] XTP_CALENDAR_DAYVIEWCELL_PARAMS* - A pointer to
 //                       cell parameters.
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_BEFORE_DRAW_DAYVIEWCELL = (WM_XTP_CALENDAR_BASE + 37);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_BEFORE_DRAW_DAYVIEWCELL = (WM_XTP_CALENDAR_BASE + 37);
 
 //===========================================================================
 // Summary:
@@ -643,10 +615,10 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_BEFORE_DRAW_DAYVIEWCELL = (WM_XTP
 //===========================================================================
 struct XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS
 {
-	int         nIndex;      // [in] Cell index.
-	DATE        dtBeginTime; // [in] Begin cell date and time.
-	BOOL        bSelected;   // [in] Is cell selected.
-	BOOL        bWorkCell;   // [in] The cell is work (or non-work).
+	int nIndex;		  // [in] Cell index.
+	DATE dtBeginTime; // [in] Begin cell date and time.
+	BOOL bSelected;   // [in] Is cell selected.
+	BOOL bWorkCell;   // [in] The cell is work (or non-work).
 
 	CXTPCalendarDayViewGroup* pViewGroup; // [in] Owner group.
 };
@@ -662,12 +634,12 @@ struct XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS
 //===========================================================================
 struct XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS
 {
-	int     nTimeScale;  // [in] Time scale number {1 - main, 2 - additional}
+	int nTimeScale; // [in] Time scale number {1 - main, 2 - additional}
 
-	int     nIndex;      // [in] Cell index.
-	DATE    dtBeginTime; // [in] Begin cell time.
+	int nIndex;		  // [in] Cell index.
+	DATE dtBeginTime; // [in] Begin cell time.
 
-	int     nMinutes;    // [in] SubCell Minutes value {0, 5, 10, ...} or -1 for cell hour.
+	int nMinutes; // [in] SubCell Minutes value {0, 5, 10, ...} or -1 for cell hour.
 };
 
 //===========================================================================
@@ -678,23 +650,30 @@ struct XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS
 //===========================================================================
 enum XTPCalendarBeforeDrawThemeObject
 {
-	xtpCalendarBeforeDraw_DayViewTimeScale          = 0x00000001, // dwParam2 - [in] nTimeScale = {1 - main, 2 - additional}
-	xtpCalendarBeforeDraw_DayViewTimeScaleCaption   = 0x00000002, // dwParam2 - [in] nTimeScale = {1 - main, 2 - additional};
-	xtpCalendarBeforeDraw_DayViewTimeScaleCell      = 0x00000004, // dwParam2 - [in] XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS*
-	xtpCalendarBeforeDraw_DayViewDay                = 0x00000010, // dwParam2 - [in] CXTPCalendarDayViewDay*
-	xtpCalendarBeforeDraw_DayViewDayGroup           = 0x00000020, // dwParam2 - [in] CXTPCalendarDayViewGroup*
-	xtpCalendarBeforeDraw_DayViewCell               = 0x00000040, // dwParam2 - [in] XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS *
-	xtpCalendarBeforeDraw_DayViewEvent              = 0x00000080, // dwParam2 - [in] CXTPCalendarDayViewEvent*
+	xtpCalendarBeforeDraw_DayViewTimeScale = 0x00000001, // dwParam2 - [in] nTimeScale = {1 - main,
+														 // 2 - additional}
+	xtpCalendarBeforeDraw_DayViewTimeScaleCaption = 0x00000002, // dwParam2 - [in] nTimeScale = {1 -
+																// main, 2 - additional};
+	xtpCalendarBeforeDraw_DayViewTimeScaleCell =
+		0x00000004, // dwParam2 - [in] XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS*
+	xtpCalendarBeforeDraw_DayViewDay	  = 0x00000010, // dwParam2 - [in] CXTPCalendarDayViewDay*
+	xtpCalendarBeforeDraw_DayViewDayGroup = 0x00000020, // dwParam2 - [in] CXTPCalendarDayViewGroup*
+	xtpCalendarBeforeDraw_DayViewCell	 = 0x00000040, // dwParam2 - [in]
+														// XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS *
+	xtpCalendarBeforeDraw_DayViewEvent = 0x00000080,	// dwParam2 - [in] CXTPCalendarDayViewEvent*
 
-	xtpCalendarBeforeDraw_AllDayViewEvent           = 0x00000100, // dwParam2 - [in] CXTPCalendarDayViewEvent*
+	xtpCalendarBeforeDraw_AllDayViewEvent = 0x00000100, // dwParam2 - [in] CXTPCalendarDayViewEvent*
 
-	xtpCalendarBeforeDraw_MonthViewDay              = 0x00001000, // dwParam2 - [in] CXTPCalendarMonthViewDay*
-	xtpCalendarBeforeDraw_MonthViewEvent            = 0x00002000, // dwParam2 - [in] CXTPCalendarMonthViewEvent*
-	xtpCalendarBeforeDraw_MonthViewWeekDayHeader    = 0x00004000, // dwParam2 - [in] WeekDay = {1-Sun, 2-Mon, ...}, -1 for common part;
-	xtpCalendarBeforeDraw_MonthViewWeekHeader       = 0x00008000, // dwParam2 - [in] WeekIndex={0...N}, -1 for common part;
+	xtpCalendarBeforeDraw_MonthViewDay   = 0x00001000, // dwParam2 - [in] CXTPCalendarMonthViewDay*
+	xtpCalendarBeforeDraw_MonthViewEvent = 0x00002000, // dwParam2 - [in]
+													   // CXTPCalendarMonthViewEvent*
+	xtpCalendarBeforeDraw_MonthViewWeekDayHeader = 0x00004000, // dwParam2 - [in] WeekDay = {1-Sun,
+															   // 2-Mon, ...}, -1 for common part;
+	xtpCalendarBeforeDraw_MonthViewWeekHeader = 0x00008000, // dwParam2 - [in] WeekIndex={0...N}, -1
+															// for common part;
 
-	xtpCalendarBeforeDraw_WeekViewDay               = 0x00100000, // dwParam2 - [in] CXTPCalendarWeekViewDay*
-	xtpCalendarBeforeDraw_WeekViewEvent             = 0x00200000  // dwParam2 - [in] CXTPCalendarWeekViewEvent*
+	xtpCalendarBeforeDraw_WeekViewDay   = 0x00100000, // dwParam2 - [in] CXTPCalendarWeekViewDay*
+	xtpCalendarBeforeDraw_WeekViewEvent = 0x00200000  // dwParam2 - [in] CXTPCalendarWeekViewEvent*
 };
 
 //---------------------------------------------------------------------------
@@ -715,7 +694,7 @@ enum XTPCalendarBeforeDrawThemeObject
 //                            XTPCalendarBeforeDrawThemeObject.
 //
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_BEFORE_DRAW_THEMEOBJECT = (WM_XTP_CALENDAR_BASE + 38);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_BEFORE_DRAW_THEMEOBJECT = (WM_XTP_CALENDAR_BASE + 38);
 
 //===========================================================================
 // Summary:
@@ -730,76 +709,15 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_BEFORE_DRAW_THEMEOBJECT = (WM_XTP
 //===========================================================================
 struct XTP_CALENDAR_GETITEMTEXT_PARAMS
 {
-	int nItem;          // [in] One of the values from enums XTPCalendarGetItemText, XTPCalendarGetItemTextEx;
-	CString* pstrText;  // [in, out] - Pointer to item text;
+	int nItem;		   // [in] One of the values from enums XTPCalendarGetItemText,
+					   // XTPCalendarGetItemTextEx;
+	CString* pstrText; // [in, out] - Pointer to item text;
 
-	CXTPCalendarViewEvent* pViewEvent;  // [in] Pointer to a ViewEvent object or NULL.
-	CXTPCalendarViewDay* pViewDay;      // [in] Pointer to a ViewDay object or NULL.
+	CXTPCalendarViewEvent* pViewEvent; // [in] Pointer to a ViewEvent object or NULL.
+	CXTPCalendarViewDay* pViewDay;	 // [in] Pointer to a ViewDay object or NULL.
 
-	int nWeekDay;                       // [in] Zero or Week day number as: 1 - Sunday, 2 - Monday, ... 7 - Satyrday.
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     This enum defines set of flags which enable calendar items
-//     to send XTP_NC_CALENDAR_GETITEMTEXT notification.
-// See Also:
-//     XTPCalendarGetItemTextEx, XTP_NC_CALENDAR_GETITEMTEXT,
-//     CXTPCalendarControl::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::SetAskItemTextFlags,
-//     CXTPCalendarTheme::GetAskItemTextFlags,
-//     CXTPCalendarTheme::SetAskItemTextFlags
-//-----------------------------------------------------------------------
-enum XTPCalendarGetItemText
-{
-	xtpCalendarItemText_EventSubject            = 0x00000001, // Send request to customize Event subject text before draw it.
-	xtpCalendarItemText_EventLocation           = 0x00000002, // Send request to customize Event location text before draw it.
-
-	xtpCalendarItemText_DayViewDayHeader        = 0x00000004, // Send request to customize Day view day header text. Used for office 2003 theme only.
-	xtpCalendarItemText_WeekViewDayHeader       = 0x00000008, // Send request to customize Week view day header text. Used for office 2003 theme only.
-	xtpCalendarItemText_MonthViewDayHeader      = 0x00000010, // Send request to customize Month view day header text. Used for office 2003 theme only.
-
-	xtpCalendarItemText_MonthViewWeekDayHeader  = 0x00000020, // Send request to customize month view week day header text.
-
-	xtpCalendarItemText_EventToolTipText        = 0x00000040, // Send request to customize event tooltip text.
-	//xtpCalendarItemText_GroupToolTipText      = 0x00000080,
-
-	xtpCalendarItemText_EventStartTimeText      = 0x00000100, // Send request to customize event start time text.
-	xtpCalendarItemText_EventEndTimeText        = 0x00000200  // Send request to customize event end time text.
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     This enum defines set of flags which enable calendar items
-//     to send XTP_NC_CALENDAR_GETITEMTEXT notification.
-//     These flags are used for office 2007 theme only.
-// See Also:
-//     XTPCalendarGetItemText, XTP_NC_CALENDAR_GETITEMTEXT,
-//     CXTPCalendarControl::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::SetAskItemTextFlags,
-//     CXTPCalendarTheme::GetAskItemTextFlags,
-//     CXTPCalendarTheme::SetAskItemTextFlags
-//-----------------------------------------------------------------------
-enum XTPCalendarGetItemTextEx
-{
-	xtpCalendarItemText_EventBody               = 0x00010000, // Send request to customize Event body text before draw it.
-	xtpCalendarItemText_EventMarkupTemplate     = 0x04000000, // Send request to set Event Markup Template text before draw it.
-
-	xtpCalendarItemText_DayViewDayHeaderLeft    = 0x00020000, // Send request to customize Day view day header text on the left.
-	xtpCalendarItemText_DayViewDayHeaderCenter  = 0x00040000, // Send request to customize Day view day header text on the center.
-	xtpCalendarItemText_DayViewDayHeaderRight   = 0x00080000, // Send request to customize Day view day header text on the right.
-
-	xtpCalendarItemText_WeekViewDayHeaderLeft   = 0x00100000, // Send request to customize Week view day header text on the left.
-	xtpCalendarItemText_WeekViewDayHeaderCenter = 0x00200000, // Send request to customize Week view day header text on the center.
-	xtpCalendarItemText_WeekViewDayHeaderRight  = 0x00400000, // Send request to customize Week view day header text on the right.
-
-	xtpCalendarItemText_MonthViewDayHeaderLeft  = 0x00800000, // Send request to customize Month view day header text on the left.
-	xtpCalendarItemText_MonthViewDayHeaderCenter= 0x01000000, // Send request to customize Month view day header text on the center.
-	xtpCalendarItemText_MonthViewDayHeaderRight = 0x02000000  // Send request to customize Month view day header text on the right.
-
-//  xtpCalendarItemText_MonthViewWeekHeader     = 0x08000000,
+	int nWeekDay; // [in] Zero or Week day number as: 1 - Sunday, 2 - Monday, etc, 7 - Saturday.
+	int nWeekNum; // [in] Zero or current visible range first week number.
 };
 
 //-----------------------------------------------------------------------
@@ -813,12 +731,12 @@ enum XTPCalendarGetItemTextEx
 // See Also:
 //     XTPCalendarGetItemTextEx, XTP_CALENDAR_GETITEMTEXT_PARAMS,
 //     CXTPCalendarControl::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::GetAskItemTextFlags,
-//     CXTPCalendarControlPaintManager::SetAskItemTextFlags,
+//     CXTPCalendarPaintManager::GetAskItemTextFlags,
+//     CXTPCalendarPaintManager::SetAskItemTextFlags,
 //     CXTPCalendarTheme::GetAskItemTextFlags,
 //     CXTPCalendarTheme::SetAskItemTextFlags
 //-----------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_GETITEMTEXT = (WM_XTP_CALENDAR_BASE + 39);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_GETITEMTEXT = (WM_XTP_CALENDAR_BASE + 39);
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -827,36 +745,11 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_GETITEMTEXT = (WM_XTP_CALENDAR_BA
 //-----------------------------------------------------------------------
 enum XTPCalendarUserAction
 {
-	xtpCalendarUserAction_OnExpandDay = 0x80000000, // Expand Day button was clicked for month or week view.
-	xtpCalendarUserAction_OnScrollDay = 0x40000000, // Expand Day button was clicked for day view. (presents in office 2007 theme only)
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     This enum defines parameters for xtpCalendarUserAction_OnExpandDay
-//     user action.
-// See Also: XTP_NC_CALENDAR_USERACTION, XTP_CALENDAR_USERACTION_PARAMS
-//-----------------------------------------------------------------------
-enum XTPCalendarExpandDayButton
-{
-	xtpCalendarExpandDayButton_MonthView    = 0x01, // Defines Month view expand button.
-	xtpCalendarExpandDayButton_WeekView     = 0x02, // Defines Week view expand button.
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     This enum defines parameters for xtpCalendarUserAction_OnScrollDay
-//     user action. (valid for office 2007 theme only)
-// See Also: XTP_NC_CALENDAR_USERACTION, XTP_CALENDAR_USERACTION_PARAMS
-//-----------------------------------------------------------------------
-enum XTPCalendarScrollDayButton
-{
-	xtpCalendarScrollDayButton_DayViewUp    = xtpCalendarHitTestDayViewScrollUp,   // Defines Day view Scroll Up button.
-	xtpCalendarScrollDayButton_DayViewDown  = xtpCalendarHitTestDayViewScrollDown, // Defines Day view Scroll Down button.
-
-	//xtpCalendarScrollDayButton_DayViewAllDayUp     = 5,
-	//xtpCalendarScrollDayButton_DayViewAllDayDown = 6,
-
+	xtpCalendarUserAction_OnExpandDay = 0x80000000, // Expand Day button was clicked for month or
+													// week view.
+	xtpCalendarUserAction_OnScrollDay = 0x40000000, // Scroll Day button was clicked for day view.
+	xtpCalendarUserAction_OnScrollAllDayEvensUp   = 0x30000000, // Scroll All Day button up action.
+	xtpCalendarUserAction_OnScrollAllDayEvensDown = 0x20000000 // Scroll All Day button down action.
 };
 
 //===========================================================================
@@ -874,8 +767,8 @@ struct XTP_CALENDAR_USERACTION_PARAMS
 	//=======================================================================
 	struct EXPANDDAYBUTTONACTION_PARAMS
 	{
-		XTPCalendarExpandDayButton nButton;     // Defines Month view or Week View expand button
-		CXTPCalendarViewDay*       pViewDay;    // Pointer to a CXTPCalendarDayViewDay object or NULL.
+		XTPCalendarExpandDayButton nButton; // Defines Month view or Week View expand button
+		CXTPCalendarViewDay* pViewDay;		// Pointer to a CXTPCalendarDayViewDay object or NULL.
 	};
 
 	//=======================================================================
@@ -884,17 +777,21 @@ struct XTP_CALENDAR_USERACTION_PARAMS
 	//=======================================================================
 	struct SCROLLDAYBUTTONACTION_PARAMS
 	{
-		XTPCalendarScrollDayButton  nButton;    // Defines Month view or Week View expand button
-		CXTPCalendarDayViewGroup*   pViewGroup; // Pointer to a CXTPCalendarDayViewGroup object or NULL.
+		XTPCalendarScrollDayButton nButton;   // Defines Month view or Week View expand button
+		CXTPCalendarDayViewGroup* pViewGroup; // Pointer to a CXTPCalendarDayViewGroup object or
+											  // NULL.
 	};
 
 	XTPCalendarUserAction m_eAction; // A value from XTPCalendarUserAction
 
 	// reserved for other actions in the feature
-	union
-	{
-		EXPANDDAYBUTTONACTION_PARAMS m_ExpandDayButton; // Parameters for xtpCalendarUserAction_OnExpandDay user action.
-		SCROLLDAYBUTTONACTION_PARAMS m_ScrollDayButton; // Parameters for xtpCalendarUserAction_OnScrollDay user action.
+	union {
+		EXPANDDAYBUTTONACTION_PARAMS m_ExpandDayButton; // Parameters for
+														// xtpCalendarUserAction_OnExpandDay user
+														// action.
+		SCROLLDAYBUTTONACTION_PARAMS m_ScrollDayButton; // Parameters for
+														// xtpCalendarUserAction_OnScrollDay user
+														// action.
 	};
 };
 
@@ -910,7 +807,7 @@ struct XTP_CALENDAR_USERACTION_PARAMS
 // See Also:
 //    XTP_CALENDAR_USERACTION_PARAMS, XTPCalendarUserAction
 //-----------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_USERACTION = (WM_XTP_CALENDAR_BASE + 40);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_USERACTION = (WM_XTP_CALENDAR_BASE + 40);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent when calendar is populating.
@@ -926,8 +823,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_USERACTION = (WM_XTP_CALENDAR_BAS
 //              lParam - unused.
 // See Also: CXTPCalendarControl::Populate, XTP_NC_CALENDAR_PREPOPULATE
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_PREPOPULATE_DAY = (WM_XTP_CALENDAR_BASE + 41);
-
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_PREPOPULATE_DAY = (WM_XTP_CALENDAR_BASE + 41);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent when calendar paint theme changed.
@@ -938,7 +834,7 @@ static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_PREPOPULATE_DAY = (WM_XTP_CALENDA
 //              lParam - unused.
 // See Also: XTP_NC_CALENDARVIEWWASCHANGED
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE   XTP_NC_CALENDAR_THEME_CHANGED = (WM_XTP_CALENDAR_BASE + 42);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_THEME_CHANGED = (WM_XTP_CALENDAR_BASE + 42);
 
 //---------------------------------------------------------------------------
 // Summary: This notification is sent on CaptionBar part click
@@ -948,8 +844,11 @@ static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_CAPTIONBARPART_CLICK = (WM_XTP_CALE
 //---------------------------------------------------------------------------
 // Summary: This notification is sent before CaptionBar part click
 //---------------------------------------------------------------------------
-static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_CAPTIONBARPART_BEFORE_CLICK = (WM_XTP_CALENDAR_BASE + 44);
+static const XTP_NOTIFY_CODE XTP_NC_CALENDAR_CAPTIONBARPART_BEFORE_CLICK = (WM_XTP_CALENDAR_BASE
+																			+ 44);
 
 // Next Free ID: (WM_XTP_CALENDAR_BASE + 45)
 /////////////////////////////////////////////////////////////////////////////
-#endif // !defined(_XTPCalendarNotifications_H__)
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#endif // !defined(_XTPCALENDARNOTIFICATIONS_H__)

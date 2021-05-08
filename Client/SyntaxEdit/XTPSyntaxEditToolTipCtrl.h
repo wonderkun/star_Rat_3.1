@@ -1,7 +1,6 @@
 // XTPSyntaxEditToolTipCtrl.h: interface for the CXTPSyntaxEditToolTipCtrl class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITTOOLTIPCTRL_H__)
-#define __XTPSYNTAXEDITTOOLTIPCTRL_H__
+#	define __XTPSYNTAXEDITTOOLTIPCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditCtrl;
 // Internal class
@@ -48,9 +49,8 @@ class CXTPSyntaxEditCtrl;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPSyntaxEditToolTipCtrl : public CWnd
 {
-// Construction
+	// Construction
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Constructs a CXTPSyntaxEditToolTipCtrl object.
@@ -88,6 +88,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL Create(CXTPSyntaxEditCtrl* pParentWnd);
 
+	using CWnd::Create;
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Sets time to display the tip.
@@ -106,7 +108,7 @@ public:
 	// See also:
 	//      void SetDelay(int nDelay);
 	//-----------------------------------------------------------------------
-	int GetDelay();
+	int GetDelay() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -138,10 +140,10 @@ public:
 	//}}AFX_VIRTUAL
 
 protected:
-	int m_nDelayTime; // Delay before showing the tooltip in milliseconds.
+	int m_nDelayTime;				  // Delay before showing the tooltip in milliseconds.
 	CXTPSyntaxEditCtrl* m_pParentWnd; // Pointer to the parent report window.
-	CRect m_rcHover; // Hover window coordinates.
-	CString m_strToolTipText; // ToolTip text to display.
+	CRect m_rcHover;				  // Hover window coordinates.
+	CString m_strToolTipText;		  // ToolTip text to display.
 
 	//{{AFX_MSG(CXTPSyntaxEditToolTipCtrl)
 
@@ -164,12 +166,10 @@ AFX_INLINE void CXTPSyntaxEditToolTipCtrl::SetDelay(int nDelay)
 {
 	m_nDelayTime = nDelay;
 }
-
-AFX_INLINE int CXTPSyntaxEditToolTipCtrl::GetDelay()
+AFX_INLINE int CXTPSyntaxEditToolTipCtrl::GetDelay() const
 {
 	return m_nDelayTime;
 }
-
 AFX_INLINE void CXTPSyntaxEditToolTipCtrl::SetHoverRect(CRect rc)
 {
 	m_rcHover = rc;
@@ -180,4 +180,5 @@ AFX_INLINE void CXTPSyntaxEditToolTipCtrl::SetHoverRect(CRect rc)
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITTOOLTIPCTRL_H__)

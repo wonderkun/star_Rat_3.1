@@ -1,7 +1,6 @@
 // XTPCalendarView.h: interface for the CXTPCalendarView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARVIEW_H__)
-#define _XTPCALENDARVIEW_H__
+#	define _XTPCALENDARVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPNotifyConnection.h"
-
-#include "XTPCalendarPtrCollectionT.h"
-#include "XTPCalendarEvent.h"
-#include "XTPCalendarNotifications.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarControl;
 class CXTPCalendarPaintManager;
@@ -39,9 +34,21 @@ class CXTPCalendarTheme;
 
 class CXTPCalendarViewDay;
 class CXTPCalendarViewEvent;
+class CXTPCalendarViewEvents;
+class CXTPCalendarEvent;
+class CXTPCalendarEvents;
 class CXTPCalendarViewPart;
+class CXTPCalendarResources;
+class CXTPCalendarData;
+class CXTPCalendarOptions;
 
 struct XTP_CALENDAR_HITTESTINFO;
+typedef DWORD XTP_NOTIFY_CODE;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvent)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvents)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarViewEvent)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarViewEvents)
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +56,7 @@ struct XTP_CALENDAR_HITTESTINFO;
 // Remarks:
 //     Timeout before appearing in the event subject editor window.
 //===========================================================================
-#define XTP_CALENDAR_START_EDIT_SUBJECT_TIMEOUT_MS 400
+#	define XTP_CALENDAR_START_EDIT_SUBJECT_TIMEOUT_MS 400
 
 //===========================================================================
 // Remarks:
@@ -60,23 +67,23 @@ static const LPCTSTR XTPCALENDARCTRL_CF_EVENT = _T("XTPCalendar_CF_Event");
 //{{AFX_CODEJOCK_PRIVATE
 enum XTPEnumCalendarUpdateResult
 {
-	xtpCalendar_Skip        = 0,
-	xtpCalendar_Redraw      = 1,
-	xtpCalendar_Populate    = 2
+	xtpCalendar_Skip	 = 0,
+	xtpCalendar_Redraw   = 1,
+	xtpCalendar_Populate = 2
 };
 //===========================================================================
 // use project settings to define _TRACE_EDITING_ON
-#ifdef _TRACE_EDITING_ON
-#define TRACE_MOUSE         TRACE
-#define TRACE_KEYBOARD      TRACE
-#define TRACE_DRAGGING      TRACE
-#define TRACE_EDIT_SUBJECT  TRACE
-#else
-#define TRACE_MOUSE
-#define TRACE_KEYBOARD
-#define TRACE_DRAGGING
-#define TRACE_EDIT_SUBJECT
-#endif
+#	ifdef _TRACE_EDITING_ON
+#		define TRACE_MOUSE TRACE
+#		define TRACE_KEYBOARD TRACE
+#		define TRACE_DRAGGING TRACE
+#		define TRACE_EDIT_SUBJECT TRACE
+#	else
+#		define TRACE_MOUSE
+#		define TRACE_KEYBOARD
+#		define TRACE_DRAGGING
+#		define TRACE_EDIT_SUBJECT
+#	endif
 //===========================================================================
 //}}AFX_CODEJOCK_PRIVATE
 
@@ -94,7 +101,7 @@ class _XTP_EXT_CLASS CXTPCalendarWMHandler : public CXTPCmdTarget
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarWMHandler)
-	typedef CCmdTarget TBase;
+	typedef CXTPCmdTarget TBase;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
 	//-----------------------------------------------------------------------
@@ -120,7 +127,7 @@ public:
 	// See Also:
 	//     CXTPCalendarWMHandler overview
 	//-----------------------------------------------------------------------
-	virtual int GetChildHandlersCount();
+	virtual int GetChildHandlersCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -135,7 +142,7 @@ public:
 	//     The pointer to the CXTPCalendarWMHandler element currently at this
 	//     index.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex);
+	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -275,6 +282,19 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//      This method is called by framework after default message processing.
+	// Parameters:
+	//      message - Specifies the message to be sent.
+	//      wParam - Specifies additional message-dependent information.
+	//      lParam - Specifies additional message-dependent information.
+	//      pResult - The return value of WindowProc. Depends on the message; may be NULL.
+	// Returns:
+	//      TRUE if the message is handled properly, FALSE else.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function is used to perform additional adjustments
 	//     in some kinds of views.
 	// Remarks:
@@ -340,15 +360,15 @@ class _XTP_EXT_CLASS CXTPCalendarView : public CXTPCalendarWMHandler
 	//}}AFX_CODEJOCK_PRIVATE
 private:
 	CUIntArray m_DiscreteSelection;
-public:
 
+public:
 	// -----------------------
 	// Summary:
 	//     This member function is used to get number of selected events.
 	// Returns:
 	//     number of selected events
 	// -----------------------
-	UINT GetDiscreteSelectionCount();
+	UINT GetDiscreteSelectionCount() const;
 
 	// -----------------------
 	// Summary:
@@ -358,7 +378,7 @@ public:
 	// Returns:
 	//     COleDateTime selected event
 	// -----------------------
-	COleDateTime GetDiscreteSelectionValue(UINT id);
+	COleDateTime GetDiscreteSelectionValue(UINT id) const;
 
 	// -----------------------
 	// Summary:
@@ -378,7 +398,7 @@ public:
 	// Returns:
 	//     BOOL flag (TRUE if present in selection, FALSE if not)
 	// -----------------------
-	BOOL IsInDiscreteSelection(UINT id);
+	BOOL IsInDiscreteSelection(UINT id) const;
 
 	// -----------------------
 	// Summary:
@@ -413,7 +433,7 @@ public:
 	//     A XTPCalendarViewType view type flag.
 	// See Also: XTPCalendarViewType
 	//-----------------------------------------------------------------------
-	virtual XTPCalendarViewType GetViewType() = 0;
+	virtual XTPCalendarViewType GetViewType() const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -442,7 +462,8 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);//<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView,
+							   BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -466,7 +487,6 @@ public:
 	//     calendar view.
 	//-----------------------------------------------------------------------
 	virtual void ShowDay(const COleDateTime& date, BOOL bSelect = TRUE) = 0;
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -523,7 +543,7 @@ public:
 	//     The derived class definition should return TRUE if the function
 	//     is successful. Return FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI)
+	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI) const
 	{
 		UNREFERENCED_PARAMETER(pSI);
 		return FALSE;
@@ -541,9 +561,10 @@ public:
 	//     The derived class definition should return TRUE if the function
 	//     is successful. Return FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL)
+	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL) const
 	{
-		UNREFERENCED_PARAMETER(pSI); UNREFERENCED_PARAMETER(pnScrollStep);
+		UNREFERENCED_PARAMETER(pSI);
+		UNREFERENCED_PARAMETER(pnScrollStep);
 		return FALSE;
 	}
 
@@ -577,7 +598,7 @@ public:
 	virtual void Draw2(CDC* pDC)
 	{
 		UNREFERENCED_PARAMETER(pDC);
-		//Draw(pDC);
+		// Draw(pDC);
 	}
 
 	//-----------------------------------------------------------------------
@@ -702,7 +723,7 @@ public:
 	// Returns:
 	//     A CRect object that contains the view's bounding rectangle coordinates.
 	//-----------------------------------------------------------------------
-	CRect GetViewRect();
+	CRect GetViewRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -717,7 +738,7 @@ public:
 	// See Also:
 	//     CXTPCalendarWMHandler overview
 	//-----------------------------------------------------------------------
-	virtual int GetChildHandlersCount();
+	virtual int GetChildHandlersCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -732,7 +753,7 @@ public:
 	//     The pointer to the CXTPCalendarWMHandler element currently at this
 	//     index.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex);
+	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -745,7 +766,7 @@ public:
 	//     An int that contains the the number of "day views" in the view
 	//     collection.
 	//-----------------------------------------------------------------------
-	virtual int GetViewDayCount() = 0;
+	virtual int GetViewDayCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -761,7 +782,7 @@ public:
 	//     A COleDateTime object that contains the day view date and time.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetViewDayDate(int nIndex) = 0;
+	virtual COleDateTime GetViewDayDate(int nIndex) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -778,8 +799,10 @@ public:
 	//     A pointer to a CXTPCalendarViewDay object.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewDay* GetViewDay_(int nIndex) = 0;
-	virtual CXTPCalendarViewDay* _GetViewDay(const COleDateTime& dtDay); //<COMBINE CXTPCalendarView::GetViewDay_@int>
+	virtual CXTPCalendarViewDay* GetViewDay_(int nIndex) const;
+
+	virtual CXTPCalendarViewDay*
+		_GetViewDay(const COleDateTime& dtDay) const; //<COMBINE CXTPCalendarView::GetViewDay_@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -796,7 +819,23 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) = 0;
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine which view item,
+	//     if any, is at a specified position index, and returns additional
+	//     info in a XTP_CALENDAR_HITTESTINFO object.
+	// Parameters:
+	//     pt       - A CPoint object that contains the coordinates of the
+	//                point to test.
+	//     pHitTest - A pointer to the template parameter XTP_CALENDAR_HITTESTINFO
+	//                object that contains information on the point
+	//                to test.
+	// Returns:
+	//     TRUE if item found; FALSE otherwise.
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -815,7 +854,7 @@ public:
 	//     A pointer to the CXTPCalendarPaintManager object.
 	// See Also: CXTPCalendarPaintManager, GetTheme
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarPaintManager* GetPaintManager();
+	virtual CXTPCalendarPaintManager* GetPaintManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -829,7 +868,7 @@ public:
 	// See Also:
 	//     CXTPCalendarControl::GetTheme, GetPaintManager
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarTheme* GetTheme();
+	virtual CXTPCalendarTheme* GetTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -839,7 +878,25 @@ public:
 	//     A pointer to the CXTPCalendarControl object.
 	// See Also: CXTPCalendarControl
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarControl* GetCalendarControl() const;
+	CXTPCalendarControl* GetCalendarControl() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this member function to get direct access to calendar options
+	//      data.
+	// Remarks:
+	//      This member function wraps CXTPCalendarData::GetCalendarOptions()
+	//      method. If you read or change returned structure members
+	//      no additional checks are made and no notifications are sent.
+	//      The preferred way is to use CXTPCalendarControl options methods
+	//      like GetWorkWeekMask(), SetWorkWeekMask(), GetFirstDayOfWeek(),
+	//      SetFirstDayOfWeek(), ... etc.
+	// Returns:
+	//      A pointer to calendar options data class CXTPCalendarOptions.
+	// See Also:
+	//      CXTPCalendarOptions,  CXTPCalendarData::GetCalendarOptions().
+	//-----------------------------------------------------------------------
+	CXTPCalendarOptions* GetCalendarOptions() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -850,7 +907,7 @@ public:
 	// See Also:
 	//     CXTPCalendarResources overview, CXTPCalendarResource overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarResources* GetResources();
+	virtual CXTPCalendarResources* GetResources() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -898,7 +955,7 @@ public:
 	//     So far, you'll have to call Calendar.RedrawControl after that.
 	// See Also: SelectEvent(), CXTPCalendarViewEvent
 	//-----------------------------------------------------------------------
-	void SelectViewEvent(CXTPCalendarViewEvent* pViewEvent, BOOL bSelect  = TRUE);
+	void SelectViewEvent(CXTPCalendarViewEvent* pViewEvent, BOOL bSelect = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -925,7 +982,7 @@ public:
 	//           SelectDay(COleDateTime dtSelDay, BOOL bSelect),
 	//           GetSelectedEvents()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvents* GetSelectedViewEvents();
+	virtual CXTPCalendarViewEvents* GetSelectedViewEvents() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -939,7 +996,7 @@ public:
 	//     selected events.
 	// See Also: GetSelectedViewEvents(), CXTPCalendarViewEvents
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEventsPtr GetSelectedEvents();
+	virtual CXTPCalendarViewEventsPtr GetSelectedEvents() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -948,7 +1005,7 @@ public:
 	//     A pointer to last selected event view or NULL.
 	// See Also: CXTPCalendarViewEvent, GetSelectedViewEvents().
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewEvent* GetLastSelectedViewEvent();
+	CXTPCalendarViewEvent* GetLastSelectedViewEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -957,7 +1014,7 @@ public:
 	//     TRUE if the view event selected, FALSE else.
 	// See Also: GetSelectedViewEvents
 	//-----------------------------------------------------------------------
-	virtual BOOL HasSelectedViewEvent();
+	virtual BOOL HasSelectedViewEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -967,7 +1024,7 @@ public:
 	//      if more than one event is selected.
 	// See Also: GetSelectedViewEvents(), SelectViewEvent(), SelectEvent().
 	//-----------------------------------------------------------------------
-	BOOL IsSingleEventSelected();
+	BOOL IsSingleEventSelected() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -976,7 +1033,7 @@ public:
 	//     Index of the last selected day of -1.
 	// See Also: GetLastSelectedDate()
 	//-----------------------------------------------------------------------
-	int FindLastSelectedDay();
+	int FindLastSelectedDay() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -985,7 +1042,7 @@ public:
 	//     Date of the last selected day or the middle view day date.
 	// See Also: FindLastSelectedDay(), GetSelection(), SetSelection().
 	//-----------------------------------------------------------------------
-	COleDateTime GetLastSelectedDate();
+	COleDateTime GetLastSelectedDate() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1012,7 +1069,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL GetSelection(COleDateTime* pBegin = NULL, COleDateTime* pEnd = NULL,
 							  BOOL* pbAllDayEvent = NULL, int* pnGroupIndex = NULL,
-							  COleDateTimeSpan* pspSelectionResolution = NULL);
+							  COleDateTimeSpan* pspSelectionResolution = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1117,7 +1174,8 @@ public:
 	// Returns:
 	//     A CRect object with relative coordinates of the tooltip.
 	//-----------------------------------------------------------------------
-	virtual CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo);
+	virtual CRect GetTooltipRect(const CPoint& ptHit,
+								 const XTP_CALENDAR_HITTESTINFO& hitInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1153,7 +1211,7 @@ public:
 	//     A BOOL. TRUE if there is the possibility to perform an undo
 	//     operation. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanUndo();
+	virtual BOOL CanUndo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1163,7 +1221,7 @@ public:
 	//     A BOOL. TRUE if it is possible to perform a redo operation on
 	//     the subject-editor. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanRedo();
+	virtual BOOL CanRedo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1196,7 +1254,38 @@ public:
 	// Returns:
 	//     A CString object containing the formatted time string.
 	// ----------------------------------------------------------------------
-	virtual CString FormatEventTime(COleDateTime dtTime);
+	virtual CString FormatEventTime(COleDateTime dtTime) const;
+
+	// ----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to set custom time format for view.
+	//     Events will use this format to show their times
+	// Parameters:
+	//     strFormat : format string specification.
+	//     h        Hours with no leading zero for single-digit hours; 12-hour clock
+	//     hh       Hours with leading zero for single-digit hours; 12-hour clock
+	//     H        Hours with no leading zero for single-digit hours; 24-hour clock
+	//     HH       Hours with leading zero for single-digit hours; 24-hour clock
+	//     m        Minutes with no leading zero for single-digit minutes
+	//     mm       Minutes with leading zero for single-digit minutes
+	//     s        Seconds with no leading zero for single-digit seconds
+	//     ss       Seconds with leading zero for single-digit seconds
+	//     t        One character time marker string, such as A or P
+	//     tt       Multi-character time marker string, such as AM or PM
+	// Returns:
+	//     none.
+	// ----------------------------------------------------------------------
+	void SetCustomTimeFormat(const CString& strFormat);
+
+	// ----------------------------------------------------------------------
+	// Summary:
+	//     Reset custom time format to default
+	// Parameters:
+	//     None
+	// Returns:
+	//     None
+	// ----------------------------------------------------------------------
+	void ResetCustomTimeFormat();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1204,7 +1293,7 @@ public:
 	// Returns:
 	//     A CString object that contains the format string.
 	//-----------------------------------------------------------------------
-	virtual CString GetDayHeaderFormat();
+	virtual CString GetDayHeaderFormat() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1212,7 +1301,7 @@ public:
 	// Parameter:
 	//     sFmt - A CString object that contains the format string.
 	//-----------------------------------------------------------------------
-	virtual void SetDayHeaderFormat(CString sFmt);
+	virtual void SetDayHeaderFormat(LPCTSTR sFmt);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1224,7 +1313,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the cut operation is possible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanCut();
+	virtual BOOL CanCut() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1236,7 +1325,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the copy operation is possible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanCopy();
+	virtual BOOL CanCopy() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1248,7 +1337,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the paste operation is possible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanPaste();
+	virtual BOOL CanPaste() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1291,7 +1380,7 @@ public:
 	//     A pointer to a CXTPCalendarEvent object before the start the
 	//     event editing or NULL.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEvent* GetDraggingEventOrig();
+	virtual CXTPCalendarEvent* GetDraggingEventOrig() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1300,7 +1389,7 @@ public:
 	// Returns:
 	//     A pointer to a CXTPCalendarEvent object or NULL.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEvent* GetDraggingEventNew();
+	virtual CXTPCalendarEvent* GetDraggingEventNew() const;
 
 	// ----------------------------------------------------------------------
 	// Summary:
@@ -1386,7 +1475,8 @@ public:
 	//                      otherwise perform only the specified action
 	//                      without redrawing.
 	//-----------------------------------------------------------------------
-	virtual void EndEditSubject(XTPCalendarEndEditSubjectAction eAction, BOOL bUpdateControl = TRUE);
+	virtual void EndEditSubject(XTPCalendarEndEditSubjectAction eAction,
+								BOOL bUpdateControl = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1397,7 +1487,6 @@ public:
 	//     the start event subject editing.
 	//-----------------------------------------------------------------------
 	virtual UINT GetStartEditSubjectTimeOut() const;
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1423,11 +1512,10 @@ public:
 	//     A CXTPCalendarViewEvent object that contains the view object or NULL.
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarViewEvent* FindViewEvent(CXTPCalendarEvent* pEvent,
-												 COleDateTime dtDay);
-
+												 COleDateTime dtDay) const;
 
 	virtual CXTPCalendarViewEvent* FindViewEventByGroup(CXTPCalendarEvent* pEvent,
-												 COleDateTime dtDay, int nScheduleID);
+														COleDateTime dtDay, int nScheduleID) const;
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the next event view
@@ -1442,8 +1530,8 @@ public:
 	//     A CXTPCalendarViewEvent object that contains the view object or NULL.
 	// See Also: GetNextTimeEditByTAB, UpdateNextTimeEditByTAB
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* FindEventToEditByTAB(COleDateTime dtMinStart,
-								BOOL bReverse, CXTPCalendarEvent* pAfterEvent = NULL);
+	virtual CXTPCalendarViewEvent* FindEventToEditByTAB(COleDateTime dtMinStart, BOOL bReverse,
+														CXTPCalendarEvent* pAfterEvent = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1453,7 +1541,7 @@ public:
 	//     A COleDateTime object that contains the next date and time.
 	// See Also: FindEventToEditByTAB, UpdateNextTimeEditByTAB
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetNextTimeEditByTAB();
+	virtual COleDateTime GetNextTimeEditByTAB() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1467,8 +1555,7 @@ public:
 	//                iteration position.
 	// See Also: GetNextTimeEditByTAB, FindEventToEditByTAB
 	//-----------------------------------------------------------------------
-	virtual void UpdateNextTimeEditByTAB(COleDateTime dtNext, BOOL bReverse,
-										 BOOL bReset = FALSE);
+	virtual void UpdateNextTimeEditByTAB(COleDateTime dtNext, BOOL bReverse, BOOL bReset = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1524,8 +1611,8 @@ public:
 	// Returns:
 	//     TRUE if scrolling enabled, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsHScrollEnabled();
-	virtual BOOL IsVScrollEnabled();// <COMBINE CXTPCalendarView::IsHScrollEnabled>
+	virtual BOOL IsHScrollEnabled() const;
+	virtual BOOL IsVScrollEnabled() const; // <COMBINE CXTPCalendarView::IsHScrollEnabled>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1555,7 +1642,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if Today day is visible, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsTodayVisible();
+	virtual BOOL IsTodayVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1564,7 +1651,7 @@ public:
 	// Returns:
 	//     A maximum time string.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextEventTimeMax();
+	virtual CString GetItemTextEventTimeMax() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1581,8 +1668,8 @@ public:
 	virtual void CalculateHeaderFormat(CDC* pDC, int nWidth, CFont* pTextFont);
 
 	COleDateTime GetDateTimeDay(const COleDateTime& dt, BOOL bWholeDayEvent) const;
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to create a timer event.
@@ -1620,7 +1707,7 @@ protected:
 	//     Call this member function to perform additional adjustments after
 	//     all adjustment activities are completed.
 	//-----------------------------------------------------------------------
-	//virtual void OnPostAdjustLayout();
+	// virtual void OnPostAdjustLayout();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1693,7 +1780,7 @@ protected:
 	//     A CString containing the name of the month or the name of the
 	//     day of the week that has the maximum width.
 	//-----------------------------------------------------------------------
-	virtual CString _GetMaxWidthFormat(CDC* pDC, CString strFormat, BOOL bMonth);
+	virtual CString _GetMaxWidthFormat(CDC* pDC, CString strFormat, BOOL bMonth) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1708,7 +1795,7 @@ protected:
 	// Returns:
 	//     An int that contains the maximum date width, in pixels.
 	//-----------------------------------------------------------------------
-	virtual int _GetMaxWidth(CDC* pDC, CString strFormat);
+	virtual int _GetMaxWidth(CDC* pDC, CString strFormat) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1757,7 +1844,7 @@ protected:
 	//      m_strDayHeaderFormatLong, m_strDayHeaderFormatMiddle,
 	//      m_strDayHeaderFormatShort, m_strDayHeaderFormatShortest.
 	//-----------------------------------------------------------------------
-	virtual CString _GetDayHeaderFormat(int nLevel);
+	virtual CString _GetDayHeaderFormat(int nLevel) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1773,7 +1860,7 @@ protected:
 	//     A BOOL. TRUE - if the subject editing mode and specified editing
 	//     operation are possible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL _CanSubjectEditor(UINT idEditCmd);
+	virtual BOOL _CanSubjectEditor(UINT idEditCmd) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1784,7 +1871,7 @@ protected:
 	// Returns:
 	//     Pointer to the CWnd or NULL.
 	//-----------------------------------------------------------------------
-	virtual CWnd* _GetSubjectEditorWnd();
+	virtual CWnd* _GetSubjectEditorWnd() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1828,7 +1915,7 @@ protected:
 	//           XTPCALENDARCTRL_CF_EVENT, COleDataSource
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarEventsPtr _ReadEventsFromClipboard(COleDataObject* pData,
-													DWORD* pdwCopyFlags = NULL);
+														   DWORD* pdwCopyFlags = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1871,7 +1958,8 @@ protected:
 	// See Also:
 	//     XTP_NOTIFY_CODE overview, XTPEnumCalendarUpdateResult overview
 	//-----------------------------------------------------------------------
-	virtual XTPEnumCalendarUpdateResult OnEventChanged_InDataProvider(XTP_NOTIFY_CODE nfCode, CXTPCalendarEvent* pEvent);
+	virtual XTPEnumCalendarUpdateResult OnEventChanged_InDataProvider(XTP_NOTIFY_CODE nfCode,
+																	  CXTPCalendarEvent* pEvent);
 
 protected:
 	//=======================================================================
@@ -1879,237 +1967,7 @@ protected:
 	//     This helper class implements Undo/Redo events editing
 	//     functionality.
 	//=======================================================================
-	class _XTP_EXT_CLASS CUndoBuffer
-	{
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Default class constructor.
-		//-----------------------------------------------------------------------
-		CUndoBuffer() {};
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Default class destructor.
-		//-----------------------------------------------------------------------
-		virtual ~CUndoBuffer()
-		{
-			RemoveAll();
-		};
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to add an Undo action to the buffer.
-		// Parameters:
-		//     pPrev - A CXTPCalendarEvent object that contains the instance
-		//             before the edit action.
-		//     pNew  - A CXTPCalendarEvent that contains the instance after
-		//             the edit action.
-		//-----------------------------------------------------------------------
-		void AddUndoAction(CXTPCalendarEvent* pPrev, CXTPCalendarEvent* pNew)
-		{
-			CXTPCalendarEventPtr ptrPrevCopy = pPrev ? pPrev->CloneEvent() : NULL;
-			CXTPCalendarEventPtr ptrNewCopy = pNew ? pNew->CloneEvent() : NULL;
-			m_arUndoActions.Add(SUndoAction(ptrPrevCopy, ptrNewCopy));
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this member function to clear the Undo buffer.
-		//-----------------------------------------------------------------------
-		void RemoveAll()
-		{
-			m_arUndoActions.RemoveAll();
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to search for an undo action for a
-		//     specified event in the buffer.
-		// Parameters:
-		//     pEvent - A CXTPCalendarEvent object to search for in the buffer.
-		// Returns:
-		//     A BOOL. TRUE if undo action for a specified event exists in the
-		//     buffer. FALSE otherwise.
-		//-----------------------------------------------------------------------
-		BOOL IsInUndoBuffer(CXTPCalendarEvent* pEvent)
-		{
-			int nCount = (int)m_arUndoActions.GetSize();
-			for (int i = nCount-1; i >= 0; i--)
-			{
-				SUndoAction& rAction = m_arUndoActions.ElementAt(i);
-				if (rAction.ptrPrev && rAction.ptrPrev->IsEqualIDs(pEvent) ||
-					rAction.ptrNew && rAction.ptrNew->IsEqualIDs(pEvent))
-				{
-					return TRUE;
-				}
-			}
-			return FALSE;
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this member function to obtain the number of undo actions.
-		// Returns:
-		//     An int that contains the number of Undo actions.
-		//-----------------------------------------------------------------------
-		int GetCount() const
-		{
-			return (int)m_arUndoActions.GetSize();
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this member function to obtain the first undo event.
-		// Returns:
-		//     A CXTPCalendarEvent object that contains the first undo event
-		//     or NULL if there are no undo events.
-		//-----------------------------------------------------------------------
-		CXTPCalendarEventPtr GetFirstUndoEvent()
-		{
-			int nCount = (int)m_arUndoActions.GetSize();
-			if (nCount > 0)
-			{
-				SUndoAction& rAction = m_arUndoActions.ElementAt(0);
-				if (rAction.ptrPrev)
-				{
-					return rAction.ptrPrev;
-				}
-				else if (rAction.ptrNew)
-				{
-					return rAction.ptrNew;
-				}
-			}
-			return NULL;
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to search for the first action for
-		//     a specified event in the buffer.
-		// Parameters:
-		//     pEvent - A CXTPCalendarEvent object that contains the event to
-		//              search for in the buffer.
-		// Returns:
-		//     A CXTPCalendarEvent that contains the oldest event object from
-		//     all of the editing actions or NULL if there are no events.
-		//-----------------------------------------------------------------------
-		CXTPCalendarEventPtr UndoAllForEvent(CXTPCalendarEvent* pEvent)
-		{
-			int nCount = (int)m_arUndoActions.GetSize();
-			for (int i = 0; i < nCount; i++)
-			{
-				SUndoAction& rAction = m_arUndoActions.ElementAt(i);
-				if (rAction.ptrPrev && rAction.ptrPrev->IsEqualIDs(pEvent) ||
-					rAction.ptrNew && rAction.ptrNew->IsEqualIDs(pEvent))
-				{
-					return rAction.ptrPrev;
-				}
-			}
-			return NULL;
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to search for last action for a
-		//     specified event in the buffer.
-		// Parameters:
-		//     pEvent - A CXTPCalendarEvent object that contains the event
-		//              to search for in the buffer.
-		// Returns:
-		//     A CXTPCalendarEvent that contains the latest event object from
-		//     all of the editing actions or NULL if there are no events.
-		//-----------------------------------------------------------------------
-		CXTPCalendarEventPtr RedoAllForEvent(CXTPCalendarEvent* pEvent)
-		{
-			CXTPCalendarEventPtr ptrResult;
-			int nCount = (int)m_arUndoActions.GetSize();
-			for (int i = nCount-1; i >= 0; i--)
-			{
-				SUndoAction& rAction = m_arUndoActions.ElementAt(i);
-				if (rAction.ptrPrev && rAction.ptrPrev->IsEqualIDs(pEvent) ||
-					rAction.ptrNew && rAction.ptrNew->IsEqualIDs(pEvent))
-				{
-					return rAction.ptrNew;
-				}
-			}
-			return NULL;
-		}
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to clear the current buffer of all
-		//     undo actions and then add new undo actions to the buffer from
-		//     the source object.
-		// Parameters:
-		//     rSrc - A CUndoBuffer object that contains the new undo actions
-		//            to add to the undo buffer object.
-		//-----------------------------------------------------------------------
-		void Set(CUndoBuffer& rSrc)
-		{
-			m_arUndoActions.RemoveAll();
-			m_arUndoActions.Append(rSrc.m_arUndoActions);
-		}
-	protected:
-		//-----------------------------------------------------------------------
-		// Remarks:
-		//     Helper structure to store editing/undo actions.
-		//-----------------------------------------------------------------------
-		struct SUndoAction
-		{
-			CXTPCalendarEventPtr ptrPrev; // Event instance before edit action.
-			CXTPCalendarEventPtr ptrNew;  // Event instance after edit action.
-
-			//-----------------------------------------------------------------------
-			// Summary:
-			//     Default class constructor.
-			// Parameters:
-			//     pPrev - A CXTPCalendarEvent object that contains the instance
-			//             before the edit action.
-			//     pNew  - A CXTPCalendarEvent object that contains the instance
-			//             after the edit action.
-			//-----------------------------------------------------------------------
-			SUndoAction(CXTPCalendarEvent* pPrev = NULL, CXTPCalendarEvent* pNew = NULL) :
-				ptrPrev(pPrev, TRUE), ptrNew(pNew, TRUE) {};
-
-			//-----------------------------------------------------------------------
-			// Parameters:
-				//     src - A SUndoAction object that contains the source object.
-			// Summary:
-				//     Copy class constructor.
-			//-----------------------------------------------------------------------
-			SUndoAction(const SUndoAction& src)
-			{
-				*this = src;
-			}
-
-			//-----------------------------------------------------------------------
-			// Summary:
-			//     Default class destructor.
-			//-----------------------------------------------------------------------
-			virtual ~SUndoAction() {}
-
-			//-----------------------------------------------------------------------
-			// Summary:
-			//     This is the overloaded assignment operator.
-			// Parameters:
-			//     src - Source object.
-			// Returns:
-			//     A reference to the current object.
-			// Remarks:
-			//     Copy class operator.
-			//-----------------------------------------------------------------------
-			const SUndoAction& operator=(const SUndoAction& src)
-			{
-				ptrPrev = src.ptrPrev;
-				ptrNew = src.ptrNew;
-				return *this;
-			}
-		};
-
-		CArray<SUndoAction, const SUndoAction&> m_arUndoActions; // Array of editing/undo actions.
-	};
-
+	class CUndoBuffer;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2134,7 +1992,8 @@ protected:
 	//      XTP_NC_CALENDAR_IS_EVENT_EDIT_OPERATION_DISABLED,
 	//      XTP_NC_CALENDAR_BEFORE_EVENT_EDIT_OPERATION, XTPCalendarEditOperation.
 	//-----------------------------------------------------------------------
-	BOOL IsEditOperationDisabledNotify(XTPCalendarEditOperation eOperation, CXTPCalendarViewEvent* pEventView);
+	BOOL IsEditOperationDisabledNotify(XTPCalendarEditOperation eOperation,
+									   CXTPCalendarViewEvent* pEventView) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2151,7 +2010,7 @@ protected:
 	//      XTP_NC_CALENDAR_BEFORE_EVENT_EDIT_OPERATION, XTPCalendarEditOperation.
 	//-----------------------------------------------------------------------
 	BOOL OnBeforeEditOperationNotify(XTPCalendarEditOperation eOperation,
-		CXTPCalendarViewEvent* pEventView);
+									 CXTPCalendarViewEvent* pEventView);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2168,7 +2027,7 @@ protected:
 	//      XTP_NC_CALENDAR_BEFORE_EVENT_EDIT_OPERATION, XTPCalendarEditOperation.
 	//-----------------------------------------------------------------------
 	BOOL OnBeforeEditOperationNotify(XTPCalendarEditOperation eOperation,
-		CXTPCalendarViewEvents* pEventViews);
+									 CXTPCalendarViewEvents* pEventViews);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2213,7 +2072,7 @@ protected:
 	//      XTP_NC_CALENDAR_SELECTION_CHANGED notification for one selection
 	//      changing operation.
 	//=======================================================================
-	class CSelectionChangedContext
+	class _XTP_EXT_CLASS CSelectionChangedContext
 	{
 	public:
 		//-------------------------------------------------------------------
@@ -2227,7 +2086,8 @@ protected:
 		//     eSelType = xtpCalendarSelectionUnknown only lock sending notifications.
 		// See Also: XTP_NC_CALENDAR_SELECTION_CHANGED
 		//-------------------------------------------------------------------
-		CSelectionChangedContext(CXTPCalendarView* pView, int eSelType = xtpCalendarSelectionUnknown);
+		CSelectionChangedContext(CXTPCalendarView* pView,
+								 int eSelType = xtpCalendarSelectionUnknown);
 
 		//-------------------------------------------------------------------
 		// Summary:
@@ -2242,7 +2102,6 @@ protected:
 	};
 
 protected:
-
 	//=======================================================================
 	// Summary: This class defines an internal structure used as a counter on
 	//          selection changes, which is needed to redraw a view when
@@ -2257,16 +2116,16 @@ protected:
 		//-------------------------------------------------------------------
 		CSelectionChanged_ContextData();
 
-		int m_nLockCount;         // Selection change notification global Lock counter.
-		int m_nLockCount_Day;     // Days selection change notification Lock counter.
-		int m_nLockCount_Event;   // Events selection change notification Lock counter.
+		int m_nLockCount;		// Selection change notification global Lock counter.
+		int m_nLockCount_Day;   // Days selection change notification Lock counter.
+		int m_nLockCount_Event; // Events selection change notification Lock counter.
 
-		BOOL m_bRequest_Day;      // Days selection change send notification request.
-		BOOL m_bRequest_Event;    // Events selection change send notification request.
+		BOOL m_bRequest_Day;   // Days selection change send notification request.
+		BOOL m_bRequest_Event; // Events selection change send notification request.
 	};
 
-	CSelectionChanged_ContextData   m_cntSelChanged; // Counter on selection changes,
-	                                                 // is needed to redraw a view when necessary.
+	CSelectionChanged_ContextData m_cntSelChanged; // Counter on selection changes,
+												   // is needed to redraw a view when necessary.
 
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CSelectionChangedContext;
@@ -2274,37 +2133,34 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CUndoBuffer m_UndoBuffer;       // Undo buffer object.
-	int         m_eUndoMode;        // Undo mode, see XTPCalendarUndoMode.
-	BOOL        m_bResetUndoBuffer; // Clean undo buffer before add next undo action.
-	CUndoBuffer m_PrevUndoBuffer;   // Undo buffer data after last undo buffer clean.
+	int m_eUndoMode;		 // Undo mode, see XTPCalendarUndoMode.
+	BOOL m_bResetUndoBuffer; // Clean undo buffer before add next undo action.
+
+	CUndoBuffer* m_pPrevUndoBuffer; // Undo buffer data after last undo buffer clean.
+	CUndoBuffer* m_pUndoBuffer;		// Undo buffer object.
 
 private:
 	//{{AFX_CODEJOCK_PRIVATE
 	BOOL _EditOperationNotify(XTP_NOTIFY_CODE ncEvent, XTPCalendarEditOperation eOperation,
-							  CXTPCalendarViewEvent* pEventView, CXTPCalendarViewEvents* pEventViews = NULL);
+							  CXTPCalendarViewEvent* pEventView,
+							  CXTPCalendarViewEvents* pEventViews = NULL) const;
 
 	XTPCalendarDraggingMode _GetDraggingMode(XTP_CALENDAR_HITTESTINFO* pHitTest) const;
-	XTPCalendarEditOperation    _DragMod2Operation(int eDragMode);
+	XTPCalendarEditOperation _DragMod2Operation(int eDragMode);
 
 	virtual CXTPCalendarData* _GetDataProviderBySelection(UINT* puScheduleID = NULL);
-	virtual CXTPCalendarData* _GetDataProviderByConnStr(LPCTSTR pcszConnStr, BOOL bCompareNoCase = TRUE);
+	virtual CXTPCalendarData* _GetDataProviderByConnStr(LPCTSTR pcszConnStr,
+														BOOL bCompareNoCase = TRUE);
 	virtual BOOL _IsScheduleVisible(CXTPCalendarData* pDataProvider, UINT uScheduleID);
 	//}}AFX_CODEJOCK_PRIVATE
-public:
-	//{{AFX_CODEJOCK_PRIVATE
-	struct XTP_VIEW_LAYOUT
-	{
-		int m_nRowHeight;                // One row height in pixels.
-	};
-	//}}AFX_CODEJOCK_PRIVATE
-protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_VIEW_LAYOUT& GetLayout_();
-	virtual BOOL IsUseCellAlignedDraggingInTimeArea();
-	//}}AFX_CODEJOCK_PRIVATE
-protected:
 
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	XTP_VIEW_LAYOUT& GetLayout_();
+	const XTP_VIEW_LAYOUT& GetLayout_() const;
+	virtual BOOL IsUseCellAlignedDraggingInTimeArea() const;
+	//}}AFX_CODEJOCK_PRIVATE
+protected:
 	XTP_VIEW_LAYOUT m_Layout; // Layout data.
 
 	//===========================================================================
@@ -2315,65 +2171,121 @@ protected:
 	//===========================================================================
 	struct SEventTimeFormatInfo
 	{
-		CString strFormat;  // Time format string.
-		CString strAM;      // AM symbol.
-		CString strPM;      // PM symbol.
-		BOOL b24_HFormat;   // Is 24 hours time format.
+		CString strFormat; // Time format string.
+		CString strAM;	 // AM symbol.
+		CString strPM;	 // PM symbol.
+		BOOL b24_HFormat;  // Is 24 hours time format.
+		BOOL isCustom;
 
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Default object constructor.
 		//-----------------------------------------------------------------------
-		SEventTimeFormatInfo() {b24_HFormat = FALSE;}
+		SEventTimeFormatInfo()
+		{
+			b24_HFormat = FALSE;
+			isCustom	= FALSE;
+		}
 	};
 
 	SEventTimeFormatInfo m_EventTimeFormat; // Information used to format events times.
 
-	CString m_strHeaderFormat;              // Day header active date format string.
+	CString m_strHeaderFormat; // Day header active date format string.
 
-	CString m_strDayHeaderFormatLong;       // Day header Long date format custom string.
-	CString m_strDayHeaderFormatMiddle;     // Day header Middle date format custom string.
-	CString m_strDayHeaderFormatShort;      // Day header Short date format custom string.
-	CString m_strDayHeaderFormatShortest;   // Day header Shortest date format custom string.
+	CString m_strDayHeaderFormatLong;	 // Day header Long date format custom string.
+	CString m_strDayHeaderFormatMiddle;   // Day header Middle date format custom string.
+	CString m_strDayHeaderFormatShort;	// Day header Short date format custom string.
+	CString m_strDayHeaderFormatShortest; // Day header Shortest date format custom string.
 
-	CString m_strDayHeaderFormatDefaultLong;        // Day header Long date format default string.
-	CString m_strDayHeaderFormatDefaultMiddle;      // Day header Middle date format default string.
-	CString m_strDayHeaderFormatDefaultShort;       // Day header Short date format default string.
-	CString m_strDayHeaderFormatDefaultShortest;    // Day header Shortest date format default string.
+	CString m_strDayHeaderFormatDefaultLong;	 // Day header Long date format default string.
+	CString m_strDayHeaderFormatDefaultMiddle;   // Day header Middle date format default string.
+	CString m_strDayHeaderFormatDefaultShort;	// Day header Short date format default string.
+	CString m_strDayHeaderFormatDefaultShortest; // Day header Shortest date format default string.
 
-	CRect m_rcView;                  // Client rect.
-	CRect m_rcTooltip;               // Last shown tooltip rect (while GetTooltipRect returns calculated
-	                                 // currently required tooltip rect)
+	CRect m_rcView;	// Client rect.
+	CRect m_rcTooltip; // Last shown tooltip rect (while GetTooltipRect returns calculated
+					   // currently required tooltip rect)
 
 protected:
-	CXTPCalendarEventPtr    m_ptrDraggingEventOrig; // Event object before start event editing.
-	CXTPCalendarEventPtr    m_ptrDraggingEventNew;  // Editing event object.
+	CXTPCalendarEventPtr m_ptrDraggingEventOrig; // Event object before start event editing.
+	CXTPCalendarEventPtr m_ptrDraggingEventNew;  // Editing event object.
 
-	COleDateTimeSpan        m_spDraggingStartOffset;// Start dragging operation offset from the beginning of the event.
-	CPoint                  m_ptStartDragging;      // Request to start dragging operation from this point.
+	COleDateTimeSpan m_spDraggingStartOffset; // Start dragging operation offset from the beginning
+											  // of the event.
+	CPoint m_ptStartDragging; // Request to start dragging operation from this point.
 
-	XTPCalendarDraggingMode m_eDraggingMode;        // Editing event mode.
-	BOOL m_bStartedClickInside;                     // Is OnLButtonDown was inside view rect.
+	XTPCalendarDraggingMode m_eDraggingMode; // Editing event mode.
+	BOOL m_bStartedClickInside;				 // Is OnLButtonDown was inside view rect.
 
-	CXTPCalendarViewEventPtr m_ptrEditingViewEvent; // Currently editing subject event view or event view requested to edit subject by timeout.
+	CXTPCalendarViewEventPtr m_ptrEditingViewEvent; // Currently editing subject event view or event
+													// view requested to edit subject by timeout.
 
-	UINT m_nTimerID_StartEditSubject;   // Timer ID of edit event subject request.
-	UINT m_nTimerID_ShowToolTip;        // Timer ID of start show tooltip request.
+	CXTPCalendarViewEvent* m_pLastEvent; // Last selected event.
+	UINT m_nTimerID_StartEditSubject;	// Timer ID of edit event subject request.
+	UINT m_nTimerID_ShowToolTip;		 // Timer ID of start show tooltip request.
 
 	CXTPCalendarControl* m_pControl; // Pointer to the owner control object.
 
-	CXTPCalendarViewEvents* m_pSelectedEvents;  //Selected Events;
+	CXTPCalendarViewEvents* m_pSelectedEvents; // Selected Events;
 
-	XTP_CALENDAR_HITTESTINFO  m_LastHitInfo;    // Last HitInfo data. It is used in CXTPCalendarView::OnMouseMove() for processing selecting, dragging and other operations.
+	XTP_CALENDAR_HITTESTINFO m_LastHitInfo; // Last HitInfo data. It is used in
+											// CXTPCalendarView::OnMouseMove() for processing
+											// selecting, dragging and other operations.
 
-	UINT m_nKeyStateTimerID;                // Timer ID to check Keys state (like Control).
+	UINT m_nKeyStateTimerID; // Timer ID to check Keys state (like Control).
 
 	XTP_CALENDAR_VIEWSELECTION m_selectedBlock; // Current selection.
 
-	BOOL m_bScrollV_Disabled;               // Is vertical scrolling disabled for a view.
-	BOOL m_bScrollH_Disabled;               // Is horizontal scrolling disabled for a view.
+	BOOL m_bScrollV_Disabled; // Is vertical scrolling disabled for a view.
+	BOOL m_bScrollH_Disabled; // Is horizontal scrolling disabled for a view.
 
-	CXTPCalendarResources*  m_pResources; // Resources array
+	CXTPCalendarResources* m_pResources; // Resources array
+
+	CPoint m_ptLBtnUpMousePos;
+	CPoint m_ptLBtnDownMousePos;
+
+protected:
+	mutable CXTPCalendarPtrCollectionT<CXTPCalendarViewDay> m_arDays; // Stores the view day
+																	  // collection.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarView);
+
+protected:
+	void OleResetSelection();
+	void OleSetSelection(DATE Begin, DATE End, BOOL bAllDay);
+	BOOL OleGetSelection(DATE* pBegin, DATE* pEnd, VARIANT_BOOL* pvbAllDay);
+	BOOL OleGetSelectionV(VARIANT* pBegin, VARIANT* pEnd, VARIANT* pvbAllDay);
+	LPDISPATCH OleSelection();
+
+	LPDISPATCH OleHitTest();
+	LPDISPATCH OleHitTestEx(long X, long Y);
+
+	void OleShowDay(DATE dt, const VARIANT& Select);
+	int OleGetItemCount();
+	LPDISPATCH OleGetItem(long nIndex);
+
+	LPDISPATCH OleGetSelectedEvents();
+	void OleSelectViewEvent(LPDISPATCH pViewEventDisp, BOOL bSelect);
+	void OleUnselectAllEvents();
+
+	void OleEnableVScroll(BOOL bEnable);
+	void OleEnableHScroll(BOOL bEnable);
+
+	LPDISPATCH OleGetMultipleResources();
+	void OleSetMultipleResources(LPDISPATCH pDispResources);
+	BOOL OleCanStartEdit();
+
+	DECLARE_ENUM_VARIANT(CXTPCalendarView)
+
+private:
+	CXTPCalendarViewSelection* m_pSelOleWrapper;
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -2389,8 +2301,6 @@ protected:
 //     These are the template parameters:
 //     _TViewDay   - Type of View Day objects stored in View.
 //     _TViewEvent - Type of View Event objects stored in View Day.
-//     _THitTest   - Type of HitTest struct, used as parameter in the
-//                   member functions.
 //
 //          You must provide all of the above parameters.
 //
@@ -2415,7 +2325,7 @@ protected:
 // See Also: CXTPCalendarDayView, CXTPCalendarWeekView, CXTPCalendarMonthView,
 //          CXTPCalendarViewDay, CXTPCalendarViewEvent
 //===========================================================================
-template<class _TViewDay, class _THitTest >
+template<class _TViewDay>
 class CXTPCalendarViewT : public CXTPCalendarView
 {
 public:
@@ -2428,21 +2338,19 @@ public:
 	//                        view type identifier.
 	// See Also: XTPCalendarViewType, ~CXTPCalendarEventT()
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewT (CXTPCalendarControl* pCalendarControl, XTPCalendarViewType nViewType) :
-		CXTPCalendarView(pCalendarControl)
+	CXTPCalendarViewT(CXTPCalendarControl* pCalendarControl, XTPCalendarViewType nViewType)
+		: CXTPCalendarView(pCalendarControl)
 	{
 		m_nViewType = nViewType;
 	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
-		//     Default class destructor.
+	//     Default class destructor.
 	// Remarks:
-		//     Handles member item deallocation.
+	//     Handles member item deallocation.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarViewT()
-	{
-	};
+	virtual ~CXTPCalendarViewT(){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2451,40 +2359,9 @@ public:
 	//     An XTPCalendarViewType object that contains the view type flag.
 	// See Also: XTPCalendarViewType
 	//-----------------------------------------------------------------------
-	virtual XTPCalendarViewType GetViewType()
+	virtual XTPCalendarViewType GetViewType() const
 	{
 		return m_nViewType;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to obtain the number of day views in
-	//     the view collection.
-	// Returns:
-	//     An int that contains the number of day views.
-	//-----------------------------------------------------------------------
-	virtual int GetViewDayCount()
-	{
-		return m_arDays.GetCount();
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to get the CXTPCalendarViewDay object
-	//     by day's index.
-	// Parameters:
-	//     nIndex  - An int that contains the day view index in the view collection.
-	// Returns:
-	//     A pointer to a CXTPCalendarViewDay object.
-	// Remarks:
-	//     Index numbers start with 0 and cannot be negative.
-	// See Also: GetViewDayCount()
-	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewDay* GetViewDay_(int nIndex)
-	{
-		ASSERT(this);
-		_TViewDay* pViewDay = this ? GetViewDay(nIndex) : NULL;
-		return pViewDay;
 	}
 
 	//-----------------------------------------------------------------------
@@ -2501,260 +2378,122 @@ public:
 	//     Index numbers start with 0 and cannot be negative.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual _TViewDay*  GetViewDay(int nIndex)
+	virtual _TViewDay* GetViewDay(int nIndex) const
 	{
-		ASSERT(this);
-		if (!this)
-		{
-			return NULL;
-		}
-
-		int nCount = m_arDays.GetCount();
-		ASSERT(nIndex >= 0 && nIndex < nCount);
-		return (nIndex >= 0 && nIndex < nCount) ? m_arDays.GetAt(nIndex) : NULL;
+		return (_TViewDay*)GetViewDay_(nIndex);
 	}
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at the specified position index, and returns
-	//     additional info in an XTP_CALENDAR_HITTESTINFO struct.
-	// Parameters:
-	//     pt          - A CPoint object that contains the coordinates of
-	//                   the point to test.
-	//     pHitTest    - A pointer to an XTP_CALENDAR_HITTESTINFO struct that
-	//                   contains information about the point to test.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest)
-	{
-		ASSERT(pHitTest);
-
-		_THitTest hitInfo;
-		BOOL bRes = HitTestEx(pt, &hitInfo);
-		if (bRes && pHitTest)
-		{
-			*pHitTest = (XTP_CALENDAR_HITTESTINFO)hitInfo;
-		}
-		return bRes;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at a specified position index, and returns additional
-	//     info in a _THitTest object.
-	// Parameters:
-	//     pt       - A CPoint object that contains the coordinates of the
-	//                point to test.
-	//     pHitTest - A pointer to the template parameter _THitTest
-	//                object that contains information on the point
-	//                to test.
-	// Returns:
-	//     TRUE if item found; FALSE otherwise.
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, _THitTest* pHitTest)
-	{
-		if (!pHitTest)
-		{
-			ASSERT(FALSE);
-			return FALSE;
-		}
-		int nCount = GetViewDayCount();
-		for (int i = 0; i < nCount; i++)
-		{
-			_TViewDay* pViewDay = GetViewDay(i);
-			ASSERT(pViewDay);
-			if (pViewDay && pViewDay->HitTestEx(pt, pHitTest))
-			{
-				ASSERT(!pHitTest->pViewDay || pHitTest->pViewDay == pViewDay);
-
-				pHitTest->nDay = i;
-				pHitTest->pViewDay = pViewDay;
-				return TRUE;
-			}
-		}
-		return FALSE;
-	}
-
-protected:
-	CXTPCalendarPtrCollectionT< _TViewDay > m_arDays; // Stores the view day collection.
 private:
 	XTPCalendarViewType m_nViewType;
-
 };
-
 
 AFX_INLINE CXTPCalendarControl* CXTPCalendarView::GetCalendarControl() const
 {
 	return this ? m_pControl : NULL;
 }
-
-AFX_INLINE CRect CXTPCalendarView::GetViewRect()
+AFX_INLINE CRect CXTPCalendarView::GetViewRect() const
 {
 	return m_rcView;
 }
-
 AFX_INLINE XTPCalendarDraggingMode CXTPCalendarView::GetDraggingMode() const
 {
 	return m_eDraggingMode;
 }
-
 AFX_INLINE int CXTPCalendarView::GetRowHeight() const
 {
 	return m_Layout.m_nRowHeight;
 }
-
 AFX_INLINE UINT CXTPCalendarView::GetStartEditSubjectTimeOut() const
 {
 	return XTP_CALENDAR_START_EDIT_SUBJECT_TIMEOUT_MS;
 }
-
 AFX_INLINE BOOL CXTPCalendarView::IsEditingSubject() const
 {
 	return m_ptrEditingViewEvent != NULL;
 }
-
-AFX_INLINE void CXTPCalendarView::EmptyUndoBuffer()
-{
-	m_UndoBuffer.RemoveAll();
-	m_eUndoMode = xtpCalendarUndoModeUnknown;
-}
-
-AFX_INLINE CString CXTPCalendarView::GetDayHeaderFormat()
+AFX_INLINE CString CXTPCalendarView::GetDayHeaderFormat() const
 {
 	return m_strHeaderFormat;
 }
-
-AFX_INLINE void CXTPCalendarView::SetDayHeaderFormat(CString sFmt)
+AFX_INLINE void CXTPCalendarView::SetDayHeaderFormat(LPCTSTR sFmt)
 {
 	m_strHeaderFormat = sFmt;
 }
-
 AFX_INLINE BOOL CXTPCalendarView::_IsDragModeCopyMove(int eDragMode) const
 {
 	return eDragMode == xtpCalendaDragModeCopy || eDragMode == xtpCalendaDragModeMove;
 }
-
 AFX_INLINE XTPCalendarEditOperation CXTPCalendarView::_DragMod2Operation(int eDragMode)
 {
 	return (XTPCalendarEditOperation)eDragMode;
 }
-
 AFX_INLINE void CXTPCalendarView::EnableVScroll(BOOL bEnable)
 {
 	m_bScrollV_Disabled = !bEnable;
 }
-
 AFX_INLINE void CXTPCalendarView::EnableHScroll(BOOL bEnable)
 {
 	m_bScrollH_Disabled = !bEnable;
 }
-
-AFX_INLINE BOOL CXTPCalendarView::IsHScrollEnabled()
+AFX_INLINE BOOL CXTPCalendarView::IsHScrollEnabled() const
 {
 	return !m_bScrollH_Disabled;
 }
-
-AFX_INLINE BOOL CXTPCalendarView::IsVScrollEnabled()
+AFX_INLINE BOOL CXTPCalendarView::IsVScrollEnabled() const
 {
 	return !m_bScrollV_Disabled;
 }
-
 AFX_INLINE void CXTPCalendarView::SetDayHeaderFormatLong(LPCTSTR pcszCustomFormat)
 {
 	m_strDayHeaderFormatLong = pcszCustomFormat;
 }
-
 AFX_INLINE void CXTPCalendarView::SetDayHeaderFormatShortest(LPCTSTR pcszCustomFormat)
 {
 	m_strDayHeaderFormatShortest = pcszCustomFormat;
 }
-
 AFX_INLINE void CXTPCalendarView::SetDayHeaderFormatMiddle(LPCTSTR pcszCustomFormat)
 {
 	m_strDayHeaderFormatMiddle = pcszCustomFormat;
 }
-
 AFX_INLINE void CXTPCalendarView::SetDayHeaderFormatShort(LPCTSTR pcszCustomFormat)
 {
 	m_strDayHeaderFormatShort = pcszCustomFormat;
 }
-
-AFX_INLINE int CXTPCalendarView::GetChildHandlersCount()
+AFX_INLINE int CXTPCalendarView::GetChildHandlersCount() const
 {
 	return GetViewDayCount();
 }
-
-AFX_INLINE CXTPCalendarView::XTP_VIEW_LAYOUT& CXTPCalendarView::GetLayout_()
+AFX_INLINE XTP_VIEW_LAYOUT& CXTPCalendarView::GetLayout_()
 {
 	return m_Layout;
 }
-
-AFX_INLINE BOOL CXTPCalendarView::IsUseCellAlignedDraggingInTimeArea()
+AFX_INLINE const XTP_VIEW_LAYOUT& CXTPCalendarView::GetLayout_() const
+{
+	return m_Layout;
+}
+AFX_INLINE BOOL CXTPCalendarView::IsUseCellAlignedDraggingInTimeArea() const
 {
 	return FALSE;
 }
-
 AFX_INLINE UINT CXTPCalendarView::GetShowToolTipTimeOut() const
 {
 	return XTP_CALENDAR_SHOW_BUTTON_TIMEOUT_MS;
 }
-
-
-AFX_INLINE BOOL CXTPCalendarView::AddToDiscreteSelection(UINT uDay)
-{
-	BOOL bAdd(TRUE);
-
-	for (int id = 0; id < (int)m_DiscreteSelection.GetSize(); id++)
-	{
-		if (uDay == m_DiscreteSelection.GetAt(id))
-		{
-			bAdd = FALSE;
-			break;
-		}
-	}
-	if (bAdd)
-		m_DiscreteSelection.Add(uDay);
-	return bAdd;
-}
-
-AFX_INLINE BOOL CXTPCalendarView::IsInDiscreteSelection(UINT uDay)
-{
-	BOOL bFound = FALSE;
-
-	for (int id = 0; id < (int)m_DiscreteSelection.GetSize(); id++)
-	{
-		if (uDay == m_DiscreteSelection.GetAt(id))
-		{
-			bFound = TRUE;
-			break;
-		}
-	}
-	return bFound;
-}
-
 AFX_INLINE void CXTPCalendarView::ClearDiscreteSelection()
 {
 	m_DiscreteSelection.RemoveAll();
 }
-
-//read-only interface
-AFX_INLINE UINT CXTPCalendarView::GetDiscreteSelectionCount()
+AFX_INLINE UINT CXTPCalendarView::GetDiscreteSelectionCount() const
 {
 	return (UINT)m_DiscreteSelection.GetSize();
 }
 
-AFX_INLINE COleDateTime CXTPCalendarView::GetDiscreteSelectionValue(UINT id)
+AFX_INLINE int CXTPCalendarView::GetViewDayCount() const
 {
-	COleDateTime dt;
-
-	if (id < (UINT) m_DiscreteSelection.GetSize())
-		dt = COleDateTime((double) m_DiscreteSelection.GetAt(id));
-	return dt;
+	return m_arDays.GetCount();
 }
 
 /////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARVIEW_H__)

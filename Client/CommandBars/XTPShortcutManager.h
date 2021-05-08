@@ -1,7 +1,6 @@
 // XTPShortcutManager.h : interface for the CXTPShortcutManager class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,38 +19,39 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHORTCUTMANAGER_H__)
-#define __XTPSHORTCUTMANAGER_H__
+#	define __XTPSHORTCUTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropExchange;
 class CXTPCommandBars;
 class CXTPShortcutManager;
 
-#include "XTPCommandBarsDefines.h"
-
 struct XTP_SHORTCUTMANAGER_ACCEL
 {
 	struct SHORTCUTACCEL
 	{
-		BYTE   fVirt;       // Specifies the accelerator behavior
-		WORD   key;         // Specifies the accelerator key.
+		BYTE fVirt; // Specifies the accelerator behavior
+		WORD key;   // Specifies the accelerator key.
 	};
 
-	int cmd;                // Specifies the accelerator identifier
-	SHORTCUTACCEL key[2];   // Double key combination
+	int cmd;			  // Specifies the accelerator identifier
+	SHORTCUTACCEL key[2]; // Double key combination
 };
 
 //===========================================================================
 // Summary: CXTPShortcutManagerAccel represents accelerator key used in an accelerator table.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPShortcutManagerAccel : public CXTPCmdTarget, public XTP_SHORTCUTMANAGER_ACCEL
+class _XTP_EXT_CLASS CXTPShortcutManagerAccel
+	: public CXTPCmdTarget
+	, public XTP_SHORTCUTMANAGER_ACCEL
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary: Constructs CXTPShortcutManagerAccel class
 	//-------------------------------------------------------------------------
@@ -63,12 +63,20 @@ public:
 public:
 	const CXTPShortcutManagerAccel& operator=(const CXTPShortcutManagerAccel& accel);
 
-
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+protected:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPShortcutManagerAccel);
+	DECLARE_INTERFACE_MAP();
+	BSTR OleGetShortcutText();
+	void OleSetShortcutText(LPCTSTR lpszShortcut);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 public:
 	CXTPShortcutManager* m_pManager;
 };
-
 
 //===========================================================================
 // Summary: CXTPShortcutManagerAccelTable class is Accelerator table for CXTPShortcutManager class
@@ -76,7 +84,6 @@ public:
 class _XTP_EXT_CLASS CXTPShortcutManagerAccelTable
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary: Constructs CXTPShortcutManagerAccelTable
 	//-------------------------------------------------------------------------
@@ -88,7 +95,6 @@ public:
 	~CXTPShortcutManagerAccelTable();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Determines count of accels in table
 	// Returns: Number of accels in table
@@ -115,7 +121,6 @@ public:
 	XTP_SHORTCUTMANAGER_ACCEL* CopyAccels() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to copy accels
 	// Input:   hAccelTable - Windows HACCEL structure
@@ -128,7 +133,6 @@ public:
 	void CopyAccelTable(LPACCEL lpAccel, int nSize);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Removes all elements in table
 	//-----------------------------------------------------------------------
@@ -141,19 +145,18 @@ public:
 	void RemoveAt(int nIndex);
 
 protected:
-	CArray<CXTPShortcutManagerAccel*, CXTPShortcutManagerAccel*> m_arrAccels;           // Array of accels.
-	CXTPShortcutManager* m_pManager; // Parent manager;
+	CArray<CXTPShortcutManagerAccel*, CXTPShortcutManagerAccel*> m_arrAccels; // Array of accels.
+	CXTPShortcutManager* m_pManager;										  // Parent manager;
 };
 
 //===========================================================================
 // Summary:
 //     CXTPShortcutManager is standalone class used to manipulate accelerators of frame.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPShortcutManager: public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPShortcutManager : public CXTPCmdTarget
 {
 public:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	class _XTP_EXT_CLASS CKeyNameText
 	{
 	public:
@@ -169,7 +172,6 @@ public:
 	class _XTP_EXT_CLASS CKeyHelper
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CKeyHelper object.
@@ -183,15 +185,17 @@ public:
 		virtual ~CKeyHelper();
 
 	public:
-
-		void Format (CString& str) const;
+		void Format(CString& str) const;
 		CString Format(const CXTPShortcutManagerAccel::SHORTCUTACCEL* pAccel) const;
 		int Priority();
 
-		static BOOL AFX_CDECL EqualAccels(const CXTPShortcutManagerAccel* pFirst, const CXTPShortcutManagerAccel* pSecond)
+		static BOOL AFX_CDECL EqualAccels(const CXTPShortcutManagerAccel* pFirst,
+										  const CXTPShortcutManagerAccel* pSecond)
 		{
-			return ((pFirst->key[0].fVirt | FNOINVERT) == (pSecond->key[0].fVirt | FNOINVERT)) && (pFirst->key[0].key == pSecond->key[0].key) &&
-				((pFirst->key[1].fVirt | FNOINVERT) == (pSecond->key[1].fVirt | FNOINVERT)) && (pFirst->key[1].key == pSecond->key[1].key);
+			return ((pFirst->key[0].fVirt | FNOINVERT) == (pSecond->key[0].fVirt | FNOINVERT))
+				   && (pFirst->key[0].key == pSecond->key[0].key)
+				   && ((pFirst->key[1].fVirt | FNOINVERT) == (pSecond->key[1].fVirt | FNOINVERT))
+				   && (pFirst->key[1].key == pSecond->key[1].key);
 		}
 
 		CXTPShortcutManager* GetShortcutManager() const
@@ -208,11 +212,12 @@ public:
 		static CString AFX_CDECL GetLocalKeyNameText(UINT uiVirtKey);
 
 	protected:
-		void AddVirtKeyStr (CString& str, UINT uiVirtKey, BOOL bLast = FALSE) const;
+		void AddVirtKeyStr(CString& str, UINT uiVirtKey, BOOL bLast = FALSE) const;
 
 	protected:
 		const CXTPShortcutManagerAccel* m_lpAccel;
 		CXTPShortcutManager* m_pManager;
+
 	public:
 		BOOL m_bAllowLocaleKey;
 	};
@@ -220,7 +225,6 @@ public:
 	class _XTP_EXT_CLASS CKeyAssign : public CEdit
 	{
 	public:
-
 		//-------------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CKeyAssign object.
@@ -246,7 +250,6 @@ public:
 		BOOL TranslateDoubleKeyShortcutsMessage(MSG* pMsg);
 		BOOL TranslateSingleKeyShortcutsMessage(MSG* pMsg);
 
-
 	public:
 		BOOL m_bExtendedOnly;
 		BOOL m_bAllowDoubleKeyShortcuts;
@@ -254,10 +257,9 @@ public:
 	protected:
 		int m_nKeyDefined;
 		CXTPShortcutManagerAccel m_accel;
-		CKeyHelper  m_keyHelper;
-
+		CKeyHelper m_keyHelper;
 	};
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -274,7 +276,6 @@ public:
 	~CXTPShortcutManager();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves shortcut text for specified command.
@@ -284,7 +285,7 @@ public:
 	// Returns:
 	//     TRUE if shortcut found.
 	//-----------------------------------------------------------------------
-	virtual BOOL FindDefaultAccelerator (int nCmd, CString& strShortcut);
+	virtual BOOL FindDefaultAccelerator(int nCmd, CString& strShortcut);
 
 	//-----------------------------------------------------------------------
 	// Summary: Find default shortcut fo command
@@ -292,7 +293,7 @@ public:
 	//          strShortcut - Reference to Shortcut for output
 	// Returns: TRUE if command was found
 	//-----------------------------------------------------------------------
-	BOOL FindDefaultFrameAccelerator (int nCmd, CString& strShortcut);
+	BOOL FindDefaultFrameAccelerator(int nCmd, CString& strShortcut);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -300,14 +301,15 @@ public:
 	//     You can override this method.
 	// Parameters:
 	//     lpAccel - Accelerator need to format.
-	//     pPriority - Returns priority of accelerator to be used to determine what accelerator used as default.
+	//     pPriority - Returns priority of accelerator to be used to determine what accelerator used
+	//     as default.
 	//-----------------------------------------------------------------------
 	virtual CString Format(CXTPShortcutManagerAccel* lpAccel, int* pPriority);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     The GetKeyNameText function retrieves a string that represents the name of a key. Override
-	//     this member function to provide additional functionality.
+	//     The GetKeyNameText function retrieves a string that represents the name of a key.
+	//     Override this member function to provide additional functionality.
 	// Parameters:
 	//     uiVirtKey - virtual-key of accelerator.
 	//-----------------------------------------------------------------------
@@ -343,7 +345,6 @@ public:
 	virtual BOOL OnBeforeRemove(CXTPShortcutManagerAccel* pAccel);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to localize shortcut key name text.
@@ -359,7 +360,8 @@ public:
 	// Summary:
 	//     Call this member to use system localized shortcuts
 	// Parameters:
-	//     bSystemKey - TRUE to allow system to localize shortcuts instead of predefined shortcuts table.
+	//     bSystemKey - TRUE to allow system to localize shortcuts instead of predefined shortcuts
+	//     table.
 	// Example:
 	//     <code>pCommandBars->GetShortcutManager()->UseSystemKeyNameText(TRUE);</code>
 	//-----------------------------------------------------------------------
@@ -371,7 +373,7 @@ public:
 	// Parameters:
 	//     bDisable - TRUE to disable shortcuts
 	//-----------------------------------------------------------------------
-	void DisableShortcuts(BOOL bDisable);
+	virtual void DisableShortcuts(BOOL bDisable);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -379,10 +381,9 @@ public:
 	// Parameters:
 	//     lpMsg - Pointer to an MSG structure that contains message information
 	//-----------------------------------------------------------------------
-	BOOL TranslateAccelerator(LPMSG lpMsg);
+	virtual BOOL TranslateAccelerator(LPMSG lpMsg);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to save the accelerators to the registry
@@ -414,7 +415,6 @@ public:
 	//     pPX    - A CXTPPropExchange object to serialize to or from.
 	//----------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -455,12 +455,13 @@ public:
 	virtual void Reset();
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void CreateOriginalAccelTable();
 
 	static TCHAR AFX_CDECL ToUpper(TCHAR vkTCHAR);
 	static BOOL AFX_CDECL CompareAccelKey(TCHAR chAccel, UINT wParam);
-	static int  AFX_CDECL FindAccelPos(LPCTSTR lpszString);
+	static UINT AFX_CDECL AccelKeyToVirtualKey(TCHAR chAccel);
+	static int AFX_CDECL FindAccelPos(LPCTSTR lpszString);
 
 	void UpdateAcellTable(LPACCEL lpAccel, int nSize);
 	void UpdateAcellTable(XTP_SHORTCUTMANAGER_ACCEL* lpAccel, int nSize);
@@ -475,39 +476,75 @@ public:
 private:
 	BOOL ParseShortcut(CString strShortcutKey, BYTE& fVirt, WORD& key) const;
 	BOOL ParseShortcutVirtKey(CString& strShortcutKey, int nAccel) const;
-	BOOL IsAccelMessage(CXTPShortcutManagerAccel::SHORTCUTACCEL& accel, int nKeyState, LPMSG lpMsg) const;
+	BOOL IsAccelMessage(CXTPShortcutManagerAccel::SHORTCUTACCEL& accel, int nKeyState,
+						LPMSG lpMsg) const;
 	int GetAccelKeyState() const;
 
+	//}}AFX_CODEJOCK_PRIVATE
 
-//}}AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+protected:
+	DECLARE_DISPATCH_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPShortcutManager);
+	DECLARE_CONNECTION_EX(CXTPShortcutManager)
+	DECLARE_INTERFACE_MAP();
+	DECLARE_ENUM_VARIANT(CXTPShortcutManager);
+
+	afx_msg void OleAdd(long fVirt, long key, long cmd);
+	afx_msg void OleAddShortcut(long cmd, LPCTSTR lpszShortcut);
+	afx_msg BOOL OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long Index);
+	afx_msg void OleDeleteAll();
+	afx_msg void OleDelete(long nID);
+	afx_msg BOOL OleGetEnabled();
+	afx_msg void OleSetEnahbled(BOOL Eanbled);
+	afx_msg BOOL OleGetEnableCustomShortcutText();
+	afx_msg void OleSetEnableCustomShortcutText(BOOL Eanbled);
 
 public:
-	BOOL m_bAllowEscapeShortcut;        // TRUE to allow escape to use as shortcut
-	BOOL m_bUseSystemKeyNameText;       // TRUE to use localized shortcuts
-	BOOL m_bAllowDoubleKeyShortcuts;    // TRUE to allow double key shortcuts(ex: Ctrl+K, Ctrl+V)
-	int m_nDisableShortcuts;            // Number of shortcuts that have been disabled.
-	BOOL m_bDisableOnCapture;           // Specifies whether the commandbars will process keybindings while another control is capturing input.
+	afx_msg BOOL OleBeforeTranslate(long cmd);
+	LPDISPATCH OleFindShortcut(long nCmd);
+
+	enum
+	{
+		dispidAdd = 1L,
+	};
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+
+public:
+	BOOL m_bAllowEscapeShortcut;	 // TRUE to allow escape to use as shortcut
+	BOOL m_bUseSystemKeyNameText;	// TRUE to use localized shortcuts
+	BOOL m_bAllowDoubleKeyShortcuts; // TRUE to allow double key shortcuts(ex: Ctrl+K, Ctrl+V)
+	int m_nDisableShortcuts;		 // Number of shortcuts that have been disabled.
+	BOOL m_bDisableOnCapture; // Specifies whether the commandbars will process keybindings while
+							  // another control is capturing input.
+	BOOL m_nEnableCustomShortcutText; // TRUE to allow adding custom text to be displayed as a
+									  // shortcut
 
 protected:
-
-	CXTPShortcutManagerAccelTable* m_pAccelTable;               // Accelerator table
-	CXTPShortcutManagerAccelTable* m_pOriginalAccelTable;       // Original accelerator table.
-	CXTPCommandBars* m_pCommandBars;    // Parent CommandBars pointer
-	CKeyNameText* m_pKeyNameText;       // KeyNameText map.
+	CXTPShortcutManagerAccelTable* m_pAccelTable;		  // Accelerator table
+	CXTPShortcutManagerAccelTable* m_pOriginalAccelTable; // Original accelerator table.
+	CXTPCommandBars* m_pCommandBars;					  // Parent CommandBars pointer
+	CKeyNameText* m_pKeyNameText;						  // KeyNameText map.
 
 	friend class CKeyHelper;
 };
 
-AFX_INLINE CXTPShortcutManagerAccelTable* CXTPShortcutManager::GetDefaultAccelerator() const {
+AFX_INLINE CXTPShortcutManagerAccelTable* CXTPShortcutManager::GetDefaultAccelerator() const
+{
 	return m_pAccelTable;
 }
-AFX_INLINE CXTPShortcutManagerAccelTable* CXTPShortcutManager::GetOriginalAccelerator() const {
+AFX_INLINE CXTPShortcutManagerAccelTable* CXTPShortcutManager::GetOriginalAccelerator() const
+{
 	return m_pOriginalAccelTable;
 }
-AFX_INLINE void CXTPShortcutManager::UseSystemKeyNameText(BOOL bSystemKey) {
+AFX_INLINE void CXTPShortcutManager::UseSystemKeyNameText(BOOL bSystemKey)
+{
 	m_bUseSystemKeyNameText = bSystemKey;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPSHORTCUTMANAGER_H__)

@@ -217,7 +217,7 @@ public:
         ));
     }
 
-    StringTrimming StringFormat::GetTrimming() const
+    StringTrimming GetTrimming() const
     {
         StringTrimming trimming;
         SetStatus(DllExports::GdipGetStringFormatTrimming(
@@ -331,3 +331,4 @@ inline const StringFormat *StringFormat::GenericTypographic()
 }
 
 #endif // !_GDIPLUSSTRINGFORMAT_H
+

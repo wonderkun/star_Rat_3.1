@@ -1,7 +1,6 @@
 // XTPCalendarDayViewEvent.h: interface for the CXTPCalendarDayViewEvent class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARVIEWEVENT_H__)
-#define _XTPCALENDARVIEWEVENT_H__
+#	define _XTPCALENDARVIEWEVENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarViewEvent.h"
-#include "XTPCalendarViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarEvent;
 class CXTPCalendarControl;
 class CXTPCalendarDayViewDay;
 class CXTPCalendarDayViewGroup;
-struct XTP_CALENDAR_HITTESTINFO_DAY_VIEW;
 
 //===========================================================================
 // Summary:
@@ -52,22 +49,18 @@ struct XTP_CALENDAR_HITTESTINFO_DAY_VIEW;
 //
 // See Also: CXTPCalendarViewEvent, CXTPCalendarViewEventT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarDayViewEvent : public  CXTPCalendarViewEventT<
-											CXTPCalendarDayViewGroup,
-											XTP_CALENDAR_HITTESTINFO_DAY_VIEW >
+class _XTP_EXT_CLASS CXTPCalendarDayViewEvent
+	: public CXTPCalendarViewEventT<CXTPCalendarDayViewGroup>
 {
-
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarDayViewEvent)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Remarks:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewEventT< CXTPCalendarDayViewGroup,
-									XTP_CALENDAR_HITTESTINFO_DAY_VIEW > TBase;
+	typedef CXTPCalendarViewEventT<CXTPCalendarDayViewGroup> TBase;
 
 	// -----------------------------------------------------
 	// Summary:
@@ -102,7 +95,8 @@ public:
 	//     when theme is set.
 	// ------------------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber);//<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax,
+							   int nEventPlaceNumber); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -129,18 +123,18 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill an
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
 	//     point - A CPoint object that contains the point to test.
-	//     pInfo - A pointer to an XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     pInfo - A pointer to an XTP_CALENDAR_HITTESTINFO structure.
 	// Returns:
 	//     TRUE if the test is successful, FALSE else.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the day view.
-	// See Also: XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pInfo);
+	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -148,7 +142,7 @@ public:
 	// Returns:
 	//     TRUE if events is "Multi Day". FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsMultidayEvent();
+	virtual BOOL IsMultidayEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -159,7 +153,7 @@ public:
 	//     A BOOL that contains the value of the visibility of the event.
 	//     TRUE if events is visible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible();
+	virtual BOOL IsVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -173,7 +167,7 @@ public:
 	// Returns:
 	//     TRUE if events is visible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisibleEx(BOOL bCheckTop, BOOL bCheckBottom, BOOL bTopAndBottom);
+	virtual BOOL IsVisibleEx(BOOL bCheckTop, BOOL bCheckBottom, BOOL bTopAndBottom) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -196,7 +190,7 @@ public:
 	// Returns:
 	//     A CRect object containing the bounding rectangle coordinates.
 	//-----------------------------------------------------------------------
-	CRect GetEventsRect();
+	CRect GetEventsRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -206,7 +200,7 @@ public:
 	// Returns:
 	//     An int that contains the value of the position identifier.
 	//-----------------------------------------------------------------------
-	int GetEventPlacePos();
+	int GetEventPlacePos() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -217,7 +211,7 @@ public:
 	// Returns:
 	//     An int that contains the number of view positions.
 	//-----------------------------------------------------------------------
-	int GetEventPlaceCount();
+	int GetEventPlaceCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -247,7 +241,7 @@ public:
 	//     A BOOL that contains the HideExentTime value.
 	//     TRUE - if event time should not be displayed. Otherwise FALSE.
 	//-----------------------------------------------------------------------
-	BOOL HideEventTime() const;
+	BOOL IsHideEventTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -260,14 +254,13 @@ public:
 	CRect GetTimeframeRect() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the editor window font.
 	// Returns:
 	//     Pointer to a CFont object that contains the editor window font.
 	//-----------------------------------------------------------------------
-	virtual CFont* GetSubjectEditorFont();
+	virtual CFont* GetSubjectEditorFont() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -276,7 +269,7 @@ protected:
 	// Returns:
 	//     A DWORD that contains the value of the window styles.
 	//-----------------------------------------------------------------------
-	virtual DWORD GetSubjectEditorStyles();
+	virtual DWORD GetSubjectEditorStyles() const;
 
 	// ------------------------------------------------------------
 	// Summary:
@@ -317,7 +310,7 @@ public:
 	// Returns:
 	//     An integer specifying the slot number.
 	//-----------------------------------------------------------------------
-	int GetSlotNumber();
+	int GetSlotNumber() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -326,70 +319,61 @@ public:
 	// Parameter:
 	//     nSlotNumber - An integer specifying the slot number.
 	//-----------------------------------------------------------------------
-	void  SetSlotNumber(int nSlotNumber);
+	void SetSlotNumber(int nSlotNumber);
 
 public:
-	CRect m_rcTimeframe;             // Rectangle area to display times.
+	CRect m_rcTimeframe; // Rectangle area to display times.
 
-	BOOL m_bHideEventTime;           // Flag determines if event time should not be displayed.
-	BOOL m_bShowArrow; // TRUE if event in AllDay area should have arrow to indicate more events follows
+	BOOL m_bHideEventTime; // Flag determines if event time should not be displayed.
+	BOOL m_bShowArrow;	 // TRUE if event in AllDay area should have arrow to indicate more events
+						   // follows
 private:
-	int  m_nSlotNumber;
-
+	int m_nSlotNumber;
 };
 
-
-
 //////////////////////////////////////////////////////////////////////////
-
 
 AFX_INLINE void CXTPCalendarDayViewEvent::SetSlotNumber(int nSlotNumber)
 {
 	m_nSlotNumber = nSlotNumber;
 }
-
-AFX_INLINE int CXTPCalendarDayViewEvent::GetSlotNumber()
+AFX_INLINE int CXTPCalendarDayViewEvent::GetSlotNumber() const
 {
 	return m_nSlotNumber;
 }
-
-AFX_INLINE int CXTPCalendarDayViewEvent::GetEventPlacePos()
+AFX_INLINE int CXTPCalendarDayViewEvent::GetEventPlacePos() const
 {
 	return (int)LOWORD((DWORD)m_nEventPlaceNumber);
 }
-
-AFX_INLINE int CXTPCalendarDayViewEvent::GetEventPlaceCount()
+AFX_INLINE int CXTPCalendarDayViewEvent::GetEventPlaceCount() const
 {
 	return (int)HIWORD((DWORD)m_nEventPlaceNumber);
 }
-
 AFX_INLINE void CXTPCalendarDayViewEvent::SetEventPlacePos(int nPlace)
 {
 	m_nEventPlaceNumber = (int)MAKELONG((WORD)nPlace, HIWORD((DWORD)m_nEventPlaceNumber));
 }
-
 AFX_INLINE void CXTPCalendarDayViewEvent::SetEventPlaceCount(int nPlaceCount)
 {
 	m_nEventPlaceNumber = (int)MAKELONG(LOWORD((DWORD)m_nEventPlaceNumber), (WORD)nPlaceCount);
 }
-
-AFX_INLINE DWORD CXTPCalendarDayViewEvent::GetSubjectEditorStyles()
+AFX_INLINE DWORD CXTPCalendarDayViewEvent::GetSubjectEditorStyles() const
 {
 	if (IsMultidayEvent())
 	{
-		return  TBase::GetSubjectEditorStyles();
+		return TBase::GetSubjectEditorStyles();
 	}
 	return (ES_NOHIDESEL | ES_MULTILINE | ES_AUTOVSCROLL);
 }
 
-AFX_INLINE BOOL CXTPCalendarDayViewEvent::HideEventTime() const
+AFX_INLINE BOOL CXTPCalendarDayViewEvent::IsHideEventTime() const
 {
 	return m_bHideEventTime;
 }
-
 AFX_INLINE CRect CXTPCalendarDayViewEvent::GetTimeframeRect() const
 {
 	return m_rcTimeframe;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARVIEWEVENT_H__)

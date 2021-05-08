@@ -1,7 +1,6 @@
 // XTPToolTipContext.h: interface for the CXTPToolTipContext class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,32 +19,33 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTOOLTIPCONTEXT_H__)
-#define __XTPTOOLTIPCONTEXT_H__
+#	define __XTPTOOLTIPCONTEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManager;
 class CXTPImageManagerIcon;
 
 //{{AFX_CODEJOCK_PRIVATE
 const UINT XTP_TTM_WINDOWFROMPOINT = (WM_USER + 9800);
-const UINT XTP_TTM_SETIMAGE = (WM_USER + 9801);
+const UINT XTP_TTM_SETIMAGE		   = (WM_USER + 9801);
 
-#ifndef TTI_NONE
-#define TTI_NONE                0
-#define TTI_INFO                1
-#define TTI_WARNING             2
-#define TTI_ERROR               3
-#endif
+#	ifndef TTI_NONE
+#		define TTI_NONE 0
+#		define TTI_INFO 1
+#		define TTI_WARNING 2
+#		define TTI_ERROR 3
+#	endif
 
-#define XTP_TTS_OFFICEFRAME         0x1000
-#define XTP_TTS_NOSHADOW            0x2000
-#define XTP_TTS_OFFICE2007FRAME     0x4000
-
+#	define XTP_TTS_OFFICEFRAME 0x1000
+#	define XTP_TTS_NOSHADOW 0x2000
+#	define XTP_TTS_OFFICE2007FRAME 0x4000
+#	define XTP_TTS_OFFICE2013FRAME 0x8000
 
 struct XTP_TOOLTIP_CONTEXT
 {
@@ -73,7 +73,6 @@ struct XTP_TOOLTIP_TOOLINFO_EX : public XTP_TOOLTIP_TOOLINFO
 };
 //}}AFX_CODEJOCK_PRIVATE
 
-
 //-----------------------------------------------------------------------
 // Summary:
 //     Enumeration used to determine styles for tooltips
@@ -86,18 +85,20 @@ struct XTP_TOOLTIP_TOOLINFO_EX : public XTP_TOOLTIP_TOOLINFO
 //-----------------------------------------------------------------------
 enum XTPToolTipStyle
 {
-	xtpToolTipStandard,     // Standard tooltip window style
-	xtpToolTipBalloon,      // Balloon tooltip window style
-	xtpToolTipOffice,       // Office tooltip window style
-	xtpToolTipRTF,          // RTF tooltip window style
-	xtpToolTipLuna,         // Luna tooltip window style
-	xtpToolTipResource,   // Office 2007 window style
-	xtpToolTipHTML,         // HTML tooltip style
-	xtpToolTipMarkup,       // HTML tooltip style
+	xtpToolTipStandard,							// Standard tooltip window style
+	xtpToolTipBalloon,							// Balloon tooltip window style
+	xtpToolTipOffice,							// Office tooltip window style
+	xtpToolTipRTF,								// RTF tooltip window style
+	xtpToolTipLuna,								// Luna tooltip window style
+	xtpToolTipResource,							// Office 2007 window style
+	xtpToolTipHTML,								// HTML tooltip style
+	xtpToolTipMarkup,							// HTML tooltip style
+	xtpToolTipOffice2013,						// Office 2013 tooltip window style
+	xtpToolTipOffice2016 = xtpToolTipOffice2013 // Office 2016 tooltip window style
 };
 
 // Obsolete
-#define xtpToolTipOffice2007 xtpToolTipResource
+#	define xtpToolTipOffice2007 xtpToolTipResource
 
 class CXTPToolTipContext;
 
@@ -110,7 +111,6 @@ class _XTP_EXT_CLASS CXTPToolTipContextToolTip : public CWnd
 {
 	DECLARE_DYNAMIC(CXTPToolTipContextToolTip)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPToolTipContextToolTip object
@@ -125,8 +125,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPToolTipContextToolTip();
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	struct TOOLITEM
 	{
 		CString strCaption;
@@ -136,24 +135,28 @@ public:
 		HINSTANCE hinst;
 		HWND hwnd;
 		UINT_PTR uId;
-		CRect  rectExclude;
+		CRect rectExclude;
 
-		BOOL IsEqual(TOOLITEM* pItem) {
+		BOOL IsEqual(TOOLITEM* pItem)
+		{
 			return (pItem && hwnd == pItem->hwnd && uId == pItem->uId) || (!pItem && !hwnd);
 		}
-		BOOL IsEmpty() {
+		BOOL IsEmpty()
+		{
 			return hwnd == 0;
 		}
-		void Reset() {
+		void Reset()
+		{
 			strCaption.Empty();
 			uFlags = 0;
-			hwnd = 0;
-			uId = (UINT)-1;
-			hinst = 0;
+			hwnd   = 0;
+			uId	= (UINT)-1;
+			hinst  = 0;
 			rect.SetRectEmpty();
 			rectExclude.SetRectEmpty();
 		}
-		void Assign(TOOLITEM* pItem) {
+		void Assign(TOOLITEM* pItem)
+		{
 			if (pItem)
 				*this = *pItem;
 			else
@@ -169,9 +172,8 @@ public:
 	void Activate(BOOL bActivate);
 	void DelTool(LPTOOLINFO lpToolInfo);
 	void RelayEvent(LPMSG lpMsg);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to retrieve size of tool tip to show
@@ -203,13 +205,13 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void DrawBackground(CDC* pDC, TOOLITEM* lpToolInfo, CRect rc);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
 	virtual void OnVisibleChanged(BOOL /*bVisble*/)
 	{
-
 	}
-	BOOL IsVisible() const {
+	BOOL IsVisible() const
+	{
 		return GetSafeHwnd() && IsWindowVisible();
 	}
 	TOOLITEM* FindTool();
@@ -222,10 +224,10 @@ protected:
 	void EnsureVisible(CRect& rcToolTip);
 	int GetMaxTipWidth() const;
 	void SetRoundRectRegion(CWnd* pWnd);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPToolTipContextToolTip)
@@ -239,6 +241,7 @@ protected:
 	afx_msg LRESULT OnSetTitle(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnUpdateTipText(WPARAM, LPARAM lParam);
 	afx_msg void OnPaint();
+	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
@@ -249,36 +252,39 @@ protected:
 	afx_msg LRESULT OnSetDelayTime(WPARAM, LPARAM lParam);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	CArray<TOOLITEM*, TOOLITEM*> m_arrTools;            // Tool tips item array
-	BOOL m_bActive;                                     // TRUE if tracking is active
-	CXTPToolTipContext* m_pContext;                     // Pointer to parent context class
-	static HHOOK m_hHookMouse;                          // Mouse hook
-	static CXTPToolTipContextToolTip* m_pWndMonitor;    // Mouse monitor pointer
+	CArray<TOOLITEM*, TOOLITEM*> m_arrTools;		 // Tool tips item array
+	BOOL m_bActive;									 // TRUE if tracking is active
+	CXTPToolTipContext* m_pContext;					 // Pointer to parent context class
+	static HHOOK m_hHookMouse;						 // Mouse hook
+	static CXTPToolTipContextToolTip* m_pWndMonitor; // Mouse monitor pointer
 
-	TOOLITEM m_toolVisible;                             // Currently visible tip
-	TOOLITEM m_toolDisabled;                            // Currently ignored tip
-	TOOLITEM m_toolDelay;                               // Currently delayed tip
-	UINT_PTR m_nDelayTimer;                             // Hover timer
-	DWORD m_dwLastTip;                                  // Last tool tip time.
-	UINT m_nDelayInitial;                               // The length of time the pointer must remain stationary within a tool's bounding rectangle before the tool tip window appears.
-	UINT m_nDelayReshow;                                // The length of time it takes for subsequent tool tip windows to appear as the pointer moves from one tool to another.
-	UINT m_nDelayAutoPop;                               // Length of time the ToolTip window remains visible if the pointer is stationary within the bounding rectangle of a too
-	UINT_PTR m_nAutoPopTimer;                           // Auto Pop timer
-	CString m_strTitle;                                 // Title of tooltip if enabled.
-	CXTPImageManagerIcon* m_pIcon;                      // Image
+	TOOLITEM m_toolVisible;  // Currently visible tip
+	TOOLITEM m_toolDisabled; // Currently ignored tip
+	TOOLITEM m_toolDelay;	// Currently delayed tip
+	UINT_PTR m_nDelayTimer;  // Hover timer
+	DWORD m_dwLastTip;		 // Last tool tip time.
+	UINT m_nDelayInitial; // The length of time the pointer must remain stationary within a tool's
+						  // bounding rectangle before the tool tip window appears.
+	UINT m_nDelayReshow; // The length of time it takes for subsequent tool tip windows to appear as
+						 // the pointer moves from one tool to another.
+	UINT m_nDelayAutoPop;	 // Length of time the ToolTip window remains visible if the pointer is
+							  // stationary within the bounding rectangle of a too
+	UINT_PTR m_nAutoPopTimer; // Auto Pop timer
+	CString m_strTitle;		  // Title of tooltip if enabled.
+	CXTPImageManagerIcon* m_pIcon; // Image
 	BOOL m_bWindowRegion;
+	UINT_PTR m_nToolTipBeingShownUid;
 };
-
-
 
 //===========================================================================
 // Summary:
-//     CXTPToolTipContext is a CCmdTarget derived class. It allows to change options for
+//     CXTPToolTipContext is a CXTPCmdTarget derived class. It allows to change options for
 //     tool tips of parent object.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPToolTipContext : public CXTPCmdTarget
@@ -289,6 +295,8 @@ public:
 	class CStandardToolTip;
 	class CLunaToolTip;
 	class CMarkupToolTip;
+	class COfficeToolTip;
+	class COffice2013ToolTip;
 
 public:
 	//-------------------------------------------------------------------------
@@ -331,9 +339,36 @@ public:
 	//     bShowImage - TRUE to show image
 	//     nImageBase - Image base
 	//     nImageSize - Size of image in tooltip. By default largest image used.
-	// See Also: ShowTitleAndDescription
+	// See Also: ShowTitleAndDescription, EnableImageDPIScaling
 	//-----------------------------------------------------------------------
 	void ShowImage(BOOL bShowImage, int nImageBase = 0, int nImageSize = ICON_BIG);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to set size of vector icon in tooltip
+	// Parameters:
+	//     szSmall - Size of small vector icon in tooltip
+	//     szLarge - Size of large vector icon in tooltip
+	//-----------------------------------------------------------------------
+	void SetVectorIconSize(CSize szSmall, CSize szLarge);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if DPI-scaling of images enabled.
+	// Returns:
+	//     TRUE if DPI-scaling of images enabled (default).
+	// See Also: EnableImageDPIScaling, ShowTitleAndDescription, ShowImage
+	//-----------------------------------------------------------------------
+	BOOL IsImageDPIScalingEnabled() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to enable or disable DPI-scaling of images.
+	// Parameters:
+	//     bScale - FALSE to disable DPI-scaling of images. TRUE to enable (default).
+	// See Also: IsImageDPIScalingEnabled, ShowTitleAndDescription, ShowImage
+	//-----------------------------------------------------------------------
+	void EnableImageDPIScaling(BOOL bScale);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -446,16 +481,20 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this function to set the delay time for a tool tip control. The delay time is the length of time the cursor must remain on a tool before the tool tip window appears. The default delay time is 500 milliseconds.
+	//     Call this function to set the delay time for a tool tip control. The delay time is the
+	//     length of time the cursor must remain on a tool before the tool tip window appears. The
+	//     default delay time is 500 milliseconds.
 	// Parameters:
-	//     dwDuration - Flag that specifies which duration value will be retrieved. See CToolTipCtrl::GetDelayTime for a description of the valid values.
-	//     iTime      - The specified delay time, in milliseconds.
+	//     dwDuration - Flag that specifies which duration value will be retrieved. See
+	//     CToolTipCtrl::GetDelayTime for a description of the valid values. iTime      - The
+	//     specified delay time, in milliseconds.
 	//-----------------------------------------------------------------------
 	void SetDelayTime(DWORD dwDuration, int iTime);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to remove a tooltip from the screen if a tooltip is currently displayed.
+	//     Call this member function to remove a tooltip from the screen if a tooltip is currently
+	//     displayed.
 	//-----------------------------------------------------------------------
 	void CancelToolTips();
 
@@ -503,11 +542,10 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL GetStripEllipsisFromToolTip() const;
 
-protected:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to create tooltip window. You can override it to create custom tool tip
-	//     derived from CXTPToolTipContextToolTip
+	//     This method is called to create tooltip window. You can override it to create custom tool
+	//     tip derived from CXTPToolTipContextToolTip
 	// Parameters:
 	//     pOwner - Specifies the tool tip control's parent window.
 	// Returns:
@@ -515,15 +553,17 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual CWnd* CreateToolTip(CWnd* pOwner);
 
-//{{AFX_CODEJOCK_PRIVATE
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual INT_PTR OnToolHitTest(CWnd* pWnd, CPoint point, TOOLINFO* pToolInf);
 
 public:
 	static void AFX_CDECL FillInToolInfo(TOOLINFO* pTI, HWND hWnd, CRect rect, INT_PTR nHit,
-		const CString& strToolTip);
+										 const CString& strToolTip);
 	static void AFX_CDECL FillInToolInfo(TOOLINFO* pTI, HWND hWnd, CRect rect, INT_PTR nHit,
-		const CString& strToolTip, const CString& strTitle, const CString& strDescription, CXTPImageManager* pImageManager = 0);
-
+										 const CString& strToolTip, const CString& strTitle,
+										 const CString& strDescription,
+										 CXTPImageManager* pImageManager = 0);
 
 	void FilterToolTipMessage(CWnd* pWndHost, MSG* pMsg);
 	void FilterToolTipMessage(CWnd* pWndHost, UINT message, WPARAM wParam, LPARAM lParam);
@@ -534,66 +574,106 @@ public:
 	void SetModuleToolTipContext();
 	static void PASCAL FilterToolTipMessageStatic(MSG* pMsg, CWnd* pWnd);
 
-	virtual void DrawBackground(CDC* pDC, CRect rc);
-
 	static int AFX_CDECL GetCursorHeight();
-//}}AFX_CODEJOCK_PRIVATE
+
+	void DrawBackground(CDC* pDC, CRect rc);
+
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	friend class CXTPToolTipContextToolTip;
 	friend class CRichEditToolTip;
+	friend class COffice2013ToolTip;
 
 protected:
-	BOOL m_bShowTitleAndDescription;    // TRUE to show title and description for tooltip.
-	BOOL m_bShowImage;                  // TRUE to show images in tooltip
-	BOOL m_nImageSize;                  // Size of images in tooltip
-	int m_nImageBase;                   // This value will be added to tool identifier to retrieve image for tip.
-	XTPToolTipStyle m_toolStyle;        // Tooltip style
-	DWORD m_dwComCtlVersion;            // CommCtrl.dll version
-	int m_nIconTitle;                   // Icon title for extended tooltip
-	int m_nMaxTipWidth;                 // Maximum width of tooltip window
-	DWORD m_dwStyle;                    // Tooltip style
-	CRect m_rcMargin;                   // Margin or "padding" placed around the tooltip text.  The sides of the CRect indicate the amount of padding for the left, top, bottom, and right sides of the tooltip window.
+	BOOL m_bShowTitleAndDescription; // TRUE to show title and description for tooltip.
+	BOOL m_bShowImage;				 // TRUE to show images in tooltip
+	BOOL m_nImageSize;				 // Size of images in tooltip
+	CSize m_szVectorIconSmall;		 // Size of small vector icon
+	CSize m_szVectorIconLarge;		 // Size of large vector icon
+	int m_nImageBase; // This value will be added to tool identifier to retrieve image for tip.
+	BOOL m_bImageDPIScaling;	 // Enables DPI scaling of images.
+	XTPToolTipStyle m_toolStyle; // Tooltip style
+	DWORD m_dwComCtlVersion;	 // CommCtrl.dll version
+	int m_nIconTitle;			 // Icon title for extended tooltip
+	int m_nMaxTipWidth;			 // Maximum width of tooltip window
+	DWORD m_dwStyle;			 // Tooltip style
+	CRect m_rcMargin; // Margin or "padding" placed around the tooltip text.  The sides of the CRect
+					  // indicate the amount of padding for the left, top, bottom, and right sides
+					  // of the tooltip window.
 
-	int m_nDelayInitial;                // The length of time the pointer must remain stationary within a tool's bounding rectangle before the tool tip window appears.
-	int m_nDelayReshow;                 // The length of time it takes for subsequent tool tip windows to appear as the pointer moves from one tool to another.
-	int m_nDelayAutoPop;                // the length of time a tooltip window remains visible if the pointer is stationary within a tool's bounding rectangle.
+	int m_nDelayInitial; // The length of time the pointer must remain stationary within a tool's
+						 // bounding rectangle before the tool tip window appears.
+	int m_nDelayReshow;  // The length of time it takes for subsequent tool tip windows to appear as
+						 // the pointer moves from one tool to another.
+	int m_nDelayAutoPop; // the length of time a tooltip window remains visible if the pointer is
+						 // stationary within a tool's bounding rectangle.
 
-	CWnd* m_pToolTip;                   // Owned Tooltip  window
-	XTP_TOOLTIP_TOOLINFO_EX m_lastInfo; // Last tooltip info.
-	static CXTPToolTipContext* m_pModuleContext;  // Tooltip for current module
+	CWnd* m_pToolTip;							 // Owned Tooltip  window
+	XTP_TOOLTIP_TOOLINFO_EX m_lastInfo;			 // Last tooltip info.
+	static CXTPToolTipContext* m_pModuleContext; // Tooltip for current module
 
-	COLORREF m_clrTipBkColor;           // Background color in a tooltip window
-	COLORREF m_clrTipTextColor;         // Text color in a tooltip window.
+	COLORREF m_clrTipBkColor;   // Background color in a tooltip window
+	COLORREF m_clrTipTextColor; // Text color in a tooltip window.
 
-	CFont m_fnt;                        // Font of the tool tip
-	CFont m_fntTitle;                   // Font of the tool tip
+	BOOL m_bStripEllipsisFromToolTip; // TRUE to remove ellipses from tip caption (defailt is TRUE)
 
-	BOOL m_bStripEllipsisFromToolTip;                   // TRUE to remove ellipses from tip caption (defailt is TRUE)
+	CXTPFont m_xtpFont;		 // Font of the tool tip.
+	CXTPFont m_xtpFontTitle; // Font of the tool tip title.
 
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fnt, m_xtpFont, GetFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntTitle, m_xtpFontTitle, GetTitleFontHandle);
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_INTERFACE_MAP()
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPToolTipContext);
+
+	afx_msg void OleSetMargin(long left, long top, long right, long bottom);
+	LPFONTDISP OleGetFont();
+	void OleSetFont(LPFONTDISP pFontDisp);
+	void OleShowImage(BOOL bShowImage, int nImageBase);
+	void OleSetVectorIconSize(long cx, long cy);
+
+	DECLARE_PROPERTY(ShowOfficeBorder, BOOL);
+	DECLARE_PROPERTY(ShowShadow, BOOL);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-AFX_INLINE CRect CXTPToolTipContext::GetMargin() const {
+AFX_INLINE CRect CXTPToolTipContext::GetMargin() const
+{
 	return m_rcMargin;
 }
-AFX_INLINE BOOL CXTPToolTipContextToolTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPToolTipContextToolTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+												  DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+												  UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE DWORD CXTPToolTipContext::GetControlStyle() const {
+AFX_INLINE DWORD CXTPToolTipContext::GetControlStyle() const
+{
 	return m_dwStyle;
 }
-AFX_INLINE BOOL CXTPToolTipContext::IsShowTitleAndDescription() const {
+AFX_INLINE BOOL CXTPToolTipContext::IsShowTitleAndDescription() const
+{
 	return m_bShowTitleAndDescription;
 }
-AFX_INLINE CFont* CXTPToolTipContext::GetFont() {
-	return &m_fnt;
+AFX_INLINE CFont* CXTPToolTipContext::GetFont()
+{
+	return &m_xtpFont;
 }
-AFX_INLINE void CXTPToolTipContext::StripEllipsisFromToolTip(BOOL bSet) {
+AFX_INLINE void CXTPToolTipContext::StripEllipsisFromToolTip(BOOL bSet)
+{
 	m_bStripEllipsisFromToolTip = bSet;
 }
-AFX_INLINE BOOL CXTPToolTipContext::GetStripEllipsisFromToolTip() const {
+AFX_INLINE BOOL CXTPToolTipContext::GetStripEllipsisFromToolTip() const
+{
 	return m_bStripEllipsisFromToolTip;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTOOLTIPCONTEXT_H__)

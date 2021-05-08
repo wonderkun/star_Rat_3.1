@@ -1,7 +1,6 @@
 // XTPCalendarWeekViewEvent.h: interface for the CXTPCalendarWeekViewEvent class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,22 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCALENDARWEEKVIEWEVENT_H_)
-#define __XTPCALENDARWEEKVIEWEVENT_H_
+#	define __XTPCALENDARWEEKVIEWEVENT_H_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-#include "XTPCalendarViewEvent.h"
-//#include "XTPCalendarWeekViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarControl;
 class CXTPCalendarWeekView;
 class CXTPCalendarWeekViewDay;
 class CXTPCalendarWeekViewGroup;
 class CXTPCalendarEvent;
-struct XTP_CALENDAR_HITTESTINFO_WEEK_VIEW;
+struct XTP_CALENDAR_HITTESTINFO;
 
 //===========================================================================
 // Summary:
@@ -53,21 +51,18 @@ struct XTP_CALENDAR_HITTESTINFO_WEEK_VIEW;
 //
 // See Also: CXTPCalendarViewEvent, CXTPCalendarViewEventT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarWeekViewEvent : public CXTPCalendarViewEventT<
-										CXTPCalendarWeekViewGroup,
-										XTP_CALENDAR_HITTESTINFO_WEEK_VIEW >
+class _XTP_EXT_CLASS CXTPCalendarWeekViewEvent
+	: public CXTPCalendarViewEventT<CXTPCalendarWeekViewGroup>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarWeekViewEvent)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewEventT< CXTPCalendarWeekViewGroup,
-									XTP_CALENDAR_HITTESTINFO_WEEK_VIEW> TBase;
+	typedef CXTPCalendarViewEventT<CXTPCalendarWeekViewGroup> TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -87,18 +82,18 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW structure.
+	//     This member function is used to fill a XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
 	//     point - A CPoint object that contains the point to test.
-	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO_WEEK_VIEW struct.
+	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO struct.
 	// Returns:
 	//     TRUE if the test is successful, FALSE else.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the day view.
-	// See Also: XTP_CALENDAR_HITTESTINFO_WEEK_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO_WEEK_VIEW* pInfo);
+	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -128,7 +123,8 @@ public:
 	//     Call Populate(COleDateTime dtDayDate) prior calling AdjustLayout().
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber); //<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax,
+							   int nEventPlaceNumber); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -148,7 +144,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the "view visible" is set. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible();
+	virtual BOOL IsVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -165,7 +161,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if "show end time" flag is set. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsShowEndTime();
+	BOOL IsShowEndTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -173,7 +169,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the "show time as clock" flag is set. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsTimeAsClock();
+	BOOL IsTimeAsClock() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -185,19 +181,20 @@ public:
 	virtual void OnPostAdjustLayout();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to determine the editor window font.
 	// Returns:
 	//     A pointer to a CFont object that contains the editor window font.
 	//-----------------------------------------------------------------------
-	virtual CFont* GetSubjectEditorFont();
+	virtual CFont* GetSubjectEditorFont() const;
 };
 ////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CRect CXTPCalendarWeekViewEvent::GetViewRect() {
+AFX_INLINE CRect CXTPCalendarWeekViewEvent::GetViewRect()
+{
 	return m_rcEvent;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCALENDARWEEKVIEWEVENT_H_)

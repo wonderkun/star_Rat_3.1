@@ -1,7 +1,6 @@
 // XTPChartLineStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTLINESTYLE_H__)
-#define __XTPCHARTLINESTYLE_H__
+#	define __XTPCHARTLINESTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../XTPChartDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartElement;
 class CXTPChartDeviceCommand;
+
+typedef CArray<float, float> CXTPChartLineDashArray;
+
 //===========================================================================
 // Summary:
 //     This class represents a chart line style, which is a kind of CXTPCmdTarget.
@@ -94,10 +95,12 @@ public:
 	//-----------------------------------------------------------------------
 	XTPChartDashStyle GetDashStyle() const;
 
+	void SetDashArray(const CXTPChartLineDashArray& dashArray);
+
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a line.
 	// Parameters:
 	//     point1     - The start point of the line.
@@ -105,58 +108,67 @@ public:
 	//     color      - The color of the line.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of a line.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPointF& point1, const CXTPChartPointF& point2, const CXTPChartColor& color);
-	CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPoints& points, const CXTPChartColor& color);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPointF& point1,
+														const CXTPChartPointF& point2,
+														const CXTPChartColor& color);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPoints& points,
+														const CXTPChartColor& color);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a spline.
 	// Parameters:
 	//     points     - The points which form the spline.
 	//     color      - The color of the line.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of a spline.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateSplineDeviceCommand(const CXTPChartPoints& points, const CXTPChartColor& color);
+	virtual CXTPChartDeviceCommand* CreateSplineDeviceCommand(const CXTPChartPoints& points,
+															  const CXTPChartColor& color);
 
 public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartLineStyle);
+
+	void OleSetDashArray(const VARIANT& var);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	int m_nThickness;               //The line thickness.
-	XTPChartDashStyle m_nDashStyle;  //The dash style.
-	CXTPChartElement* m_pOwner;      //The owner element.
+	int m_nThickness;				// The line thickness.
+	XTPChartDashStyle m_nDashStyle; // The dash style.
+	CXTPChartElement* m_pOwner;		// The owner element.
+	CXTPChartLineDashArray m_arrDashArray;
 };
 
-AFX_INLINE void CXTPChartLineStyle::Release() {
+AFX_INLINE void CXTPChartLineStyle::Release()
+{
 	InternalRelease();
 }
-AFX_INLINE int CXTPChartLineStyle::GetThickness() const {
+AFX_INLINE int CXTPChartLineStyle::GetThickness() const
+{
 	return m_nThickness;
 }
-AFX_INLINE XTPChartDashStyle CXTPChartLineStyle::GetDashStyle() const {
+AFX_INLINE XTPChartDashStyle CXTPChartLineStyle::GetDashStyle() const
+{
 	return m_nDashStyle;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTLINESTYLE_H__)

@@ -1,7 +1,6 @@
 // XTPEditListBox.h interface for the CXTPEditListBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTEDITLISTBOX_H__)
-#define __XTEDITLISTBOX_H__
+#	define __XTEDITLISTBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------------------
@@ -58,9 +59,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPEditListBoxToolBar();
 
-
 public:
-
 	// ------------------------------------------------------------------------
 	// Summary:
 	//     Initializes the CXTPEditListBoxToolBar control.
@@ -183,7 +182,7 @@ public:
 	CToolTipCtrl& GetTooltipControl();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPEditListBoxToolBar)
@@ -198,54 +197,58 @@ protected:
 	afx_msg void OnEnable(BOOL bEnable);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	bool m_bShowUpDownButtons;     // Controls whether of not the up.down buttons are shown.
-	bool m_bShowNewDeleteButtons;     // Controls whether of not the up.down buttons are shown.
-	bool           m_bEnableEdit;   // True if editing is enabled.
-	CRect          m_arClipRect[4]; // Array of toolbar button sizes.
-	CXTPButton     m_arButton[4];   // Array of toolbar buttons.
-	CXTPIconHandle m_arIcon[4];     // Array of toolbar button icons.
-	CToolTipCtrl   m_tooltip;       // Tooltip control for edit buttons.
+	bool m_bShowUpDownButtons;	// Controls whether of not the up.down buttons are shown.
+	bool m_bShowNewDeleteButtons; // Controls whether of not the up.down buttons are shown.
+	bool m_bEnableEdit;			  // True if editing is enabled.
+	CRect m_arClipRect[4];		  // Array of toolbar button sizes.
+	CXTPButton m_arButton[4];	 // Array of toolbar buttons.
+	CToolTipCtrl m_tooltip;		  // Tooltip control for edit buttons.
 
 	friend class CXTPEditListBox;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetNewButton() {
+AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetNewButton()
+{
 	return m_arButton[0];
 }
-AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetDeleteButton() {
+AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetDeleteButton()
+{
 	return m_arButton[1];
 }
-AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetUpButton() {
+AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetUpButton()
+{
 	return m_arButton[2];
 }
-AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetDownButton() {
+AFX_INLINE CXTPButton& CXTPEditListBoxToolBar::GetDownButton()
+{
 	return m_arButton[3];
 }
-AFX_INLINE void CXTPEditListBoxToolBar::EnableEdit(bool bEnable) {
+AFX_INLINE void CXTPEditListBoxToolBar::EnableEdit(bool bEnable)
+{
 	m_bEnableEdit = bEnable;
 }
-AFX_INLINE CToolTipCtrl& CXTPEditListBoxToolBar::GetTooltipControl() {
-		return m_tooltip;
+AFX_INLINE CToolTipCtrl& CXTPEditListBoxToolBar::GetTooltipControl()
+{
+	return m_tooltip;
 }
-
 
 // forwards
 
 class CXTPItemEdit;
 
-const DWORD LBS_XTP_DEFAULT         = 0x0000;  //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
-const DWORD LBS_XTP_CHOOSEDIR       = 0x0001;  //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
-const DWORD LBS_XTP_CHOOSEFILE      = 0x0002;  //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
-const DWORD LBS_XTP_NOTOOLBAR       = 0x0008;  //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
-const DWORD LBS_XTP_BROWSE          = 0x0010; // Browse button
-const DWORD LBS_XTP_HIDE_UP_DOWN    = 0x0020; // Hide Up/Down buttons
-const DWORD LBS_XTP_ONLY_UP_DOWN    = 0x0040; // Only Up/Down buttons
-const DWORD LBS_XTP_BROWSE_ONLY     = 0x0080; // Browse button
+const DWORD LBS_XTP_DEFAULT		 = 0x0000; //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
+const DWORD LBS_XTP_CHOOSEDIR	= 0x0001; //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
+const DWORD LBS_XTP_CHOOSEFILE   = 0x0002; //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
+const DWORD LBS_XTP_NOTOOLBAR	= 0x0008; //<ALIAS CXTPEditListBox::SetListEditStyle@UINT@DWORD>
+const DWORD LBS_XTP_BROWSE		 = 0x0010; // Browse button
+const DWORD LBS_XTP_HIDE_UP_DOWN = 0x0020; // Hide Up/Down buttons
+const DWORD LBS_XTP_ONLY_UP_DOWN = 0x0040; // Only Up/Down buttons
+const DWORD LBS_XTP_BROWSE_ONLY  = 0x0080; // Browse button
 
 //===========================================================================
 // Summary:
@@ -272,7 +275,6 @@ public:
 	virtual ~CXTPEditListBox();
 
 public:
-
 	// -----------------------------------------------------------------------------
 	// Summary:
 	//     Sets the edit style for the edit list box.
@@ -293,7 +295,9 @@ public:
 	//     * <b>LBS_XTP_NOTOOLBAR</b> Do not display edit toolbar.
 	// -----------------------------------------------------------------------------
 	void SetListEditStyle(UINT nTitle, DWORD dwLStyle = LBS_XTP_DEFAULT);
-	void SetListEditStyle(LPCTSTR lpszTitle, DWORD dwLStyle = LBS_XTP_DEFAULT); //<combine CXTPEditListBox::SetListEditStyle@UINT@DWORD>
+	void SetListEditStyle(
+		LPCTSTR lpszTitle,
+		DWORD dwLStyle = LBS_XTP_DEFAULT); //<combine CXTPEditListBox::SetListEditStyle@UINT@DWORD>
 
 	// --------------------------------------------------------------------
 	// Summary:
@@ -430,7 +434,6 @@ public:
 	virtual void MoveItemDown(int nIndex);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will create the edit group control.
@@ -468,7 +471,7 @@ protected:
 	virtual CXTPItemEdit* CreateEditControl(CRect rcItem);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPEditListBox)
@@ -494,46 +497,54 @@ protected:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CWnd* m_pParentWnd;             // Pointer to the parent window.
-	CString m_strItemDefaultText;   // Default text used when new items are created.
-	int             m_nIndex;       // Current index when edit functions are performed.
-	BOOL            m_bNewItem;     // TRUE if a new item is being entered into the list box.
-	bool            m_bEnableEdit;  // True if editing is enabled.
-	DWORD           m_dwLStyle;     // List edit styles.
-	CString         m_strTitle;     // Caption area title.
-	CString         m_strFilter;    // Default file filter.
-	CString         m_strInitialDir;   // Initial Dir.
-	CString         m_strItemText;  // Current text of a selected item during edit.
-	CXTPItemEdit*    m_pItemEdit;    // Points to the in-place edit item.
-	CXTPEditListBoxToolBar    m_editGroup;    // The edit group (toolbar) that appears above the list box.
-
+	CWnd* m_pParentWnd;					// Pointer to the parent window.
+	CString m_strItemDefaultText;		// Default text used when new items are created.
+	int m_nIndex;						// Current index when edit functions are performed.
+	BOOL m_bNewItem;					// TRUE if a new item is being entered into the list box.
+	bool m_bEnableEdit;					// True if editing is enabled.
+	DWORD m_dwLStyle;					// List edit styles.
+	CString m_strTitle;					// Caption area title.
+	CString m_strFilter;				// Default file filter.
+	CString m_strInitialDir;			// Initial Dir.
+	CString m_strItemText;				// Current text of a selected item during edit.
+	CXTPItemEdit* m_pItemEdit;			// Points to the in-place edit item.
+	CXTPEditListBoxToolBar m_editGroup; // The edit group (toolbar) that appears above the list box.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTPEditListBox::GetCurrentIndex() {
+AFX_INLINE int CXTPEditListBox::GetCurrentIndex()
+{
 	return m_nIndex;
 }
-AFX_INLINE CXTPEditListBoxToolBar& CXTPEditListBox::GetEditGroup() {
+AFX_INLINE CXTPEditListBoxToolBar& CXTPEditListBox::GetEditGroup()
+{
 	return m_editGroup;
 }
-AFX_INLINE void CXTPEditListBox::SetDlgFilter(LPCTSTR lpszFilter/*=NULL*/) {
+AFX_INLINE void CXTPEditListBox::SetDlgFilter(LPCTSTR lpszFilter /*=NULL*/)
+{
 	m_strFilter = lpszFilter;
 }
-AFX_INLINE void CXTPEditListBox::SetDlgInitialDir(LPCTSTR lpszInitialDir/*=NULL*/) {
+AFX_INLINE void CXTPEditListBox::SetDlgInitialDir(LPCTSTR lpszInitialDir /*=NULL*/)
+{
 	m_strInitialDir = lpszInitialDir;
 }
-AFX_INLINE bool CXTPEditListBox::HasToolbar() {
+AFX_INLINE bool CXTPEditListBox::HasToolbar()
+{
 	return ((m_dwLStyle & LBS_XTP_NOTOOLBAR) == 0);
 }
-AFX_INLINE void CXTPEditListBox::EnableEdit(bool bEnable) {
-	m_bEnableEdit = bEnable; m_editGroup.EnableEdit(bEnable);
+AFX_INLINE void CXTPEditListBox::EnableEdit(bool bEnable)
+{
+	m_bEnableEdit = bEnable;
+	m_editGroup.EnableEdit(bEnable);
 }
-AFX_INLINE void CXTPEditListBox::SetNewItemDefaultText(LPCTSTR lpszItemDefaultText) {
+AFX_INLINE void CXTPEditListBox::SetNewItemDefaultText(LPCTSTR lpszItemDefaultText)
+{
 	m_strItemDefaultText = lpszItemDefaultText;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTEDITLISTBOX_H__)

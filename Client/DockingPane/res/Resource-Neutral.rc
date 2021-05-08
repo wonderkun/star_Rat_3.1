@@ -1,7 +1,6 @@
 // DockingPane resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -33,11 +32,27 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Bitmap
 //
 
-XTP_IDB_DOCKINGPANE_VISIOGRIPPER    BITMAP  DISCARDABLE   "DockingPane/res/VisioGripper.bmp"
-XTP_IDB_DOCKINGPANE_STICKER_CLIENT  PNG  DISCARDABLE      "DockingPane/res/DockingStickersClient.png"
-XTP_IDB_DOCKINGPANE_STICKERS_BLUE   PNG  DISCARDABLE      "DockingPane/res/DockingStickersBlue.png"
-XTP_IDB_DOCKINGPANE_STICKERS_OLIVE  PNG  DISCARDABLE      "DockingPane/res/DockingStickersOlive.png"
-XTP_IDB_DOCKINGPANE_STICKERS_SILVER PNG  DISCARDABLE      "DockingPane/res/DockingStickersSilver.png"
-XTP_IDB_DOCKINGPANE_STICKERS_2005   PNG  DISCARDABLE      "DockingPane/res/DockingStickers2005.png"
+XTP_IDB_DOCKINGPANE_VISIOGRIPPER        BITMAP DISCARDABLE "DockingPane/res/VisioGripper.bmp"
+XTP_IDB_DOCKINGPANE_STICKER_CLIENT      PNG    DISCARDABLE "DockingPane/res/DockingStickersClient.png"
+XTP_IDB_DOCKINGPANE_STICKERS_BLUE       PNG    DISCARDABLE "DockingPane/res/DockingStickersBlue.png"
+XTP_IDB_DOCKINGPANE_STICKERS_OLIVE      PNG    DISCARDABLE "DockingPane/res/DockingStickersOlive.png"
+XTP_IDB_DOCKINGPANE_STICKERS_SILVER     PNG    DISCARDABLE "DockingPane/res/DockingStickersSilver.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_2005_100  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_2005_100.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_2005_125  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_2005_125.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_2005_150  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_2005_150.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_2005_200  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_2005_200.png"
+XTP_IDB_DOCKINGPANE_STICKERS_2008       PNG    DISCARDABLE "DockingPane/res/DockingStickers2008.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_LIGHT_100 PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Light_100.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_LIGHT_125 PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Light_125.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_LIGHT_150 PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Light_150.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_LIGHT_200 PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Light_200.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_DARK_100  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Dark_100.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_DARK_125  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Dark_125.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_DARK_150  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Dark_150.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_DARK_200  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Dark_200.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_BLUE_100  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Blue_100.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_BLUE_125  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Blue_125.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_BLUE_150  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Blue_150.png"
+XTP_IDB_DOCKINGPANE_STICKERS_VS_BLUE_200  PNG    DISCARDABLE "DockingPane/res/DockingStickers_VisualStudio_Blue_200.png"
 
 #endif // !defined(_XTP_NO_BINARY_RESOURCES)

@@ -1,7 +1,6 @@
 // XTPSyntaxEditGoToLineDlg.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITGOTOLINEDLG_H__)
-#define __XTPSYNTAXEDITGOTOLINEDLG_H__
+#	define __XTPSYNTAXEDITGOTOLINEDLG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -43,9 +44,12 @@ public:
 	CXTPSyntaxEditGoToLineDlg(CWnd* pParent = NULL);
 
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_EDIT_GOTOLINE };
-	CEdit   m_wndEditLineNo;
-	int     m_iLineNo;
+	enum
+	{
+		IDD = XTP_IDD_EDIT_GOTOLINE
+	};
+	CEdit m_wndEditLineNo;
+	int m_iLineNo;
 	CString m_csLineNo;
 	//}}AFX_CODEJOCK_PRIVATE
 
@@ -62,17 +66,18 @@ public:
 	//      TRUE if successful, FALSE otherwise.
 	// See Also: ShowWindow
 	//-----------------------------------------------------------------------
-	BOOL ShowDialog(CXTPSyntaxEditCtrl* pEditCtrl, BOOL bSelectLine = FALSE, BOOL bHideOnFind = FALSE);
+	BOOL ShowDialog(CXTPSyntaxEditCtrl* pEditCtrl, BOOL bSelectLine = FALSE,
+					BOOL bHideOnFind = FALSE);
 
 	//{{AFX_CODEJOCK_PRIVATE
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_CODEJOCK_PRIVATE
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary: Load window position from application profile.
 	// Returns: TRUE if successful, FALSE otherwise.
@@ -94,11 +99,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	//}}AFX_CODEJOCK_PRIVATE
 
-	int                 m_iMaxLineNo;   // Store a maximum line number.
-	BOOL                m_bHideOnFind;  // Store Hide On Find option.
-	BOOL                m_bSelectLine;  // Store Select Line option.
-	CPoint              m_ptWndPos;     // Store window position.
-	CXTPSyntaxEditCtrl* m_pEditCtrl;    // Store attached edit control.
+	int m_iMaxLineNo;				 // Store a maximum line number.
+	BOOL m_bHideOnFind;				 // Store Hide On Find option.
+	BOOL m_bSelectLine;				 // Store Select Line option.
+	CPoint m_ptWndPos;				 // Store window position.
+	CXTPSyntaxEditCtrl* m_pEditCtrl; // Store attached edit control.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -106,4 +111,5 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITGOTOLINEDLG_H__)

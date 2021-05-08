@@ -1,7 +1,6 @@
 // XTPChartDiagram.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,31 +19,28 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTDIAGRAM_H__)
-#define __XTPCHARTDIAGRAM_H__
+#	define __XTPCHARTDIAGRAM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartPanel.h"
-#include "XTPChartElementView.h"
-#include "Types/XTPChartTypes.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartElementView;
 class CXTPChartDiagramView;
 class CXTPChartSeries;
-class CXTPChartPanel;
+class CXTPArcBall;
+template<class T>
+class CXTPMatrix;
 
 typedef CArray<CXTPChartSeries*, CXTPChartSeries*> CXTPChartSeriesArray;
-
-
 
 //===========================================================================
 // Summary:
 //     This class represents a chart diagram, which is a kind of CXTPChartElement.
-//     This class act as a base class for 2D and 3D diagrams.
 // Remarks:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartDiagram : public CXTPChartPanel
@@ -72,7 +68,8 @@ public:
 	//     This is a virtual function, so the sub classes can give their type
 	//     specific implementation for this function.
 	//-----------------------------------------------------------------------
-	virtual CXTPChartDiagramView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartElementView* pParent);
+	virtual CXTPChartDiagramView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartElementView* pParent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -86,17 +83,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void CalculateSeriesLayout(CXTPChartDeviceContext* pDC, CXTPChartDiagramView* pView);
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether the diagram is a 3D style.
-	// Remarks:
-	//     This is a virtual function, so the sub classes can give their type
-	//     specific implementation for this function.
-	//-----------------------------------------------------------------------
-	virtual BOOL Is3DDiagram() const;
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the series collection object.
@@ -144,131 +131,190 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	friend class CXTPChartContent;
 	friend class CXTPChartSeries;
 
-
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPChartDiagram);
+	LPDISPATCH OleGetTitles();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CXTPChartSeriesArray m_arrSeries;        //The series collection.
+	CXTPChartSeriesArray m_arrSeries; // The series collection.
 };
 
+//-----------------------------------------------------------------------
+// Summary:
+//      Represents a virtual diagram rectangular domain area.
+//-----------------------------------------------------------------------
 class _XTP_EXT_CLASS CXTPChartDiagramDomain
 {
 public:
-	virtual CXTPChartRectF GetInnerBounds() const = 0;
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Constructs diagram domain.
+	// Parameters:
+	//      rcInnerBounds - Rectangle value that defines domain area.
+	//-----------------------------------------------------------------------
+	CXTPChartDiagramDomain(const CXTPChartRectF& rcInnerBounds);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines domain area boundary rectangle.
+	// Returns:
+	//      Domain area boundary rectangle
+	//-----------------------------------------------------------------------
+	const CXTPChartRectF& GetInnerBounds() const;
+
+private:
+	const CXTPChartRectF m_rcInnerBounds;
 };
-//===========================================================================
-// Summary:
-//     This class represents the view of a chart diagram, which is a kind of
-//     CXTPChartElementView.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartDiagramView : public CXTPChartElementView
+
+AFX_INLINE CXTPChartDiagramDomain::CXTPChartDiagramDomain(const CXTPChartRectF& rcInnerBounds)
+	: m_rcInnerBounds(rcInnerBounds)
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartDiagram object.
-	// Parameters:
-	//     pDiagram    - A pointer to chart diagram object.
-	//     pParentView - A pointer to the parent view.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartDiagramView(CXTPChartDiagram* pDiagram, CXTPChartElementView* pParentView);
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the bounds of the diagram.
-	// Returns:
-	//     A CRect object contains the bounds of the diagram.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CRect GetBounds() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the diagram object associated with the
-	//     view.
-	// Returns:
-	//     A CXTPChartDiagram pointer, the actual type could be CXTPChartDiagram2D
-	//     or CXTPChartDiagram3D.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartDiagram* GetDiagram() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the label view object associated with
-	//     this diagram view.
-	// Returns:
-	//     A CXTPChartElementView pointer, representing the label view.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartElementView* GetLabelsView() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the series view object associated with
-	//     this diagram view.
-	// Returns:
-	//     A CXTPChartElementView pointer, representing the series view.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartElementView* GetSeriesView() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to calculate the view of the diagram.
-	// Parameters:
-	//     pDC      - Pointer to the chart device context object.
-	//     rcBounds - The bounding rectangle.
-	// Remarks:
-	//     This is a virtual function, so the sub classes can give their type
-	//     specific implementation for this function.
-	//-----------------------------------------------------------------------
-	virtual void CalculateView(CXTPChartDeviceContext* pDC, CRect rcBounds);
-
-	virtual void UpdateRange(CXTPChartDeviceContext* pDC);
-
-	virtual void OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
-	virtual void CreateView(CXTPChartDeviceContext* pDC);
-
-
-protected:
-	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
-
-protected:
-	CXTPChartDiagram* m_pDiagram;        //Pointer to the associated diagram object.
-	CRect m_rcBounds;                   //The diagram bounds.
-	CXTPChartElementView* m_pLabelsView; //The label view.
-	CXTPChartElementView* m_pSeriesView; //The series view.
-	CXTPChartElementView* m_pTitlesView; // Titles View.
-};
-
-
-AFX_INLINE CRect CXTPChartDiagramView::GetBounds() const {
-	return m_rcBounds;
 }
-AFX_INLINE BOOL CXTPChartDiagram::Is3DDiagram() const {
-	return FALSE;
+
+AFX_INLINE const CXTPChartRectF& CXTPChartDiagramDomain::GetInnerBounds() const
+{
+	return m_rcInnerBounds;
 }
-AFX_INLINE CXTPChartDiagram* CXTPChartDiagramView::GetDiagram() const {
-	return m_pDiagram;
-}
-AFX_INLINE const CXTPChartSeriesArray& CXTPChartDiagram::GetSeries() const {
+
+AFX_INLINE const CXTPChartSeriesArray& CXTPChartDiagram::GetSeries() const
+{
 	return m_arrSeries;
 }
-AFX_INLINE CXTPChartElementView* CXTPChartDiagramView::GetLabelsView() const {
-	return m_pLabelsView;
-}
-AFX_INLINE CXTPChartElementView* CXTPChartDiagramView::GetSeriesView() const {
-	return m_pSeriesView;
+
+//===========================================================================
+// Summary:
+//     The base class for all 2D diagrams.
+// Remarks:
+//===========================================================================
+class _XTP_EXT_CLASS CXTPChart2dDiagram : public CXTPChartDiagram
+{
+	DECLARE_DYNAMIC(CXTPChart2dDiagram)
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChartDiagram2D object.
+	// Remarks:
+	//-----------------------------------------------------------------------
+	CXTPChart2dDiagram();
+};
+
+//===========================================================================
+// Summary:
+//     The base class for all 3D diagrams.
+// Remarks:
+//===========================================================================
+class _XTP_EXT_CLASS CXTPChart3dDiagram : public CXTPChartDiagram
+{
+	DECLARE_DYNAMIC(CXTPChart3dDiagram)
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChart3dDiagram object.
+	// Remarks:
+	//-----------------------------------------------------------------------
+	CXTPChart3dDiagram();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Handles CXTPChart3dDiagram object destruction.
+	//-----------------------------------------------------------------------
+	~CXTPChart3dDiagram();
+
+public:
+	// The side of the box in 3D space whithin which a chart is drawn.
+	static const float m_fChartBoxSize;
+	// The size of a primitive, the smallest part of a chart, e.g. triangle side size.
+	static const int m_nPrimitiveSize;
+	// The closest possible distance to the center of a model.
+	static const float m_fMinModelDistance;
+	// The farthest possible distance to the center of a model.
+	static const float m_fMaxModelDistance;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains camera coordinates in 3D space. The camera is always directed
+	//      to the center of the model.
+	// Returns:
+	//      Camera coordinates in 3D space.
+	//-----------------------------------------------------------------------
+	const CXTPPoint3f& GetCameraPosition() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains view rotation matrix. The matrix is used for rotating view
+	//      and not the model itself.
+	// Returns:
+	//      View rotation matrix.
+	//-----------------------------------------------------------------------
+	const CXTPMatrix<double>& GetViewRotationMatrix() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Sets boundaries for arc ball used for rotating the view.
+	// Parameters:
+	//      dWidth - Available width value.
+	//      dHeight - Available height value.
+	//-----------------------------------------------------------------------
+	void SetArcBallBounds(double dWidth, double dHeight);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Sets start arc ball rotation point.
+	// Parameters:
+	//      point - Specifies the relative x- and y- coordinates of
+	//              the start arc ball rotation point.
+	// Returns:
+	//      TRUE is the start rotation point is set, otherwise the return value FALSE.
+	//-----------------------------------------------------------------------
+	BOOL SetStartArcBallRotationPoint(POINT point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Rotates arc ball to the specified point.
+	// Parameters:
+	//      point - Specifies the relative x- and y- coordinates of
+	//              the end rotation point.
+	// Returns:
+	//      TRUE is the rotation is completed, otherwise the return value FALSE.
+	//-----------------------------------------------------------------------
+	BOOL RotateArcBallToPoint(POINT point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Zooms arc ball in or out.
+	// Parameters:
+	//      fDelta - The zooming distance. If positive arc ball is zoomed in.
+	//               Nevative value zooms arc ball out.
+	//-----------------------------------------------------------------------
+	void ZoomArcBall(float fDelta);
+
+private:
+	CXTPPoint3f m_ptCameraPosition;
+	CXTPArcBall* m_pArcBall;
+	CXTPMatrix<double>* m_pMatrixBeforeRotation;
+	CXTPMatrix<double>* m_pMatrixAfterRotation;
+};
+
+AFX_INLINE const CXTPPoint3f& CXTPChart3dDiagram::GetCameraPosition() const
+{
+	return m_ptCameraPosition;
 }
 
+AFX_INLINE const CXTPMatrix<double>& CXTPChart3dDiagram::GetViewRotationMatrix() const
+{
+	return *m_pMatrixAfterRotation;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTDIAGRAM_H__)

@@ -1,7 +1,6 @@
 // XTPReportColumns.h: interface for the CXTPReportColumns class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTCOLUMNS_H__)
-#define __XTPREPORTCOLUMNS_H__
+#	define __XTPREPORTCOLUMNS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportColumn;
 class CXTPReportHeader;
@@ -50,6 +51,7 @@ class CXTPPropExchange;
 class _XTP_EXT_CLASS CXTPReportColumns : public CXTPCmdTarget
 {
 	friend class CXTPReportColumn;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -137,6 +139,27 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns column at specified visible position.
+	// Parameters:
+	//     nOffset - Left offset in pixels for seeking column.
+	//     bFrozen - TRUE to count frozen columns also.
+	// Returns:
+	//     Index of column at specified visible position
+	//-----------------------------------------------------------------------
+	int GetAtOffset(int nOffset, BOOL bFrozen) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns left offset in pixels of specified visible and non-frozen column.
+	// Parameters:
+	//     nIndex - scroll index of column that is visible on position number nIndex.
+	// Returns:
+	//     Left offset in pixels of specified visible and non-frozen column.
+	//-----------------------------------------------------------------------
+	int GetOffset(int nIndex) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Gets specific indentation column.
 	// Remarks:
 	//     Indentation column used for representing it ends in
@@ -161,7 +184,8 @@ public:
 	//     Found column.
 	//-----------------------------------------------------------------------
 	CXTPReportColumn* Find(int nItemIndex) const;
-	CXTPReportColumn* Find(const CString& strInternalName) const; //<COMBINE CXTPReportColumns::Find@int@const>
+	CXTPReportColumn*
+		Find(const CString& strInternalName) const; //<COMBINE CXTPReportColumns::Find@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -288,19 +312,45 @@ public:
 	// See Also: GetFirstVisibleColumn
 	//-----------------------------------------------------------------------
 	CXTPReportColumn* GetLastVisibleColumn() const;
+
 protected:
+	CXTPReportColumnOrder* m_pGroupsOrder; // Container for the columns order in auto grouping mode.
+	CXTPReportColumnOrder* m_pSortOrder;   // Container for the columns sort order.
+	CArray<CXTPReportColumn*, CXTPReportColumn*> m_arrColumns; // Storage for column items.
+	CXTPReportControl* m_pControl;   // Pointer to the associated report control object.
+	CXTPReportColumn* m_pTreeColumn; // Column containing tree view images.
 
-	CXTPReportColumnOrder* m_pGroupsOrder;  // Container for the columns order in auto grouping mode.
-	CXTPReportColumnOrder* m_pSortOrder;    // Container for the columns sort order.
-	CArray<CXTPReportColumn*, CXTPReportColumn*> m_arrColumns;  // Storage for column items.
-	CXTPReportControl* m_pControl;          // Pointer to the associated report control object.
-	CXTPReportColumn* m_pTreeColumn;       // Column containing tree view images.
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportColumns);
+
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleAdd(long nId, LPCTSTR strCaption, int nWidth, BOOL bAutoSize);
+	afx_msg LPDISPATCH OleAddEx(long nId, LPCTSTR strCaption, LPCTSTR strInternalName, int nWidth,
+								BOOL bAutoSize);
+	afx_msg LPDISPATCH OleFindColumn(long nId);
+
+	DECLARE_ENUM_VARIANT(CXTPReportColumns)
+
+	enum
+	{
+		dispidCount		 = 1L,
+		dispidAdd		 = 2L,
+		dispidAddEx		 = 3L,
+		dispidFindColumn = 4L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 AFX_INLINE int CXTPReportColumns::GetCount() const
 {
-	return (int) m_arrColumns.GetSize();
+	return (int)m_arrColumns.GetSize();
 }
 
 AFX_INLINE CXTPReportColumn* CXTPReportColumns::GetAt(int nIndex) const
@@ -403,7 +453,8 @@ public:
 	//     The index of the added element.
 	//-----------------------------------------------------------------------
 	int Add(CXTPReportColumn* pColumn);
-	int Add(CXTPReportColumn* pColumn, BOOL bSortIncreasing); // <COMBINE CXTPReportColumnOrder::Add@CXTPReportColumn*>
+	int Add(CXTPReportColumn* pColumn,
+			BOOL bSortIncreasing); // <COMBINE CXTPReportColumnOrder::Add@CXTPReportColumn*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -442,10 +493,33 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-	CXTPReportColumns* m_pColumns;  // Parent columns array.
+	CXTPReportColumns* m_pColumns; // Parent columns array.
 
-	CArray<CXTPReportColumn*, CXTPReportColumn*> m_arrColumns;  // Storage for column items with the corresponding order.
+	CArray<CXTPReportColumn*, CXTPReportColumn*> m_arrColumns; // Storage for column items with the
+															   // corresponding order.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportColumnOrder);
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg void OleAdd(LPDISPATCH lpColumn);
+	afx_msg int OleIndexOf(LPDISPATCH lpColumn);
+
+	DECLARE_ENUM_VARIANT(CXTPReportColumnOrder)
+
+	enum
+	{
+		dispidCount = 1L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPREPORTCOLUMNS_H__)

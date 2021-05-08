@@ -58,12 +58,12 @@ FontCollection::GetFamilies(
         return SetStatus(OutOfMemory);
     }
 
-    Status status = SetStatus(DllExports::GdipGetFontCollectionFamilyList(
+    Status status = DllExports::GdipGetFontCollectionFamilyList(
         nativeFontCollection,
         numSought,
         nativeFamilyList,
         numFound
-    ));
+    );
     if (status == Ok)
     {
         for (INT i = 0; i < *numFound; i++)
@@ -75,7 +75,7 @@ FontCollection::GetFamilies(
 
     delete [] nativeFamilyList;
 
-    return status;
+    return SetStatus(status);
 }
 
 inline Status FontCollection::GetLastStatus () const
@@ -132,3 +132,4 @@ PrivateFontCollection::AddMemoryFont(IN const void* memory,
 }
 
 #endif // _GDIPLUSFONTCOLL_H
+

@@ -1,7 +1,6 @@
 // XTPSyntaxEditSectionManager.h: interface for the CXTPSyntaxEditSectionManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITSECTIONMANAGER_H__)
-#define __XTPSYNTAXEDITSECTIONMANAGER_H__
+#	define __XTPSYNTAXEDITSECTIONMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 //=======================================================================
@@ -47,23 +48,23 @@ public:
 	CString csName;
 	CString csValue;
 	CString csDesc;
-	UINT    uValue;
+	UINT uValue;
 };
 
 //=======================================================================
 // class: CXTPSyntaxEditSchemaFileInfoList
 //=======================================================================
-class _XTP_EXT_CLASS CXTPSyntaxEditSchemaFileInfoList : public CList<XTP_EDIT_SCHEMAFILEINFO,XTP_EDIT_SCHEMAFILEINFO&>
+class _XTP_EXT_CLASS CXTPSyntaxEditSchemaFileInfoList
+	: public CList<XTP_EDIT_SCHEMAFILEINFO, XTP_EDIT_SCHEMAFILEINFO&>
 {
 public:
+	POSITION LookupName(const CString& csName, XTP_EDIT_SCHEMAFILEINFO& info) const;
 
-	POSITION LookupName (const CString& csName, XTP_EDIT_SCHEMAFILEINFO& info);
+	POSITION LookupValue(const CString& csValue, XTP_EDIT_SCHEMAFILEINFO& info) const;
 
-	POSITION LookupValue(const CString& csValue, XTP_EDIT_SCHEMAFILEINFO& info);
+	POSITION LookupValue(const UINT& uValue, XTP_EDIT_SCHEMAFILEINFO& info) const;
 
-	POSITION LookupValue(const UINT& uValue, XTP_EDIT_SCHEMAFILEINFO& info);
-
-	POSITION LookupDesc (const CString& csDesc, XTP_EDIT_SCHEMAFILEINFO& info);
+	POSITION LookupDesc(const CString& csDesc, XTP_EDIT_SCHEMAFILEINFO& info) const;
 };
 
 //=======================================================================
@@ -77,19 +78,22 @@ public:
 	virtual ~CXTPSyntaxEditSectionManager();
 
 public:
-//used for file based settings
-	int GetSectionNames(CStringArray& arSections, LPCTSTR lpszFilePath);
-	int GetSectionKeyList(CXTPSyntaxEditSchemaFileInfoList& infoList, LPCTSTR lpszFilePath, LPCTSTR lpszSectionName);
-//used for non-file based settings
-	int GetSectionNames(CStringArray& arSections, CStringArray& arPassedString);
-	int GetSectionKeyList(CXTPSyntaxEditSchemaFileInfoList& infoList, CStringArray& arPassedString, CString sSectionName);
+	// used for file based settings
+	int GetSectionNames(CStringArray& arSections, LPCTSTR lpszFilePath) const;
+	int GetSectionKeyList(CXTPSyntaxEditSchemaFileInfoList& infoList, LPCTSTR lpszFilePath,
+						  LPCTSTR lpszSectionName) const;
+	// used for non-file based settings
+	int GetSectionNames(CStringArray& arSections, CStringArray& arPassedString) const;
+	int GetSectionKeyList(CXTPSyntaxEditSchemaFileInfoList& infoList, CStringArray& arPassedString,
+						  CString sSectionName) const;
 
-	BOOL ParseSectionKey(XTP_EDIT_SCHEMAFILEINFO& info, const CString& csBuffer);
+	BOOL ParseSectionKey(XTP_EDIT_SCHEMAFILEINFO& info, const CString& csBuffer) const;
 
-	BOOL SplitString(CString& csLeft, CString& csRight, const CString& csBuffer, TCHAR chSep);
+	BOOL SplitString(CString& csLeft, CString& csRight, const CString& csBuffer, TCHAR chSep) const;
 };
 
 //}}AFX_CODEJOCK_PRIVATE
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITSECTIONMANAGER_H__)

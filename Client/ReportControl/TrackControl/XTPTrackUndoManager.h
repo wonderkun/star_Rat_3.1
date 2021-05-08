@@ -1,7 +1,6 @@
 // XTPTrackUndoManager.h: interface for the CXTPTrackUndoManager class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,23 +19,23 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRACKUNDOMANAGER_H__)
-#define __XTPTRACKUNDOMANAGER_H__
+#	define __XTPTRACKUNDOMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "../XTPReportPaintManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-const int XTP_ID_TRACKUNDO_GROUP = -1;                  //The undo group command.
-const int XTP_ID_TRACKUNDO_SETMARKERPOSITION = 1000;    //The undo set marker position command.
-const int XTP_ID_TRACKUNDO_ADDMARKER = 1001;            //The undo add marker command.
-const int XTP_ID_TRACKUNDO_DELETEMARKER = 1002;         //The undo delete marker command.
+const int XTP_ID_TRACKUNDO_GROUP			 = -1;   // The undo group command.
+const int XTP_ID_TRACKUNDO_SETMARKERPOSITION = 1000; // The undo set marker position command.
+const int XTP_ID_TRACKUNDO_ADDMARKER		 = 1001; // The undo add marker command.
+const int XTP_ID_TRACKUNDO_DELETEMARKER		 = 1002; // The undo delete marker command.
 
-const int XTP_ID_TRACKUNDO_ADDBLOCK = 1003;             //The undo add block command.
-const int XTP_ID_TRACKUNDO_DELETEBLOCK = 1004;          //The undo delete block command.
-const int XTP_ID_TRACKUNDO_SETBLOCKPOSITION = 1005;     //The undo set block position command.
+const int XTP_ID_TRACKUNDO_ADDBLOCK			= 1003; // The undo add block command.
+const int XTP_ID_TRACKUNDO_DELETEBLOCK		= 1004; // The undo delete block command.
+const int XTP_ID_TRACKUNDO_SETBLOCKPOSITION = 1005; // The undo set block position command.
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -67,6 +66,7 @@ public:
 	//     An integer value denoting the contained command id.
 	//-----------------------------------------------------------------------
 	int GetID() const;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -78,7 +78,7 @@ protected:
 	virtual void Undo();
 
 protected:
-	const int m_nID;                        //The command id.
+	const int m_nID; // The command id.
 
 	friend class CXTPTrackUndoManager;
 	friend class CXTPTrackUndoGroupCommand;
@@ -91,7 +91,6 @@ protected:
 class _XTP_EXT_CLASS CXTPTrackUndoGroupCommand : public CXTPTrackUndoCommand
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructor, creates a CXTPTrackUndoCommand object.
@@ -134,12 +133,11 @@ public:
 	//-----------------------------------------------------------------------
 	void Add(CXTPTrackUndoCommand* pCommand);
 
-
 protected:
-	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrUndoCommands; //The command collection.
-	CXTPTrackUndoManager* m_pManager;                                       //The undo manager.
+	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrUndoCommands; // The command
+																			// collection.
+	CXTPTrackUndoManager* m_pManager;										// The undo manager.
 	friend class CXTPTrackUndoManager;
-
 };
 
 //-----------------------------------------------------------------------
@@ -175,7 +173,7 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackMarker* m_pMarker; //The track marker object.
+	CXTPTrackMarker* m_pMarker; // The track marker object.
 };
 
 //-----------------------------------------------------------------------
@@ -211,9 +209,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackMarker* m_pMarker; //The track marker object.
+	CXTPTrackMarker* m_pMarker; // The track marker object.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -249,8 +246,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackMarker* m_pMarker; //The track marker object.
-	int m_nOldPosition;         //The old position of the marker.
+	CXTPTrackMarker* m_pMarker; // The track marker object.
+	int m_nOldPosition;			// The old position of the marker.
 };
 
 //-----------------------------------------------------------------------
@@ -286,8 +283,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackBlock* m_pBlock;           //The track block object.
-	CXTPTrackControlItem* m_pOldItem;   //The old track control item.
+	CXTPTrackBlock* m_pBlock;		  // The track block object.
+	CXTPTrackControlItem* m_pOldItem; // The old track control item.
 };
 
 //-----------------------------------------------------------------------
@@ -323,7 +320,7 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackBlock* m_pBlock;   //Pointer to the track block object.
+	CXTPTrackBlock* m_pBlock; // Pointer to the track block object.
 };
 
 //-----------------------------------------------------------------------
@@ -361,9 +358,9 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPTrackBlock* m_pBlock;   //Pointer to the track block object.
-	int m_nOldPosition;         //Old position of the block.
-	int m_nOldLength;           //Old length of the block.
+	CXTPTrackBlock* m_pBlock; // Pointer to the track block object.
+	int m_nOldPosition;		  // Old position of the block.
+	int m_nOldLength;		  // Old length of the block.
 };
 
 //-----------------------------------------------------------------------
@@ -446,24 +443,27 @@ public:
 	void EndGroup();
 
 protected:
-	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrUndoCommands; //The undo commands array.
-	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrRedoCommands; //The redo command array.
+	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrUndoCommands; // The undo commands
+																			// array.
+	CArray<CXTPTrackUndoCommand*, CXTPTrackUndoCommand*> m_arrRedoCommands; // The redo command
+																			// array.
 
-	int m_nUndoContext;                                                     //The undo context.
-	CXTPTrackUndoGroupCommand* m_pUndoGroup;                                //The undo group command.
+	int m_nUndoContext;						 // The undo context.
+	CXTPTrackUndoGroupCommand* m_pUndoGroup; // The undo group command.
 
-
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPTrackUndoManager);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
-AFX_INLINE int CXTPTrackUndoCommand::GetID() const {
+AFX_INLINE int CXTPTrackUndoCommand::GetID() const
+{
 	return m_nID;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTRACKUNDOMANAGER_H__)

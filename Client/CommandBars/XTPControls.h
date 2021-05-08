@@ -1,7 +1,6 @@
 // XTPControls.h : interface for the CXTPControls class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLS_H__)
-#define __XTPCONTROLS_H__
+#	define __XTPCONTROLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBarsDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCommandBar;
 class CXTPControl;
@@ -39,7 +38,7 @@ class CXTPOriginalControls;
 
 //===========================================================================
 // Summary:
-//     CXTPControls is a CCmdTarget derived class. It represents a collection
+//     CXTPControls is a CXTPCmdTarget derived class. It represents a collection
 //     of the controls.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPControls : public CXTPCmdTarget
@@ -47,7 +46,7 @@ class _XTP_EXT_CLASS CXTPControls : public CXTPCmdTarget
 	DECLARE_DYNCREATE(CXTPControls)
 
 private:
-	struct XTPBUTTONINFO;       // Internal helper structure.
+	struct XTPBUTTONINFO; // Internal helper structure.
 
 public:
 	//-----------------------------------------------------------------------
@@ -97,9 +96,13 @@ public:
 	// Returns:
 	//     A pointer to the added control.
 	//-----------------------------------------------------------------------
-	CXTPControl* Add(CXTPControl* pControl, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1, BOOL bTemporary = FALSE);
-	CXTPControl* Add(XTPControlType controlType, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1, BOOL bTemporary = FALSE); //<combine CXTPControls::Add@CXTPControl*@int@LPCTSTR@int@BOOL>
-	CXTPControl* Add(CXTPControl* pControl);//<combine CXTPControls::Add@CXTPControl*@int@LPCTSTR@int@BOOL>
+	CXTPControl* Add(CXTPControl* pControl, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1,
+					 BOOL bTemporary = FALSE);
+	CXTPControl* Add(
+		XTPControlType controlType, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1,
+		BOOL bTemporary = FALSE); //<combine CXTPControls::Add@CXTPControl*@int@LPCTSTR@int@BOOL>
+	CXTPControl* Add(CXTPControl* pControl); //<combine
+											 // CXTPControls::Add@CXTPControl*@int@LPCTSTR@int@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -160,7 +163,8 @@ public:
 	//     Pointer to the CXTPControl object if successful; otherwise returns NULL.
 	//-----------------------------------------------------------------------
 	CXTPControl* FindControl(int nId) const;
-	CXTPControl* FindControl(XTPControlType type, int nId, BOOL bVisible, BOOL bRecursive) const; //<combine CXTPControls::FindControl@int@const>
+	CXTPControl* FindControl(XTPControlType type, int nId, BOOL bVisible,
+							 BOOL bRecursive) const; //<combine CXTPControls::FindControl@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -173,7 +177,6 @@ public:
 	BOOL LoadMenu(CMenu* pMenu);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to retrieve the first control.
@@ -196,7 +199,10 @@ public:
 	//     Index of the next control.
 	//-----------------------------------------------------------------------
 	void GetNext(CXTPControl*& pControl) const;
-	long GetNext(long nIndex, int nDirection = +1, BOOL bKeyboard = TRUE, BOOL bSkipTemporary = FALSE, BOOL bSkipCollapsed = TRUE) const; //<combine CXTPControls::GetNext@CXTPControl*&@const>
+	long GetNext(long nIndex, int nDirection = +1, BOOL bKeyboard = TRUE,
+				 BOOL bSkipTemporary = FALSE,
+				 BOOL bSkipCollapsed = TRUE) const; //<combine
+													// CXTPControls::GetNext@CXTPControl*&@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -220,7 +226,9 @@ public:
 	//     A pointer to a CXTPControl object
 	//-----------------------------------------------------------------------
 	CXTPControl* SetControlType(CXTPControl* pControl, XTPControlType type);
-	CXTPControl* SetControlType(int nIndex, XTPControlType type); // <combine CXTPControls::SetControlType@CXTPControl*@XTPControlType>
+	CXTPControl* SetControlType(
+		int nIndex,
+		XTPControlType type); // <combine CXTPControls::SetControlType@CXTPControl*@XTPControlType>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -247,7 +255,8 @@ public:
 	// Returns:
 	//     Total size of the controls.
 	//-----------------------------------------------------------------------
-	CSize CalcDynamicSize(CDC* pDC, int nLength, DWORD dwMode, const CRect& rcBorder, int nWidth = 0);
+	CSize CalcDynamicSize(CDC* pDC, int nLength, DWORD dwMode, const CRect& rcBorder,
+						  int nWidth = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -362,7 +371,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetOriginalControls(CXTPOriginalControls* pControls);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to compare the controls.
@@ -445,34 +453,73 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnControlRemoving(CXTPControl* pControl);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
 	virtual void RefreshIndexes();
-	static int _cdecl CompareByCaption(const CXTPControl** ppItem1, const CXTPControl** ppItem2);
+	static int AFX_CDECL CompareByCaption(const CXTPControl** ppItem1, const CXTPControl** ppItem2);
 
 protected:
-	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList,
+								XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 	void RestoreCommandBarList(CXTPCommandBarList* pCommandBarList);
 	CSize _CalcSize(XTPBUTTONINFO* pData, BOOL bVert);
 	int _WrapToolBar(XTPBUTTONINFO* pData, int nWidth, DWORD& dwMode);
 	void _SizeFloatableBar(XTPBUTTONINFO* pData, int nLength, DWORD dwMode);
 	void _AdjustBorders(XTPBUTTONINFO* pData, CSize& sizeResult, DWORD dwMode, CRect rcBorder);
-	void _CenterControlsInRow(XTPBUTTONINFO* pData, int nFirst, int nLast, int, BOOL, CSize sizeResult, CRect);
+	void _CenterControlsInRow(XTPBUTTONINFO* pData, int nFirst, int nLast, int, BOOL,
+							  CSize sizeResult, CRect);
 	void _MoveRightAlligned(XTPBUTTONINFO* pData, CSize sizeResult, CRect rcBorder, DWORD dwMode);
-	void  _SizePopupToolBar(XTPBUTTONINFO* pData, DWORD dwMode);
+	void _SizePopupToolBar(XTPBUTTONINFO* pData, DWORD dwMode);
 
 	CSize _CalcSmartLayoutToolBar(CDC* pDC, XTPBUTTONINFO* pData, DWORD& dwMode);
 	CSize _WrapSmartLayoutToolBar(CDC* pDC, XTPBUTTONINFO* pData, int nWidth, DWORD& dwMode);
 	CSize _ReduceSmartLayoutToolBar(CDC* pDC, XTPBUTTONINFO* pData, int nWidth, DWORD& dwMode);
 	void _MakeSameWidth(int nStart, int nLast, int nWidth);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPCommandBar* m_pParent;                          // Parent Command Bar
-	CArray<CXTPControl*, CXTPControl*> m_arrControls;   // Collection of controls
-	CXTPCommandBars* m_pCommandBars;                    // Parent Command Bars
-	CXTPOriginalControls* m_pOriginalControls;          // Original controls collection.
-	BOOL m_bOriginalControls;           // TRUE if all controls are original and unmodified
+	CXTPCommandBar* m_pParent;						  // Parent Command Bar
+	CArray<CXTPControl*, CXTPControl*> m_arrControls; // Collection of controls
+	CXTPCommandBars* m_pCommandBars;				  // Parent Command Bars
+	CXTPOriginalControls* m_pOriginalControls;		  // Original controls collection.
+	BOOL m_bOriginalControls; // TRUE if all controls are original and unmodified
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+
+	CArray<CXTPControl*, CXTPControl*>* CXTPControls::GetArray()
+	{
+		return &m_arrControls;
+	}
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControls);
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleItem(long nIndex);
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg LPDISPATCH OleAdd(long controlType, int nId, LPCTSTR strCaption, const VARIANT& pBefore,
+							  const VARIANT& pTemporary);
+	afx_msg void OleAddControl(LPDISPATCH Control, const VARIANT& pBefore);
+	DECLARE_ENUM_VARIANT(CXTPControls)
+
+	afx_msg LPDISPATCH OleParent();
+	afx_msg LPDISPATCH OleGetOriginalControls();
+	afx_msg LPDISPATCH OleFindControl(const VARIANT& varType, const VARIANT& varId,
+									  const VARIANT& varVisible, const VARIANT& varRecursive);
+
+	enum
+	{
+		dispidCount		  = 1L,
+		dispidAdd		  = 2L,
+		dispidParent	  = 3L,
+		dispidFindControl = 4L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPCommandBar;
 	friend class CXTPCommandBars;
@@ -489,7 +536,6 @@ class _XTP_EXT_CLASS CXTPOriginalControls : public CXTPControls
 	DECLARE_DYNCREATE(CXTPOriginalControls)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPOriginalControls object
@@ -501,21 +547,27 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPControl* CXTPControls::GetAt(int nIndex) const {
+AFX_INLINE CXTPControl* CXTPControls::GetAt(int nIndex) const
+{
 	ASSERT(nIndex < m_arrControls.GetSize());
 	return (nIndex >= 0 && nIndex < m_arrControls.GetSize()) ? m_arrControls.GetAt(nIndex) : NULL;
 }
-AFX_INLINE int CXTPControls::GetCount() const {
+AFX_INLINE int CXTPControls::GetCount() const
+{
 	return (int)m_arrControls.GetSize();
 }
-AFX_INLINE CXTPOriginalControls* CXTPControls::GetOriginalControls() const {
+AFX_INLINE CXTPOriginalControls* CXTPControls::GetOriginalControls() const
+{
 	return m_pOriginalControls;
 }
-AFX_INLINE CXTPCommandBar* CXTPControls::GetParent() const {
+AFX_INLINE CXTPCommandBar* CXTPControls::GetParent() const
+{
 	return m_pParent;
 }
-AFX_INLINE BOOL CXTPControls::IsOriginalControls() const {
+AFX_INLINE BOOL CXTPControls::IsOriginalControls() const
+{
 	return m_bOriginalControls;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLS_H__)

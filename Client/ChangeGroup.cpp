@@ -1,7 +1,7 @@
 // ChangeGroup.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "ChangeGroup.h"
 

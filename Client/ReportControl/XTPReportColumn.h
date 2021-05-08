@@ -1,7 +1,6 @@
 // XTPReportColumn.h: interface for the CXTPReportColumn class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTCOLUMN_H__)
-#define __XTPREPORTCOLUMN_H__
+#	define __XTPREPORTCOLUMN_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
-#include "XTPReportDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportGroups;
 class CXTPReportRecordItemEditOptions;
@@ -43,7 +41,40 @@ class CXTPMarkupUIElement;
 enum XTPReportColumnBestFitMode
 {
 	xtpColumnBestFitModeVisibleData = 0, // Fit by visible column data.
-	xtpColumnBestFitModeAllData     = 1, // Fit by all column data.
+	xtpColumnBestFitModeAllData		= 1, // Fit by all column data.
+};
+
+class _XTP_EXT_CLASS CXTPReportColumnDisplaySettings : public CXTPCmdTarget
+{
+public:
+	CXTPReportColumnDisplaySettings();
+
+	BOOL IsShowIcon() const;
+	void SetShowIcon(BOOL bShowIcon);
+
+	BOOL IsShowText() const;
+	void SetShowText(BOOL bShowText);
+
+protected:
+	BOOL m_bShowIcon; // If TRUE the icon will be shown
+	BOOL m_bShowText; // If TRUE the text will be shown
+};
+
+class _XTP_EXT_CLASS CXTPReportColumnDisplayOptions : public CXTPCmdTarget
+{
+public:
+	CXTPReportColumnDisplayOptions();
+	virtual ~CXTPReportColumnDisplayOptions();
+
+public:
+	CXTPReportColumnDisplaySettings* Column() const;
+	CXTPReportColumnDisplaySettings* FieldChooser() const;
+	CXTPReportColumnDisplaySettings* GroupBy() const;
+
+protected:
+	CXTPReportColumnDisplaySettings* m_pColumn;
+	CXTPReportColumnDisplaySettings* m_pFieldChooser;
+	CXTPReportColumnDisplaySettings* m_pGroupBy;
 };
 
 //===========================================================================
@@ -71,6 +102,8 @@ enum XTPReportColumnBestFitMode
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportColumn : public CXTPCmdTarget
 {
+	DECLARE_DYNAMIC(CXTPReportColumn);
+
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPReportControl;
 	friend class CXTPReportColumns;
@@ -81,7 +114,6 @@ class _XTP_EXT_CLASS CXTPReportColumn : public CXTPCmdTarget
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportColumn object.
@@ -115,11 +147,15 @@ public:
 	// #define COLUMN_MAIL_ICON 1
 	//
 	// CXTPReportControl wndReport;
-	// wndReport.AddColumn(new CXTPReportColumn(COLUMN_ICON, _T("Message Class"), 18, FALSE, COLUMN_MAIL_ICON));
+	// wndReport.AddColumn(new CXTPReportColumn(COLUMN_ICON, _T("Message Class"), 18, FALSE,
+	// COLUMN_MAIL_ICON));
 	// </code>
 	//-----------------------------------------------------------------------
-	CXTPReportColumn(int nItemIndex, LPCTSTR strName, int nWidth, BOOL bAutoSize = TRUE, int nIconID = XTP_REPORT_NOICON , BOOL bSortable = TRUE, BOOL bVisible = TRUE);
-	CXTPReportColumn(int nItemIndex, LPCTSTR strDisplayName, LPCTSTR strInternalName, int nWidth, BOOL bAutoSize = TRUE, int nIconID = XTP_REPORT_NOICON , BOOL bSortable = TRUE, BOOL bVisible = TRUE);
+	CXTPReportColumn(int nItemIndex, LPCTSTR strName, int nWidth, BOOL bAutoSize = TRUE,
+					 int nIconID = XTP_REPORT_NOICON, BOOL bSortable = TRUE, BOOL bVisible = TRUE);
+	CXTPReportColumn(int nItemIndex, LPCTSTR strDisplayName, LPCTSTR strInternalName, int nWidth,
+					 BOOL bAutoSize = TRUE, int nIconID = XTP_REPORT_NOICON, BOOL bSortable = TRUE,
+					 BOOL bVisible = TRUE);
 	// <COMBINE CXTPReportColumn::CXTPReportColumn@int@LPCTSTR@int@BOOL@int@BOOL@BOOL>
 
 	//-----------------------------------------------------------------------
@@ -209,6 +245,14 @@ public:
 	//     The index of the associated record item.
 	//-----------------------------------------------------------------------
 	int GetItemIndex() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the index of the associated record item.
+	// Parameters:
+	//     nItemIndex - The index of the associated record item.
+	//-----------------------------------------------------------------------
+	void SetItemIndex(int nItemIndex);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -348,7 +392,7 @@ public:
 	// See Also:
 	//     SetDrawFooterDivider
 	//-----------------------------------------------------------------------
-	BOOL GetDrawFooterDivider();
+	BOOL GetDrawFooterDivider() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -373,7 +417,7 @@ public:
 	// See Also:
 	//     SetDrawHeaderDivider
 	//-----------------------------------------------------------------------
-	BOOL GetDrawHeaderDivider();
+	BOOL GetDrawHeaderDivider() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -414,15 +458,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns the current column header filterability mode.
-	// Returns:
-	//     TRUE if the column header is filterable FALSE otherwise.
-	// See Also: SetFiltrable
-	//-----------------------------------------------------------------------
-	BOOL IsFiltrable() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Determines if group is highlighted
 	// Returns:
 	//     TRUE if group is highlighted
@@ -438,7 +473,16 @@ public:
 	//     Previous column filterable state.
 	// See Also: IsFiltrable
 	//-----------------------------------------------------------------------
-	BOOL SetFiltrable(BOOL bFiltrable = TRUE);
+	BOOL SetFilterable(BOOL bFilterable = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns if the column is filterable.
+	// Returns:
+	//     TRUE if the column header is filterable FALSE otherwise.
+	// See Also: SetFilterable
+	//-----------------------------------------------------------------------
+	BOOL IsFilterable() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -722,7 +766,7 @@ public:
 
 	// Summary:
 	//     Call this method to set the column auto sized.
-	//Missing MFC function (presented in ActiveX version)
+	// Missing MFC function (presented in ActiveX version)
 	// Parameters:
 	//  bSet - BOOL flag
 	//-----------------------------------------------------------------------
@@ -799,7 +843,7 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to set the number next visual column.
-	// Paramter:
+	// Parameter:
 	//     nNextVisualBlock - An integer specifying the zero based index of the column.
 	// See also:
 	//     m_nNextVisualBlock and GetNextVisualBlock(...)
@@ -872,6 +916,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Retrieves CXTPReportColumnDisplayOptions.
+	// Returns:
+	//     Display options of column
+	//-----------------------------------------------------------------------
+	CXTPReportColumnDisplayOptions* GetDisplayOptions() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to determine if an edit box is added for the items
 	//     in the column.
 	// Returns:
@@ -933,7 +985,7 @@ public:
 	// Returns:
 	//     Internal column name string.
 	//-----------------------------------------------------------------------
-	const CString& GetInternalName() const;
+	CString GetInternalName() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1005,7 +1057,7 @@ public:
 	//-----------------------------------------------------------------------
 	void SetBestFitMode(int nMode);
 
-//private:
+	// private:
 	//{{AFX_CODEJOCK_PRIVATE
 	int GetNormAlignment(int nAlignment) const;
 	int GetBestFitWidth();
@@ -1017,74 +1069,162 @@ public:
 	// Returns:
 	//     pointer to CXTPMarkupUIElement
 	//-----------------------------------------------------------------------
-	CXTPMarkupUIElement* GetMarkupUIElement();
+	CXTPMarkupUIElement* GetMarkupUIElement() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this method to reset Markup element
+	// See Also:
+	//      GetMarkupUIElement, CXTPReportControl::EnableMarkup
+	//-----------------------------------------------------------------------
+	virtual void ResetMarkupUIElement();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to fix or unfix the column.
+	// Parameters:
+	//     bFixed - TRUE to fix the column, FALSE to unfix it.
+	//-----------------------------------------------------------------------
+	void SetFixed(BOOL bFixed);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns whether the column is fixed.
+	// Returns:
+	//     TRUE if the column is fixed, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsFixed() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns whether the column is frozen.
+	// Returns:
+	//     TRUE if the column is frozen, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsFrozen() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to freeze or unfreeze the column.
+	// Parameters:
+	//     bFreeze - TRUE to freeze the column, FALSE to unfreeze it.
+	//-----------------------------------------------------------------------
+	void SetFrozen(BOOL bFrozen);
+
+	BOOL IsAutoNumbering() const;
+
+	void SetAutoNumbering(BOOL bAutoNumbering);
+
+	int GetAutoNumberingBase() const;
+
+	void SetAutoNumberingBase(int nAutoNumberingBase);
 
 private:
-	void _initData(int nItemIndex, LPCTSTR strDisplayName, LPCTSTR strInternalName, int nWidth, BOOL bAutoSize, int nIconID, BOOL bSortable, BOOL bVisible);
+	void _initData(int nItemIndex, LPCTSTR strDisplayName, LPCTSTR strInternalName, int nWidth,
+				   BOOL bAutoSize, int nIconID, BOOL bSortable, BOOL bVisible);
 
 protected:
-	CString m_strInternalName;          // Internal column name (to serialize colunm options).
-	CString m_strName;                  // Column name.
-	CString m_strTooltip;               // Column tooltip.
-	int m_nItemIndex;                   // Column index.
+	CString m_strInternalName; // Internal column name (to serialize colunm options).
+	CString m_strName;		   // Column name.
+	CString m_strTooltip;	  // Column tooltip.
+	int m_nItemIndex;		   // Column index.
 
-	CString m_strFooterText;            // Column Footer Text.
-	CFont   m_fontFooter;               // Column Footer font. If Font handle is NULL - the default font is used.
-	BOOL    m_bDrawFooterDivider;       // If TRUE - draw footer column right divider.
-	BOOL    m_bDrawHeaderDivider;       // If TRUE - draw header column right divider.
+	CString m_strFooterText; // Column Footer Text.
 
-	BOOL m_bSortIncreasing;             // Stores column sort direction (used when m_bSortable is TRUE).
-	BOOL m_bSortable;                   // Determines if the column could be sortable by.
-	BOOL m_bGroupable;                  // Determines if the column could be grouped by.
-	BOOL m_bAutoSortWhenGrouped;        // If TRUE this column will be sortable when grouped by, otherwise it will grouped without sorting by it (sort by  other columns wiil be applied).
+	CXTPFont m_xtpFontFooter; // Column Footer font. If Font handle is NULL - the default font is
+							  // used.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontFooter, m_xtpFontFooter,
+										  GetFooterFontHandle);
+
+	BOOL m_bDrawFooterDivider; // If TRUE - draw footer column right divider.
+	BOOL m_bDrawHeaderDivider; // If TRUE - draw header column right divider.
+
+	BOOL m_bAutoNumbering;	// Enables auto numbering
+	int m_nAutoNumberingBase; // Base index for auto numbering
+
+	BOOL m_bSortIncreasing;		 // Stores column sort direction (used when m_bSortable is TRUE).
+	BOOL m_bSortable;			 // Determines if the column could be sortable by.
+	BOOL m_bGroupable;			 // Determines if the column could be grouped by.
+	BOOL m_bAutoSortWhenGrouped; // Column will be sortable when grouped by, otherwise it will
+								 // grouped without sorting by it (sort by  other columns wiil be
+								 // applied).
+	BOOL m_bFixed;				 // Determines if the column is fixed.
+	BOOL m_bFrozen;				 // Determines if the column is frozen, i.e. not scrollable.
+	BOOL m_bFilterable;			 // Is filtering by this column allowed?.
 
 	BOOL m_bPlusMinus;
 	// Determines if the column have Expand / Collapse right icon (+/-).
-	//See IsPlusMinus() and SetPlusMinus()
+	// See IsPlusMinus() and SetPlusMinus()
 
 	BOOL m_bExpanded;
 	// State of PlusMinus column
 
 	int m_nNextVisualBlock;
 	// Number of next visual columns to show or hide
-	//see SetNextVisualBlock(...) and GetNextVisualBlock()
+	// see SetNextVisualBlock(...) and GetNextVisualBlock()
 
-	BOOL m_bAllowDrag;                  // Allow/disallow dragging of the column
-	BOOL m_bAllowRemove;                // TRUE to allow column remove
+	BOOL m_bAllowDrag;   // Allow/disallow dragging of the column
+	BOOL m_bAllowRemove; // TRUE to allow column remove
 
-	CXTPReportColumns* m_pColumns;      // Stores a pointer to the parent columns collection.
+	CXTPReportColumns* m_pColumns; // Stores a pointer to the parent columns collection.
 
-	int m_nIconID;                      // Associated icon ID.
-	BOOL m_bVisible;                    // Visible state.
-	int m_nOldVisibleIndex;             // Visible index before Hide state.
+	int m_nIconID;			// Associated icon ID.
+	BOOL m_bVisible;		// Visible state.
+	int m_nOldVisibleIndex; // Visible index before Hide state.
 	// Release 13.1
 
-	BOOL m_bFiltrable;                  // Is filtering by this column allowed?.
+	BOOL m_bIsResizable; // Indicates if the column allows width resizing
+	CRect m_rcColumn;	// Saves rectangle where column was drawn last time.
+	CRect m_rcGroupBy;   // Saves rectangle where column was drawn in group box.
+	int m_nMinWidth;	 // Minimal column width. It is not allowed to do it less then minimal.
+	int m_nMaxWidth; // Maximal column width (if set as positive). It is not allowed to do it more
+					 // then maximal.
+	int m_nMaxItemWidth; // Contains maximal width of the corresponding item drawn in the column.
+	int m_nAlignment;	// Alignment mode for column: DT_LEFT || DT_RIGHT || DT_CENTER
 
-	BOOL m_bIsResizable;                // Indicates if the column allows width resizing
-	CRect m_rcColumn;                   // Saves rectangle where column was drawn last time.
-	CRect m_rcGroupBy;                  // Saves rectangle where column was drawn in group box.
-	int m_nMinWidth;                    // Minimal column width. It is not allowed to do it less then minimal.
-	int m_nMaxWidth;                    // Maximal column width (if set as positive). It is not allowed to do it more then maximal.
-	int m_nMaxItemWidth;                // Contains maximal width of the corresponding item drawn in the column.
-	int m_nAlignment;                   // Alignment mode for column: DT_LEFT || DT_RIGHT || DT_CENTER
+	int m_nHeaderAlignment; // Alignment mode for column text: DT_LEFT || DT_RIGHT || DT_CENTER
+	int m_nFooterAlignment; // Alignment mode for column footer text: DT_LEFT || DT_RIGHT ||
+							// DT_CENTER
 
-	int m_nHeaderAlignment;             // Alignment mode for column text: DT_LEFT || DT_RIGHT || DT_CENTER
-	int m_nFooterAlignment;             // Alignment mode for column footer text: DT_LEFT || DT_RIGHT || DT_CENTER
+	int m_nColumnAutoWidth;   // The column automatic width
+	int m_nColumnStaticWidth; // The user defined with.
+	BOOL m_bAutoSize;		  // TRUE if column auto sized.
 
-	int m_nColumnAutoWidth;             // The column automatic width
-	int m_nColumnStaticWidth;           // The user defined with.
-	BOOL m_bAutoSize;                   // TRUE if column auto sized.
+	BOOL m_bShowInFieldChooser; // Indicates if column is shown in the field chooser when the column
+								// is hidden or in the GroupBy Box.
+	BOOL m_bEditable; // Indicates whether an edit box should be added to the items in the column.
+	BOOL m_bDrawHeaderRowsVGrid; // Indicates whether to draw vertical grid for headers rows.
+	BOOL m_bDrawFooterRowsVGrid; // Indicates whether to draw vertical grid for footers rows.
+	int m_nBestFitMode;			 // Best fit mode. See enum XTPReportColumnBestFitMode
 
-	BOOL m_bShowInFieldChooser;         // Indicates if column is shown in the field chooser when the column is hidden or in the GroupBy Box.
-	BOOL m_bEditable;                   // Indicates whether an edit box should be added to the items in the column.
-	BOOL m_bDrawHeaderRowsVGrid;        // Indicates whether to draw vertical grid for headers rows.
-	BOOL m_bDrawFooterRowsVGrid;        // Indicates whether to draw vertical grid for footers rows.
-	int m_nBestFitMode;                 // Best fit mode. See enum XTPReportColumnBestFitMode
+	CXTPReportRecordItemEditOptions* m_pEditOptions;   // Edit options of the column
+	CXTPReportColumnDisplayOptions* m_pDisplayOptions; // Display options of the column
+	CXTPMarkupUIElement* m_pMarkupUIElement;		   // Store Markup Object
 
-	CXTPReportRecordItemEditOptions* m_pEditOptions;    // Edit options of the column
-	CXTPMarkupUIElement* m_pMarkupUIElement;            // Store Markup Object
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportColumn);
+
+	void OleMove(long nIndex);
+	BSTR OleGetFooterText();
+	BSTR OleGetCaption();
+
+	void OleBestFit();
+
+	LPFONTDISP OleGetFooterFont();
+	void OleSetFooterFont(LPFONTDISP pFontDisp);
+
+public:
+	static CXTPReportColumn* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+	LPDISPATCH OleGetEditOptions();
+	COleVariant m_oleTag;
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 };
 
 AFX_INLINE CString CXTPReportColumn::GetCaption() const
@@ -1102,9 +1242,9 @@ AFX_INLINE void CXTPReportColumn::SetIconID(int nIconId)
 	m_nIconID = nIconId;
 }
 
-AFX_INLINE BOOL CXTPReportColumn::IsFiltrable() const
+AFX_INLINE BOOL CXTPReportColumn::IsFilterable() const
 {
-	return m_bFiltrable;
+	return m_bFilterable;
 }
 
 AFX_INLINE BOOL CXTPReportColumn::IsResizable() const
@@ -1115,16 +1255,6 @@ AFX_INLINE BOOL CXTPReportColumn::IsResizable() const
 AFX_INLINE void CXTPReportColumn::EnableResize(BOOL bIsResizable)
 {
 	m_bIsResizable = bIsResizable;
-}
-
-AFX_INLINE BOOL CXTPReportColumn::IsSortable() const
-{
-	return m_bSortable;
-}
-
-AFX_INLINE BOOL CXTPReportColumn::IsGroupable() const
-{
-	return m_bGroupable;
 }
 
 AFX_INLINE BOOL CXTPReportColumn::IsPlusMinus() const
@@ -1152,26 +1282,6 @@ AFX_INLINE BOOL CXTPReportColumn::IsAllowDragging() const
 	return m_bAllowDrag;
 }
 
-AFX_INLINE BOOL CXTPReportColumn::IsAutoSize() const
-{
-	return m_bAutoSize;
-}
-
-AFX_INLINE void CXTPReportColumn::SetAutoSize(BOOL bSet)
-{
-	m_bAutoSize = bSet;
-}
-
-AFX_INLINE void CXTPReportColumn::SetSortable(BOOL bSortable)
-{
-	m_bSortable = bSortable;
-}
-
-AFX_INLINE void CXTPReportColumn::SetGroupable(BOOL bGroupable)
-{
-	m_bGroupable = bGroupable;
-}
-
 AFX_INLINE void CXTPReportColumn::SetAutoSortWhenGrouped(BOOL bAutoSortWhenGrouped)
 {
 	m_bAutoSortWhenGrouped = bAutoSortWhenGrouped;
@@ -1187,15 +1297,108 @@ AFX_INLINE CXTPReportRecordItemEditOptions* CXTPReportColumn::GetEditOptions() c
 	return m_pEditOptions;
 }
 
+AFX_INLINE CXTPReportColumnDisplayOptions* CXTPReportColumn::GetDisplayOptions() const
+{
+	return m_pDisplayOptions;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE void CXTPReportColumn::SetAutoSize(BOOL bSet)
+{
+	m_bAutoSize = bSet;
+}
+
+AFX_INLINE BOOL CXTPReportColumn::IsAutoSize() const
+{
+	return m_bAutoSize;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE void CXTPReportColumn::SetFixed(BOOL bFixed)
+{
+	m_bFixed = bFixed;
+}
+
+AFX_INLINE BOOL CXTPReportColumn::IsFixed() const
+{
+	return m_bFixed;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE BOOL CXTPReportColumn::IsFrozen() const
+{
+	return m_bFrozen;
+}
+
+AFX_INLINE void CXTPReportColumn::SetFrozen(BOOL bFrozen)
+{
+	m_bFrozen = bFrozen;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE BOOL CXTPReportColumn::IsAutoNumbering() const
+{
+	return m_bAutoNumbering;
+}
+
+AFX_INLINE void CXTPReportColumn::SetAutoNumbering(BOOL bAutoNumbering)
+{
+	m_bAutoNumbering = bAutoNumbering;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE int CXTPReportColumn::GetAutoNumberingBase() const
+{
+	return m_nAutoNumberingBase;
+}
+
+AFX_INLINE void CXTPReportColumn::SetAutoNumberingBase(int nAutoNumberingBase)
+{
+	m_nAutoNumberingBase = nAutoNumberingBase;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE void CXTPReportColumn::SetGroupable(BOOL bGroupable)
+{
+	m_bGroupable = bGroupable;
+}
+
+AFX_INLINE BOOL CXTPReportColumn::IsGroupable() const
+{
+	return m_bGroupable;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE void CXTPReportColumn::SetSortable(BOOL bSortable)
+{
+	m_bSortable = bSortable;
+}
+
+AFX_INLINE BOOL CXTPReportColumn::IsSortable() const
+{
+	return m_bSortable;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
 AFX_INLINE BOOL CXTPReportColumn::IsEditable() const
 {
 	return m_bEditable;
 }
 
-AFX_INLINE void CXTPReportColumn::SetEditable(BOOL bEditable /*= TRUE*/)
+AFX_INLINE void CXTPReportColumn::SetEditable(BOOL bEditable)
 {
 	m_bEditable = bEditable;
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 AFX_INLINE void CXTPReportColumn::AllowRemove(BOOL bAllow)
 {
@@ -1206,6 +1409,8 @@ AFX_INLINE BOOL CXTPReportColumn::IsAllowRemove() const
 {
 	return m_bAllowRemove;
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 AFX_INLINE CString CXTPReportColumn::GetTooltip() const
 {
@@ -1227,17 +1432,17 @@ AFX_INLINE void CXTPReportColumn::SetHeaderAlignment(int nAlignment)
 	m_nHeaderAlignment = nAlignment;
 }
 
-AFX_INLINE BOOL CXTPReportColumn::GetDrawFooterDivider()
+AFX_INLINE BOOL CXTPReportColumn::GetDrawFooterDivider() const
 {
 	return m_bDrawFooterDivider;
 }
 
-AFX_INLINE BOOL CXTPReportColumn::GetDrawHeaderDivider()
+AFX_INLINE BOOL CXTPReportColumn::GetDrawHeaderDivider() const
 {
 	return m_bDrawHeaderDivider;
 }
 
-AFX_INLINE const CString& CXTPReportColumn::GetInternalName() const
+AFX_INLINE CString CXTPReportColumn::GetInternalName() const
 {
 	return m_strInternalName;
 }
@@ -1277,8 +1482,10 @@ AFX_INLINE void CXTPReportColumn::SetBestFitMode(int nMode)
 	m_nBestFitMode = nMode;
 }
 
-AFX_INLINE CXTPMarkupUIElement* CXTPReportColumn::GetMarkupUIElement()
+AFX_INLINE CXTPMarkupUIElement* CXTPReportColumn::GetMarkupUIElement() const
 {
 	return m_pMarkupUIElement;
 }
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTCOLUMN_H__)

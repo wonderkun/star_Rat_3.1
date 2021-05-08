@@ -1,7 +1,6 @@
 // XTPPaintManager.h : interface for the CXTPPaintManager class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPAINTMANAGER_H__)
-#define __XTPPAINTMANAGER_H__
+#	define __XTPPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBarsDefines.h"
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
-#include "Common/XTPDrawHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+class CXTPWinThemeWrapper;
 class CXTPControlButton;
 class CXTPControlPopup;
 class CXTPControl;
@@ -44,37 +41,45 @@ class CXTPTabControl;
 class CXTPDockBar;
 class CXTPControlEdit;
 class CXTPImageManagerIcon;
+class CXTPDialogBar;
+
 class CXTPStatusBar;
 class CXTPStatusBarPane;
 class CXTPStatusBarSwitchPane;
-class CXTPDialogBar;
+class CXTPStatusBarPaintManager;
+
 class CXTPMessageBar;
 class CXTPMessageBarButton;
-class CXTPCommandBarKeyboardTip;
-class CXTPRibbonPaintManager;
+class CXTPMessageBarPaintManager;
 
-class CXTPBufferDC;
+class CXTPCommandBarKeyboardTip;
+class CXTPShadowManager;
+class CXTPResourceImages;
+class CXTPResourceImage;
+
+// Paint manager
+class CXTPRibbonPaintManager;
 class CXTPControlGalleryPaintManager;
 class CXTPSliderPaintManager;
-class CXTPShadowManager;
 class CXTPProgressPaintManager;
 class CXTPFramePaintManager;
+class CXTPScrollBarPaintManager;
 
 //-----------------------------------------------------------------------
 // Summary:
 //     Special control with extended drawing.
 // See Also: CXTPPaintManager::DrawSpecialControl
 //
-// <KEYWORDS xtpButtonExpandToolbar, xtpButtonExpandMenu, xtpButtonHideFloating, xtpButtonExpandFloating, xtpButtonCustomize>
+// <KEYWORDS xtpButtonExpandToolbar, xtpButtonExpandMenu, xtpButtonHideFloating,
+// xtpButtonExpandFloating, xtpButtonCustomize>
 //-----------------------------------------------------------------------
 enum XTPSpecialControl
 {
 	xtpButtonExpandToolbar, // Control is option button of docking toolbar.
-	xtpButtonExpandMenu,    // Control is expand button of popup bar.
+	xtpButtonExpandMenu,	// Control is expand button of popup bar.
 	xtpButtonHideFloating,  // Control is hide button of floating toolbar.
 	xtpButtonExpandFloating // Control is option button of floating toolbar.
 };
-
 
 //------------------------------------------------------------------------
 // Summary:
@@ -85,10 +90,12 @@ enum XTPSpecialControl
 //------------------------------------------------------------------------
 struct XTP_COMMANDBARS_ICONSINFO
 {
-	BOOL bUseFadedIcons;    // If TRUE, Icons will appear faded.
+	BOOL bUseFadedIcons;	// If TRUE, Icons will appear faded.
 	BOOL bUseDisabledIcons; // If TRUE, disabled icons will be used when the control is disabled.
-	BOOL bIconsWithShadow;  // If TRUE, when the mouse pointer is moved over a command bar control, the icons will appear to "jump" away from the screen casting a shadow.
-	BOOL bOfficeStyleDisabledIcons;  // If TRUE, Office 2003 style disabled icons will be drawn when using disabled icons.
+	BOOL bIconsWithShadow;  // If TRUE, when the mouse pointer is moved over a command bar control,
+						   // the icons will appear to "jump" away from the screen casting a shadow.
+	BOOL bOfficeStyleDisabledIcons; // If TRUE, Office 2003 style disabled icons will be drawn when
+									// using disabled icons.
 };
 
 //===========================================================================
@@ -98,14 +105,13 @@ struct XTP_COMMANDBARS_ICONSINFO
 class _XTP_EXT_CLASS CXTPPaintManagerFont : public CFont
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPaintManagerFont object.
 	//-----------------------------------------------------------------------
 	CXTPPaintManagerFont()
+		: m_bStandardFont(TRUE)
 	{
-		m_bStandardFont = TRUE;
 	}
 
 	//-----------------------------------------------------------------------
@@ -114,17 +120,7 @@ public:
 	// Parameters:
 	//     lpLogFont - Application defined font
 	//-----------------------------------------------------------------------
-	BOOL SetCustomFont(const LOGFONT* lpLogFont)
-	{
-		m_bStandardFont = (lpLogFont == NULL);
-		if (lpLogFont)
-		{
-			DeleteObject();
-			return CreateFontIndirect(lpLogFont);
-		}
-		return TRUE;
-	}
-
+	BOOL SetCustomFont(const LOGFONT* lpLogFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -133,10 +129,7 @@ public:
 	//      bCustomFont - TRUE if custom font used
 	// See Also: SetStandardFont
 	//-----------------------------------------------------------------------
-	void SetCustomFont(BOOL bCustomFont)
-	{
-		m_bStandardFont = !bCustomFont;
-	}
+	void SetCustomFont(BOOL bCustomFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -144,30 +137,93 @@ public:
 	// Parameters:
 	//     lpLogFont - PaintManager's defined font
 	//-----------------------------------------------------------------------
-	BOOL SetStandardFont(const LOGFONT* lpLogFont)
-	{
-		if (lpLogFont && (m_bStandardFont || !GetSafeHandle()))
-		{
-			DeleteObject();
-			return CreateFontIndirect(lpLogFont);
-		}
-		return TRUE;
-	}
+	BOOL SetStandardFont(const LOGFONT* lpLogFont);
 
 protected:
 	BOOL m_bStandardFont; // TRUE to use standard font;
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+#	define XTP_COMMANDBAR_MIN_FONT_HEIGHT 10
+#	define XTP_COMMANDBAR_MIN_CONTROL_HEIGHT                                                      \
+		(XTP_COMMANDBAR_MIN_FONT_HEIGHT + (XTP_COMMANDBAR_MIN_FONT_HEIGHT * 80) / 100)
+#	define XTP_COMMANDBAR_SPLITBUTTON_DROPDOWN_WIDTH (XTP_COMMANDBAR_MIN_FONT_HEIGHT + 1)
+#	define XTP_COMMANDBAR_TRIANGLE_SIZE XTP_DPI_Y(10)
+#	define XTP_COMMANDBAR_BUTTON_TEXT_OFFSET XTP_DPI_Y(2)
+
+#	define XTP_COMMANDBAR_TEXT_HEIGHT_FACTOR 110
+#	define XTP_COMMANDBAR_CONTROL_HEIGHT_FACTOR 190
+//}}AFX_CODEJOCK_PRIVATE
+
+class CXTPControlGalleryItem;
+class CXTPPaintManager;
+XTP_FORWARD_ENUM(XTPPrimitiveSymbol);
+
+struct IXTPPaintManagerEvents
+{
+	virtual void OnPaintManagerDestroyed(CXTPPaintManager* /*pPaintManager*/)
+	{
+	}
 };
 
 //===========================================================================
 // Summary:
 //     Paint manager of the command bars.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPaintManager : public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPPaintManager
+	: public CXTPCmdTarget
+	, public CXTPObservable<CXTPPaintManager, IXTPPaintManagerEvents>
 {
 	DECLARE_DYNAMIC(CXTPPaintManager)
+
+	class CGlobalPaintManagerPtr;
+	friend class CGlobalPaintManagerPtr;
+
 private:
-	friend class CXTPPaintManager* XTPPaintManager();
-	class CPaintManagerDestructor;
+	friend _XTP_EXT_CLASS CXTPPaintManager* AFX_CDECL XTPPaintManager();
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains a pointer to a global paint manager object and increments
+	//     its reference counter. If paint manager object has not yet been
+	//     created then the function creates it and initializes its default
+	//     state.
+	// Returns:
+	//     A pointer to a global paint manager object.
+	//-----------------------------------------------------------------------
+	static CXTPPaintManager* AFX_CDECL GetInstanceAddRef();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Decrements global paint manager's reference counter and deletes
+	//     its instance when the reference counter reaches 0. Does nothing
+	//     if global paint manager has not been created.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL ReleaseInstance();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Specifies the resource that contains the bitmaps to be loaded for the
+	//     theme.  This allows images to be loaded from something other than bitmap files.
+	// Parameters:
+	//     hResource - Handle to a visual style dll file handle. Or
+	//                 some other resource that contains the images
+	//                 to load for the theme.
+	//     lpszIniFileName - String identifier of ini file with color specifications
+	// Remarks:
+	//     The images are the bitmaps that represent all the visual components
+	//     of the Ribbon Bar.  For example tab buttons, group buttons, menu buttons,
+	//     toolbar buttons, option button, toolbar dropdown, etc.
+	//     The images are loaded using LoadImage and are stored in the m_pImages
+	//     image collection.
+	//     Images for the Office 2007 theme can be found in the \Source\Ribbon\Res
+	//     folder.
+	// Example:
+	//     <code>XTPPaintManager()->SetImageHandle(XTPSkinManager()->GetResourceFile()->GetModuleHandle());</code>
+	// See Also: LoadImage, m_pImages
+	//-----------------------------------------------------------------------
+	virtual void SetImageHandle(HMODULE hResource, LPCTSTR lpszIniFileName);
 
 public:
 	//-----------------------------------------------------------------------
@@ -263,7 +319,8 @@ public:
 	// Returns:
 	//     Size of the control.
 	//-----------------------------------------------------------------------
-	virtual CSize DrawListBoxControl(CDC* pDC, CXTPControl* pButton, CRect rc, BOOL bSelected, BOOL bDraw, CXTPCommandBars* pCommandBars = 0) = 0;
+	virtual CSize DrawListBoxControl(CDC* pDC, CXTPControl* pButton, CRect rc, BOOL bSelected,
+									 BOOL bDraw, CXTPCommandBars* pCommandBars = 0) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -303,7 +360,9 @@ public:
 	//     barType     - Parent's bar type
 	//     barPosition - Parent's bar position.
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition) = 0;
+	virtual COLORREF GetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled,
+										   BOOL bChecked, BOOL bPopuped, XTPBarType barType,
+										   XTPBarPosition barPosition) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -318,8 +377,37 @@ public:
 	//     bPopuped    - TRUE if the control is popuped.
 	//     barType     - Parent's bar type
 	//     barPosition - Parent's bar position.
+	//     nID         - Bar's control ID.
 	//-----------------------------------------------------------------------
-	virtual void DrawRectangle(CDC* pDC, CRect rc, BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition) = 0;
+	virtual void DrawRectangle(CDC* pDC, CRect rc, BOOL bSelected, BOOL bPressed, BOOL bEnabled,
+							   BOOL bChecked, BOOL bPopuped, XTPBarType barType,
+							   XTPBarPosition barPosition) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw the background for a Gallery menu item.
+	// Parameters:
+	//     pDC         - Pointer to a valid device context
+	//     rc          - Rectangle to draw.
+	//     bSelected   - TRUE if the control is selected.
+	//     bPressed    - TRUE if the control is pushed.
+	//     bEnabled    - TRUE if the control is enabled.
+	//     bChecked    - TRUE if the control is checked.
+	//     barType     - Parent's bar type
+	//-----------------------------------------------------------------------
+	virtual void DrawGalleryItemBack(CDC* pDC, CRect rcItem, BOOL bEnabled, BOOL bSelected,
+									 BOOL bPressed, BOOL bChecked, XTPBarType barType);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to fill the control's face
+	// Parameters:
+	//     pDC  - Pointer to a valid device context
+	//     pBar - Points to a CXTPControl object to draw.
+	// Returns:
+	//     TRUE if the rectange was drawn, otherwise returns FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL DrawRectangle(CDC* pDC, CXTPControl* pButton);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -344,7 +432,24 @@ public:
 	// Returns:
 	//     This method is called to draw a command bar's separator.
 	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarSeparator(CDC* pDC, CXTPCommandBar* pBar, CXTPControl* pControl, BOOL bDraw = TRUE) = 0;
+	virtual CSize DrawCommandBarSeparator(CDC* pDC, CXTPCommandBar* pBar, CXTPControl* pControl,
+										  BOOL bDraw = TRUE) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw a command bar's group separator.
+	// Parameters:
+	//     pDC      - Pointer to a valid device context
+	//     pBar     - Points to a CXTPCommandBar object
+	//     pLeftControl - Points to a left CXTPControl object
+	//     pRightControl - Points to a left CXTPControl object
+	//     bDraw    - TRUE to draw; FALSE to retrieve the size of the separator.
+	// Returns:
+	//     This method is called to draw a command bar's separator.
+	//-----------------------------------------------------------------------
+	virtual void DrawCommandBarGroupSeparator(CDC* pDC, CXTPCommandBar* pBar,
+											  CXTPControl* pLeftControl, CXTPControl* pRightControl,
+											  BOOL bDraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -358,61 +463,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw a single pane text of the status bar.
-	// Parameters:
-	//     pDC     - Pointer to a valid device context.
-	//     pPane - The status bar pane need to draw.
-	//     rcItem - Item rectangle.
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarPaneEntry(CDC* pDC, CRect rcItem, CXTPStatusBarPane* pPane);
-
-	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          rcItem - Item rectangle.
-	//          pPane - The status bar pane need to draw.
-	// Summary: This method is called to draw a status bar button.
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarButtonFace(CDC* pDC, CRect rcItem, CXTPStatusBarPane* pPane);
-
-	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          rcItem - Item rectangle.
-	//          pPane - The status bar pane need to draw.
-	// Summary: This method is called to draw a status bar switch pane.
-	// Returns: Returns width of switch pane
-	//-----------------------------------------------------------------------
-	virtual int DrawStatusBarSwitchPane(CDC* pDC, CRect rcItem, CXTPStatusBarSwitchPane* pPane);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw frame of single cell of status bar.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rc - CRect object specifying size of area.
-	//     pPane - The status bar pane need to draw.
-	//     bGripperPane - TRUE if pane is last cell of status bar
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarPaneBorder(CDC* pDC, CRect rc, CXTPStatusBarPane* pPane, BOOL bGripperPane);
-
-	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          rc - CRect object specifying size of area.
-	//          pPane - The status bar pane need to draw.
-	// Summary: This method is called to draw a status bar switch pane separator.
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarPaneSeparator(CDC* pDC, CRect rc, CXTPStatusBarPane* pPane);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the status bar's gripper.
-	// Parameters:
-	//     pDC      - Pointer to a valid device context
-	//     rcClient - Client rectangle of the status bar.
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarGripper(CDC* pDC, CRect rcClient);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     This method is called to fill a dockbar.
 	// Parameters:
 	//     pDC  - Pointer to a valid device context
@@ -421,27 +471,14 @@ public:
 	virtual void FillDockBar(CDC* pDC, CXTPDockBar* pBar);
 
 	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          pBar - Points to a CXTPMessageBar object.
-	// Summary: Draws the message bar.
-	//-----------------------------------------------------------------------
-	virtual void FillMessageBar(CDC* pDC, CXTPMessageBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          pButton - Button to draw.
-	// Summary: Call this member to draw a button in the message bar.
-	//-----------------------------------------------------------------------
-	virtual void DrawMessageBarButton(CDC* pDC, CXTPMessageBarButton* pButton);
-
-	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to fill a status bar.
+	//     Draws workspace space
 	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     pBar - Points to a CXTPStatusBar object
+	//     pDC - Pointer to device context
+	//     rc - Bounding rectangle
+	//     rcExclude - Excluded rectangle
 	//-----------------------------------------------------------------------
-	virtual void FillStatusBar(CDC* pDC, CXTPStatusBar* pBar);
+	virtual void FillWorkspace(CDC* pDC, CRect rc, CRect rcExclude);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -459,6 +496,27 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Draw expand or hidden glyphs for a button.
+	// Parameters:
+	//     pDC           - Output device context pointer.
+	//     pButton       - Target button pointer.
+	//     pt0, pt1, pt2 - Expand glyph triangle coordinates.
+	//     clr           - Glyph color.
+	//     bVertical     - TRUE if vertically positioned glyph is to be drawn.
+	//----------------------------------------------------------------------
+	virtual void DrawExpandGlyph(CDC* pDC, CXTPControl* pButton, CPoint pt0, CPoint pt1, CPoint pt2,
+								 COLORREF clr);
+	virtual void DrawExpandGlyph(
+		CDC* pDC, CXTPControl* pButton, COLORREF clr,
+		BOOL bVertical); // <combine
+						 // CXTPPaintManager::DrawExpandGlyph@CDC*@CXTPControl*@CPoint@CPoint@CPoint@COLORREF>
+	virtual void DrawHiddenGlyph(
+		CDC* pDC, CXTPControl* pButton, COLORREF clr,
+		BOOL bVertical); // <combine
+						 // CXTPPaintManager::DrawExpandGlyph@CDC*@CXTPControl*@CPoint@CPoint@CPoint@COLORREF>
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This method is called to draw the specified controls.
 	// Parameters:
 	//     pDC         - Pointer to a valid device context
@@ -471,7 +529,8 @@ public:
 	// Returns:
 	//     Size of the control.
 	//-----------------------------------------------------------------------
-	virtual CSize DrawSpecialControl(CDC* pDC, XTPSpecialControl controlType, CXTPControl* pButton, CXTPCommandBar* pBar, BOOL bDraw, LPVOID lpParam);
+	virtual CSize DrawSpecialControl(CDC* pDC, XTPSpecialControl controlType, CXTPControl* pButton,
+									 CXTPCommandBar* pBar, BOOL bDraw, LPVOID lpParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -519,7 +578,10 @@ public:
 	//     bPopuped      - TRUE if the control is popuped.
 	//     bToolBarImage - TRUE if it is a toolbar image.
 	//-----------------------------------------------------------------------
-	virtual void DrawImage(CDC* pDC, CPoint pt, CSize sz, CXTPImageManagerIcon* pImage, BOOL bSelected, BOOL bPressed, BOOL bEnabled = TRUE, BOOL bChecked = FALSE, BOOL bPopuped = FALSE, BOOL bToolBarImage = TRUE) = 0;
+	virtual void DrawImage(CDC* pDC, CPoint pt, CSize sz, CXTPImageManagerIcon* pImage,
+						   BOOL bSelected, BOOL bPressed, BOOL bEnabled = TRUE,
+						   BOOL bChecked = FALSE, BOOL bPopuped = FALSE,
+						   BOOL bToolBarImage = TRUE) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -564,7 +626,20 @@ public:
 	//     bEnabled - TRUE if control is enabled
 	// Returns: Size of check box mark
 	//-----------------------------------------------------------------------
-	virtual CSize DrawControlCheckBoxMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected, BOOL bPressed, BOOL bChecked, BOOL bEnabled);
+	virtual CSize DrawControlCheckBoxMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected,
+										  BOOL bPressed, BOOL bChecked, BOOL bEnabled);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw check box mark area
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pButton - Pointer to the checkbox control
+	//     rc - Bounding rectangle of the check box itself (not control)
+	//     bDraw - TRUE to draw; FALSE to find size
+	// Returns: Size of check box mark
+	//-----------------------------------------------------------------------
+	virtual CSize DrawControlCheckBoxMark(CDC* pDC, CXTPControl* pButton, CRect rc, BOOL bDraw);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -579,23 +654,23 @@ public:
 	//     bEnabled - TRUE if control is enabled
 	// Returns: Size of radio button mark
 	//-----------------------------------------------------------------------
-	virtual CSize DrawControlRadioButtonMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected, BOOL bPressed, BOOL bChecked, BOOL bEnabled);
+	virtual CSize DrawControlRadioButtonMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected,
+											 BOOL bPressed, BOOL bChecked, BOOL bEnabled);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw popup bar right gripper.
 	// Parameters:
 	//     pDC       - Points to a valid device context.
-	//     xPos         - Specifies the logical x coordinate of the upper-left corner of the rectangle.
-	//     yPos         - Specifies the logical y coordinate of the upper-left corner of the destination rectangle.
-	//     cx        - Specifies the width of the rectangle.
-	//     cy        - Specifies the height of the rectangle.
-	//     bExpanded - TRUE if expanded.gripper.
+	//     xPos         - Specifies the logical x coordinate of the upper-left corner of the
+	//     rectangle. yPos         - Specifies the logical y coordinate of the upper-left corner of
+	//     the destination rectangle. cx        - Specifies the width of the rectangle. cy        -
+	//     Specifies the height of the rectangle. bExpanded - TRUE if expanded.gripper.
 	//-----------------------------------------------------------------------
-	virtual void DrawPopupBarGripper(CDC* pDC, int xPos, int yPos, int cx, int cy, BOOL bExpanded = FALSE);
+	virtual void DrawPopupBarGripper(CDC* pDC, int xPos, int yPos, int cx, int cy,
+									 BOOL bExpanded = FALSE);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates new PaintManager pointer.
@@ -620,7 +695,7 @@ public:
 	//     * <b>xtpThemeOffice2000</b> Enables Office 2000 theme.
 	//     * <b>xtpThemeOffice2003</b> Enables Office 2003 theme.
 	//     * <b>xtpThemeNativeWinXP</b> Enables Windows XP themes support.
-	//     * <b>xtpThemeWhidbey</b> Enables Visual Studio 2005 theme.
+	//     * <b>xtpThemeVisualStudio2005</b> Enables Visual Studio 2005 theme.
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL SetTheme(XTPPaintTheme paintTheme);
 
@@ -638,13 +713,10 @@ public:
 	// Returns:
 	//     The current theme.
 	//-----------------------------------------------------------------------
-	XTPPaintTheme GetCurrentTheme() { return m_themeCurrent;}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to destroy a paint manager object.
-	//-----------------------------------------------------------------------
-	static void AFX_CDECL Done();
+	XTPPaintTheme GetCurrentTheme()
+	{
+		return m_themeCurrent;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -654,8 +726,16 @@ public:
 	//-----------------------------------------------------------------------
 	virtual XTPPaintTheme BaseTheme() = 0;
 
-public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Used by the paint manager to determine if the theme requires a
+	//     resource DLL to load image and color information.
+	// Returns:
+	//     Returns TRUE if the theme requires a resource DLL, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL RequiresResourceImages();
 
+public:
 	// ---------------------------------------------------------------------
 	// Summary:
 	//     Call this member to retrieve the font of the command bar control.
@@ -767,14 +847,26 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Computes default command bar size taking into account command bar font.
+	//     Command bar elements sizes are not considered.
+	// Returns:
+	//     Default command bar size.
+	//-----------------------------------------------------------------------
+	virtual CSize GetDefaultCommandBarSize(CXTPCommandBar* pBar);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Draws a rectangle.
 	// Parameters:
-	//     pDC    - Pointer to a valid device context
-	//     rc     - Specifies the rectangle in logical units.
-	//     nPen   - Specifies the color used to paint the rectangle.
-	//     nBrush - Specifies the color used to fill the rectangle.
+	//     pDC      - Pointer to a valid device context
+	//     rc       - Specifies the rectangle in logical units.
+	//     nPen     - Specifies the color used to paint the rectangle.
+	//     nBrush   - Specifies the color used to fill the rectangle.
+	//     clrPen   - Specifies the color used to paint the rectangle.
+	//     clrBrush - Specifies the color used to fill the rectangle.
 	//-----------------------------------------------------------------------
-	void Rectangle(CDC* pDC, CRect rc, int nPen, int nBrush);
+	void Rectangle(CDC* pDC, LPCRECT rc, int nPen, const int nBrush);
+	void Rectangle(CDC* pDC, LPCRECT rc, COLORREF clrPen, COLORREF clrBrush);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -787,7 +879,22 @@ public:
 	//     nBottomRight - Specifies the color of the bottom and right sides
 	//                    of the three-dimensional rectangle.
 	//-----------------------------------------------------------------------
-	void Draw3dRect(CDC* pDC, CRect rc, int nTopLeft, int nBottomRight);
+	void Draw3dRect(CDC* pDC, LPCRECT rc, int nTopLeft, int nBottomRight);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to draw a rectangle with predetermined thickness.
+	//
+	// Parameters:
+	//     pDC				- Pointer to a valid device context
+	//     rc				- Specifies the rectangle in logical units.
+	//	   frameThickness	- thickness of rectangle frame.
+	//     nPen				- Specifies the color used to paint the rectangle.
+	//     nBrush			- Specifies the color used to fill the rectangle.
+	//     clrPen			- Specifies the color used to paint the rectangle.
+	//     clrBrush			- Specifies the color used to fill the rectangle.
+	//-----------------------------------------------------------------------
+	void Draw3dRect(CDC* pDC, LPCRECT rc, int frameThickness, COLORREF clrPen, COLORREF clrBrush);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -806,7 +913,8 @@ public:
 	//          clr - Color to fill.
 	// Summary: Call this member function to draw a check mark.
 	//-----------------------------------------------------------------------
-	void DrawCheckMark(CDC* pDC, CRect rcCheck, COLORREF clr = 0) {
+	void DrawCheckMark(CDC* pDC, CRect rcCheck, COLORREF clr = 0)
+	{
 		DrawPopupBarCheckMark(pDC, rcCheck, TRUE, clr);
 	}
 
@@ -844,20 +952,47 @@ public:
 	// Summary:
 	//     Draws a line.
 	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     p0  - Specifies the logical coordinates of the start position.
-	//     p1  - Specifies the logical coordinates of the endpoint for the line.
-	//     x0   - Specifies the logical x coordinate of the start position.
-	//     y0   - Specifies the logical y coordinate of the start position.
-	//     x1   - Specifies the logical x coordinate of the endpoint for the line.
-	//     y1   - Specifies the logical y coordinate of the endpoint for the line.
-	//     nPen - Specifies the color used to paint the line.
-	//     clrPen - Specifies the color used to paint the line.
+	//     pDC    - Pointer to a valid device context
+	//     p0     - Specifies the logical coordinates of the start position.
+	//     p1     - Specifies the logical coordinates of the endpoint for the line.
+	//     x0     - Specifies the logical x coordinate of the start position.
+	//     y0     - Specifies the logical y coordinate of the start position.
+	//     x1     - Specifies the logical x coordinate of the endpoint for the line.
+	//     y1     - Specifies the logical y coordinate of the endpoint for the line.
+	//     nPen   - Specifies the index of the color used to paint the line.
+	//     clrPen - RGB value that specifies the color used to paint the line.
 	//-----------------------------------------------------------------------
 	void Line(CDC* pDC, CPoint p0, CPoint p1);
-	void Line(CDC* pDC, int x0, int y0, int x1, int y1, int nPen); //<combine CXTPPaintManager::Line@CDC*@CPoint@CPoint>
-	void HorizontalLine(CDC* pDC, int x0, int y0, int x1, COLORREF clrPen); //<combine CXTPPaintManager::Line@CDC*@CPoint@CPoint>
-	void VerticalLine(CDC* pDC, int x0, int y0, int y1, COLORREF clrPen); //<combine CXTPPaintManager::Line@CDC*@CPoint@CPoint>
+	void Line(CDC* pDC, int x0, int y0, int x1, int y1,
+			  const int nPen); //<combine CXTPPaintManager::Line@CDC*@CPoint@CPoint>
+	void Line(CDC* pDC, int x0, int y0, int x1, int y1,
+			  COLORREF clrPen); //<combine CXTPPaintManager::Line@CDC*@CPoint@CPoint>
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//    Call this member function to draw a horizontal line using the specified
+	//    coordinages and RGB color value.
+	// Parameters:
+	//     pDC    - Pointer to a valid device context
+	//     x0     - Specifies the logical x coordinate of the start position.
+	//     y0     - Specifies the logical y coordinate of the start position.
+	//     x1     - Specifies the logical x coordinate of the endpoint for the line.
+	//     clrPen - RGB value that specifies the color used to paint the line.
+	//-----------------------------------------------------------------------
+	void HorizontalLine(CDC* pDC, int x0, int y0, int x1, COLORREF clrPen);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//    Call this member function to draw a vertical line using the specified
+	//    coordinages and RGB color value.
+	// Parameters:
+	//     pDC    - Pointer to a valid device context
+	//     x0     - Specifies the logical x coordinate of the start position.
+	//     y0     - Specifies the logical y coordinate of the start position.
+	//     y1     - Specifies the logical y coordinate of the endpoint for the line.
+	//     clrPen - RGB value that specifies the color used to paint the line.
+	//-----------------------------------------------------------------------
+	void VerticalLine(CDC* pDC, int x0, int y0, int y1, COLORREF clrPen);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -871,7 +1006,8 @@ public:
 	//     bEnabled    - TRUE if the control is enabled.
 	//     bVert       - TRUE if control is vertical
 	//-----------------------------------------------------------------------
-	virtual void DrawDropDownGlyph(CDC* pDC, CXTPControl* pControl, CPoint pt, BOOL bSelected, BOOL bPopuped, BOOL bEnabled, BOOL bVert);
+	virtual void DrawDropDownGlyph(CDC* pDC, CXTPControl* pControl, CPoint pt, BOOL bSelected,
+								   BOOL bPopuped, BOOL bEnabled, BOOL bVert);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -897,7 +1033,8 @@ public:
 	//                   rectangle. This parameter is optional and may be set to
 	//                   NULL.
 	// -------------------------------------------------------------------------
-	void GradientFill(CDC* pDC, LPRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz, LPCRECT lpRectClip = NULL);
+	void GradientFill(CDC* pDC, LPRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz,
+					  LPCRECT lpRectClip = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -932,7 +1069,8 @@ public:
 	//                   take.
 	//     bExpandDown - TRUE to animate expanding top-to-bottom; FALSE to animate  bottom-to-top.
 	//-----------------------------------------------------------------------
-	virtual void AnimateExpanding(CXTPCommandBar* pCommandBar, CDC* pDestDC, CDC* pSrcDC, BOOL bExpandDown);
+	virtual void AnimateExpanding(CXTPCommandBar* pCommandBar, CDC* pDestDC, CDC* pSrcDC,
+								  BOOL bExpandDown);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -964,44 +1102,50 @@ public:
 	// Remarks:
 	//     <TABLE>
 	//     <b>Constant</b>                   <b>Value</b>  <b>Description</b>
-	//     --------------------------------  ============  ------------------------------------------------------------
-	//     COLOR_SCROLLBAR                   0             Scroll bar color
-	//     COLOR_BACKGROUND                  1             Desktop color
-	//     COLOR_ACTIVECAPTION               2             Color of the title bar for the active window, Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.
-	//     COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive window, Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.
-	//     COLOR_MENU                        4             Menu background color
-	//     COLOR_WINDOW                      5             Window background color
+	//     --------------------------------  ============
+	//     ------------------------------------------------------------ COLOR_SCROLLBAR 0 Scroll bar
+	//     color COLOR_BACKGROUND                  1             Desktop color COLOR_ACTIVECAPTION
+	//     2             Color of the title bar for the active window, Specifies the left side color
+	//     in the color gradient of an active window's title bar if the gradient effect is enabled.
+	//     COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive
+	//     window, Specifies the left side color in the color gradient of an inactive window's title
+	//     bar if the gradient effect is enabled. COLOR_MENU                        4 Menu
+	//     background color COLOR_WINDOW                      5             Window background color
 	//     COLOR_WINDOWFRAME                 6             Window frame color
 	//     COLOR_MENUTEXT                    7             Color of text on menus
 	//     COLOR_WINDOWTEXT                  8             Color of text in windows
-	//     COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and scroll arrow
-	//     COLOR_ACTIVEBORDER                10            Border color of active window
-	//     COLOR_INACTIVEBORDER              11            Border color of inactive window
-	//     COLOR_APPWORKSPACE                12            Background color of multiple-document interface (MDI) applications
-	//     COLOR_HIGHLIGHT                   13            Background color of items selected in a control
-	//     COLOR_HIGHLIGHTTEXT               14            Text color of items selected in a control
-	//     COLOR_BTNFACE                     15            Face color for three-dimensional display elements and for dialog box backgrounds.
-	//     COLOR_BTNSHADOW                   16            Color of shading on the edge of command buttons
-	//     COLOR_GRAYTEXT                    17            Grayed (disabled) text
+	//     COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and
+	//     scroll arrow COLOR_ACTIVEBORDER                10            Border color of active
+	//     window COLOR_INACTIVEBORDER              11            Border color of inactive window
+	//     COLOR_APPWORKSPACE                12            Background color of multiple-document
+	//     interface (MDI) applications COLOR_HIGHLIGHT                   13            Background
+	//     color of items selected in a control COLOR_HIGHLIGHTTEXT               14            Text
+	//     color of items selected in a control COLOR_BTNFACE                     15            Face
+	//     color for three-dimensional display elements and for dialog box backgrounds.
+	//     COLOR_BTNSHADOW                   16            Color of shading on the edge of command
+	//     buttons COLOR_GRAYTEXT                    17            Grayed (disabled) text
 	//     COLOR_BTNTEXT                     18            Text color on push buttons
 	//     COLOR_INACTIVECAPTIONTEXT         19            Color of text in an inactive caption
 	//     COLOR_BTNHIGHLIGHT                20            Highlight color for 3-D display elements
-	//     COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display elements
-	//     COLOR_3DLIGHT                     22            Second lightest 3-D color after 3DHighlight, Light color for three-dimensional display elements (for edges facing the light source.)
-	//     COLOR_INFOTEXT                    23            Color of text in ToolTips
+	//     COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display
+	//     elements COLOR_3DLIGHT                     22            Second lightest 3-D color after
+	//     3DHighlight, Light color for three-dimensional display elements (for edges facing the
+	//     light source.) COLOR_INFOTEXT                    23            Color of text in ToolTips
 	//     COLOR_INFOBK                      24            Background color of ToolTips
-	//     COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single clicking a hot-tracked item executes the item.
-	//     COLOR_GRADIENTACTIVECAPTION       27            Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color.
-	//     COLOR_GRADIENTINACTIVECAPTION     28            Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.
-	//     XPCOLOR_TOOLBAR_FACE              30            XP toolbar background color.
-	//     XPCOLOR_HIGHLIGHT                 31            XP menu item selected color.
-	//     XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border color.
-	//     XPCOLOR_HIGHLIGHT_PUSHED          33            XP menu item pushed color.
+	//     COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single
+	//     clicking a hot-tracked item executes the item. COLOR_GRADIENTACTIVECAPTION       27 Right
+	//     side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION
+	//     specifies the left side color. COLOR_GRADIENTINACTIVECAPTION     28            Right side
+	//     color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION
+	//     specifies the left side color. XPCOLOR_TOOLBAR_FACE              30            XP toolbar
+	//     background color. XPCOLOR_HIGHLIGHT                 31            XP menu item selected
+	//     color. XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border
+	//     color. XPCOLOR_HIGHLIGHT_PUSHED          33            XP menu item pushed color.
 	//     XPCOLOR_HIGHLIGHT_CHECKED         36            XP menu item checked color.
-	//     XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu item checked border color.
-	//     XPCOLOR_ICONSHADDOW               34            XP menu item icon shadow.
-	//     XPCOLOR_GRAYTEXT                  35            XP menu item disabled text color.
-	//     XPCOLOR_TOOLBAR_GRIPPER           38            XP toolbar gripper color.
+	//     XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu
+	//     item checked border color. XPCOLOR_ICONSHADDOW               34            XP menu item
+	//     icon shadow. XPCOLOR_GRAYTEXT                  35            XP menu item disabled text
+	//     color. XPCOLOR_TOOLBAR_GRIPPER           38            XP toolbar gripper color.
 	//     XPCOLOR_SEPARATOR                 39            XP toolbar separator color.
 	//     XPCOLOR_DISABLED                  40            XP menu icon disabled color.
 	//     XPCOLOR_MENUBAR_FACE              41            XP menu item text background color.
@@ -1013,15 +1157,17 @@ public:
 	//     XPCOLOR_PUSHED_TEXT               47            XP toolbar pushed text color.
 	//     XPCOLOR_TAB_INACTIVE_BACK         48            XP inactive tab background color.
 	//     XPCOLOR_TAB_INACTIVE_TEXT         49            XP inactive tab text color.
-	//     XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP border color for pushed in 3D elements.
-	//     XPCOLOR_CHECKED_TEXT              45            XP color for text displayed in a checked button.
-	//     XPCOLOR_3DFACE                    51            XP face color for three- dimensional display elements and for dialog box backgrounds.
-	//     XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional display elements (for edges facing away from the light source).
-	//     XPCOLOR_EDITCTRLBORDER            53            XP color for the border color of edit controls.
-	//     XPCOLOR_FRAME                     54            Office 2003 frame color.
-	//     XPCOLOR_SPLITTER_FACE             55            XP splitter face color.
-	//     XPCOLOR_LABEL                     56            Color for label control (xtpControlLabel)
-	//     XPCOLOR_STATICFRAME               57            WinXP Static frame color
+	//     XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP
+	//     border color for pushed in 3D elements. XPCOLOR_CHECKED_TEXT              45 XP color for
+	//     text displayed in a checked button. XPCOLOR_3DFACE                    51            XP
+	//     face color for three- dimensional display elements and for dialog box backgrounds.
+	//     XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional
+	//     display elements (for edges facing away from the light source). XPCOLOR_EDITCTRLBORDER 53
+	//     XP color for the border color of edit controls. XPCOLOR_FRAME                     54
+	//     Office 2003 frame color. XPCOLOR_SPLITTER_FACE             55            XP splitter face
+	//     color. XPCOLOR_LABEL                     56            Color for label control
+	//     (xtpControlLabel) XPCOLOR_STATICFRAME               57            WinXP Static frame
+	//     color
 	//     </TABLE>
 	// Returns:
 	//     The red, green, blue (RGB) color value of the given element.
@@ -1040,7 +1186,6 @@ public:
 	void SetColors(int cElements, CONST INT* lpaElements, CONST COLORREF* lpaRgbValues);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw control text
@@ -1054,7 +1199,8 @@ public:
 	//      bTriangled - TRUE if triangle drawn
 	// Returns: Size of the text
 	//-----------------------------------------------------------------------
-	CSize DrawControlText(CDC* pDC, CXTPControl* pControl, CRect rcText, BOOL bDraw, BOOL bVert, BOOL bCentered, BOOL bTriangled);
+	CSize DrawControlText(CDC* pDC, CXTPControl* pControl, CRect rcText, BOOL bDraw, BOOL bVert,
+						  BOOL bCentered, BOOL bTriangled);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1075,9 +1221,7 @@ public:
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL StripMnemonics(CString& strClear);
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to prepare caption fro Right-To-Left draw
@@ -1136,6 +1280,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns paint manager used to draw scrollbars.
+	// Returns:
+	//     Returns paint manager used to draw scrollbars.
+	//-----------------------------------------------------------------------
+	virtual CXTPScrollBarPaintManager* GetScrollBarPaintManager() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Returns paint manager used to draw slider panes.
 	// Returns:
 	//     Returns paint manager used to draw slider panes.
@@ -1160,11 +1312,27 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns paint manager used to draw the status bar.
+	// Returns:
+	//     Returns paint manager used to draw the status bar.
+	//-----------------------------------------------------------------------
+	virtual CXTPStatusBarPaintManager* GetStatusBarPaintManager();
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Retrieves ribbon paint manager.
 	// Returns:
 	//     Pointer to CXTPRibbonPaintManager object.
 	//-----------------------------------------------------------------------
 	virtual CXTPRibbonPaintManager* GetRibbonPaintManager();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Retrieves message bar paint manager.
+	// Returns:
+	//     Pointer to CXTPMessageBarPaintManager object.
+	//-----------------------------------------------------------------------
+	virtual CXTPMessageBarPaintManager* GetMessageBarPaintManager();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1174,35 +1342,49 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPShadowManager* GetShadowManager() const;
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
+	_XTP_DEPRECATE("The function is no longer supported. Use GetInstanceAddRef and ReleaseInstance "
+				   "instead.")
+	static void AFX_CDECL Done()
+	{
+	}
+
 	// deprecated.
 	void ShowKeyboardCues(BOOL bShow);
 
-	CFont* GetIconBoldFont()
-	{
-		return &m_fontIconBold;
-	}
-	virtual void FillWorkspace(CDC* pDC, CRect rc, CRect rcExclude);
+	CFont* GetIconBoldFont();
 
 	virtual void DrawKeyboardTip(CDC* pDC, CXTPCommandBarKeyboardTip* pWnd, BOOL bSetRegion);
 
 	CSize GetAutoIconSize(BOOL bLarge) const;
 
+	void FillCompositeRect(CDC* pDC, LPCRECT lpRect, COLORREF clr);
+
 	static void AFX_CDECL FillCompositeAlpha(CDC* pDC, CRect rc);
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'DrawControlText' instead")
-	CSize DrawTextEx(CDC*, CString, CRect, BOOL, BOOL, BOOL, BOOL, BOOL = FALSE, BOOL = FALSE) {
+	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'DrawControlText' "
+				   "instead")
+	CSize DrawTextEx(CDC*, CString, CRect, BOOL, BOOL, BOOL, BOOL, BOOL = FALSE, BOOL = FALSE)
+	{
 		return CSize(0, 0);
 	}
-	int GetSplitDropDownHeight() const;
 	void AlphaEllipse(CDC* pDC, CRect rc, COLORREF clrBorder, COLORREF clrFace);
 
-	static void AFX_CDECL DrawTextApi(CDC* pDC, const CString& str, LPRECT lpRect, UINT format, BOOL bComposited);
-	int GetEditHeight() const;
-	CSize DrawControlText2(CDC* pDC, CXTPControl* pControl, CRect rcText, BOOL bDraw, BOOL bVert, BOOL bTrangled);
+	static void AFX_CDECL DrawTextApi(CDC* pDC, const CString& str, LPRECT lpRect, UINT format,
+									  BOOL bComposited);
+	CSize DrawControlText2(CDC* pDC, CXTPControl* pControl, CRect rcText, BOOL bDraw, BOOL bVert,
+						   BOOL bTrangled);
 
-	void SetFontHeight(int nFontHeight);
+	virtual int GetSplitDropDownHeight() const;
+	virtual int GetEditHeight() const;
+	virtual int GetTextHeight() const;
+	virtual int GetFontHeight() const;
+	virtual void SetFontHeight(int nFontHeight);
+	virtual int GetTabsHeight() const;
+
+	virtual BOOL IsDPIIconsScallingEnabled(CXTPControl* pButton);
+	virtual CSize GetStretchIconSizeDPIAwareness(CXTPImageManagerIcon* pImage, CSize szIcon,
+												 CXTPControl* pControl, CSize szAvailable);
 
 protected:
 	virtual BOOL IsFlatToolBar(CXTPCommandBar* pCommandBar);
@@ -1210,100 +1392,163 @@ protected:
 	void AlphaBlendU(PBYTE pDest, PBYTE pSrcBack, int cx, int cy, PBYTE pSrc, BYTE byAlpha);
 	void _DrawCheckMark(CDC* pDC, CRect rcCheck, COLORREF clr = 0, BOOL bLayoutRTL = FALSE);
 
-	void DrawControlText3(CDC* pDC, CXTPControl* pControl, const CString& str, const CString& strClear, CRect rcText, BOOL bVert, BOOL bCentered);
+	void DrawControlText3(CDC* pDC, CXTPControl* pControl, const CString& str,
+						  const CString& strClear, CRect rcText, BOOL bVert, BOOL bCentered);
 	void SplitString(const CString& str, CString& strFirstRow, CString& strSecondRow);
 
-	CSize DrawControlText(CDC* pDC, CXTPControl* pControl, CRect rcText, BOOL bDraw, BOOL bTriangled, CSize szButton, BOOL bDrawImage);
+	virtual CSize DrawControlText(CDC* pDC, CXTPControl* pButton, CRect rcText, BOOL bDraw,
+								  BOOL bTriangled, CSize szImage, BOOL bDrawImage);
 	CSize GetControlSize(CXTPControl* pControl, CSize sz, BOOL bVert);
 	virtual CSize GetPopupBarImageSize(CXTPCommandBar* pBar);
-	virtual void DrawPopupBarText(CDC* pDC, const CString& strText, CRect& rcText, UINT nFlags, BOOL bDraw, BOOL bSelected, BOOL bEnabled);
+	virtual void DrawPopupBarText(CDC* pDC, const CString& strText, CRect& rcText, UINT nFlags,
+								  BOOL bDraw, BOOL bSelected, BOOL bEnabled);
 
 	CSize GetIconSize(CXTPControl* pButton);
 
 	CSize GetStretchIconSize(CXTPImageManagerIcon* pImage, CSize szIcon);
 
+	static int AFX_CDECL CalcEntityHeight(int nFontHeight, int nFactor,
+										  int nMinHeight = XTP_COMMANDBAR_MIN_CONTROL_HEIGHT,
+										  int nCustomDPI = 0);
+	static int AFX_CDECL CalcTextHeight(int nFontHeight,
+										int nFactor	= XTP_COMMANDBAR_TEXT_HEIGHT_FACTOR,
+										int nCustomDPI = 0);
+	static int AFX_CDECL CalcCtrlHeight(int nFontHeight,
+										int nFactor	= XTP_COMMANDBAR_CONTROL_HEIGHT_FACTOR,
+										int nCustomDPI = 0);
+	static int AFX_CDECL CalcSplitButtonDropDownWidth(int nTextHeight);
+	static int AFX_CDECL CalcSplitButtonDropDownHeight(int nFontHeight);
 
-//}}AFX_CODEJOCK_PRIVATE
+	XTPPrimitiveSymbol GetControlSymbol(XTPBarPosition barPosition, BOOL bVert) const;
+
+	//}}AFX_CODEJOCK_PRIVATE
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains global paint manager pointer. If no global paint manager
+	//      is set the result value is NULL.
+	// Parameters:
+	//      Global paint manager pointer.
+	// See also:
+	//      SetGlobalPaintManager, XTPPaintManager
+	//-----------------------------------------------------------------------
+	static CXTPPaintManager* AFX_CDECL GetGlobalPaintManager();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Sets global paint manager pointer value.
+	// Parameters:
+	//      pPaintManager - A new global paint manager pointer.
+	// See also:
+	//      GetGlobalPaintManager, XTPPaintManager
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL SetGlobalPaintManager(CXTPPaintManager* pPaintManager);
+
+	// Combo-box / Edit-box
+public:
+	CXTPPaintManagerColor m_clrEditTextNormal;
+	CXTPPaintManagerColor m_clrEditTextDisabled;
+	CXTPPaintManagerColor m_clrEditTextHighlighted;
+
+	// Message bar
+public:
+	COLORREF m_clrMessageBarText; // Message bar text color
+	CRect m_rcMessageBarMargin;   // Margin of the message bar.
+
+	// Paint manager
+public:
+	CXTPFramePaintManager* m_pFramePaintManager;			// Frame paint manager
+	CXTPStatusBarPaintManager* m_pStatusBarPaintManager;	// Paint manager of the status bar
+	CXTPRibbonPaintManager* m_pRibbonPaintManager;			// Ribbon Paint Manager
+	CXTPControlGalleryPaintManager* m_pGalleryPaintManager; // Gallery paint manager
+	CXTPProgressPaintManager* m_pProgressPaintManager;		// Progress bar paint manager
+	CXTPSliderPaintManager* m_pSliderPaintManager;			// Slider pane paint manager
+	CXTPScrollBarPaintManager* m_pScrollBarPaintManager;	// Scrollbar paint manager
+	CXTPMessageBarPaintManager* m_pMessageBarPaintManager;
 
 public:
-	COLORREF m_clrStatusTextColor;          // Status bar test color
-	COLORREF m_clrMessageBarText;           // Message bar text color
-	CXTPPaintManagerColorGradient m_clrDisabledIcon;    // Disabled icons color
-	CXTPPaintManagerColor m_clrFloatingGripper;     // Gripper color of floating toolbar.
-	CXTPPaintManagerColor m_clrFloatingGripperText; // Gripper text color of floating toolbar.
+	CXTPPaintManagerColorGradient m_clrDisabledIcon; // Disabled icons color
+	CXTPPaintManagerColor m_clrFloatingGripper;		 // Gripper color of floating toolbar.
+	CXTPPaintManagerColor m_clrFloatingGripperText;  // Gripper text color of floating toolbar.
 
-	BOOL m_bThickCheckMark;             // TRUE to draw thick check mark
-	BOOL m_bShowShadow;                 // TRUE to show shadow
-	BOOL m_bThemedStatusBar;            // TRUE to draw status bar using WinXP theme.
-	BOOL m_bThemedCheckBox;             // TRUE to draw check box using WinXP theme.
-	BOOL m_bClearTypeTextQuality;       // TRUE to enable ClearType text for the font.
+	BOOL m_bThickCheckMark;		  // TRUE to draw thick check mark
+	BOOL m_bShowShadow;			  // TRUE to show shadow
+	BOOL m_bThemedStatusBar;	  // TRUE to draw status bar using WinXP theme.
+	BOOL m_bThemedCheckBox;		  // TRUE to draw check box using WinXP theme.
+	BOOL m_bClearTypeTextQuality; // TRUE to enable ClearType text for the font.
 
-	BOOL m_bFlatToolBar;                // TRUE to draw toolbars flat
-	BOOL m_bFlatMenuBar;                // TRUE to draw menubar flat
-	int m_nPopupBarTextPadding;         // Distance between gripper and control text.
-	BOOL m_bSelectImageInPopupBar;      // TRUE to select image as in explorer theme.
-	BOOL m_bEnableAnimation;            // TRUE to enable animation for all toolbars
+	BOOL m_bFlatToolBar;		   // TRUE to draw toolbars flat
+	BOOL m_bFlatMenuBar;		   // TRUE to draw menubar flat
+	int m_nPopupBarTextPadding;	// Distance between gripper and control text.
+	BOOL m_bSelectImageInPopupBar; // TRUE to select image as in explorer theme.
+	BOOL m_bEnableAnimation;	   // TRUE to enable animation for all toolbars
 
-	BOOL m_bOffice2007Padding;          // TRUE if Office2007 metrics used
-	BOOL m_bOffsetPopupLabelText;       // TRUE if labels in popups drawn with offset
-	BOOL m_bWrapCaptionBelowText;       // Wrap text for xtpButtonIconAndCaptionBelow buttons
+	BOOL m_bOffice2007Padding;	// TRUE if Office2007 metrics used
+	BOOL m_bOffsetPopupLabelText; // TRUE if labels in popups drawn with offset
+	BOOL m_bWrapCaptionBelowText; // Wrap text for xtpButtonIconAndCaptionBelow buttons
 
-	CXTPPaintManagerFont m_fontSmCaption;   // Small caption font.
-	CXTPPaintManagerFont m_fontIcon;        // Icon font.
-	CXTPPaintManagerFont m_fontIconBold;    // Icon bold font.
-	CXTPPaintManagerFont m_fontToolTip;     // Tooltip font
+	CXTPPaintManagerFont m_fontSmCaption; // Small caption font.
+	CXTPPaintManagerFont m_fontIcon;	  // Icon font.
+	CXTPPaintManagerFont m_fontIconBold;  // Icon bold font.
+	CXTPPaintManagerFont m_fontToolTip;   // Tooltip font
 
-	int   m_nSplitButtonDropDownWidth;      // Split button drop down width in toolbars
-	int   m_nSplitButtonPopupWidth;         // Split button drop down width in popups
-	BOOL  m_bAutoResizeIcons;               // TRUE to automatically resize icons using current DPI
-	int m_nStatusBarMinHeight;          // Minimum height for the status bar
-	CXTPControlGalleryPaintManager* m_pGalleryPaintManager;         // Gallery paint manager
-	CXTPSliderPaintManager* m_pSliderPaintManager;          // Slider pane paint manager
-	CXTPProgressPaintManager* m_pProgressPaintManager;          // Progress bar paint manager
-	CXTPRibbonPaintManager* m_pRibbonPaintManager;              // Ribbon Paint Manager
+	int m_nSplitButtonDropDownWidth;  // Split button drop down width in toolbars
+	int m_nSplitButtonDropDownHeight; // Split button drop down height in toolbars
+	int m_nSplitButtonPopupWidth;	 // Split button drop down width in popups
+	BOOL m_bAutoResizeIcons;		  // TRUE to automatically resize icons using current DPI
+	int m_nStatusBarMinHeight;		  // Minimum height for the status bar
 
-	CXTPFramePaintManager* m_pFramePaintManager;            // Frame paint manager
+	PVOID m_pfnSetLayeredWindowAttributes; // point to Transparency proc in USER32.dll module
 
-	PVOID m_pfnSetLayeredWindowAttributes;  // point to Transparency proc in USER32.dll module
+	CRect m_rcStatusBarBorder; // Bounding rectangle of the status bar border
 
-	CRect m_rcStatusBarBorder;          // Bounding rectangle of the status bar border
-
-	BOOL  m_bUseOfficeFont;             // TRUE to use Tahoma font.
-	CString m_strOfficeFont;            // Office font
-	int   m_nTextHeight;                // Text height of the regular font.
+	BOOL m_bUseOfficeFont;   // TRUE to use Tahoma font.
+	CString m_strOfficeFont; // Office font
+	int m_nTextHeight;		 // Regular text field height (not font height).
 
 protected:
-	CFont m_fontRegular;                // Regular font.
-	CFont m_fontRegularBold;            // Regular bold font.
-	CFont m_fontVert;                   // Vertical font.
-	CFont m_fontVertBold;               // Vertical font.
+	CXTPFont m_xtpFontRegular;	 // Regular font.
+	CXTPFont m_xtpFontRegularBold; // Regular bold font.
+	CXTPFont m_xtpFontVert;		   // Vertical font.
+	CXTPFont m_xtpFontVertBold;	// Vertical font.
 
-	int   m_nEditHeight;                // Edit text height.
-	int   m_nFontHeight;                // Font Height.
-	BOOL  m_bUseStandardFont;           // TRUE to use system font.
-	BOOL  m_bEmbossedDisabledText;      // TRUE to draw disabled text embossed
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontRegular, m_xtpFontRegular,
+										  GetRegularFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontRegularBold, m_xtpFontRegularBold,
+										  GetRegularBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontVert, m_xtpFontVert, GetVertFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontVertBold, m_xtpFontVertBold,
+										  GetVertBoldFontHandle);
 
-	CXTPWinThemeWrapper m_themeStatusBar;   // StatusBar theme helper.
-	CXTPWinThemeWrapper m_themeButton;      // Buttons theme helper.
+	int m_nEditHeight;			  // Edit text height.
+	int m_nFontHeight;			  // Custom font height (optional).
+	BOOL m_bUseStandardFont;	  // TRUE to use system font.
+	BOOL m_bEmbossedDisabledText; // TRUE to draw disabled text embossed
 
-	XTPPaintTheme m_themeCurrent;           // Current theme.
-	static CXTPPaintManager* s_pInstance;   // Instance of the manager.
+	CXTPWinThemeWrapper* m_themeStatusBar; // StatusBar theme helper.
+	CXTPWinThemeWrapper* m_themeButton;	// Buttons theme helper.
 
-	XTP_COMMANDBARS_ICONSINFO m_iconsInfo;  // Specific icons options.
+	XTPPaintTheme m_themeCurrent; // Current theme.
 
+	//{{AFX_CODEJOCK_PRIVATE
+	_XTP_DEPRECATE("The member is obsolete. Use GetGlobalPaintManager/SetGlobalPaintManager "
+				   "instead")
+	static CXTPPaintManager* s_pInstance; // Instance of the manager.
+	//}}AFX_CODEJOCK_PRIVATE
 
-	int m_nAnimationSteps;                  // Steps of the animation.
-	int m_nAnimationTime;                   // Time of the animation.
+	XTP_COMMANDBARS_ICONSINFO m_iconsInfo; // Specific icons options.
 
-	BOOL m_bShowKeyboardCues;               // TRUE to show keyboard cues - deprecated.
+	int m_nAnimationSteps; // Steps of the animation.
+	int m_nAnimationTime;  // Time of the animation.
 
-	CXTPPaintManagerColor m_arrColor[XPCOLOR_LAST + 1];  // Self colors array.
-	XTPCurrentSystemTheme m_systemTheme;   // Current system theme.
+	BOOL m_bShowKeyboardCues; // TRUE to show keyboard cues - deprecated.
 
-	CXTPShadowManager* m_pShadowManager;            // Shadow manager
+	CXTPPaintManagerColor m_arrColor[XPCOLOR_LAST + 1]; // Self colors array.
+	XTPCurrentSystemTheme m_systemTheme;				// Current system theme.
+
+	CXTPShadowManager* m_pShadowManager; // Shadow manager
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPaintManager object
@@ -1332,30 +1577,49 @@ public:
 		CLogFont();
 	};
 
-	//---------------------------------------------------------------------------
-	// Summary:
-	//     CNonClientMetrics is a self initializing NONCLIENTMETRICS derived
-	//     class. It contains the scalable metrics associated with the
-	//     non-client area of a non-minimized window.  This class is used by
-	//     the SPI_GETNONCLIENTMETRICS and SPI_SETNONCLIENTMETRICS actions of
-	//     SystemParametersInfo.
-	//---------------------------------------------------------------------------
-	struct _XTP_EXT_CLASS CNonClientMetrics : public NONCLIENTMETRICS
-	{
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CNonClientMetrics object
-		//-----------------------------------------------------------------------
-		CNonClientMetrics();
-	};
+	_XTP_DEPRECATE("The member is obsolete. Use CXTPNonClientMetrics instead.")
+	typedef CXTPNonClientMetrics CNonClientMetrics;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	/*  x64 #ifdef below is a fix for OLE_HANDLE. While HBITMAP/HICON are still 32-bit on 64-bit
+	Windows, OLE_HANDLE (long) can still be used. But OLE_HANDLE cannot be used as HMODULE which is
+	always 64-bit
+*/
+
+#		ifndef _WIN64
+#			define MODULE_HANDLE OLE_HANDLE
+#			define MODULE_HANDLE_TYPE VTS_I4
+#		else
+#			define MODULE_HANDLE LONG64
+#			define MODULE_HANDLE_TYPE VTS_I8
+#		endif
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPPaintManager);
+	DECLARE_INTERFACE_MAP()
+
+	void OleLoadFrameIcon(MODULE_HANDLE Module, LPCTSTR pszFileName, long Width, long Height);
+	void OleRefreshMetrics();
+	void OleFillWorkspace(OLE_HANDLE hDC, int x, int y, int cx, int cy);
+	void OleDrawRectangle(OLE_HANDLE hDC, int x, int y, int cx, int cy, BOOL bSelected,
+						  BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped,
+						  XTPBarType barType, XTPBarPosition barPosition);
+	COLORREF OleGetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked,
+									  BOOL bPopuped, XTPBarType barType,
+									  XTPBarPosition barPosition);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CCommandBarsCtrl;
 	friend class CXTPCommandBarsOptions;
 	friend class CXTPCommandBars;
 	friend class CXTPRibbonPaintManager;
+	friend class CXTPStatusBarPaintManager;
+	friend class CXTPStatusBarThemeVisualStudio2010;
+	friend class CXTPStatusBarThemeOffice2003;
 };
-
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -1363,911 +1627,31 @@ public:
 //     Since this class is designed as a single instance object you can
 //     only access version info through this method. You <b>cannot</b>
 //     directly instantiate an object of type CXTPPaintManager.
+//     If no global paint manager has been previously set the function
+//     enables and sets a default paint manager that corresponds to xtpThemeOffice2000.
+// Remarks:
+//     Implementers of custom themes or other classes that access a global
+//     paint manager by a call to XTPPaintManager() must ensure they increment
+//     global paint manager's reference counter before making the call to XTPPaintManager()
+//     by calling CXTPPaintManager::GetInstanceAddRef(), and then decrement
+//     its reference counter by calling CXTPPaintManager::ReleaseInstance().
+//     The natural places for those steps are constructors and destructor
+//     of a class from which a call to XTPPaintManager() is to be made.
+// Returns: A pointer to the only instance of CXTPPaintManager object.
 // Example:
 //     <code>XTPPaintManager()->GetIconsInfo()->bIconsWithShadow = FALSE;</code>
 //---------------------------------------------------------------------------
-CXTPPaintManager* XTPPaintManager();
-
-//-----------------------------------------------------------------------
-// Summary: Call this function to access CXTPPaintManager members. Since
-//          this class is designed as a single instance object you can
-//          only access version info through this method. You cannot
-//          directly instantiate an object of type CXTPPaintManager.
-
-// Returns: A CXTPPaintManager object.
-//-----------------------------------------------------------------------
-AFX_INLINE CXTPPaintManager* XTPPaintManager() {
-	if (CXTPPaintManager::s_pInstance == NULL)
-	{
-		CXTPPaintManager::SetTheme(xtpThemeOffice2000);
-	}
-	return CXTPPaintManager::s_pInstance;
-}
-
-
-//===========================================================================
-// Summary:
-//     The CXTPOfficeTheme class is used to enable an Office XP style theme for Command Bars
-// See Also: CXTPPaintManager::SetTheme
-//===========================================================================
-class _XTP_EXT_CLASS CXTPOfficeTheme : public CXTPPaintManager
-{
-	DECLARE_DYNAMIC(CXTPOfficeTheme)
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPOfficeTheme object.
-	//-----------------------------------------------------------------------
-	CXTPOfficeTheme();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the command bar's face.
-	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     pBar - Points to a CXTPCommandBar object to draw.
-	//-----------------------------------------------------------------------
-	virtual void FillCommandBarEntry(CDC* pDC, CXTPCommandBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method retrieves buttons text color
-	// Parameters:
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual COLORREF GetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the command bar's gripper.
-	// Parameters:
-	//     pDC   - Pointer to a valid device context
-	//     pBar  - Points to a CXTPCommandBar object
-	//     bDraw - TRUE to draw; FALSE to retrieve the size of the gripper.
-	// Returns:
-	//     Size of the gripper.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarGripper(CDC* pDC, CXTPCommandBar* pBar, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a command bar's separator.
-	// Parameters:
-	//     pDC      - Pointer to a valid device context
-	//     pBar     - Points to a CXTPCommandBar object
-	//     pControl - Points to a CXTPControl object
-	//     bDraw    - TRUE to draw; FALSE to retrieve the size of the separator.
-	// Returns:
-	//     This method is called to draw a command bar's separator.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarSeparator(CDC* pDC, CXTPCommandBar* pBar, CXTPControl* pControl, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control placed on the ListBox.
-	// Parameters:
-	//     pDC       - Pointer to a valid device context
-	//     pButton   - Points to a CXTPControl object
-	//     rc        - Bounding rectangle to draw.
-	//     bSelected - TRUE if the control is selected.
-	//     bDraw     - TRUE to draw; FALSE to retrieve the size of the control.
-	//     pCommandBars - CommandBars object which metrics need to use.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawListBoxControl(CDC* pDC, CXTPControl* pButton, CRect rc, BOOL bSelected, BOOL bDraw, CXTPCommandBars* pCommandBars = 0);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to determine offset of popuped bar.
-	// Parameters:
-	//     rc       - Control's bounding rectangle.
-	//     pControl - Points to a CXTPControl object
-	//     bVertical - TRUE if control docked vertically.
-	//-----------------------------------------------------------------------
-	virtual void AdjustExcludeRect(CRect& rc, CXTPControl* pControl, BOOL bVertical);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a tear-off gripper of a Popup Bar.
-	// Parameters:
-	//     pDC       - Pointer to a valid device context
-	//     rcGripper - Bounding rectangle of the gripper.
-	//     bSelected - True if the gripper is selected.
-	//     bDraw     - TRUE to draw; FALSE to retrieve the size of the gripper.
-	// Returns:
-	//     Size of the gripper.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawTearOffGripper(CDC* pDC, CRect rcGripper, BOOL bSelected, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary: This method is called to draw a resize gripper of a Popup Bar.
-	// Input:   pDC       - Pointer to a valid device context
-	//          rcGripper - Bounding rectangle of the gripper.
-	//          nFlags    - Position of resize gripper
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupResizeGripper(CDC* pDC, CRect rcGripper, int nFlags);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw gripper of dialog bar.
-	// Parameters:
-	//     pDC   - Points to a valid device context.
-	//     pBar  - Dialog Bar pointer
-	//     bDraw - TRUE to draw gripper, FALSE to calculate size.
-	// Returns:
-	//     Size of gripper to be drawn.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawDialogBarGripper(CDC* pDC, CXTPDialogBar* pBar, BOOL bDraw);
-
-protected:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw popup bar right gripper.
-	// Parameters:
-	//     pDC       - Points to a valid device context.
-	//     xPos         - Specifies the logical x coordinate of the upper-left corner of the rectangle.
-	//     yPos         - Specifies the logical y coordinate of the upper-left corner of the destination rectangle.
-	//     cx        - Specifies the width of the rectangle.
-	//     cy        - Specifies the height of the rectangle.
-	//     bExpanded - TRUE if expanded.gripper.
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupBarGripper(CDC* pDC, int xPos, int yPos, int cx, int cy, BOOL bExpanded = FALSE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control placed on the PopupBar.
-	// Parameters:
-	//     pDC     - Pointer to a valid device context
-	//     pButton - Points to a CXTPControl object
-	//     bDraw   - TRUE to draw; FALSE to retrieve the size of the control.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlPopupParent(CDC* pDC, CXTPControl* pButton, BOOL bDraw);
-
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the control's face
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     rc          - Rectangle to draw.
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual void DrawRectangle(CDC* pDC, CRect rc, BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the image of the control.
-	// Parameters:
-	//     pDC           - Pointer to a valid device context
-	//     pt            - Position to draw.
-	//     sz            - Size of the image.
-	//     pImage        - Points to a CXTPImageManagerIcon object
-	//     bSelected     - TRUE if the control is selected.
-	//     bPressed      - TRUE if the control is pushed.
-	//     bEnabled      - TRUE if the control is enabled.
-	//     bChecked      - TRUE if the control is checked.
-	//     bPopuped      - TRUE if the control is popuped.
-	//     bToolBarImage - TRUE if it is a toolbar image.
-	//-----------------------------------------------------------------------
-	virtual void DrawImage(CDC* pDC, CPoint pt, CSize sz, CXTPImageManagerIcon* pImage, BOOL bSelected, BOOL bPressed, BOOL bEnabled = TRUE, BOOL bChecked = FALSE, BOOL bPopuped = FALSE, BOOL bToolBarImage = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control.
-	// Parameters:
-	//     pDC    - Pointer to a valid device context
-	//     bDraw  - TRUE to draw; FALSE to retrieve the size of the control.
-	//     pComboBox - CXTPControlComboBox pointer need to draw.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlComboBox(CDC* pDC, CXTPControlComboBox* pComboBox, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control.
-	// Parameters:
-	//     pDC   - Pointer to a valid device context
-	//     bDraw - TRUE to draw; FALSE to retrieve the size of the control.
-	//     pEdit - Edit control to draw.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlEdit(CDC* pDC, CXTPControlEdit* pEdit, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws intersect rectangle of popup bar and its control.
-	// Parameters:
-	//     pDC       - Points to a valid device context.
-	//     pPopupBar - Popup bar pointer.
-	//     clr       - COLORREF specifies RGB color value.
-	//-----------------------------------------------------------------------
-	void FillIntersectRect(CDC* pDC, CXTPPopupBar* pPopupBar, COLORREF clr);
-
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw frame of single cell of status bar.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rc - CRect object specifying size of area.
-	//     pPane - The status bar pane need to draw
-	//     bGripperPane - TRUE if pane is last cell of status bar
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarPaneBorder(CDC* pDC, CRect rc, CXTPStatusBarPane* pPane, BOOL bGripperPane);
-
-	//-----------------------------------------------------------------------
-	// Input:   pDC - Pointer to a valid device context.
-	//          rc - CRect object specifying size of area.
-	//          pPane - The status bar pane need to draw.
-	// Summary: This method is called to draw a status bar switch pane separator.
-	//-----------------------------------------------------------------------
-	virtual void DrawStatusBarPaneSeparator(CDC* pDC, CRect rc, CXTPStatusBarPane* pPane);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves the base theme of the manager.
-	// Returns:
-	//     Returns the base theme.
-	//-----------------------------------------------------------------------
-	XTPPaintTheme BaseTheme() { return xtpThemeOfficeXP; }
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the frame for the SplitButton
-	//     control
-	// Parameters:
-	//     pDC     - Pointer to a valid device context
-	//     pButton - Points to a CXTPControl object
-	//     rc      - Bounding rectangle to draw
-	//-----------------------------------------------------------------------
-	virtual void DrawSplitButtonFrame(CDC* pDC, CXTPControl* pButton, CRect rc);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw check box mark area
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     rc - Bounding rectangle
-	//     bDraw - TRUE to draw; FALSE to find size
-	//     bSelected - TRUE if control is selected
-	//     bPressed - TRUE if control is pressed
-	//     bChecked - TRUE if control is checked
-	//     bEnabled - TRUE if control is enabled
-	// Returns: Size of check box mark
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlCheckBoxMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected, BOOL bPressed, BOOL bChecked, BOOL bEnabled);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw radio button mark area
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     rc - Bounding rectangle
-	//     bDraw - TRUE to draw; FALSE to find size
-	//     bSelected - TRUE if control is selected
-	//     bPressed - TRUE if control is pressed
-	//     bChecked - TRUE if control is checked
-	//     bEnabled - TRUE if control is enabled
-	// Returns: Size of radio button mark
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlRadioButtonMark(CDC* pDC, CRect rc, BOOL bDraw, BOOL bSelected, BOOL bPressed, BOOL bChecked, BOOL bEnabled);
-protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual void DrawSplitButtonPopup(CDC* pDC, CXTPControl* pButton);
-	virtual void DrawControlPopupGlyph(CDC* pDC, CXTPControl* pButton);
-	virtual void FillPopupLabelEntry(CDC* pDC, CRect rc);
-	//}}AFX_CODEJOCK_PRIVATE
-};
-
-//===========================================================================
-// Summary:
-//     The CXTPDefaultTheme class is used to enable an Office 2000 style theme for Command Bars
-// See Also: CXTPPaintManager::SetTheme
-//===========================================================================
-class _XTP_EXT_CLASS CXTPDefaultTheme : public CXTPPaintManager
-{
-	DECLARE_DYNAMIC(CXTPDefaultTheme)
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPDefaultTheme object.
-	//-------------------------------------------------------------------------
-	CXTPDefaultTheme();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to refresh the visual metrics of the manager.
-	//-----------------------------------------------------------------------
-	virtual void RefreshMetrics();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the command bar's face.
-	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     pBar - Points to a CXTPCommandBar object to draw.
-	//-----------------------------------------------------------------------
-	virtual void FillCommandBarEntry(CDC* pDC, CXTPCommandBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method retrieves buttons text color
-	// Parameters:
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual COLORREF GetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the command bar's gripper.
-	// Parameters:
-	//     pDC   - Pointer to a valid device context
-	//     pBar  - Points to a CXTPCommandBar object
-	//     bDraw - TRUE to draw; FALSE to retrieve the size of the gripper.
-	// Returns:
-	//     Size of the gripper.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarGripper(CDC* pDC, CXTPCommandBar* pBar, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a command bar's separator.
-	// Parameters:
-	//     pDC      - Pointer to a valid device context
-	//     pBar     - Points to a CXTPCommandBar object
-	//     pControl - Points to a CXTPControl object
-	//     bDraw    - TRUE to draw; FALSE to retrieve the size of the separator.
-	// Returns:
-	//     This method is called to draw a command bar's separator.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarSeparator(CDC* pDC, CXTPCommandBar* pBar, CXTPControl* pControl, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to determine offset of popuped bar.
-	// Parameters:
-	//     rc       - Control's bounding rectangle.
-	//     pControl - Points to a CXTPControl object
-	//     bVertical - TRUE if control docked vertically.
-	//-----------------------------------------------------------------------
-	virtual void AdjustExcludeRect(CRect& rc, CXTPControl* pControl, BOOL bVertical);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to retrieve the command bar's borders.
-	// Parameters:
-	//     pBar - Points to a CXTPCommandBar object that the borders need to get.
-	// Returns:
-	//     Borders of the command bar.
-	//-----------------------------------------------------------------------
-	virtual CRect GetCommandBarBorders(CXTPCommandBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control placed on the ListBox.
-	// Parameters:
-	//     pDC       - Pointer to a valid device context
-	//     pButton   - Points to a CXTPControl object
-	//     rc        - Bounding rectangle to draw.
-	//     bSelected - TRUE if the control is selected.
-	//     bDraw     - TRUE to draw; FALSE to retrieve the size of the control.
-	//     pCommandBars - CommandBars object which metrics need to use.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawListBoxControl(CDC* pDC, CXTPControl* pButton, CRect rc, BOOL bSelected, BOOL bDraw, CXTPCommandBars* pCommandBars = 0);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the specified controls.
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     controlType - Special control enumerator.
-	//     pButton     - Points to a CXTPControl object to draw.
-	//     pBar        - Parent CXTPCommandBar object.
-	//     bDraw       - TRUE to draw; FALSE to retrieve the size of the
-	//                   control.
-	//     lpParam     - Specified parameter.
-	// Returns:
-	//     Size of the control.
-	// See Also: XTPSpecialControl
-	//-----------------------------------------------------------------------
-	virtual CSize DrawSpecialControl(CDC* pDC, XTPSpecialControl controlType, CXTPControl* pButton, CXTPCommandBar* pBar, BOOL bDraw, LPVOID lpParam);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a tear-off gripper of Popup Bar.
-	// Parameters:
-	//     pDC       - Pointer to a valid device context
-	//     rcGripper - Bounding rectangle of the gripper.
-	//     bSelected - True if the gripper is selected.
-	//     bDraw     - TRUE to draw; FALSE to retrieve the size of the gripper.
-	// Returns:
-	//     Size of the gripper.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawTearOffGripper(CDC* pDC, CRect rcGripper, BOOL bSelected, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary: This method is called to draw popup bar resize gripper.
-	// Input:   pDC       - Pointer to a valid device context.
-	//          rcGripper - Bounding rectangle of the gripper.
-	//          nFlags    - Position of resize gripper
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupResizeGripper(CDC* pDC, CRect rcGripper, int nFlags);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control placed on the PopupBar.
-	// Parameters:
-	//     pDC     - Pointer to a valid device context
-	//     pButton - Points to a CXTPControl object
-	//     bDraw   - TRUE to draw; FALSE to retrieve the size of the control.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlPopupParent(CDC* pDC, CXTPControl* pButton, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws split button frame
-	// Parameters:
-	//     pDC      - Points to a valid device context.
-	//     pButton  - Pointer to split button to draw.
-	//     rcButton - Bounding rectangle to draw
-	//-----------------------------------------------------------------------
-	virtual void DrawSplitButtonFrame(CDC* pDC, CXTPControl* pButton, CRect rcButton);
-
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the control's face
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     rc          - Rectangle to draw.
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual void DrawRectangle(CDC* pDC, CRect rc, BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the image of the control.
-	// Parameters:
-	//     pDC           - Pointer to a valid device context
-	//     pt            - Position to draw.
-	//     sz            - Size of the image.
-	//     pImage        - Points to a CXTPImageManagerIcon object
-	//     bSelected     - TRUE if the control is selected.
-	//     bPressed      - TRUE if the control is pushed.
-	//     bEnabled      - TRUE if the control is enabled.
-	//     bChecked      - TRUE if the control is checked.
-	//     bPopuped      - TRUE if the control is popuped.
-	//     bToolBarImage - TRUE if it is a toolbar image.
-	//-----------------------------------------------------------------------
-	virtual void DrawImage(CDC* pDC, CPoint pt, CSize sz, CXTPImageManagerIcon* pImage, BOOL bSelected, BOOL bPressed, BOOL bEnabled = TRUE, BOOL bChecked = FALSE, BOOL bPopuped = FALSE, BOOL bToolBarImage = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control.
-	// Parameters:
-	//     pDC       - Pointer to a valid device context
-	//     pComboBox - ComboBox to draw.
-	//     bDraw     - TRUE to draw; FALSE to retrieve the size of the control.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlComboBox(CDC* pDC, CXTPControlComboBox* pComboBox, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the control.
-	// Parameters:
-	//     pDC   - Pointer to a valid device context
-	//     bDraw - TRUE to draw; FALSE to retrieve the size of the control.
-	//     pEdit - Edit control to draw.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlEdit(CDC* pDC, CXTPControlEdit* pEdit, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw gripper of dialog bar.
-	// Parameters:
-	//     pDC   - Points to a valid device context.
-	//     pBar  - Dialog Bar pointer
-	//     bDraw - TRUE to draw gripper, FALSE to calculate size.
-	// Returns:
-	//     Size of gripper to be drawn.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawDialogBarGripper(CDC* pDC, CXTPDialogBar* pBar, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw frame of edit control.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rc - CRect object specifying size of area.
-	//     bEnabled  - TRUE if control is enabled.
-	//     bSelected - TRUE if control is selected.
-	//-----------------------------------------------------------------------
-	virtual void DrawControlEditFrame(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bSelected);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw button od combo box control.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rcBtn     - Button bounding rectangle.
-	//     bEnabled  - TRUE if combo box is enabled
-	//     bSelected - TRUE if combo box is selected
-	//     bDropped  - TRUE TRUE if combo box is dropped.
-	//-----------------------------------------------------------------------
-	virtual void DrawControlComboBoxButton(CDC* pDC, CRect rcBtn, BOOL bEnabled, BOOL bSelected, BOOL bDropped);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method draws edit control spin buttons
-	// Parameters:
-	//     pDC - Pointer to device context
-	//     pControlEdit - Edit control
-	//-----------------------------------------------------------------------
-	virtual void DrawControlEditSpin(CDC* pDC, CXTPControlEdit* pControlEdit);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves the base theme of the manager.
-	// Returns:
-	//     Returns the base theme.
-	//-----------------------------------------------------------------------
-	XTPPaintTheme BaseTheme() { return xtpThemeOffice2000; }
-
-
-protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	void DrawShadedRect(CDC* pDC, CRect& rect);
-	virtual CSize GetPopupBarImageSize(CXTPCommandBar* pBar);
-	//}}AFX_CODEJOCK_PRIVATE
-
-protected:
-	int m_nPopupBarText;    // Popup bar text index.
-};
-
-
-//===========================================================================
-// Summary:
-//     The CXTPNativeXPTheme class is used to enable a Windows XP style theme for Command Bars
-// See Also: CXTPPaintManager::SetTheme
-//===========================================================================
-class _XTP_EXT_CLASS CXTPNativeXPTheme : public CXTPDefaultTheme
-{
-	DECLARE_DYNAMIC(CXTPNativeXPTheme)
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPNativeXPTheme object.
-	//-----------------------------------------------------------------------
-	CXTPNativeXPTheme();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPNativeXPTheme object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	~CXTPNativeXPTheme();
-
-protected:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to refresh the visual metrics of the manager.
-	//-----------------------------------------------------------------------
-	virtual void RefreshMetrics();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the command bar's face.
-	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     pBar - Points to a CXTPCommandBar object to draw.
-	//-----------------------------------------------------------------------
-	virtual void FillCommandBarEntry(CDC* pDC, CXTPCommandBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the control's face
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     rc          - Rectangle to draw.
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual void DrawRectangle(CDC* pDC, CRect rc, BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill the control's face
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     pButton - Points to a CXTPControl object to draw.
-	//-----------------------------------------------------------------------
-	void DrawControlEntry(CDC* pDC, CXTPControl* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method returns control text color to draw
-	// Parameters:
-	//     pButton - Points to a CXTPControl object to draw.
-	//-----------------------------------------------------------------------
-	COLORREF GetControlTextColor(CXTPControl* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the command bar's gripper.
-	// Parameters:
-	//     pDC   - Pointer to a valid device context
-	//     pBar  - Points to a CXTPCommandBar object
-	//     bDraw - TRUE to draw; FALSE to retrieve the size of the gripper.
-	// Returns:
-	//     Size of the gripper.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarGripper(CDC* pDC, CXTPCommandBar* pBar, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill a dockbar.
-	// Parameters:
-	//     pDC  - Pointer to a valid device context
-	//     pBar - Points to a CXTPDockBar object
-	//-----------------------------------------------------------------------
-	virtual void FillDockBar(CDC* pDC, CXTPDockBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to fill a dockbar.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     pWnd   - Client area to fill.
-	//     pFrame - Parent frame window.
-	//-----------------------------------------------------------------------
-	void FillDockBarRect(CDC* pDC, CWnd* pWnd, CWnd* pFrame);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to determine offset of popuped bar.
-	// Parameters:
-	//     rc       - Control's bounding rectangle.
-	//     pControl - Points to a CXTPControl object
-	//     bVertical - TRUE if control docked vertically.
-	//-----------------------------------------------------------------------
-	void AdjustExcludeRect(CRect& rc, CXTPControl* pControl, BOOL bVertical);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws split button frame
-	// Parameters:
-	//     pDC      - Points to a valid device context.
-	//     pButton  - Pointer to split button to draw.
-	//     rcButton - Bounding rectangle to draw
-	//-----------------------------------------------------------------------
-	void DrawSplitButtonFrame(CDC* pDC, CXTPControl* pButton, CRect rcButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw frame of edit control.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rc - CRect object specifying size of area.
-	//     bEnabled  - TRUE if control is enabled.
-	//     bSelected - TRUE if control is selected.
-	//-----------------------------------------------------------------------
-	virtual void DrawControlEditFrame(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bSelected);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw button od combo box control.
-	// Parameters:
-	//     pDC - Points to a valid device context.
-	//     rcBtn     - Button bounding rectangle.
-	//     bEnabled  - TRUE if combo box is enabled
-	//     bSelected - TRUE if combo box is selected
-	//     bDropped  - TRUE TRUE if combo box is dropped.
-	//-----------------------------------------------------------------------
-	virtual void DrawControlComboBoxButton(CDC* pDC, CRect rcBtn, BOOL bEnabled, BOOL bSelected, BOOL bDropped);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw gripper of dialog bar.
-	// Parameters:
-	//     pDC   - Points to a valid device context.
-	//     pBar  - Dialog Bar pointer
-	//     bDraw - TRUE to draw gripper, FALSE to calculate size.
-	// Returns:
-	//     Size of gripper to be drawn.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawDialogBarGripper(CDC* pDC, CXTPDialogBar* pBar, BOOL bDraw);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a command bar's separator.
-	// Parameters:
-	//     pDC      - Pointer to a valid device context
-	//     pBar     - Points to a CXTPCommandBar object
-	//     pControl - Points to a CXTPControl object
-	//     bDraw    - TRUE to draw; FALSE to retrieve the size of the separator.
-	// Returns:
-	//     This method is called to draw a command bar's separator.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawCommandBarSeparator(CDC* pDC, CXTPCommandBar* pBar, CXTPControl* pControl, BOOL bDraw = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method retrieves buttons text color
-	// Parameters:
-	//     bSelected   - TRUE if the control is selected.
-	//     bPressed    - TRUE if the control is pushed.
-	//     bEnabled    - TRUE if the control is enabled.
-	//     bChecked    - TRUE if the control is checked.
-	//     bPopuped    - TRUE if the control is popuped.
-	//     barType     - Parent's bar type
-	//     barPosition - Parent's bar position.
-	//-----------------------------------------------------------------------
-	virtual COLORREF GetRectangleTextColor(BOOL bSelected, BOOL bPressed, BOOL bEnabled, BOOL bChecked, BOOL bPopuped, XTPBarType barType, XTPBarPosition barPosition);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves the base theme of the manager.
-	// Returns:
-	//     Returns the base theme.
-	//-----------------------------------------------------------------------
-	XTPPaintTheme BaseTheme() { return xtpThemeNativeWinXP; }
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines if theme is enabled
-	// Returns:
-	//     TRUE if WinXP theme is enabled
-	//-----------------------------------------------------------------------
-	BOOL IsThemeEnabled() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method draws edit control spin buttons
-	// Parameters:
-	//     pDC - Pointer to device context
-	//     pControlEdit - Edit control
-	//-----------------------------------------------------------------------
-	virtual void DrawControlEditSpin(CDC* pDC, CXTPControlEdit* pControlEdit);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the specified controls.
-	// Parameters:
-	//     pDC         - Pointer to a valid device context
-	//     controlType - Special control enumerator.
-	//     pButton     - Points to a CXTPControl object to draw.
-	//     pBar        - Parent CXTPCommandBar object.
-	//     bDraw       - TRUE to draw; FALSE to retrieve the size of the
-	//                   control.
-	//     lpParam     - Specified parameter.
-	// Returns:
-	//     Size of the control.
-	//-----------------------------------------------------------------------
-	virtual CSize DrawSpecialControl(CDC* pDC, XTPSpecialControl controlType, CXTPControl* pButton, CXTPCommandBar* pBar, BOOL bDraw, LPVOID lpParam);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw popup bar right gripper.
-	// Parameters:
-	//     pDC       - Points to a valid device context.
-	//     xPos         - Specifies the logical x coordinate of the upper-left corner of the rectangle.
-	//     yPos         - Specifies the logical y coordinate of the upper-left corner of the destination rectangle.
-	//     cx        - Specifies the width of the rectangle.
-	//     cy        - Specifies the height of the rectangle.
-	//     bExpanded - TRUE if expanded.gripper.
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupBarGripper(CDC* pDC, int xPos, int yPos, int cx, int cy, BOOL bExpanded = FALSE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to draw a check mark.
-	// Parameters:
-	//     pDC        - Pointer to a valid device context
-	//     rcCheck    - Specifies the rectangle in logical units.
-	//     clr        - Color to fill.
-	//     bEnabled   - TRUE to enable, FALSE to disable the button.
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupBarCheckMark(CDC* pDC, CRect rcCheck, BOOL bEnabled, COLORREF clr);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to draw a radio button.
-	// Parameters:
-	//     pDC        - Pointer to a valid device context
-	//     rcCheck    - Specifies the rectangle in logical units.
-	//     clr        - Color to fill.
-	//     bEnabled   - TRUE to enable, FALSE to disable the button.
-	//-----------------------------------------------------------------------
-	virtual void DrawPopupBarRadioMark(CDC* pDC, CRect rcCheck, BOOL bEnabled, COLORREF clr);
-
-	//-----------------------------------------------------------------------
-	// Input:   pBar - Popup bar.
-	// Summary: Calculates gripper of popup bar.
-	// Returns: Width of gripper to draw.
-	//-----------------------------------------------------------------------
-	virtual int GetPopupBarGripperWidth(CXTPCommandBar* pBar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to draw Menu MDI buttons
-	// Parameters:
-	//     pDC        - Pointer to a valid device context
-	//     pButton    - Button to draw
-	//-----------------------------------------------------------------------
-	virtual void DrawControlMDIButton(CDC* pDC, CXTPControlButton* pButton);
-
-
-protected:
-	CXTPWinThemeWrapper m_themeRebar;           // Rebar theme helper
-	CXTPWinThemeWrapper m_themeToolbar;         // Toolbar theme helper
-	CXTPWinThemeWrapper m_themeCombo;           // ComboBox theme helper
-	CXTPWinThemeWrapper m_themeWindow;          // Window theme helper
-	CXTPWinThemeWrapper m_themeSpin;            // Window theme helper
-	CXTPWinThemeWrapper m_themeMenu;            // Menu theme helper
-	COLORREF            m_clrEdgeShadowColor;   // Color of toolbar bottom line
-	COLORREF            m_clrEdgeHighLightColor;// Color of toolbar top line
-	BOOL                m_bFlatMenus;           // TRUE if OS flat menu option enabled
-
-	COLORREF            m_clrSelectedText;      // Selectext text color
-	COLORREF            m_clrPressedText;       // Pressed text color.
-};
+_XTP_EXT_CLASS CXTPPaintManager* AFX_CDECL XTPPaintManager();
 
 //===========================================================================
 // Summary:
 //     The CXTPReBarPaintManager template class is used to enable a ReBar theme for Command Bars
 // See Also: CXTPPaintManager::SetTheme
 //===========================================================================
-template <class TBase>
+template<class TBase>
 class CXTPReBarPaintManager : public TBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReBarPaintManager object.
@@ -2295,7 +1679,7 @@ public:
 	//     pDC  - Pointer to a valid device context
 	//     pBar - Points to a CXTPCommandBar object to draw.
 	//-----------------------------------------------------------------------
-	void FillCommandBarEntry (CDC* pDC, CXTPCommandBar* pBar)
+	void FillCommandBarEntry(CDC* pDC, CXTPCommandBar* pBar)
 	{
 		if (pBar->GetPosition() != xtpBarFloating && pBar->GetPosition() != xtpBarPopup)
 		{
@@ -2316,61 +1700,97 @@ public:
 	}
 
 protected:
-	CXTPWinThemeWrapper m_themeRebar;  // ReBar theme helper.
+	CXTPWinThemeWrapper m_themeRebar; // ReBar theme helper.
 };
-
-
-class CXTPVisualStudio6Theme : public CXTPDefaultTheme
-{
-	CSize DrawCommandBarGripper(CDC* pDC, CXTPCommandBar* pBar, BOOL bDraw);
-};
-
-
-
-
-//{{AFX_CODEJOCK_PRIVATE
-namespace XTPPaintThemes
-{
-
-}
-//}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPPaintManager::SetAnimationDelay(int nAnimationSteps, int nAnimationTime) {
+AFX_INLINE void CXTPPaintManager::SetAnimationDelay(int nAnimationSteps, int nAnimationTime)
+{
 	m_nAnimationSteps = nAnimationSteps;
-	m_nAnimationTime = nAnimationTime;
+	m_nAnimationTime  = nAnimationTime;
 }
-AFX_INLINE CFont* CXTPPaintManager::GetRegularFont() {
-	return this == NULL ? CFont ::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT)): &m_fontRegular;
+
+AFX_INLINE CFont* CXTPPaintManager::GetRegularFont()
+{
+	return this == NULL ? CFont ::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT))
+						: &m_xtpFontRegular;
 }
-AFX_INLINE CFont* CXTPPaintManager::GetRegularBoldFont() {
-	return &m_fontRegularBold;
+
+AFX_INLINE CFont* CXTPPaintManager::GetRegularBoldFont()
+{
+	return &m_xtpFontRegularBold;
 }
-AFX_INLINE CFont* CXTPPaintManager::GetIconFont() {
+
+AFX_INLINE CFont* CXTPPaintManager::GetIconFont()
+{
 	return &m_fontIcon;
 }
-AFX_INLINE CFont* CXTPPaintManager::GetSmCaptionFont() {
+
+AFX_INLINE int CXTPPaintManager::GetFontHeight() const
+{
+	return m_nFontHeight;
+}
+
+AFX_INLINE CFont* CXTPPaintManager::GetSmCaptionFont()
+{
 	return &m_fontSmCaption;
 }
-AFX_INLINE void CXTPPaintManager::ShowKeyboardCues(BOOL bShow) {
+
+AFX_INLINE void CXTPPaintManager::ShowKeyboardCues(BOOL bShow)
+{
 	m_bShowKeyboardCues = bShow;
 }
-AFX_INLINE CXTPControlGalleryPaintManager* CXTPPaintManager::GetGalleryPaintManager() const {
+
+AFX_INLINE CXTPScrollBarPaintManager* CXTPPaintManager::GetScrollBarPaintManager() const
+{
+	return m_pScrollBarPaintManager;
+}
+
+AFX_INLINE CXTPControlGalleryPaintManager* CXTPPaintManager::GetGalleryPaintManager() const
+{
 	return m_pGalleryPaintManager;
 }
-AFX_INLINE CXTPSliderPaintManager* CXTPPaintManager::GetSliderPaintManager() const {
+
+AFX_INLINE CXTPSliderPaintManager* CXTPPaintManager::GetSliderPaintManager() const
+{
 	return m_pSliderPaintManager;
 }
-AFX_INLINE CXTPProgressPaintManager* CXTPPaintManager::GetProgressPaintManager() const {
+
+AFX_INLINE CXTPProgressPaintManager* CXTPPaintManager::GetProgressPaintManager() const
+{
 	return m_pProgressPaintManager;
 }
 
-AFX_INLINE CXTPShadowManager* CXTPPaintManager::GetShadowManager() const {
+AFX_INLINE CXTPShadowManager* CXTPPaintManager::GetShadowManager() const
+{
 	return m_pShadowManager;
 }
-AFX_INLINE int CXTPPaintManager::GetEditHeight() const {
+
+AFX_INLINE int CXTPPaintManager::GetEditHeight() const
+{
 	return m_nEditHeight;
 }
 
+AFX_INLINE int CXTPPaintManager::GetTextHeight() const
+{
+	return m_nTextHeight;
+}
+
+AFX_INLINE int CXTPPaintManager::GetSplitDropDownHeight() const
+{
+	return m_nSplitButtonDropDownHeight;
+}
+
+AFX_INLINE BOOL CXTPPaintManager::RequiresResourceImages()
+{
+	return FALSE;
+}
+
+AFX_INLINE CFont* CXTPPaintManager::GetIconBoldFont()
+{
+	return &m_fontIconBold;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPAINTMANAGER_H__)

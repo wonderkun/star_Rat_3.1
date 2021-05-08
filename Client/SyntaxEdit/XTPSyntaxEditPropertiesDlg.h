@@ -1,7 +1,6 @@
 // XTPSyntaxEditPropertiesDlg.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITPROPERTIESDLG_H__)
-#define __XTPSYNTAXEDITPROPERTIESDLG_H__
+#	define __XTPSYNTAXEDITPROPERTIESDLG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPSyntaxEditView;
 
 //===========================================================================
 // Summary:
@@ -42,7 +45,7 @@ public:
 	// Parameters:
 	//     pEditView  - Pointer to CXTPSyntaxEditView object.
 	// -------------------------------------------------------------------
-	CXTPSyntaxEditPropertiesDlg(CXTPSyntaxEditView* pEditView=NULL);
+	CXTPSyntaxEditPropertiesDlg(CXTPSyntaxEditView* pEditView = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -55,9 +58,9 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	CXTPSyntaxEditPropertiesPageEdit    m_Page1; // Property page for common edit options.
-	CXTPSyntaxEditPropertiesPageFont    m_Page2; // Property page for font options.
-	CXTPSyntaxEditPropertiesPageColor   m_Page3; // Property page for colors options.
+	CXTPSyntaxEditPropertiesPageEdit m_Page1;  // Property page for common edit options.
+	CXTPSyntaxEditPropertiesPageFont m_Page2;  // Property page for font options.
+	CXTPSyntaxEditPropertiesPageColor m_Page3; // Property page for colors options.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -65,4 +68,5 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITPROPERTIESDLG_H__)

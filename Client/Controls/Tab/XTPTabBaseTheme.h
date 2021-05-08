@@ -1,7 +1,6 @@
 // XTPTabBaseTheme.h: interface for the CXTPTabBaseTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABCTRLTHEME_H__)
-#define __XTPTABCTRLTHEME_H__
+#	define __XTPTABCTRLTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabCtrl;
 class CXTPTabBase;
 class CXTPTabCtrlButton;
 class CXTPTabCtrlButtons;
 class CXTPTcbItem;
+class CXTPWinThemeWrapper;
 
 //===========================================================================
 // Summary:
@@ -119,7 +121,8 @@ protected:
 	//      This member function is called to draw the borders around the tab control.
 	// Parameters:
 	//      pDC      - A pointer to a valid device context.
-	//      rcClient - A CRect object that contains the location and the dimensions of the Tab Control.
+	//      rcClient - A CRect object that contains the location and the dimensions of the Tab
+	//      Control.
 	// See Also:
 	//      CXTPTabBaseThemeOfficeXP::DrawBorders
 	//-----------------------------------------------------------------------
@@ -131,7 +134,8 @@ protected:
 	//      pDC          - A pointer to a valid device context.
 	//      pTabCtrlBase - A pointer to a CXTPTabBase object.  Contains information
 	//                     about the tab control.
-	//      rcHeader     - A CRect object that contains the location and the dimensions of the header.
+	//      rcHeader     - A CRect object that contains the location and the dimensions of the
+	//      header.
 	// See Also:
 	//      CXTPTabBaseThemeOfficeXP::FillHeader, FillTabFaceNativeWinXP
 	//-----------------------------------------------------------------------
@@ -208,7 +212,8 @@ protected:
 	//      DrawTabIcon, FillTabFace, FillTabFaceNativeWinXP,
 	//      CXTPExcelTabCtrlTheme::DrawTab
 	//-----------------------------------------------------------------------
-	virtual void DrawTabText(CDC* pDC, CTabCtrl* pTabCtrl, CRect& rcItem, int iItem, BOOL bSelected, BOOL bBoldFont);
+	virtual void DrawTabText(CDC* pDC, CTabCtrl* pTabCtrl, CRect& rcItem, int iItem, BOOL bSelected,
+							 BOOL bBoldFont);
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Call this member function to get the bounding rectangle of the tab
@@ -252,8 +257,10 @@ protected:
 	// See Also:
 	//      IsLeft, IsRight, IsTop, IsBottom, IsVert, IsHorz
 	//-----------------------------------------------------------------------
-	DWORD GetTabStyle(CTabCtrl* pTabCtrl) const {
-		ASSERT(::IsWindow(pTabCtrl->GetSafeHwnd())); return (pTabCtrl->GetStyle() & (TCS_VERTICAL|TCS_RIGHT|TCS_BOTTOM));
+	DWORD GetTabStyle(CTabCtrl* pTabCtrl) const
+	{
+		ASSERT(::IsWindow(pTabCtrl->GetSafeHwnd()));
+		return (pTabCtrl->GetStyle() & (TCS_VERTICAL | TCS_RIGHT | TCS_BOTTOM));
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -267,8 +274,9 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsRight, IsTop, IsBottom, IsVert, IsHorz
 	//-----------------------------------------------------------------------
-	BOOL IsLeft(DWORD dwStyle) const {
-		return ((dwStyle & (TCS_VERTICAL|TCS_RIGHT|TCS_BOTTOM)) == TCS_VERTICAL);
+	BOOL IsLeft(DWORD dwStyle) const
+	{
+		return ((dwStyle & (TCS_VERTICAL | TCS_RIGHT | TCS_BOTTOM)) == TCS_VERTICAL);
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -282,8 +290,9 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsLeft, IsTop, IsBottom, IsVert, IsHorz
 	//-----------------------------------------------------------------------
-	BOOL IsRight(DWORD dwStyle) const {
-		return ((dwStyle & (TCS_VERTICAL|TCS_RIGHT|TCS_BOTTOM)) == (TCS_VERTICAL|TCS_RIGHT));
+	BOOL IsRight(DWORD dwStyle) const
+	{
+		return ((dwStyle & (TCS_VERTICAL | TCS_RIGHT | TCS_BOTTOM)) == (TCS_VERTICAL | TCS_RIGHT));
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -297,8 +306,9 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsLeft, IsRight, IsBottom, IsVert, IsHorz
 	//-----------------------------------------------------------------------
-	BOOL IsTop(DWORD dwStyle) const {
-		return ((dwStyle & (TCS_VERTICAL|TCS_RIGHT|TCS_BOTTOM)) == 0);
+	BOOL IsTop(DWORD dwStyle) const
+	{
+		return ((dwStyle & (TCS_VERTICAL | TCS_RIGHT | TCS_BOTTOM)) == 0);
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -312,8 +322,9 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsLeft, IsRight, IsTop, IsVert, IsHorz
 	//-----------------------------------------------------------------------
-	BOOL IsBottom(DWORD dwStyle) const {
-		return ((dwStyle & (TCS_VERTICAL|TCS_RIGHT|TCS_BOTTOM)) == TCS_BOTTOM);
+	BOOL IsBottom(DWORD dwStyle) const
+	{
+		return ((dwStyle & (TCS_VERTICAL | TCS_RIGHT | TCS_BOTTOM)) == TCS_BOTTOM);
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -327,7 +338,8 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsLeft, IsRight, IsTop, IsBottom, IsHorz
 	//-----------------------------------------------------------------------
-	BOOL IsVert(DWORD dwStyle) const {
+	BOOL IsVert(DWORD dwStyle) const
+	{
 		return (IsRight(dwStyle) || IsLeft(dwStyle));
 	}
 	//-----------------------------------------------------------------------
@@ -342,7 +354,8 @@ protected:
 	// See Also:
 	//      GetTabStyle, IsLeft, IsRight, IsTop, IsVert, IsBottom
 	//-----------------------------------------------------------------------
-	BOOL IsHorz(DWORD dwStyle) const {
+	BOOL IsHorz(DWORD dwStyle) const
+	{
 		return (IsTop(dwStyle) || IsBottom(dwStyle));
 	}
 	//-----------------------------------------------------------------------
@@ -395,22 +408,25 @@ protected:
 	void Pixel(CDC* pDC, int xPos, int yPos, COLORREF clr);
 
 private:
-	typedef void (AFX_CDECL* LPFNDRAWROTATEDBITS)(int cx, int cy, UINT* pSrcBits, UINT* pDestBits);
-	void DrawRotatedButton(CDC* pDC, CRect rcItem, BOOL bSelected, BOOL bSwap, LPFNDRAWROTATEDBITS pfnRotatedProc);
+	typedef void(AFX_CDECL* LPFNDRAWROTATEDBITS)(int cx, int cy, UINT* pSrcBits, UINT* pDestBits);
+	void DrawRotatedButton(CDC* pDC, CRect rcItem, BOOL bSelected, BOOL bSwap,
+						   LPFNDRAWROTATEDBITS pfnRotatedProc);
 	static void AFX_CDECL DrawRotatedBitsLeft(int cx, int cy, UINT* pSrcBits, UINT* pDestBits);
 	static void AFX_CDECL DrawRotatedBitsRight(int cx, int cy, UINT* pSrcBits, UINT* pDestBits);
 	static void AFX_CDECL DrawRotatedBitsBottom(int cx, int cy, UINT* pSrcBits, UINT* pDestBits);
 
-
 public:
-	BOOL m_bSystemDrawing;  // TRUE to perform system drawing. FALSE otherwise.
-	BOOL m_bUseWinThemes;   // TRUE to use Windows XP themes when available. FALSE otherwise.
+	BOOL m_bSystemDrawing; // TRUE to perform system drawing. FALSE otherwise.
+	BOOL m_bUseWinThemes;  // TRUE to use Windows XP themes when available. FALSE otherwise.
 
 protected:
-	int  m_iEdge;    // The Y dimension of a 3D border.
-	CXTPWinThemeWrapper m_wrapTheme; // Windows Theme wrapper.
-	CXTPPaintManagerColor m_clrNormalText; // Color of text in a normal tab.  Normal tabs are tabs that are not selected or disabled.
-	CXTPPaintManagerColor m_clrSelectedText; // Color of text in a "selected" tab button.  The "selected" tab button is the tab with focus.  I.e. The tab becomes active when it is clicked.
+	int m_iEdge;							 // The Y dimension of a 3D border.
+	CXTPWinThemeWrapper* m_themeTab;		 // Windows Theme wrapper.
+	CXTPPaintManagerColor m_clrNormalText;   // Color of text in a normal tab.  Normal tabs are tabs
+											 // that are not selected or disabled.
+	CXTPPaintManagerColor m_clrSelectedText; // Color of text in a "selected" tab button.  The
+											 // "selected" tab button is the tab with focus.  I.e.
+											 // The tab becomes active when it is clicked.
 };
 
 //===========================================================================
@@ -492,7 +508,8 @@ protected:
 	//      This member function is called to draw the borders around the tab control.
 	// Parameters:
 	//      pDC      - A pointer to a valid device context.
-	//      rcClient - A CRect object that contains the location and the dimensions of the Tab Control.
+	//      rcClient - A CRect object that contains the location and the dimensions of the Tab
+	//      Control.
 	// See Also:
 	//      CXTPTabBaseTheme::DrawBorders
 	//-----------------------------------------------------------------------
@@ -504,7 +521,8 @@ protected:
 	//      pDC          - A pointer to a valid device context.
 	//      pTabCtrlBase - A pointer to a CXTPTabBase object.  Contains information
 	//                     about the tab control.
-	//      rcHeader     - A CRect object that contains the location and the dimensions of the header.
+	//      rcHeader     - A CRect object that contains the location and the dimensions of the
+	//      header.
 	// See Also:
 	//      CXTPTabBaseTheme::FillHeader, CXTPTabBaseThemeOffice2003::FillHeader
 	//-----------------------------------------------------------------------
@@ -579,7 +597,8 @@ protected:
 	//      pDC          - A pointer to a valid device context.
 	//      pTabCtrlBase - A pointer to a CXTPTabBase object.  Contains information
 	//                     about the tab control.
-	//      rcHeader     - A CRect object that contains the location and the dimensions of the header.
+	//      rcHeader     - A CRect object that contains the location and the dimensions of the
+	//      header.
 	// See Also:
 	//      CXTPTabBaseTheme::FillHeader, CXTPTabBaseThemeOfficeXP::FillHeader
 	//-----------------------------------------------------------------------
@@ -598,7 +617,8 @@ protected:
 	//      CXTPTabBaseThemeOfficeXP::FillTabFace, CXTPTabBaseThemeOffice2003::FillTabFace,
 	//      FillTabFace, DrawTab, DrawTabIcon, DrawTabText
 	//-----------------------------------------------------------------------
-	virtual COLORREF GradientFillTabFace(CDC* pDC, CTabCtrl* pTabCtrl, CRect rcItem, BOOL bSelected);
+	virtual COLORREF GradientFillTabFace(CDC* pDC, CTabCtrl* pTabCtrl, CRect rcItem,
+										 BOOL bSelected);
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      This member function is called draw the tab face.
@@ -633,14 +653,16 @@ protected:
 	virtual COLORREF FillButtons(CDC* pDC, CXTPTabCtrlButtons* pButtons);
 
 protected:
-	CXTPPaintManagerColorGradient m_clrHeaderFace; // Represents the gradient color of the header face.
-	CXTPPaintManagerColor m_clrShadow;             // Represents the color used for shadows.
-	CXTPPaintManagerColor m_clrHighlight;          // Represents the highlight color.
-	CXTPPaintManagerColor m_clrDarkShadow;         // Represents the color used for dark shadows.
-	CXTPPaintManagerColor m_clrButtonSelected;     // Represents the color used for selected buttons.
-	CXTPPaintManagerColor m_clrButtonNormal;       // Represents the color used for normal buttons.
+	CXTPPaintManagerColorGradient m_clrHeaderFace; // Represents the gradient color of the header
+												   // face.
+	CXTPPaintManagerColor m_clrShadow;			   // Represents the color used for shadows.
+	CXTPPaintManagerColor m_clrHighlight;		   // Represents the highlight color.
+	CXTPPaintManagerColor m_clrDarkShadow;		   // Represents the color used for dark shadows.
+	CXTPPaintManagerColor m_clrButtonSelected; // Represents the color used for selected buttons.
+	CXTPPaintManagerColor m_clrButtonNormal;   // Represents the color used for normal buttons.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTABCTRLTHEME_H__)

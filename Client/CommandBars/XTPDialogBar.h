@@ -1,7 +1,6 @@
-// XTPToolBar.h : interface for the CXTPToolBar class.
+// XTPDialogBar.h : interface for the CXTPDialogBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,31 +19,31 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDIALOGBAR_H__)
-#define __XTPDIALOGBAR_H__
+#	define __XTPDIALOGBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPopupBar;
 
-#include "XTPToolBar.h"
-
 //===========================================================================
 // Summary:
-//     CXTPDialogBar is a CXTPToolBar derived class. It represents dockable container for child window
+//     CXTPDialogBar is a CXTPToolBar derived class. It represents dockable container for child
+//     window
 //===========================================================================
 class _XTP_EXT_CLASS CXTPDialogBar : public CXTPToolBar
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	class CControlButtonHide;
 	class CControlCaptionPopup;
 	class CCaptionPopupBar;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPDialogBar object
@@ -58,7 +57,6 @@ public:
 	virtual ~CXTPDialogBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to specify the child window displayed under the
@@ -163,7 +161,6 @@ public:
 	BOOL IsActive() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method calculates the dimensions of a toolbar.
@@ -180,7 +177,8 @@ protected:
 	// Summary:
 	//     This method calculates the dimensions of a toolbar.
 	// Parameters:
-	//     nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
+	//     nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//     depending on dwMode.
 	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
 	// Returns:
 	//     Size of the docked toolbar.
@@ -246,7 +244,7 @@ protected:
 	void MoveChildWindow(CRect rc);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPDialogBar)
@@ -254,47 +252,62 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	CRect m_rcBorders;		   // Borders size.
+	BOOL m_bResizable;		   // TRUE if the child window and dialog bar are re-sizable.
+	CSize m_szMinTrackRect;	// Minimum tracking rectangle
+	BOOL m_bCaptionVisible;	// TRUE if the caption popup control is visible.
+	BOOL m_bCaptionPopup;	  // TRUE to use caption as popup control.
+	int m_nCaptionHeight;	  // Caption height.
+	CSize m_szDockingClient;   // Docking client rectangle
+	CSize m_szFloatingClient;  // Floating client rectangle
+	HWND m_hwndChild;		   // Child window handle.
+	CString m_strCaption;	  // Text that is displayed in the caption popup control.
+	CXTPPopupBar* m_pPopupBar; // Pointer to caption popup bar.
+	BOOL m_bActive;			   // TRUE if dialog bar has active caption
+
+protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDialogBar);
+	DECLARE_INTERFACE_MAP()
+
+	afx_msg LPDISPATCH OleGetCaptionPopupBar();
+	afx_msg void OleSetChildHandle(HWND hWnd);
+	afx_msg HWND OleGetChildHandle();
+	afx_msg void OleSetSize(int cx, int cy);
+
 //}}AFX_CODEJOCK_PRIVATE
-
-protected:
-	CRect m_rcBorders;          // Borders size.
-	BOOL m_bResizable;          // TRUE if the child window and dialog bar are re-sizable.
-	CSize m_szMinTrackRect;     // Minimum tracking rectangle
-	BOOL m_bCaptionVisible;     // TRUE if the caption popup control is visible.
-	BOOL m_bCaptionPopup;       // TRUE to use caption as popup control.
-	int m_nCaptionHeight;       // Caption height.
-	CSize m_szDockingClient;    // Docking client rectangle
-	CSize m_szFloatingClient;   // Floating client rectangle
-	HWND m_hwndChild;           // Child window handle.
-	CString m_strCaption;       // Text that is displayed in the caption popup control.
-	CXTPPopupBar* m_pPopupBar;  // Pointer to caption popup bar.
-	BOOL m_bActive;             // TRUE if dialog bar has active caption
-
-
-protected:
+#	endif
 
 	DECLARE_XTP_COMMANDBAR(CXTPDialogBar)
 
 	friend class CXTPToolBar;
 	friend class CXTPDockContext;
-
-
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPDialogBar::IsDialogBar() const {
+AFX_INLINE BOOL CXTPDialogBar::IsDialogBar() const
+{
 	return TRUE;
 }
-AFX_INLINE CXTPPopupBar* CXTPDialogBar::GetCaptionPopup() const {
+AFX_INLINE CXTPPopupBar* CXTPDialogBar::GetCaptionPopup() const
+{
 	return m_pPopupBar;
 }
-AFX_INLINE void CXTPDialogBar::SetResizable(BOOL bResizable) {
+AFX_INLINE void CXTPDialogBar::SetResizable(BOOL bResizable)
+{
 	m_bResizable = bResizable;
 }
-AFX_INLINE BOOL CXTPDialogBar::IsActive() const {
+AFX_INLINE BOOL CXTPDialogBar::IsActive() const
+{
 	return m_bActive;
 }
 
-
-#endif  //#if !defined(__XTPDIALOGBAR_H__)
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#endif //#if !defined(__XTPDIALOGBAR_H__)

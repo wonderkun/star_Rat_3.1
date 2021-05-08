@@ -1,7 +1,7 @@
 // WebCamDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "WebCamDlg.h"
 /*#ifdef _DEBUG*/
@@ -703,7 +703,7 @@ void CWebCamDlg::DoPaint()
 
 	// Do not call CDialog::OnPaint() for painting messages
 }
-#ifdef NDEBUG
+#ifdef DEBUG
 void CWebCamDlg::OnPaint() 
 {
 	// TODO: Add your message handler code here

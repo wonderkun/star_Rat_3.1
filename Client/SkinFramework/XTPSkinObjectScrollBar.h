@@ -1,7 +1,6 @@
 // XTPSkinObjectScrollBar.h: interface for the CXTPSkinObjectScrollBar class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,22 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTSCROLLBAR_H__)
-#define __XTPSKINOBJECTSCROLLBAR_H__
+#	define __XTPSKINOBJECTSCROLLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
 //     CXTPSkinObjectScrollBar is a CXTPSkinObjectFrame derived class.
 //     It implements standard scroll bar control
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinObjectScrollBar: public CXTPSkinObjectFrame
+class _XTP_EXT_CLASS CXTPSkinObjectScrollBar : public CXTPSkinObjectFrame
 {
 	DECLARE_DYNCREATE(CXTPSkinObjectScrollBar)
 public:
@@ -52,7 +50,7 @@ public:
 	virtual ~CXTPSkinObjectScrollBar();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	void OnDraw(CDC* pDC);
@@ -74,13 +72,12 @@ protected:
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	XTP_SKINSCROLLBARPOSINFO m_spiCtl;
-//}}AFX_CODEJOCK_PRIVATE
+	XTP_SKINSCROLLBAR_POSINFO m_spiCtl;
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTSCROLLBAR_H__)

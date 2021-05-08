@@ -1,7 +1,6 @@
 // XTPComboBox.h interface for the CXTPComboBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,136 +19,127 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOMBOBOX_H__)
-#define __XTPCOMBOBOX_H__
+#	define __XTPCOMBOBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Common/XTPWinThemeWrapper.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-class _XTP_EXT_CLASS CXTPComboBoxEditCtrl : public CEdit
-{
+class CXTPComboBoxTheme;
+class CXTPComboBoxEditCtrl;
 
-protected:
-
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_MSG(CXTPComboBox)
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	void OnMouseLeave();
-	void OnMouseMove(UINT nFlags, CPoint point);
-	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
-};
-
+//===========================================================================
+// Summary: The CXTPComboBox class provides the functionality of a themed
+//          Widnows combo-box.
+//===========================================================================
 class _XTP_EXT_CLASS CXTPComboBox : public CComboBox
 {
 	DECLARE_DYNAMIC(CXTPComboBox)
 
 public:
-
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPComboBox object
+	// Summary: Constructs a CXTPComboBox object
 	//-----------------------------------------------------------------------
 	CXTPComboBox();
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPComboBox object, handles cleanup and deallocation
+	// Summary: Destroys a CXTPComboBox object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
-	~CXTPComboBox();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to switch the visual theme of the control.
-	// Parameters:
-	//     nTheme - New visual theme. Can be any of the values listed in the Remarks section.
-	// Remarks:
-	//     nStyle can be one of the following:
-	//     * <b>xtpControlThemeStandard</b> Standard appearance style.
-	//     * <b>xtpControlThemeFlat</b> Flat appearance style.
-	//     * <b>xtpControlThemeUltraFlat</b> Ultra flat appearance style.
-	//     * <b>xtpControlThemeOffice2000</b> Office 2000 appearance style.
-	//     * <b>xtpControlThemeOfficeXP</b> Office XP appearance style.
-	//     * <b>xtpControlThemeOffice2003</b> Office 2003 appearance style.
-	//     * <b>xtpControlThemeOffice2007</b> Office 2007 appearance style.
-	//-----------------------------------------------------------------------
-	void SetTheme(XTPControlTheme nTheme);
+	virtual ~CXTPComboBox();
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Gets the flat style appearance of the button control.
-	// Remarks:
-	//     The control will appear flat until the mouse pointer moves over it,
-	//     at which point it appears three-dimensional.
-	// Returns:
-	//     TRUE if the flat style is used, FALSE otherwise.
+	// Summary:  Call this member to switch the visual theme of the control.
+	// Input:    nTheme - New visual theme. Can be any of the values listed
+	//                    in the Remarks section.
+	// Remarks:  nTheme can be one of the theme IDs specified by XTPControlTheme.
+	// See Also: XTPControlTheme
+	//-----------------------------------------------------------------------
+	BOOL SetTheme(XTPControlTheme nTheme);
+
+	//-----------------------------------------------------------------------
+	// Summary: This member function is called to set the theme for the combo-box
+	//          control using the theme specified by pTheme.
+	// Input:   pTheme - Points to a valid CXTPComboBox theme object.
+	//-----------------------------------------------------------------------
+	virtual void SetTheme(CXTPComboBoxTheme* pTheme);
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member funciton to retrieve a pointer to the current
+	//          theme used by the combo-box.
+	// Returns: A CXTPComboBoxTheme pointer or NULL if no theme is set.
+	//-----------------------------------------------------------------------
+	CXTPComboBoxTheme* GetTheme();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member funciton to retrieve a pointer to the current
+	//          theme used by the combo-box.
+	// Returns: A CXTPComboBoxTheme pointer or NULL if no theme is set.
+	//-----------------------------------------------------------------------
+	const CXTPComboBoxTheme* GetTheme() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Redraws the button.
+	// Input:   bUpdateWindow - TRUE to notify the parent window.
+	//-----------------------------------------------------------------------
+	void RedrawComboBox(BOOL bUpdateWindow = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary: Gets the flat style appearance of the combo-box.
+	// Remarks: The control will appear flat until the mouse pointer moves
+	//          over it, at which point it appears three-dimensional.
+	// Returns: TRUE if the flat style is used, FALSE otherwise.
 	//-----------------------------------------------------------------------
 	BOOL GetFlatStyle() const;
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sets the flat style appearance of the button control.
-	// Parameters:
-	//     bFlatStyle - TRUE to use the flat style, FALSE otherwise.
-	// Remarks:
-	//     The control will appear flat until the mouse pointer moves over it,
-	//     at which point it appears three-dimensional.
+	// Summary: Sets the flat style appearance of the button control.
+	// Input:   bFlatStyle - TRUE to use the flat style, FALSE otherwise.
+	// Remarks: The control will appear flat until the mouse pointer moves
+	//          over it, at which point it appears three-dimensional.
 	//-----------------------------------------------------------------------
 	void SetFlatStyle(BOOL bFlatStyle = TRUE);
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines if the control is drawn using visual styles\SkinFramework, if supported.
-	// Remarks:
-	//     This method enables Windows XP visual styles for the control. This
-	//     Control will draw with visual styles if the control and the operating
-	//     system supports it.
-	//     Visual styles and SkinFramwork skins are specifications for the
-	//     appearance of controls.  GetUseVisualStyle determines whether to
-	//     use the currently set Windows XP visual style.  If using SkinFramwork,
-	//     it determines whether to use the currently set style of the SkinFramework.
-	// Returns:
-	//     TRUE if the currently set Windows XP visual style will be used to
-	//     theme the control.  If using SkinFramwork, the currently set style
-	//     of the SkinFramework will be used to skin the control.
-	//
-	//     FALSE if the currently set appearance\style in the OS will be used.
+	// Summary: Determines if the control is drawn using visual styles\SkinFramework,
+	//          if supported.
+	// Remarks: This method enables Windows XP visual styles for the control.
+	//          This control will draw with visual styles if the control and
+	//          the operating system supports it. Visual styles and SkinFramwork
+	//          skins are specifications for the appearance of controls.
+	//          GetUseVisualStyle determines whether to use the currently set
+	//          Windows XP visual style.  If using SkinFramwork, it determines
+	//          whether to use the currently set style of the SkinFramework.
+	// Returns: TRUE if the currently set Windows XP visual style will be used
+	//          to theme the control.  If using SkinFramwork, the currently set
+	//          style of the SkinFramework will be used to skin the control.
+	//          FALSE if the currently set appearance\style in the OS will be used.
 	//-----------------------------------------------------------------------
 	BOOL GetUseVisualStyle() const;
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Enables Windows XP visual styles for the control.
-	// Remarks:
-	//     This method enables Windows XP visual styles for the control. This
-	//     Control will draw with visual styles if the control and the operating
-	//     system supports it.
-	//     Visual styles and SkinFramwork skins are specifications for the
-	//     appearance of controls.  GetUseVisualStyle determines whether to
-	//     use the currently set Windows XP visual style.  If using SkinFramwork,
-	//     it determines whether to use the currently set style of the SkinFramework.
-	// Parameters:
-	//     bUseVisualStyle - TRUE if the currently set Windows XP visual style will be used to
-	//                       theme the control.  If using SkinFramwork, the currently set style
-	//                       of the SkinFramework will be used to skin the control.
-	//
-	//                       FALSE if the currently set appearance\style in the OS will be used.
+	// Summary: Enables Windows XP visual styles for the control.
+	// Remarks: This method enables Windows XP visual styles for the control.
+	//          This control will draw with visual styles if the control and
+	//          the operating system supports it.  Visual styles and SkinFramwork
+	//          skins are specifications for the appearance of controls.
+	//          GetUseVisualStyle determines whether to use the currently set
+	//          Windows XP visual style.  If using SkinFramwork, it determines
+	//          whether to use the currently set style of the SkinFramework.
+	// Input:   bUseVisualStyle - TRUE if the currently set Windows XP visual
+	//                            style will be used to theme the control.
+	//                            If using SkinFramwork, the currently set style
+	//                            of the SkinFramework will be used to skin the
+	//                            control. FALSE if the currently set
+	//                            appearance\style in the OS will be used.
 	//-----------------------------------------------------------------------
 	void SetUseVisualStyle(BOOL bUseVisualStyle = TRUE);
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function enables or disables auto completion.
-	// Parameters:
-	//     bEnable - TRUE to enable auto completion, otherwise FALSE.
+	// Summary: This member function enables or disables auto completion.
+	// Input:   bEnable - TRUE to enable auto completion, otherwise FALSE.
 	//-----------------------------------------------------------------------
 	void EnableAutoCompletion(BOOL bEnable = TRUE);
 
@@ -187,113 +177,138 @@ public:
 	//-----------------------------------------------------------------------
 	COLORREF GetTextColor() const;
 
-	// -----------------------------------------------------------------
-	// Summary:
-	//     This member is called to update color, text and other visual elements
-	//     of the control.
-	// -----------------------------------------------------------------
+	//-----------------------------------------------------------------------
+	// Summary: This member is called to update color, text and other visual
+	//          elements of the control.
+	//-----------------------------------------------------------------------
 	void RefreshMetrics();
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to determine if the combo-box has
+	//          input focus.
+	// Returns: TRUE if the combo-box has input focus, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsFocused() const;
 
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to determine if the combo-box state
+	//          is highilghted, meaning the mouse cursor is currently hovering
+	//          the control.
+	// Returns: TRUE if the combo-box state is highlighted, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsHighlighted() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member funciton to retreive a handle to the client
+	//          background brush.
+	// Input:   pDC - Points to a valid device context.
+	// Returns: A HBRUSH handle representing the client background brush.
+	//-----------------------------------------------------------------------
 	HBRUSH GetClientBrush(CDC* pDC);
-	void FillSolidRect(HDC hdc, int x, int y, int cx, int cy, HBRUSH hBrush);
-	void DrawFrame(HDC hdc, LPRECT lprc, int nSize, HBRUSH hBrush);
 
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to retreve the size of the combo-box
+	//          in client coordinates.
+	// Returns: A CRect object representing the client size for the combo-box.
+	//-----------------------------------------------------------------------
+	CRect GetComboBoxRect() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: This member fuction is called ot set the highlighted state for
+	//          the combo-box.
+	// Input:   bHot - TRUE to set the combo-box state to highlighted.
+	//-----------------------------------------------------------------------
 	void SetHighlighted(BOOL bHot);
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to redraw the focused frame for the
+	//          combo-box.
+	//-----------------------------------------------------------------------
 	void RedrawFocusedFrame();
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to determine if the combo-box needs to
+	//          be redrawn.
+	// Returns: TRUE if the combo-box needs to be redrawn.
+	//-----------------------------------------------------------------------
 	BOOL NeedRedraw();
 
+	//{{AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
+	//{{AFX_VIRTUAL(CXTPComboBox)
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void PreSubclassWindow();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
 
-	BOOL PreCreateWindow(CREATESTRUCT& cs);
-	void PreSubclassWindow();
-	void Init();
-	BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void Init();
 
 	//{{AFX_MSG(CXTPComboBox)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnPaint();
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	void OnMouseLeave();
-	void OnMouseMove(UINT nFlags, CPoint point);
-	void OnSysColorChange();
-
-	BOOL OnEndSel();
-	BOOL OnEditUpdate();
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnSysColorChange();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor); // reflect message
+	afx_msg BOOL OnEditUpdate();
+	afx_msg BOOL OnCloseUp();
+	afx_msg BOOL OnDropDown();
+	afx_msg void OnMouseLeave();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
 
+	DECLARE_MESSAGE_MAP()
+
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL m_bPreSubclassInit;
+	BOOL m_bPreSubclassInit; // TRUE if the control has been subclassed.
+	BOOL m_bUseVisualStyle;  // TRUE to use Windows themes.
+	BOOL m_bFlatStyle; // TRUE to draw the control using flat styles, this is mostly deprecated, use
+					   // SetTheme() instead.
+	BOOL m_bHighlighted; // TRUE when the combo-box is highlighted.
+	BOOL m_bFocused;	 // TRUE when the combo-box has input focus.
+	BOOL m_bAutoComp;	// TRUE when the combo-box is using the auto-complete feature.
+	BOOL m_bDisableAC;   // TRUE to disable auto-complete temporarily.
 
-	BOOL m_bUseVisualStyle;
-	int m_nTheme;
-	BOOL m_bFlatStyle;
+	CXTPComboBoxTheme* m_pTheme;	  // Pointer to the current theme object.
+	CXTPComboBoxEditCtrl* m_pWndEdit; // Pointer to the edit-control for the combo box.
 
-	CXTPWinThemeWrapper m_wrapperComboBox;
-
-	BOOL m_bHighlighted;
-	BOOL m_bFocused;
-
-	int m_nThumbWidth;
-
-	BOOL m_bAutoComp;
-	BOOL m_bDisableAC;
-
-	COLORREF m_clrBorderDisabled;
-	COLORREF m_clrBorderHot;
-	COLORREF m_clrBorderNormal;
-
-	COLORREF m_clrButtonPressed;
-	COLORREF m_clrButtonHot;
-	COLORREF m_clrButtonNormal;
-
-	COLORREF m_clrButtonArrowPressed;
-	COLORREF m_clrButtonArrowHot;
-	COLORREF m_clrButtonArrowNormal;
-
-	COLORREF m_crBack;  // RGB color value representing background color.
-	COLORREF m_crText;  // RGB color value representing text color.
-
-	CXTPPaintManagerColorGradient m_grcButton;
-	CXTPPaintManagerColorGradient m_grcButtonHilite;
-	CXTPPaintManagerColorGradient m_grcButtonPushed;
-
-	CXTPComboBoxEditCtrl m_wndEdit;
+private:
 	friend class CXTPComboBoxEditCtrl;
-
 };
 
-AFX_INLINE BOOL CXTPComboBox::GetUseVisualStyle() const {
+/////////////////////////////////////////////////////////////////////////////
+
+AFX_INLINE BOOL CXTPComboBox::GetUseVisualStyle() const
+{
 	return m_bUseVisualStyle;
 }
-AFX_INLINE BOOL CXTPComboBox::GetFlatStyle() const{
+AFX_INLINE BOOL CXTPComboBox::IsFocused() const
+{
+	return m_bFocused;
+}
+AFX_INLINE BOOL CXTPComboBox::IsHighlighted() const
+{
+	return m_bHighlighted;
+}
+AFX_INLINE BOOL CXTPComboBox::GetFlatStyle() const
+{
 	return m_bFlatStyle;
 }
-AFX_INLINE void CXTPComboBox::SetFlatStyle(BOOL bFlatStyle/* = TRUE*/) {
+AFX_INLINE void CXTPComboBox::SetFlatStyle(BOOL bFlatStyle /* = TRUE*/)
+{
 	m_bFlatStyle = bFlatStyle;
-	if (m_hWnd) Invalidate(FALSE);
+	if (m_hWnd)
+		Invalidate(FALSE);
 }
-AFX_INLINE void CXTPComboBox::EnableAutoCompletion(BOOL bEnable/*=TRUE*/) {
+AFX_INLINE void CXTPComboBox::EnableAutoCompletion(BOOL bEnable /*=TRUE*/)
+{
 	m_bAutoComp = bEnable;
 }
-AFX_INLINE void CXTPComboBox::SetBackColor(COLORREF crBack) {
-	m_crBack = crBack;
-}
-AFX_INLINE COLORREF CXTPComboBox::GetBackColor() const {
-	return (m_crBack == COLORREF_NULL) ? GetXtremeColor(COLOR_WINDOW) : m_crBack;
-}
-AFX_INLINE void CXTPComboBox::SetTextColor(COLORREF crText) {
-	m_crText = crText;
-}
-AFX_INLINE COLORREF CXTPComboBox::GetTextColor() const {
-	return (m_crText == COLORREF_NULL) ? GetXtremeColor(COLOR_WINDOWTEXT) : m_crText;
-}
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCOMBOBOX_H__)

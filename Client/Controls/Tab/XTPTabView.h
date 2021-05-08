@@ -1,7 +1,6 @@
 // XTPTabView.h interface for the CXTPTabView class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,27 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABVIEW_H__)
-#define __XTPTABVIEW_H__
+#	define __XTPTABVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
-class CXTPCtrlView : public CCtrlView
+class _XTP_EXT_CLASS CXTPCtrlView : public CCtrlView
 {
 public:
-	CXTPCtrlView() : CCtrlView(WC_TABCONTROL, AFX_WS_DEFAULT_VIEW | TCS_TOOLTIPS)
+	CXTPCtrlView()
+		: CCtrlView(WC_TABCONTROL, AFX_WS_DEFAULT_VIEW | TCS_TOOLTIPS)
 	{
 	}
 };
 //}}AFX_CODEJOCK_PRIVATE
 
-DECLATE_TABCTRLEX_BASE(CXTPTabViewBase, CXTPCtrlView, CXTPTabExBase)
+DECLARE_TABCTRLEX_BASE(CXTPTabViewBase, CXTPCtrlView, CXTPTabExBase)
 
 //===========================================================================
 // Summary:
@@ -53,7 +55,6 @@ class _XTP_EXT_CLASS CXTPTabView : public CXTPTabViewBase
 	friend class CXTPTabViewBase;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTabView object
@@ -67,7 +68,6 @@ public:
 	virtual ~CXTPTabView();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to retrieve a reference pointer to the CTabCtrl
@@ -75,7 +75,7 @@ public:
 	// Returns:
 	//     A CTabCtrl reference to the object associated with this view.
 	//-----------------------------------------------------------------------
-	virtual CTabCtrl& GetTabCtrl () const;
+	virtual CTabCtrl& GetTabCtrl() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -117,7 +117,6 @@ public:
 	void UpdateDocTitle();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPTabView class to
@@ -127,7 +126,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL Init();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	//{{AFX_VIRTUAL(CXTPTabView)
 	virtual void OnInitialUpdate();
@@ -136,22 +135,29 @@ protected:
 	//{{AFX_MSG(CXTPTabView)
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CTabCtrl& CXTPTabView::GetTabCtrl() const {
-	ASSERT_VALID(this); return (CTabCtrl&)*this;
+AFX_INLINE CTabCtrl& CXTPTabView::GetTabCtrl() const
+{
+	ASSERT(this);
+	return (CTabCtrl&)*this;
 }
-AFX_INLINE CImageList* CXTPTabView::SetTabImageList(CImageList* pImageList) {
-	ASSERT_VALID(this); return GetTabCtrl().SetImageList(pImageList);
+AFX_INLINE CImageList* CXTPTabView::SetTabImageList(CImageList* pImageList)
+{
+	ASSERT(this);
+	return GetTabCtrl().SetImageList(pImageList);
 }
-AFX_INLINE CToolTipCtrl* CXTPTabView::GetToolTips() {
+AFX_INLINE CToolTipCtrl* CXTPTabView::GetToolTips()
+{
 	return GetTips();
 }
-AFX_INLINE void CXTPTabView::SetToolTips(CToolTipCtrl* pWndTip) {
+AFX_INLINE void CXTPTabView::SetToolTips(CToolTipCtrl* pWndTip)
+{
 	SetTips(pWndTip);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTABVIEW_H__)

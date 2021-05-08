@@ -1,7 +1,6 @@
 // XTPFlowGraphPaintManager.h: interface for the CXTPFlowGraphPaintManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHPAINTMANAGER_H__)
-#define __XTPFLOWGRAPHPAINTMANAGER_H__
+#	define __XTPFLOWGRAPHPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphDrawContext;
@@ -35,12 +36,10 @@ class CXTPFlowGraphConnection;
 class CXTPFlowGraphNodeGroup;
 class CXTPFlowGraphElement;
 
-//}}AFX_CODEJOCK_PRIVATE
 namespace Gdiplus
 {
-	class Font;
-};
-//}}AFX_CODEJOCK_PRIVATE
+class Font;
+}
 
 // ------------------------------------------------------------------
 // Summary:
@@ -53,10 +52,23 @@ namespace Gdiplus
 // ------------------------------------------------------------------
 enum XTPFlowGraphConnectorType
 {
-	xtpFlowGraphConnectorStraight, // Straight line connector.
-	xtpFlowGraphConnectorCurved // Curved line connector.
+	xtpFlowGraphConnectorStraight			 = 0, // 00000000
+	xtpFlowGraphConnectorStraightArrow		 = 1, // 00000001
+	xtpFlowGraphConnectorStraightDoubleArrow = 3, // 00000011
+	xtpFlowGraphConnectorCurved				 = 4, // 00000100
+	xtpFlowGraphConnectorCurvedArrow		 = 5, // 00000101
+	xtpFlowGraphConnectorCurvedDoubleArrow   = 7, // 00000111
+	xtpFlowGraphConnectorElbow				 = 8, // 00001000
+	xtpFlowGraphConnectorElbowArrow			 = 9, // 00001001
+	xtpFlowGraphConnectorElbowDoubleArrow	= 11 // 00001011
 };
 
+#	define IsStraightConnection(type) ((type >> 2) == 0)
+#	define IsCurvedConnection(type) ((type & 4))
+#	define IsElbowConnection(type) ((type & 8))
+
+#	define HasStartingArrow(type) ((type & 2))
+#	define HasEndingArrow(type) ((type & 1))
 
 // -------------------------------------------------------------
 //
@@ -78,6 +90,10 @@ public:
 	// --------------------------------------------------------------------
 	virtual ~CXTPFlowGraphPaintManager();
 
+protected:
+	BOOL CalculateConnectionPointsPositions(CXTPFlowGraphConnection* pConnection, CPoint& p1,
+											CPoint& p2);
+
 public:
 	// ----------------------------------------------------
 	// Summary:
@@ -86,7 +102,9 @@ public:
 	//     pDC :       Pointer to a valid device context.
 	//     pControl :  Pointer to the flow graph control.
 	// ----------------------------------------------------
-	virtual void DrawControlBackground(CXTPFlowGraphDrawContext* pDC, CXTPFlowGraphControl* pControl);
+	virtual void DrawControlBackground(CXTPFlowGraphDrawContext* pDC,
+									   CXTPFlowGraphControl* pControl, BOOL bPrintToFile = FALSE,
+									   const CRect& drawRect = CRect(0, 0, 0, 0));
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -95,18 +113,6 @@ public:
 	// -------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
-
-	// ----------------------------------------------------------------------
-	// Summary:
-	//     Recalculates the layout of the Node.
-	// Remarks:
-	//     Call this functions to correctly reposition the connections within
-	//     the node. This also will readjust the layout when the size or
-	//     caption has changed. It will also handle any color or font
-	//     changes.
-	// ----------------------------------------------------------------------
-	virtual void RecalcNodeLayout(CXTPFlowGraphDrawContext* pDC, CXTPFlowGraphNode* pNode);
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Recalculates the layout of the connection.
@@ -114,18 +120,9 @@ public:
 	//     Call this functions to correctly reposition the connection within
 	//     the node. This will also update any colors, etc that have changed.
 	// ----------------------------------------------------------------------
-	virtual void RecalcConnectionLayout(CXTPFlowGraphDrawContext* pDC, CXTPFlowGraphConnection* pConnection);
+	virtual void RecalcConnectionLayout(CXTPFlowGraphDrawContext* pDC,
+										CXTPFlowGraphConnection* pConnection);
 
-
-	// -----------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw a single Node in the flow graph
-	//     control.
-	// Parameters:
-	//     pDC :    Pointer to a valid device context.
-	//     pNode :  Points to a CXTPFlowGraphNode object to draw.
-	// -----------------------------------------------------------------
-	virtual void DrawNode(CXTPFlowGraphDrawContext* pDC, CXTPFlowGraphNode* pNode);
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw a single connection in the flow
@@ -134,7 +131,8 @@ public:
 	//     pDC :          Pointer to a valid device context.
 	//     pConnection :  Points to a CXTPFlowGraphConnection object to draw.
 	// ----------------------------------------------------------------------
-	virtual void DrawConnection(CXTPFlowGraphDrawContext* pDC, CXTPFlowGraphConnection* pConnection);
+	virtual void DrawConnection(CXTPFlowGraphDrawContext* pDC,
+								CXTPFlowGraphConnection* pConnection);
 
 	// ------------------------------------------------------------------
 	// Summary:
@@ -145,6 +143,17 @@ public:
 	//     The bounding rectangle for the specified node.
 	// ------------------------------------------------------------------
 	virtual CRect GetNodeBoundingRectangle(CXTPFlowGraphNode* pNode);
+
+	// --------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw a transparent rectangle on the
+	//     graph control.
+	// Parameters:
+	//     pDC :         Pointer to a valid device context.
+	//     rect :        Rectangle boundaries
+	//     clrColor :    Base color
+	// --------------------------------------------------------------------
+	void DrawTransparentRectangle(CXTPFlowGraphDrawContext* pDC, CRect rect, COLORREF clrColor);
 
 	// --------------------------------------------------------------------
 	// Summary:
@@ -186,7 +195,6 @@ public:
 	// --------------------------------------------------------------------
 	virtual void Cleanup();
 
-protected:
 	// ------------------------------------------------------------------
 	// Summary:
 	//     Creates and returns a darker color of the specified color.
@@ -199,38 +207,78 @@ protected:
 	// Returns:
 	//     \Returns a darker color of the specified color.
 	// ------------------------------------------------------------------
-	COLORREF GetDarkColor(COLORREF clrBackground);
+	static COLORREF AFX_CDECL GetDarkColor(COLORREF clrBackground);
 
 public:
 	COLORREF m_clrBackground; // Specifies the background "canvas" color for the flow graph.
-	COLORREF m_clrSelection; // Specifies the color used for selected nodes.
-	COLORREF m_clrTextColor;  // Specifies the color used for text.
-	COLORREF m_clrGridColor; //Specifies the color used for grid lines.
+	COLORREF m_clrSelection;  // Specifies the color used for selected nodes connection points
+							  // rectangles.
+	COLORREF m_clrSelectionInactive; // Specifies the color used for selected nodes rectangle
+									 // (inactive)
+	COLORREF m_clrTextColor;		 // Specifies the color used for text.
+	COLORREF m_clrTextColorSelected; // Specifies the color used for text when node is selected
+
+	COLORREF m_clrGridColor; // Specifies the color used for grid lines.
 
 	COLORREF m_clrNodeBackground; // Gets\sets the background color used for Nodes.
 
-	LOGFONT m_lfText; // Gets\sets the font used for connection captions.
+	LOGFONT m_lfText;	// Gets\sets the font used for connection captions.
 	LOGFONT m_lfCaption; // Gets\sets the font used for Node captions.
 
-	int m_nNodeFrameSize; // Gets\sets the size of the border-frame of a node.
-	int m_nPointTextMargin; // Specifies the margin to place between a connection's caption text and the connection's connection point (if a connection point is present).
-	COLORREF m_clrConnection; // Specifies the color of the connection lines that connect two connection points.
-	BOOL m_bDrawArrow; // Specifies whether to draw arrows for connections.
-	int m_nEllipseSize; // Specifies the size of Connection Points.
-	BOOL m_bShowGrid; // Specifies whether to show the grid for the flow graph.
+	int m_nNodeFrameSize;   // Gets\sets the size of the border-frame of a node.
+	int m_nPointTextMargin; // Specifies the margin to place between a connection's caption text and
+							// the connection's connection point (if a connection point is present).
+	COLORREF m_clrConnection; // Specifies the color of the connection lines that connect two
+							  // connection points.
+	int m_nEllipseSize;		  // Specifies the size of Connection Points.
+	BOOL m_bShowGrid;		  // Specifies whether to show the grid for the flow graph.
 
-	BOOL m_bShowNodeGroupsAlways; // Specifies whether to always show node groups, even if a non-groupped node is selected (or no nodes are selected).
+	BOOL m_bShowNodeGroupsAlways;		// Specifies whether to always show node groups, even if a
+										// non-grouped node is selected (or no nodes are selected).
+	BOOL m_bAlwaysDrawConnectionPoints; // Specifies whether to draw connection points always or
+										// draw only on active nodes
+	BOOL m_bRecalcConnectionLayoutWhenNeeded; // recalculates end points of a connection when it's
+											  // selected state changes
 
-	XTPFlowGraphConnectorType m_nConnectorType;  // Node connector style.
+	BOOL m_bChangeNodeColorWhenSelected; // true by default. Otherwise selected node's caption text
+										 // color is changed (to white by default,
+										 // m_clrTextColorSelected)
 
-	double m_dMinZoomLevelBackground;   // Specifies the minimum zoom level to stop drawing the background of the flow graph.  Default is 20%.  Can be used to optimize drawing when a lot of objects are on screen.
-	double m_dMinZoomLevelConnectionPoints; // Specifies the minimum zoom level to stop drawing connection points in the flow graph.  Default is 30%.  Can be used to optimize drawing when a lot of objects are on screen.
-	double m_dMinZoomLevelConnections; // Specifies the minimum zoom level to stop drawing connections in the flow graph.  Default is 5%.  Can be used to optimize drawing when a lot of objects are on screen.
-	double m_dMinZoomLevelGDIQuality; // Specifies the minimum zoom level to stop using GDI quality when drawing elements in the flow graph.  Default is 40%.  Can be used to optimize drawing when a lot of objects are on screen.
+	XTPFlowGraphConnectorType m_nConnectorType; // Node connector style.
+
+	double m_dMinZoomLevelBackground; // Specifies the minimum zoom level to stop drawing the
+									  // background of the flow graph.  Default is 20%.  Can be used
+									  // to optimize drawing when a lot of objects are on screen.
+	double m_dMinZoomLevelConnectionPoints; // Specifies the minimum zoom level to stop drawing
+											// connection points in the flow graph.  Default is 30%.
+											// Can be used to optimize drawing when a lot of objects
+											// are on screen.
+	double m_dMinZoomLevelConnections;		// Specifies the minimum zoom level to stop drawing
+									   // connections in the flow graph.  Default is 5%.  Can be
+									   // used to optimize drawing when a lot of objects are on
+									   // screen.
+	double m_dMinZoomLevelGDIQuality; // Specifies the minimum zoom level to stop using GDI quality
+									  // when drawing elements in the flow graph.  Default is 40%.
+									  // Can be used to optimize drawing when a lot of objects are
+									  // on screen.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphPaintManager)
+
+	afx_msg void OleSetFont(LPFONTDISP pFontDisp);
+	afx_msg LPFONTDISP OleGetFont();
+	afx_msg void OleSetCaptionFont(LPFONTDISP pFontDisp);
+	afx_msg LPFONTDISP OleGetCaptionFont();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHPAINTMANAGER_H__)

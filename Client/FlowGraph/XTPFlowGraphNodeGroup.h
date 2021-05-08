@@ -1,7 +1,6 @@
 // XTPFlowGraphNodeGroup.h: interface for the CXTPFlowGraphNodeGroup class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHNODEGROUP_H__)
-#define __XTPFLOWGRAPHNODEGROUP_H__
+#	define __XTPFLOWGRAPHNODEGROUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPFlowGraphElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPage;
 class CXTPFlowGraphNodeGroups;
@@ -133,46 +132,65 @@ public:
 
 	// ----------------------------------------------
 	// Summary:
-	//     Sets the caption for the group.
+	//     Sets the caption for each node in the group.
 	// Parameters:
 	//     lpszCaption :  New caption for this group.
 	// ----------------------------------------------
 	void SetCaption(LPCTSTR lpszCaption);
 	// -----------------------------------
 	// Summary:
-	//     Gets the caption for the group.
+	//     Gets the common caption for the group. If nodes in a group
+	//     have different caption the return value will be an empty string.
 	// Returns:
-	//     The caption for the group.
+	//     The common caption for the group.
 	// -----------------------------------
 	CString GetCaption() const;
 
 protected:
-
-	CArray<CXTPFlowGraphNode*, CXTPFlowGraphNode*> m_arrNodes;  // Collection of nodes that are in this group.
-	CXTPFlowGraphNodeGroups* m_pGroups; // Pointer to the collection of groups that this group belongs to.
-	CRect m_rcWorkRect; // Rectangle displayed for this group.
-	CString m_strCaption; // Caption used for this group.
+	CArray<CXTPFlowGraphNode*, CXTPFlowGraphNode*> m_arrNodes; // Collection of nodes that are in
+															   // this group.
+	CXTPFlowGraphNodeGroups* m_pGroups; // Pointer to the collection of groups that this group
+										// belongs to.
+	CRect m_rcWorkRect;					// Rectangle displayed for this group.
 
 	friend class CXTPFlowGraphNodeGroups;
 	friend class CXTPFlowGraphPage;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphNodeGroup)
+
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+
+	afx_msg LPDISPATCH OleGetPage();
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+
+	afx_msg void OleAddNode(LPDISPATCH Node);
+	afx_msg void OleRemoveNode(LPDISPATCH Node);
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphNodeGroup)
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-AFX_INLINE int CXTPFlowGraphNodeGroup::GetCount() const {
+AFX_INLINE int CXTPFlowGraphNodeGroup::GetCount() const
+{
 	return (int)m_arrNodes.GetSize();
 }
-AFX_INLINE CXTPFlowGraphNode* CXTPFlowGraphNodeGroup::GetAt(int nIndex) const {
+AFX_INLINE CXTPFlowGraphNode* CXTPFlowGraphNodeGroup::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrNodes.GetSize() ? m_arrNodes[nIndex] : NULL;
 }
-AFX_INLINE CRect CXTPFlowGraphNodeGroup::GetWorkRect() const {
+AFX_INLINE CRect CXTPFlowGraphNodeGroup::GetWorkRect() const
+{
 	return m_rcWorkRect;
 }
-AFX_INLINE void CXTPFlowGraphNodeGroup::SetCaption(LPCTSTR lpszCaption) {
-	m_strCaption = lpszCaption;
-}
-AFX_INLINE CString CXTPFlowGraphNodeGroup::GetCaption() const {
-	return m_strCaption;
-}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHNODEGROUP_H__)

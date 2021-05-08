@@ -2,8 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by XTResource.rc
 //
-// This file is a part of the XTREME SHORTCUTBAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#define XTP_SHORTCUT_RESOURCE_FIRST     9650
-#define XTP_SHORTCUT_RESOURCE_LAST      9699
+#define XTP_SHORTCUT_RESOURCE_FIRST 9650
+#define XTP_SHORTCUT_RESOURCE_LAST 9699
 
+#define XTP_IDB_SHORTCUT_EXPANDBUTTON 9650
 
-#define XTP_IDB_SHORTCUT_EXPANDBUTTON   9650
+#define XTP_ID_SHORTCUT_SHOW_MORE 9651
+#define XTP_ID_SHORTCUT_SHOW_FEWER 9652
 
-#define XTP_ID_SHORTCUT_SHOW_MORE       9651
-#define XTP_ID_SHORTCUT_SHOW_FEWER      9652
+#define XTP_IDS_SHORTCUT_CONFIGURE 9653
 
-#define XTP_IDS_SHORTCUT_CONFIGURE      9653
-
-#define XTP_IDS_SHORTCUT_NAVIGATIONPANE  9654
+#define XTP_IDS_SHORTCUT_NAVIGATIONPANE 9654

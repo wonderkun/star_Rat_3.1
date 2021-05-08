@@ -1,7 +1,6 @@
 // XTPTaskDialogFrame.h: interface for the CXTPTaskDialogFrame class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKFRAMEWND_H__)
-#define __XTPTASKFRAMEWND_H__
+#	define __XTPTASKFRAMEWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CXTPTaskDialogFrame window
@@ -48,7 +49,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTaskDialogFrame)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	BOOL OnInitDialog();
 	//}}AFX_VIRTUAL
@@ -75,14 +76,14 @@ protected:
 	afx_msg LRESULT OnDialogNavigatePage(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
 
-
 protected:
 	LPDLGTEMPLATE m_lpDlgTemplate;
 	DWORD m_dwTickCount;
+	DWORD m_dwCallbackInterval;
 
 private:
 	friend class CXTPTaskCmdLinkButton;
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKFRAMEWND_H__)

@@ -1,7 +1,6 @@
-//XTPCalendarRemindersDialog.h: interface for the CXTPCalendarDayViewTimeScale class.
+// XTPCalendarRemindersDialog.h: interface for the CXTPCalendarDayViewTimeScale class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_REMINDERS_DIALOG_H__)
-#define _XTP_CALENDAR_REMINDERS_DIALOG_H__
+#	define _XTP_CALENDAR_REMINDERS_DIALOG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Resource.h"
-#include "XTPCalendarRemindersManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarRemindersManager;
 class CXTPCalendarControl;
+class CXTPNotifySink;
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
 // Summary:
@@ -43,10 +42,13 @@ class CXTPCalendarControl;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPCalendarRemindersDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_CALENDAR_REMINDERS};
+	enum
+	{
+		IDD = XTP_IDD_CALENDAR_REMINDERS
+	};
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
@@ -56,8 +58,8 @@ public:
 	//     pParent       - [in] Pointer to parent window. Can be NULL.
 	//     nIDTemplate   - [in] Contains the ID number of a dialog-box template resource.
 	//-----------------------------------------------------------------------
-	CXTPCalendarRemindersDialog(CWnd* pParent = NULL,
-		UINT nIDTemplate = CXTPCalendarRemindersDialog::IDD);
+	CXTPCalendarRemindersDialog(CWnd* pParent	= NULL,
+								UINT nIDTemplate = CXTPCalendarRemindersDialog::IDD);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -122,7 +124,7 @@ public:
 	// Returns:
 	//     TRUE if dialog pop up automatically, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsAutoPopup();
+	BOOL IsAutoPopup() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -131,25 +133,41 @@ public:
 	// Parameters:
 	//     bAutoPopup - [in] Set TRUE to pop up  dialog automatically, FALSE otherwise
 	//-----------------------------------------------------------------------
-	virtual void SetAutoPopup(BOOL bAutoPopup = TRUE);
+	void SetAutoPopup(BOOL bAutoPopup = TRUE);
+
+private:
+	virtual BOOL Create(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL)
+	{
+		return CDialog::Create(lpszTemplateName, pParentWnd);
+	}
+	virtual BOOL Create(UINT nIDTemplate, CWnd* pParentWnd = NULL)
+	{
+		return CDialog::Create(nIDTemplate, pParentWnd);
+	}
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+						const RECT& rect, CWnd* pParentWnd, UINT nID,
+						CCreateContext* pContext = NULL)
+	{
+		return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID,
+							pContext);
+	}
 
 protected:
-	CXTPCalendarRemindersManager*   m_pRemindersMan;        // Store pointer to reminders manager.
-	CXTPCalendarReminders           m_arActiveReminders;    // Store active reminders list.
+	CXTPCalendarRemindersManager* m_pRemindersMan; // Store pointer to reminders manager.
+	CXTPCalendarReminders m_arActiveReminders;	 // Store active reminders list.
 
-	CXTPCalendarControl* m_pCalendar;   // Store pointer to calendar control.
+	CXTPCalendarControl* m_pCalendar; // Store pointer to calendar control.
 
-	int m_nNextRefreshIndex;    // Store next reminder item index for automatic refresh by timer or -1 to refresh all.
+	int m_nNextRefreshIndex; // Store next reminder item index for automatic refresh by timer or -1
+							 // to refresh all.
 
-	//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK(CXTPCalendarRemindersDialog, m_Sink)
+	CXTPNotifySink* m_pSink;
 
-	virtual void OnReminders(XTP_NOTIFY_CODE Event, WPARAM wParam , LPARAM lParam);
-	//}}AFX_CODEJOCK_PRIVATE
+	virtual void OnReminders(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void InitSnoozeComboBox();
 
@@ -172,31 +190,35 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CListCtrl   m_ctrlRemindersList;    // Reminders list control.
-	CStatic     m_ctrlDescription;      // Description control.
+	CListCtrl m_ctrlRemindersList; // Reminders list control.
+	CStatic m_ctrlDescription;	 // Description control.
 
-	CComboBox   m_ctrlSnoozeTimeCB; // Snooze combobox control.
-	CButton     m_ctrlSnoozeBtn;    // Snooze button.
+	CComboBox m_ctrlSnoozeTimeCB; // Snooze combobox control.
+	CButton m_ctrlSnoozeBtn;	  // Snooze button.
 
-	CButton m_ctrlDismissBtn;       // Dismiss button.
-	CButton m_ctrlDismissAllBtn;    // Dismiss All button.
-	CButton m_ctrlOpenItemBtn;      // Open Item button.
+	CButton m_ctrlDismissBtn;	// Dismiss button.
+	CButton m_ctrlDismissAllBtn; // Dismiss All button.
+	CButton m_ctrlOpenItemBtn;   // Open Item button.
 
-	BOOL m_bShowInTaskBar;  // Store ShowInTaskBar property value.
-	BOOL m_bAutoPopup;      // Store AutoPopup property value.
+	BOOL m_bShowInTaskBar; // Store ShowInTaskBar property value.
+	BOOL m_bAutoPopup;	 // Store AutoPopup property value.
 };
 
 /////////////////////////////////////////////////////////////////////////////
-AFX_INLINE void CXTPCalendarRemindersDialog::Detach() {
+AFX_INLINE void CXTPCalendarRemindersDialog::Detach()
+{
 	SetRemindersManager(NULL);
 }
 
-AFX_INLINE BOOL CXTPCalendarRemindersDialog::IsAutoPopup() {
+AFX_INLINE BOOL CXTPCalendarRemindersDialog::IsAutoPopup() const
+{
 	return m_bAutoPopup;
 }
 
-AFX_INLINE void CXTPCalendarRemindersDialog::SetAutoPopup(BOOL bAutoPopup) {
+AFX_INLINE void CXTPCalendarRemindersDialog::SetAutoPopup(BOOL bAutoPopup)
+{
 	m_bAutoPopup = bAutoPopup;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_REMINDERS_DIALOG_H__)

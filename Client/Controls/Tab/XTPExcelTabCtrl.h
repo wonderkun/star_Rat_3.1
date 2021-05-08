@@ -1,7 +1,6 @@
 // XTPExcelTabCtrl.h interface for the CXTPExcelTabCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPEXCELTABCTRL_H__)
-#define __XTPEXCELTABCTRL_H__
+#	define __XTPEXCELTABCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPExcelTabCtrlTheme;
 
@@ -43,10 +44,10 @@ class CXTPExcelTabCtrlTheme;
 // ---------------------------------------------------------------
 enum XTPArrowIcon
 {
-	xtpArrowIconLeft      =   0x0200, // Left arrow display.
-	xtpArrowIconLeftHome  =   0x0201, // Left home arrow display.
-	xtpArrowIconRight     =   0x0000, // Right arrow display.
-	xtpArrowIconRightHome =   0x0001  // Right home arrow display.
+	xtpArrowIconLeft	  = 0x0200, // Left arrow display.
+	xtpArrowIconLeftHome  = 0x0201, // Left home arrow display.
+	xtpArrowIconRight	 = 0x0000, // Right arrow display.
+	xtpArrowIconRightHome = 0x0001  // Right home arrow display.
 };
 
 //===========================================================================
@@ -77,16 +78,16 @@ public:
 	void SetInfo(CRect rect, int iCommand, XTPArrowIcon iconType);
 
 public:
-	int             m_iCommand; // Button command ID.
-	bool            m_bPressed; // true if the button is pressed.
-	bool            m_bEnabled; // true if the button is enabled.
-	bool            m_bHilight; // true if the mouse if hovering.
-	CRect           m_rect;     // Size and location of the button.
-	XTPArrowIcon     m_IconType; // Icon style of the button.
+	int m_iCommand;			 // Button command ID.
+	bool m_bPressed;		 // true if the button is pressed.
+	bool m_bEnabled;		 // true if the button is enabled.
+	bool m_bHilight;		 // true if the mouse if hovering.
+	CRect m_rect;			 // Size and location of the button.
+	XTPArrowIcon m_IconType; // Icon style of the button.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-typedef CArray <CXTPTcbItem*, CXTPTcbItem*> CTabItemArray;
+typedef CArray<CXTPTcbItem*, CXTPTcbItem*> CTabItemArray;
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -113,7 +114,6 @@ public:
 	virtual ~CXTPExcelTabCtrl();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to switch the visual theme of the control.
@@ -141,7 +141,8 @@ public:
 	// Returns      : A reference to a CTabItemArray object used for maintaining
 	//                the list of tabs for the tab control.
 	//-----------------------------------------------------------------------
-	CTabItemArray& GetTabItemArray() {
+	CTabItemArray& GetTabItemArray()
+	{
 		return m_tcbItems;
 	}
 
@@ -176,7 +177,7 @@ public:
 	//     A pointer to the window that is associated with a tab, or it returns NULL
 	//     if no window is associated with (managed by) the tab.
 	//-----------------------------------------------------------------------
-	CWnd *GetItemWindow(int nIndex) const;
+	CWnd* GetItemWindow(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -200,7 +201,10 @@ public:
 	//     \otherwise -1.
 	// ---------------------------------------------------------------------
 	virtual int InsertItem(int nItem, UINT nTextID, CWnd* pWndControl = NULL);
-	virtual int InsertItem(int nItem, LPCTSTR lpszItem, CWnd* pWndControl = NULL); //<combine CXTPExcelTabCtrl::InsertItem@int@UINT@CWnd* >
+	virtual int InsertItem(int nItem, LPCTSTR lpszItem,
+						   CWnd* pWndControl = NULL); //<combine
+													  // CXTPExcelTabCtrl::InsertItem@int@UINT@CWnd*
+													  //>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -386,7 +390,8 @@ public:
 	//     nIndex - The index of the tab to set background color for.
 	//-----------------------------------------------------------------------
 	void SetTabBackColor(COLORREF crBack);
-	void SetTabBackColor(int nIndex, COLORREF crBack); // <combine CXTPExcelTabCtrl::SetTabBackColor@COLORREF>
+	void SetTabBackColor(int nIndex,
+						 COLORREF crBack); // <combine CXTPExcelTabCtrl::SetTabBackColor@COLORREF>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -411,7 +416,8 @@ public:
 	//     nIndex - The index of the tab to set text color for.
 	//-----------------------------------------------------------------------
 	void SetTabTextColor(COLORREF crText);
-	void SetTabTextColor(int nIndex, COLORREF crText); // <combine CXTPExcelTabCtrl::SetTabTextColor@COLORREF>
+	void SetTabTextColor(int nIndex,
+						 COLORREF crText); // <combine CXTPExcelTabCtrl::SetTabTextColor@COLORREF>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -436,7 +442,8 @@ public:
 	//     nIndex - The index of the tab to set selected background color for.
 	//-----------------------------------------------------------------------
 	void SetSelTabBackColor(COLORREF crBack);
-	void SetSelTabBackColor(int nIndex, COLORREF crBack); // <combine CXTPExcelTabCtrl::SetSelTabBackColor@COLORREF>
+	void SetSelTabBackColor(
+		int nIndex, COLORREF crBack); // <combine CXTPExcelTabCtrl::SetSelTabBackColor@COLORREF>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -449,7 +456,8 @@ public:
 	//     successful, otherwise returns COLORREF_NULL.
 	//-----------------------------------------------------------------------
 	COLORREF GetSelTabBackColor() const;
-	COLORREF GetSelTabBackColor(int nIndex) const; // <combine CXTPExcelTabCtrl::GetSelTabBackColor@const>
+	COLORREF GetSelTabBackColor(int nIndex) const; // <combine
+												   // CXTPExcelTabCtrl::GetSelTabBackColor@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -461,7 +469,8 @@ public:
 	//     nIndex - The index of the tab to set selected text color for.
 	//-----------------------------------------------------------------------
 	void SetSelTabTextColor(COLORREF crText);
-	void SetSelTabTextColor(int nIndex, COLORREF crText); // <combine CXTPExcelTabCtrl::SetSelTabTextColor@COLORREF>
+	void SetSelTabTextColor(
+		int nIndex, COLORREF crText); // <combine CXTPExcelTabCtrl::SetSelTabTextColor@COLORREF>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -474,7 +483,8 @@ public:
 	//     successful, otherwise returns COLORREF_NULL.
 	//-----------------------------------------------------------------------
 	COLORREF GetSelTabTextColor() const;
-	COLORREF GetSelTabTextColor(int nIndex) const; // <combine CXTPExcelTabCtrl::GetSelTabTextColor@const>
+	COLORREF GetSelTabTextColor(int nIndex) const; // <combine
+												   // CXTPExcelTabCtrl::GetSelTabTextColor@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -586,6 +596,7 @@ public:
 	//     * <b>FTS_XTP_DEFAULT</b> Same as (FTS_XTP_BOTTOM | FTS_XTP_HASARROWS
 	//           | FTS_XTP_HASHOMEEND | FTS_XTP_TOOLTIPS).
 	//     * <b>FTS_XTP_HSCROLL</b> Show a horizontal scroll bar.
+	//     * <b>FTS_XTP_SQUARETABS</b> Shows square tabs instead of angled tabs.
 	//     * <b>FTS_XTP_MASK</b> Combines all FTS_ styles.
 	//
 	//     In addition to tab control styles, you can apply the following
@@ -635,8 +646,26 @@ public:
 	// ----------------------------------------------------------------------------------------
 	virtual BOOL Create(DWORD dwStyle, const CRect& rect, CWnd* pParentWnd, UINT nID);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to set the height for the tab control.
+	// Parameters:
+	//     iTabHeight - Size in pixels for the tab control.  Minimum height
+	//                  must be no smaller than the size returned from
+	//                  GetSystemMetrics(SM_CYHSCROLL).
+	//-----------------------------------------------------------------------
+	void SetTabHeight(int iTabHeight);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to retrieve the current height in pixels
+	//     for the tab control.
+	// Returns:
+	//     The height in pixels for the tab control.
+	//-----------------------------------------------------------------------
+	int GetTabHeight() const;
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to determine which button, if any, is at the specified
@@ -777,7 +806,6 @@ protected:
 	CRect GetTotalButtonRect() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPExcelTabCtrl class to
@@ -793,7 +821,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPExcelTabCtrl)
@@ -824,88 +852,121 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//}}AFX_MSG
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-
-	int m_cx;                 // Width for each arrow button.
-	int m_cy;                 // Height for each arrow button.
-	int m_nCurSel;            // Index of the currently selected tab.
-	int m_nClientWidth;       // Width in pixels of the tab control client area.
-	int m_nClientHeight;      // Height in pixels of the tab control client area.
-	int m_nOffset;            // Amount in pixels of the displayed tab offset.
-	int m_xGripperPos;        // The current gripper position in pixels from the left.
+	int m_cx;				  // Width for each arrow button.
+	int m_cy;				  // Height for each arrow button.
+	int m_nCurSel;			  // Index of the currently selected tab.
+	int m_nClientWidth;		  // Width in pixels of the tab control client area.
+	int m_nClientHeight;	  // Height in pixels of the tab control client area.
+	int m_nOffset;			  // Amount in pixels of the displayed tab offset.
+	int m_xGripperPos;		  // The current gripper position in pixels from the left.
 	int m_iGripperPosPerCent; // The current gripper position in percent of the control width.
-	int m_xTrackingDelta;     // Tracking delta.
-	int m_iBtnLeft;           // Index of "left" button in button array.
-	int m_iBtnRight;          // Index of "right" button in button array.
-	int m_iBtnHome;           // Index of "home" button in button array.
-	int m_iBtnEnd;            // Index of "end" button in button array.
-	int m_iBtnHilight;        // Index of the button that has the mouse hovering over it.
+	int m_xTrackingDelta;	 // Tracking delta.
+	int m_iBtnLeft;			  // Index of "left" button in button array.
+	int m_iBtnRight;		  // Index of "right" button in button array.
+	int m_iBtnHome;			  // Index of "home" button in button array.
+	int m_iBtnEnd;			  // Index of "end" button in button array.
+	int m_iBtnHilight;		  // Index of the button that has the mouse hovering over it.
+	int m_iTabHeight;		  // Max height in pixels for the tab control.
 
-	bool m_bTracking;      // Tracking state.
+	bool m_bTracking;	  // Tracking state.
 	bool m_bManagingViews; // true if the control is managing views.
-	bool m_bUserColors;    // true if user defined colors are used.
-	bool m_bPainted;       // Set to TRUE to indicate that a button has been painted. FALSE otherwise.
+	bool m_bUserColors;	// true if user defined colors are used.
+	bool m_bPainted; // Set to TRUE to indicate that a button has been painted. FALSE otherwise.
 
-	DWORD m_dwStyle;       // Tab control style.
+	DWORD m_dwStyle;	   // Tab control style.
 	CWnd* m_pWndLastFocus; // Last focused window.
-	CRect m_rectTabs;      // Area occupied by tabs.
-	CRect m_rectViews;     // Area occupied by managed views.
-	CRect m_rectSB_H;      // Area occupied by the horizontal scroll bar.
+	CRect m_rectTabs;	  // Area occupied by tabs.
+	CRect m_rectViews;	 // Area occupied by managed views.
+	CRect m_rectSB_H;	  // Area occupied by the horizontal scroll bar.
 	CRect m_rectGripper;   // Area occupied by the sizing gripper.
 
 	CFont* m_pNormFont; // Font that is used for non-selected tabs.
 	CFont* m_pBoldFont; // Font that is used for selected tabs.
 
-	CScrollBar                  m_wndHScrollBar; // The horizontal scroll bar (used with FTS_XTP_HSCROLL).
-	CToolTipCtrl                m_ToolTip;       // Tooltip for the flat tab control.
-	CXTPExcelTabCtrlButtonState  m_buttons[4];    // Array of button information.
-	CTabItemArray               m_tcbItems;      // Template list containing tab information.
-
-	CXTPExcelTabCtrlTheme* m_pTheme;      // Pointer to the current theme object.
-	BOOL                   m_bSubclassed; // TRUE if the window was sub-classed.
+	CXTPScrollBar m_wndHScrollBar; // The horizontal scroll bar (used with FTS_XTP_HSCROLL).
+	CToolTipCtrl m_ToolTip;		   // Tooltip for the flat tab control.
+	CXTPExcelTabCtrlButtonState m_buttons[4]; // Array of button information.
+	CTabItemArray m_tcbItems;				  // Template list containing tab information.
+	CXTPExcelTabCtrlTheme* m_pTheme;		  // Pointer to the current theme object.
+	BOOL m_bSubclassed;						  // TRUE if the window was sub-classed.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPExcelTabCtrl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPExcelTabCtrl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE int CXTPExcelTabCtrl::InsertItem(int nItem, UINT nTextID, CWnd* pWndControl) {
-	ASSERT(IsWindow(m_hWnd)); CString strItem; VERIFY(strItem.LoadString(nTextID)); return InsertItem(nItem, strItem, pWndControl);
+AFX_INLINE int CXTPExcelTabCtrl::InsertItem(int nItem, UINT nTextID, CWnd* pWndControl)
+{
+	ASSERT(IsWindow(m_hWnd));
+	CString strItem;
+	VERIFY(strItem.LoadString(nTextID));
+	return InsertItem(nItem, strItem, pWndControl);
 }
-AFX_INLINE int CXTPExcelTabCtrl::GetCurSel() const {
-	ASSERT(IsWindow(m_hWnd)); return m_nCurSel;
+AFX_INLINE int CXTPExcelTabCtrl::GetCurSel() const
+{
+	ASSERT(IsWindow(m_hWnd));
+	return m_nCurSel;
 }
-AFX_INLINE int CXTPExcelTabCtrl::GetItemCount() const {
-	ASSERT(IsWindow(m_hWnd)); int iItemCount = (int)m_tcbItems.GetSize(); return iItemCount;
+AFX_INLINE int CXTPExcelTabCtrl::GetItemCount() const
+{
+	ASSERT(IsWindow(m_hWnd));
+	int iItemCount = (int)m_tcbItems.GetSize();
+	return iItemCount;
 }
-AFX_INLINE void CXTPExcelTabCtrl::SetTabFonts(CFont* pNormFont, CFont* pBoldFont) {
-	if (pNormFont){ m_pNormFont = pNormFont; } if (pBoldFont){ m_pBoldFont = pBoldFont; }
+AFX_INLINE void CXTPExcelTabCtrl::SetTabFonts(CFont* pNormFont, CFont* pBoldFont)
+{
+	if (pNormFont)
+	{
+		m_pNormFont = pNormFont;
+	}
+	if (pBoldFont)
+	{
+		m_pBoldFont = pBoldFont;
+	}
 }
-AFX_INLINE DWORD CXTPExcelTabCtrl::GetTabStyle() {
+AFX_INLINE DWORD CXTPExcelTabCtrl::GetTabStyle()
+{
 	return m_dwStyle;
 }
-AFX_INLINE  CRect CXTPExcelTabCtrl::GetTabsRect() {
+AFX_INLINE CRect CXTPExcelTabCtrl::GetTabsRect()
+{
 	return m_rectTabs;
 }
-AFX_INLINE CFont* CXTPExcelTabCtrl::GetTabFont(BOOL bBold) {
+AFX_INLINE CFont* CXTPExcelTabCtrl::GetTabFont(BOOL bBold)
+{
 	return bBold ? m_pBoldFont : m_pNormFont;
 }
-AFX_INLINE CXTPExcelTabCtrlTheme* CXTPExcelTabCtrl::GetTheme() {
+AFX_INLINE CXTPExcelTabCtrlTheme* CXTPExcelTabCtrl::GetTheme()
+{
 	return m_pTheme;
 }
 
-const DWORD FTS_XTP_BOTTOM          = 0x0001;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_HASARROWS       = 0x0002;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_HASHOMEEND      = 0x0004;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_TOOLTIPS        = 0x0008;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_DEFAULT         = 0x000F;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_HSCROLL         = 0x0010;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
-const DWORD FTS_XTP_MASK            = 0x001F;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_BOTTOM = 0x0001;	 //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_HASARROWS = 0x0002;  //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_HASHOMEEND = 0x0004; //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_TOOLTIPS = 0x0008;   //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_DEFAULT = 0x000F;	//<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_HSCROLL = 0x0010;	//<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_SQUARETABS = 0X0020; //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const
+										 // CRect&@CWnd*@UINT>
+const DWORD FTS_XTP_MASK = 0x003F; //<ALIAS CXTPExcelTabCtrl::Create@DWORD@const CRect&@CWnd*@UINT>
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPEXCELTABCTRL_H__)

@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NOR))
 #ifdef _WIN32
 LANGUAGE LANG_NORWEGIAN, SUBLANG_NORWEGIAN_BOKMAL
 #pragma code_page(1252)
@@ -104,18 +103,18 @@ CAPTION "Ordne vinduer"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Velg &vindu:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,213,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,208,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Aktiver",XTP_IDC_BTN_ACTIVATE,224,7,76,14
-    PUSHBUTTON      "OK",IDOK,224,24,76,14
-    PUSHBUTTON      "Lagre",XTP_IDC_BTN_SAVE,224,41,76,14
-    PUSHBUTTON      "Lukk vindu",XTP_IDC_BTN_CLOSEWINDOWS,224,58,76,14
-    PUSHBUTTON      "Overlappet",XTP_IDC_BTN_CASCADE,224,75,76,14
-    PUSHBUTTON      "Side ved side vannrett",XTP_IDC_BTN_TILEHORZ,224,92,76,14
-    PUSHBUTTON      "Side ved side loddrett",XTP_IDC_BTN_TILEVERT,224,109,76,14
-    PUSHBUTTON      "Minimer",XTP_IDC_BTN_MINIMIZE,224,126,76,14
+    PUSHBUTTON      "Aktiver",XTP_IDC_BTN_ACTIVATE,219,7,81,14
+    PUSHBUTTON      "OK",IDOK,219,24,81,14
+    PUSHBUTTON      "Lagre",XTP_IDC_BTN_SAVE,219,41,81,14
+    PUSHBUTTON      "Lukk vindu",XTP_IDC_BTN_CLOSEWINDOWS,219,58,81,14
+    PUSHBUTTON      "Overlappet",XTP_IDC_BTN_CASCADE,219,75,81,14
+    PUSHBUTTON      "Side ved side vannrett",XTP_IDC_BTN_TILEHORZ,219,92,81,14
+    PUSHBUTTON      "Side ved side loddrett",XTP_IDC_BTN_TILEVERT,219,109,81,14
+    PUSHBUTTON      "Minimer",XTP_IDC_BTN_MINIMIZE,219,126,81,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standardfarger"
+	XTP_IDS_RECENT_COLORS    "Nye farger"
+	XTP_IDS_THEME_COLORS     "Temafarger"
+	XTP_IDS_TAGCLOUD_TIP     "Kode %s, Score %d"
     XTP_IDS_TIPTEXT          "Tipstekst"
     XTP_IDS_DIDYOUKNOW       "Hviste du at..."
     XTP_IDS_FILE_ABSENT      "Fant ikke angitt fil."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Skjul detaljer"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Bakgrunn 1"
+    XTP_IDS_BACKGROUND2        "Bakgrunn 2"
+    XTP_IDS_TEXT1              "Tekst 1"
+    XTP_IDS_TEXT2              "Tekst 2"
+    XTP_IDS_ACCENT1            "Uthevingsfarge 1"
+    XTP_IDS_ACCENT2            "Uthevingsfarge 2"
+    XTP_IDS_ACCENT3            "Uthevingsfarge 3"
+    XTP_IDS_ACCENT4            "Uthevingsfarge 4"
+    XTP_IDS_ACCENT5            "Uthevingsfarge 5"
+    XTP_IDS_ACCENT6            "Uthevingsfarge 6"
+    XTP_IDS_LIGHTER            "Lysere"
+    XTP_IDS_DARKER             "Mørkere"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NOR))

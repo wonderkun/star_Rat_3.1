@@ -1,7 +1,6 @@
 // TaskPanel resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,11 +20,11 @@
 #include "TaskPanel/Resource.h"
 #include "TaskPanel/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL)  ||  defined(AFX_TARG_CHS) 
-#ifdef  _WIN32 
-LANGUAGE  LANG_CHINESE,  SUBLANG_CHINESE_SIMPLIFIED 
-#pragma  code_page(936) 
-#endif  //_WIN32
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //

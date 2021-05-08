@@ -1,7 +1,6 @@
 // XTPSyntaxEditLexCfgFileReader.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,117 +19,119 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITLEXCFGFILEREADER_H__)
-#define __XTPSYNTAXEDITLEXCFGFILEREADER_H__
+#	define __XTPSYNTAXEDITLEXCFGFILEREADER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditLexCfgFileReader;
 
 namespace XTPSyntaxEditLexAnalyser
 {
 //{{AFX_CODEJOCK_PRIVATE
-	//===========================================================================
-	// Summary:
-	//     XTPSyntaxEditTokenType type defines type of tokens that read by
-	//     CXTPSyntaxEditLexCfgFileReader class from configuration files.
-	// See also:
-	//     CXTPSyntaxEditLexCfgFileReader
-	//===========================================================================
-	enum XTPSyntaxEditTokenType
-	{
-		xtpEditTokType_Unknown,
-		xtpEditTokType_Delim,
-		xtpEditTokType_Name,
-		xtpEditTokType_Value,
-		xtpEditTokType_Quoted,
-		xtpEditTokType_Comment,
-		xtpEditTokType_EOL,
-		xtpEditTokType_Control
-	};
+//===========================================================================
+// Summary:
+//     XTPSyntaxEditTokenType type defines type of tokens that read by
+//     CXTPSyntaxEditLexCfgFileReader class from configuration files.
+// See also:
+//     CXTPSyntaxEditLexCfgFileReader
+//===========================================================================
+enum XTPSyntaxEditTokenType
+{
+	xtpEditTokType_Unknown,
+	xtpEditTokType_Delim,
+	xtpEditTokType_Name,
+	xtpEditTokType_Value,
+	xtpEditTokType_Quoted,
+	xtpEditTokType_Comment,
+	xtpEditTokType_EOL,
+	xtpEditTokType_Control
+};
 
-	//===========================================================================
-	// Summary:
-	//     XTP_EDIT_LEXPROPINFO helper structure is used to group information
-	//     which describes one Lex Class property pair. The property pair is
-	//     property name and property value.
-	//===========================================================================
-	struct _XTP_EXT_CLASS XTP_EDIT_LEXPROPINFO
-	{
-		XTP_EDIT_LEXPROPINFO();
+//===========================================================================
+// Summary:
+//     XTP_EDIT_LEXPROPINFO helper structure is used to group information
+//     which describes one Lex Class property pair. The property pair is
+//     property name and property value.
+//===========================================================================
+struct _XTP_EXT_CLASS XTP_EDIT_LEXPROPINFO
+{
+	XTP_EDIT_LEXPROPINFO();
 
-		XTP_EDIT_LEXPROPINFO(const XTP_EDIT_LEXPROPINFO& rSrc);
+	XTP_EDIT_LEXPROPINFO(const XTP_EDIT_LEXPROPINFO& rSrc);
 
-		const XTP_EDIT_LEXPROPINFO& operator = (const XTP_EDIT_LEXPROPINFO& rSrc);
+	const XTP_EDIT_LEXPROPINFO& operator=(const XTP_EDIT_LEXPROPINFO& rSrc);
 
-		CStringArray    arPropName;     // stores property name chain
-		CStringArray    arPropValue;    // stores value for property names with  corresponding index
-		int             nLine;
-		int             nOffset;
-		int             nPropertyLen;
-	};
+	CStringArray arPropName;  // stores property name chain
+	CStringArray arPropValue; // stores value for property names with  corresponding index
+	int nLine;
+	int nOffset;
+	int nPropertyLen;
+};
 
-	//===========================================================================
-	// Summary:
-	//      CXTPSyntaxEditLexPropInfoArray type defines custom array type based on
-	//      CArray to store XTP_EDIT_LEXPROPINFO structures.
-	// See also:
-	//      XTP_EDIT_LEXPROPINFO
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPSyntaxEditLexPropInfoArray : public CArray<XTP_EDIT_LEXPROPINFO, XTP_EDIT_LEXPROPINFO&>
-	{
-	public:
-		CXTPSyntaxEditLexPropInfoArray();
+//===========================================================================
+// Summary:
+//      CXTPSyntaxEditLexPropInfoArray type defines custom array type based on
+//      CArray to store XTP_EDIT_LEXPROPINFO structures.
+// See also:
+//      XTP_EDIT_LEXPROPINFO
+//===========================================================================
+class _XTP_EXT_CLASS CXTPSyntaxEditLexPropInfoArray
+	: public CArray<XTP_EDIT_LEXPROPINFO, XTP_EDIT_LEXPROPINFO&>
+{
+public:
+	CXTPSyntaxEditLexPropInfoArray();
 
-		CXTPSyntaxEditLexPropInfoArray(const CXTPSyntaxEditLexPropInfoArray& rSrc);
+	CXTPSyntaxEditLexPropInfoArray(const CXTPSyntaxEditLexPropInfoArray& rSrc);
 
-		const CXTPSyntaxEditLexPropInfoArray& operator = (const CXTPSyntaxEditLexPropInfoArray& rSrc);
-	};
+	const CXTPSyntaxEditLexPropInfoArray& operator=(const CXTPSyntaxEditLexPropInfoArray& rSrc);
+};
 
-	//===========================================================================
-	// Summary:
-	//     XTP_EDIT_LEXCLASSINFO structure is used to group information which describes
-	//     a set of properties for one Lex Class.
-	// See also:
-	//     XTP_EDIT_LEXPROPINFO
-	//===========================================================================
-	struct _XTP_EXT_CLASS XTP_EDIT_LEXCLASSINFO
-	{
-		XTP_EDIT_LEXCLASSINFO();
+//===========================================================================
+// Summary:
+//     XTP_EDIT_LEXCLASSINFO structure is used to group information which describes
+//     a set of properties for one Lex Class.
+// See also:
+//     XTP_EDIT_LEXPROPINFO
+//===========================================================================
+struct _XTP_EXT_CLASS XTP_EDIT_LEXCLASSINFO
+{
+	XTP_EDIT_LEXCLASSINFO();
 
-		XTP_EDIT_LEXCLASSINFO(const XTP_EDIT_LEXCLASSINFO& rSrc);
+	XTP_EDIT_LEXCLASSINFO(const XTP_EDIT_LEXCLASSINFO& rSrc);
 
-		const XTP_EDIT_LEXCLASSINFO& operator = (const XTP_EDIT_LEXCLASSINFO& rSrc);
+	const XTP_EDIT_LEXCLASSINFO& operator=(const XTP_EDIT_LEXCLASSINFO& rSrc);
 
-		CString                         csClassName;        // name to identify lex class
-		CXTPSyntaxEditLexPropInfoArray  arPropertyDesc;     // array to store a set of lex class properties
-		int                             nStartLine;
-		int                             nEndLine;
-	};
+	CString csClassName;						   // name to identify lex class
+	CXTPSyntaxEditLexPropInfoArray arPropertyDesc; // array to store a set of lex class properties
+	int nStartLine;
+	int nEndLine;
+};
 
-	//===========================================================================
-	// Summary:
-	//     Determines custom array type to store XTP_EDIT_LEXCLASSINFO structures.
-	// See also:
-	//     XTP_EDIT_LEXCLASSINFO.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPSyntaxEditLexClassInfoArray : public CArray<XTP_EDIT_LEXCLASSINFO, XTP_EDIT_LEXCLASSINFO&>
-	{
-	public:
-		CXTPSyntaxEditLexClassInfoArray();
+//===========================================================================
+// Summary:
+//     Determines custom array type to store XTP_EDIT_LEXCLASSINFO structures.
+// See also:
+//     XTP_EDIT_LEXCLASSINFO.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPSyntaxEditLexClassInfoArray
+	: public CArray<XTP_EDIT_LEXCLASSINFO, XTP_EDIT_LEXCLASSINFO&>
+{
+public:
+	CXTPSyntaxEditLexClassInfoArray();
 
-		CXTPSyntaxEditLexClassInfoArray(const CXTPSyntaxEditLexClassInfoArray& rSrc);
+	CXTPSyntaxEditLexClassInfoArray(const CXTPSyntaxEditLexClassInfoArray& rSrc);
 
-		const CXTPSyntaxEditLexClassInfoArray& operator = (const CXTPSyntaxEditLexClassInfoArray& rSrc);
+	const CXTPSyntaxEditLexClassInfoArray& operator=(const CXTPSyntaxEditLexClassInfoArray& rSrc);
 
-		BOOL m_bModified;
-	};
+	BOOL m_bModified;
+};
 //}}AFX_CODEJOCK_PRIVATE
-}
-
-using namespace XTPSyntaxEditLexAnalyser;
+} // namespace XTPSyntaxEditLexAnalyser
 
 //===========================================================================
 // Summary: This class provides functionality to read configuration information
@@ -146,8 +147,9 @@ using namespace XTPSyntaxEditLexAnalyser;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPSyntaxEditLexCfgFileReader
 {
-public:
+	friend class CXTPSingleton<CXTPSyntaxEditLexCfgFileReader>;
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPSyntaxEditLexCfgFileReader object, handles cleanup and
@@ -201,7 +203,7 @@ public:
 	// Returns:
 	//     Pointer to CXTPSyntaxEditLexClassInfoArray array.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditLexClassInfoArray& GetLexClassInfoArray();
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray& GetLexClassInfoArray();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -248,7 +250,8 @@ public:
 	// Returns:
 	//      TRUE if successful, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL WriteCfgFile(const CString& csFileName, CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
+	BOOL WriteCfgFile(const CString& csFileName,
+					  XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -258,7 +261,7 @@ public:
 	// Returns:
 	//      TRUE if successful, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL WriteCfg2String(CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
+	BOOL WriteCfg2String(XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -292,13 +295,12 @@ public:
 	CString ESToStr(CString strSrc, BOOL bQuoted);
 
 private:
-
 	// A map describes whether property description has a flag or not.
 	typedef CMap<void*, void*, bool, bool> CMapPtrToBool;
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	// Process error messages of file processing. Writes messages into debug window.
 	void ProcessFileException(CFileException* pExc);
-#endif
+#	endif
 	// Process next token from file.
 	int GetToken();
 	// Process next lex class token from file.
@@ -313,11 +315,15 @@ private:
 	int ProcessEOLToken(TCHAR tchCurrSymbol);
 	int ProcessControlToken(TCHAR tchCurrSymbol);
 	// Parses single lex class.
-	void ParseLexClass(XTP_EDIT_LEXCLASSINFO& infoClass);
+	void ParseLexClass(XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO& infoClass);
 	// Searches for lex class.
-	XTP_EDIT_LEXCLASSINFO* FindClassDesc(CXTPSyntaxEditLexClassInfoArray& arInfoClass, const CString& csClassName);
+	XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO*
+		FindClassDesc(XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray& arInfoClass,
+					  const CString& csClassName);
 	// Searches for property of lex class.
-	XTP_EDIT_LEXPROPINFO* FindPropDesc(XTP_EDIT_LEXCLASSINFO* pInfoClass, XTP_EDIT_LEXPROPINFO* pInfoProp, CMapPtrToBool& mapUsed);
+	XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO* FindPropDesc(
+		XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO* pInfoClass,
+		XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO* pInfoProp, CMapPtrToBool& mapUsed);
 	// Read source string by string into string array.
 	void ReadSource2(const CString& csFileName, CStringArray& arBuffer);
 	// Writes single string into file.
@@ -325,39 +331,42 @@ private:
 	// Writes a number of string into file.
 	void WriteStrings(CFile& file, CStringArray& arBuffer, int nFrom, int nTo);
 	// Writes a whole property description into file.
-	void WriteProp(CFile& file, CString& csOffset, const XTP_EDIT_LEXPROPINFO& newInfoProp);
-	void WriteProp(CFile& file, CString& csOffset, const XTP_EDIT_LEXPROPINFO& oldInfoProp, const XTP_EDIT_LEXPROPINFO& newInfoProp, const CStringArray& arBuffer);
+	void WriteProp(CFile& file, CString& csOffset,
+				   const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO& newInfoProp);
+	void WriteProp(CFile& file, CString& csOffset,
+				   const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO& oldInfoProp,
+				   const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO& newInfoProp,
+				   const CStringArray& arBuffer);
 	// Process configuration data.
-	void Parse(CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
+	void Parse(XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray& arLexClassDesc);
 
 	CString* p_sSyntaxScheme;
 	CString* p_sColorScheme;
 	void SetSyntaxAndColorScheme(CString* pSyntaxScheme, CString* pColorScheme)
 	{
 		p_sSyntaxScheme = pSyntaxScheme;
-		p_sColorScheme = pColorScheme;
+		p_sColorScheme  = pColorScheme;
 
 		m_csDataBuffer = *p_sSyntaxScheme;
 	}
 
 private:
-
-	int                             m_nCurrLine;        // Current processing line identifier.
-	int                             m_nCurrLine_pos;    // Position in current line.
-	int                             m_nCurrPos;         // Current position in data buffer.
-	int                             m_nEOFPos;          // EOF position.
-	int                             m_nPrevPos;         // Previous position in data buffer.
-	int                             m_nTokenType;       // Type of processed token.
-	BOOL                            m_bReadNames;       // Flag to read names of properties.
-	BOOL                            m_bES;
-	CString                         m_csDataBuffer;     // Internal buffer to read file to.
-	CString                         m_strToken;         // Text of processed token.
-	CMapStringToPtr                 m_mapLexClassInfo;
-	CXTPSyntaxEditLexClassInfoArray m_arLexClassInfo;   // lex classes array.
+	int m_nCurrLine;	 // Current processing line identifier.
+	int m_nCurrLine_pos; // Position in current line.
+	int m_nCurrPos;		 // Current position in data buffer.
+	int m_nEOFPos;		 // EOF position.
+	int m_nPrevPos;		 // Previous position in data buffer.
+	int m_nTokenType;	// Type of processed token.
+	BOOL m_bReadNames;   // Flag to read names of properties.
+	BOOL m_bES;
+	CString m_csDataBuffer; // Internal buffer to read file to.
+	CString m_strToken;		// Text of processed token.
+	CMapStringToPtr m_mapLexClassInfo;
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray m_arLexClassInfo; // lex classes
+																				// array.
 
 	// Singleton instantiation.
 	CXTPSyntaxEditLexCfgFileReader();
-	static CXTPSyntaxEditLexCfgFileReader& AFX_CDECL Instance();
 	friend CXTPSyntaxEditLexCfgFileReader* AFX_CDECL XTPSyntaxEditLexConfig();
 };
 
@@ -369,7 +378,7 @@ private:
 //===========================================================================
 AFX_INLINE CXTPSyntaxEditLexCfgFileReader* AFX_CDECL XTPSyntaxEditLexConfig()
 {
-	return &CXTPSyntaxEditLexCfgFileReader::Instance();
+	return &CXTPSingleton<CXTPSyntaxEditLexCfgFileReader>::Instance();
 }
 
 //===========================================================================
@@ -450,7 +459,6 @@ public:
 	void RefreshFiles();
 
 private:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Remove all files which are monitored at the moment
@@ -460,11 +468,12 @@ private:
 private:
 	CString m_strPath;
 	CWinThread* m_pThread;
-	HANDLE      m_evExitThread;
+	HANDLE m_evExitThread;
 	static UINT AFX_CDECL ThreadMonitorProc(LPVOID);
 	BOOL m_bES;
 
-	CXTPSyntaxEditConfigurationManager* m_pConfigMgr; // pointer to the associated configuration manager
+	CXTPSyntaxEditConfigurationManager* m_pConfigMgr; // pointer to the associated configuration
+													  // manager
 
 	// this class contain information about monitoring file
 	class _XTP_EXT_CLASS CFMFileInfo
@@ -476,17 +485,17 @@ private:
 		//-----------------------------------------------------------------------
 		CFMFileInfo();
 
-		CString                     m_strFileName;  // monitoring file name
+		CString m_strFileName; // monitoring file name
 
-		BY_HANDLE_FILE_INFORMATION  m_sysFileInfo;  // File information
-		BOOL                        m_bExists;      // Is file exist
-		DWORD                       m_dwOwnerFlags; // Additional flags
+		BY_HANDLE_FILE_INFORMATION m_sysFileInfo; // File information
+		BOOL m_bExists;							  // Is file exist
+		DWORD m_dwOwnerFlags;					  // Additional flags
 
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Copy operator.
 		//-----------------------------------------------------------------------
-		const CFMFileInfo& operator = (const CFMFileInfo& rSrc);
+		const CFMFileInfo& operator=(const CFMFileInfo& rSrc);
 	};
 
 	//-----------------------------------------------------------------------
@@ -498,9 +507,11 @@ private:
 	CArray<CFMFileInfo, CFMFileInfo&> m_arFiles; // a bunch of filenames to monitor changes at
 };
 
-AFX_INLINE void CXTPSyntaxEditFileChangesMonitor::SetConfigurationManager(CXTPSyntaxEditConfigurationManager* pConfigMgr)
+AFX_INLINE void CXTPSyntaxEditFileChangesMonitor::SetConfigurationManager(
+	CXTPSyntaxEditConfigurationManager* pConfigMgr)
 {
 	m_pConfigMgr = pConfigMgr;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITLEXCFGFILEREADER_H__)

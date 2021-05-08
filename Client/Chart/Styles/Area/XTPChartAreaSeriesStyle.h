@@ -1,7 +1,6 @@
 // XTPChartAreaSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTAREASERIESSTYLE_H__)
-#define __XTPCHARTAREASERIESSTYLE_H__
+#	define __XTPCHARTAREASERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartBorder;
 class CXTPChartFillStyle;
-
-#include "../Point/XTPChartPointSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -48,7 +47,6 @@ class _XTP_EXT_CLASS CXTPChartAreaSeriesStyle : public CXTPChartPointSeriesStyle
 	DECLARE_SERIAL(CXTPChartAreaSeriesStyle)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartAreaSeriesStyle object.
@@ -63,7 +61,6 @@ public:
 	virtual ~CXTPChartAreaSeriesStyle();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the background fill style.
@@ -81,7 +78,6 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the transparency of the filled area with
@@ -106,8 +102,31 @@ public:
 	//-------------------------------------------------------------------------
 	void SetTransparency(int nTransparency);
 
-protected:
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the fill chart arrea indicator
+	//     respect to the background.
+	// Returns:
+	//     Returns an bool value.
+	// Remarks:
+	//     A value of TRUE means fill on both sides.
+	// See Also:
+	//-------------------------------------------------------------------------
+	BOOL GetFillAcrossXAxis() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to set the fill chart arrea indicator
+	//     respect to the background.
+	// Parameters:
+	//     nFillAcrossXAxis - an bool value.
+	// Remarks:
+	//     A value of TRUE means fill on both sides.
+	// See Also:
+	//-------------------------------------------------------------------------
+	void SetFillAcrossXAxis(BOOL nFillAcrossXAxis);
+
+protected:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Use this function to create a chart series view object.
@@ -120,11 +139,12 @@ protected:
 	//     CXTPChartSeriesView abstracts the view of a series.
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartAreaSeriesStyle);
@@ -133,114 +153,43 @@ public:
 	LPDISPATCH OleGetFillStyle();
 	LPDISPATCH OleGetBorder();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	int m_nTransparency;                //The transparency values range from 0 to 255.
-	CXTPChartBorder* m_pBorder;          //The chart border object pointer.
+	int m_nTransparency;		// The transparency values range from 0 to 255.
+	CXTPChartBorder* m_pBorder; // The chart border object pointer.
 
-	CXTPChartFillStyle* m_pFillStyle;    //The chart background fill style.
+	CXTPChartFillStyle* m_pFillStyle; // The chart background fill style.
 
+	BOOL m_nFillAcrossXAxis; // Fill chart arrea across X axis (under and over X axis)
 };
 
-//===========================================================================
-// Summary:
-//     CXTPChartAreaSeriesView is a kind of CXTPChartSeriesView, this class
-//     represents the view of the area series of a chart.
-// Remarks:
-//     Area series displays graphically the quantitative data in a chart.
-//     it displays a series as a set of points connected by a line or spline
-//     with all the area filled in below the line.
-//
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartAreaSeriesView : public CXTPChartDiagram2DSeriesView
+AFX_INLINE int CXTPChartAreaSeriesStyle::GetTransparency() const
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartAreaSeriesView object.
-	// Parameters:
-	//     pSeries      - Pointer to a chart series object.
-	//     pDiagramView - Pointer to a chart diagram view object.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartAreaSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
-
-protected:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to create a chart area series point view object.
-	// Parameters:
-	//     pDC      - Pointer to a chart device context object.
-	//     pPoint   - Pointer to a chart series object.
-	// Returns:
-	//     A pointer to CXTPChartSeriesPointView which refers a  newly created.
-	//     CXTPChartPointSeriesPointView object.
-	// Remarks:
-	//     CXTPChartSeriesPointView object abstracts the view of a point in a series.
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of an area series in the chart.
-	// Parameters:
-	//     pDC     - Pointer to a CXTPChartDeviceContext object.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this polymorphic object handles
-	//     the rendering of an element in the chart.Here it handles the drawing
-	//     of the area series of the chart.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the actual color of the series.
-	// Returns:
-	//     Returns the CXTPChartColor object representing an ARGB value.
-	// Remarks:
-	//-------------------------------------------------------------------------
-	CXTPChartColor GetActualColor() const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the second actual color of the series.
-	// Returns:
-	//     Returns the CXTPChartColor object representing an ARGB value.
-	// Remarks:
-	//-------------------------------------------------------------------------
-	CXTPChartColor GetActualColor2() const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the actual color of the series border.
-	// Returns:
-	//     Returns the CXTPChartColor object representing an ARGB value.
-	// Remarks:
-	//-------------------------------------------------------------------------
-	CXTPChartColor GetBorderActualColor() const;
-
-	CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
-};
-
-
-AFX_INLINE int CXTPChartAreaSeriesStyle::GetTransparency() const {
 	return m_nTransparency;
 }
-AFX_INLINE void CXTPChartAreaSeriesStyle::SetTransparency(int nTransparency) {
+AFX_INLINE void CXTPChartAreaSeriesStyle::SetTransparency(int nTransparency)
+{
 	m_nTransparency = nTransparency;
 	OnChartChanged();
 }
-AFX_INLINE CXTPChartFillStyle* CXTPChartAreaSeriesStyle::GetFillStyle() const {
+AFX_INLINE CXTPChartFillStyle* CXTPChartAreaSeriesStyle::GetFillStyle() const
+{
 	return m_pFillStyle;
 }
-AFX_INLINE CXTPChartBorder* CXTPChartAreaSeriesStyle::GetBorder() const {
+AFX_INLINE CXTPChartBorder* CXTPChartAreaSeriesStyle::GetBorder() const
+{
 	return m_pBorder;
 }
+AFX_INLINE BOOL CXTPChartAreaSeriesStyle::GetFillAcrossXAxis() const
+{
+	return m_nFillAcrossXAxis;
+}
+AFX_INLINE void CXTPChartAreaSeriesStyle::SetFillAcrossXAxis(BOOL nFillAcrossXAxis)
+{
+	m_nFillAcrossXAxis = nFillAcrossXAxis;
+	OnChartChanged();
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTAREASERIESSTYLE_H__)

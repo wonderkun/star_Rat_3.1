@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NOR)
 #ifdef _WIN32
 LANGUAGE LANG_NORWEGIAN, SUBLANG_NORWEGIAN_BOKMAL
 #pragma code_page(1252)
@@ -76,9 +75,9 @@ BEGIN
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Trykk ny hurtigtast:",XTP_IDC_TXT_NEWKEY,100,93,100,8
     EDITTEXT        XTP_IDC_EDIT_SHORTCUTKEY,100,103,75,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Tilordne",XTP_IDC_BTN_ASSIGN,179,39,49,14
-    PUSHBUTTON      "Fjern",XTP_IDC_BTN_REMOVE,179,56,49,14
-    PUSHBUTTON      "Tilbakestill alle",XTP_IDC_BTN_ACCEL_RESET,179,73,49,14
+    PUSHBUTTON      "Tilordne",XTP_IDC_BTN_ASSIGN,177,39,52,14
+    PUSHBUTTON      "Fjern",XTP_IDC_BTN_REMOVE,177,56,52,14
+    PUSHBUTTON      "Tilbakestill alle",XTP_IDC_BTN_ACCEL_RESET,177,73,52,14
     LTEXT           "Beskrivelse:",XTP_IDC_TXT_DESC_TITLE,4,117,89,8
     LTEXT           "",XTP_IDC_TXT_DESC_OVERVIEW,4,127,224,19,0,
                     WS_EX_STATICEDGE
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menyer"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Programmenyer",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "Sammenheng menyer",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Vis-menyen:",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Tilbakestille",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Standardmenyen\nStandard program-menyen",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           "Velg hurtigmenyen:",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Tilbakestille",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Tilpass"
     XTP_IDS_NEWMENU         "Ny meny"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Tilpass statuslinje"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Tilpasset %d"
     XTP_IDS_ERROR_BLANKNAME "Navnet på verktøylinjen kan ikke være tomt. Skriv inn et navn."
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
+    XTP_IDS_ERROR_LIMIT     "Beklager du har nådd grensen."
     XTP_IDS_ERROR_EXISTS    "Verktøylinjen '%s' finnes allerede. Velg et annet navn."
     XTP_IDS_RENAMETOOLBAR   "Gi nytt navn til verktøylinje"
     XTP_IDS_CONFIRM_DELETE  "Er du sikker på at du vil slette verktøylinjen %s?"
@@ -255,12 +254,13 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Er du sikker på at du vil tilbakestille tastetilordningene? Denne handlingen vil fjerne alle tilpassede tastetilordninger på tekstnivå."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Denne hurtigtasten er tilordnet.\nVil du for å tildele denne snarveien?"
+    XTP_IDS_CONFIRM_UPDATE  "På grunn av en programvareoppdatering er verktøylinjen '%s' endret. Ønsker du tilbakestille din tilpassede og laste inn ny?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Alle bildefiler|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Punktgrafikk(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiler(*.Wmf;*.Emf)|*.wmf;*.emf|Ikoner(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Alle filer(*.*)|*.*||"
+                            "Alle bildefilene|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Punktgrafikk (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiler (*.wmf;*.emf)|*.wmf;*.emf|Ikoner (*.ico;*.cur)|*.ico;*.cur|Alle filer (*.*)|*.*||
+"
     XTP_ID_TOOLBAR_EXPAND   "\nAlternativer for verktøylinje"
     XTP_ID_TOOLBAR_HIDE     "\nLukk"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +268,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nGjenopprett vindu"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimer vindu"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) ble trykket. Venter på andre sentrale av akkord..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +299,29 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Avbryt"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nFlytte til forrige fanegruppe"
+    XTP_ID_WORKSPACE_MOVENEXT "\nFlytter til neste kategorien gruppen"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNy vannrett kategorigruppe"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNy vertikal fanegruppe"
+    XTP_ID_WORKSPACE_CANCEL "\nAvbryt"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktive filer
+"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Skrive ut forhåndsviste elementet\nSkriv ut"
+    XTP_ID_PREVIEW_PREV     "Gå til forrige side\nForrige side"
+    XTP_ID_PREVIEW_NEXT     "Gå til neste side\nNeste side"
+    XTP_ID_PREVIEW_ZOOMIN   "Øke forstørrelsen av forhåndsvisningsside\nZoome inn"
+    XTP_ID_PREVIEW_ZOOMOUT  "Redusere forstørrelsen av forhåndsvisningsside\nZoome ut"
+    XTP_ID_PREVIEW_ONEPAGE  "Enkelt side"
+    XTP_ID_PREVIEW_TWOPAGE  "Flere sider"
+    XTP_ID_PREVIEW_CLOSE    "Lukk forhåndsvisning\nLukk forhåndsvisning"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Hel side"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Sidebredden"
+    XTP_IDS_PREVIEW_PAGEI     "Siden %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Siden %i av %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NOR)

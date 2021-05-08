@@ -1,7 +1,6 @@
 // XTFlatComboBox.h interface for the CXTFlatComboBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTFLATCOMBOBOX_H__)
-#define __XTFLATCOMBOBOX_H__
+#	define __XTFLATCOMBOBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTFlatComboBoxTheme;
 class CXTFlatEditTheme;
-
-#include "XTThemeManager.h"
 
 //===========================================================================
 // Summary:
@@ -42,7 +41,9 @@ class CXTFlatEditTheme;
 //     Class Wizard -> Member Variables Tab -> Add Variable) and rename CComboBox
 //     to CXTFlatComboBox.
 //===========================================================================
-class _XTP_EXT_CLASS CXTFlatComboBox : public CComboBox, public CXTThemeManagerStyleHostBase
+class _XTP_EXT_CLASS CXTFlatComboBox
+	: public CComboBox
+	, public CXTThemeManagerStyleHostBase
 {
 	DECLARE_DYNAMIC(CXTFlatComboBox)
 	DECLARE_THEME_HOST(CXTFlatComboBox)
@@ -108,7 +109,8 @@ public:
 	// Parameters   : crBack - RGB value representing background color.
 	// See Also     : SetTextColor, GetBackColor, GetTextColor
 	//-----------------------------------------------------------------------
-	virtual void SetBackColor(COLORREF crBack) {
+	virtual void SetBackColor(COLORREF crBack)
+	{
 		m_crBack = crBack;
 	}
 	//-----------------------------------------------------------------------
@@ -118,7 +120,8 @@ public:
 	//                the CXTFlatComboBox.
 	// See Also     : SetTextColor, SetBackColor, GetTextColor
 	//-----------------------------------------------------------------------
-	COLORREF GetBackColor() const {
+	COLORREF GetBackColor() const
+	{
 		return (m_crBack == COLORREF_NULL) ? GetXtremeColor(COLOR_WINDOW) : m_crBack;
 	}
 	//-----------------------------------------------------------------------
@@ -127,7 +130,8 @@ public:
 	// Parameters   : crText - RGB value representing text color.
 	// See Also     : SetBackColor, GetBackColor, GetTextColor
 	//-----------------------------------------------------------------------
-	virtual void SetTextColor(COLORREF crText) {
+	virtual void SetTextColor(COLORREF crText)
+	{
 		m_crText = crText;
 	}
 	//-----------------------------------------------------------------------
@@ -137,7 +141,8 @@ public:
 	//                the CXTFlatComboBox.
 	// See Also     : SetTextColor, SetBackColor, GetBackColor
 	//-----------------------------------------------------------------------
-	COLORREF GetTextColor() const {
+	COLORREF GetTextColor() const
+	{
 		return (m_crText == COLORREF_NULL) ? GetXtremeColor(COLOR_WINDOWTEXT) : m_crText;
 	}
 
@@ -148,7 +153,8 @@ protected:
 	//     operation should occur.
 	// Parameters:
 	//     pDC    - Points to the current device context.
-	//     eState - Current state of the CXTFlatComboBox, either xtMouseNormal, xtMouseHover, or xtMouseSelect.
+	//     eState - Current state of the CXTFlatComboBox, either xtMouseNormal, xtMouseHover, or
+	//     xtMouseSelect.
 	// See Also:
 	//     XTMouseState
 	//-----------------------------------------------------------------------
@@ -173,7 +179,7 @@ protected:
 	virtual void CalcClientRect(CRect& rc);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTFlatComboBox)
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
@@ -190,36 +196,38 @@ protected:
 	afx_msg LRESULT OnPrintClient(WPARAM wp, LPARAM lp);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	BOOL m_bAutoComp;   // Used by Auto completing.
-	BOOL m_bFlatLook;   // TRUE if the control is flat.
-	BOOL m_bDisableAC;  // TRUE when auto complete is disabled internally.
+	BOOL m_bAutoComp;  // Used by Auto completing.
+	BOOL m_bFlatLook;  // TRUE if the control is flat.
+	BOOL m_bDisableAC; // TRUE when auto complete is disabled internally.
 
 protected:
-	BOOL m_bPainted;    // Used during paint operations.
-	BOOL m_bHasFocus;   // TRUE if the control has the focus.
-	DWORD m_nStyle;     // Stores the standard window styles for the control.
-	DWORD m_nStyleEx;   // Stores the extended window styles for the control.
-	COLORREF m_crBack;  // RGB color value representing background color.
-	COLORREF m_crText;  // RGB color value representing text color.
+	BOOL m_bPainted;   // Used during paint operations.
+	BOOL m_bHasFocus;  // TRUE if the control has the focus.
+	DWORD m_nStyle;	// Stores the standard window styles for the control.
+	DWORD m_nStyleEx;  // Stores the extended window styles for the control.
+	COLORREF m_crBack; // RGB color value representing background color.
+	COLORREF m_crText; // RGB color value representing text color.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTFlatComboBox::EnableAutoCompletion(BOOL bEnable/*=TRUE*/) {
+AFX_INLINE void CXTFlatComboBox::EnableAutoCompletion(BOOL bEnable /*=TRUE*/)
+{
 	m_bAutoComp = bEnable;
 }
-AFX_INLINE BOOL CXTFlatComboBox::IsFlat() {
+AFX_INLINE BOOL CXTFlatComboBox::IsFlat()
+{
 	return m_bFlatLook;
 }
-AFX_INLINE BOOL CXTFlatComboBox::IsFocused() const {
+AFX_INLINE BOOL CXTFlatComboBox::IsFocused() const
+{
 	return m_bHasFocus;
 }
 
-#define  CXTEdit CXTPEdit
-
+#	define CXTEdit CXTPEdit
 
 //===========================================================================
 // Summary:
@@ -230,7 +238,9 @@ AFX_INLINE BOOL CXTFlatComboBox::IsFocused() const {
 //     To use the control, use Class Wizard to add the CEdit member variable (Class Wizard ->
 //     Member Variables Tab -> Add Variable) and rename CEdit to CXTFlatEdit.
 //===========================================================================
-class _XTP_EXT_CLASS CXTFlatEdit : public CXTEdit, public CXTThemeManagerStyleHostBase
+class _XTP_EXT_CLASS CXTFlatEdit
+	: public CXTEdit
+	, public CXTThemeManagerStyleHostBase
 {
 	DECLARE_DYNAMIC(CXTFlatEdit)
 	DECLARE_THEME_HOST(CXTFlatEdit)
@@ -250,7 +260,6 @@ public:
 	virtual ~CXTFlatEdit();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will disable the flat look for the edit control.
@@ -278,7 +287,6 @@ public:
 	virtual BOOL PointInRect();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the edit control whenever a paint
@@ -292,8 +300,7 @@ protected:
 	virtual void DrawBorders(CDC* pDC, const CRect& rWindow);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTFlatEdit)
@@ -305,7 +312,7 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg LRESULT OnPrintClient(WPARAM wp, LPARAM lp);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	BOOL m_bPainted;  // Used during paint operations.
@@ -317,8 +324,10 @@ protected:
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTFlatEdit::IsFlat() {
+AFX_INLINE BOOL CXTFlatEdit::IsFlat()
+{
 	return m_bFlatLook;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTFLATCOMBOBOX_H__)

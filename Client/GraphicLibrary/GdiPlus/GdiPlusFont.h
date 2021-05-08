@@ -278,3 +278,4 @@ Font::SetStatus(IN Status status) const
 }
 
 #endif
+

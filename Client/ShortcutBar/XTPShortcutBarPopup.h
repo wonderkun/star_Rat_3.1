@@ -1,7 +1,6 @@
 // XTPShortcutBarPopup.h interface for the CXTPShortcutBarPopup class.
 //
-// This file is a part of the XTREME SHORTCUTBAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHORTCUTBARPOPUP_H__)
-#define __XTPSHORTCUTBARPOPUP_H__
+#	define __XTPSHORTCUTBARPOPUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPShortcutBar;
 
@@ -56,10 +57,11 @@ protected:
 protected:
 	HWND m_hWndChild;
 	CXTPShortcutBar* m_pShortcutBar;
+	CSize m_szGap;
 
 public:
 	static int m_nPopupWidth;
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSHORTCUTBARPOPUP_H__)

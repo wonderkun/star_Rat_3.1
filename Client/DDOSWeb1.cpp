@@ -1,7 +1,7 @@
 // DDOSWeb1.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "DDOSWeb1.h"
 #include "PcView.h"

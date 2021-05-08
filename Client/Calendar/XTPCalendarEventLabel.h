@@ -1,8 +1,7 @@
 // XTPCalendarEventLabel.h: interface for the CXTPCalendarEventLabel and
 // CXTPCalendarEventLabels classes.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,15 +20,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDAREVENTLABEL_H__)
-#define _XTPCALENDAREVENTLABEL_H__
+#	define _XTPCALENDAREVENTLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarPtrCollectionT.h"
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 class CXTPCalendarEventLabel;
@@ -47,9 +45,9 @@ class _XTP_EXT_CLASS CXTPCalendarEventLabel : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarEventLabel)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-	int         m_nLabelID; // Label ID.
-	COLORREF    m_clrColor; // Label color used to fill the event background.
-	CString     m_strName;  // Label name.
+	int m_nLabelID;		 // Label ID.
+	COLORREF m_clrColor; // Label color used to fill the event background.
+	CString m_strName;   // Label name.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -58,8 +56,10 @@ public:
 	//     nID      - Label ID.
 	//     clrColor - Label color.
 	//     pcszName - Label name.
+	//     pSrc     - Pointer to the source used initialize this object.
 	//-----------------------------------------------------------------------
 	CXTPCalendarEventLabel(int nID = 0, COLORREF clrColor = 0, LPCTSTR pcszName = _T(""));
+	CXTPCalendarEventLabel(CXTPCalendarEventLabel* pSrc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -67,7 +67,7 @@ public:
 	// Remarks:
 	//     Handles class member deallocation.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarEventLabel() {};
+	virtual ~CXTPCalendarEventLabel();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -79,17 +79,22 @@ public:
 	// Returns:
 	//     Reference to this class instance.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarEventLabel& operator=(const CXTPCalendarEventLabel& rSrc)
-	{
-		m_nLabelID = rSrc.m_nLabelID;
-		m_clrColor = rSrc.m_clrColor;
-		m_strName = rSrc.m_strName;
+	const CXTPCalendarEventLabel& operator=(const CXTPCalendarEventLabel& rSrc);
 
-		return *this;
-	}
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg OLE_COLOR OleGetColor();
+	afx_msg void OleSetColor(OLE_COLOR clrOleColor);
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEventLabel);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
+
 //===========================================================================
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,8 +105,8 @@ protected:
 //     objects.
 // See Also: CXTPCalendarEventLabel, CXTPCalendarEvent
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarEventLabels :
-						public CXTPCalendarPtrCollectionT<CXTPCalendarEventLabel>
+class _XTP_EXT_CLASS CXTPCalendarEventLabels
+	: public CXTPCalendarPtrCollectionT<CXTPCalendarEventLabel>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarEventLabels)
@@ -130,6 +135,19 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     This member function updates default colors of labels when theme is changed
+	//-----------------------------------------------------------------------
+	void UpdateDefaultValues(COLORREF* clrEventColors, UINT uCount);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to sets a flag indicating custom
+	//             labels are defined.
+	// Parameters: bDefault : Set to FALSE when using custom values.
+	//-----------------------------------------------------------------------
+	void SetDefaultValues(BOOL bDefault);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function is used to search for the label with a
 	//     specified ID.
 	// Parameters:
@@ -138,8 +156,10 @@ public:
 	//     A pointer to a CXTPCalendarEventLabel object or NULL.
 	//-----------------------------------------------------------------------
 	CXTPCalendarEventLabel* Find(int nLabelID) const;
-protected:
 
+	using CXTPCalendarPtrCollectionT<CXTPCalendarEventLabel>::Find;
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Finds label index in the internal array by its ID.
@@ -151,6 +171,29 @@ protected:
 	//-----------------------------------------------------------------------
 	int FindIndex(int nLabelID) const;
 
+protected:
+	BOOL m_bDefaultValues; // Set to FALSE when using custom values.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	//  afx_msg long OleGetItemCount();
+	//  afx_msg LPDISPATCH OleGetItem(long nIndex);
+
+	afx_msg void OleAddLabel(long nLabelID, OLE_COLOR clrOleColor, LPCTSTR pcszName);
+	//  afx_msg void OleRemoveAll();
+
+	afx_msg LPDISPATCH OleFind(long nID);
+
+	// afx_msg void OleInitDefaultValues();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEventLabels);
+
+	DECLARE_ENUM_VARIANT(CXTPCalendarEventLabels);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -179,9 +222,12 @@ public:
 	//      clrBorder   - Event border color.
 	//      clrBkBase   - Base color to calculate few background colors for event
 	//                    background and other elements.
+	//      pCategory   - Points to the source category object to initialize this object with.
 	//-----------------------------------------------------------------------
 	CXTPCalendarEventCategory(UINT nID = 0, LPCTSTR pcszName = _T(""), COLORREF clrBorder = 0,
 							  COLORREF clrBkBase = 0);
+	CXTPCalendarEventCategory(CXTPCalendarEventCategory* pCategory);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default class destructor.
@@ -195,7 +241,7 @@ public:
 	//     A unique category ID.
 	// See Also: SetID
 	//-----------------------------------------------------------------------
-	virtual UINT GetID() const;
+	UINT GetID() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -204,7 +250,7 @@ public:
 	//     nID - A unique category ID.
 	// See Also: GetID
 	//-----------------------------------------------------------------------
-	virtual void SetID(UINT nID);
+	void SetID(UINT nID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -213,7 +259,7 @@ public:
 	//     A category name.
 	// See Also: SetName
 	//-----------------------------------------------------------------------
-	virtual LPCTSTR GetName() const;
+	CString GetName() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -222,7 +268,7 @@ public:
 	//     pcszName - A category name.
 	// See Also: GetName
 	//-----------------------------------------------------------------------
-	virtual void SetName(LPCTSTR pcszName);
+	void SetName(LPCTSTR pcszName);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -276,7 +322,7 @@ public:
 	//     All Day Events area background color.
 	// See Also: GetBkBaseColor, SetBkBaseColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetBkColorAllDayEvents();
+	virtual COLORREF GetBkColorAllDayEvents() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -285,7 +331,7 @@ public:
 	//     A Day View Work Cell background color.
 	// See Also: GetBkBaseColor, SetBkBaseColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetBkColorWorkCell();
+	virtual COLORREF GetBkColorWorkCell() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -294,7 +340,7 @@ public:
 	//     A Day View NonWork Cell background color.
 	// See Also: GetBkBaseColor, SetBkBaseColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetBkColorNonWorkCell();
+	virtual COLORREF GetBkColorNonWorkCell() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -303,7 +349,7 @@ public:
 	//     A Day View Cell border color.
 	// See Also: GetBkBaseColor, SetBkBaseColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetColorCellBorder();
+	virtual COLORREF GetColorCellBorder() const;
 
 protected:
 	//      nID         -
@@ -312,15 +358,31 @@ protected:
 	//      clrBkBase   - Base color to calculate few background colors for event
 	//                    background and other elements.
 
-	UINT     m_nID;         // Stores category identifier.
-	CString  m_strName;     // Stores category name.
+	UINT m_nID;		   // Stores category identifier.
+	CString m_strName; // Stores category name.
 
-	COLORREF m_clrBorder;   // Stores Event border color.
-	COLORREF m_clrBkBase;   // Stores Base color to calculate few background colors for event background and other elements.
+	COLORREF m_clrBorder; // Stores Event border color.
+	COLORREF m_clrBkBase; // Stores Base color to calculate few background colors for event
+						  // background and other elements.
 
 	CXTPPaintManagerColorGradient m_grclrBackground; // Stores an event background gradient color.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEventCategory);
+	DECLARE_OLECREATE_EX(CXTPCalendarEventCategory);
+
+	OLE_COLOR OleGetBorderColor();
+	void OleSetBorderColor(OLE_COLOR oleColor);
+
+	LPDISPATCH OleGetBackground(); // implemented in the CalendarThemesAxParts.cpp
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -329,18 +391,17 @@ protected:
 //     objects.
 // See Also: CXTPCalendarEventCategory, CXTPCalendarEvent
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarEventCategories : public
-						CXTPCalendarPtrCollectionT<CXTPCalendarEventCategory>
+class _XTP_EXT_CLASS CXTPCalendarEventCategories
+	: public CXTPCalendarPtrCollectionT<CXTPCalendarEventCategory>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNCREATE(CXTPCalendarEventCategories)
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	//CXTPCalendarEventCategories(BOOL bDefaultColorsSet);
+	// CXTPCalendarEventCategories(BOOL bDefaultColorsSet);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default class constructor.
@@ -363,6 +424,25 @@ public:
 	virtual void InitDefaultValues();
 
 	//-----------------------------------------------------------------------
+	// Summary: This member function updates default colors of category list
+	//          when theme is changed.
+	// Parameters:
+	//          pClrBkBase : Array of COLORREF values representing the background
+	//                       color for each category item.
+	//          pClrBorder : Array of COLORREF values represening the border
+	//                       color for each category item.
+	//          nCount     : Size of pClrBack and pClrBorder arrays.
+	//-----------------------------------------------------------------------
+	void UpdateDefaultValues(COLORREF* pClrBkBase, COLORREF* pClrBorder, int nCount);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to sets a flag indicating custom
+	//             labels are defined.
+	// Parameters: bDefault : Set to FALSE when using custom values.
+	//-----------------------------------------------------------------------
+	void SetDefaultValues(BOOL bDefault);
+
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to search for the event category with
 	//     a specified ID.
@@ -373,7 +453,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarEventCategory* Find(UINT nID) const;
 
-	//virtual CXTPCalendarEventCategories* GetDefaultColorsSet() const;
+	using CXTPCalendarPtrCollectionT<CXTPCalendarEventCategory>::Find;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -387,9 +467,25 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual int FindIndex(UINT nID) const;
 
-protected:
 	CString LoadCategoryName(UINT nIDResource) const;
 
+	BOOL m_bDefaultValues; // Set to FALSE when using custom values.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEventCategories);
+	DECLARE_OLECREATE_EX(CXTPCalendarEventCategories);
+	DECLARE_ENUM_VARIANT(CXTPCalendarEventCategories);
+
+	afx_msg void OleSetItem(long nIndex, LPDISPATCH pdispItem);
+	afx_msg void OleAdd(LPDISPATCH pdispItem);
+	afx_msg LPDISPATCH OleFind(long nID);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -404,7 +500,6 @@ class _XTP_EXT_CLASS CXTPCalendarUIntArray : public CXTPArrayT<UINT, UINT>
 	DECLARE_DYNAMIC(CXTPCalendarUIntArray)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	typedef CXTPArrayT<UINT, UINT> TBase;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -417,7 +512,7 @@ public:
 	// Returns:
 	//     Zero based index in the collection or -1 if element does not find.
 	//-----------------------------------------------------------------------
-	virtual int Find(UINT uID) const;
+	int Find(UINT uID) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -465,6 +560,15 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszSection, LPCTSTR pcszElement);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_ENUM_VARIANTLIST(CXTPCalendarUIntArray);
+
+	void OleLoadFromString(LPCTSTR strData);
+	BSTR OleSaveToString();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -481,7 +585,6 @@ class _XTP_EXT_CLASS CXTPCalendarIconIDs : public CXTPCalendarUIntArray
 	DECLARE_DYNAMIC(CXTPCalendarIconIDs)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	typedef CXTPCalendarUIntArray TBase;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -512,7 +615,16 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
+	using CXTPCalendarUIntArray::DoPropExchange;
+
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPCalendarIconIDs);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -527,7 +639,6 @@ class _XTP_EXT_CLASS CXTPCalendarEventCategoryIDs : public CXTPCalendarUIntArray
 	DECLARE_DYNAMIC(CXTPCalendarEventCategoryIDs)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	typedef CXTPCalendarUIntArray TBase;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -556,53 +667,58 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
-protected:
+	using CXTPCalendarUIntArray::DoPropExchange;
 
+protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEventCategoryIDs);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE void CXTPCalendarIconIDs::DoPropExchange(CXTPPropExchange* pPX) {
+AFX_INLINE void CXTPCalendarIconIDs::DoPropExchange(CXTPPropExchange* pPX)
+{
 	TBase::DoPropExchange(pPX, _T("CustomIcons"), _T("IconID"));
 }
-
-AFX_INLINE void CXTPCalendarEventCategoryIDs::DoPropExchange(CXTPPropExchange* pPX) {
+AFX_INLINE void CXTPCalendarEventCategoryIDs::DoPropExchange(CXTPPropExchange* pPX)
+{
 	TBase::DoPropExchange(pPX, _T("EventCategories"), _T("CategoryID"));
 }
-
-AFX_INLINE UINT CXTPCalendarEventCategory::GetID() const {
+AFX_INLINE UINT CXTPCalendarEventCategory::GetID() const
+{
 	return m_nID;
 }
-
-AFX_INLINE void CXTPCalendarEventCategory::SetID(UINT nID) {
+AFX_INLINE void CXTPCalendarEventCategory::SetID(UINT nID)
+{
 	m_nID = nID;
 }
-
-AFX_INLINE LPCTSTR CXTPCalendarEventCategory::GetName() const {
+AFX_INLINE CString CXTPCalendarEventCategory::GetName() const
+{
 	return m_strName;
 }
-
-AFX_INLINE void CXTPCalendarEventCategory::SetName(LPCTSTR pcszName) {
+AFX_INLINE void CXTPCalendarEventCategory::SetName(LPCTSTR pcszName)
+{
 	m_strName = pcszName;
 }
-
-AFX_INLINE COLORREF CXTPCalendarEventCategory::GetBorderColor() const {
+AFX_INLINE COLORREF CXTPCalendarEventCategory::GetBorderColor() const
+{
 	return m_clrBorder;
 }
-
-AFX_INLINE void CXTPCalendarEventCategory::SetBorderColor(COLORREF clrColor) {
+AFX_INLINE void CXTPCalendarEventCategory::SetBorderColor(COLORREF clrColor)
+{
 	m_clrBorder = clrColor;
 }
-
-AFX_INLINE COLORREF CXTPCalendarEventCategory::GetBkBaseColor() const {
+AFX_INLINE COLORREF CXTPCalendarEventCategory::GetBkBaseColor() const
+{
 	return m_clrBkBase;
 }
-
-AFX_INLINE void CXTPCalendarEventCategory::SetBkBaseColor(COLORREF clrColor) {
+AFX_INLINE void CXTPCalendarEventCategory::SetBkBaseColor(COLORREF clrColor)
+{
 	m_clrBkBase = clrColor;
 }
 
-
-//AFX_INLINE CXTPCalendarEventCategories* CXTPCalendarEventCategories::GetDefaultColorsSet() const {
-//  return m_pDefaultColorsSet;
-//}
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDAREVENTLABEL_H__)

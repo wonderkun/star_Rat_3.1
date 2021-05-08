@@ -1,7 +1,6 @@
 // XTPCalendarMemoryDataProvider.h: interface for the CXTPCalendarMemoryDataProvider class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARMEMORYDATAPROVIDER_H__)
-#define _XTPCALENDARMEMORYDATAPROVIDER_H__
+#	define _XTPCALENDARMEMORYDATAPROVIDER_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-#include "XTPCalendarData.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 class CXTPCalendarEvent;
@@ -40,7 +39,7 @@ class CXTPCalendarRecurrencePattern;
 //     16001, 32003, 48017, 64007
 // See Also: CXTPCalendarData::EventsMapByID_T overview, CMap overview
 //===========================================================================
-#define XTP_EVENTS_STORAGE_HASH_TABLE_SIZE 4001
+#	define XTP_EVENTS_STORAGE_HASH_TABLE_SIZE 4001
 
 //===========================================================================
 // Summary:
@@ -70,7 +69,6 @@ class _XTP_EXT_CLASS CXTPCalendarMemoryDataProvider : public CXTPCalendarData
 	DECLARE_DYNAMIC(CXTPCalendarMemoryDataProvider)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -222,7 +220,7 @@ protected:
 	// Returns:
 	//     A collection of events for a specified day.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr   DoRetrieveDayEvents(COleDateTime dtDay);
+	virtual CXTPCalendarEventsPtr DoRetrieveDayEvents(COleDateTime dtDay);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -243,7 +241,7 @@ protected:
 	//     A pointer to the new CXTPCalendarEvent object which fields
 	//     are filled with a data from the corresponding memory storage.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventPtr    DoRead_Event(DWORD dwEventID);
+	virtual CXTPCalendarEventPtr DoRead_Event(DWORD dwEventID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -256,7 +254,7 @@ protected:
 	//     A pointer to the new CXTPCalendarRecurrencePatternPtr object which
 	//     fields are filled with a data from the corresponding memory storage.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarRecurrencePatternPtr    DoRead_RPattern(DWORD dwPatternID);
+	virtual CXTPCalendarRecurrencePatternPtr DoRead_RPattern(DWORD dwPatternID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -272,7 +270,7 @@ protected:
 	//     TRUE if event created successfully,
 	//     FALSE in case of any error during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoCreate_Event (CXTPCalendarEvent* pEvent, DWORD& rdwNewEventID);
+	virtual BOOL DoCreate_Event(CXTPCalendarEvent* pEvent, DWORD& rdwNewEventID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -287,7 +285,7 @@ protected:
 	//     TRUE if an event updated successfully,
 	//     FALSE in case of any errors during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoUpdate_Event (CXTPCalendarEvent* pEvent);
+	virtual BOOL DoUpdate_Event(CXTPCalendarEvent* pEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -302,7 +300,7 @@ protected:
 	//     TRUE if an event deleted successfully,
 	//     FALSE in case of any errors during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoDelete_Event (CXTPCalendarEvent* pEvent);
+	virtual BOOL DoDelete_Event(CXTPCalendarEvent* pEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -318,7 +316,7 @@ protected:
 	//     TRUE if recurrence pattern created successfully,
 	//     FALSE in case of any error during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoCreate_RPattern  (CXTPCalendarRecurrencePattern* pPattern, DWORD& rdwNewPatternID);
+	virtual BOOL DoCreate_RPattern(CXTPCalendarRecurrencePattern* pPattern, DWORD& rdwNewPatternID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -332,7 +330,7 @@ protected:
 	//     TRUE if recurrence pattern updated successfully,
 	//     FALSE in case of any error during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoUpdate_RPattern  (CXTPCalendarRecurrencePattern* pPattern);
+	virtual BOOL DoUpdate_RPattern(CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -347,7 +345,7 @@ protected:
 	//     TRUE if recurrence pattern deleted successfully,
 	//     FALSE in case of any error during the process.
 	//-----------------------------------------------------------------------
-	virtual BOOL DoDelete_RPattern  (CXTPCalendarRecurrencePattern* pPattern);
+	virtual BOOL DoDelete_RPattern(CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -380,7 +378,8 @@ protected:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom,
+													  COleDateTimeSpan spPeriod);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -395,14 +394,17 @@ protected:
 	// See Also:
 	//    CXTPTopLevelWndMsgNotifier, XTP_WM_TIME_ZONE_CHANGED
 	//-----------------------------------------------------------------------
-	virtual BOOL OnTimeZoneChanged() { return TRUE; };
-//{{AFX_CODEJOCK_PRIVATE
+	virtual BOOL OnTimeZoneChanged()
+	{
+		return TRUE;
+	};
+	//{{AFX_CODEJOCK_PRIVATE
 private:
 	typedef CMap<DWORD, DWORD, CXTPCalendarEvent*, CXTPCalendarEvent*> CMapIDtoEvent;
 
 	// Digital Search Tree Node
-	struct DSTNode {
-
+	struct DSTNode
+	{
 		DSTNode();
 		~DSTNode();
 
@@ -416,7 +418,7 @@ private:
 		void AppendAll(CMapIDtoEvent* pMapEvents);
 
 	private:
-		typedef CMap<CXTPCalendarEvent*,CXTPCalendarEvent*, BOOL, BOOL> EventsMap;
+		typedef CMap<CXTPCalendarEvent*, CXTPCalendarEvent*, BOOL, BOOL> EventsMap;
 		EventsMap* m_pMapEvents;
 	};
 	// Digital Search Tree
@@ -431,24 +433,26 @@ private:
 		void Clear();
 
 		void SearchForEvents(DWORD dwStart, DWORD dwEnd, CXTPCalendarEvents* pEvents);
+
 	private:
 		// properties
 		DSTNode* pHead;
 
 		// temp data storage
 		CMapIDtoEvent tmp_mapEvents;
+
 	private:
-		enum DSTScanType {
+		enum DSTScanType
+		{
 			dstScanMark,
 			dstScanUnmark,
 			dstScanFind
 		};
 		// methods
-		void ScanRange(DSTNode* const pNode, const int nDepth,
-			const DWORD dwMinValue, const DWORD dwMaxValue,
-			const DWORD dwStart, const DWORD dwEnd,
-			CXTPCalendarEvent* const pEvent, CMapIDtoEvent* pMapEvents,
-			const DSTScanType eScanType);
+		void ScanRange(DSTNode* const pNode, const int nDepth, const DWORD dwMinValue,
+					   const DWORD dwMaxValue, const DWORD dwStart, const DWORD dwEnd,
+					   CXTPCalendarEvent* const pEvent, CMapIDtoEvent* pMapEvents,
+					   const DSTScanType eScanType);
 
 		void MarkRange(CXTPCalendarEvent* pEvent, const DSTScanType eScanType);
 	};
@@ -459,16 +463,18 @@ private:
 
 	DWORD _UniqueID_Event(DWORD dwID);
 	DWORD _UniqueID_Patern(DWORD dwID);
+
 private:
-	EventsMapByID_T<CXTPCalendarEvent>              m_EventsStorage;
-	EventsMapByID_T<CXTPCalendarRecurrencePattern>  m_mapPatterns;
+	EventsMapByID_T<CXTPCalendarEvent> m_EventsStorage;
+	EventsMapByID_T<CXTPCalendarRecurrencePattern> m_mapPatterns;
 
 	DST m_tree;
 
 	//---------------------------------------------------------------------------
-	//CMap<DWORD, DWORD, BOOL, BOOL>  m_mapIsDayInCache;
+	// CMap<DWORD, DWORD, BOOL, BOOL>  m_mapIsDayInCache;
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARMEMORYDATAPROVIDER_H__)

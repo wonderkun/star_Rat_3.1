@@ -1,7 +1,6 @@
 // XTPSkinManager.h: interface for the CXTPSkinManager class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,23 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINMANAGER_H__)
-#define __XTPSKINMANAGER_H__
+#	define __XTPSKINMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "XTPSkinManagerSchema.h"
-#include "XTPSkinObject.h"
-#include "XTPSkinManagerColorFilter.h"
+class CXTPSkinManagerSchemaProperty;
+class CXTPSkinManagerResourceFile;
+class CXTPSkinManagerColorFilter;
+class CXTPSkinObjectClassMap;
+class CXTPSkinManagerApiHookBase;
+class CXTPSkinManagerModuleListSharedData;
+class CXTPSkinManagerSchemaCodeManager;
+typedef HANDLE HTHEME;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -48,12 +51,39 @@
 //-----------------------------------------------------------------------
 enum XTPSkinApplyOptions
 {
-	xtpSkinApplyMetrics     = 1,    // TRUE to apply frame metrics (Caption height/font, scrollbars width/with, etc)
-	xtpSkinApplyFrame       = 2,    // TRUE to apply frame skins.
-	xtpSkinApplyColors      = 4,    // TRUE to use skin colors.
-	xtpSkinApplyMenus       = 8     // TRUE to apply skin for Popup Menus.
+	xtpSkinApplyMetrics = 1, // TRUE to apply frame metrics (Caption height/font, scrollbars
+							 // width/with, etc)
+	xtpSkinApplyFrame  = 2,  // TRUE to apply frame skins.
+	xtpSkinApplyColors = 4,  // TRUE to use skin colors.
+	xtpSkinApplyMenus  = 8   // TRUE to apply skin for Popup Menus.
 };
 
+//-----------------------------------------------------------------------
+// Summary:
+//     Available property for CXTPSkinManagerSchemaProperty class
+// Example:
+// <code>
+// XTPSkinManager()->GetProperty(XTP_SKINPROPERTY_BOOL, iPartId, iStateId, TMT_TRANSPARENT);
+// </code>
+// See Also:
+//     CXTPSkinManagerSchemaProperty
+//-----------------------------------------------------------------------
+enum XTPSkinManagerProperty
+{
+	XTP_SKINPROPERTY_UNKNOWN,							 // Not defined
+	XTP_SKINPROPERTY_STRING,							 // CString property
+	XTP_SKINPROPERTY_INT,								 // int property
+	XTP_SKINPROPERTY_BOOL,								 // BOOL property
+	XTP_SKINPROPERTY_COLOR,								 // COLORREF property
+	XTP_SKINPROPERTY_RECT,								 // CRect property
+	XTP_SKINPROPERTY_FONT,								 // LOGFONT property
+	XTP_SKINPROPERTY_INTLIST,							 // CIntArray property
+	XTP_SKINPROPERTY_ENUM,								 // enum property
+	XTP_SKINPROPERTY_POSITION,							 // int property
+	XTP_SKINPROPERTY_FILENAME = XTP_SKINPROPERTY_STRING, // FileName property
+	XTP_SKINPROPERTY_MARGINS  = XTP_SKINPROPERTY_RECT,   // Margins property
+	XTP_SKINPROPERTY_SIZE	 = XTP_SKINPROPERTY_INT	 // Size property
+};
 
 class CXTPSkinManager;
 class CXTPSkinManagerSchema;
@@ -65,9 +95,9 @@ class CXTPSkinObject;
 //     CXTPSkinManagerClass is a standalone class that represents a
 //     single visual class of skin manager.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinManagerClass
+class _XTP_EXT_CLASS CXTPSkinManagerClass : public CXTPSynchronized
 {
-protected:
+public:
 	// ---------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSkinManagerClass object.
@@ -75,7 +105,7 @@ protected:
 	//     pSchema :  Parent skin manager class.
 	//
 	// ---------------------------------------------
-	CXTPSkinManagerClass(CXTPSkinManagerSchema* pSchema);
+	CXTPSkinManagerClass(CXTPSkinManagerSchema* pSchema, CString pszClassList, int nClassCode);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -84,7 +114,6 @@ protected:
 	virtual ~CXTPSkinManagerClass();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Get the value for the specified string property
@@ -161,7 +190,8 @@ public:
 	// Returns:
 	//     COLORREF value for the specified property
 	//-----------------------------------------------------------------------
-	COLORREF GetThemeColor(int iPartId, int iStateId, int iPropId, COLORREF clrDefault = COLORREF_NULL);
+	COLORREF GetThemeColor(int iPartId, int iStateId, int iPropId,
+						   COLORREF clrDefault = (COLORREF)-1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -188,8 +218,7 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL GetThemePartSize(int iPartId, int iStateId, RECT *pRect, THEMESIZE eSize, SIZE* pSize);
-
+	BOOL GetThemePartSize(int iPartId, int iStateId, RECT* pRect, int eSize, SIZE* pSize);
 
 public:
 	//-----------------------------------------------------------------------
@@ -204,8 +233,7 @@ public:
 	// Returns:
 	//     Returns TRUE if successful, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL DrawThemeBackground(CDC* pDC, int iPartId, int iStateId, const RECT *pRect);
-
+	BOOL DrawThemeBackground(CDC* pDC, int iPartId, int iStateId, const RECT* pRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -221,7 +249,8 @@ public:
 	// Returns:
 	//     Returns TRUE if successful, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL DrawThemeText(CDC* pDC, int iPartId, int iStateId, const CString& strText, DWORD dwFormat, const RECT *pRect);
+	BOOL DrawThemeText(CDC* pDC, int iPartId, int iStateId, const CString& strText, DWORD dwFormat,
+					   const RECT* pRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -248,7 +277,6 @@ public:
 	CString GetClassName() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns property value for specified part and state
@@ -262,29 +290,67 @@ public:
 	// See Also:
 	//     XTPSkinManagerProperty, CXTPSkinManagerSchemaProperty
 	//-----------------------------------------------------------------------
-	CXTPSkinManagerSchemaProperty* GetProperty(XTPSkinManagerProperty propType, int iPartId, int iStateId, int iPropId);
+	CXTPSkinManagerSchemaProperty* GetProperty(XTPSkinManagerProperty propType, int iPartId,
+											   int iStateId, int iPropId);
+
+	//-----------------------------------------------------------------------
+	// Summary: Returns system theme handle for the class.
+	//-----------------------------------------------------------------------
+	HTHEME GetSystemTheme() const;
 
 protected:
-	CXTPSkinManagerSchema* m_pSchema;    // Parent CXTPSkinManager object.
+	CXTPSkinManagerSchema* m_pSchema; // Parent CXTPSkinManager object.
+	HTHEME m_hSystemTheme;
 
-	CString m_strClass;             // Class name
-	UINT m_nClassCode;              // Hashed value of class name
+	CString m_strClass; // Class name
+	UINT m_nClassCode;  // Hashed value of class name
 
-	CXTPSkinImages* m_pImages;      // Image collection
-	CMap<UINT, UINT, CXTPSkinManagerSchemaProperty*, CXTPSkinManagerSchemaProperty*> m_mapCachedProperties; // Cached collection of class properties
-
-	friend class CXTPSkinManager;
-	friend class CXTPSkinManagerSchema;
+	CXTPSkinImages* m_pImages; // Image collection
+	CMap<UINT, UINT, CXTPSkinManagerSchemaProperty*, CXTPSkinManagerSchemaProperty*>
+		m_mapCachedProperties; // Cached collection of class properties
 };
 
-#define XTP_SKINMETRICS_COLORTABLESIZE 31
+#	define XTP_SKINMETRICS_COLORTABLESIZE 31
+
+//===========================================================================
+// Summary:
+//     Implement this interface in order to provide custom configured
+//     window filter functionality. The filtered out windows will not be skinned.
+//     If you find yourself frequently filtering out some system window in order
+//     to prevent application crashes, please report us its class name and
+//     ideally the contents of WNDCLASS structure filled out by a call to
+//     GetWindowClass for this window handle.
+//     Use CXTPSkinManager::SetWindowFilter for setting or disabling a
+//     custom provided window filter implementation.
+//===========================================================================
+struct IXTPSkinManagerWindowFilter
+{
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     The implementation has to make a decision on whether a window
+	//     has to be filtered out (not skinned) or not depending on certain window
+	//     characteristics.
+	// Parameters:
+	//     hWnd - Window handle.
+	//     lpszClassName - Window class name.
+	//     lpcs - Pointer to window's CREATUSTRUCT structure.
+	// Returns:
+	//     TRUE for filtering a window out, otherwise return FALSE (default).
+	//-----------------------------------------------------------------------
+	virtual BOOL FilterWindow(HWND hWnd, LPCTSTR lpszClassName, LPCREATESTRUCT lpcs) = 0;
+};
+
+AFX_INLINE HTHEME CXTPSkinManagerClass::GetSystemTheme() const
+{
+	return m_hSystemTheme;
+}
 
 //===========================================================================
 // Summary:
 //     CXTPSkinManagerMetrics is a standalone class that represents a
 //     collection of metrics of the current skin
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinManagerMetrics
+class _XTP_EXT_CLASS CXTPSkinManagerMetrics : public CXTPSynchronized
 {
 public:
 	//-----------------------------------------------------------------------
@@ -314,6 +380,15 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL IsMetricObject(HGDIOBJ hObject) const;
 
+	//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary: Determines if handle belongs to any existing metrics.
+	// Input:   hObject - Handle to test
+	//-----------------------------------------------------------------------
+	_XTP_DEPRECATE("The method is deprecated, use IsMetricObject instead")
+	static BOOL AFX_CDECL IsKnownMetricObject(HGDIOBJ hObject);
+	//}}AFX_CODEJOCK_PRIVATE
+
 	//-------------------------------------------------------------------------
 	// Summary: Destroys all GDI objects of metrics
 	//-------------------------------------------------------------------------
@@ -322,50 +397,79 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to get skinned color
 	// Input:   nIndex - Index of color to retrieve
-	// Returns: Skinned color for specified index
+	// Returns: Skinned color for specified index or COLORREF_NULL
 	//-----------------------------------------------------------------------
 	COLORREF GetColor(int nIndex) const;
 
-private:
-	void DeleteSysBrush(HBRUSH* pBrush);
+	//-----------------------------------------------------------------------
+	// Summary: Call this method to get skinned brush
+	// Input:   nIndex - Index of brush to retrieve
+	// Returns: Skinned brush for specified index or NULL
+	//-----------------------------------------------------------------------
+	HBRUSH GetBrush(int nIndex) const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Creates tab control brush.
+	// Input:   pBitmap - Bitmap used as brush pattern.
+	// Returns: TRUE if the brush is successfully created.
+	//-----------------------------------------------------------------------
+	BOOL CreateTabControlBrush(CBitmap* pBitmap);
 
 public:
-	CFont m_fntCaption;             // Caption font
-	CFont m_fntMenu;                // Menu font
-	CFont m_fntSmCaption;           // Small caption font
-	CXTPSkinManagerSchema* m_pSchema;     // Parent CXTPSkinManager object
+	mutable CXTPCriticalSection m_csAccess;
+	BOOL m_bAllowHandleDestroy;
 
-	HBRUSH m_brushDialog;           // Dialog brush
-	HBRUSH m_brushTabControl;       // Tab Control brush;
-	HBRUSH m_brushWindow;           // Window brush;
+	CXTPFont m_xtpFontCaption;   // Caption font
+	CXTPFont m_xtpFontMenu;		 // Menu font
+	CXTPFont m_xtpFontSmCaption; // Small caption font
 
-	COLORREF m_clrEdgeLight;        // Light edge color
-	COLORREF m_clrEdgeHighLight;    // HighLight edge color
-	COLORREF m_clrEdgeShadow;       // Shadow edge color
-	COLORREF m_clrEdgeDkShadow;     // Dark shadow edge color
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntCaption, m_xtpFontCaption,
+										  GetCaptionFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntMenu, m_xtpFontMenu, GetMenuFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntSmCaption, m_xtpFontSmCaption,
+										  GetSmCaptionFontHandle);
 
-	COLORREF m_clrTheme[XTP_SKINMETRICS_COLORTABLESIZE];        // Colors of the theme
-	HBRUSH m_brTheme[XTP_SKINMETRICS_COLORTABLESIZE];           // Brushes of the theme
+	CXTPSkinManagerSchema* m_pSchema; // Parent CXTPSkinManager object
 
-	int m_nBorderSize;              // Border size
-	int m_cxBorder;                 // SM_CXBORDER system metric
-	int m_cyBorder;                 // SM_CYBORDER system metric
-	int m_cxEdge;                   // SM_CXEDGE system metric
-	int m_cyEdge;                   // SM_CYEDGE system metric
+	CXTPBrush m_xtpBrushDialog;		// Dialog brush
+	CXTPBrush m_xtpBrushTabControl; // Tab Control brush;
+	CXTPBrush m_xtpBrushWindow;		// Window brush;
 
-	int m_cxHScroll;                // SM_CXHSCROLL system metric
-	int m_cyHScroll;                // SM_CYHSCROLL system metric
-	int m_cxVScroll;                // SM_CXVSCROLL system metric
-	int m_cyVScroll;                // SM_CYVSCROLL system metric
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED_(HBRUSH, HBRUSH, HBRUSH, m_brushDialog, m_xtpBrushDialog,
+										   GetDialogBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED_(HBRUSH, HBRUSH, HBRUSH, m_brushTabControl,
+										   m_xtpBrushTabControl, GetTabControlBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED_(HBRUSH, HBRUSH, HBRUSH, m_brushWindow, m_xtpBrushWindow,
+										   GetWindowBrushHandle);
 
-	int m_cyCaption;                // Height of captions
-	int m_cySmallCaption;           // Height of small captions
+	COLORREF m_clrEdgeLight;	 // Light edge color
+	COLORREF m_clrEdgeHighLight; // HighLight edge color
+	COLORREF m_clrEdgeShadow;	// Shadow edge color
+	COLORREF m_clrEdgeDkShadow;  // Dark shadow edge color
 
-	int m_cyOsCaption;              // System caption height
-	int m_cyOsSmallCaption;         // System small caption height
-	int m_cxOsVScroll;              // System SM_CXVSCROLL metric
+	COLORREF m_clrTheme[XTP_SKINMETRICS_COLORTABLESIZE]; // Colors of the theme
 
-	BOOL m_bRefreshMetrics;         // TRUE if refresh metrics currently executed
+	HBRUSH m_brTheme[XTP_SKINMETRICS_COLORTABLESIZE]; // Brushes of the theme
+
+	int m_nBorderSize; // Border size
+	int m_cxBorder;	// SM_CXBORDER system metric
+	int m_cyBorder;	// SM_CYBORDER system metric
+	int m_cxEdge;	  // SM_CXEDGE system metric
+	int m_cyEdge;	  // SM_CYEDGE system metric
+
+	int m_cxHScroll; // SM_CXHSCROLL system metric
+	int m_cyHScroll; // SM_CYHSCROLL system metric
+	int m_cxVScroll; // SM_CXVSCROLL system metric
+	int m_cyVScroll; // SM_CYVSCROLL system metric
+
+	int m_cyCaption;	  // Height of captions
+	int m_cySmallCaption; // Height of small captions
+
+	int m_cyOsCaption;		// System caption height
+	int m_cyOsSmallCaption; // System small caption height
+	int m_cxOsVScroll;		// System SM_CXVSCROLL metric
+
+	BOOL m_bRefreshMetrics; // TRUE if refresh metrics currently executed
 };
 
 //===========================================================================
@@ -374,15 +478,27 @@ public:
 //     global object managing skins.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPSkinManager
+	: public CXTPSynchronized
+	, IXTPApplicationEvents
 {
+	friend class CXTPSingleton<
+		CXTPSkinManager,
+		CXTPSingletonDependencies<CXTPSingleton<CXTPSkinManagerModuleListSharedData>,
+								  CXTPSingleton<CXTPSkinManagerSchemaCodeManager>,
+								  CXTPSingleton<CXTPBrushCache>, CXTPSingleton<CXTPSoundManager> > >;
+
 private:
 	DECLARE_HANDLE(HWINEVENTHOOK);
 
-	typedef void (CALLBACK* WINEVENTPROC) ( HWINEVENTHOOK hWinEventHook, DWORD event, HWND hwnd, LONG idObject, LONG idChild, DWORD idEventThread, DWORD dwmsEventTime);
-	typedef HWINEVENTHOOK (WINAPI* LPFNSETWINEVENTHOOK)(UINT eventMin, UINT eventMax, HMODULE hmodWinEventProc,
-		WINEVENTPROC lpfnWinEventProc, DWORD idProcess, DWORD idThread, UINT dwflags);
-	typedef BOOL (WINAPI* LPFNUNHOOKWINEVENT)(HWINEVENTHOOK hWinEventHook);
-
+	typedef void(CALLBACK* WINEVENTPROC)(HWINEVENTHOOK hWinEventHook, DWORD event, HWND hwnd,
+										 LONG idObject, LONG idChild, DWORD idEventThread,
+										 DWORD dwmsEventTime);
+	typedef HWINEVENTHOOK(WINAPI* LPFNSETWINEVENTHOOK)(UINT eventMin, UINT eventMax,
+													   HMODULE hmodWinEventProc,
+													   WINEVENTPROC lpfnWinEventProc,
+													   DWORD idProcess, DWORD idThread,
+													   UINT dwflags);
+	typedef BOOL(WINAPI* LPFNUNHOOKWINEVENT)(HWINEVENTHOOK hWinEventHook);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -398,7 +514,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPSkinManager();
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Loads skin from cjstyles or msstyles file.
@@ -410,6 +525,15 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL LoadSkin(LPCTSTR lpszResourcePath, LPCTSTR lpszIniFileName = NULL);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Creates a new schema instance from the resource provided.
+	// Parameters:
+	//      lpszResourcePath - A path to the styles file to load a schema from.
+	//      lpszIniFileName - Optional embedded INI file name to use from the styles file.
+	// Returns:
+	//      A pointer to a new schema created or NULL in case of an error.
+	//-----------------------------------------------------------------------
 	CXTPSkinManagerSchema* CreateSchema(LPCTSTR lpszResourcePath, LPCTSTR lpszIniFileName = NULL);
 
 public:
@@ -421,15 +545,15 @@ public:
 	// See Also: XTPSkinApplyOptions, SetApplyOptions
 	//-----------------------------------------------------------------------
 	DWORD GetApplyOptions() const;
-
-	BOOL HasApplyOptions(DWORD dwOptions) const;
+	BOOL HasApplyOptions(DWORD dwOptions) const; // <combine CXTPSkinManager::GetApplyOptions@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to set what parts of application skin must apply.
 	// Parameters:
 	//     dwOptions - combined by using the bitwise OR (|) operator of following:
-	//         * <b>xtpSkinApplyMetrics</b> To apply skin metrics (caption height, scroll bar with, etc)
+	//         * <b>xtpSkinApplyMetrics</b> To apply skin metrics (caption height, scroll bar with,
+	//         etc)
 	//         * <b>xtpSkinApplyFrame</b> To apply window frames.
 	// See Also: XTPSkinApplyOptions, GetApplyOptions
 	//-----------------------------------------------------------------------
@@ -442,7 +566,16 @@ public:
 	//     hWnd - Handle of window which appearance must be skinned.
 	//-----------------------------------------------------------------------
 	void ApplyWindow(HWND hWnd);
+	void ApplyWindow(HWND hWnd, BOOL bApplyChilds); // <combine CXTPSkinManager::ApplyWindow@HWND>
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets window theme.
+	// Parameters:
+	//     hWnd - A valid window handle for which a new theme is to be set.
+	//     pSchema - A valid pointer to schema describe theme to be set.
+	// See Also: CreateSchema
+	//-----------------------------------------------------------------------
 	void SetWindowTheme(HWND hWnd, CXTPSkinManagerSchema* pSchema);
 
 	//-----------------------------------------------------------------------
@@ -471,7 +604,8 @@ public:
 	// Example:
 	// <code>CXTPSkinManager::SetSkinManager(new CMySkinManager());</code>
 	//-----------------------------------------------------------------------
-	static CXTPSkinManager* AFX_CDECL SetSkinManager(CXTPSkinManager* pSkinManager, BOOL bDelete = TRUE);
+	static CXTPSkinManager* AFX_CDECL SetSkinManager(CXTPSkinManager* pSkinManager,
+													 BOOL bDelete = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -479,9 +613,15 @@ public:
 	// Parameters:
 	//     lpszModule - File name to exclude
 	//-----------------------------------------------------------------------
+#	if defined(XTP_SKINFRAMEWORK_USE_DETOURS_API_HOOK) && !defined(_XTP_ACTIVEX)
+	_XTP_DEPRECATE("The method is disabled for compilation with "
+				   "XTP_SKINFRAMEWORK_USE_DETOURS_API_HOOK and "
+				   "its empty implementation is added for backward compatibility only. In order to "
+				   "you the legacy implementation of API hooking re-compile ToolkitPro with "
+				   "XTP_SKINFRAMEWORK_USE_LEGACY_API_HOOK macro defined.")
+#	endif
 	void ExcludeModule(LPCTSTR lpszModule);
 
-public:
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Retrieves skin class by its name
@@ -503,7 +643,6 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPSkinObject* Lookup(HWND hWnd);
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get pointer to skin metrics
@@ -550,8 +689,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetResourceFile(CXTPSkinManagerResourceFile* pResourceFile);
 
-public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Enables/disables dialog background theme.  This method can be used to
@@ -592,7 +729,7 @@ public:
 	// Returns:
 	//     S_OK if successful
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeSysFont(int iFontId, LOGFONT *plf);
+	HRESULT GetThemeSysFont(int iFontId, LOGFONT* plf);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -664,7 +801,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method for each thread in multi threaded application to enable skin framework for all threads
+	//     Call this method for each thread in multi threaded application to enable skin framework
+	//     for all threads
 	//-----------------------------------------------------------------------
 	void EnableCurrentThread();
 
@@ -708,7 +846,6 @@ public:
 	//-------------------------------------------------------------------------
 	void RemoveAll(BOOL bDetach = TRUE);
 
-public:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Determines if any color filter installed
@@ -737,7 +874,6 @@ public:
 	//-------------------------------------------------------------------------
 	void RemoveColorFilters();
 
-protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when skin is changed
@@ -747,8 +883,24 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnSkinChanged(BOOL bPrevState, BOOL bNewState);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines whether is persistent, i.e. will remain loaded into the
+	//      process address space for the entire lifetime of SkinManager and
+	//      cannot be unloaded. The current and/or executable modules are always
+	//      considered persistent.
+	// Parameters:
+	//      hModule - A module handle to check.
+	// Returns:
+	//      TRUE if a module is persistent, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsPersistentModule(HMODULE hModule);
 
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPSkinManagerApiHookBase* GetApiHook() const;
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to parse visual styles ini file
@@ -769,8 +921,6 @@ protected:
 	//-------------------------------------------------------------------------
 	void FreeSkinData();
 
-protected:
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to create hook class for specified window
@@ -788,102 +938,177 @@ protected:
 	// See Also:
 	//     CXTPSkinObject
 	// ----------------------------------------------------------------------
-	virtual CXTPSkinObject* SetHook(HWND hWnd, LPCTSTR lpszClassName, LPCREATESTRUCT lpcs, BOOL bAuto);
+	virtual CXTPSkinObject* SetHook(HWND hWnd, LPCTSTR lpszClassName, LPCREATESTRUCT lpcs,
+									BOOL bAuto);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Sets window filter implementation. NULL disables any previously set
+	//     window filter implementation.
+	// See Also:
+	//     IXTPSkinManagerWindowFilter
+	//-------------------------------------------------------------------------
+	void SetWindowFilter(IXTPSkinManagerWindowFilter* pFilter);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Is called by framework before application shutting down.
+	// Parameters:
+	//      pApplication - Event sending application pointer.
+	//-----------------------------------------------------------------------
+	virtual void OnBeforeApplicationShutdown(CXTPApplication* pApplication);
 
 protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	static BOOL AFX_CDECL IsClassKnownIgnoredClass(LPCTSTR lpszClassName);
 	static LRESULT CALLBACK HookWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK CbtFilterHook(int code, WPARAM wParam, LPARAM lParam);
-	static void CALLBACK WinEventProc(HWINEVENTHOOK hWinEventHook,
-		DWORD event, HWND hWnd, LONG idObject, LONG idChild, DWORD dwEventThread, DWORD dwmsEventTime);
-	static LRESULT CALLBACK DoCallWindowProc(WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+	static void CALLBACK WinEventProc(HWINEVENTHOOK hWinEventHook, DWORD event, HWND hWnd,
+									  LONG idObject, LONG idChild, DWORD dwEventThread,
+									  DWORD dwmsEventTime);
+	static LRESULT CALLBACK DoCallWindowProc(WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg,
+											 WPARAM wParam, LPARAM lParam);
 	static BOOL CALLBACK EnumWindowsProcNetBroadcast(HWND hwnd, LPARAM lParam);
+	static BOOL AFX_CDECL AreAppVisualThemesDisabled();
 	void Remove(HWND hWnd, BOOL bAuto);
+	BOOL IsWindowFilteredOut(HWND hWnd, LPCTSTR lpszClassName, LPCREATESTRUCT lpcs);
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	DWORD m_dwComCtrl;      // Version of ComCtl.dll
-	BOOL m_bWin9x;          // TRUE if OS is Win9x
-	BOOL m_bEnabled;        // TRIE if skinning is enabled
-	BOOL m_bAutoApplyWindows;      // TRUE to auto skin all new windows
-	BOOL m_bAutoApplyThreads;      // TRUE to auto skin all new windows
+	DWORD m_dwComCtrl; // Version of ComCtl.dll
+	const BOOL m_bAppVisualThemesDisabled;
+	BOOL m_bWin9x;			  // TRUE if OS is Win9x
+	BOOL m_bEnabled;		  // TRIE if skinning is enabled
+	BOOL m_bAutoApplyWindows; // TRUE to auto skin all new windows
+	BOOL m_bAutoApplyThreads; // TRUE to auto skin all new windows
 
-	CXTPSkinManagerSchema* m_pSchema;   // Current schema
-	CXTPSkinManagerResourceFile* m_pResourceFile;   // Resource file
+	CXTPSkinManagerSchema* m_pSchema;			  // Current schema
+	CXTPSkinManagerResourceFile* m_pResourceFile; // Resource file
 
-	BOOL m_dwApplyOptions;  // Apply options.
+	BOOL m_dwApplyOptions; // Apply options.
 
-	HWINEVENTHOOK m_hWinEventHook;      // HWINEVENTHOOK value that identifies event hook instance
-	CMap<HWND, HWND, CXTPSkinObject*, CXTPSkinObject*> m_mapObjects;  // Collection of CXTPSkinObject classes
-	CXTPCriticalSection m_csObjects;            // Helper critical section object
+	HWINEVENTHOOK m_hWinEventHook; // HWINEVENTHOOK value that identifies event hook instance
+	CMap<HWND, HWND, CXTPSkinObject*, CXTPSkinObject*> m_mapObjects; // Collection of CXTPSkinObject
+																	 // classes
+	CRITICAL_SECTION m_csObjects; // Helper critical section object
 
-	LPFNSETWINEVENTHOOK m_pSetWinEventHook;         // Pointer to SetWinEventHook API
-	LPFNUNHOOKWINEVENT m_pUnhookWinEvent;           // Pointer to UnhookWinEvent API
+	LPFNSETWINEVENTHOOK m_pSetWinEventHook; // Pointer to SetWinEventHook API
+	LPFNUNHOOKWINEVENT m_pUnhookWinEvent;   // Pointer to UnhookWinEvent API
 
-	CArray<CXTPSkinManagerColorFilter*, CXTPSkinManagerColorFilter*> m_arrFilters;          // Array of filters to apply
+	CArray<CXTPSkinManagerColorFilter*, CXTPSkinManagerColorFilter*> m_arrFilters; // Array of
+																				   // filters to
+																				   // apply
 
-	CXTPSkinObjectClassMap* m_pClassMap;            // Class map helper
+	CXTPSkinObjectClassMap* m_pClassMap; // Class map helper
 
-	static CXTPSkinManager* s_pInstance;            // Instance of SkinManager
+	IXTPSkinManagerWindowFilter* m_pWindowFilter; // Custom provided window filter implementation.
+
+	mutable CXTPSkinManagerApiHookBase* m_pApiHook;  // API hook instance.
+	static CXTPSkinManager* s_pInstance;			 // Instance of SkinManager
+	CXTPRWCriticalSection m_csPersistentModuleCache; // Synchronization primitive for persistent
+													 // module info cache access.
+
+	struct PERSISTENT_IMPORT_INFO
+	{
+		HMODULE hModule;
+		BOOL bPersistent;
+	};
+
+	CArray<PERSISTENT_IMPORT_INFO, PERSISTENT_IMPORT_INFO&>
+		m_arPersistentModuleCache; // Persistent module info cache.
 
 public:
-#ifdef _AFXDLL
+	//{{AFX_CODEJOCK_PRIVATE
 	AFX_MODULE_STATE* m_pModuleState;
-#endif
 
+#	ifdef _XTP_ACTIVEX
+	static BOOL s_bUserLegacyApiHook;
+#	endif
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	class CDestructor;
 	friend _XTP_EXT_CLASS CXTPSkinManager* AFX_CDECL XTPSkinManager();
 	friend class CXTPSkinObject;
 	friend class CDestructor;
-	friend class CXTPSkinManagerApiHook;
+	friend class CXTPSkinManagerApiHookBase;
 };
 
-AFX_INLINE CXTPSkinImages* CXTPSkinManagerClass::GetImages() const {
+AFX_INLINE CXTPSkinImages* CXTPSkinManagerClass::GetImages() const
+{
 	return m_pImages;
 }
-AFX_INLINE int CXTPSkinManagerClass::GetClassCode() const {
+AFX_INLINE int CXTPSkinManagerClass::GetClassCode() const
+{
 	return m_nClassCode;
 }
-AFX_INLINE CString CXTPSkinManagerClass::GetClassName() const {
+AFX_INLINE CString CXTPSkinManagerClass::GetClassName() const
+{
 	return m_strClass;
 }
 
-AFX_INLINE BOOL CXTPSkinManager::IsEnabled() const {
+AFX_INLINE BOOL CXTPSkinManager::IsEnabled() const
+{
 	return m_bEnabled;
 }
-AFX_INLINE CXTPSkinManagerResourceFile* CXTPSkinManager::GetResourceFile() const {
+AFX_INLINE CXTPSkinManagerResourceFile* CXTPSkinManager::GetResourceFile() const
+{
 	return m_pResourceFile;
 }
-AFX_INLINE CXTPSkinManagerSchema* CXTPSkinManager::GetSchema() const {
+AFX_INLINE CXTPSkinManagerSchema* CXTPSkinManager::GetSchema() const
+{
 	return m_pSchema;
 }
-AFX_INLINE DWORD CXTPSkinManager::GetApplyOptions() const {
+AFX_INLINE DWORD CXTPSkinManager::GetApplyOptions() const
+{
 	return m_dwApplyOptions;
 }
-AFX_INLINE BOOL CXTPSkinManager::HasApplyOptions(DWORD dwOptions) const {
+AFX_INLINE BOOL CXTPSkinManager::HasApplyOptions(DWORD dwOptions) const
+{
 	return (m_dwApplyOptions & dwOptions) == dwOptions;
 }
-AFX_INLINE BOOL CXTPSkinManager::IsComCtlV6() const {
+AFX_INLINE BOOL CXTPSkinManager::IsComCtlV6() const
+{
 	return m_dwComCtrl >= MAKELONG(0, 6);
 }
-AFX_INLINE BOOL CXTPSkinManager::IsWin9x() const {
+AFX_INLINE BOOL CXTPSkinManager::IsWin9x() const
+{
 	return m_bWin9x;
 }
-AFX_INLINE CXTPSkinObjectClassMap* CXTPSkinManager::GetClassMap() const {
+AFX_INLINE CXTPSkinObjectClassMap* CXTPSkinManager::GetClassMap() const
+{
 	return m_pClassMap;
 }
-AFX_INLINE BOOL CXTPSkinManager::GetAutoApplyNewWindows() const {
+AFX_INLINE BOOL CXTPSkinManager::GetAutoApplyNewWindows() const
+{
 	return m_bAutoApplyWindows;
 }
-AFX_INLINE BOOL CXTPSkinManager::GetAutoApplyNewThreads()const {
+AFX_INLINE BOOL CXTPSkinManager::GetAutoApplyNewThreads() const
+{
 	return m_bAutoApplyThreads;
 }
-AFX_INLINE void CXTPSkinManager::SetAutoApplyNewWindows(BOOL bAutoApply) {
+AFX_INLINE void CXTPSkinManager::SetAutoApplyNewWindows(BOOL bAutoApply)
+{
 	m_bAutoApplyWindows = bAutoApply;
 }
-AFX_INLINE void CXTPSkinManager::SetAutoApplyNewThreads(BOOL bAutoApply) {
+AFX_INLINE void CXTPSkinManager::SetAutoApplyNewThreads(BOOL bAutoApply)
+{
 	m_bAutoApplyThreads = bAutoApply;
 }
+AFX_INLINE void CXTPSkinManager::SetWindowFilter(IXTPSkinManagerWindowFilter* pFilter)
+{
+	m_pWindowFilter = pFilter;
+}
+
+#	ifndef _XTP_ACTIVEX
+
+AFX_INLINE CXTPSkinManagerApiHookBase* CXTPSkinManager::GetApiHook() const
+{
+	return m_pApiHook;
+}
+
+#	endif
+
 //---------------------------------------------------------------------------
 // Summary:
 //     Call this function to access CXTPSkinManager members.
@@ -897,5 +1122,61 @@ AFX_INLINE void CXTPSkinManager::SetAutoApplyNewThreads(BOOL bAutoApply) {
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS CXTPSkinManager* AFX_CDECL XTPSkinManager();
 
+//{{AFX_CODEJOCK_PRIVATE
 
+_XTP_EXT_CLASS CXTPRWCriticalSection* AFX_CDECL XTPSkinGlobalAccess();
+
+#	ifdef _AFXDLL
+
+class _XTP_EXT_CLASS CXTPSkinScopeModuleStateHolder
+{
+	AFX_MODULE_STATE* m_pPrevState;
+
+	CXTPSkinScopeModuleStateHolder(const CXTPSkinScopeModuleStateHolder&);
+	CXTPSkinScopeModuleStateHolder& operator=(const CXTPSkinScopeModuleStateHolder&);
+
+public:
+	CXTPSkinScopeModuleStateHolder(AFX_MODULE_STATE* pNewState)
+	{
+		m_pPrevState = AfxSetModuleState(pNewState);
+	}
+
+	~CXTPSkinScopeModuleStateHolder()
+	{
+		AfxSetModuleState(m_pPrevState);
+	}
+
+	operator int()
+	{
+		return 0;
+	}
+};
+
+#	endif /*_AFXDLL*/
+
+#	define XTP_SKINFRAMEWORK_GLOBALLOCK_SHARED_SCOPE()                                            \
+		XTP_RWCS_LOCK_SHARED_SCOPE(*XTPSkinGlobalAccess())
+#	define XTP_SKINFRAMEWORK_GLOBALLOCK_EXCLUSIVE_SCOPE()                                         \
+		XTP_RWCS_LOCK_EXCLUSIVE_SCOPE(*XTPSkinGlobalAccess())
+
+#	define XTP_SKINFRAMEWORK_MANAGE_STATE()                                                       \
+		AFX_MODULE_STATE* $__xtpSkinOrigModuleState = AfxGetModuleState();                         \
+		UNREFERENCED_PARAMETER($__xtpSkinOrigModuleState);                                         \
+		SAFE_MANAGE_STATE(XTPSkinManager()->m_pModuleState);
+
+#	ifdef _AFXDLL
+#		define XTP_SKINFRAMEWORK_ORIGINAL_STATE()                                                 \
+			XTP_BLOCKSTATEMENT(CXTPSkinScopeModuleStateHolder, $__xtpSkinScopeModuleStateHolder,   \
+							   $__xtpSkinOrigModuleState)
+#	else
+#		define XTP_SKINFRAMEWORK_ORIGINAL_STATE()
+#	endif /*_AFXDLL*/
+
+#	define XTP_SKINFRAMEWORK_ASSERT_WINDOW_THREAD(hWnd)                                           \
+		ASSERT(::IsWindow(hWnd) ? GetWindowThreadProcessId(hWnd, NULL) == GetCurrentThreadId()     \
+								: TRUE)
+
+//}}AFX_CODEJOCK_PRIVATE
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINMANAGER_H__)

@@ -1,7 +1,6 @@
 // XTPChartLineDeviceCommand.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,288 +19,149 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTLINEDEVICECOMMAND_H__)
-#define __XTPCHARTLINEDEVICECOMMAND_H__
+#	define __XTPCHARTLINEDEVICECOMMAND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartDeviceCommand.h"
-#include "../XTPChartDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+// Array type used for dashed chart lines.
+typedef CArray<float, float> CXTPChartLineDashArray;
+
+//-----------------------------------------------------------------------
+// Summary:
+//      Provides interface for 2D line drawing device command.
+//-----------------------------------------------------------------------
 class _XTP_EXT_CLASS CXTPChartLineDeviceCommand : public CXTPChartDeviceCommand
 {
 protected:
-	CXTPChartLineDeviceCommand(const CXTPChartDiagramPoint& p1, const CXTPChartDiagramPoint& p2, int thickness);
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Constructs CXTPChartLineDeviceCommand object.
+	// Parameters:
+	//      p1 - Start point.
+	//      p2 - End point.
+	//      color - Line color.
+	//      thickness - Line thickness in pixels.
+	//-----------------------------------------------------------------------
+	CXTPChartLineDeviceCommand(const CXTPPoint2f& p1, const CXTPPoint2f& p2,
+							   const CXTPChartColor& color, int thickness);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Performs recursive hit testing of the element at the specified point.
+	// Parameters:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
+	//-----------------------------------------------------------------------
 	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
 
 protected:
-	CXTPChartDiagramPoint m_p1;  //The first point.
-	CXTPChartDiagramPoint m_p2;  //The second point.
-	int m_nThickness;           //The thickness of the line.
+	CXTPPoint2f m_p1;		// The first point.
+	CXTPPoint2f m_p2;		// The second point.
+	CXTPChartColor m_color; // The line color.
+	int m_nThickness;		// The thickness of the line.
 };
-//===========================================================================
+
+//-----------------------------------------------------------------------
 // Summary:
-//     This class represents a solid line device command, which is a kind of
-//     CXTPChartDeviceCommand It specifically handles the rendering of solid
-//     lines in a chart.
-//
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartSolidLineDeviceCommand : public CXTPChartLineDeviceCommand
+//      Provides interface for 2D poly-line drawing device command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartPolylineDeviceCommand : public CXTPChartDeviceCommand
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartSolidLineDeviceCommand object.
-	// Parameters:
-	//     p1        - The first point of the line.
-	//     p2        - The second point of the line
-	//     color     - The color of the line.
-	//     thickness - The thickness of the line.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSolidLineDeviceCommand(const CXTPChartDiagramPoint& p1, const CXTPChartDiagramPoint& p2, const CXTPChartColor& color, int thickness);
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
+	//      Constructs CXTPChartPolylineDeviceCommand object.
 	// Parameters:
-	//     pDC      - The GDI device context of the chart.
-	// Remarks:
+	//      p - A collection of poly-line points.
+	//      thickness - Line thickness in pixels.
 	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
-	// Parameters:
-	//     pDC      - The OpenGL device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
+	CXTPChartPolylineDeviceCommand(const CXTPChartPoints& p, int thickness);
 
 protected:
-	CXTPChartColor m_color;      //The line color.
+	CXTPChartPoints m_p; // A collection of poly-line points.
+	int m_nThickness;	// Line thickness in pixels.
 };
 
-//===========================================================================
+//-----------------------------------------------------------------------
 // Summary:
-//     This class represents a solid polyline device command, which is a kind of
-//     CXTPChartDeviceCommand It specifically handles the rendering of solid
-//     lines in a chart.
-//
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartSolidPolylineDeviceCommand : public CXTPChartDeviceCommand
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartSolidPolylineDeviceCommand object.
-	// Parameters:
-	//     p1        - The first point of the line.
-	//     p2        - The second point of the line
-	//     color     - The color of the line.
-	//     thickness - The thickness of the line.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSolidPolylineDeviceCommand(const CXTPChartPoints& p, const CXTPChartColor& color, int thickness);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
-	// Parameters:
-	//     pDC      - The GDI device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-protected:
-	CXTPChartColor m_color;      //The line color.
-	int m_nThickness;       //The thickness of the spline.
-	CXTPChartPoints m_p;     //The points which form the polyline.
-};
-
-
+//      Provides interface for 2D spline drawing device command.
+//-----------------------------------------------------------------------
 class _XTP_EXT_CLASS CXTPChartSplineDeviceCommand : public CXTPChartDeviceCommand
 {
 protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Constructs CXTPChartSplineDeviceCommand object.
+	// Parameters:
+	//      p - A collection of spline points.
+	//      thickness - Line thickness in pixels.
+	//-----------------------------------------------------------------------
 	CXTPChartSplineDeviceCommand(const CXTPChartPoints& p, int thickness);
 
 protected:
-	CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
-
-protected:
-	CXTPChartPoints m_p;     //The points which form the spline.
-	int m_nThickness;       //The thickness of the spline.
+	CXTPChartPoints m_p; // A collection of spline points.
+	int m_nThickness;	// Line thickness in pixels.
 };
-//===========================================================================
+
+//-----------------------------------------------------------------------
 // Summary:
-//     This class represents a solid spline device command, which is a kind of
-//     CXTPChartDeviceCommand It specifically handles the rendering of solid
-//     splines in a chart.
-//
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartSolidSplineDeviceCommand : public CXTPChartSplineDeviceCommand
+//      Provides interface for 3D line drawing device command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChart3dLineDeviceCommand : public CXTPChartDeviceCommand
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartSolidLineDeviceCommand object.
-	// Parameters:
-	//     p         - The points which forms the spline.
-	//     color     - The color of the spline.
-	//     thickness - The thickness of the spline.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSolidSplineDeviceCommand(const CXTPChartPoints& p, const CXTPChartColor& color, int thickness);
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
+	//      Constructs CXTPChart3dLineDeviceCommand object.
 	// Parameters:
-	//     pDC      - The GDI device context of the chart.
-	// Remarks:
+	//      p1 - Start point.
+	//      p2 - End point.
+	//      color - Line color.
+	//      thickness - Line thickness in pixels.
 	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
+	CXTPChart3dLineDeviceCommand(const CXTPPoint3d& p1, const CXTPPoint3d& p2,
+								 const CXTPChartColor& color, int thickness);
+
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
+	//      Performs recursive hit testing of the element at the specified point.
 	// Parameters:
-	//     pDC      - The OpenGL device context of the chart.
-	// Remarks:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
 	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
+	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Notifies that a command enters AfterExecute step.
+	// Parameters:
+	//      pCommand - Sender command pointer.
+	//      pDC - Device context pointer for which a command has been executed.
+	//-----------------------------------------------------------------------
+	virtual void AfterExecute(CXTPChartDeviceContext* pDC);
 
 protected:
-	CXTPChartColor m_color;  //The spline color.
+	CXTPPoint3d m_p1;		// The first point.
+	CXTPPoint3d m_p2;		// The second point.
+	CXTPChartColor m_color; // The line color.
+	int m_nThickness;		// The thickness of the line.
 
+private:
+	BOOL m_bProjected;
+	CPoint m_pt2d1;
+	CPoint m_pt2d2;
 };
 
-//===========================================================================
-// Summary:
-//     This class represents a dash line device command, which is a kind of
-//     CXTPChartDeviceCommand It specifically handles the rendering of solid
-//     lines in a chart.
-//
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartDashedLineDeviceCommand : public CXTPChartLineDeviceCommand
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartSolidLineDeviceCommand object.
-	// Parameters:
-	//     p1         - The first point of the line.
-	//     p2         - The second point of the line
-	//     color      - The color of the line.
-	//     thickness  - The thickness of the line.
-	//     nDashStyle - The dash style.
-	// Remarks:
-	//     The dash line style are the following.
-	//     Empty style, invisible.
-	//     Solid line style.
-	//     Dash line style.
-	//     Dot line style.
-	//     Alternate dash and dot line style.
-	//     Dash dot dot line style.
-	//-----------------------------------------------------------------------
-	CXTPChartDashedLineDeviceCommand(const CXTPChartDiagramPoint& p1, const CXTPChartDiagramPoint& p2, const CXTPChartColor& color, int thickness, XTPChartDashStyle nDashStyle);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
-	// Parameters:
-	//     pDC      - The GDI device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-protected:
-	CXTPChartColor m_color;          //The line color.
-	XTPChartDashStyle m_nDashStyle;  //The dash style.
-};
-
-//===========================================================================
-// Summary:
-//     This class represents a dashed spline device command, which is a kind of
-//     CXTPChartDeviceCommand It specifically handles the rendering of dashed
-//     splines in a chart.
-//
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartDashedSplineDeviceCommand : public CXTPChartSplineDeviceCommand
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartSolidLineDeviceCommand object.
-	// Parameters:
-	//     p         - The points which forms the spline.
-	//     color     - The color of the spline.
-	//     thickness - The thickness of the spline.
-	//     nDashStyle - The dash style.
-	// Remarks:
-	//     The dash line style are the following.
-	//     Empty style, invisible.
-	//     Solid line style.
-	//     Dash line style.
-	//     Dot line style.
-	//     Alternate dash and dot line style.
-	//     Dash dot dot line style.
-	//-----------------------------------------------------------------------
-	CXTPChartDashedSplineDeviceCommand(const CXTPChartPoints& p, const CXTPChartColor& color, int thickness, XTPChartDashStyle nDashStyle);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
-	// Parameters:
-	//     pDC      - The GDI device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element, to which
-	//     this device command is associated with.
-	// Parameters:
-	//     pDC      - The OpenGL device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
-protected:
-	CXTPChartColor m_color;          //The spline color.
-	XTPChartDashStyle m_nDashStyle;  //The dash style.
-};
-
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTLINEDEVICECOMMAND_H__)

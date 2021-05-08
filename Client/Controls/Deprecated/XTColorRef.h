@@ -1,7 +1,6 @@
 // XTColorRef.h: interface for the CXTColorRef class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,12 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTCOLORREF_H__)
-#define __XTCOLORREF_H__
+#	define __XTCOLORREF_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
 //===========================================================================
 // Summary:
@@ -35,7 +34,6 @@
 class _XTP_EXT_CLASS CXTColorRef
 {
 public:
-
 	// --------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTColorRef object
@@ -52,7 +50,7 @@ public:
 	//           the maximum color intensity.
 	// --------------------------------------------------------------------------
 	CXTColorRef();
-	CXTColorRef(COLORREF cr);         //<combine CXTColorRef::CXTColorRef>
+	CXTColorRef(COLORREF cr);		  //<combine CXTColorRef::CXTColorRef>
 	CXTColorRef(int r, int g, int b); //<combine CXTColorRef::CXTColorRef>
 
 	//-----------------------------------------------------------------------
@@ -184,7 +182,7 @@ public:
 	// Returns:
 	//     An RGB value.
 	//-----------------------------------------------------------------------
-	operator COLORREF () const;
+	operator COLORREF() const;
 
 	//////////////////////////////////////////////////////////////
 	// RGB Values
@@ -520,7 +518,6 @@ public:
 	static COLORREF AFX_CDECL GetColor(int nIndex);
 
 protected:
-
 	COLORREF m_ColorRef; // Current RGB value for this object
 
 	// -------------------------------------------------------------------------
@@ -545,60 +542,79 @@ protected:
 	//     An RGB value.
 	// -------------------------------------------------------------------------
 	static COLORREF AFX_CDECL SafeRGB(int r, int g, int b);
-
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTColorRef::CXTColorRef() {
+AFX_INLINE CXTColorRef::CXTColorRef()
+{
 	m_ColorRef = 0;
 }
 
-AFX_INLINE CXTColorRef& CXTColorRef::operator=(COLORREF cr) {
-	m_ColorRef = cr; return *this;
+AFX_INLINE CXTColorRef& CXTColorRef::operator=(COLORREF cr)
+{
+	m_ColorRef = cr;
+	return *this;
 }
-AFX_INLINE CXTColorRef::CXTColorRef(COLORREF r) {
+AFX_INLINE CXTColorRef::CXTColorRef(COLORREF r)
+{
 	*this = r;
 }
-AFX_INLINE CXTColorRef::CXTColorRef(int r, int g, int b) {
+AFX_INLINE CXTColorRef::CXTColorRef(int r, int g, int b)
+{
 	*this = RGB(r, g, b);
 }
-AFX_INLINE int CXTColorRef::fixColorValue(int iVal) {
-	if (iVal > 255) return 255; if (iVal < 0) return 0; return iVal;
+AFX_INLINE int CXTColorRef::fixColorValue(int iVal)
+{
+	if (iVal > 255)
+		return 255;
+	if (iVal < 0)
+		return 0;
+	return iVal;
 }
-AFX_INLINE CXTColorRef::operator COLORREF () const {
+AFX_INLINE CXTColorRef::operator COLORREF() const
+{
 	return m_ColorRef;
 }
-AFX_INLINE int CXTColorRef::getRValue() const {
+AFX_INLINE int CXTColorRef::getRValue() const
+{
 	return GetRValue(m_ColorRef);
 }
-AFX_INLINE int CXTColorRef::getGValue() const {
+AFX_INLINE int CXTColorRef::getGValue() const
+{
 	return GetGValue(m_ColorRef);
 }
-AFX_INLINE int CXTColorRef::getBValue() const {
+AFX_INLINE int CXTColorRef::getBValue() const
+{
 	return GetBValue(m_ColorRef);
 }
-AFX_INLINE void CXTColorRef::setRValue(int val) {
+AFX_INLINE void CXTColorRef::setRValue(int val)
+{
 	m_ColorRef = RGB(val, getGValue(), getBValue());
 }
-AFX_INLINE void CXTColorRef::setGValue(int val) {
+AFX_INLINE void CXTColorRef::setGValue(int val)
+{
 	m_ColorRef = RGB(getRValue(), val, getBValue());
 }
-AFX_INLINE void CXTColorRef::setBValue(int val) {
+AFX_INLINE void CXTColorRef::setBValue(int val)
+{
 	m_ColorRef = RGB(getRValue(), getGValue(), val);
 }
-AFX_INLINE double CXTColorRef::getIntensity() const {
-	return  ((299 * getRValue()) + (587 * getGValue()) + (114 * getBValue())) / 1000.0;
+AFX_INLINE double CXTColorRef::getIntensity() const
+{
+	return ((299 * getRValue()) + (587 * getGValue()) + (114 * getBValue())) / 1000.0;
 }
-AFX_INLINE int CXTColorRef::addColorValue(int iVal, int iAdd) {
+AFX_INLINE int CXTColorRef::addColorValue(int iVal, int iAdd)
+{
 	return fixColorValue(iVal + iAdd);
 }
-AFX_INLINE int CXTColorRef::multiplyColorValue(int iVal, int iMult, int iDiv) {
-	return fixColorValue(iVal*  iMult / iDiv);
+AFX_INLINE int CXTColorRef::multiplyColorValue(int iVal, int iMult, int iDiv)
+{
+	return fixColorValue(iVal * iMult / iDiv);
 }
-AFX_INLINE int CXTColorRef::BlendColor(int iClrFront, int iClrBack, int opacity) {
+AFX_INLINE int CXTColorRef::BlendColor(int iClrFront, int iClrBack, int opacity)
+{
 	return fixColorValue(((iClrFront * opacity) + (iClrBack * (100 - opacity))) / 100);
 }
-
 
 #endif // !defined(__XTCOLORREF_H__)

@@ -1,7 +1,6 @@
 // XTButton.h : interface for the CXTButton class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTBUTTON_H__)
-#define __XTBUTTON_H__
+#	define __XTBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // forwards
 class CXTThemeManager;
 class CXTButtonTheme;
 class CXTPImageManagerIcon;
-
-#include "XTThemeManager.h"
-#include "Common/XTPImageManager.h"
+class CXTPImageManagerIconHandle;
 
 // ---------------------------------------------------------------------
 // Summary:
@@ -41,7 +40,9 @@ class CXTPImageManagerIcon;
 //     flat style and image buttons. This control has several features
 //     including flat, semi-flat, and three dimensional borders.
 // ---------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTButton : public CButton, public CXTThemeManagerStyleHostBase
+class _XTP_EXT_CLASS CXTButton
+	: public CButton
+	, public CXTThemeManagerStyleHostBase
 {
 	DECLARE_DYNAMIC(CXTButton)
 	DECLARE_THEME_HOST(CXTButton)
@@ -139,10 +140,15 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL SetIcon(CSize size, HICON hIcon, HICON hIconHot = NULL, BOOL bRedraw = TRUE);
-	virtual BOOL SetIcon(CSize size, UINT nID, UINT nHotID = 0, BOOL bRedraw = TRUE);                //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
-	virtual BOOL SetIcon(CSize size, LPCTSTR lpszID, LPCTSTR lpszHotID = NULL, BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
-	virtual BOOL SetIcon(CSize size, CXTPImageManagerIconHandle hIconHandle, CXTPImageManagerIconHandle hIconHotHandle, BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
-	BOOL SetIcon(CSize size, CXTPImageManagerIcon* pIcon, BOOL bRedraw = TRUE);//<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
+	virtual BOOL SetIcon(CSize size, UINT nID, UINT nHotID = 0,
+						 BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
+	virtual BOOL SetIcon(CSize size, LPCTSTR lpszID, LPCTSTR lpszHotID = NULL,
+						 BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
+	virtual BOOL SetIcon(CSize size, const CXTPImageManagerIconHandle& hIconHandle,
+						 const CXTPImageManagerIconHandle& hIconHotHandle,
+						 BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
+	BOOL SetIcon(CSize size, CXTPImageManagerIcon* pIcon,
+				 BOOL bRedraw = TRUE); //<COMBINE CXTButton::SetIcon@CSize@HICON@HICON@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,7 +358,8 @@ public:
 	//     clrBtnText   - An RGB value that represents the user defined
 	//                    text color on push buttons.
 	//-----------------------------------------------------------------------
-	virtual void SetAlternateColors(COLORREF clr3DFace, COLORREF clr3DHilight, COLORREF clr3DShadow, COLORREF clrBtnText);
+	virtual void SetAlternateColors(COLORREF clr3DFace, COLORREF clr3DHilight, COLORREF clr3DShadow,
+									COLORREF clrBtnText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -425,13 +432,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns the button styles for this object. This function returns only the BS_ style values, not any of the other window styles.
+	//     Returns the button styles for this object. This function returns only the BS_ style
+	//     values, not any of the other window styles.
 	// Returns: Returns BS_ style for this button.
 	//-----------------------------------------------------------------------
 	BYTE GetButtonStyle() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTButton class to
@@ -458,9 +465,8 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual CString GetButtonText(BOOL bRemoveAmpersand);
 
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTButton)
@@ -490,77 +496,95 @@ protected:
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	int                   m_nBorderGap;        // Gap between the button edge and the image.
-	int                   m_nImageGap;         // Gap between the button text and the image.
-	bool                  m_bPreSubclassInit;  // true when initializing from PreSubclassWindow.
-	BOOL                  m_bUserPosition;     // TRUE if the user has defined the XY coordinates for the image and text.
-	BOOL                  m_bChecked;          // TRUE if the button is checked.
-	DWORD                 m_dwxStyle;          // The style of the button, see SetXButtonStyle.
-	CSize                 m_sizeImage;         // Initial size of the button.
-	CPoint                m_ptImage;           // XY location of the button image.
-	CPoint                m_ptText;            // XY location of the button text.
-	CXTPImageManagerIcon* m_pIcon;             // Multiple state icon manager converts icon to different states.
+	int m_nBorderGap;		 // Gap between the button edge and the image.
+	int m_nImageGap;		 // Gap between the button text and the image.
+	bool m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
+	BOOL m_bUserPosition; // TRUE if the user has defined the XY coordinates for the image and text.
+	BOOL m_bChecked;	  // TRUE if the button is checked.
+	DWORD m_dwxStyle;	 // The style of the button, see SetXButtonStyle.
+	CSize m_sizeImage;	// Initial size of the button.
+	CPoint m_ptImage;	 // XY location of the button image.
+	CPoint m_ptText;	  // XY location of the button text.
+	CXTPImageManagerIcon* m_pIcon; // Multiple state icon manager converts icon to different states.
 
 protected:
-	BOOL m_bHot;            // TRUE if mouse under button
-	BOOL m_bPushed;         // TRUE if button was pressed
-	BOOL m_bOwnerDraw;      // TRUE if button has BS_OWNERDRAW style
+	BOOL m_bHot;	   // TRUE if mouse under button
+	BOOL m_bPushed;	// TRUE if button was pressed
+	BOOL m_bOwnerDraw; // TRUE if button has BS_OWNERDRAW style
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTButton::SetImageGap(int nGap) {
-	int nOldGap = m_nImageGap; m_nImageGap = nGap; return nOldGap;
+AFX_INLINE int CXTButton::SetImageGap(int nGap)
+{
+	int nOldGap = m_nImageGap;
+	m_nImageGap = nGap;
+	return nOldGap;
 }
-AFX_INLINE int CXTButton::SetBorderGap(int nGap) {
-	int nOldGap = m_nBorderGap; m_nBorderGap = nGap; return nOldGap;
+AFX_INLINE int CXTButton::SetBorderGap(int nGap)
+{
+	int nOldGap  = m_nBorderGap;
+	m_nBorderGap = nGap;
+	return nOldGap;
 }
-AFX_INLINE DWORD CXTButton::GetXButtonStyle() {
-	ASSERT(::IsWindow(m_hWnd)); return m_dwxStyle;
+AFX_INLINE DWORD CXTButton::GetXButtonStyle()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return m_dwxStyle;
 }
-AFX_INLINE void CXTButton::SetStateX(BOOL bChecked) {
-	m_bChecked = bChecked; if (GetSafeHwnd()) Invalidate(FALSE);
+AFX_INLINE void CXTButton::SetStateX(BOOL bChecked)
+{
+	m_bChecked = bChecked;
+	if (GetSafeHwnd())
+		Invalidate(FALSE);
 }
-AFX_INLINE void CXTButton::SetChecked(BOOL bChecked) {
-	m_bChecked = bChecked; if (GetSafeHwnd()) Invalidate(FALSE);
+AFX_INLINE void CXTButton::SetChecked(BOOL bChecked)
+{
+	m_bChecked = bChecked;
+	if (GetSafeHwnd())
+		Invalidate(FALSE);
 }
-AFX_INLINE int CXTButton::GetBorderGap() const {
+AFX_INLINE int CXTButton::GetBorderGap() const
+{
 	return m_nBorderGap;
 }
-AFX_INLINE int CXTButton::GetImageGap() const {
+AFX_INLINE int CXTButton::GetImageGap() const
+{
 	return m_nImageGap;
 }
-AFX_INLINE BOOL CXTButton::GetHilite() const {
+AFX_INLINE BOOL CXTButton::GetHilite() const
+{
 	return m_bHot || (::GetCapture() == m_hWnd);
 }
-AFX_INLINE BOOL CXTButton::GetUserPosition() const {
+AFX_INLINE BOOL CXTButton::GetUserPosition() const
+{
 	return m_bUserPosition;
 }
 
-AFX_INLINE BOOL CXTButton::GetChecked() const {
+AFX_INLINE BOOL CXTButton::GetChecked() const
+{
 	return m_bChecked;
 }
 
-#ifndef ODS_NOACCEL
-#define ODS_NOACCEL         0x0100
-#endif
+#	ifndef ODS_NOACCEL
+#		define ODS_NOACCEL 0x0100
+#	endif
 
-#ifndef ODS_NOFOCUSRECT
-#define ODS_NOFOCUSRECT     0x0200
-#endif
+#	ifndef ODS_NOFOCUSRECT
+#		define ODS_NOFOCUSRECT 0x0200
+#	endif
 
+const DWORD BS_XT_FLAT			= 0x0001; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_SEMIFLAT		= 0x0002; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_FLAT_ANY		= 0x0003; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_TWOROWS		= 0x0004; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_SHOWFOCUS		= 0x0010; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_HILITEPRESSED = 0x0020; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_XPFLAT		= 0x0040; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
+const DWORD BS_XT_WINXP_COMPAT  = 0x1000; //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
 
-const DWORD BS_XT_FLAT             = 0x0001;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_SEMIFLAT         = 0x0002;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_FLAT_ANY         = 0x0003;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_TWOROWS          = 0x0004;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_SHOWFOCUS        = 0x0010;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_HILITEPRESSED    = 0x0020;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_XPFLAT           = 0x0040;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-const DWORD BS_XT_WINXP_COMPAT     = 0x1000;  //<ALIAS CXTButton::SetXButtonStyle@DWORD@BOOL>
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTBUTTON_H__)

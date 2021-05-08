@@ -1,7 +1,6 @@
 // XTPRibbonBar.h: interface for the CXTPRibbonBar class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONBAR_H__)
-#define __XTPRIBBONBAR_H__
+#	define __XTPRIBBONBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonQuickAccessControls;
 class CXTPRibbonTab;
@@ -34,22 +34,20 @@ class CXTPRibbonControlTab;
 class CXTPTabPaintManager;
 class CXTPRibbonBar;
 class CXTPRibbonGroup;
-class CXTPOffice2007FrameHook;
+class CXTPCommandBarsFrameHook;
 class CXTPRibbonTabContextHeaders;
 class CXTPRibbonGroups;
 class CXTPRibbonPaintManager;
 class CXTPRibbonControlSystemButton;
 
-#include "CommandBars/XTPControls.h"
-#include "CommandBars/XTPMenuBar.h"
-#include "CommandBars/XTPPopupBar.h"
-#include "XTPRibbonPopups.h"
-
 //-----------------------------------------------------------------------
 // Summary:
-//     The WM_XTP_RIBBONMINIMIZE message is sent to CXTPCommandBars site when user minimized RibonBar
+//     The WM_XTP_RIBBONMINIMIZE message is sent to CXTPCommandBars site when user minimized
+//     RibonBar
 //-----------------------------------------------------------------------
-#define WM_XTP_RIBBONMINIMIZE (WM_XTP_COMMANDBARS_BASE + 25)
+#	define WM_XTP_RIBBONMINIMIZE (WM_XTP_COMMANDBARS_BASE + 25)
+
+#	define WM_XTP_CUSTOMIZATION_RIBBONRESET (WM_XTP_COMMANDBARS_BASE + 27)
 
 //===========================================================================
 // Summary:
@@ -57,10 +55,13 @@ class CXTPRibbonControlSystemButton;
 // Example:
 //     The following code sample demonstrates how to create CXTPRibbonBar:
 // <code>
-// CXTPRibbonBar* pRibbonBar = (CXTPRibbonBar*)pCommandBars->Add(_T("The Ribbon"), xtpBarTop, RUNTIME_CLASS(CXTPRibbonBar));
+// CXTPRibbonBar* pRibbonBar = (CXTPRibbonBar*)pCommandBars->Add(_T("The Ribbon"), xtpBarTop,
+// RUNTIME_CLASS(CXTPRibbonBar));
 // </code>
 //===========================================================================
-class _XTP_EXT_CLASS CXTPRibbonBar : public CXTPMenuBar, public CXTPRibbonScrollableBar
+class _XTP_EXT_CLASS CXTPRibbonBar
+	: public CXTPMenuBar
+	, public CXTPRibbonScrollableBar
 {
 private:
 	class CControlQuickAccessMorePopup;
@@ -120,6 +121,7 @@ public:
 	// See Also: AddTab
 	//-----------------------------------------------------------------------
 	CXTPRibbonTab* InsertTab(int nItem, LPCTSTR lpszCaption, int nID = 0);
+	CXTPRibbonTab* InsertTab(int nItem, CXTPRibbonTab* pTab);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -229,6 +231,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Determines if the Ribbon state is active or inactive.
+	// Returns:
+	//     TRUE if the Ribbon state is active, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsActive() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Determines if groups part of ribbon bar is visible
 	// Returns:
 	//     TRUE if groups are visible
@@ -293,7 +303,9 @@ public:
 	// See Also: GetMinimumVisibleWidth
 	//-----------------------------------------------------------------------
 	void SetMinimumVisibleWidth(int nMinVisibleWidth);
-	void SetMinimumVisibleSize(int nMinVisibleWidth, int nMinVisibleHeight); // <combine CXTPRibbonBar::SetMinimumVisibleWidth@int>
+	void SetMinimumVisibleSize(int nMinVisibleWidth,
+							   int nMinVisibleHeight); // <combine
+													   // CXTPRibbonBar::SetMinimumVisibleWidth@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -363,6 +375,7 @@ public:
 	virtual void EnsureVisible(CXTPControl* pControl);
 
 	BOOL OnFrameMouseWheel(BOOL bForward);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -471,7 +484,6 @@ public:
 	void AllowMinimize(BOOL bAllow);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     When switching tabs, RebuildControls first deletes all the controls
@@ -650,10 +662,10 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns CXTPOffice2007FrameHook hook window used to skin frame.
+	//     Returns CXTPCommandBarsFrameHook hook window used to skin frame.
 	// See Also: EnableFrameTheme
 	//-----------------------------------------------------------------------
-	CXTPOffice2007FrameHook* GetFrameHook() const;
+	CXTPCommandBarsFrameHook* GetFrameHook() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -691,6 +703,12 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     This method returns TRUE when the caption is shown if frame theme is not enabled.
+	//-----------------------------------------------------------------------
+	BOOL GetShowCaptionAlways() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member function to get the size of a toolbar icon.
 	// See Also:
 	//     GetLargeIconSize
@@ -721,15 +739,33 @@ public:
 	//-----------------------------------------------------------------------
 	void Reset(BOOL bShowWarningMessage);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines whether backstage is visible.
+	// Returns:
+	//      TRUE if backstage is visible, otherwise FALSE.
+	//-----------------------------------------------------------------------
 	BOOL IsBackstageViewVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set icon id that will be used if user add new control to quick access without icon
+	//     Call this method to set icon id that will be used if user add new control to quick access
+	//     without icon
 	// Parameters:
 	//     nIconId - Icon will be associated with new quick access control.
 	//-----------------------------------------------------------------------
 	void SetQuickAccessEmptyIconId(int nIconId);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to give chance the backstage view to process the keyboard input if it is
+	//     active
+	// Parameters:
+	//		message	- The code of Window message (like WM_KEYDOWN).
+	//		wParam	- WPARAM of Wondow message
+	//		lParam	- LPARAM of Wondow message
+	//-----------------------------------------------------------------------
+	BOOL PassKeyboardInputToBackstageView(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -750,14 +786,40 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnTabChanged(CXTPRibbonTab* pTab);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method calculates groups height using GetLargeIconSize method and height of captions
+	// Parameters:
+	//     nClientHeight - Client height for which groups height to be computed.
+	// Returns:
+	//     Height of ribbon groups
+	// See Also: GetGroupsHeight
+	//-----------------------------------------------------------------------
+	virtual int CalcGroupsHeight(int nClientHeight);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Creates a new popup toolbar object for the tab provided.
+	// Parameters:
+	//      pTab - A pointer to a tab for which a new popup toolbat has to be created.
+	// Returns:
+	//      A pointer to a newly allocated popup toolbar object. The caller
+	//      is responsible for releasing resources.
+	//-----------------------------------------------------------------------
 	virtual CXTPRibbonTabPopupToolBar* CreateTabPopupToolBar(CXTPRibbonTab* pTab);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines whether a control is enabled.
+	// Parameters:
+	//      pControl - A pointer to control to check enabled state for.
+	// Returns:
+	//      TRUE if control is enabled, otherwise FALSE.
+	//-----------------------------------------------------------------------
 	BOOL IsControlEnabled(const CXTPControl* pControl) const;
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to assign self identifiers for serialization process.
@@ -766,11 +828,13 @@ protected:
 	//     pCommandBarList - List of CommandBars.
 	//     pParam          - Address of a XTP_COMMANDBARS_PROPEXCHANGE_PARAM structure.
 	//-----------------------------------------------------------------------
-	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList,
+								XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called in serialization process.to restore popups from list of command bars.
+	//     This method is called in serialization process.to restore popups from list of command
+	//     bars.
 	// Parameters:
 	//     pCommandBarList - List of CommandBars.
 	//-----------------------------------------------------------------------
@@ -782,6 +846,8 @@ protected:
 	virtual CXTPPopupBar* CreateMoreQuickAccessContextMenu();
 	virtual BOOL ShouldSerializeBar();
 	virtual void MergeToolBar(CXTPCommandBar* pCommandBar, BOOL bSilent);
+	virtual void MergeToolBar(CXTPCommandBar* pCommandBar, BOOL bSilent,
+							  int nDefaultConfirmationChoice);
 	int HitTestCaption(CPoint point) const;
 	void RepositionCaptionButtons();
 	void RepositionContextHeaders();
@@ -790,17 +856,26 @@ protected:
 	void ShowContextMenu(CPoint point, CXTPControl* pSelectedControl);
 	virtual void CreateKeyboardTips();
 	virtual void OnKeyboardTip(CXTPCommandBarKeyboardTip* pTip);
-	virtual void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop, CPoint ptDrag);
+	virtual void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop,
+								 CPoint ptDrag);
 	void RefreshSysButtons();
 	virtual BOOL ProcessSpecialKey(XTPSpecialKey key);
 
 protected:
-
-	public:
+public:
 	virtual CSize CalcDockingLayout(int nLength, DWORD dwMode, int nWidth = 0);
 	void Reposition(int cx, int cy);
 	void RepositionGroups(CDC* pDC, CRect rcGroups);
 	virtual BOOL PreviewAccel(UINT chAccel);
+
+	BOOL IsCaptionBarInBackstageMode() const;
+	void SetCaptionBarBackstageMode(BOOL bMode);
+	int GetBackstageModeMenuWidth() const;
+	void SetBackstageModeMenuWidth(int nWidth);
+	int GetBackstageSysButtonTop() const;
+	void SetBackstageSysButtonTop(int nTop);
+	int GetBackstageSysButtonBottom() const;
+	void SetBackstageSysButtonBottom(int nBottom);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -813,16 +888,18 @@ protected:
 	//     TRUE if the method was successful.
 	//-----------------------------------------------------------------------
 	virtual BOOL SetTrackingMode(int bMode, BOOL bSelectFirst = TRUE, BOOL bKeyboard = FALSE);
-	int OnHookMessage(HWND /*hWnd*/, UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& /*lResult*/);
+	int OnHookMessage(HWND /*hWnd*/, UINT nMessage, WPARAM& wParam, LPARAM& lParam,
+					  LRESULT& /*lResult*/);
 	void OnRemoved();
 	void OnGroupsScroll(BOOL bScrollLeft);
 	int GetRibbonTopBorder() const;
-	void CustomizeFindDropIndex(CXTPControl* pDataObject, const CPoint& point, CRect& rcMarker, int& nDropIndex, BOOL& bDropAfter);
+	void CustomizeFindDropIndex(CXTPControl* pDataObject, const CPoint& point, CRect& rcMarker,
+								int& nDropIndex, BOOL& bDropAfter);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	//{{AFX_VIRTUAL(CXTPRibbonBar)
 	//}}AFX_VIRTUAL
@@ -845,49 +922,85 @@ protected:
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 
 	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg LPDISPATCH OleInsertTab(int nIndex, LPCTSTR lpszTitle);
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddSystemButton();
+	afx_msg LPDISPATCH OleGetSystemButton();
+	afx_msg void OleSetSelectedTab(LPDISPATCH lpTab);
+	afx_msg LPDISPATCH OleGetSelectedTab();
+	afx_msg void OleEnableFrameTheme();
+
+	afx_msg LPDISPATCH OleGetRibbonPaintManager();
+	afx_msg LPDISPATCH OleGetTabPaintManager();
+	afx_msg LPDISPATCH OleGetQuickAccessControls();
+	afx_msg LPDISPATCH OleFindGroup(int nID);
+	afx_msg LPDISPATCH OleFindTab(int nID);
+	virtual void OleEnableCustomization();
+	afx_msg LPDISPATCH OleGetControlQuickAccess();
+	afx_msg LPDISPATCH OleGetControlSystemButton();
+	afx_msg void OleSetRibbonMinimized(BOOL bNewValue);
+	afx_msg long OleGetGroupsHeight();
+	afx_msg void OleSetGroupsHeight(long nHeight);
+	afx_msg long OleGetClientHeight();
+	afx_msg void OleSetClientHeight(long nHeight);
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPRibbonBar);
+	DECLARE_INTERFACE_MAP()
+	DECLARE_ENUM_VARIANT(CXTPRibbonBar);
 //}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
+	CRect m_rcTabControl;  // Bounding rectangle of Tabs
+	CRect m_rcGroups;	  // Groups bounding rectangle
+	CRect m_rcCaption;	 // Caption bounding rectangle
+	CRect m_rcCaptionText; // Caption text bounding rectangle
+	CRect m_rcHeader;	  // Header bounding rectangle
+	CRect m_rcQuickAccess; // Quick access bounding rectangle
 
-protected:
-	CRect m_rcTabControl;           // Bounding rectangle of Tabs
-	CRect m_rcGroups;               // Groups bounding rectangle
-	CRect m_rcCaption;              // Caption bounding rectangle
-	CRect m_rcCaptionText;          // Caption text bounding rectangle
-	CRect m_rcHeader;               // Header bounding rectangle
-	CRect m_rcQuickAccess;          // Quick access bounding rectangle
+	BOOL m_bRibbonBarVisible;			   // TRUE if ribbon bar visible
+	BOOL m_bGroupsVisible;				   // TRUE if groups is visible
+	BOOL m_bTabsVisible;				   // TRUE if tabs are visible
+	BOOL m_bShowQuickAccessBelow;		   // TRUE to show quick access controls below ribbon bar
+	BOOL m_bShowQuickAccess;			   // TRUE to show quick access
+	BOOL m_bAllowQuickAccessDuplicates;	// TRUE to allow quick access duplicates
+	BOOL m_bAllowQuickAccessCustomization; // TRUE to allow quick access customization
+	BOOL m_bGroupReducedChanged;		   // Some group appear in resize handler
+	int m_nQuickAccessHeight;			   // Quick Access height
+	BOOL m_bAllowMinimize;				   // TRUE to allow minimize ribbon
 
-	BOOL m_bRibbonBarVisible;       // TRUE if ribbon bar visible
-	BOOL m_bGroupsVisible;          // TRUE if groups is visible
-	BOOL m_bTabsVisible;            // TRUE if tabs are visible
-	BOOL m_bShowQuickAccessBelow;   // TRUE to show quick access controls below ribbon bar
-	BOOL m_bShowQuickAccess;        // TRUE to show quick access
-	BOOL m_bAllowQuickAccessDuplicates;         // TRUE to allow quick access duplicates
-	BOOL m_bAllowQuickAccessCustomization;      // TRUE to allow quick access customization
-	BOOL m_bGroupReducedChanged;    // Some group appear in resize handler
-	int m_nQuickAccessHeight;           // Quick Access height
-	BOOL m_bAllowMinimize;          // TRUE to allow minimize ribbon
+	CXTPRibbonQuickAccessControls* m_pQuickAccessControls; // Quick AccessControls (not used now)
+	CXTPRibbonControlTab* m_pControlTab;				   // Control tab pointer
+	CXTPControl* m_pControlQuickAccess;					   // Quick Access menu control
+	CXTPControl* m_pControlQuickAccessMore;				   // Quick Access more control
+	CXTPRibbonControlSystemButton* m_pControlSystemButton; // System button control
+	BOOL m_bMinimizeOnDblClick; // True to allow the ribbon to be minimized\maximized when double
+								// clicked
+	int m_nMinVisibleWidth;		// Minimum width before ribbon bar disappears
+	int m_nMinVisibleHeight;	// Minimum height before ribbon bar disappears
 
-	CXTPRibbonQuickAccessControls* m_pQuickAccessControls;      // Quick AccessControls (not used now)
-	CXTPRibbonControlTab* m_pControlTab;        // Control tab pointer
-	CXTPControl* m_pControlQuickAccess;         // Quick Access menu control
-	CXTPControl* m_pControlQuickAccessMore;     // Quick Access more control
-	CXTPRibbonControlSystemButton* m_pControlSystemButton;          // System button control
-	BOOL m_bMinimizeOnDblClick;                 // True to allow the ribbon to be minimized\maximized when double clicked
-	int m_nMinVisibleWidth;                     // Minimum width before ribbon bar disappears
-	int m_nMinVisibleHeight;                    // Minimum height before ribbon bar disappears
+	CXTPRibbonTabContextHeaders* m_pContextHeaders; // Context header collection
+	int m_nCustomGroupsHeight;						// Custom groups height
+	int m_nCustomClientHeight;						// Custom client height
 
-	CXTPOffice2007FrameHook* m_pFrameHook;      // Office 2007 Frame hook
+	BOOL m_bMinimized;		   // TRUE if Ribbon currently minimized
+	BOOL m_bShowCaptionAlways; // TRUE to show caption even if EnableFrameTheme was not called.
+	CString m_strCaptionText;  // Caption text
 
-	CXTPRibbonTabContextHeaders* m_pContextHeaders;     // Context header collection
-	int m_nGroupsHeight;            // Custom groups height
-	int m_nClientHeight;            // Custom groups height
-
-	BOOL m_bMinimized;              // TRUE if Ribbon currently minimized
-	BOOL m_bShowCaptionAlways;      // TRUE to show caption even if EnableFrameTheme was not called.
-	CString m_strCaptionText;       // Caption text
-
+	const int m_nQuickAccessHeightDiff;
 	int m_nQuickAccessEmptyIconId;
+
+	BOOL m_bIsCaptionBarInBackstageMode; // Is backstage active
+	int m_nBackstageMenuWidth;	// The width of the panel with commands and tabs in the mackstage
+	int m_nBackstageSysButtonTop; // The top of the sysbutton on the backstage
+	int m_nBackstageSysButtonBottom; // The buttom of the sysbutton on the backstage
 
 private:
 	friend class CXTPRibbonControlTab;
@@ -899,89 +1012,182 @@ private:
 	friend class CXTPRibbonTabPopupToolBar;
 };
 
-
-AFX_INLINE CRect CXTPRibbonBar::GetTabControlRect() const {
+AFX_INLINE CRect CXTPRibbonBar::GetTabControlRect() const
+{
 	return m_rcTabControl;
 }
-AFX_INLINE CXTPRibbonGroup* CXTPRibbonBar::GetHighlightedGroup() const {
+
+AFX_INLINE CXTPRibbonGroup* CXTPRibbonBar::GetHighlightedGroup() const
+{
 	return m_pHighlightedGroup;
 }
-AFX_INLINE CXTPRibbonGroup* CXTPRibbonScrollableBar::GetHighlightedGroup() const {
+
+AFX_INLINE CXTPRibbonGroup* CXTPRibbonScrollableBar::GetHighlightedGroup() const
+{
 	return m_pHighlightedGroup;
 }
-AFX_INLINE CXTPRibbonControlTab* CXTPRibbonBar::GetControlTab() const {
+
+AFX_INLINE CXTPRibbonControlTab* CXTPRibbonBar::GetControlTab() const
+{
 	return m_pControlTab;
 }
-AFX_INLINE void CXTPRibbonBar::SetMinimumVisibleWidth(int nMinVisibleWidth) {
+
+AFX_INLINE void CXTPRibbonBar::SetMinimumVisibleWidth(int nMinVisibleWidth)
+{
 	m_nMinVisibleWidth = nMinVisibleWidth;
 }
-AFX_INLINE void CXTPRibbonBar::SetMinimumVisibleSize(int nMinVisibleWidth, int nMinVisibleHeight ) {
-	m_nMinVisibleWidth = nMinVisibleWidth;
+
+AFX_INLINE void CXTPRibbonBar::SetMinimumVisibleSize(int nMinVisibleWidth, int nMinVisibleHeight)
+{
+	m_nMinVisibleWidth  = nMinVisibleWidth;
 	m_nMinVisibleHeight = nMinVisibleHeight;
 }
-AFX_INLINE int CXTPRibbonBar::GetMinimumVisibleWidth() const {
+
+AFX_INLINE int CXTPRibbonBar::GetMinimumVisibleWidth() const
+{
 	return m_nMinVisibleWidth;
 }
-AFX_INLINE CRect CXTPRibbonBar::GetCaptionRect() const {
+
+AFX_INLINE CRect CXTPRibbonBar::GetCaptionRect() const
+{
 	return m_rcCaption;
 }
-AFX_INLINE CRect CXTPRibbonBar::GetCaptionTextRect() const {
+
+AFX_INLINE CRect CXTPRibbonBar::GetCaptionTextRect() const
+{
 	return m_rcCaptionText;
 }
-AFX_INLINE CRect CXTPRibbonBar::GetQuickAccessRect() const {
+
+AFX_INLINE CRect CXTPRibbonBar::GetQuickAccessRect() const
+{
 	return m_rcQuickAccess;
 }
-AFX_INLINE CXTPRibbonQuickAccessControls* CXTPRibbonBar::GetQuickAccessControls() const {
+
+AFX_INLINE CXTPRibbonQuickAccessControls* CXTPRibbonBar::GetQuickAccessControls() const
+{
 	return m_pQuickAccessControls;
 }
-AFX_INLINE CXTPRibbonControlSystemButton* CXTPRibbonBar::GetSystemButton() const {
+
+AFX_INLINE CXTPRibbonControlSystemButton* CXTPRibbonBar::GetSystemButton() const
+{
 	return m_pControlSystemButton;
 }
-AFX_INLINE BOOL CXTPRibbonBar::IsRibbonBarVisible() const {
+
+AFX_INLINE BOOL CXTPRibbonBar::IsRibbonBarVisible() const
+{
 	return m_bVisible && m_bRibbonBarVisible;
 }
-AFX_INLINE CXTPRibbonTabContextHeaders* CXTPRibbonBar::GetContextHeaders() const {
+
+AFX_INLINE CXTPRibbonTabContextHeaders* CXTPRibbonBar::GetContextHeaders() const
+{
 	return m_pContextHeaders;
 }
-AFX_INLINE BOOL CXTPRibbonBar::IsRibbonBar() const {
+
+AFX_INLINE BOOL CXTPRibbonBar::IsRibbonBar() const
+{
 	return TRUE;
 }
-AFX_INLINE void CXTPRibbonBar::ShowQuickAccess(BOOL bShow) {
+
+AFX_INLINE void CXTPRibbonBar::ShowQuickAccess(BOOL bShow)
+{
 	m_bShowQuickAccess = bShow;
 	OnRecalcLayout();
 }
-AFX_INLINE BOOL CXTPRibbonBar::IsQuickAccessVisible() const {
+
+AFX_INLINE BOOL CXTPRibbonBar::IsQuickAccessVisible() const
+{
 	return m_bShowQuickAccess;
 }
-AFX_INLINE void CXTPRibbonBar::AllowQuickAccessDuplicates(BOOL bAllow) {
+
+AFX_INLINE void CXTPRibbonBar::AllowQuickAccessDuplicates(BOOL bAllow)
+{
 	m_bAllowQuickAccessDuplicates = bAllow;
 }
-AFX_INLINE void CXTPRibbonBar::AllowQuickAccessCustomization(BOOL bAllow) {
+
+AFX_INLINE void CXTPRibbonBar::AllowQuickAccessCustomization(BOOL bAllow)
+{
 	m_bAllowQuickAccessCustomization = bAllow;
 }
-AFX_INLINE BOOL CXTPRibbonBar::IsAllowQuickAccessDuplicates() const {
+
+AFX_INLINE BOOL CXTPRibbonBar::IsAllowQuickAccessDuplicates() const
+{
 	return m_bAllowQuickAccessDuplicates;
 }
-AFX_INLINE void CXTPRibbonBar::SetGroupsHeight(int nHeight) {
-	m_nGroupsHeight = nHeight;
+
+AFX_INLINE void CXTPRibbonBar::SetGroupsHeight(int nHeight)
+{
+	m_nCustomGroupsHeight = nHeight;
 }
-AFX_INLINE CXTPOffice2007FrameHook* CXTPRibbonBar::GetFrameHook() const {
-	return m_pFrameHook;
-}
-AFX_INLINE void CXTPRibbonBar::AllowMinimize(BOOL bAllow) {
+
+AFX_INLINE void CXTPRibbonBar::AllowMinimize(BOOL bAllow)
+{
 	m_bAllowMinimize = bAllow;
 }
-AFX_INLINE CRect CXTPRibbonBar::GetGroupsRect() const {
+
+AFX_INLINE CRect CXTPRibbonBar::GetGroupsRect() const
+{
 	return m_rcGroups;
 }
-AFX_INLINE void CXTPRibbonBar::ShowCaptionAlways(BOOL bShowCaption) {
+
+AFX_INLINE void CXTPRibbonBar::ShowCaptionAlways(BOOL bShowCaption)
+{
 	m_bShowCaptionAlways = bShowCaption;
 }
-AFX_INLINE CXTPControl* CXTPRibbonBar::GetControlQuickAccess() const {
+
+AFX_INLINE BOOL CXTPRibbonBar::GetShowCaptionAlways() const
+{
+	return m_bShowCaptionAlways;
+}
+
+AFX_INLINE CXTPControl* CXTPRibbonBar::GetControlQuickAccess() const
+{
 	return m_pControlQuickAccess;
 }
-AFX_INLINE void CXTPRibbonBar::SetQuickAccessEmptyIconId(int nIconId) {
+
+AFX_INLINE void CXTPRibbonBar::SetQuickAccessEmptyIconId(int nIconId)
+{
 	m_nQuickAccessEmptyIconId = nIconId;
 }
 
+AFX_INLINE BOOL CXTPRibbonBar::IsCaptionBarInBackstageMode() const
+{
+	return m_bIsCaptionBarInBackstageMode;
+}
+
+AFX_INLINE void CXTPRibbonBar::SetCaptionBarBackstageMode(BOOL bMode)
+{
+	m_bIsCaptionBarInBackstageMode = bMode;
+}
+
+AFX_INLINE int CXTPRibbonBar::GetBackstageModeMenuWidth() const
+{
+	return m_nBackstageMenuWidth;
+}
+
+AFX_INLINE void CXTPRibbonBar::SetBackstageModeMenuWidth(int nWidth)
+{
+	m_nBackstageMenuWidth = nWidth;
+}
+
+AFX_INLINE int CXTPRibbonBar::GetBackstageSysButtonTop() const
+{
+	return m_nBackstageSysButtonTop;
+}
+
+AFX_INLINE void CXTPRibbonBar::SetBackstageSysButtonTop(int nTop)
+{
+	m_nBackstageSysButtonTop = nTop;
+}
+
+AFX_INLINE int CXTPRibbonBar::GetBackstageSysButtonBottom() const
+{
+	return m_nBackstageSysButtonBottom;
+}
+
+AFX_INLINE void CXTPRibbonBar::SetBackstageSysButtonBottom(int nBottom)
+{
+	m_nBackstageSysButtonBottom = nBottom;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONBAR_H__)

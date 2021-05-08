@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS))
 #ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "标准色"
+	XTP_IDS_RECENT_COLORS    "最近的顏色"
+	XTP_IDS_THEME_COLORS     "主題顏色"
+	XTP_IDS_TAGCLOUD_TIP     "標籤 %s，得分 %d"
     XTP_IDS_TIPTEXT          "提示文字"
     XTP_IDS_DIDYOUKNOW       "您是否知道..."
     XTP_IDS_FILE_ABSENT      "指定的文件不存在。"
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "隐藏明细数据"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "背景 1"
+    XTP_IDS_BACKGROUND2        "背景 2"
+    XTP_IDS_TEXT1              "文字1"
+    XTP_IDS_TEXT2              "文字2"
+    XTP_IDS_ACCENT1            "雅紳特1"
+    XTP_IDS_ACCENT2            "雅紳特2"
+    XTP_IDS_ACCENT3            "雅紳特3"
+    XTP_IDS_ACCENT4            "雅紳特4"
+    XTP_IDS_ACCENT5            "雅紳特5"
+    XTP_IDS_ACCENT6            "雅紳特6"
+    XTP_IDS_LIGHTER            "打火機"
+    XTP_IDS_DARKER             "深色"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS))

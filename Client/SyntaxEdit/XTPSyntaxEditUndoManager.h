@@ -1,7 +1,6 @@
 // XTPSyntaxEditUndoManager.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITUNDOMANAGER_H__)
-#define __XTPSYNTAXEDITUNDOMANAGER_H__
+#	define __XTPSYNTAXEDITUNDOMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditBufferManager;
 class CXTPSyntaxEditCtrl;
@@ -63,11 +64,13 @@ public:
 	//      pEditCtrl: [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      UnExecute
 	//-----------------------------------------------------------------------
-	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl) = 0;
+	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						CXTPSyntaxEditCtrl* pEditCtrl) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -78,11 +81,13 @@ public:
 	//      pEditCtrl: [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      Execute
 	//-----------------------------------------------------------------------
-	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl) = 0;
+	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						  CXTPSyntaxEditCtrl* pEditCtrl) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -100,7 +105,7 @@ public:
 	// See also:
 	//      SetCommandText
 	//-----------------------------------------------------------------------
-	virtual LPCTSTR GetCommandText();
+	virtual LPCTSTR GetCommandText() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -123,7 +128,7 @@ public:
 	// Returns:
 	//      Undo command data size (in bytes).
 	//-----------------------------------------------------------------------
-	virtual int GetDataSize();
+	virtual int GetDataSize() const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -141,7 +146,8 @@ protected:
 	//      pEditCtrl : [in] A pointer to edit control.
 	//      lcPos     : [in] A text position to set to the edit control.
 	//-----------------------------------------------------------------------
-	static void SetPositionInternally(CXTPSyntaxEditCtrl* pEditCtrl, const XTP_EDIT_LINECOL& lcPos);
+	static void AFX_CDECL SetPositionInternally(CXTPSyntaxEditCtrl* pEditCtrl,
+												const XTP_EDIT_LINECOL& lcPos);
 
 	CString m_strCommandText; // A text description of the command.
 };
@@ -150,13 +156,11 @@ AFX_INLINE void CXTPSyntaxEditCommand::SetCommandText(LPCTSTR szText)
 {
 	m_strCommandText = szText;
 }
-
-AFX_INLINE LPCTSTR CXTPSyntaxEditCommand::GetCommandText()
+AFX_INLINE LPCTSTR CXTPSyntaxEditCommand::GetCommandText() const
 {
 	return m_strCommandText;
 }
-
-AFX_INLINE int CXTPSyntaxEditCommand::GetDataSize()
+AFX_INLINE int CXTPSyntaxEditCommand::GetDataSize() const
 {
 	return 0;
 }
@@ -193,11 +197,13 @@ public:
 	//      pEditCtrl   : [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      UnExecute
 	//-----------------------------------------------------------------------
-	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -208,11 +214,13 @@ public:
 	//      pEditCtrl   : [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      Execute
 	//-----------------------------------------------------------------------
-	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						  CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -241,7 +249,7 @@ public:
 	// Returns:
 	//      Undo command data size (in bytes).
 	//-----------------------------------------------------------------------
-	virtual int GetDataSize();
+	virtual int GetDataSize() const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -250,7 +258,7 @@ protected:
 	//-----------------------------------------------------------------------
 	void Clear();
 
-	CPtrList m_CommandList;   // Commands buffer storage.
+	CPtrList m_CommandList; // Commands buffer storage.
 };
 
 //===========================================================================
@@ -287,8 +295,8 @@ protected:
 	//      lcFrom: [in] Start text position affected by the command.
 	//      lcTo:   [in] End text position affected by the command.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditBufferCommand(CXTPSyntaxEditBufferManager* pMgr,
-		LPCTSTR szText, const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
+	CXTPSyntaxEditBufferCommand(CXTPSyntaxEditBufferManager* pMgr, LPCTSTR szText,
+								const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
 
 	CXTPSyntaxEditBufferManager* m_pBufferMgr; // Pointer to the associated text buffer.
 
@@ -323,7 +331,7 @@ protected:
 
 	private:
 		CXTPSyntaxEditBufferManager* m_pBufMgr; // Associated buffer manager
-		BOOL m_bOldSettings;    // Stored buffer overwrite settings.
+		BOOL m_bOldSettings;					// Stored buffer overwrite settings.
 	};
 
 	//-----------------------------------------------------------------------
@@ -336,11 +344,13 @@ protected:
 	//      pEditCtrl:  [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      DoDeleteText
 	//-----------------------------------------------------------------------
-	int DoInsertText(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	int DoInsertText(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+					 CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,11 +362,13 @@ protected:
 	//      pEditCtrl:  [in]  A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the happened edit actions:
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      DoInsertText
 	//-----------------------------------------------------------------------
-	int DoDeleteText(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	int DoDeleteText(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+					 CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -364,18 +376,13 @@ protected:
 	// Returns:
 	//      Undo command data size (in bytes).
 	//-----------------------------------------------------------------------
-	virtual int GetDataSize();
+	virtual int GetDataSize() const;
 
 protected:
-	CString m_strText;      // Stored changed text.
+	CString m_strText;		   // Stored changed text.
 	XTP_EDIT_LINECOL m_lcFrom; // Start edit position.
-	XTP_EDIT_LINECOL m_lcTo;       // End edit position.
+	XTP_EDIT_LINECOL m_lcTo;   // End edit position.
 };
-
-AFX_INLINE int CXTPSyntaxEditBufferCommand::GetDataSize()
-{
-	return m_strText.GetLength() * sizeof(TCHAR);
-}
 
 //===========================================================================
 // Summary:
@@ -402,8 +409,8 @@ public:
 	//      lcFrom: [in] Start text position affected by the command.
 	//      lcTo:   [in] End text position affected by the command.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditInsertStringCommand(CXTPSyntaxEditBufferManager* pMgr,
-		LPCTSTR szText, const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
+	CXTPSyntaxEditInsertStringCommand(CXTPSyntaxEditBufferManager* pMgr, LPCTSTR szText,
+									  const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -425,7 +432,8 @@ public:
 	// See also:
 	//      UnExecute
 	//-----------------------------------------------------------------------
-	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -440,7 +448,8 @@ public:
 	// See also:
 	//      Execute
 	//-----------------------------------------------------------------------
-	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						  CXTPSyntaxEditCtrl* pEditCtrl);
 };
 
 //===========================================================================
@@ -468,8 +477,8 @@ public:
 	//      lcFrom: [in] Start text position affected by the command.
 	//      lcTo:   [in] End text position affected by the command.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditDeleteStringCommand(CXTPSyntaxEditBufferManager* pMgr,
-		LPCTSTR szText, const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
+	CXTPSyntaxEditDeleteStringCommand(CXTPSyntaxEditBufferManager* pMgr, LPCTSTR szText,
+									  const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -491,7 +500,8 @@ public:
 	// See also:
 	//      UnExecute
 	//-----------------------------------------------------------------------
-	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -506,7 +516,8 @@ public:
 	// See also:
 	//      Execute
 	//-----------------------------------------------------------------------
-	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						  CXTPSyntaxEditCtrl* pEditCtrl);
 };
 
 //===========================================================================
@@ -534,8 +545,9 @@ public:
 	//      lcFrom: [in] Start text position affected by the command.
 	//      lcTo:   [in] End text position affected by the command.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditReplaceStringCommand(CXTPSyntaxEditBufferManager* pMgr,
-		LPCTSTR szText, LPCTSTR szReplacedText, const XTP_EDIT_LINECOL& lcFrom, const XTP_EDIT_LINECOL& lcTo);
+	CXTPSyntaxEditReplaceStringCommand(CXTPSyntaxEditBufferManager* pMgr, LPCTSTR szText,
+									   LPCTSTR szReplacedText, const XTP_EDIT_LINECOL& lcFrom,
+									   const XTP_EDIT_LINECOL& lcTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -557,7 +569,8 @@ public:
 	// See also:
 	//      UnExecute
 	//-----------------------------------------------------------------------
-	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int Execute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -572,7 +585,8 @@ public:
 	// See also:
 	//      Execute
 	//-----------------------------------------------------------------------
-	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual int UnExecute(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
+						  CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -580,9 +594,9 @@ public:
 	// Returns:
 	//      Undo command data size (in bytes).
 	//-----------------------------------------------------------------------
-	virtual int GetDataSize();
-protected:
+	virtual int GetDataSize() const;
 
+protected:
 	CString m_strReplacedText; // Buffer which holds replaced text.
 
 	//-----------------------------------------------------------------------
@@ -600,13 +614,6 @@ protected:
 	int DoReplaceText(LPCTSTR szText, XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo,
 					  CXTPSyntaxEditCtrl* pEditCtrl);
 };
-
-AFX_INLINE int CXTPSyntaxEditReplaceStringCommand::GetDataSize()
-{
-	return m_strReplacedText.GetLength() * sizeof(TCHAR) +
-		   CXTPSyntaxEditBufferCommand::GetDataSize();
-}
-
 
 //===========================================================================
 // Summary:
@@ -681,7 +688,8 @@ public:
 	//      pEditCtrl - [in] A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the affected edit actions.
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      DoRedo
 	//-----------------------------------------------------------------------
@@ -697,33 +705,12 @@ public:
 	//      pEditCtrl - [in] A pointer to edit control.
 	// Returns:
 	//      A bitwise combination of the affected edit actions.
-	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW, XTP_EDIT_EDITACTION_INSERTROW
+	//      XTP_EDIT_EDITACTION_MODIFYROW, XTP_EDIT_EDITACTION_DELETEROW,
+	//      XTP_EDIT_EDITACTION_INSERTROW
 	// See also:
 	//      DoUndo
 	//-----------------------------------------------------------------------
 	int DoRedo(XTP_EDIT_LINECOL& lcFrom, XTP_EDIT_LINECOL& lcTo, CXTPSyntaxEditCtrl* pEditCtrl);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Perform undo operation:
-	//      Unexecutes <i>nCount</i> last commands.
-	// Parameters:
-	//      nCount: [in] A number of commands to execute Undo.
-	// See also:
-	//      DoRedo
-	//-----------------------------------------------------------------------
-	//void DoUndo(int nCount);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Perform redo operation:
-	//      Executes <i>nCount</i> next commands.
-	// Parameters:
-	//      nCount: [in] A number of commands to execute Redo.
-	// See also:
-	//      DoUndo
-	//-----------------------------------------------------------------------
-	//void DoRedo(int nCount);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -748,7 +735,7 @@ public:
 	// See also:
 	//      CanRedo
 	//-----------------------------------------------------------------------
-	BOOL CanUndo();
+	BOOL CanUndo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -758,7 +745,7 @@ public:
 	// See also:
 	//      CanUndo
 	//-----------------------------------------------------------------------
-	BOOL CanRedo();
+	BOOL CanRedo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -778,7 +765,7 @@ public:
 	// See also:
 	//      MarkSaved
 	//-----------------------------------------------------------------------
-	BOOL IsModified();
+	BOOL IsModified() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -850,7 +837,7 @@ public:
 	// Returns:
 	//      Undo buffer data size (in bytes).
 	//-----------------------------------------------------------------------
-	virtual int GetDataSize();
+	virtual int GetDataSize() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -861,6 +848,7 @@ public:
 	//      nDataSizeLimit  - The maximum data size to store in undo buffer.
 	//-----------------------------------------------------------------------
 	virtual void LimitDataSize(int nNewCommandData, int nDataSizeLimit);
+
 private:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -869,16 +857,17 @@ private:
 	void RemoveTail();
 
 protected:
-	CPtrList m_CommandList;   // Commands buffer.
-	POSITION m_posFirstUndo;  // Actual command position in the buffer.
-	POSITION m_posSavedMark;  // Last saved command position in the buffer.
+	CPtrList m_CommandList;  // Commands buffer.
+	POSITION m_posFirstUndo; // Actual command position in the buffer.
+	POSITION m_posSavedMark; // Last saved command position in the buffer.
 
-	BOOL m_bGroupInsertMode;  // TRUE if group insert mode is on, FALSE otherwise
-	int  m_nDataSizeLimit;    // The memory limit for undo data.
+	BOOL m_bGroupInsertMode; // TRUE if group insert mode is on, FALSE otherwise
+	int m_nDataSizeLimit;	// The memory limit for undo data.
 
 private:
-	CStringList m_lstUndoText;  // A temporary storage for undo text strings.
-	CStringList m_lstRedoText;  // A temporary storage for redo text strings.
+	CStringList m_lstUndoText; // A temporary storage for undo text strings.
+	CStringList m_lstRedoText; // A temporary storage for redo text strings.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITUNDOMANAGER_H__)

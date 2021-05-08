@@ -41,6 +41,15 @@ extern "C" {
 typedef BOOL (CALLBACK * EnumerateMetafileProc)(EmfPlusRecordType,UINT,UINT,const BYTE*,VOID*);
 }
 
+#if (GDIPVER >= 0x0110)
+// This is the main GDI+ Abort interface
+
+struct __declspec(novtable) GdiplusAbort
+{
+    virtual HRESULT __stdcall Abort(void) = 0;
+};
+#endif //(GDIPVER >= 0x0110)
+
 //--------------------------------------------------------------------------
 // Primitive data types
 //
@@ -106,7 +115,10 @@ enum Status
     UnsupportedGdiplusVersion = 17,
     GdiplusNotInitialized = 18,
     PropertyNotFound = 19,
-    PropertyNotSupported = 20
+    PropertyNotSupported = 20,
+#if (GDIPVER >= 0x0110)
+    ProfileNotFound = 21,
+#endif //(GDIPVER >= 0x0110)
 };
 
 //--------------------------------------------------------------------------
@@ -455,10 +467,10 @@ public:
                           IN const RectF& a,
                           IN const RectF& b)
     {
-        REAL right = min(a.GetRight(), b.GetRight());
-        REAL bottom = min(a.GetBottom(), b.GetBottom());
-        REAL left = max(a.GetLeft(), b.GetLeft());
-        REAL top = max(a.GetTop(), b.GetTop());
+        REAL right = __min(a.GetRight(), b.GetRight());
+        REAL bottom = __min(a.GetBottom(), b.GetBottom());
+        REAL left = __max(a.GetLeft(), b.GetLeft());
+        REAL top = __max(a.GetTop(), b.GetTop());
 
         c.X = left;
         c.Y = top;
@@ -479,10 +491,10 @@ public:
                       IN const RectF& a,
                       IN const RectF& b)
     {
-        REAL right = max(a.GetRight(), b.GetRight());
-        REAL bottom = max(a.GetBottom(), b.GetBottom());
-        REAL left = min(a.GetLeft(), b.GetLeft());
-        REAL top = min(a.GetTop(), b.GetTop());
+        REAL right = __max(a.GetRight(), b.GetRight());
+        REAL bottom = __max(a.GetBottom(), b.GetBottom());
+        REAL left = __min(a.GetLeft(), b.GetLeft());
+        REAL top = __min(a.GetTop(), b.GetTop());
 
         c.X = left;
         c.Y = top;
@@ -643,10 +655,10 @@ public:
                           IN const Rect& a,
                           IN const Rect& b)
     {
-        INT right = min(a.GetRight(), b.GetRight());
-        INT bottom = min(a.GetBottom(), b.GetBottom());
-        INT left = max(a.GetLeft(), b.GetLeft());
-        INT top = max(a.GetTop(), b.GetTop());
+        INT right = __min(a.GetRight(), b.GetRight());
+        INT bottom = __min(a.GetBottom(), b.GetBottom());
+        INT left = __max(a.GetLeft(), b.GetLeft());
+        INT top = __max(a.GetTop(), b.GetTop());
 
         c.X = left;
         c.Y = top;
@@ -667,10 +679,10 @@ public:
                       IN const Rect& a,
                       IN const Rect& b)
     {
-        INT right = max(a.GetRight(), b.GetRight());
-        INT bottom = max(a.GetBottom(), b.GetBottom());
-        INT left = min(a.GetLeft(), b.GetLeft());
-        INT top = min(a.GetTop(), b.GetTop());
+        INT right = __max(a.GetRight(), b.GetRight());
+        INT bottom = __max(a.GetBottom(), b.GetBottom());
+        INT left = __min(a.GetLeft(), b.GetLeft());
+        INT top = __min(a.GetTop(), b.GetTop());
 
         c.X = left;
         c.Y = top;
@@ -713,12 +725,12 @@ public:
     {
         if (Points != NULL)
         {
-            delete Points;
+            delete [] Points;
         }
 
         if (Types != NULL)
         {
-            delete Types;
+            delete [] Types;
         }
     }
 
@@ -758,3 +770,4 @@ public:
 };
 
 #endif // !_GDIPLUSTYPES_HPP
+

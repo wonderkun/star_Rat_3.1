@@ -1,7 +1,6 @@
 // Resource.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,5 +17,5 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#define XTP_IDC_CHART_NORMALHAND   9830
-#define XTP_IDC_CHART_DRAGHAND     9831
+#define XTP_IDC_CHART_NORMALHAND 9830
+#define XTP_IDC_CHART_DRAGHAND 9831

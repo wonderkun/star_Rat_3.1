@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 #pragma code_page(1252)
@@ -142,23 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menüs"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Anwendungsmenüs",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,
-                    222,8
-    LTEXT           "Kontextmenüs",XTP_IDC_STATIC_CONTEXTMENUS,4,86,222,8
-    LTEXT           "&Menü auswählen:",IDC_STATIC,10,20,44,17
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Anwendungsmenüs",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+                    8
+    LTEXT           "Kontextmenüs",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "&Menü auswählen:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "&Zurücksetzen",XTP_IDC_BUTTON_RESETAPP,10,63,70,14
-    LTEXT           "Standard-Menüleiste\nStandard-Menüleiste",
-                    XTP_IDC_STATIC_DESCRIPTION,37,40,181,18
-    ICON            0,XTP_IDC_STATIC_ICON,10,38,20,20
-    LTEXT           "&Kontextmenü auswählen:",IDC_STATIC,10,98,68,18
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,96,130,79,CBS_DROPDOWNLIST | 
+    PUSHBUTTON      "&Zurücksetzen",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Standard-Menüleiste\nStandard-Menüleiste",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
+    LTEXT           "&Kontextmenü auswählen:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Zurück&setzen",XTP_IDC_BUTTON_RESETCONTEXT,10,119,70,14
+    PUSHBUTTON      "Zurück&setzen",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -248,7 +246,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_CUSTOMIZE        "\n&Anpassen..."
+    XTP_ID_CUSTOMIZE        "Anpassen der Anwendungsdarstellung, Symbolleisten und Menüs\n&Anpassen..."
     XTP_ID_CUSTOMIZE_RESET  "\n&Zurücksetzen"
     XTP_ID_CUSTOMIZE_ADDORREMOVE "\n&Schaltflächen hinzufügen oder entfernen"
 END
@@ -304,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nZur nächsten Registerkartengruppe wechseln"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNeue horizontale Registerkartengruppe"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNeue vertikale Registerkartengruppe"
-    XTP_ID_WORKSPACE_CANCEL "Abbrechen"
+    XTP_ID_WORKSPACE_CANCEL "\nAbbrechen"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktive Dateien"
 END
 
@@ -315,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "Gehe zu nächster Seite\nNächste Seite"
     XTP_ID_PREVIEW_ZOOMIN   "Vergrößerung der Vorschau erhöhen\nVergrößern"
     XTP_ID_PREVIEW_ZOOMOUT  "Vergrößerung der Vorschau verkleinern\nVerkleinern"
+    XTP_ID_PREVIEW_ONEPAGE  "Einzelne Seite"
+    XTP_ID_PREVIEW_TWOPAGE  "Mehrere Seiten"
     XTP_ID_PREVIEW_CLOSE    "Vorschau schließen\nVorschau schließen"
     XTP_IDS_PREVIEW_WHOLEPAGE "Gesamte Seite"
     XTP_IDS_PREVIEW_PAGEWIDTH "Seitenbreite"
@@ -322,4 +322,4 @@ BEGIN
     XTP_IDS_PREVIEW_PAGEIOFI  "Seite %i von %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)

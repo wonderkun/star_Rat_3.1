@@ -1,7 +1,6 @@
 // XTPShortcutListBox.h interface for the CXTPShortcutListBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHORTCUTLISTBOX_H__)
-#define __XTPSHORTCUTLISTBOX_H__
+#	define __XTPSHORTCUTLISTBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPShortcutListBoxTheme;
 class CXTPImageManagerIcon;
@@ -56,10 +57,10 @@ public:
 		~CONTENT_ITEM();
 		//}}AFX_CODEJOCK_PRIVATE
 
-		int           m_nIndex;   // Zero-based index for the menu item.
-		BOOL          m_bEnabled; // TRUE if the menu item is enabled.
-		CString       m_strText;  // Text label for the menu item.
-		CXTPImageManagerIcon* m_pIcon;    // Icon handle for the menu item.
+		int m_nIndex;				   // Zero-based index for the menu item.
+		BOOL m_bEnabled;			   // TRUE if the menu item is enabled.
+		CString m_strText;			   // Text label for the menu item.
+		CXTPImageManagerIcon* m_pIcon; // Icon handle for the menu item.
 	};
 
 	// ----------------------------------------------------------------------
@@ -73,7 +74,6 @@ public:
 	//     CXTPShortcutListBox, CXTPShortcutListBox::InsertMenuItem, CONTENT_ITEM
 	// ----------------------------------------------------------------------
 	typedef CList<CONTENT_ITEM*, CONTENT_ITEM*> CContentItemList;
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -89,7 +89,6 @@ public:
 	virtual ~CXTPShortcutListBox();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to switch the visual theme of the control.
@@ -224,14 +223,13 @@ public:
 	int GetTextHeight(LPCTSTR lspzItem) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to refresh theme colors and redraw the control.
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShortcutListBox)
@@ -241,7 +239,7 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPShortcutListBox)
-	afx_msg void OnLButtonDown (UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);
@@ -251,40 +249,48 @@ protected:
 	afx_msg void OnMouseLeave();
 	//}}AFX_MSG
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	void RedrawItem(int iIndex);
 	void RedrawItem(CPoint point);
 
 public:
-	bool                m_bNoBorder;        // true to disable a border drawn around highlighted items.
-	bool                m_bNoUnderline;     // true if the text is not drawn with a underline when no highlight border is displayed.
+	bool m_bNoBorder;	// true to disable a border drawn around highlighted items.
+	bool m_bNoUnderline; // true if the text is not drawn with a underline when no highlight border
+						 // is displayed.
 
 protected:
-	int               m_nPrevIndex;     // Previously selected menu index.
-	int               m_bHilightItemID;   // Index of the currently highlighted item, set to -1 if no selection.
-	bool              m_bHilight;         // true when the menu item is selected.
-	bool              m_bTimerActive;     // true if the redraw timer is active.
-	CPoint            m_point;            // Holds the cursor position.
-	CContentItemList  m_arContentItems;     // Array of CONTENT_ITEM structs that represent each item in the Outlook bar.
-	HCURSOR           m_hCursor;          // Cursor display when item is hovered.
-	CXTPShortcutListBoxTheme* m_pTheme;      // Pointer to the current theme object.
+	int m_nPrevIndex;	 // Previously selected menu index.
+	int m_bHilightItemID; // Index of the currently highlighted item, set to -1 if no selection.
+	bool m_bHilight;	  // true when the menu item is selected.
+	bool m_bTimerActive;  // true if the redraw timer is active.
+	CPoint m_point;		  // Holds the cursor position.
+	CContentItemList m_arContentItems;  // Array of CONTENT_ITEM structs that represent each item in
+										// the Outlook bar.
+	HCURSOR m_hCursor;					// Cursor display when item is hovered.
+	CXTPShortcutListBoxTheme* m_pTheme; // Pointer to the current theme object.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTOutlookBar CXTPShortcutListBox
+#	define CXTOutlookBar CXTPShortcutListBox
 //}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPShortcutListBox::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPShortcutListBox::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
-AFX_INLINE CXTPShortcutListBoxTheme* CXTPShortcutListBox::GetTheme() {
+AFX_INLINE CXTPShortcutListBoxTheme* CXTPShortcutListBox::GetTheme()
+{
 	return m_pTheme;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPSHORTCUTLISTBOX_H__)

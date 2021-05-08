@@ -1,7 +1,6 @@
 // Common resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,12 +23,27 @@
 #include "Common/Resource.h"
 #include "Common/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
 #ifdef _WIN32
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 #pragma code_page(1252)
 #endif //_WIN32
 
+#ifndef _AFXDLL
+
+#include <l.fra/afxctl.rc>
+#include <l.fra/afxdb.rc>
+#include <l.fra/afxolecl.rc>
+#include <l.fra/afxolesv.rc>
+#include <l.fra/afxprint.rc>
+#include <l.fra/afxres.rc>
+
+#ifdef _XTP_INCLUDE_MFC_STRINGS
+#include "Common/res/mfc/l.fra/indicate.rc"
+#include "Common/res/mfc/l.fra/prompts.rc"
+#endif
+
+#endif	//_AFXDLL
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -145,5 +159,5 @@ BEGIN
 END
 
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
 #endif // __XTPCOMMONRESOURCE_RC__

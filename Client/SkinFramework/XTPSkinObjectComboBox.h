@@ -1,7 +1,6 @@
 // XTPSkinObjectComboBox.h: interface for the CXTPSkinObjectComboBox class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTCOMBOXBOX__)
-#define __XTPSKINOBJECTCOMBOXBOX__
+#	define __XTPSKINOBJECTCOMBOXBOX__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -60,8 +59,9 @@ public:
 
 public:
 	static HWND AFX_CDECL GetComboListBox(HWND hWnd);
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	DECLARE_MESSAGE_MAP()
 	//{{AFX_VIRTUAL(CXTPSkinObjectButton)
@@ -85,7 +85,7 @@ protected:
 	BOOL m_bHot;
 	BOOL m_bPushed;
 	BOOL m_bPaint;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
@@ -120,7 +120,6 @@ public:
 	void RefreshMetrics();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when skin was changed
@@ -130,7 +129,7 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnSkinChanged(BOOL bPrevState, BOOL bNewState);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	virtual int GetClientBrushMessage();
 
@@ -139,7 +138,7 @@ protected:
 	void OnLButtonDown(UINT nFlags, CPoint point);
 	void DrawFrame(CDC* pDC);
 	BOOL IsVistaStyle() const;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
@@ -164,5 +163,5 @@ public:
 	void RefreshMetrics();
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTCOMBOXBOX__)

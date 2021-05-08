@@ -1,7 +1,6 @@
 // XTPSyntaxEditCtrl.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,31 +19,61 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITSYNTAXEDITCTRL_H__)
-#define __XTPSYNTAXEDITSYNTAXEDITCTRL_H__
+#	define __XTPSYNTAXEDITSYNTAXEDITCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSyntaxEditDrawTextProcessor.h"
-#include "XTPSyntaxEditSelection.h"
-
-using namespace XTPSyntaxEditLexAnalyser;
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
-typedef CMap<int,int,COLORREF,COLORREF> CXTPSyntaxEditRowColorMap;
+typedef CMap<int, int, COLORREF, COLORREF> CXTPSyntaxEditRowColorMap;
 //}}AFX_CODEJOCK_PRIVATE
 
 // forwards
+class CXTPNotifySink;
 class CXTPSyntaxEditBufferManager;
 class CXTPSyntaxEditConfigurationManager;
 class CXTPSyntaxEditToolTipCtrl;
 class CXTPSyntaxEditAutoCompleteWnd;
 class CXTPSyntaxEditLineMarksManager;
+class CXTPSyntaxEditDrawTextProcessor;
+class CXTPSyntaxEditSelection;
 typedef CList<XTP_EDIT_TEXTBLOCK, XTP_EDIT_TEXTBLOCK> CXTPSyntaxEditTextBlockList;
 typedef LPCTSTR XTP_EDIT_LINEMARKTYPE;
 struct XTP_EDIT_LMPARAM;
+
+//===========================================================================
+// Shared Options of SyntaxEdit.
+class _XTP_EXT_CLASS CXTPSyntaxEditOptions : public CXTPCmdTarget
+{
+public:
+	CXTPSyntaxEditOptions();
+
+protected:
+	BOOL m_bSyntaxColor;	  // Enables or disables syntax colorization
+	BOOL m_bAutoIndent;		  // Auto indentation is enabled or not
+	BOOL m_bSelMargin;		  // TRUE if selection margin is to be enabled or not
+	BOOL m_bLineNumbers;	  // TRUE if line number is to be printed
+	BOOL m_bWideCaret;		  // Stored Overwrite Caret Style: Thin or Thick.
+	BOOL m_bTabWithSpace;	 // Store tabulation width.
+	BOOL m_bVirtualSpace;	 // TRUE if virtual space is enabled (cursor can be paced in any place
+							  // after line end).
+	BOOL m_bDrawNodes;		  // TRUE if Collapsible nodes signs are to be printed
+	BOOL m_bEnableWhiteSpace; // Show white space
+	BOOL m_bReadOnly;		  // Store ReadOnly mode.
+	BOOL m_bViewOnly;		  // Store ViewOnly mode (as ViewOnly but with normal background.
+	BOOL m_bHideCaret;		  // Store is caret visible.
+	BOOL m_bEnableEditAccelerators; // Enable/disable accelerators for Cut, Copy, Paste, Undo, Redoo
+									// and Select All operations.
+
+	CXTPSyntaxEditRowColorMap m_mapRowBkColor;   // The map for row back colors
+	CXTPSyntaxEditRowColorMap m_mapRowForeColor; // The map for row colors
+
+	friend class CXTPSyntaxEditCtrl;
+};
 
 //===========================================================================
 // Summary: This class is the main CWnd - based editor class. It is a rectangular
@@ -65,13 +94,13 @@ struct XTP_EDIT_LMPARAM;
 //          file is the following:
 //<code>
 //[Schemas]
-//FileType1=SchemaFileName1.schclass
-//FileType2=SchemaFileName2.schclass
+// FileType1=SchemaFileName1.schclass
+// FileType2=SchemaFileName2.schclass
 //...
 //
 //[Themes]
-//ThemeName1=ThemeFileName1.ini
-//ThemeName2=ThemeFileName2.ini
+// ThemeName1=ThemeFileName1.ini
+// ThemeName2=ThemeFileName2.ini
 //...
 //</code>
 //
@@ -79,15 +108,16 @@ struct XTP_EDIT_LMPARAM;
 class _XTP_EXT_CLASS CXTPSyntaxEditCtrl : public CWnd
 {
 	DECLARE_DYNAMIC(CXTPSyntaxEditCtrl)
-	DECLARE_XTP_SINK(CXTPSyntaxEditCtrl, m_Sink)
 
 	friend class CXTPSyntaxEditAutoCompleteWnd;
 	friend class CXTPSyntaxEditView;
 	friend class CXTPSyntaxEditCommand;
 	friend class CXTPSyntaxEditPaintManager;
 	friend class CXTPSyntaxEditSelection;
-
 	friend class CSyntaxEditCtrl; // for AciveX implementation
+	friend class CSyntaxEditBaseCtrl;
+
+	class CImmWrapper;
 
 public:
 	//-----------------------------------------------------------------------
@@ -119,7 +149,7 @@ public:
 	//     bUpdateReg   : [in] Set this parameter as TRUE to update this setting
 	//                         in the registry. It is FALSE by default.
 	//-----------------------------------------------------------------------
-	BOOL SetLineNumbers(BOOL bLineNumbers, BOOL bUpdateReg=FALSE);
+	BOOL SetLineNumbers(BOOL bLineNumbers, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -137,7 +167,7 @@ public:
 	//     bUpdateReg : [in] Set this parameter as TRUE to update this setting
 	//                         in the registry. It is FALSE by default.
 	//-----------------------------------------------------------------------
-	void SetCollapsibleNodes(BOOL bDrawNodes, BOOL bUpdateReg=FALSE);
+	void SetCollapsibleNodes(BOOL bDrawNodes, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -188,7 +218,7 @@ public:
 	// See Also:
 	//     CXTPSyntaxEditAutoCompleteWnd
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditAutoCompleteWnd* GetAutoCompleteWnd();
+	CXTPSyntaxEditAutoCompleteWnd* GetAutoCompleteWnd() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -197,7 +227,7 @@ public:
 	//     int value determines the number of rows can be printed in current
 	//     settings.
 	//-----------------------------------------------------------------------
-	int GetRowPerPage();
+	int GetRowPerPage() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -210,7 +240,7 @@ public:
 	// Returns:
 	//     TRUE if the row is visible, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsRowVisible(int iRow);
+	BOOL IsRowVisible(int iRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -242,7 +272,7 @@ public:
 	// Returns:
 	//      TRUE if scrollbars were updated, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL SetScrollBars(BOOL bHorzSBar, BOOL bVertSBar, BOOL bUpdateReg=FALSE);
+	BOOL SetScrollBars(BOOL bHorzSBar, BOOL bVertSBar, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -274,7 +304,7 @@ public:
 	// See also:
 	//     BOOL GetSelMargin()
 	//-----------------------------------------------------------------------
-	BOOL SetSelMargin(BOOL bSelMargin, BOOL bUpdateReg=FALSE);
+	BOOL SetSelMargin(BOOL bSelMargin, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -305,7 +335,7 @@ public:
 	// See also:
 	//     BOOL GetSyntaxColor()
 	//-----------------------------------------------------------------------
-	BOOL SetSyntaxColor(BOOL bSyntaxColor, BOOL bUpdateReg=FALSE);
+	BOOL SetSyntaxColor(BOOL bSyntaxColor, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -333,7 +363,7 @@ public:
 	// See also:
 	//     BOOL GetAutoIndent()
 	//-----------------------------------------------------------------------
-	BOOL SetAutoIndent(BOOL bAutoIndent, BOOL bUpdateReg=FALSE);
+	BOOL SetAutoIndent(BOOL bAutoIndent, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -399,7 +429,7 @@ public:
 	// See also:
 	//     BOOL GetTabWithSpace()
 	//-----------------------------------------------------------------------
-	BOOL SetTabWithSpace(BOOL bTabWithSpace, BOOL bUpdateReg=FALSE);
+	BOOL SetTabWithSpace(BOOL bTabWithSpace, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -422,7 +452,7 @@ public:
 	// See also:
 	//      SetRowColor(int nRow);
 	//-----------------------------------------------------------------------
-	COLORREF GetRowColor(int nRow);
+	virtual COLORREF GetRowColor(int nRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -445,7 +475,7 @@ public:
 	// See also:
 	//      void SetRowBkColor(int nRow, COLORREF crBack);
 	//-----------------------------------------------------------------------
-	COLORREF GetRowBkColor(int nRow);
+	virtual COLORREF GetRowBkColor(int nRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -458,7 +488,7 @@ public:
 	// See also:
 	//     void EnableWhiteSpace(BOOL bShow = TRUE)
 	//-----------------------------------------------------------------------
-	BOOL IsEnabledWhiteSpace();
+	BOOL IsEnabledWhiteSpace() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -494,7 +524,7 @@ public:
 	// See also:
 	//     BOOL IsEnabledWhiteSpace()
 	//-----------------------------------------------------------------------
-	void EnableVirtualSpace(BOOL bEnable, BOOL bUpdateReg=FALSE);
+	void EnableVirtualSpace(BOOL bEnable, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -508,7 +538,7 @@ public:
 	//     void SetRightButtonDrag(BOOL bRightButtonDrag = TRUE)
 	//     void CancelRightButtonDrag();
 	//-----------------------------------------------------------------------
-	BOOL IsRightButtonDrag();
+	BOOL IsRightButtonDrag() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -570,7 +600,8 @@ public:
 	// Returns:
 	//      The number of founded matches.
 	//-----------------------------------------------------------------------
-	int ReplaceAll(LPCTSTR szFindText, LPCTSTR szReplaceText, BOOL bMatchWholeWord, BOOL bMatchCase);
+	int ReplaceAll(LPCTSTR szFindText, LPCTSTR szReplaceText, BOOL bMatchWholeWord,
+				   BOOL bMatchCase);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -605,7 +636,7 @@ public:
 	// Returns:
 	//     Return absolute column position.
 	//-----------------------------------------------------------------------
-	int GetCurAbsCol();
+	int GetCurAbsCol() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -659,8 +690,8 @@ public:
 	// Returns:
 	//      BOOL : True if point was out of bound and index was corrected
 	//-----------------------------------------------------------------------
-	BOOL RowColFromPoint(CPoint pt, int *pRow, int *pCol, int *pDispRow = NULL,
-						 int *pDispCol = NULL, BOOL bVirtualSpace = -1);
+	BOOL RowColFromPoint(CPoint pt, int* pRow, int* pCol, int* pDispRow = NULL,
+						 int* pDispCol = NULL, BOOL bVirtualSpace = -1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -714,13 +745,14 @@ public:
 	//     bMatchCase       : [in] Try to match case.
 	//     bSearchDown      : [in] TRUE for searching downward.
 	//     bRedraw          : [in] TRUE for redraw control after search.
-	//     nStartRow        : [in] The row number to start search. Value -1 means start from current row.
-	//     nStartCol        : [in] The column number to start search. Value -1 means start from current column.
+	//     nStartRow        : [in] The row number to start search. Value -1 means start from current
+	//     row. nStartCol        : [in] The column number to start search. Value -1 means start from
+	//     current column.
 	// Returns:
 	//     TRUE if found, FALSE if not
 	//-----------------------------------------------------------------------
-	BOOL Find(LPCTSTR szText, BOOL bMatchWholeWord, BOOL bMatchCase, BOOL bSearchDown,BOOL bRedraw = TRUE,
-			  int nStartRow = -1, int nStartCol = -1);
+	BOOL Find(LPCTSTR szText, BOOL bMatchWholeWord, BOOL bMatchCase, BOOL bSearchDown,
+			  BOOL bRedraw = TRUE, int nStartRow = -1, int nStartCol = -1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -794,7 +826,7 @@ public:
 	// Returns:
 	//      TRUE if caret is hidden, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsHideCaret();
+	BOOL IsHideCaret() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -826,7 +858,8 @@ public:
 	//          bEnsureVisible  : [in] Pass true if the set row col should be
 	//                            forcefully made visible.
 	//-----------------------------------------------------------------------
-	void SetCurCaretPos(int nTextRow, int nDispCol, BOOL bRowColNotify = TRUE, BOOL bEnsureVisible = TRUE);
+	void SetCurCaretPos(int nTextRow, int nDispCol, BOOL bRowColNotify = TRUE,
+						BOOL bEnsureVisible = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -835,7 +868,7 @@ public:
 	// Returns:
 	//      Pointer to the CXTPSyntaxEditBufferManager object.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditBufferManager* GetEditBuffer();
+	CXTPSyntaxEditBufferManager* GetEditBuffer() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -851,7 +884,7 @@ public:
 	// Returns:
 	//      Returns pointer to associated CXTPSyntaxEditPaintManager object.
 	//-----------------------------------------------------------------------
-	virtual CXTPSyntaxEditPaintManager* GetPaintManager();
+	CXTPSyntaxEditPaintManager* GetPaintManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -903,7 +936,7 @@ public:
 	// See also:
 	//      CXTPSyntaxEditCtrl::SetConfigFile().
 	//--------------------------------------------------------------------
-	CString GetConfigFile();
+	CString GetConfigFile() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -937,7 +970,7 @@ public:
 	//      bUpdateReg  : [in] Set this parameter as TRUE to update this setting
 	//                         in the registry. It is FALSE by default.
 	//-----------------------------------------------------------------------
-	void SetFontIndirect(LPLOGFONT pLogfont, BOOL bUpdateReg=FALSE);
+	void SetFontIndirect(LPLOGFONT pLogfont, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -952,7 +985,8 @@ public:
 	// See also:
 	//      int GetCurCol(), int GetCurRow()
 	//-----------------------------------------------------------------------
-	void SetCurPos(int nTextRow, int nDispCol, BOOL bRemainSelected = FALSE, BOOL bForceVisible = TRUE);
+	void SetCurPos(int nTextRow, int nDispCol, BOOL bRemainSelected = FALSE,
+				   BOOL bForceVisible = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -960,7 +994,7 @@ public:
 	// Returns:
 	//      An integer value of current document column identifier.
 	//-----------------------------------------------------------------------
-	int GetCurCol();
+	int GetCurCol() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -992,7 +1026,7 @@ public:
 	//      rcRect  : [in] A rectangle to draw control.
 	// See Also: PrintPage
 	//-----------------------------------------------------------------------
-	virtual void Draw(CDC *pDC, const CRect& rcRect);
+	virtual void Draw(CDC* pDC, const CRect& rcRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1008,7 +1042,7 @@ public:
 	//      Returns count of the printed rows.
 	// See Also: Draw
 	//-----------------------------------------------------------------------
-	virtual int PrintPage(CDC *pDC, const CRect& rcRect, int nFlags = 0);
+	virtual int PrintPage(CDC* pDC, const CRect& rcRect, int nFlags = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1032,8 +1066,8 @@ public:
 	//      (this is a window client rect or value from prcClient parameter).
 	//-----------------------------------------------------------------------
 	virtual CRect CalcEditRects(CRect* prcBookMarks = NULL, CRect* prcLineNum = NULL,
-						CRect* prcNodes = NULL, CRect* prcText = NULL,
-						const CRect* prcClient = NULL);
+								CRect* prcNodes = NULL, CRect* prcText = NULL,
+								const CRect* prcClient = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1041,7 +1075,7 @@ public:
 	// Returns:
 	//      TRUE if selection exist, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsSelectionExist();
+	BOOL IsSelectionExist() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1072,7 +1106,7 @@ public:
 	// See also:
 	//      BOOL Redo(int nActionsCount = 1);
 	//-----------------------------------------------------------------------
-	BOOL CanRedo();
+	BOOL CanRedo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1084,7 +1118,7 @@ public:
 	// See also:
 	//      BOOL Undo(int nActionsCount = 1);
 	//-----------------------------------------------------------------------
-	BOOL CanUndo();
+	BOOL CanUndo() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1184,7 +1218,7 @@ public:
 	//      Second function returns TRUE if succeeded, FALSE otherwise.
 	// See Also: SetText, CWnd::SetWindowText
 	//-----------------------------------------------------------------------
-	virtual CString GetText(int nMaxLen = -1);
+	CString GetText(int nMaxLen = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1201,7 +1235,7 @@ public:
 	//      Second function returns TRUE if succeeded, FALSE otherwise.
 	// See Also: SetText, CWnd::SetWindowText
 	//-----------------------------------------------------------------------
-	virtual BOOL GetText(CMemFile& memFile, int nMaxLen = -1);
+	BOOL GetText(CMemFile& memFile, int nMaxLen = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1212,7 +1246,7 @@ public:
 	//      Also CWnd::SetWindowText can be used to set editor text.
 	// See Also: GetText, CWnd::GetWindowText
 	//-----------------------------------------------------------------------
-	virtual void SetText(LPCTSTR pcszText);
+	void SetText(LPCTSTR pcszText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1233,7 +1267,7 @@ public:
 	// See also:
 	//      SetTopRow(int iRow);
 	//-----------------------------------------------------------------------
-	int GetTopRow();
+	int GetTopRow() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1278,7 +1312,9 @@ public:
 	//          is repositioned and resized to fill the rest of the client area
 	//          not filled by control bars.
 	//-----------------------------------------------------------------------
-	void RepositionBars(UINT nIDFirst, UINT nIDLast, UINT nIDLeftOver, UINT nFlag = CWnd::reposDefault, LPRECT lpRectParam = NULL, LPCRECT lpRectClient = NULL, BOOL bStretch = TRUE);
+	void RepositionBars(UINT nIDFirst, UINT nIDLast, UINT nIDLeftOver,
+						UINT nFlag = CWnd::reposDefault, LPRECT lpRectParam = NULL,
+						LPCRECT lpRectClient = NULL, BOOL bStretch = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1300,7 +1336,7 @@ public:
 	// Returns:
 	//      A pointer to sibling scroll-bar control, or NULL if none.
 	//-----------------------------------------------------------------------
-	virtual CScrollBar* GetScrollBarCtrl( int nBar ) const;
+	virtual CScrollBar* GetScrollBarCtrl(int nBar) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1315,7 +1351,7 @@ public:
 	// See also:
 	//      void ShowScrollBar(UINT nBar, BOOL bShow = TRUE );
 	//-----------------------------------------------------------------------
-	void EnableScrollBarCtrl(int nBar, BOOL bEnable = TRUE );
+	void EnableScrollBarCtrl(int nBar, BOOL bEnable = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1342,7 +1378,7 @@ public:
 	// See also:
 	//          void EnableScrollBarCtrl( int nBar, BOOL bEnable = TRUE );
 	//-----------------------------------------------------------------------
-	void ShowScrollBar(UINT nBar, BOOL bShow = TRUE );
+	void ShowScrollBar(UINT nBar, BOOL bShow = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1377,7 +1413,7 @@ public:
 	//          values specified by nMinPos and nMaxPos must not be greater
 	//          than INT_MAX.
 	//-----------------------------------------------------------------------
-	void SetScrollRange( int nBar, int nMinPos, int nMaxPos, BOOL bRedraw = TRUE );
+	void SetScrollRange(int nBar, int nMinPos, int nMaxPos, BOOL bRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1406,7 +1442,7 @@ public:
 	// Returns:
 	//      The previous position of the scroll box.
 	//-----------------------------------------------------------------------
-	int SetScrollPos( int nBar, int nPos, BOOL bRedraw = TRUE );
+	int SetScrollPos(int nBar, int nPos, BOOL bRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1441,7 +1477,7 @@ public:
 	//     BOOL GetScrollInfo( int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL )
 	//     int GetScrollLimit( int nBar )
 	//-----------------------------------------------------------------------
-	BOOL SetScrollInfo( int nBar, LPSCROLLINFO lpScrollInfo, BOOL bRedraw = TRUE );
+	BOOL SetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, BOOL bRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1462,7 +1498,7 @@ public:
 	//      An  integer value which specifies the maximum position of a scroll
 	//      bar if successful; otherwise 0.
 	//-----------------------------------------------------------------------
-	int GetScrollLimit( int nBar );
+	int GetScrollLimit(int nBar);
 
 	//-----------------------------------------------------------------------
 	// Summary: Retrieves the scrollbar information
@@ -1510,7 +1546,7 @@ public:
 	// See also:
 	//     BOOL SetScrollInfo( int nBar, LPSCROLLINFO lpScrollInfo, BOOL bRedraw = TRUE );
 	//-----------------------------------------------------------------------
-	BOOL GetScrollInfo( int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL );
+	BOOL GetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1553,7 +1589,8 @@ public:
 	//                      scroll rectangle.[/li]
 	//                      [/ul]
 	//-----------------------------------------------------------------------
-	int ScrollWindowEx( int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, CRgn* prgnUpdate, LPRECT lpRectUpdate, UINT flags );
+	int ScrollWindowEx(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, CRgn* prgnUpdate,
+					   LPRECT lpRectUpdate, UINT flags);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1578,7 +1615,7 @@ public:
 	//                          If lpClipRect is NULL, no clipping is performed
 	//                          on the scroll rectangle.
 	//-----------------------------------------------------------------------
-	void ScrollWindow( int xAmount, int yAmount, LPCRECT lpRect = NULL, LPCRECT lpClipRect = NULL );
+	void ScrollWindow(int xAmount, int yAmount, LPCRECT lpRect = NULL, LPCRECT lpClipRect = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1597,7 +1634,7 @@ public:
 	//      lpMaxPos : [out] Points to the integer variable that is to receive
 	//                          the maximum position.
 	//-----------------------------------------------------------------------
-	void GetScrollRange( int nBar, LPINT lpMinPos, LPINT lpMaxPos ) const;
+	void GetScrollRange(int nBar, LPINT lpMinPos, LPINT lpMaxPos) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1615,7 +1652,7 @@ public:
 	//      The current position of the scroll box in the scroll bar if it is
 	//      successful; otherwise, it is zero.
 	//-----------------------------------------------------------------------
-	int GetScrollPos(int nBar);
+	int GetScrollPos(int nBar) const;
 
 	// ----------------------------------------------------------------------
 	// Summary:
@@ -1660,9 +1697,11 @@ public:
 	//      nID         : [in] Specifies the control identifier.
 	// Returns: TRUE if created, FALSE otherwise
 	//-----------------------------------------------------------------------
-	BOOL Create(CWnd *pParent, BOOL bHorzScroll, BOOL bVertScroll,
-				CXTPSyntaxEditBufferManager *pBuffer = NULL,
-				CCreateContext *lpCS = NULL, UINT nID = 0);
+	BOOL Create(CWnd* pParent, BOOL bHorzScroll, BOOL bVertScroll,
+				CXTPSyntaxEditBufferManager* pBuffer = NULL, CCreateContext* lpCS = NULL,
+				UINT nID = 0);
+
+	using CWnd::Create;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1722,7 +1761,7 @@ public:
 	// Returns:
 	//      TRUE if breakpoints were set; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL HasBreakpoints();
+	BOOL HasBreakpoints() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1730,7 +1769,7 @@ public:
 	// Returns:
 	//      TRUE if bookmarks were set; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL HasBookmarks();
+	BOOL HasBookmarks() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1744,7 +1783,8 @@ public:
 	// See also:
 	//      XTP_EDIT_LINEMARKTYPE, XTP_EDIT_LMPARAM
 	//-----------------------------------------------------------------------
-	BOOL HasRowMark(int nRow, const XTP_EDIT_LINEMARKTYPE& lmType, XTP_EDIT_LMPARAM* pParam = NULL);
+	BOOL HasRowMark(int nRow, const XTP_EDIT_LINEMARKTYPE& lmType,
+					XTP_EDIT_LMPARAM* pParam = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1785,7 +1825,7 @@ public:
 	// Returns:
 	//      A reference to CString object with active theme name.
 	//-----------------------------------------------------------------------
-	const CString& GetCurrentTheme();
+	CString GetCurrentTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1823,7 +1863,7 @@ public:
 	// See also:
 	//      void SetRowValid(int nDispRow);
 	//-----------------------------------------------------------------------
-	BOOL IsRowValid(int nDispRow);
+	BOOL IsRowValid(int nDispRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1842,7 +1882,7 @@ public:
 	// Returns:
 	//    TRUE if the edit control has been activated, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsActive() const;
+	BOOL IsActive() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1860,7 +1900,7 @@ public:
 	// Returns:
 	//    TRUE if parent window scroll bars are used, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCreateScrollbarOnParent() const;
+	BOOL IsCreateScrollbarOnParent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1869,7 +1909,7 @@ public:
 	// Parameters:
 	//     nSet - TRUE if parent window scroll bars should be used, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	virtual void SetCreateScrollbarOnParent(BOOL nSet);
+	void SetCreateScrollbarOnParent(BOOL nSet);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1879,7 +1919,7 @@ public:
 	// Returns:
 	//      TRUE if the document can be edited, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL CanEditDoc();
+	virtual BOOL CanEditDoc() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1887,7 +1927,7 @@ public:
 	// Returns:
 	//      TRUE if the editor in read-only mode, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsReadOnly();
+	BOOL IsReadOnly() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1906,7 +1946,7 @@ public:
 	// Returns:
 	//      TRUE if the editor in read-only mode, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsViewOnly();
+	BOOL IsViewOnly() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1930,7 +1970,7 @@ public:
 	// Returns:
 	//     TRUE if accelerators internally supported, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsEnabledEditAccelerators();
+	BOOL IsEnabledEditAccelerators() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1941,7 +1981,9 @@ public:
 	//-----------------------------------------------------------------------
 	void EnableEditAccelerators(BOOL bEnable);
 
-//{{AFX_CODEJOCK_PRIVATE
+	BOOL HasFocus() const;
+
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -1949,13 +1991,15 @@ public:
 	virtual void OnFinalRelease();
 
 	virtual BOOL _InitEditControl();
-	virtual DWORD ProcessCollapsedRowsBeroreDraw(int nTextRow,
-												 int& rnSkipRowsCount);
+	virtual DWORD ProcessCollapsedRowsBeroreDraw(int nTextRow, int& rnSkipRowsCount);
 	virtual BOOL _IsVirtualSpaceActive() const;
 	virtual void _EnsureVisible(int nTextRow, int nDispCol);
 
 	virtual BOOL SetValueInt(LPCTSTR lpszValue, int nNewValue, int& nRefValue, BOOL bUpdateReg);
 	virtual BOOL SetValueBool(LPCTSTR lpszValue, BOOL bNewValue, BOOL& bRefValue, BOOL bUpdateReg);
+
+	void SetInternalRowBkColor(int nRow, COLORREF crBack);
+	void SetInternalRowColor(int nRow, COLORREF crText);
 
 protected:
 	afx_msg void OnPaint();
@@ -1996,7 +2040,7 @@ protected:
 	afx_msg UINT OnGetDlgCode();
 
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	/////////////////////////////////////////////////////////////////
 	// Methods
@@ -2012,7 +2056,7 @@ protected:
 	//      prcNodeFull : [out] Pointer to CRect variable to receive full
 	//                          node area rect
 	//-----------------------------------------------------------------------
-	void GetLineNodeRect(int nDispRow, CRect& rcNode, CRect* prcNodeFull = NULL);
+	void GetLineNodeRect(int nDispRow, CRect& rcNode, CRect* prcNodeFull = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2022,7 +2066,7 @@ protected:
 	// Parameters:
 	//      pDC : [in] A pointer to device context to draw.
 	//-----------------------------------------------------------------------
-	void CalculateEditbarLength(CDC* pDC= NULL);
+	void CalculateEditbarLength(CDC* pDC = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2052,7 +2096,7 @@ protected:
 	//      rstrTextToIns : [in out] Text to be inserted
 	//      nDispColl     : [in] A display column number to reach to.
 	//-----------------------------------------------------------------------
-	void FillTabs(CString &rstrTextToIns, int nDispColl);
+	void FillTabs(CString& rstrTextToIns, int nDispColl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2069,8 +2113,9 @@ protected:
 	// Returns:
 	//      TRUE if the operation is successful, FALSE else.
 	//-----------------------------------------------------------------------
-	BOOL CreateInsertText(LPTSTR szText, CString& strTextToIns,int& iNewRow,int& iNewCol,
-						  int& iNewDispCol, int& iEditRowFrom, int& iEditRowTo,int& iChainActionCount);
+	BOOL CreateInsertText(LPTSTR szText, CString& strTextToIns, int& iNewRow, int& iNewCol,
+						  int& iNewDispCol, int& iEditRowFrom, int& iEditRowTo,
+						  int& iChainActionCount);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2092,7 +2137,7 @@ protected:
 	//     Call this member function to send notification to the parent class
 	//     about the row col changes.
 	//-----------------------------------------------------------------------
-	void NotifyCurRowCol(int nRow, int nCol);
+	void NotifyCurRowCol(int nRow, int nCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2100,7 +2145,7 @@ protected:
 	// Parameters:
 	//      uCode : [in] The notification code to send.
 	//-----------------------------------------------------------------------
-	virtual LRESULT NotifyParent(UINT uCode);
+	virtual LRESULT NotifyParent(UINT uCode) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2113,7 +2158,7 @@ protected:
 	//      XTP_EDIT_NM_LBUTTONDOWN, XTP_EDIT_NM_LBUTTONDBLCLICK, XTP_EDIT_NM_LBUTTONUP,
 	//      XTP_EDIT_NM_RBUTTONDOWN, XTP_EDIT_NM_RBUTTONUP, XTP_EDIT_NM_MOUSEMOVE.
 	//-----------------------------------------------------------------------
-	virtual LRESULT NotifyMouseEvent(UINT uCode, UINT nFlags, const CPoint& point);
+	virtual LRESULT NotifyMouseEvent(UINT uCode, UINT nFlags, const CPoint& point) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2124,13 +2169,13 @@ protected:
 	// Returns:
 	//      TRUE if action was handled, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL NotifyMarginLBtnClick(int nRow, int nDispRow);
+	virtual BOOL NotifyMarginLBtnClick(int nRow, int nDispRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Initialize selection of all the sibling views.
 	//-----------------------------------------------------------------------
-	virtual void NotifySelInit();
+	virtual void NotifySelInit() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2172,9 +2217,8 @@ protected:
 	// Returns:
 	//      TRUE if the word is found, FALSE else.
 	//-----------------------------------------------------------------------
-	BOOL FindWordEx(UINT nFindWhat, int nTextRow, int nCol,
-					XTP_EDIT_LINECOL& rlcWordStart, XTP_EDIT_LINECOL& rlcWordEnd,
-					BOOL& rbOverSpace);
+	BOOL FindWordEx(UINT nFindWhat, int nTextRow, int nCol, XTP_EDIT_LINECOL& rlcWordStart,
+					XTP_EDIT_LINECOL& rlcWordEnd, BOOL& rbOverSpace);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2193,9 +2237,8 @@ protected:
 	//      rbOverSpace  : [out] A reference to BOOL variable to receive
 	//                           if finding started from space or tab character.
 	//-----------------------------------------------------------------------
-	BOOL FindWordEx_str(UINT nFindWhat, XTP_EDIT_LINECOL lcPos_str,
-						XTP_EDIT_LINECOL& rlcWordStart, XTP_EDIT_LINECOL& rlcWordEnd,
-						BOOL& rbOverSpace);
+	BOOL FindWordEx_str(UINT nFindWhat, XTP_EDIT_LINECOL lcPos_str, XTP_EDIT_LINECOL& rlcWordStart,
+						XTP_EDIT_LINECOL& rlcWordEnd, BOOL& rbOverSpace);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2213,8 +2256,7 @@ protected:
 	//      TRUE if the operation is successful, FALSE else.
 	//-----------------------------------------------------------------------
 	BOOL MatchText(int nRow, LPCTSTR szLineText, LPCTSTR szMatchText, int nStartPos,
-				   BOOL bMatchWholeWord, BOOL bMatchCase, BOOL bSearchForward,
-				   BOOL bRedraw = TRUE);
+				   BOOL bMatchWholeWord, BOOL bMatchCase, BOOL bSearchForward, BOOL bRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2234,7 +2276,7 @@ protected:
 	// Returns:
 	//      The display column as integer value.
 	//-----------------------------------------------------------------------
-	int CalcValidDispCol(LPCTSTR szText, int iCol);
+	int CalcValidDispCol(LPCTSTR szText, int iCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2245,7 +2287,7 @@ protected:
 	// Returns:
 	//      The absolute column.
 	//-----------------------------------------------------------------------
-	int CalcAbsCol(LPCTSTR szText, int nDispCol);
+	int CalcAbsCol(LPCTSTR szText, int nDispCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2257,7 +2299,7 @@ protected:
 	// Returns:
 	//      The calculated display column.
 	//-----------------------------------------------------------------------
-	int CalcDispCol(LPCTSTR szText, int nActualCol);
+	int CalcDispCol(LPCTSTR szText, int nActualCol) const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -2271,7 +2313,7 @@ public:
 	// Returns:
 	//      The calculated display column.
 	//-----------------------------------------------------------------------
-	int CalcAbsCol(int nTextRow, int nDispCol);
+	int CalcAbsCol(int nTextRow, int nDispCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2283,7 +2325,7 @@ public:
 	// Returns:
 	//      The calculated display column.
 	//-----------------------------------------------------------------------
-	int CalcDispCol(int nTextRow, int nActualCol);
+	int CalcDispCol(int nTextRow, int nActualCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2292,7 +2334,7 @@ public:
 	// Returns:
 	//      Pointer to CXTPSyntaxEditLineMarksManager
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditLineMarksManager* GetLineMarksManager();
+	CXTPSyntaxEditLineMarksManager* GetLineMarksManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2365,7 +2407,7 @@ public:
 	//      You may override this method and create own fast implementation.
 	//-----------------------------------------------------------------------
 	virtual void GetCollapsableBlocksInfo(int nTextRow,
-										  CXTPSyntaxEditRowsBlockArray& rArBlocks);
+										  CXTPSyntaxEditRowsBlockArray& rArBlocks) const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -2380,7 +2422,7 @@ public:
 	//      Reference to CString with text.
 	// See Also: CXTPSyntaxEditBufferManager::GetLineText
 	//-----------------------------------------------------------------------
-	CString GetLineText(int nRow, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1);
+	CString GetLineText(int nRow, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2393,7 +2435,8 @@ public:
 	//      iCRLFStyle : [in] Style of end of text lines. Default is -1.
 	// See Also: CXTPSyntaxEditBufferManager::GetLineText
 	//-----------------------------------------------------------------------
-	void GetLineText(int nRow, CString& strBuffer, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1);
+	void GetLineText(int nRow, CString& strBuffer, BOOL bAddCRLF = FALSE,
+					 int iCRLFStyle = -1) const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -2451,7 +2494,7 @@ protected:
 	// See also:
 	//      struct XTP_EDIT_COLLAPSEDBLOCK
 	//-----------------------------------------------------------------------
-	CString GetCollapsedText(XTP_EDIT_COLLAPSEDBLOCK* pCoDrawBlk, int nMaxLinesCount = 150);
+	CString GetCollapsedText(XTP_EDIT_COLLAPSEDBLOCK* pCoDrawBlk, int nMaxLinesCount = 150) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2464,7 +2507,7 @@ protected:
 	// See also:
 	//      struct XTP_EDIT_COLLAPSEDBLOCK.
 	//-----------------------------------------------------------------------
-	XTP_EDIT_COLLAPSEDBLOCK* GetBlockFromPt(const CPoint& ptMouse);
+	XTP_EDIT_COLLAPSEDBLOCK* GetBlockFromPt(const CPoint& ptMouse) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2557,7 +2600,8 @@ protected:
 	// See also:
 	//      struct XTP_EDIT_LINECOL
 	//-----------------------------------------------------------------------
-	void OnEditChanged(const XTP_EDIT_LINECOL& LCFrom, const XTP_EDIT_LINECOL& LCTo, int eEditAction);
+	void OnEditChanged(const XTP_EDIT_LINECOL& LCFrom, const XTP_EDIT_LINECOL& LCTo,
+					   int eEditAction);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2665,9 +2709,25 @@ protected:
 	//      nStartDocumentRow : [in] Start row.
 	//      nDocumentRow      : [in] Count of document rows.
 	// Returns:
-	//      Integer value of global visible row.
+	//      Integer value of global visible row. Returns 1 if value less than 1.
+	// See also:
+	//      CalculateVisibleRow_
 	//-----------------------------------------------------------------------
 	int CalculateVisibleRow(int nStartDocumentRow, int nDocumentRow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Calculates global visible row basing in document row.
+	// Parameters:
+	//      nStartDocumentRow : [in] Start row.
+	//      nDocumentRow      : [in] Count of document rows.
+	// Returns:
+	//      Integer value of global visible row. Can return values less than 1 if
+	//      nStartDocumentRow bigger than nDocumentRow.
+	// See also:
+	//      CalculateVisibleRow
+	//-----------------------------------------------------------------------
+	int CalculateVisibleRow_(int nStartDocumentRow, int nDocumentRow);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2732,7 +2792,7 @@ protected:
 	// Returns:
 	//      TRUE if success; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetCollapsedBlockLen(int nStartRow, int& rnLen);
+	BOOL GetCollapsedBlockLen(int nStartRow, int& rnLen) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2743,8 +2803,7 @@ protected:
 	// Returns:
 	//      TRUE if success; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetRowNodes(int nRow, DWORD& dwType);
-
+	BOOL GetRowNodes(int nRow, DWORD& dwType) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2869,75 +2928,84 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void _EnableScrollBarNotify(DWORD dwScrollBar, DWORD dwState);
 
+	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
+
+private:
+	void RedrawScrollBar(int nBar);
+	void InvalidateAll();
+
+protected:
+	CXTPSyntaxEditOptions* m_pOptions;
 	/////////////////////////////////////////////////////////////////////////
 	// Variables
 	/////////////////////////////////////////////////////////////////////////
+	BOOL m_bVertScrollBarEnabled;
+	BOOL m_bHorzScrollBarEnabled;
 
-	BOOL m_bLineNumbers;        // TRUE if line number is to be printed
-	BOOL m_bDrawNodes;          // TRUE if Collapsible nodes signs are to be printed
-	BOOL m_bScrolling;          // Temporary variable to specify if scrolling by mouse wheel
-	BOOL m_bCaseSensitive;      // Case sensitive
-	BOOL m_bSelMargin;          // TRUE if selection margin is to be enabled or not
-	BOOL m_bVertScrollBar;      // TRUE if horizontal scrollbar is to be enabled
-	BOOL m_bHorzScrollBar;      // TRUE if vertical scrollbar is to be enabled
-	BOOL m_bEnableWhiteSpace;   // Show white space
-	BOOL m_bVirtualSpace;       // TRUE if virtual space is enabled (cursor can be paced in any place after line end).
-	BOOL m_bSyntaxColor;        // Enables or disables syntax colorization
-	BOOL m_bEnableOleDrag;      // Enables or disables OLE drag drop
-	BOOL m_bAutoIndent;         // Auto indentation is enabled or not
-	BOOL m_bIsSmartIndent;      // Smart indentation is enabled or not
-	BOOL m_bRightButtonDrag;    // TRUE if user is dragging through right button
-	BOOL m_bIsScrollingEndRow;  // Maintains a internal logic to draw the last row which is partly visible
-	BOOL m_bTokensLoaded;       // Specifies if tokens are loaded or not
-	BOOL m_bDroppable;          // TRUE if the current position is droppable
-	BOOL m_bDragging;           // TRUE if in dragging mode
-	BOOL m_bIsDragging;         // TRUE if dragging, FALSE otherwise
+	CXTPSyntaxEditRowColorMap m_mapInternalRowBkColor;   // The map for row back colors
+	CXTPSyntaxEditRowColorMap m_mapInternalRowForeColor; // The map for row colors
 
-	BOOL m_bPageDirty;          // TRUE if the whole page is dirty
-	BOOL m_bWideCaret;          // Stored Overwrite Caret Style: Thin or Thick.
-	BOOL m_bTabWithSpace;       // Store tabulation width.
-	BOOL m_bIsActive;           // TRUE if application is active.
-	BOOL m_bFocused;            // States if focused or not
+	CXTPNotifySink* m_pSink;
+
+	BOOL m_bVertScrollBar;	 // TRUE if horizontal scrollbar is to be enabled
+	BOOL m_bHorzScrollBar;	 // TRUE if vertical scrollbar is to be enabled
+	BOOL m_bScrolling;		   // Temporary variable to specify if scrolling by mouse wheel
+	BOOL m_bCaseSensitive;	 // Case sensitive
+	BOOL m_bEnableOleDrag;	 // Enables or disables OLE drag drop
+	BOOL m_bIsSmartIndent;	 // Smart indentation is enabled or not
+	BOOL m_bRightButtonDrag;   // TRUE if user is dragging through right button
+	BOOL m_bIsScrollingEndRow; // Maintains a internal logic to draw the last row which is partly
+							   // visible
+	BOOL m_bTokensLoaded;	  // Specifies if tokens are loaded or not
+	BOOL m_bDroppable;		   // TRUE if the current position is droppable
+	BOOL m_bDragging;		   // TRUE if in dragging mode
+	BOOL m_bIsDragging;		   // TRUE if dragging, FALSE otherwise
+
+	BOOL m_bPageDirty;				 // TRUE if the whole page is dirty
+	BOOL m_bIsActive;				 // TRUE if application is active.
+	BOOL m_bFocused;				 // States if focused or not
 	BOOL m_bCreateScrollbarOnParent; // TRUE if parent window scroll bars are used, otherwise FALSE.
-	BOOL m_bReadOnly;           // Store ReadOnly mode.
-	BOOL m_bViewOnly;           // Store ViewOnly mode (as ViewOnly but with normal background.
-	BOOL m_bHideCaret;          // Store is caret visible.
 	BOOL m_bAllowExpandCollapse;
-	BOOL m_bActivateOnFocus;    //Flag to activate control on focus set (like CXTPSyntaxEditView do)
-	BOOL m_bEnableEditAccelerators; // Enable/disable accelerators for Cut, Copy, Paste, Undo, Redoo and Select All operations.
+	BOOL m_bActivateOnFocus; // Flag to activate control on focus set (like CXTPSyntaxEditView do)
 
-	int m_nTopCalculatedRow;    // Top row of the last range of rows that have scrollbars properly calculated
-	int m_nBottomCalculatedRow; // Bottom row of the last range of rows that have scrollbars properly calculated
-	int m_nEditbarLength;       // Edit bar length including gutter and line number
-	int m_nMarginLength;        // Margin length
-	int m_nLineNumLength;       // Line numbers length
-	int m_nNodesWidth;          // The width of the nodes signs
+	int m_nTopCalculatedRow;	// Top row of the last range of rows that have scrollbars properly
+								// calculated
+	int m_nBottomCalculatedRow; // Bottom row of the last range of rows that have scrollbars
+								// properly calculated
+	int m_nEditbarLength;		// Edit bar length including gutter and line number
+	int m_nMarginLength;		// Margin length
+	int m_nLineNumLength;		// Line numbers length
+	int m_nNodesWidth;			// The width of the nodes signs
 
-	int m_nInsertTabCount;      // Temporarily stores the no of tabs to be inserted for auto indentation
-	int m_nInsertSpaceCount;    // Temporarily stores the no of space to be inserted for auto indentation
-	int m_nAutoIndentCol;       // Contains the column for auto indentation
-	int m_nTopRow;              // Top row for display
-	int m_nCurrentDocumentRow;  // Current row in the document
-	int m_nCurrentCol;          // Current absolute column
-	int m_nDispCol;             // Current display column
-	int m_nWheelScroll;         // Lines to scroll on mouse wheel
-	int m_nAverageLineLen;      // Average length of line
-	int m_nCollapsedTextRowsCount;  // The total amount of collapsed blocks in the document,
+	int m_nInsertTabCount; // Temporarily stores the no of tabs to be inserted for auto indentation
+	int m_nInsertSpaceCount;	   // Temporarily stores the no of space to be inserted for auto
+								   // indentation
+	int m_nAutoIndentCol;		   // Contains the column for auto indentation
+	int m_nTopRow;				   // Top row for display
+	int m_nCurrentDocumentRow;	 // Current row in the document
+	int m_nCurrentCol;			   // Current absolute column
+	int m_nDispCol;				   // Current display column
+	int m_nWheelScroll;			   // Lines to scroll on mouse wheel
+	int m_nAverageLineLen;		   // Average length of line
+	int m_nCollapsedTextRowsCount; // The total amount of collapsed blocks in the document,
 
-	DWORD m_dwInsertPos;        // Current insert position
-	DWORD m_dwLastRedrawTime;   // Stores last redrawing time
+	DWORD m_dwInsertPos;	  // Current insert position
+	DWORD m_dwLastRedrawTime; // Stores last redrawing time
 
-#ifndef _UNICODE
+#	ifndef _UNICODE
 	// DBCS Support (specially for IME)
-	BYTE m_chPrevLeadByte; // For none-UNICODE version IME sends double byte chars as 2 WM_CHAR messages. This member keep a lead byte until second byte receive to process them together.
-#endif
+	BYTE m_chPrevLeadByte; // For none-UNICODE version IME sends double byte chars as 2 WM_CHAR
+						   // messages. This member keep a lead byte until second byte receive to
+						   // process them together.
+#	endif
 
-	CPoint m_ptDropPos;         // Specifies the drop position
-	CPoint m_ptPrevMouse;       // Stored mouse position of the previous tip showing.
+	CPoint m_ptDropPos;   // Specifies the drop position
+	CPoint m_ptPrevMouse; // Stored mouse position of the previous tip showing.
 
 	CBitmap m_bmpCache; // Current view cached picture
 
-	CXTPSyntaxEditSelection m_Selection;            // Current selection
+	CXTPSyntaxEditSelection* m_pSelection; // Current selection
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2945,32 +3013,29 @@ protected:
 	//-----------------------------------------------------------------------
 	enum XTPScrolDirection
 	{
-		xtpLeft     = 0x0001,   // Defines left direction.
-		xtpRight    = 0x0010,   // Defines right direction.
-		xtpTop      = 0x0100,   // Defines top direction.
-		xtpBottom   = 0x1000,   // Defines bottom direction.
+		xtpLeft   = 0x0001, // Defines left direction.
+		xtpRight  = 0x0010, // Defines right direction.
+		xtpTop	= 0x0100, // Defines top direction.
+		xtpBottom = 0x1000, // Defines bottom direction.
 	};
-	DWORD m_dwAutoScrollDirection;  // Store active auto scroll direction.
+	DWORD m_dwAutoScrollDirection; // Store active auto scroll direction.
 
-	CXTPSyntaxEditBufferManager*    m_pBuffer;      // The buffer manager
-	CXTPSyntaxEditPaintManager*     m_pPaintManeger;// The paint manager
-	CWnd*                           m_pParentWnd;   // Points to parent window.
+	CXTPSyntaxEditBufferManager* m_pBuffer;		 // The buffer manager
+	CXTPSyntaxEditPaintManager* m_pPaintManeger; // The paint manager
+	CWnd* m_pParentWnd;							 // Points to parent window.
 
-	CUIntArray  m_arCollapsedTextRows;              // The array of rows with beginning of collapsed blocks.
+	CUIntArray m_arCollapsedTextRows; // The array of rows with beginning of collapsed blocks.
 
-	CXTPSyntaxEditToolTipCtrl* m_pToolTip;          // Tool tip window for collapsed blocks text.
+	CXTPSyntaxEditToolTipCtrl* m_pToolTip;			// Tool tip window for collapsed blocks text.
 	CXTPSyntaxEditAutoCompleteWnd* m_pAutoComplete; // Auto complete popup window.
 
-	CString m_strDefaultCfgFilePath;                // Store configuration file full name.
+	CString m_strDefaultCfgFilePath; // Store configuration file full name.
 
-	CString m_strSyntaxScheme;                      //The syntax scheme.
-	CString m_strColorScheme;                       //The color scheme.
+	CString m_strSyntaxScheme; // The syntax scheme.
+	CString m_strColorScheme;  // The color scheme.
 
-	int m_nHScrollMaxWidth;                         // Maximum horizontal scrollbar position.
-	BOOL m_bWndCreateInProgress;                    // Internal flag to indicate that windows creating is in progress.
-
-	CXTPSyntaxEditRowColorMap m_mapRowBkColor;      // The map for row back colors (cache)
-	CXTPSyntaxEditRowColorMap m_mapRowColor;        // The map for row colors (cache)
+	int m_nHScrollMaxWidth;		 // Maximum horizontal scrollbar position.
+	BOOL m_bWndCreateInProgress; // Internal flag to indicate that windows creating is in progress.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2979,7 +3044,7 @@ protected:
 	// Returns:
 	//  a pointer to the screen schema cache.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditLexTextBlock* GetOnScreenSch(int nForRow);
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexTextBlock* GetOnScreenSch(int nForRow);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -3019,14 +3084,14 @@ protected:
 	//===========================================================================
 	class CTextSearchCache;
 
-	CTextSearchCache* m_fcCollapsable;   // Collapsible rows cache
-	CTextSearchCache* m_fcRowColors;     // Row colors cache
+	CTextSearchCache* m_fcCollapsable; // Collapsible rows cache
+	CTextSearchCache* m_fcRowColors;   // Row colors cache
 
 	class CScreenSearchBlock;
 	class CScreenSearchCache;
 
-	CScreenSearchCache*  m_arOnScreenSchCache;   // On-screen schema cache for this control.
-	CByteArray          m_arValidDispRows;      // An array with indexes of valid displayed rows.
+	CScreenSearchCache* m_arOnScreenSchCache; // On-screen schema cache for this control.
+	CByteArray m_arValidDispRows;			  // An array with indexes of valid displayed rows.
 
 	//===========================================================================
 	// CXTPSyntaxEditCtrl::CAverageVal
@@ -3059,21 +3124,22 @@ protected:
 		//      A UINT value denoting the average of all data in the object.
 		// -----------------------------------------------------------------
 		UINT GetAverageValue(UINT uDefaultIfNoData = 0);
+
 	protected:
-		int m_nDataSize;        //The data size.
-		int m_nNextIndex;       //The next index.
-		CUIntArray m_arData;    //The data collection.
+		int m_nDataSize;	 // The data size.
+		int m_nNextIndex;	// The next index.
+		CUIntArray m_arData; // The data collection.
 	};
 
-	CAverageVal m_aveRedrawScreenTime;  //The redraw screen time.
+	CAverageVal m_aveRedrawScreenTime; // The redraw screen time.
 
 	//===========================================================================
-	CXTPSyntaxEditDrawTextProcessor m_DrawTextProcessor;    //The draw text processor.
+	CXTPSyntaxEditDrawTextProcessor* m_pDrawTextProcessor; // The draw text processor.
 
-	CXTPImmWrapper  m_ImmWrapper;       //The Imm wrapper.
-	BOOL m_bIMEsupported;               //Tells whether the IME supported or not.
+	CImmWrapper* m_pImmWrapper; // The Imm wrapper.
+	BOOL m_bIMEsupported;		// Tells whether the IME supported or not.
 
-//for direct assignment (without SynaxEditControl files to read!)
+	// for direct assignment (without SynaxEditControl files to read!)
 	CString m_sIniSet;
 	// String with default or passed type of rules,
 	// e.g. _T("[Schemes]\r\nCPP\r\n[Themes]\r\nDefault\r\nAlternative\r\n")
@@ -3088,13 +3154,12 @@ protected:
 
 public:
 	BOOL m_bDisableRedraw;
-	// If TRUE - control window is not redraw, it is draw last window content (draw cached bitmap). FALSE by default.
-	BOOL m_bDeleteOnFinalRelease;
-	// If TRUE - Delete self OnFinalRelease() call.
+	// If TRUE - control window is not redraw, it is draw last window content (draw cached bitmap).
+	// FALSE by default.
 
 	BOOL m_bUseMonitor;
-	// TRUE if control use special thread to synchronize syntax rules with files with Syntax and Color schemes
-	// FALSE if control works "off-line"
+	// TRUE if control use special thread to synchronize syntax rules with files with Syntax and
+	// Color schemes FALSE if control works "off-line"
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3104,7 +3169,10 @@ public:
 	//  A boolean value that specifies current cofig file mode
 	//
 	// -----------------------------------------------------------------
-	BOOL IsConfigFileMode() { return m_bConfigFileMode; }
+	BOOL IsConfigFileMode()
+	{
+		return m_bConfigFileMode;
+	}
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3113,7 +3181,10 @@ public:
 	// Returns:
 	//  String with current Syntax Scheme
 	// -----------------------------------------------------------------
-	CString GetSyntaxScheme() { return m_strSyntaxScheme; }
+	CString GetSyntaxScheme()
+	{
+		return m_strSyntaxScheme;
+	}
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3122,10 +3193,13 @@ public:
 	// Returns:
 	//  String with current Color Scheme
 	// -----------------------------------------------------------------
-	CString GetColorScheme() { return m_strColorScheme; }
+	CString GetColorScheme()
+	{
+		return m_strColorScheme;
+	}
 
 	CString m_sCustomTitle;
-	//user-defined app title - can be used also in Print Job as unique identifier
+	// user-defined app title - can be used also in Print Job as unique identifier
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3134,7 +3208,10 @@ public:
 	//     sPassedIniSet - passed string
 	//
 	// -----------------------------------------------------------------
-	void SetPassedIniSet(CString sPassedIniSet) { m_sPassedIniSet = sPassedIniSet; }
+	void SetPassedIniSet(CString sPassedIniSet)
+	{
+		m_sPassedIniSet = sPassedIniSet;
+	}
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3146,7 +3223,8 @@ public:
 	//  bColors : additional flag to call in-place editor
 	//
 	// -----------------------------------------------------------------
-	void SetSyntaxAndColorScheme(CString sSyntaxScheme, CString sColorScheme, BOOL bScheme = FALSE, BOOL bColors = FALSE);
+	void SetSyntaxAndColorScheme(CString sSyntaxScheme, CString sColorScheme, BOOL bScheme = FALSE,
+								 BOOL bColors = FALSE);
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -3165,140 +3243,146 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 
-
 AFX_INLINE void CXTPSyntaxEditCtrl::InvalidateRow(int nDispRow)
 {
 	InvalidateRows(nDispRow, nDispRow);
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetAutoIndent() const
 {
-	return m_bAutoIndent;
+	return m_pOptions->m_bAutoIndent;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetSyntaxColor() const
 {
-	return m_bSyntaxColor;
+	return m_pOptions->m_bSyntaxColor;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetSelMargin() const
 {
-	return m_bSelMargin;
+	return m_pOptions->m_bSelMargin;
 }
-
-AFX_INLINE CXTPSyntaxEditBufferManager* CXTPSyntaxEditCtrl::GetEditBuffer()
+AFX_INLINE CXTPSyntaxEditBufferManager* CXTPSyntaxEditCtrl::GetEditBuffer() const
 {
 	return m_pBuffer;
 }
-
-AFX_INLINE CXTPSyntaxEditPaintManager* CXTPSyntaxEditCtrl::GetPaintManager()
+AFX_INLINE CXTPSyntaxEditPaintManager* CXTPSyntaxEditCtrl::GetPaintManager() const
 {
 	return m_pPaintManeger;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetHorzScrollBar() const
 {
 	return m_bHorzScrollBar;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetVertScrollBar() const
 {
 	return m_bVertScrollBar;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsActive() const
 {
 	return m_bIsActive;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsCreateScrollbarOnParent() const
 {
 	return m_bCreateScrollbarOnParent;
 }
-
 AFX_INLINE void CXTPSyntaxEditCtrl::SetCreateScrollbarOnParent(BOOL bSet)
 {
 	m_bCreateScrollbarOnParent = bSet;
 }
-
-AFX_INLINE CXTPSyntaxEditDrawTextProcessor& CXTPSyntaxEditCtrl::GetDrawTextProcessor()
-{
-	return m_DrawTextProcessor;
-}
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsEnabledVirtualSpace() const
 {
-	return m_bVirtualSpace;
+	return m_pOptions->m_bVirtualSpace;
 }
-
-AFX_INLINE CXTPSyntaxEditSelection& CXTPSyntaxEditCtrl::GetSelection()
-{
-	return m_Selection;
-}
-
-AFX_INLINE CXTPSyntaxEditAutoCompleteWnd* CXTPSyntaxEditCtrl::GetAutoCompleteWnd()
+AFX_INLINE CXTPSyntaxEditAutoCompleteWnd* CXTPSyntaxEditCtrl::GetAutoCompleteWnd() const
 {
 	return m_pAutoComplete;
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsReadOnly()
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsReadOnly() const
 {
-	return m_bReadOnly;
+	return m_pOptions->m_bReadOnly;
 }
-
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetLineNumbers() const
+{
+	return m_pOptions->m_bLineNumbers;
+}
 AFX_INLINE void CXTPSyntaxEditCtrl::SetReadOnly(BOOL bReadOnly)
 {
-	m_bReadOnly = bReadOnly;
-	if (m_hWnd)
-		Invalidate(FALSE);
+	m_pOptions->m_bReadOnly = bReadOnly;
+	InvalidateAll();
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsViewOnly()
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsViewOnly() const
 {
-	return m_bViewOnly;
+	return m_pOptions->m_bViewOnly;
 }
-
 AFX_INLINE void CXTPSyntaxEditCtrl::SetViewOnly(BOOL bViewOnly)
 {
-	m_bViewOnly = bViewOnly;
-	m_bReadOnly = bViewOnly;
-	m_bHideCaret = bViewOnly;
+	m_pOptions->m_bViewOnly  = bViewOnly;
+	m_pOptions->m_bReadOnly  = bViewOnly;
+	m_pOptions->m_bHideCaret = bViewOnly;
 
-	if (m_hWnd)
-		Invalidate(FALSE);
+	InvalidateAll();
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsHideCaret()
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::HasFocus() const
 {
-	return m_bHideCaret;
+	return m_bFocused;
 }
-
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsHideCaret() const
+{
+	return m_pOptions->m_bHideCaret;
+}
 AFX_INLINE void CXTPSyntaxEditCtrl::SetHideCaret(BOOL bHide)
 {
-	m_bHideCaret = bHide;
+	m_pOptions->m_bHideCaret = bHide;
 	if (m_hWnd)
 		Invalidate(FALSE);
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetCollapsibleNodes() const
 {
-	return m_bDrawNodes;
+	return m_pOptions->m_bDrawNodes;
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsEnabledEditAccelerators()
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsEnabledEditAccelerators() const
 {
-	return m_bEnableEditAccelerators;
+	return m_pOptions->m_bEnableEditAccelerators;
 }
-
 AFX_INLINE void CXTPSyntaxEditCtrl::EnableEditAccelerators(BOOL bEnable)
 {
-	m_bEnableEditAccelerators = bEnable;
+	m_pOptions->m_bEnableEditAccelerators = bEnable;
 }
 
 AFX_INLINE BOOL CXTPSyntaxEditCtrl::_IsVirtualSpaceActive() const
 {
 	BOOL bVirtualSpace = IsEnabledVirtualSpace();
 	return bVirtualSpace;
+}
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsEnabledWhiteSpace() const
+{
+	return m_pOptions->m_bEnableWhiteSpace;
+}
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::GetTabWithSpace() const
+{
+	return m_pOptions->m_bTabWithSpace;
+}
+AFX_INLINE int CXTPSyntaxEditCtrl::GetTopRow() const
+{
+	return m_nTopRow;
+}
+AFX_INLINE BOOL CXTPSyntaxEditCtrl::IsRightButtonDrag() const
+{
+	return m_bRightButtonDrag;
+}
+AFX_INLINE void CXTPSyntaxEditCtrl::CancelRightButtonDrag()
+{
+	m_bRightButtonDrag = FALSE;
+}
+AFX_INLINE void CXTPSyntaxEditCtrl::SetRightButtonDrag(BOOL bRightButtonDrag)
+{
+	m_bRightButtonDrag = bRightButtonDrag;
+}
+AFX_INLINE int CXTPSyntaxEditCtrl::GetCurCol() const
+{
+	return m_nDispCol;
+}
+AFX_INLINE int CXTPSyntaxEditCtrl::GetCurAbsCol() const
+{
+	return m_nCurrentCol;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -3310,15 +3394,16 @@ class _XTP_EXT_CLASS CXTPSyntaxEditStringDlg : public CDialog
 	DECLARE_DYNAMIC(CXTPSyntaxEditStringDlg)
 
 public:
-	CXTPSyntaxEditStringDlg(CWnd* pParent = NULL);   // standard constructor
+	CXTPSyntaxEditStringDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CXTPSyntaxEditStringDlg();
 	CString m_Syntax;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
+
 public:
 	virtual INT_PTR DoModal();
 	virtual BOOL OnInitDialog();
@@ -3336,4 +3421,5 @@ public:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITSYNTAXEDITCTRL_H__)

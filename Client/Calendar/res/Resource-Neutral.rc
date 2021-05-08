@@ -1,7 +1,6 @@
 // Calendar resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -33,29 +32,41 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Bitmap
 //
 
-XTP_IDB_CALENDAR_EVENT_GLYPHS BITMAP  DISCARDABLE     "Calendar/res/EventGlyps.bmp"
-XTP_IDB_CALENDAR_EXPANDSIGNDOWN BITMAP  DISCARDABLE     "Calendar/res/ExpandSignDown.bmp"
-XTP_IDB_CALENDAR_EXPANDSIGNUP BITMAP  DISCARDABLE     "Calendar/res/ExpandSignUp.bmp"
-XTP_IDB_CALENDAR_TENATIVE_PATTERN BITMAP  DISCARDABLE     "Calendar/res/TenativePattern.bmp"
-XTP_IDB_CALENDAR_TENATIVE_PATTERN_2007 BITMAP  DISCARDABLE     "Calendar/res/Office2007_CalendarTenativePattern.bmp"
-
-XTP_IDB_CALENDAR_TLV_EVENT PNG  MOVEABLE PURE   "Calendar/res/TimeLineViewAppointmentIcon.png"
+XTP_IDB_CALENDAR_EVENT_GLYPHS_100        BITMAP  DISCARDABLE     "Calendar/res/EventGlyps_100.bmp"
+XTP_IDB_CALENDAR_EVENT_GLYPHS_125        BITMAP  DISCARDABLE     "Calendar/res/EventGlyps_125.bmp"
+XTP_IDB_CALENDAR_EVENT_GLYPHS_150        BITMAP  DISCARDABLE     "Calendar/res/EventGlyps_150.bmp"
+XTP_IDB_CALENDAR_EVENT_GLYPHS_200        BITMAP  DISCARDABLE     "Calendar/res/EventGlyps_200.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNDOWN_100      BITMAP  DISCARDABLE     "Calendar/res/ExpandSignDown_100.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNDOWN_125      BITMAP  DISCARDABLE     "Calendar/res/ExpandSignDown_125.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNDOWN_150      BITMAP  DISCARDABLE     "Calendar/res/ExpandSignDown_150.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNDOWN_200      BITMAP  DISCARDABLE     "Calendar/res/ExpandSignDown_200.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNUP_100        BITMAP  DISCARDABLE     "Calendar/res/ExpandSignUp_100.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNUP_125        BITMAP  DISCARDABLE     "Calendar/res/ExpandSignUp_125.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNUP_150        BITMAP  DISCARDABLE     "Calendar/res/ExpandSignUp_150.bmp"
+XTP_IDB_CALENDAR_EXPANDSIGNUP_200        BITMAP  DISCARDABLE     "Calendar/res/ExpandSignUp_200.bmp"
+XTP_IDB_CALENDAR_ELSEWHERE_PATTERN       BITMAP  DISCARDABLE     "Calendar/res/ElsewherePattern.bmp"
+XTP_IDB_CALENDAR_ELSEWHERE_PATTERN_2007  BITMAP  DISCARDABLE     "Calendar/res/Office2007_CalendarElsewherePattern.bmp"
+XTP_IDB_CALENDAR_TENTATIVE_PATTERN       BITMAP  DISCARDABLE     "Calendar/res/TentativePattern.bmp"
+XTP_IDB_CALENDAR_TENTATIVE_PATTERN_2007  BITMAP  DISCARDABLE     "Calendar/res/Office2007_CalendarTentativePattern.bmp"
+XTP_IDB_CALENDAR_TLV_EVENT_100           PNG     MOVEABLE PURE   "Calendar/res/TimeLineViewAppointmentIcon_100.png"
+XTP_IDB_CALENDAR_TLV_EVENT_125           PNG     MOVEABLE PURE   "Calendar/res/TimeLineViewAppointmentIcon_125.png"
+XTP_IDB_CALENDAR_TLV_EVENT_150           PNG     MOVEABLE PURE   "Calendar/res/TimeLineViewAppointmentIcon_150.png"
+XTP_IDB_CALENDAR_TLV_EVENT_200           PNG     MOVEABLE PURE   "Calendar/res/TimeLineViewAppointmentIcon_200.png"
 
 // these bitmaps are the same for different Office 2007 theme styles
-OFFICE2007_CALENDARALLDAYEVENTARROWSLR_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarAllDayEventArrowsLR.png"
-OFFICE2007_CALENDAREVENTGLYPHS_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarEventGlyphs.png"
-OFFICE2007_CALENDAREXPANDDAY_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarExpandDay.png"
+OFFICE2007_CALENDARALLDAYEVENTARROWSLR_BMP  PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarAllDayEventArrowsLR.png"
+OFFICE2007_CALENDAREVENTGLYPHS_BMP          PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarEventGlyphs.png"
+OFFICE2007_CALENDAREXPANDDAY_BMP            PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarExpandDay.png"
+OFFICE2007_CALENDARTODAYHEADER_BMP          PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarTodayHeader.png"
+OFFICE2007_CALENDARTODAYHEADERMVDAY_BMP     PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarTodayHeaderMVDay.png"
 
-OFFICE2007_CALENDARTODAYHEADER_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarTodayHeader.png"
-OFFICE2007_CALENDARTODAYHEADERMVDAY_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarTodayHeaderMVDay.png"
-
-//Styleable Office 2007 theme bitmaps
+// Styleable Office 2007 theme bitmaps
 // these bitmaps are different for Office 2007 theme styles
-OFFICE2007_CALENDARHEADER_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeader.png"
-OFFICE2007_CALENDARHEADERDVGROUP_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderDVGroup.png"
-OFFICE2007_CALENDARHEADERMVDAY_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderMVDay.png"
-OFFICE2007_CALENDARHEADERMVWEEK_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderMVWeek.png"
-OFFICE2007_CALENDARHEADERWVDAY_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderWVDay.png"
+OFFICE2007_CALENDARHEADER_BMP           PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeader.png"
+OFFICE2007_CALENDARHEADERDVGROUP_BMP    PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderDVGroup.png"
+OFFICE2007_CALENDARHEADERMVDAY_BMP      PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderMVDay.png"
+OFFICE2007_CALENDARHEADERMVWEEK_BMP     PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderMVWeek.png"
+OFFICE2007_CALENDARHEADERWVDAY_BMP      PNG  MOVEABLE PURE   "Calendar/res/Office2007_CalendarHeaderWVDay.png"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,9 +74,9 @@ OFFICE2007_CALENDARHEADERWVDAY_BMP PNG  MOVEABLE PURE   "Calendar/res/Office2007
 // Cursor
 //
 
-XTP_IDC_CALENDAR_DRAGMOVE CURSOR  DISCARDABLE     "Calendar/res/DragMove.cur"
-XTP_IDC_CALENDAR_DRAGCOPY CURSOR  DISCARDABLE     "Calendar/res/DragCopy.cur"
-XTP_IDC_DATEPICKER_BACKARROW CURSOR  DISCARDABLE     "Calendar/res/backarrow.cur"
+XTP_IDC_CALENDAR_DRAGMOVE       CURSOR  DISCARDABLE     "Calendar/res/DragMove.cur"
+XTP_IDC_CALENDAR_DRAGCOPY       CURSOR  DISCARDABLE     "Calendar/res/DragCopy.cur"
+XTP_IDC_DATEPICKER_BACKARROW    CURSOR  DISCARDABLE     "Calendar/res/backarrow.cur"
 
 #endif // !defined(_XTP_NO_BINARY_RESOURCES)
 

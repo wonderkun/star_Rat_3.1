@@ -483,6 +483,32 @@ Image::SetPropertyItem(
     return SetStatus(DllExports::GdipSetPropertyItem(nativeImage, item));
 }
 
+#if (GDIPVER >= 0x0110)
+inline Status 
+Image::FindFirstItem(
+    IN ImageItemData* item
+    )
+{
+    return SetStatus(DllExports::GdipFindFirstImageItem(nativeImage, item));
+}
+
+inline Status 
+Image::FindNextItem(
+    IN ImageItemData* item
+    )
+{
+    return SetStatus(DllExports::GdipFindNextImageItem(nativeImage, item));
+}
+
+inline Status 
+Image::GetItemData(
+    IN ImageItemData* item
+    )
+{
+    return SetStatus(DllExports::GdipGetImageItemData(nativeImage, item));
+}
+#endif //(GDIPVER >= 0x0110)
+
 inline Status
 Image::GetLastStatus() const
 {
@@ -778,16 +804,14 @@ Bitmap::Clone(
    GpBitmap* gpdstBitmap = NULL;
    Bitmap* bitmap;
 
-   lastResult = DllExports::GdipCloneBitmapAreaI(
+   if (SetStatus(DllExports::GdipCloneBitmapAreaI(
                                x,
                                y,
                                width,
                                height,
                                format,
                                (GpBitmap *)nativeImage,
-                               &gpdstBitmap);
-
-   if (lastResult == Ok)
+                               &gpdstBitmap)) == Ok)
    {
        bitmap = new Bitmap(gpdstBitmap);
 
@@ -823,16 +847,14 @@ Bitmap::Clone(
    GpBitmap* gpdstBitmap = NULL;
    Bitmap* bitmap;
 
-   SetStatus(DllExports::GdipCloneBitmapArea(
+   if (SetStatus(DllExports::GdipCloneBitmapArea(
                                x,
                                y,
                                width,
                                height,
                                format,
                                (GpBitmap *)nativeImage,
-                               &gpdstBitmap));
-
-   if (lastResult == Ok)
+                               &gpdstBitmap)) == Ok)
    {
        bitmap = new Bitmap(gpdstBitmap);
 
@@ -913,6 +935,180 @@ Bitmap::SetPixel(
         color.GetValue()));
 }
 
+#if (GDIPVER >= 0x0110)
+inline Status Image::SetAbort(GdiplusAbort *pIAbort)
+{
+    return SetStatus(DllExports::GdipImageSetAbort(
+        nativeImage,
+        pIAbort
+        ));
+}
+
+inline Status
+Bitmap::ConvertFormat(
+    PixelFormat format,
+    DitherType dithertype,
+    PaletteType palettetype,
+    ColorPalette *palette,
+    REAL alphaThresholdPercent
+    )
+{
+    return SetStatus(DllExports::GdipBitmapConvertFormat(
+        static_cast<GpBitmap*>(nativeImage),
+        format,
+        dithertype,
+        palettetype,
+        palette,
+        alphaThresholdPercent
+        ));
+}
+
+inline Status 
+Bitmap::InitializePalette(
+    OUT ColorPalette *palette,   // output palette. must be allocated.
+    PaletteType palettetype,     // palette enumeration type.
+    INT optimalColors,           // how many optimal colors
+    BOOL useTransparentColor,    // add a transparent color to the palette.
+    Bitmap *bitmap               // optional bitmap for median cut.
+    )
+{
+    return DllExports::GdipInitializePalette(
+        palette,
+        palettetype,
+        optimalColors,
+        useTransparentColor,
+        bitmap ? static_cast<GpBitmap*>(bitmap->nativeImage) : NULL
+        );
+}
+
+
+inline Status 
+Bitmap::ApplyEffect(
+    IN  Bitmap **inputs,
+    IN  INT numInputs,
+    IN  Effect *effect, 
+    IN  RECT *ROI,                     // optional parameter.
+    OUT RECT *outputRect,              // optional parameter.
+    OUT Bitmap **output
+)
+{
+    if (numInputs < 0)
+    {
+        return InvalidParameter;
+    }
+    
+    GpBitmap *outputNative = NULL;
+    GpBitmap **nativeInputs = new GpBitmap * [numInputs];
+    
+    if (NULL == nativeInputs)
+    {
+        return OutOfMemory;
+    }
+    
+    for (int i = 0; i < numInputs; i++)
+    {
+        nativeInputs[i] = static_cast<GpBitmap*>(inputs[i]->nativeImage);
+    }
+    
+    if (effect->auxData)
+    {
+        DllExports::GdipFree(effect->auxData);
+        effect->auxData = NULL;
+        effect->auxDataSize = 0;
+    }
+    
+    Status status = DllExports::GdipBitmapCreateApplyEffect(
+        nativeInputs,
+        numInputs,
+        effect->nativeEffect,
+        ROI,
+        outputRect,
+        &outputNative,
+        effect->useAuxData,
+        &effect->auxData,
+        &effect->auxDataSize
+        );
+    
+    if ((Ok == status) && outputNative)
+    {
+        *output = new Bitmap(outputNative);
+        
+        if (NULL == *output)
+        {
+            status = OutOfMemory;
+            DllExports::GdipDisposeImage(outputNative);
+        }
+    }
+    else
+    {
+        *output = NULL;
+    }
+    
+    delete [] nativeInputs;
+    
+    return status;
+}
+
+
+inline Status
+Bitmap::ApplyEffect(
+    Effect *effect,
+    RECT *ROI
+)
+{
+    if(effect->auxData)
+    {
+        DllExports::GdipFree(effect->auxData);
+        effect->auxData = NULL;
+        effect->auxDataSize = 0;
+    }
+    
+    return DllExports::GdipBitmapApplyEffect(
+        static_cast<GpBitmap *>(nativeImage),
+        effect->nativeEffect,
+        ROI,
+        effect->useAuxData,
+        &effect->auxData,
+        &effect->auxDataSize
+        );
+}
+
+inline Status
+Bitmap::GetHistogram(
+    IN HistogramFormat format,
+    IN UINT NumberOfEntries,
+    UINT *channel0,
+    UINT *channel1,
+    UINT *channel2,
+    UINT *channel3
+)
+{
+    return DllExports::GdipBitmapGetHistogram(
+        static_cast<GpBitmap *>(nativeImage),
+        format,
+        NumberOfEntries,
+        channel0,
+        channel1,
+        channel2,
+        channel3
+        );
+}
+
+inline Status 
+Bitmap::GetHistogramSize(
+    IN HistogramFormat format,
+    OUT UINT *NumberOfEntries
+)
+{
+    return DllExports::GdipBitmapGetHistogramSize(
+        format,
+        NumberOfEntries
+        );
+}
+
+#endif // (GDIPVER >= 0x0110)
+
+
 inline Status 
 Bitmap::SetResolution(
     IN REAL xdpi, 
@@ -923,3 +1119,4 @@ Bitmap::SetResolution(
         xdpi, ydpi));
 }
 #endif
+

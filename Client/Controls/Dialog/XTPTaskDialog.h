@@ -1,7 +1,6 @@
 // XTPTaskDialog.h: interface for the CXTPTaskDialog class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKDIALOG_H__)
-#define __XTPTASKDIALOG_H__
+#	define __XTPTASKDIALOG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropExchangeXMLNode;
 
@@ -625,12 +626,12 @@ public:
 	// Remarks:
 	//       Any of the following flags can be used with the dwButtons parameter:
 	//
-	//       * <b>TDCBF_OK_BUTTON<b>     The task dialog contains the push button: <b>OK</b>.
-	//       * <b>TDCBF_YES_BUTTON<b>    The task dialog contains the push button: <b>Yes</b>.
-	//       * <b>TDCBF_NO_BUTTON<b>     The task dialog contains the push button: <b>No</b>.
-	//       * <b>TDCBF_CANCEL_BUTTON<b> The task dialog contains the push button: <b>Cancel</b>.
-	//       * <b>TDCBF_RETRY_BUTTON<b>  The task dialog contains the push button: <b>Retry</b>.
-	//       * <b>TDCBF_CLOSE_BUTTON<b>  The task dialog contains the push button: <b>Close</b>.
+	//       * <b>TDCBF_OK_BUTTON</b>     The task dialog contains the push button: <b>OK</b>.
+	//       * <b>TDCBF_YES_BUTTON</b>    The task dialog contains the push button: <b>Yes</b>.
+	//       * <b>TDCBF_NO_BUTTON</b>     The task dialog contains the push button: <b>No</b>.
+	//       * <b>TDCBF_CANCEL_BUTTON</b> The task dialog contains the push button: <b>Cancel</b>.
+	//       * <b>TDCBF_RETRY_BUTTON</b>  The task dialog contains the push button: <b>Retry</b>.
+	//       * <b>TDCBF_CLOSE_BUTTON</b>  The task dialog contains the push button: <b>Close</b>.
 	//
 	//       If the Cancel button is specified, the task dialog will respond to
 	//       typical cancel actions (Alt-F4 and Escape).
@@ -656,12 +657,12 @@ public:
 	// Remarks:
 	//       Any of the following flags can be used with the dwButtons parameter:
 	//
-	//       * <b>TDCBF_OK_BUTTON<b>     The task dialog contains the push button: <b>OK</b>.
-	//       * <b>TDCBF_YES_BUTTON<b>    The task dialog contains the push button: <b>Yes</b>.
-	//       * <b>TDCBF_NO_BUTTON<b>     The task dialog contains the push button: <b>No</b>.
-	//       * <b>TDCBF_CANCEL_BUTTON<b> The task dialog contains the push button: <b>Cancel</b>.
-	//       * <b>TDCBF_RETRY_BUTTON<b>  The task dialog contains the push button: <b>Retry</b>.
-	//       * <b>TDCBF_CLOSE_BUTTON<b>  The task dialog contains the push button: <b>Close</b>.
+	//       * <b>TDCBF_OK_BUTTON</b>     The task dialog contains the push button: <b>OK</b>.
+	//       * <b>TDCBF_YES_BUTTON</b>    The task dialog contains the push button: <b>Yes</b>.
+	//       * <b>TDCBF_NO_BUTTON</b>     The task dialog contains the push button: <b>No</b>.
+	//       * <b>TDCBF_CANCEL_BUTTON</b> The task dialog contains the push button: <b>Cancel</b>.
+	//       * <b>TDCBF_RETRY_BUTTON</b>  The task dialog contains the push button: <b>Retry</b>.
+	//       * <b>TDCBF_CLOSE_BUTTON</b>  The task dialog contains the push button: <b>Close</b>.
 	//
 	//       If the Cancel button is specified, the task dialog will respond to
 	//       typical cancel actions (Alt-F4 and Escape).
@@ -1210,13 +1211,18 @@ public:
 	//       pPX         - CXTPPropExchangeXMLNode node.
 	//-----------------------------------------------------------------------
 	BOOL CreateFromResource(UINT nIDResource, LPCTSTR lpszDialog);
-	BOOL CreateFromResource(HINSTANCE hInstance, UINT nIDResource, LPCTSTR lpszDialog); //<COMBINE CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
-	BOOL CreateFromResourceParam(HINSTANCE hInstance, UINT nIDResource, LPCTSTR lpszDialog, LPCTSTR const* rglpsz, int nString);    //<COMBINE CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
-	BOOL CreateFromResourceParam(CXTPPropExchangeXMLNode* pPX, LPCTSTR const* rglpsz, int nString);     //<COMBINE CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
-
+	BOOL CreateFromResource(HINSTANCE hInstance, UINT nIDResource,
+							LPCTSTR lpszDialog); //<COMBINE
+												 // CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
+	BOOL CreateFromResourceParam(HINSTANCE hInstance, UINT nIDResource, LPCTSTR lpszDialog,
+								 LPCTSTR const* rglpsz,
+								 int nString); //<COMBINE
+											   // CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
+	BOOL CreateFromResourceParam(CXTPPropExchangeXMLNode* pPX, LPCTSTR const* rglpsz,
+								 int nString); //<COMBINE
+											   // CXTPTaskDialog::CreateFromResource@UINT@LPCTSTR>
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//       This notification is sent by the Task Dialog once the task dialog
@@ -1341,125 +1347,164 @@ protected:
 	//          wParam - Extended parameter of notification
 	//          lParam - Extended parameter of notification
 	// Returns: S_OK if successful
-	// See Also: OnDialogConstructed, OnNavigated, OnButtonClicked, OnHyperlinkClicked, OnTimer, OnRadioButtonClicked, OnVerificationClicked, OnExpandoButtonClicked
+	// See Also: OnDialogConstructed, OnNavigated, OnButtonClicked, OnHyperlinkClicked, OnTimer,
+	// OnRadioButtonClicked, OnVerificationClicked, OnExpandoButtonClicked
 	//-----------------------------------------------------------------------
 	virtual HRESULT OnDialogNotify(UINT uNotification, WPARAM wParam, LPARAM lParam);
 
-
 protected:
-
-	int                                          m_nSelButtonID;      // ID of the button that was selected when the task dialog was closed.
-	HWND                                         m_hwndTaskDialog;    // Real window handle of TaskDialog
-	TASKDIALOGCONFIG                             m_config;            // Structure contains information used to display a task dialog
-	CArray<TASKDIALOG_BUTTON,TASKDIALOG_BUTTON&> m_arrButtons;        // Array of TASKDIALOG_BUTTON structures containing the definition of the custom buttons that are to be displayed in the dialog.
-	CArray<TASKDIALOG_BUTTON,TASKDIALOG_BUTTON&> m_arrRadioButtons;   // Array of TASKDIALOG_BUTTON structures containing the definition of the custom radio buttons that are to be displayed in the dialog.
-	BOOL                                         m_bUseComCtl32;      // TRUE to use Vista ComCtl32.dll to show task dialog.
+	int m_nSelButtonID;	// ID of the button that was selected when the task dialog was closed.
+	HWND m_hwndTaskDialog; // Real window handle of TaskDialog
+	TASKDIALOGCONFIG m_config; // Structure contains information used to display a task dialog
+	CArray<TASKDIALOG_BUTTON, TASKDIALOG_BUTTON&>
+		m_arrButtons; // Array of TASKDIALOG_BUTTON structures containing the definition of the
+					  // custom buttons that are to be displayed in the dialog.
+	CArray<TASKDIALOG_BUTTON, TASKDIALOG_BUTTON&>
+		m_arrRadioButtons; // Array of TASKDIALOG_BUTTON structures containing the definition of the
+						   // custom radio buttons that are to be displayed in the dialog.
+	BOOL m_bUseComCtl32;   // TRUE to use Vista ComCtl32.dll to show task dialog.
 
 private:
-
 	BOOL OnAttach(HWND hWndNew);
 	HWND OnDetach();
 
-	static HRESULT CALLBACK TaskDialogCallbackProc(
-		HWND hwnd,
-		UINT uNotification,
-		WPARAM wParam,
-		LPARAM lParam,
-		DWORD_PTR dwRefData);
+	static HRESULT CALLBACK TaskDialogCallbackProc(HWND hwnd, UINT uNotification, WPARAM wParam,
+												   LPARAM lParam, DWORD_PTR dwRefData);
 };
 
-AFX_INLINE void CXTPTaskDialog::OnDialogConstructed() {
-
+AFX_INLINE void CXTPTaskDialog::OnDialogConstructed()
+{
 }
-AFX_INLINE void CXTPTaskDialog::OnDialogDestroyed() {
-
+AFX_INLINE void CXTPTaskDialog::OnDialogDestroyed()
+{
 }
-AFX_INLINE void CXTPTaskDialog::OnHyperlinkClicked(LPCTSTR pszURL) {
-	UNREFERENCED_PARAMETER(pszURL);
+AFX_INLINE void CXTPTaskDialog::OnHyperlinkClicked(LPCTSTR pszURL)
+{
+	::ShellExecute(NULL, _T("open"), pszURL, NULL, NULL, SW_SHOW);
 }
-AFX_INLINE void CXTPTaskDialog::OnButtonClicked(int nButtonID, BOOL& bCloseDialog) {
-	UNREFERENCED_PARAMETER(nButtonID); bCloseDialog = TRUE;
+AFX_INLINE void CXTPTaskDialog::OnButtonClicked(int nButtonID, BOOL& bCloseDialog)
+{
+	UNREFERENCED_PARAMETER(nButtonID);
+	bCloseDialog = TRUE;
 }
-AFX_INLINE void CXTPTaskDialog::OnRadioButtonClicked(int nButtonID) {
+AFX_INLINE void CXTPTaskDialog::OnRadioButtonClicked(int nButtonID)
+{
 	UNREFERENCED_PARAMETER(nButtonID);
 }
-AFX_INLINE void CXTPTaskDialog::OnVerificationClicked(BOOL bChecked) {
+AFX_INLINE void CXTPTaskDialog::OnVerificationClicked(BOOL bChecked)
+{
 	UNREFERENCED_PARAMETER(bChecked);
 }
-AFX_INLINE void CXTPTaskDialog::OnHelp() {
-
+AFX_INLINE void CXTPTaskDialog::OnHelp()
+{
 }
-AFX_INLINE void CXTPTaskDialog::OnInputBoxChanged() {
-
+AFX_INLINE void CXTPTaskDialog::OnInputBoxChanged()
+{
 }
-AFX_INLINE void CXTPTaskDialog::OnExpandoButtonClicked(BOOL bExpanded) {
+AFX_INLINE void CXTPTaskDialog::OnExpandoButtonClicked(BOOL bExpanded)
+{
 	UNREFERENCED_PARAMETER(bExpanded);
 }
-AFX_INLINE void CXTPTaskDialog::OnTimer(DWORD dwMilliSeconds, BOOL& bReset) {
-	UNREFERENCED_PARAMETER(dwMilliSeconds); UNREFERENCED_PARAMETER(bReset);
+AFX_INLINE void CXTPTaskDialog::OnTimer(DWORD dwMilliSeconds, BOOL& bReset)
+{
+	UNREFERENCED_PARAMETER(dwMilliSeconds);
+	UNREFERENCED_PARAMETER(bReset);
 }
-AFX_INLINE void CXTPTaskDialog::OnNavigated() {
-
+AFX_INLINE void CXTPTaskDialog::OnNavigated()
+{
 }
-AFX_INLINE int CXTPTaskDialog::GetSelectedButtonId() const {
+AFX_INLINE int CXTPTaskDialog::GetSelectedButtonId() const
+{
 	return m_nSelButtonID;
 }
-AFX_INLINE int CXTPTaskDialog::GetSelectedRadioButtonId() const {
+AFX_INLINE int CXTPTaskDialog::GetSelectedRadioButtonId() const
+{
 	return m_nSelRadioButtonID;
 }
-AFX_INLINE BOOL CXTPTaskDialog::IsVerificiationChecked() const {
+AFX_INLINE BOOL CXTPTaskDialog::IsVerificiationChecked() const
+{
 	return m_bVerification;
 }
-AFX_INLINE void CXTPTaskDialog::ClickButton(int nButtonID) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_CLICK_BUTTON, nButtonID, 0);
+AFX_INLINE void CXTPTaskDialog::ClickButton(int nButtonID)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_CLICK_BUTTON, nButtonID, 0);
 }
-AFX_INLINE void CXTPTaskDialog::ClickRadioButton(int nButtonID) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_CLICK_RADIO_BUTTON, nButtonID, 0);
+AFX_INLINE void CXTPTaskDialog::ClickRadioButton(int nButtonID)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_CLICK_RADIO_BUTTON, nButtonID, 0);
 }
-AFX_INLINE void CXTPTaskDialog::ClickVerification(BOOL bChecked, BOOL bSetKeyFocus) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_CLICK_VERIFICATION, bChecked, bSetKeyFocus);
+AFX_INLINE void CXTPTaskDialog::ClickVerification(BOOL bChecked, BOOL bSetKeyFocus)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_CLICK_VERIFICATION, static_cast<WPARAM>(bChecked),
+				  bSetKeyFocus);
 }
-AFX_INLINE void CXTPTaskDialog::EnableButton(int nButtonID, BOOL bEnable) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_ENABLE_BUTTON, nButtonID, bEnable);
+AFX_INLINE void CXTPTaskDialog::EnableButton(int nButtonID, BOOL bEnable)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_ENABLE_BUTTON, nButtonID, bEnable);
 }
-AFX_INLINE void CXTPTaskDialog::EnableRadioButton(int nButtonID, BOOL bEnable) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_ENABLE_RADIO_BUTTON, nButtonID, bEnable);
+AFX_INLINE void CXTPTaskDialog::EnableRadioButton(int nButtonID, BOOL bEnable)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_ENABLE_RADIO_BUTTON, nButtonID, bEnable);
 }
-AFX_INLINE void CXTPTaskDialog::SetMarqueeProgressBar(BOOL bMarquee) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_MARQUEE_PROGRESS_BAR, bMarquee, 0);
+AFX_INLINE void CXTPTaskDialog::SetMarqueeProgressBar(BOOL bMarquee)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_MARQUEE_PROGRESS_BAR, static_cast<WPARAM>(bMarquee), 0);
 }
-AFX_INLINE void CXTPTaskDialog::StartProgressBarMarquee(BOOL bStartMarquee, DWORD dwMilliSeconds) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_MARQUEE, bStartMarquee, dwMilliSeconds);
+AFX_INLINE void CXTPTaskDialog::StartProgressBarMarquee(BOOL bStartMarquee, DWORD dwMilliSeconds)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_MARQUEE,
+				  static_cast<WPARAM>(bStartMarquee), static_cast<LPARAM>(dwMilliSeconds));
 }
-AFX_INLINE void CXTPTaskDialog::SetProgressBarState(int nState) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_STATE, nState, 0);
+AFX_INLINE void CXTPTaskDialog::SetProgressBarState(int nState)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_STATE, nState, 0);
 }
-AFX_INLINE void CXTPTaskDialog::SetProgressBarPos(int nPosition) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_POS, nPosition, 0);
+AFX_INLINE void CXTPTaskDialog::SetProgressBarPos(int nPosition)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_POS, nPosition, 0);
 }
-AFX_INLINE void CXTPTaskDialog::SetProgressBarRange(WORD wMinRange, WORD wMaxRange) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_RANGE, 0, MAKELPARAM(wMinRange, wMaxRange));
+AFX_INLINE void CXTPTaskDialog::SetProgressBarRange(WORD wMinRange, WORD wMaxRange)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_PROGRESS_BAR_RANGE, 0,
+				  MAKELPARAM(wMinRange, wMaxRange));
 }
-AFX_INLINE void CXTPTaskDialog::SetButtonElevationRequired(int nButtonID, BOOL bRequired) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, nButtonID, bRequired);
+AFX_INLINE void CXTPTaskDialog::SetButtonElevationRequired(int nButtonID, BOOL bRequired)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, nButtonID, bRequired);
 }
-AFX_INLINE void CXTPTaskDialog::NavigatePage(CXTPTaskDialog& taskDlg) {
-	ASSERT(::IsWindow(m_hwndTaskDialog)); ::SendMessage(m_hwndTaskDialog, TDM_NAVIGATE_PAGE, 0, (LPARAM)&taskDlg.m_config);
+AFX_INLINE void CXTPTaskDialog::NavigatePage(CXTPTaskDialog& taskDlg)
+{
+	ASSERT(::IsWindow(m_hwndTaskDialog));
+	::SendMessage(m_hwndTaskDialog, TDM_NAVIGATE_PAGE, 0, (LPARAM)&taskDlg.m_config);
 }
-AFX_INLINE void CXTPTaskDialog::SetUseSysIcons(BOOL bUseSysIcons) {
+AFX_INLINE void CXTPTaskDialog::SetUseSysIcons(BOOL bUseSysIcons)
+{
 	m_bUseSysIcons = bUseSysIcons;
 }
-AFX_INLINE void CXTPTaskDialog::SetUseComCtl32(BOOL bUseComCtl32) {
+AFX_INLINE void CXTPTaskDialog::SetUseComCtl32(BOOL bUseComCtl32)
+{
 	m_bUseComCtl32 = bUseComCtl32;
 }
-AFX_INLINE void CXTPTaskDialog::EnableMessageBoxStyle(BOOL bEnable) {
+AFX_INLINE void CXTPTaskDialog::EnableMessageBoxStyle(BOOL bEnable)
+{
 	m_bMessageBoxStyle = bEnable;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKDIALOG_H__)

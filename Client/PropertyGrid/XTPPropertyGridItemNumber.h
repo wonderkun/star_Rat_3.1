@@ -1,7 +1,6 @@
 // XTPPropertyGridItemNumber.h interface for the CXTPPropertyGridItemNumber class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEMNUMBER_H__)
-#define __XTPPROPERTYGRIDITEMNUMBER_H__
+#	define __XTPPROPERTYGRIDITEMNUMBER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,7 +36,6 @@
 class _XTP_EXT_CLASS CXTPPropertyGridItemNumber : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemNumber object
@@ -73,7 +73,11 @@ public:
 	// See Also: BindToNumber
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemNumber(LPCTSTR strCaption, long nValue = 0, long* pBindNumber = NULL);
-	CXTPPropertyGridItemNumber(UINT nID, long nValue = 0, long* pBindNumber = NULL);  // <COMBINE CXTPPropertyGridItemNumber::CXTPPropertyGridItemNumber@LPCTSTR@long@long*>
+	CXTPPropertyGridItemNumber(
+		UINT nID, long nValue = 0,
+		long* pBindNumber =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemNumber::CXTPPropertyGridItemNumber@LPCTSTR@long@long*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -82,7 +86,6 @@ public:
 	virtual ~CXTPPropertyGridItemNumber();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change the item's value.
@@ -125,9 +128,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void BindToNumber(long* pBindNumber);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change an item's value.
@@ -155,15 +156,20 @@ protected:
 	virtual void OnBeforeInsert();
 
 protected:
-
-	long m_nValue;          // Value of the item.
-	long* m_pBindNumber;    // Binded object.  This is a pointer to the variable bound to this item.
+	long m_nValue;		 // Value of the item.
+	long* m_pBindNumber; // Binded object.  This is a pointer to the variable bound to this item.
 
 private:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
 
+	void BindDispatch();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	DECLARE_DYNAMIC(CXTPPropertyGridItemNumber)
 };
-
 
 //===========================================================================
 // Summary:
@@ -173,7 +179,6 @@ private:
 class _XTP_EXT_CLASS CXTPPropertyGridItemDouble : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemDouble object.
@@ -213,8 +218,13 @@ public:
 	//            updated until you call CXTPPropertyGrid::Refresh.
 	// See Also: BindToDouble
 	//-----------------------------------------------------------------------
-	CXTPPropertyGridItemDouble(LPCTSTR strCaption, double fValue = 0, LPCTSTR strFormat = NULL, double* pBindNumber = NULL);
-	CXTPPropertyGridItemDouble(UINT nID, double fValue = 0, LPCTSTR strFormat = NULL, double* pBindNumber = NULL); // <COMBINE CXTPPropertyGridItemDouble::CXTPPropertyGridItemDouble@LPCTSTR@double@LPCTSTR@double*>
+	CXTPPropertyGridItemDouble(LPCTSTR strCaption, double fValue = 0, LPCTSTR strFormat = NULL,
+							   double* pBindNumber = NULL);
+	CXTPPropertyGridItemDouble(
+		UINT nID, double fValue = 0, LPCTSTR strFormat = NULL,
+		double* pBindNumber =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemDouble::CXTPPropertyGridItemDouble@LPCTSTR@double@LPCTSTR@double*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -223,7 +233,6 @@ public:
 	virtual ~CXTPPropertyGridItemDouble();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change the item's value.
@@ -286,7 +295,6 @@ public:
 	void UseSystemDecimalSymbol(BOOL bUseSystemDecimalSymbol);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change an item's value.
@@ -313,9 +321,7 @@ protected:
 	//-------------------------------------------------------------------------
 	virtual void OnBeforeInsert();
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Converts a String vale to a double value.
@@ -339,30 +345,47 @@ protected:
 	CString DoubleToString(double dValue);
 
 protected:
-
-	double m_fValue;        // Double value of item.
-	double* m_pBindDouble;  // Binded value.  This is a pointer to the variable bound to this item.
-	BOOL m_bUseSystemDecimalSymbol;  // TRUE to use system defined decimal symbol, FALSE to always use a decimal point ".".
+	double m_fValue;	   // Double value of item.
+	double* m_pBindDouble; // Binded value.  This is a pointer to the variable bound to this item.
+	BOOL m_bUseSystemDecimalSymbol; // TRUE to use system defined decimal symbol, FALSE to always
+									// use a decimal point ".".
 
 private:
 	DECLARE_DYNAMIC(CXTPPropertyGridItemDouble)
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemDouble)
+
+	void BindDispatch();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE long CXTPPropertyGridItemNumber::GetNumber() const {
+AFX_INLINE long CXTPPropertyGridItemNumber::GetNumber() const
+{
 	return m_nValue;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE double CXTPPropertyGridItemDouble::GetDouble() const {
+AFX_INLINE double CXTPPropertyGridItemDouble::GetDouble() const
+{
 	return m_fValue;
 }
-AFX_INLINE void CXTPPropertyGridItemDouble::UseSystemDecimalSymbol(BOOL bUseSystemDecimalSymbol) {
+AFX_INLINE void CXTPPropertyGridItemDouble::UseSystemDecimalSymbol(BOOL bUseSystemDecimalSymbol)
+{
 	m_bUseSystemDecimalSymbol = bUseSystemDecimalSymbol;
-	m_strValue = DoubleToString(m_fValue);
+	m_strValue				  = DoubleToString(m_fValue);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDITEMNUMBER_H__)

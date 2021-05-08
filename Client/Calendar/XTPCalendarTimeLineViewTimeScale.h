@@ -1,6 +1,22 @@
 // XTPCalendarTimeLineViewTimeScale.h: interface for the
 // CXTPCalendarTimeLineViewTimeScale class.
 //
+// (c)1998-2020 Codejock Software, All Rights Reserved.
+//
+// THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
+// RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
+// CONSENT OF CODEJOCK SOFTWARE.
+//
+// THIS SOURCE CODE CAN ONLY BE USED UNDER THE TERMS AND CONDITIONS OUTLINED
+// IN THE XTREME TOOLKIT PRO LICENSE AGREEMENT. CODEJOCK SOFTWARE GRANTS TO
+// YOU (ONE SOFTWARE DEVELOPER) THE LIMITED RIGHT TO USE THIS SOFTWARE ON A
+// SINGLE COMPUTER.
+//
+// CONTACT INFORMATION:
+// support@codejock.com
+// http://www.codejock.com
+//
+/////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
 #ifndef _XTPCALENDARTIMELINEVIEWTIMESCALE_H__
@@ -8,14 +24,10 @@
 //}}AFX_CODEJOCK_PRIVATE
 
 #if _MSC_VER > 1000
-#pragma once
+#	pragma once
 #endif // _MSC_VER > 1000
 
-
-#include "Common/XTPDrawHelpers.h"
-
-#include "XTPCalendarPaintManager.h"
-#include "XTPCalendarPtrs.h"
+#include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 struct XTPCALENDARHITTESTINFO_TIMELINE_VIEW;
 class CXTPCalendarTimeLineView;
@@ -28,16 +40,16 @@ class CXTPCalendarTimeLineViewTimeScalePart;
 //============================================================================
 enum XTPEnumCalendarDateItem
 {
-	xtpDTScale_Unknown  = 0, // Typed unknown value
+	xtpDTScale_Unknown = 0, // Typed unknown value
 
-	xtpDTScale_Sec      = 0x0001, // Sec scale
-	xtpDTScale_Min      = 0x0002, // Min scale
-	xtpDTScale_Hour     = 0x0004, // Hour scale
-	xtpDTScale_Day      = 0x0010, // Day scale
+	xtpDTScale_Sec		= 0x0001, // Sec scale
+	xtpDTScale_Min		= 0x0002, // Min scale
+	xtpDTScale_Hour		= 0x0004, // Hour scale
+	xtpDTScale_Day		= 0x0010, // Day scale
 	xtpDTScale_WorkWeek = 0x0015, // WorkWeek scale
-	xtpDTScale_Week     = 0x0020, // Week scale
-	xtpDTScale_Month    = 0x0040, // Month scale
-	xtpDTScale_Year     = 0x0080, // Year scale
+	xtpDTScale_Week		= 0x0020, // Week scale
+	xtpDTScale_Month	= 0x0040, // Month scale
+	xtpDTScale_Year		= 0x0080, // Year scale
 };
 
 //============================================================================
@@ -46,8 +58,8 @@ enum XTPEnumCalendarDateItem
 //============================================================================
 struct XTP_CALENDAR_TIMELINE_VIEW_SCALE
 {
-	int m_eType;    // one of the values from enum XTPEnumCalendarDateItem
-	int m_nValue;   // number of days to show (e.g. 1, 5, 7, 31)
+	int m_eType;  // one of the values from enum XTPEnumCalendarDateItem
+	int m_nValue; // number of days to show (e.g. 1, 5, 7, 31)
 };
 
 //============================================================================
@@ -80,7 +92,7 @@ public:
 	// Returns:
 	//     CXTPCalendarTimeLineView pointer to the owner view object.
 	//-----------------------------------------------------------------------
-	CXTPCalendarTimeLineView* GetView();
+	CXTPCalendarTimeLineView* GetView() const;
 
 	// -----------------
 	// Summary:
@@ -88,7 +100,7 @@ public:
 	// Returns:
 	//  pointer to CXTPCalendarTLV_TimeScaleParams object
 	// -----------------
-	virtual CXTPCalendarTLV_TimeScaleParams* GetTimeScaleParams();
+	virtual CXTPCalendarTLV_TimeScaleParams* GetTimeScaleParams() const;
 
 	// ---------------------------------------
 	// Summary:
@@ -114,7 +126,7 @@ public:
 	// Returns:
 	//  start view date value as COleDateTime object
 	// -----------------
-	virtual COleDateTime GetStartViewDate();
+	virtual COleDateTime GetStartViewDate() const;
 
 	// -----------------------
 	// Summary:
@@ -150,7 +162,7 @@ public:
 	// Returns:
 	// time scale rectangle as CRect object
 	// -----------------
-	virtual CRect GetRect();
+	virtual CRect GetRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -175,15 +187,16 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest);
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
-	CXTPEmptyRect m_rcScale; // internal member to keep time scale rectangle
+	CRect m_rcScale; // internal member to keep time scale rectangle
 
 protected:
-	CXTPCalendarTimeLineView* m_pParentView; //internal pointer to parent view
-	COleDateTime m_dtStartViewDate; // internal datetime object to keep start view date
-	CXTPEmptyRect m_rcRect;  // internal member used for layout adjustment
-	CXTPCalendarTLV_TimeScaleParams* m_pTimeScaleParams; // internal pointer to CXTPCalendarTLV_TimeScaleParams
+	CXTPCalendarTimeLineView* m_pParentView; // internal pointer to parent view
+	COleDateTime m_dtStartViewDate;			 // internal datetime object to keep start view date
+	CRect m_rcRect;							 // internal member used for layout adjustment
+	CXTPCalendarTLV_TimeScaleParams* m_pTimeScaleParams; // internal pointer to
+														 // CXTPCalendarTLV_TimeScaleParams
 };
 
 //============================================================================
@@ -193,6 +206,7 @@ protected:
 class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams : public CXTPCmdTarget
 {
 	friend class CXTPCalendarTimeLineViewTimeScale;
+
 public:
 	// -----------------
 	// Summary:
@@ -218,7 +232,7 @@ public:
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScale
 	// -----------------
-	CXTPCalendarTimeLineViewTimeScale* GetParentTimeScale();
+	CXTPCalendarTimeLineViewTimeScale* GetParentTimeScale() const;
 
 	// -----------------
 	// Summary:
@@ -234,7 +248,7 @@ public:
 	// Returns:
 	//     interval as XTP_CALENDAR_TIMELINE_VIEW_SCALE object
 	// -----------------
-	virtual XTP_CALENDAR_TIMELINE_VIEW_SCALE GetScaleInterval() const;
+	virtual XTP_CALENDAR_TIMELINE_VIEW_SCALE GetTimeLineViewScale() const;
 
 	// -----------------
 	// Summary:
@@ -242,7 +256,7 @@ public:
 	// Returns:
 	//     interval as COleDateTimeSpan object
 	// -----------------
-	virtual COleDateTimeSpan GetScaleInterval();
+	virtual COleDateTimeSpan GetScaleInterval() const;
 
 	// -----------------
 	// Summary:
@@ -250,7 +264,7 @@ public:
 	// Returns:
 	//     int as current time scale inteval width
 	// -----------------
-	virtual int GetScaleIntervalWidth_px();
+	virtual int GetScaleIntervalWidth_px() const;
 
 	// -----------------
 	// Summary:
@@ -258,7 +272,7 @@ public:
 	// Returns:
 	//     current time per pixel value  as COleDateTimeSpan object
 	// -----------------
-	virtual COleDateTimeSpan GetTimePerPixel();
+	virtual COleDateTimeSpan GetTimePerPixel() const;
 
 	// -----------------
 	//  Summary:
@@ -275,14 +289,15 @@ public:
 	//     abstract function - real ones are:
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Day::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Week::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart*
+	//     CXTPCalendarTLV_TimeScaleParams_WorkWeek::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Month::GetPart()
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScalePart object
 	// -----------------
-	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() = 0;
+	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() const = 0;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to set the time scale interval m_scaleInterval.
@@ -305,8 +320,7 @@ private:
 // Summary:
 //     This class implements a Timeline scale params for Day case.
 //============================================================================
-class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Day :
-	public CXTPCalendarTLV_TimeScaleParams
+class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Day : public CXTPCalendarTLV_TimeScaleParams
 {
 public:
 	// -----------------
@@ -330,19 +344,20 @@ public:
 	//     abstract function - real ones are:
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Day::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Week::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart*
+	//     CXTPCalendarTLV_TimeScaleParams_WorkWeek::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Month::GetPart()
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScalePart object
 	// -----------------
-	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart();
+	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() const;
 };
 
 //============================================================================
 // Summary:
 //     This class implements a Timeline scale params for Week case.
 //============================================================================
-class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Week :
-	public CXTPCalendarTLV_TimeScaleParams
+class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Week : public CXTPCalendarTLV_TimeScaleParams
 {
 public:
 	// -----------------
@@ -366,19 +381,58 @@ public:
 	//     abstract function - real ones are:
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Day::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Week::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart*
+	//     CXTPCalendarTLV_TimeScaleParams_WorkWeek::GetPart()
 	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Month::GetPart()
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScalePart object
 	// -----------------
-	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart();
+	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() const;
+};
+
+//============================================================================
+// Summary:
+//     This class implements a Timeline scale params for WorkWeek case.
+//============================================================================
+class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_WorkWeek
+	: public CXTPCalendarTLV_TimeScaleParams
+{
+public:
+	// -----------------
+	// Summary:
+	//     Default object constructor.
+	// Parameters:
+	//     pTimeScale - pointer to CXTPCalendarTimeLineViewTimeScale
+	// -----------------
+	CXTPCalendarTLV_TimeScaleParams_WorkWeek(CXTPCalendarTimeLineViewTimeScale* pTimeScale);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default class destructor.
+	// Remarks:
+	//     Handles member items deallocation.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPCalendarTLV_TimeScaleParams_WorkWeek();
+
+	// -----------------
+	// Summary:
+	//     abstract function - real ones are:
+	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Day::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Week::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart*
+	//     CXTPCalendarTLV_TimeScaleParams_WorkWeek::GetPart()
+	//     CXTPCalendarTimeLineViewTimeScalePart* CXTPCalendarTLV_TimeScaleParams_Month::GetPart()
+	// Returns:
+	//     pointer to CXTPCalendarTimeLineViewTimeScalePart object
+	// -----------------
+	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() const;
 };
 
 //============================================================================
 // Summary:
 //     This class implements a Timeline scale params for Month case.
 //============================================================================
-class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Month :
-	public CXTPCalendarTLV_TimeScaleParams
+class _XTP_EXT_CLASS CXTPCalendarTLV_TimeScaleParams_Month : public CXTPCalendarTLV_TimeScaleParams
 {
 public:
 	// -----------------
@@ -406,67 +460,53 @@ public:
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScalePart object
 	// -----------------
-	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart();
+	virtual CXTPCalendarTimeLineViewTimeScalePart* GetPart() const;
 
-	//virtual CString FormatLowerScaleLabel(COleDateTime dtDateTime);
-	//virtual void DrawLowerScale(CDC* pDC, DATE dtStart, const CRect& rcRect);
+	// virtual CString FormatLowerScaleLabel(COleDateTime dtDateTime);
+	// virtual void DrawLowerScale(CDC* pDC, DATE dtStart, const CRect& rcRect);
 };
 
-AFX_INLINE CXTPCalendarTimeLineView* CXTPCalendarTimeLineViewTimeScale::GetView()
+AFX_INLINE CXTPCalendarTimeLineView* CXTPCalendarTimeLineViewTimeScale::GetView() const
 {
 	return m_pParentView;
 }
-
 AFX_INLINE CXTPCalendarTLV_TimeScaleParams*
-	CXTPCalendarTimeLineViewTimeScale::GetTimeScaleParams()
+	CXTPCalendarTimeLineViewTimeScale::GetTimeScaleParams() const
 {
 	return m_pTimeScaleParams;
 }
-
-AFX_INLINE COleDateTime CXTPCalendarTimeLineViewTimeScale::GetStartViewDate()
+AFX_INLINE COleDateTime CXTPCalendarTimeLineViewTimeScale::GetStartViewDate() const
 {
 	return m_dtStartViewDate;
 }
-
 AFX_INLINE void CXTPCalendarTimeLineViewTimeScale::SetStartViewDate(COleDateTime dt)
 {
 	m_dtStartViewDate = dt;
 }
-
-AFX_INLINE CRect CXTPCalendarTimeLineViewTimeScale::GetRect()
+AFX_INLINE CRect CXTPCalendarTimeLineViewTimeScale::GetRect() const
 {
 	return m_rcRect;
 }
-
 AFX_INLINE CXTPCalendarTimeLineViewTimeScale*
-						CXTPCalendarTLV_TimeScaleParams::GetParentTimeScale()
+	CXTPCalendarTLV_TimeScaleParams::GetParentTimeScale() const
 {
 	return m_pTimeScale;
 }
-
-
-AFX_INLINE XTP_CALENDAR_TIMELINE_VIEW_SCALE CXTPCalendarTLV_TimeScaleParams::GetScaleInterval() const
+AFX_INLINE XTP_CALENDAR_TIMELINE_VIEW_SCALE
+	CXTPCalendarTLV_TimeScaleParams::GetTimeLineViewScale() const
 {
 	return m_scaleInterval;
 }
-
-AFX_INLINE int CXTPCalendarTLV_TimeScaleParams::GetScaleIntervalWidth_px()
+AFX_INLINE int CXTPCalendarTLV_TimeScaleParams::GetScaleIntervalWidth_px() const
 {
 	return m_nScaleIntervalWidth_px;
 }
-
-AFX_INLINE COleDateTimeSpan CXTPCalendarTLV_TimeScaleParams::GetTimePerPixel()
-{
-	ASSERT(m_nScaleIntervalWidth_px > 0);
-	COleDateTimeSpan spSInterval = GetScaleInterval();
-	COleDateTimeSpan spTimePerPixel = (DATE)((double)GetScaleInterval() / max(m_nScaleIntervalWidth_px, 1));
-	return spTimePerPixel;
-}
-
 AFX_INLINE int CXTPCalendarTLV_TimeScaleParams::GetTimeScaleParamsID() const
 {
 	return m_nTimeScaleParamsID;
 }
 
 //============================================================================
+
+#include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // (_XTPCALENDARTIMELINEVIEWTIMESCALE_H__)

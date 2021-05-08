@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI))
 #ifdef _WIN32
 LANGUAGE LANG_LATVIAN, SUBLANG_DEFAULT
 #pragma code_page(1257)
@@ -198,10 +197,10 @@ BEGIN
     XTP_IDS_SE_ERR_ASSOCINCOMPLETE 
                             "Nav saistîjumu"
     XTP_IDS_SE_ERR_DDETIMEOUT 
-                            "The DDE transaction could not be completed because the request timed out."
-    XTP_IDS_SE_ERR_DDEFAIL   "The DDE transaction failed."
-    XTP_IDS_SE_ERR_DDEBUSY   "The DDE transaction could not be completed because other DDE transactions were being processed."
-    XTP_IDS_SE_ERR_NOASSOC   "There is no application associated with the given file name extension."
+                            "DDE transakciju nevar pabeigt, jo pieprasîjumam ir iestâjies taimauts."
+    XTP_IDS_SE_ERR_DDEFAIL   "DDE darîjums neizdevâs."
+    XTP_IDS_SE_ERR_DDEBUSY   "DDE darîjums nevarçja pabeigt, jo citi DDE darîjumi tika apstrâdâti."
+    XTP_IDS_SE_ERR_NOASSOC   "Nav, kas saistîts ar konkrçtu faila nosaukuma paplaðinâjumu."
     XTP_IDS_SE_ERR_DLLNOTFOUND 
                             "Fails nav atrasts"
     XTP_IDS_SE_ERR_UNKOWN    "Tika norâdîts kïûdas numurs %d"
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standarta krâsas"
+	XTP_IDS_RECENT_COLORS    "Nesen krâsas"
+	XTP_IDS_THEME_COLORS     "Dizaina krâsas"
+	XTP_IDS_TAGCLOUD_TIP     "%s frâzi, rezultâts %d"
     XTP_IDS_TIPTEXT          "Padoma teksts"
     XTP_IDS_DIDYOUKNOW       "Vai jûs zinâjât..."
     XTP_IDS_FILE_ABSENT      "Ðis fails nepastâv."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Paslçpt detaïas"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "fons 1"
+    XTP_IDS_BACKGROUND2        "fons 2"
+    XTP_IDS_TEXT1              "Teksts 1"
+    XTP_IDS_TEXT2              "Teksts 2"
+    XTP_IDS_ACCENT1            "Izcçlums 1"
+    XTP_IDS_ACCENT2            "Izcçlums 2"
+    XTP_IDS_ACCENT3            "Izcçlums 3"
+    XTP_IDS_ACCENT4            "Izcçlums 4"
+    XTP_IDS_ACCENT5            "Izcçlums 5"
+    XTP_IDS_ACCENT6            "Izcçlums 6"
+    XTP_IDS_LIGHTER            "Ðíiltavas"
+    XTP_IDS_DARKER             "Tumðâku"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI))

@@ -1,7 +1,6 @@
 // XTPPopupBar.h : interface for the CXTPPopupBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPOPUPBAR_H__)
-#define __XTPPOPUPBAR_H__
+#	define __XTPPOPUPBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControlPopup;
 class CXTPCommandBars;
@@ -38,9 +37,9 @@ class CXTPCommandBars;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPopupBar : public CXTPCommandBar
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_XTP_COMMANDBAR(CXTPPopupBar)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	class CControlExpandButton;
@@ -56,8 +55,7 @@ protected:
 	// Summary:
 	//     Destroys a CXTPPopupBar object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
-	~CXTPPopupBar();
-
+	virtual ~CXTPPopupBar();
 
 public:
 	//-----------------------------------------------------------------------
@@ -115,7 +113,8 @@ public:
 	//     TRUE if successful; otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL Popup(int xPos, int yPos, LPCRECT rcExclude);
-	BOOL Popup(CXTPControlPopup* pControlPopup, BOOL bSelectFirst = FALSE); // <combine CXTPPopupBar::Popup@int@int@LPCRECT>
+	BOOL Popup(CXTPControlPopup* pControlPopup,
+			   BOOL bSelectFirst = FALSE); // <combine CXTPPopupBar::Popup@int@int@LPCRECT>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -221,8 +220,9 @@ public:
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. dwMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
@@ -268,12 +268,14 @@ public:
 	virtual BOOL SetTrackingMode(int bMode, BOOL bSelectFirst = TRUE, BOOL bKeyboard = FALSE);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Redraw the popup bar.
 	//-----------------------------------------------------------------------
-	virtual void DelayRedraw() { Redraw(); }
+	virtual void DelayRedraw()
+	{
+		Redraw();
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -403,9 +405,8 @@ public:
 	virtual CRect GetBorders();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
-
 
 	//{{AFX_MSG(CXTPPopupBar)
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -417,15 +418,13 @@ protected:
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	LRESULT OnFloatStatus(WPARAM wParam, LPARAM);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary: Animates popup window
 	//-------------------------------------------------------------------------
 	virtual void Animate();
-
 
 private:
 	void AdjustScrolling(LPSIZE lpSize, BOOL bDown = FALSE, BOOL bInvalidate = FALSE);
@@ -439,87 +438,48 @@ private:
 	XTPAnimationType GetAnimationType() const;
 
 public:
-	static double m_dMaxWidthDivisor;   // Maximum available width of popup
+	static double m_dMaxWidthDivisor; // Maximum available width of popup
 
 protected:
-	CXTPControlPopup* m_pControlPopup;  // Control that popuped the bar.
-	CPoint m_ptPopup;                   // Position of the bar.
-	CRect m_rcExclude;                  // Excluded area.
-	DWORD m_popupFlags;                 // Flags of the bar.
-	BOOL m_bDynamicLayout;              // TRUE if DynamicLayout routine executed.
-	BOOL m_bCollapsed;                  // TRUE if popupbar is collapsed.
-	BOOL m_bExpanded;                   // TRUE if popupbar is expanded.
-	BOOL m_bExpanding;                  // TRUE if popupbar is expanding.
+	CXTPControlPopup* m_pControlPopup; // Control that popuped the bar.
+	CPoint m_ptPopup;				   // Position of the bar.
+	CRect m_rcExclude;				   // Excluded area.
+	DWORD m_popupFlags;				   // Flags of the bar.
+	BOOL m_bDynamicLayout;			   // TRUE if DynamicLayout routine executed.
+	BOOL m_bCollapsed;				   // TRUE if popupbar is collapsed.
+	BOOL m_bExpanded;				   // TRUE if popupbar is expanded.
+	BOOL m_bExpanding;				   // TRUE if popupbar is expanding.
 
-	BOOL m_bTearOffPopup;               // TRUE if popupbar has tear-off option.
-	CRect m_rcTearOffGripper;           // Tear-off gripper position.
-	CRect m_rcResizeGripper;            // Resizable gripper position.
-	BOOL m_bResizable;                  // TRUE to allow resize
+	BOOL m_bTearOffPopup;	 // TRUE if popupbar has tear-off option.
+	CRect m_rcTearOffGripper; // Tear-off gripper position.
+	CRect m_rcResizeGripper;  // Resizable gripper position.
+	BOOL m_bResizable;		  // TRUE to allow resize
 
-	BOOL m_bTearOffSelected;            // TRUE if gripper selected.
-	UINT_PTR m_nTearOffTimer;           // Tear-off timer.
-	BOOL m_bTearOffTracking;            // Tear-off tracking mode.
-	CSize m_szTearOffBar;               // Size of the bar.
-	CXTPToolBar* m_pTearOffBar;         // Tear-off toolbar pointer.
-	CString m_strTearOffCaption;        // Caption of the Tear-off toolbar.
-	UINT m_nTearOffID;                  // ID of the Tear-off toolbar.
-	int m_nTearOffWidth;                // Width of the Tear-off toolbar.
-	BOOL m_bShowShadow;                 // TRUE to show the shadow.
-	CRect m_rcBorders;                  // Borders of the bar.
-	BOOL m_bDoubleGripper;              // TRUE if popup is state popup type
-	BOOL m_bContextMenu;                // TRUE if popup bar is context menu
+	BOOL m_bTearOffSelected;	 // TRUE if gripper selected.
+	UINT_PTR m_nTearOffTimer;	// Tear-off timer.
+	BOOL m_bTearOffTracking;	 // Tear-off tracking mode.
+	CSize m_szTearOffBar;		 // Size of the bar.
+	CXTPToolBar* m_pTearOffBar;  // Tear-off toolbar pointer.
+	CString m_strTearOffCaption; // Caption of the Tear-off toolbar.
+	UINT m_nTearOffID;			 // ID of the Tear-off toolbar.
+	int m_nTearOffWidth;		 // Width of the Tear-off toolbar.
+	BOOL m_bShowShadow;			 // TRUE to show the shadow.
+	CRect m_rcBorders;			 // Borders of the bar.
+	BOOL m_bDoubleGripper;		 // TRUE if popup is state popup type
+	BOOL m_bContextMenu;		 // TRUE if popup bar is context menu
 
-	int m_nMaxHeight;                   // Maximum height the popup bar can become
-
-private:
-
-	struct SCROLLINFO
-	{
-		struct BTNSCROLL
-		{
-			void Init(CWnd* pParent, UINT nID)
-			{
-				m_pParent = pParent;
-				m_nID = nID;
-				m_rc.SetRectEmpty();
-				m_nTimer = 0;
-			}
-
-			CRect m_rc;
-			UINT m_nTimer;
-			CWnd* m_pParent;
-			UINT m_nID;
-
-			void KillTimer() { m_pParent->KillTimer(m_nTimer); m_nTimer = 0;}
-			void SetTimer() { if (m_nTimer == 0) m_nTimer = (UINT)m_pParent->SetTimer(m_nID, 80, 0); }
-			BOOL OnMouseMove(CPoint point)
-			{
-				if (m_rc.PtInRect(point))
-				{
-					SetTimer();
-					return TRUE;
-				} else if (m_nTimer) KillTimer();
-				return FALSE;
-			}
-		};
-
-		BOOL bScroll;
-		int nScrollFirst, nScrollLast;
-		BTNSCROLL btnUp;
-		BTNSCROLL btnDown;
-
-		void Init(CWnd* pWnd, UINT nIDUp, UINT nIDDown)
-		{
-			btnUp.Init(pWnd, nIDUp);
-			btnDown.Init(pWnd, nIDDown);
-			bScroll = nScrollFirst = nScrollLast = 0;
-		}
-	} m_scrollInfo;
-
-
+	int m_nMaxHeight; // Maximum height the popup bar can become
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	XTP_SCROLLINFO m_scrollInfo;
+
+#	ifdef _XTP_ACTIVEX
+	DECLARE_DISPATCH_MAP()
+#	endif
+
+private:
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 	friend class CControlExpandButton;
 	friend class CXTPControlPopup;
@@ -543,7 +503,6 @@ class _XTP_EXT_CLASS CXTPPopupToolBar : public CXTPPopupBar
 	CXTPPopupToolBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates a popup toolbar object.
@@ -554,15 +513,14 @@ public:
 	//-----------------------------------------------------------------------
 	static CXTPPopupToolBar* AFX_CDECL CreatePopupToolBar(CXTPCommandBars* pCommandBars);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. dwMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
@@ -571,38 +529,48 @@ protected:
 
 //////////////////////////////////////////////////////////////////////////
 
-
-
-AFX_INLINE void CXTPPopupBar::DisableShadow() {
+AFX_INLINE void CXTPPopupBar::DisableShadow()
+{
 	m_bShowShadow = FALSE;
 }
-AFX_INLINE void CXTPPopupBar::SetBorders(CRect rcBorders) {
+AFX_INLINE void CXTPPopupBar::SetBorders(CRect rcBorders)
+{
 	m_rcBorders = rcBorders;
 }
-AFX_INLINE BOOL CXTPPopupBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPopupBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									 const RECT& rect, CWnd* pParentWnd, UINT nID,
+									 CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPPopupBar::IsDoubleGripper() const {
+AFX_INLINE BOOL CXTPPopupBar::IsDoubleGripper() const
+{
 	return m_bDoubleGripper;
 }
-AFX_INLINE void CXTPPopupBar::SetDoubleGripper(BOOL bDoubleGripper /*= TRUE*/) {
+AFX_INLINE void CXTPPopupBar::SetDoubleGripper(BOOL bDoubleGripper /*= TRUE*/)
+{
 	m_bDoubleGripper = bDoubleGripper;
 }
-AFX_INLINE CXTPControlPopup* CXTPPopupBar::GetControlPopup() const {
+AFX_INLINE CXTPControlPopup* CXTPPopupBar::GetControlPopup() const
+{
 	return m_pControlPopup;
 }
-AFX_INLINE BOOL CXTPPopupBar::IsPopupBar() const {
+AFX_INLINE BOOL CXTPPopupBar::IsPopupBar() const
+{
 	return TRUE;
 }
-AFX_INLINE BOOL CXTPPopupBar::IsContextMenu() const {
+AFX_INLINE BOOL CXTPPopupBar::IsContextMenu() const
+{
 	return m_bContextMenu;
 }
-AFX_INLINE BOOL CXTPPopupBar::IsResizable() const {
+AFX_INLINE BOOL CXTPPopupBar::IsResizable() const
+{
 	return m_bResizable;
 }
-AFX_INLINE void CXTPPopupBar::SetPopupFlags(DWORD dwPopupFlags) {
+AFX_INLINE void CXTPPopupBar::SetPopupFlags(DWORD dwPopupFlags)
+{
 	m_popupFlags = dwPopupFlags;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPOPUPBAR_H__)

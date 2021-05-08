@@ -1,7 +1,6 @@
 // XTPChartTypes.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,720 +19,25 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTTYPES_H__)
-#define __XTPCHARTTYPES_H__
+#	define __XTPCHARTTYPES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#define float_EPSILON 1.192092896e-07F
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropExchange;
 
-//===========================================================================
-// Summary:
-//     This class abstracts a size entity and its operations.This object composed
-//     of two float values width and height.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartSizeF
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default constructor, creates a CXTPChartSizeF object and initializes
-	//     the values.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF()
-	{
-		Width = Height = 0.0f;
-	}
+typedef CXTPPoint2f CXTPChartPointF, CXTPChartPoint2dF;
+typedef CXTPPoint3f CXTPChartPoint3dF;
+typedef CXTPSizeF CXTPChartSizeF;
+typedef CXTPRectF CXTPChartRectF;
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Copy constructor, creates a CXTPChartSizeF object and initializes
-	//     the values.
-	// Parameters:
-	//     size - A reference to a CXTPChartSizeF object.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF(const CXTPChartSizeF& size)
-	{
-		Width = size.Width;
-		Height = size.Height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartSizeF object and initializes
-	//     the values.
-	// Parameters:
-	//     width - A float(float) value for width.
-	//     height - A float value for height.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF(float width, float height)
-	{
-		Width = width;
-		Height = height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded + operator, adds two CXTPChartSizeF objects.
-	//     the values.
-	// Parameters:
-	//     sz - A reference to a CXTPChartSizeF object.
-	// Returns:
-	//     A CXTPChartPointF object which contain the result of operation.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF operator+(const CXTPChartSizeF& sz) const
-	{
-		return CXTPChartSizeF(Width + sz.Width,
-			Height + sz.Height);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded - operator, subtracts two CXTPChartSizeF objects.
-	//     the values.
-	// Parameters:
-	//     sz - A reference to a CXTPChartSizeF object.
-	// Returns:
-	//     A CXTPChartPointF object which contain the result of operation.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF operator-(const CXTPChartSizeF& sz) const
-	{
-		return CXTPChartSizeF(Width - sz.Width,
-			Height - sz.Height);
-	}
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to know whether the two CXTPChartSizeF objects are
-	//     equal.
-	// Parameters:
-	//     sz - A reference to a CXTPChartSizeF object.
-	// Returns:
-	//     TRUE if the objects are equal and FALSE if they are unequal.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	BOOL Equals(const CXTPChartSizeF& sz) const
-	{
-		return (Width == sz.Width) && (Height == sz.Height);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether the object is empty or its
-	//     height and width are zero.
-	// Returns:
-	//     TRUE if the objects is empty and FALSE if it contains some value other
-	//     than zero.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	BOOL Empty() const
-	{
-		return (Width == 0.0f && Height == 0.0f);
-	}
-
-public:
-
-	float Width;     //The width.
-	float Height;    //The height.
-};
-
-//===========================================================================
-// Summary:
-//     This class abstracts a Point entity and its operations.This object composed
-//     of two float values for x and y coordinates.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartPointF
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default constructor, creates a CXTPChartPointF object and initializes
-	//     the values.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF()
-	{
-		X = Y = 0.0f;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Copy constructor, creates a CXTPChartPointF object and initializes
-	//     the values.
-	// Parameters:
-	//     size - A reference to a CXTPChartPointF object.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF(const CXTPChartPointF &point)
-	{
-		X = point.X;
-		Y = point.Y;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartPointF object from a chart
-	//     size type object and initializes the values.
-	// Parameters:
-	//     size - A reference to a CXTPChartSizeF.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF(const CXTPChartSizeF &size)
-	{
-		X = size.Width;
-		Y = size.Height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartPointF object.
-	// Parameters:
-	//     x - A float(float) value denoting the x coordinate.
-	//     y - A float(float) value denoting the y coordinate.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF(double x, double y)
-	{
-		X = (float)x;
-		Y = (float)y;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartPointF object.
-	// Parameters:
-	//     p - A POINT structure contains values for x and y coordinates.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF(const POINT& p)
-	{
-		X = (float)p.x;
-		Y = (float)p.y;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded + operator, adds two CXTPChartPointF objects.
-	//     the values.
-	// Parameters:
-	//     point - A reference to a CXTPChartPointF object.
-	// Returns:
-	//     A CXTPChartPointF object which contain the result of operation.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	CXTPChartPointF operator+(const CXTPChartPointF& point) const
-	{
-		return CXTPChartPointF(X + point.X,
-			Y + point.Y);
-	}
-
-	void operator+=(const CXTPChartPointF& point)
-	{
-		X += point.X;
-		Y += point.Y;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded - operator, subtracts two CXTPChartPointF objects.
-	//     the values.
-	// Parameters:
-	//     sz - A reference to a CXTPChartPointF object.
-	// Returns:
-	//     A CXTPChartPointF object which contain the result of operation.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	CXTPChartPointF operator-(const CXTPChartPointF& point) const
-	{
-		return CXTPChartPointF(X - point.X,
-			Y - point.Y);
-	}
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to know whether the two CXTPChartPointF objects are
-	//     equal.
-	// Parameters:
-	//     point - A reference to a CXTPChartPointF object.
-	// Returns:
-	//     TRUE if the objects are equal and FALSE if they are unequal.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-	BOOL Equals(const CXTPChartPointF& point)
-	{
-		return (X == point.X) && (Y == point.Y);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to round the point values to nearest integer.
-	// Returns:
-	//     A CPoint object which contain integer values for x and y coordinates.
-	// Remarks:
-	//     It is a constant member function.
-	//-----------------------------------------------------------------------
-
-	CPoint Round() const
-	{
-		return CPoint((int)X, (int)Y);
-	}
-
-public:
-
-	float X;     //The x coordinate.
-	float Y;     //The y coordinate.
-};
-
-typedef CArray<CXTPChartPointF, const CXTPChartPointF&> CXTPChartPoints;
-//===========================================================================
-// Summary:
-//     This class abstracts a rectangular entity and its operations.This object composed
-//     of four float values for x and y coordinates and width and height.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartRectF
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default constructor, creates a CXTPChartRectF object and initializes
-	//     the values.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartRectF()
-	{
-		X = Y = Width = Height = 0.0f;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartRectF object from
-	//     CRect type object and initializes the values.
-	// Parameters:
-	//     rc - A reference to a CRect.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartRectF(const CRect& rc)
-	{
-		X = (float)rc.left;
-		Y = (float)rc.top;
-		Width = (float)rc.Width();
-		Height = (float)rc.Height();
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartRectF object.
-	// Parameters:
-	//     x      - The x coordinate.
-	//     y      - The y coordinate.
-	//     width  - The width of the rectangle.
-	//     height - The height of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartRectF(float x, float y, float width, float height)
-	{
-		X = x;
-		Y = y;
-		Width = width;
-		Height = height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Overloaded constructor, creates a CXTPChartRectF object from chart point
-	//     and chart size objects.
-	// Parameters:
-	//     location - The rectangle location.
-	//     size     - The size of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartRectF(const CXTPChartPointF& location,
-		  const CXTPChartSizeF& size)
-	{
-		X = location.X;
-		Y = location.Y;
-		Width = size.Width;
-		Height = size.Height;
-	}
-
-	CXTPChartRectF(const CXTPChartPointF& ptTopLeft, const CXTPChartPointF& ptBottomRight)
-	{
-		X = ptTopLeft.X;
-		Y = ptTopLeft.Y;
-		Width = ptBottomRight.X - ptTopLeft.X;
-		Height = ptBottomRight.Y - ptTopLeft.Y;
-
-		Normalize();
-	}
-
-	void Normalize()
-	{
-		if (Width < 0)
-		{
-			X += Width;
-			Width = -Width;
-		}
-
-		if (Height < 0)
-		{
-			Y += Height;
-			Height = -Height;
-		}
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the coordinate location of the rectangle.
-	// Returns:
-	//     A CXTPChartPointF object denoting the current location of the rectangle
-	//     in a plane.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF GetLocation() const
-	{
-		return CXTPChartPointF(X, Y);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the size of the rectangle.
-	// Returns:
-	//     A CXTPChartSizeF object denoting size of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSizeF GetSize() const
-	{
-		return CXTPChartSizeF(Width, Height);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the starting x coordinate of the rectangle.
-	// Returns:
-	//     A float value denoting the left of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	float GetLeft() const
-	{
-		return X;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the starting y coordinate of the rectangle.
-	// Returns:
-	//     A float value denoting the top of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	float GetTop() const
-	{
-		return Y;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the ending x coordinate of the rectangle.
-	// Returns:
-	//     A float value denoting the right of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	float GetRight() const
-	{
-		return X+Width;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the ending y coordinate of the rectangle.
-	// Returns:
-	//     A float value denoting the bottom of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	float GetBottom() const
-	{
-		return Y+Height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether the rectangular area is epty.
-	// Returns:
-	//     TRUE if the rectangle is of finite area and FALSE if it is empty.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL IsEmptyArea() const
-	{
-		return (Width <= float_EPSILON) || (Height <= float_EPSILON);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether the current rectangle is equal
-	//     to another.
-	// Parameters:
-	//     rect - The rectangle which is to be compared with the current object
-	//     for equality.
-	// Returns:
-	//     TRUE if the second rectangle is equal to the current object and FALSE
-	//     they are unequal.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL Equals(const CXTPChartRectF & rect) const
-	{
-		return X == rect.X &&
-			   Y == rect.Y &&
-			   Width == rect.Width &&
-			   Height == rect.Height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether a point is inside the rectangle
-	//     or not.
-	// Parameters:
-	//     x - The x coordinate of the point.
-	//     y - The y coordinate of the point.
-	// Returns:
-	//     TRUE if the point is inside the rectangle and FALSE if the point is
-	//     outside the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL Contains(float x,
-				  float y) const
-	{
-		return x >= X && x < X+Width &&
-			   y >= Y && y < Y+Height;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether a point is inside the rectangle
-	//     or not.
-	// Parameters:
-	//     pt - The point.
-	// Returns:
-	//     TRUE if the point is inside the rectangle and FALSE if the point is
-	//     outside the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL Contains(const CXTPChartPointF& pt) const
-	{
-		return Contains(pt.X, pt.Y);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether a rectangle is inside the rectangle
-	//     or not.
-	// Parameters:
-	//     pt - The rectangle.
-	// Returns:
-	//     TRUE if the second rectangle is inside the current rectangle and FALSE if
-	//     the not.
-	//
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL Contains(const CXTPChartRectF& rect) const
-	{
-		return (X <= rect.X) && (rect.GetRight() <= GetRight()) &&
-			   (Y <= rect.Y) && (rect.GetBottom() <= GetBottom());
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to inflate the rectangle by an arbitrary value.
-	// Parameters:
-	//     dx - The change in x value.
-	//     dy - The change in y value.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	VOID Inflate(float dx,
-				 float dy)
-	{
-		X -= dx;
-		Y -= dy;
-		Width += 2*dx;
-		Height += 2*dy;
-	}
-
-	void DeflateRect(float l, float t, float r, float b)
-	{
-		X += l;
-		Y += t;
-		Width -= l + r;
-		Height -= t + b;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to inflate the rectangle by an arbitrary value
-	//     denoted by a CXTPChartPointF object.
-	// Parameters:
-	//     point - The change value.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	VOID Inflate(const CXTPChartPointF& point)
-	{
-		Inflate(point.X, point.Y);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function calculates the intersection, the current object
-	//     and another rectangle and places the coordinates of the intersection
-	//     rectangle into the current object.
-	// Parameters:
-	//     rect - The other rectangle.
-	// Returns:
-	//     TRUE if the operation succeed and FALSE if operation failed.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL Intersect(const CXTPChartRectF& rect)
-	{
-		return Intersect(*this, *this, rect);
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this static function to calculates the intersection of two
-	//     source rectangles and places the coordinates of the intersection
-	//     rectangle into the destination rectangle.
-	// Parameters:
-	//     c - The reference to destination rectangle.
-	//     a - The first source rectangle.
-	//     b - The second source rectangle.
-	// Returns:
-	//     TRUE if the operation succeed and FALSE if operation failed.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	static BOOL Intersect(OUT CXTPChartRectF& c,
-						  const CXTPChartRectF& a,
-						  const CXTPChartRectF& b)
-	{
-		float right = min(a.GetRight(), b.GetRight());
-		float bottom = min(a.GetBottom(), b.GetBottom());
-		float left = max(a.GetLeft(), b.GetLeft());
-		float top = max(a.GetTop(), b.GetTop());
-
-		c.X = left;
-		c.Y = top;
-		c.Width = right - left;
-		c.Height = bottom - top;
-		return !c.IsEmptyArea();
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check whether this object intersect with a given
-	//     rectangle.
-	// Parameters:
-	//     rect - The reference to the other rectangle.
-	// Returns:
-	//     TRUE if the rectangles intersect and FALSE if rectangles do not intersect.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	BOOL IntersectsWith(const CXTPChartRectF& rect) const
-	{
-		return (GetLeft() < rect.GetRight() &&
-				GetTop() < rect.GetBottom() &&
-				GetRight() > rect.GetLeft() &&
-				GetBottom() > rect.GetTop());
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this static function to calculates the union of two
-	//     source rectangles and places the coordinates of the union
-	//     rectangle into the destination rectangle.
-	// Parameters:
-	//     c - The reference to destination rectangle.
-	//     a - The first source rectangle.
-	//     b - The second source rectangle.
-	// Returns:
-	//     TRUE if the operation succeed and FALSE if operation failed.
-	// Remarks:
-	//     The union is the smallest rectangle that contains both source rectangles.
-	//-----------------------------------------------------------------------
-	static BOOL Union(OUT CXTPChartRectF& c, const CXTPChartRectF& a, const CXTPChartRectF& b)
-	{
-		float right = max(a.GetRight(), b.GetRight());
-		float bottom = max(a.GetBottom(), b.GetBottom());
-		float left = min(a.GetLeft(), b.GetLeft());
-		float top = min(a.GetTop(), b.GetTop());
-
-		c.X = left;
-		c.Y = top;
-		c.Width = right - left;
-		c.Height = bottom - top;
-		return !c.IsEmptyArea();
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to move the rectangle by an offset.
-	// Parameters:
-	//     point - The offset as a point.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	VOID Offset(const CXTPChartPointF& point)
-	{
-		Offset(point.X, point.Y);
-	}
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to move the rectangle by an offset.
-	// Parameters:
-	//     dx - The offset x value.
-	//     dy - The offset y value.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	VOID Offset(float dx,
-				float dy)
-	{
-		X += dx;
-		Y += dy;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the center point of the rectangle.
-	// Returns:
-	//     A CXTPChartPointF object representing the center of the rectangle.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointF GetCenter()
-	{
-		return CXTPChartPointF(X + Width / 2.0f, Y + Height / 2.0f);
-	}
-
-	void Round();
-
-public:
-
-	float X;         //The x coordinate(left).
-	float Y;         //The y coordinate(top).
-	float Width;     //The width of the rectangle.
-	float Height;    //The height of the rectangle.
-};
-
-
+typedef CArray<CXTPChartPoint2dF, const CXTPChartPoint2dF&> CXTPChartPoints, CXTPChartPoints2d;
+typedef CArray<CXTPChartPoint3dF, const CXTPChartPoint3dF&> CXTPChartPoints3d;
+typedef CArray<float, float> CXTPChartLineDashArray;
 typedef CString CXTPChartString;
 
 //===========================================================================
@@ -748,7 +52,6 @@ public:
 	typedef DWORD ARGB;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor, creates a CXTPChartColor object and initializes
@@ -816,7 +119,7 @@ public:
 	//-----------------------------------------------------------------------
 	BYTE GetAlpha() const
 	{
-		return (BYTE) (Argb >> AlphaShift);
+		return (BYTE)(Argb >> AlphaShift);
 	}
 
 	//-----------------------------------------------------------------------
@@ -842,7 +145,7 @@ public:
 	//-----------------------------------------------------------------------
 	BYTE GetRed() const
 	{
-		return (BYTE) (Argb >> RedShift);
+		return (BYTE)(Argb >> RedShift);
 	}
 
 	//-----------------------------------------------------------------------
@@ -868,7 +171,7 @@ public:
 	//-----------------------------------------------------------------------
 	BYTE GetGreen() const
 	{
-		return (BYTE) (Argb >> GreenShift);
+		return (BYTE)(Argb >> GreenShift);
 	}
 
 	//-----------------------------------------------------------------------
@@ -894,7 +197,7 @@ public:
 	//-----------------------------------------------------------------------
 	BYTE GetBlue() const
 	{
-		return (BYTE) (Argb >> BlueShift);
+		return (BYTE)(Argb >> BlueShift);
 	}
 
 	//-----------------------------------------------------------------------
@@ -908,6 +211,50 @@ public:
 	BYTE GetB() const
 	{
 		return GetBlue();
+	}
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Clamps alpha color component to range 0..1
+	// Returns:
+	//     Alpha component value clamped to range 0..1.
+	//-----------------------------------------------------------------------
+	float ClampA() const
+	{
+		return static_cast<float>(GetA()) / 255;
+	}
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Clamps red color component to range 0..1
+	// Returns:
+	//     Red component value clamped to range 0..1.
+	//-----------------------------------------------------------------------
+	float ClampR() const
+	{
+		return static_cast<float>(GetR()) / 255;
+	}
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Clamps green color component to range 0..1
+	// Returns:
+	//     Green component value clamped to range 0..1.
+	//-----------------------------------------------------------------------
+	float ClampG() const
+	{
+		return static_cast<float>(GetG()) / 255;
+	}
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Clamps blue color component to range 0..1
+	// Returns:
+	//     Blue component value clamped to range 0..1.
+	//-----------------------------------------------------------------------
+	float ClampB() const
+	{
+		return static_cast<float>(GetB()) / 255;
 	}
 
 	//-----------------------------------------------------------------------
@@ -983,10 +330,15 @@ public:
 		return Argb == Empty;
 	}
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains a "darker" color for the current color.
+	// Returns:
+	//     A "darker" color value.
+	//-----------------------------------------------------------------------
 	CXTPChartColor GetDarkColor() const;
 
 public:
-
 	// Common color constants
 
 	const static ARGB AliceBlue;
@@ -1139,11 +491,12 @@ public:
 	//===========================================================================
 	enum
 	{
-		AlphaShift  = 24,
-		RedShift    = 16,
-		GreenShift  = 8,
-		BlueShift   = 0
+		AlphaShift = 24,
+		RedShift   = 16,
+		GreenShift = 8,
+		BlueShift  = 0
 	};
+
 	//===========================================================================
 	// Summary:
 	//     Enumeration for bit mask of A, R, G, B components
@@ -1151,10 +504,10 @@ public:
 	//===========================================================================
 	enum
 	{
-		AlphaMask   = 0xff000000,
-		RedMask     = 0x00ff0000,
-		GreenMask   = 0x0000ff00,
-		BlueMask    = 0x000000ff
+		AlphaMask = 0xff000000,
+		RedMask   = 0x00ff0000,
+		GreenMask = 0x0000ff00,
+		BlueMask  = 0x000000ff
 	};
 
 	// Assemble A, R, G, B values into a 32-bit integer
@@ -1171,28 +524,22 @@ public:
 	//     A 32 bit ARGB value.
 	// Remarks:
 	//===========================================================================
-	static ARGB MakeARGB(BYTE a,
-						 BYTE r,
-						 BYTE g,
-						 BYTE b)
+	static ARGB AFX_CDECL MakeARGB(BYTE a, BYTE r, BYTE g, BYTE b)
 	{
-		return (((ARGB) (b) <<  BlueShift) |
-				((ARGB) (g) << GreenShift) |
-				((ARGB) (r) <<   RedShift) |
-				((ARGB) (a) << AlphaShift));
+		return (((ARGB)(b) << BlueShift) | ((ARGB)(g) << GreenShift) | ((ARGB)(r) << RedShift)
+				| ((ARGB)(a) << AlphaShift));
 	}
 
 protected:
+	ARGB Argb; // The 32 bit color value.
 
-	ARGB Argb;  //The 32 bit color value.
-
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	OLE_COLOR ToOleColor();
 	static CXTPChartColor AFX_CDECL FromOleColor(OLE_COLOR);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
 //===========================================================================
@@ -1244,7 +591,7 @@ public:
 	// Returns:
 	//     A pointer to the CXTPChartFont object.
 	// Remarks:
-	//     This function create a new CXTPChartFont and set the underlying font to
+	//     This function creates a new CXTPChartFont and set the underlying font to
 	//     Tahoma with size 18.
 	//-----------------------------------------------------------------------
 	static CXTPChartFont* AFX_CDECL GetTahoma18();
@@ -1255,7 +602,7 @@ public:
 	// Returns:
 	//     A pointer to the CXTPChartFont object.
 	// Remarks:
-	//     This function create a new CXTPChartFont and set the underlying font to
+	//     This function creates a new CXTPChartFont and set the underlying font to
 	//     Tahoma with size 12.
 	//-----------------------------------------------------------------------
 	static CXTPChartFont* AFX_CDECL GetTahoma12();
@@ -1266,7 +613,7 @@ public:
 	// Returns:
 	//     A pointer to the CXTPChartFont object.
 	// Remarks:
-	//     This function create a new CXTPChartFont and set the underlying font to
+	//     This function creates a new CXTPChartFont and set the underlying font to
 	//     Tahoma with size 8.
 	//-----------------------------------------------------------------------
 	static CXTPChartFont* AFX_CDECL GetTahoma8();
@@ -1277,23 +624,280 @@ public:
 	//-----------------------------------------------------------------------
 	void Release();
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartFont);
 	afx_msg void OleSetFont(LPFONTDISP pFontDisp);
 	afx_msg LPFONTDISP OleGetFont();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 public:
-	LOGFONT m_lf;   //The LOGFONT variable.
+	LOGFONT m_lf; // The LOGFONT variable.
 };
 
-BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pszPropName, CXTPChartColor& clrValue);
-BOOL AFX_CDECL PX_Font(CXTPPropExchange* pPX, LPCTSTR pszPropName, CXTPChartFont* pFont);
+//-----------------------------------------------------------------------
+// Summary:
+//     Represents a 3D rotation primitive for chart objects using
+//     Euler angles Yaw, Pitch and Roll in degrees.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChart3dRotation
+#	ifdef _XTP_ACTIVEX
+	: public CXTPCmdTarget
+#	endif
+{
+#	ifdef _XTP_ACTIVEX
+	DECLARE_SERIAL(CXTPChart3dRotation)
+#	endif
 
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs rotation object with no rotation by default.
+	// Parameters:
+	//     rhs - Right-hand-side rotation object to copy data from.
+	//-----------------------------------------------------------------------
+	CXTPChart3dRotation();
+	CXTPChart3dRotation(
+		const CXTPChart3dRotation& rhs); // <combine CXTPChart3dRotation::CXTPChart3dRotation>
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs rotation object with provided rotation parameters.
+	// Parameters:
+	//     dYaw - Yaw angle value in degrees.
+	//     dPitch - Pitch angle value in degrees.
+	//     dRoll - Roll angle value in degrees.
+	//-----------------------------------------------------------------------
+	CXTPChart3dRotation(double dYaw, double dPitch, double dRoll);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Checks if any roration is applied.
+	// Returns:
+	//     BOOL if any rotation is applied.
+	//-----------------------------------------------------------------------
+	BOOL IsRotated() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Reads roration angle value from a string provided
+	//     The values are expected to be comma-separated floating point
+	//     values in the following order: "yaw, pitch, roll"
+	//-----------------------------------------------------------------------
+	void SetFromString(LPCTSTR lpsz);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Overloads default assignment operator. Assigns rotation components only.
+	//-----------------------------------------------------------------------
+	CXTPChart3dRotation& operator=(const CXTPChart3dRotation& rhs);
+
+	double m_dYaw;   // Yaw angle value in degrees
+	double m_dPitch; // Pitch angle value in degrees
+	double m_dRoll;  // Roll angle value in degrees
+
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPChart3dRotation);
+	DECLARE_OLECREATE_EX(CXTPChart3dRotation);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
+
+AFX_INLINE BOOL CXTPChart3dRotation::IsRotated() const
+{
+	return 0 != m_dYaw || 0 != m_dPitch || 0 != m_dRoll;
+}
+
+AFX_INLINE CXTPChart3dRotation& CXTPChart3dRotation::operator=(const CXTPChart3dRotation& rhs)
+{
+	m_dYaw   = rhs.m_dYaw;
+	m_dPitch = rhs.m_dPitch;
+	m_dRoll  = rhs.m_dRoll;
+	return *this;
+}
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Represents a 3D box build around included points and
+//     provides useful and fast operations.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChart3dBox
+{
+public:
+	// Point list collection type
+	typedef CList<CXTPPoint3d, const CXTPPoint3d&> PointList;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs an empty 3D box.
+	//-----------------------------------------------------------------------
+	CXTPChart3dBox();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a copy of a 3D box provided.
+	// Parameters:
+	//     rhs - A box to be constructed from.
+	//-----------------------------------------------------------------------
+	CXTPChart3dBox(const CXTPChart3dBox& rhs);
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Performs box assignment in an efficient way.
+	// Parameters:
+	//     rhs - A box to be assigned to.
+	// Returns:
+	//     Self object reference.
+	//-----------------------------------------------------------------------
+	CXTPChart3dBox& operator=(const CXTPChart3dBox& rhs);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if a box is valid, e.i. minimal points are less or equal
+	//     to maximal points.
+	// Returns:
+	//     TRUE if
+	//-----------------------------------------------------------------------
+	BOOL IsValid() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Includes a point into the box. If point exceeds any box side
+	//     then the box size gets increased.
+	// Parameters:
+	//     pt - A point to include into the box.
+	//     bCenterCandidate - If TRUE, the point is concidered a center
+	//         candidate when GetCenter is called for center candidates.
+	// See also:
+	//     GetCenter
+	//-----------------------------------------------------------------------
+	void Include(const CXTPPoint3d& pt, BOOL bCenterCandidate = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Includes a point into the box. If point exceeds any box side
+	//     then the box size gets increased.
+	// Parameters:
+	//     x - X coordinate of a point to include into the box.
+	//     y - Y coordinate of a point to include into the box.
+	//     z - Z coordinate of a point to include into the box.
+	//     bCenterCandidate - If TRUE, the point is concidered a center
+	//         candidate when GetCenter is called for center candidates.
+	// See also:
+	//     GetCenter
+	//-----------------------------------------------------------------------
+	void Include(double x, double y, double z, BOOL bCenterCandidate = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Includes a box into the box. The inclusion assumes stretching
+	//     to extreme points and copying only center candidates.
+	// Parameters:
+	//     box - A box to include.
+	// See also:
+	//     GetCenter
+	//-----------------------------------------------------------------------
+	void Include(const CXTPChart3dBox& box);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains a minimal point in the box, i.e. a point with the minimal
+	//     coordinate value along 3D axes.
+	// Returns:
+	//     A point with minimal coordinates.
+	//-----------------------------------------------------------------------
+	const CXTPPoint3d& GetMinPoint() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains a maximal point in the box, i.e. a point with the maximal
+	//     coordinate value along 3D axes.
+	// Returns:
+	//     A point with maximal coordinates.
+	//-----------------------------------------------------------------------
+	const CXTPPoint3d& GetMaxPoint() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Computes a center of the box. If bAmongstCenterCandidates is FALSE
+	//     than the center of the box is computed as a medium point between
+	//     the minimal and maximal points. Otherwise the closest to the physical
+	//     box center point added with CentedCandidate = TRUE if returned.
+	// Parameters:
+	//     bAmongstCenterCandidates - If TRUE, only center candidate points
+	//        are considered and the closest one to the physical center is returned.
+	// Returns:
+	//     A center box point.
+	// See also:
+	//     Include
+	//-----------------------------------------------------------------------
+	CXTPPoint3d GetCenter(BOOL bAmongstCenterCandidates = FALSE) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains box corners coordinates.
+	// Parameters:
+	//     pt - an array of 3D box corners. The first 4 points represent
+	//          far box face along Z axis, the next 4 points represent
+	//          the close box face long Z axis.
+	//-----------------------------------------------------------------------
+	void GetCorners(CXTPPoint3d (&pt)[8]) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Provides access to the list of center candidate points.
+	// Returns:
+	//      A reference to the list of center candidate points.
+	// See also:
+	//      GetCenter
+	//-----------------------------------------------------------------------
+	const PointList& GetCenterCandidates() const;
+
+private:
+	CXTPPoint3d m_ptMin, m_ptMax;
+	PointList m_CenterCandidates;
+};
+
+AFX_INLINE void CXTPChart3dBox::Include(double x, double y, double z,
+										BOOL bCenterCandidate /*= FALSE*/)
+{
+	Include(CXTPPoint3d(x, y, z), bCenterCandidate);
+}
+AFX_INLINE const CXTPPoint3d& CXTPChart3dBox::GetMinPoint() const
+{
+	return m_ptMin;
+}
+AFX_INLINE const CXTPPoint3d& CXTPChart3dBox::GetMaxPoint() const
+{
+	return m_ptMax;
+}
+AFX_INLINE const CXTPChart3dBox::PointList& CXTPChart3dBox::GetCenterCandidates() const
+{
+	return m_CenterCandidates;
+}
+
+_XTP_EXT_CLASS BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pszPropName,
+									   CXTPChartColor& clrValue,
+									   CXTPChartColor clrDefault = CXTPChartColor::Empty);
+_XTP_EXT_CLASS BOOL AFX_CDECL PX_Font(CXTPPropExchange* pPX, LPCTSTR pszPropName,
+									  CXTPChartFont* pFont);
+_XTP_EXT_CLASS BOOL AFX_CDECL PX_Rotation(CXTPPropExchange* pPX, LPCTSTR pszPropName,
+										  CXTPChart3dRotation& rotation);
+
+#	ifdef _XTP_ACTIVEX
+extern double AFX_CDECL VariantToDoubleEx(const VARIANT* pVariant);
+extern BOOL AFX_CDECL IsStringVariant(const VARIANT* pVariant);
+extern double AFX_CDECL VariantToDouble(const VARIANT* pVariant);
+#	endif
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTTYPES_H__)

@@ -1,7 +1,6 @@
 // XTPSkinDrawTools.h
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,25 +19,44 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINDRAWTOOLS_H__)
-#define __XTPSKINDRAWTOOLS_H__
+#	define __XTPSKINDRAWTOOLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 
 // Private function
 
-BOOL WINAPI XTRSkinFrameworkDrawEdge(HDC hdc, LPRECT lprc, UINT edge, UINT flags);
-BOOL WINAPI XTRSkinFrameworkDrawFrameControl(HDC hdc, LPRECT lprc,  UINT uType,  UINT uState);
-int AFX_CDECL XTPGetParentDCClipBox(HWND   pwnd, HDC    hdc, LPRECT lprc);
-void AFX_CDECL XTPSkinFrameworkGetIconSize(HICON hImage, int* pcx, int* pcy);
-HBITMAP AFX_CDECL XTPSkinFrameworkLoadBitmap(HMODULE hModule, LPCTSTR lpszResourceName, BOOL& bAlpha);
-void AFX_CDECL XTPSkinFrameworkDrawFrame(HDC hdc, LPRECT lprc, int nSize, COLORREF clr);
-void AFX_CDECL XTPSkinFrameworkDrawFrame(HDC hdc, LPRECT lprc, int nSize, HBRUSH hBrush);
+_XTP_EXT_CLASS BOOL WINAPI XTRSkinFrameworkDrawEdge(HDC hdc, LPRECT lprc, UINT edge, UINT flags);
+_XTP_EXT_CLASS BOOL WINAPI XTRSkinFrameworkDrawFrameControl(HDC hdc, LPRECT lprc, UINT uType,
+															UINT uState);
+_XTP_EXT_CLASS int AFX_CDECL XTPGetParentDCClipBox(HWND pwnd, HDC hdc, LPRECT lprc);
+_XTP_EXT_CLASS void AFX_CDECL XTPSkinFrameworkGetIconSize(HICON hImage, int* pcx, int* pcy);
+_XTP_EXT_CLASS HBITMAP AFX_CDECL XTPSkinFrameworkLoadBitmap(HMODULE hModule,
+															LPCTSTR lpszResourceName, BOOL& bAlpha);
+_XTP_EXT_CLASS void AFX_CDECL XTPSkinFrameworkDrawFrame(HDC hdc, LPRECT lprc, int nSize,
+														COLORREF clr);
+_XTP_EXT_CLASS void AFX_CDECL XTPSkinFrameworkDrawFrame(HDC hdc, LPRECT lprc, int xSize, int ySize,
+														COLORREF clr);
+_XTP_EXT_CLASS void AFX_CDECL XTPSkinFrameworkDrawFrame(HDC hdc, LPRECT lprc, int nSize,
+														HBRUSH hBrush);
+_XTP_EXT_CLASS int AFX_CDECL XTPSkinFrameworkDrawText(HDC hdc, LPCTSTR lpText, int cch, LPRECT lprc,
+													  UINT nFormat,
+													  LPLOGFONT pAssociatedFont = NULL);
+
+AFX_INLINE int AFX_CDECL XTPSkinFrameworkDrawText(HDC hdc, const CString& strText, LPRECT lprc,
+												  UINT nFormat, LPLOGFONT pAssociatedFont = NULL)
+{
+	return XTPSkinFrameworkDrawText(hdc, strText, strText.GetLength(), lprc, nFormat,
+									pAssociatedFont);
+}
 
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINDRAWTOOLS_H__)

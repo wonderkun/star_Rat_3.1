@@ -1,7 +1,6 @@
 // XTPColorManager.h: interface for the CXTPColorManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOLORMANAGER_H__)
-#define __XTPCOLORMANAGER_H__
+#	define __XTPCOLORMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -36,69 +36,75 @@
 // Example:
 //     <code>XTPCurrentSystemTheme systemTheme = XTPColorManager()->GetCurrentSystemTheme();</code>
 //
-// <KEYWORDS xtpSystemThemeUnknown, xtpSystemThemeBlue, xtpSystemThemeOlive, xtpSystemThemeSilver, xtpSystemThemeAuto, xtpSystemThemeDefault>
+// <KEYWORDS xtpSystemThemeUnknown, xtpSystemThemeBlue, xtpSystemThemeOlive, xtpSystemThemeSilver,
+// xtpSystemThemeAuto, xtpSystemThemeDefault>
 //-----------------------------------------------------------------------
 enum XTPCurrentSystemTheme
 {
-	xtpSystemThemeUnknown,      // No known theme in use
-	xtpSystemThemeBlue,         // Luna Blue Windows XP theme in use
-	xtpSystemThemeOlive,        // Luna Olive Windows XP theme in use
-	xtpSystemThemeSilver,       // Luna Silver Windows XP theme in use
-	xtpSystemThemeRoyale,       // Royale Windows XP theme in use
-	xtpSystemThemeAero,         // Aero Vista theme in use
-	xtpSystemThemeAuto,         // Use OS theme.
-	xtpSystemThemeDefault       // Default theme (xtpSystemThemeAuto)
+	xtpSystemThemeUnknown, // No known theme in use
+	xtpSystemThemeBlue,	// Luna Blue Windows XP theme in use
+	xtpSystemThemeOlive,   // Luna Olive Windows XP theme in use
+	xtpSystemThemeSilver,  // Luna Silver Windows XP theme in use
+	xtpSystemThemeRoyale,  // Royale Windows XP theme in use
+	xtpSystemThemeAero,	// Aero Vista theme in use
+	xtpSystemThemeAuto,	// Use OS theme.
+	xtpSystemThemeDefault  // Default theme (xtpSystemThemeAuto)
 };
 
-
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef COLOR_GRADIENTACTIVECAPTION
-#define COLOR_GRADIENTACTIVECAPTION           27
-#endif
+#	ifndef COLOR_GRADIENTACTIVECAPTION
+#		define COLOR_GRADIENTACTIVECAPTION 27
+#	endif
 
-#ifndef COLOR_GRADIENTINACTIVECAPTION
-#define COLOR_GRADIENTINACTIVECAPTION         28
-#endif
+#	ifndef COLOR_GRADIENTINACTIVECAPTION
+#		define COLOR_GRADIENTINACTIVECAPTION 28
+#	endif
 
-#define COLORREF_NULL   (COLORREF)-1
+#	ifndef COLORREF_NULL
+#		define COLORREF_NULL ((COLORREF)-1)
+#	endif
+
+#	ifndef COLORREF_ERROR
+#		define COLORREF_ERROR RGB(255, 0, 0)
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
-const UINT XPCOLOR_BASE                     = 30; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TOOLBAR_FACE             = XPCOLOR_BASE; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT                = 31; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_BORDER         = 32; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_PUSHED         = 33; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_CHECKED        = 36; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_CHECKED_BORDER = 37; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_ICONSHADDOW              = 34; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_MENUBAR_GRAYTEXT         = 35; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_GRAYTEXT                 = XPCOLOR_MENUBAR_GRAYTEXT; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TOOLBAR_GRIPPER          = 38; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_SEPARATOR                = 39; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_DISABLED                 = 40; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_MENUBAR_FACE             = 41; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_MENUBAR_EXPANDED         = 42; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_MENUBAR_BORDER           = 43; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_MENUBAR_TEXT             = 44; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_TEXT           = 45; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TOOLBAR_TEXT             = 46; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_PUSHED_TEXT              = 47; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TAB_INACTIVE_BACK        = 48; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TAB_INACTIVE_TEXT        = 49; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_PUSHED_BORDER  = 50; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_CHECKED_TEXT             = XPCOLOR_HIGHLIGHT_TEXT; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_3DFACE                   = 51; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_3DSHADOW                 = 52; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_EDITCTRLBORDER           = 53; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_FRAME                    = 54; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_SPLITTER_FACE            = 55; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_LABEL                    = 56; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_STATICFRAME              = 57; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_HIGHLIGHT_DISABLED_BORDER = 58; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_SHADOW_FACTOR            = 59; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_TOOLBAR_GRAYTEXT         = 60; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_FLOATBAR_BORDER          = 61; //<ALIAS CXTPColorManager::GetColor>
-const UINT XPCOLOR_LAST                     = 62; //<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_BASE					   = 30;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TOOLBAR_FACE			   = XPCOLOR_BASE;		//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT				   = 31;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_BORDER		   = 32;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_PUSHED		   = 33;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_PUSHED_BORDER  = 50;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_CHECKED		   = 36;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_CHECKED_BORDER = 37;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_ICONSHADDOW			   = 34;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_MENUBAR_GRAYTEXT		   = 35;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_GRAYTEXT			= XPCOLOR_MENUBAR_GRAYTEXT; //<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TOOLBAR_GRIPPER   = 38;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_SEPARATOR			= 39;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_DISABLED			= 40;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_MENUBAR_FACE		= 41;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_MENUBAR_EXPANDED  = 42;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_MENUBAR_BORDER	= 43;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_MENUBAR_TEXT		= 44;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_TEXT	= 45;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TOOLBAR_TEXT		= 46;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_PUSHED_TEXT		= 47;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TAB_INACTIVE_BACK = 48;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TAB_INACTIVE_TEXT = 49;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_CHECKED_TEXT		= XPCOLOR_HIGHLIGHT_TEXT;   //<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_3DFACE			= 51;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_3DSHADOW			= 52;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_EDITCTRLBORDER	= 53;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_FRAME				= 54;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_SPLITTER_FACE		= 55;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_LABEL				= 56;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_STATICFRAME		= 57;						//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_HIGHLIGHT_DISABLED_BORDER = 58;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_SHADOW_FACTOR				= 59;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_TOOLBAR_GRAYTEXT			= 60;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_FLOATBAR_BORDER			= 61;				//<ALIAS CXTPColorManager::GetColor>
+const int XPCOLOR_LAST						= 62;				//<ALIAS CXTPColorManager::GetColor>
 
 //===========================================================================
 // Summary:
@@ -196,12 +202,14 @@ public:
 	//     This operator assigns a new COLORREF value for the application defined color
 	// Parameters:
 	//     clr    - RGB value that represents application defined color to set.
-	//     refclr - Reference to CXTPPaintManagerColor value that represents application defined color to set.
+	//     refclr - Reference to CXTPPaintManagerColor value that represents application defined
+	//     color to set.
 	// See Also:
 	//     SetStandardValue, SetCustomValue
 	//-----------------------------------------------------------------------
 	const CXTPPaintManagerColor& operator=(COLORREF clr);
-	const CXTPPaintManagerColor& operator=(const CXTPPaintManagerColor& refclr); // <combine CXTPPaintManagerColor::=@COLORREF>
+	const CXTPPaintManagerColor& operator=(
+		const CXTPPaintManagerColor& refclr); // <combine CXTPPaintManagerColor::=@COLORREF>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -210,42 +218,55 @@ public:
 	//     ar - A CArchive object to serialize to or from.
 	//-----------------------------------------------------------------------
 	virtual void Serialize(CArchive& ar);
+
 protected:
-	COLORREF m_clrStandardValue;   // Standard color
-	COLORREF m_clrCustomValue;     // Application defined color
+	COLORREF m_clrStandardValue; // Standard color
+	COLORREF m_clrCustomValue;   // Application defined color
 };
 
 //---------------------------------------------------------------------------
 
-AFX_INLINE BOOL CXTPPaintManagerColor::IsDefaultValue() const {
+AFX_INLINE BOOL CXTPPaintManagerColor::IsDefaultValue() const
+{
 	return (m_clrCustomValue == COLORREF_NULL) && (m_clrStandardValue == COLORREF_NULL);
 }
-AFX_INLINE BOOL CXTPPaintManagerColor::IsStandardValue() const {
+AFX_INLINE BOOL CXTPPaintManagerColor::IsStandardValue() const
+{
 	return (m_clrCustomValue == COLORREF_NULL) && (m_clrStandardValue != COLORREF_NULL);
 }
-AFX_INLINE BOOL CXTPPaintManagerColor::IsCustomValue() const {
+AFX_INLINE BOOL CXTPPaintManagerColor::IsCustomValue() const
+{
 	return m_clrCustomValue != COLORREF_NULL;
 }
-AFX_INLINE COLORREF CXTPPaintManagerColor::GetStandardColor() const {
+AFX_INLINE COLORREF CXTPPaintManagerColor::GetStandardColor() const
+{
 	return m_clrStandardValue;
 }
-AFX_INLINE void CXTPPaintManagerColor::SetCustomValue(COLORREF clr) {
+AFX_INLINE void CXTPPaintManagerColor::SetCustomValue(COLORREF clr)
+{
 	m_clrCustomValue = clr;
 }
-AFX_INLINE void CXTPPaintManagerColor::SetStandardValue(COLORREF clr) {
+AFX_INLINE void CXTPPaintManagerColor::SetStandardValue(COLORREF clr)
+{
 	m_clrStandardValue = clr;
 }
-AFX_INLINE void CXTPPaintManagerColor::SetDefaultValue() {
+AFX_INLINE void CXTPPaintManagerColor::SetDefaultValue()
+{
 	m_clrCustomValue = COLORREF_NULL;
 }
-AFX_INLINE CXTPPaintManagerColor::operator COLORREF() const{
-	return  (m_clrCustomValue == COLORREF_NULL) ? m_clrStandardValue : m_clrCustomValue;
+AFX_INLINE CXTPPaintManagerColor::operator COLORREF() const
+{
+	return (m_clrCustomValue == COLORREF_NULL) ? m_clrStandardValue : m_clrCustomValue;
 }
-AFX_INLINE const CXTPPaintManagerColor& CXTPPaintManagerColor::operator=(COLORREF clr) {
-	SetCustomValue(clr); return *this;
+AFX_INLINE const CXTPPaintManagerColor& CXTPPaintManagerColor::operator=(COLORREF clr)
+{
+	SetCustomValue(clr);
+	return *this;
 }
-AFX_INLINE const CXTPPaintManagerColor& CXTPPaintManagerColor::operator=(const CXTPPaintManagerColor& clr) {
-	m_clrCustomValue = clr.m_clrCustomValue;
+AFX_INLINE const CXTPPaintManagerColor& CXTPPaintManagerColor::
+	operator=(const CXTPPaintManagerColor& clr)
+{
+	m_clrCustomValue   = clr.m_clrCustomValue;
 	m_clrStandardValue = clr.m_clrStandardValue;
 	return *this;
 }
@@ -271,9 +292,15 @@ public:
 	//     SetStandardValue, SetCustomValue
 	//-----------------------------------------------------------------------
 	CXTPPaintManagerColorGradient();
-	CXTPPaintManagerColorGradient(const COLORREF clr); // <combine CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
-	CXTPPaintManagerColorGradient(const CXTPPaintManagerColor clr); // <combine CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
-	CXTPPaintManagerColorGradient(COLORREF clrLight, COLORREF clrDark); // <combine CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
+	CXTPPaintManagerColorGradient(
+		const COLORREF clr); // <combine
+							 // CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
+	CXTPPaintManagerColorGradient(
+		const CXTPPaintManagerColor
+			clr); // <combine CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
+	CXTPPaintManagerColorGradient(
+		COLORREF clrLight,
+		COLORREF clrDark); // <combine CXTPPaintManagerColorGradient::CXTPPaintManagerColorGradient>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -325,7 +352,7 @@ public:
 	// Returns:
 	//     An RGB value that represents the dark gradient color.
 	//-----------------------------------------------------------------------
-	operator COLORREF () const;
+	operator COLORREF() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -335,7 +362,7 @@ public:
 	//     A reference to the CXTPPaintManagerColor dark gradient color used
 	//     for the CXTPPaintManagerColorGradient class.
 	//-----------------------------------------------------------------------
-	operator CXTPPaintManagerColor& ();
+	operator CXTPPaintManagerColor&();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -366,25 +393,30 @@ public:
 	virtual void Serialize(CArchive& ar);
 
 public:
-	CXTPPaintManagerColor clrLight;     // Light color.
-	CXTPPaintManagerColor clrDark;      // Dark color.
-	float fGradientFactor;              // Gradient divider factor
+	CXTPPaintManagerColor clrLight; // Light color.
+	CXTPPaintManagerColor clrDark;  // Dark color.
+	float fGradientFactor;			// Gradient divider factor
 };
 
 //---------------------------------------------------------------------------
 
-AFX_INLINE CXTPPaintManagerColorGradient::operator COLORREF () const {
+AFX_INLINE CXTPPaintManagerColorGradient::operator COLORREF() const
+{
 	return clrDark;
 }
-AFX_INLINE CXTPPaintManagerColorGradient::operator CXTPPaintManagerColor& () {
+AFX_INLINE CXTPPaintManagerColorGradient::operator CXTPPaintManagerColor&()
+{
 	return clrDark;
 }
-AFX_INLINE BOOL CXTPPaintManagerColorGradient::IsNull() const {
+AFX_INLINE BOOL CXTPPaintManagerColorGradient::IsNull() const
+{
 	return ((clrDark == COLORREF_NULL) && (clrLight == COLORREF_NULL));
 }
-AFX_INLINE const CXTPPaintManagerColorGradient& CXTPPaintManagerColorGradient::operator=(const CXTPPaintManagerColorGradient& refSrc) {
-	clrLight = refSrc.clrLight;
-	clrDark = refSrc.clrDark;
+AFX_INLINE const CXTPPaintManagerColorGradient& CXTPPaintManagerColorGradient::
+	operator=(const CXTPPaintManagerColorGradient& refSrc)
+{
+	clrLight		= refSrc.clrLight;
+	clrDark			= refSrc.clrDark;
 	fGradientFactor = refSrc.fGradientFactor;
 	return *this;
 }
@@ -397,22 +429,27 @@ AFX_INLINE const CXTPPaintManagerColorGradient& CXTPPaintManagerColorGradient::o
 //===========================================================================
 class _XTP_EXT_CLASS CXTPColorManager : public CXTPCmdTarget
 {
+	friend class CXTPSingleton<CXTPColorManager>;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Application-defined callback function used with the SetGetSysColorPtr function.
 	// See Also: SetGetSysColorPtr
 	//-----------------------------------------------------------------------
-	typedef DWORD (__stdcall* PFNGETSYSCOLOR)(int nIndex);
+	typedef DWORD(__stdcall* PFNGETSYSCOLOR)(int nIndex);
 
 public:
+	void ResetCustomColors();
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This function will refresh the display element colors defined
 	//     in the CXTPColorManager object.
+	// Parameters:
+	//     bResetCustomColors - If FALSE, all custom colors will remain unchanged.
 	//-----------------------------------------------------------------------
-	void RefreshColors();
+	void RefreshColors(BOOL bResetCustomColors = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -434,43 +471,48 @@ public:
 	//     and then click the "Appearance" tab.
 	//<TABLE>
 	//  <b>Constant</b>                   <b>Value</b>  <b>Description</b>
-	//  --------------------------------  ============  ------------------------------------------------------------
-	//  COLOR_SCROLLBAR                   0             Scroll bar color
-	//  COLOR_BACKGROUND                  1             Desktop color
-	//  COLOR_ACTIVECAPTION               2             Color of the title bar for the active window, Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.
-	//  COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive window, Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.
-	//  COLOR_MENU                        4             Menu background color
-	//  COLOR_WINDOW                      5             Window background color
+	//  --------------------------------  ============
+	//  ------------------------------------------------------------ COLOR_SCROLLBAR 0 Scroll bar
+	//  color COLOR_BACKGROUND                  1             Desktop color COLOR_ACTIVECAPTION 2
+	//  Color of the title bar for the active window, Specifies the left side color in the color
+	//  gradient of an active window's title bar if the gradient effect is enabled.
+	//  COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive
+	//  window, Specifies the left side color in the color gradient of an inactive window's title
+	//  bar if the gradient effect is enabled. COLOR_MENU                        4             Menu
+	//  background color COLOR_WINDOW                      5             Window background color
 	//  COLOR_WINDOWFRAME                 6             Window frame color
 	//  COLOR_MENUTEXT                    7             Color of text on menus
 	//  COLOR_WINDOWTEXT                  8             Color of text in windows
-	//  COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and scroll arrow
-	//  COLOR_ACTIVEBORDER                10            Border color of active window
+	//  COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and
+	//  scroll arrow COLOR_ACTIVEBORDER                10            Border color of active window
 	//  COLOR_INACTIVEBORDER              11            Border color of inactive window
-	//  COLOR_APPWORKSPACE                12            Background color of multiple-document interface (MDI) applications
-	//  COLOR_HIGHLIGHT                   13            Background color of items selected in a control
-	//  COLOR_HIGHLIGHTTEXT               14            Text color of items selected in a control
-	//  COLOR_BTNFACE                     15            Face color for three-dimensional display elements and for dialog box backgrounds.
-	//  COLOR_BTNSHADOW                   16            Color of shading on the edge of command buttons
-	//  COLOR_GRAYTEXT                    17            Grayed (disabled) text
-	//  COLOR_BTNTEXT                     18            Text color on push buttons
+	//  COLOR_APPWORKSPACE                12            Background color of multiple-document
+	//  interface (MDI) applications COLOR_HIGHLIGHT                   13            Background
+	//  color of items selected in a control COLOR_HIGHLIGHTTEXT               14            Text
+	//  color of items selected in a control COLOR_BTNFACE                     15            Face
+	//  color for three-dimensional display elements and for dialog box backgrounds. COLOR_BTNSHADOW
+	//  16            Color of shading on the edge of command buttons COLOR_GRAYTEXT 17 Grayed
+	//  (disabled) text COLOR_BTNTEXT                     18            Text color on push buttons
 	//  COLOR_INACTIVECAPTIONTEXT         19            Color of text in an inactive caption
 	//  COLOR_BTNHIGHLIGHT                20            Highlight color for 3-D display elements
-	//  COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display elements
-	//  COLOR_3DLIGHT                     22            Second lightest 3-D color after 3DHighlight, Light color for three-dimensional display elements (for edges facing the light source.)
-	//  COLOR_INFOTEXT                    23            Color of text in ToolTips
+	//  COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display
+	//  elements COLOR_3DLIGHT                     22            Second lightest 3-D color after
+	//  3DHighlight, Light color for three-dimensional display elements (for edges facing the light
+	//  source.) COLOR_INFOTEXT                    23            Color of text in ToolTips
 	//  COLOR_INFOBK                      24            Background color of ToolTips
-	//  COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single clicking a hot-tracked item executes the item.
-	//  COLOR_GRADIENTACTIVECAPTION       27            Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color.
-	//  COLOR_GRADIENTINACTIVECAPTION     28            Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.
-	//  XPCOLOR_TOOLBAR_FACE              30            XP toolbar background color.
-	//  XPCOLOR_HIGHLIGHT                 31            XP menu item selected color.
-	//  XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border color.
+	//  COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single
+	//  clicking a hot-tracked item executes the item. COLOR_GRADIENTACTIVECAPTION       27 Right
+	//  side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION
+	//  specifies the left side color. COLOR_GRADIENTINACTIVECAPTION     28            Right side
+	//  color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION
+	//  specifies the left side color. XPCOLOR_TOOLBAR_FACE              30            XP toolbar
+	//  background color. XPCOLOR_HIGHLIGHT                 31            XP menu item selected
+	//  color. XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border color.
 	//  XPCOLOR_HIGHLIGHT_PUSHED          33            XP menu item pushed color.
 	//  XPCOLOR_HIGHLIGHT_CHECKED         36            XP menu item checked color.
-	//  XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu item checked border color.
-	//  XPCOLOR_ICONSHADDOW               34            XP menu item icon shadow.
-	//  XPCOLOR_GRAYTEXT                  35            XP menu item disabled text color.
+	//  XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu
+	//  item checked border color. XPCOLOR_ICONSHADDOW               34            XP menu item icon
+	//  shadow. XPCOLOR_GRAYTEXT                  35            XP menu item disabled text color.
 	//  XPCOLOR_TOOLBAR_GRIPPER           38            XP toolbar gripper color.
 	//  XPCOLOR_SEPARATOR                 39            XP toolbar separator color.
 	//  XPCOLOR_DISABLED                  40            XP menu icon disabled color.
@@ -483,13 +525,14 @@ public:
 	//  XPCOLOR_PUSHED_TEXT               47            XP toolbar pushed text color.
 	//  XPCOLOR_TAB_INACTIVE_BACK         48            XP inactive tab background color.
 	//  XPCOLOR_TAB_INACTIVE_TEXT         49            XP inactive tab text color.
-	//  XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP border color for pushed in 3D elements.
-	//  XPCOLOR_CHECKED_TEXT              45            XP color for text displayed in a checked button.
-	//  XPCOLOR_3DFACE                    51            XP face color for three- dimensional display elements and for dialog box backgrounds.
-	//  XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional display elements (for edges facing away from the light source).
-	//  XPCOLOR_EDITCTRLBORDER            53            XP color for the border color of edit controls.
-	//  XPCOLOR_FRAME                     54            Office 2003 frame color.
-	//  XPCOLOR_SPLITTER_FACE             55            XP splitter face color.
+	//  XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP border
+	//  color for pushed in 3D elements. XPCOLOR_CHECKED_TEXT              45            XP color
+	//  for text displayed in a checked button. XPCOLOR_3DFACE                    51            XP
+	//  face color for three- dimensional display elements and for dialog box backgrounds.
+	//  XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional
+	//  display elements (for edges facing away from the light source). XPCOLOR_EDITCTRLBORDER 53 XP
+	//  color for the border color of edit controls. XPCOLOR_FRAME                     54 Office
+	//  2003 frame color. XPCOLOR_SPLITTER_FACE             55            XP splitter face color.
 	//  XPCOLOR_LABEL                     56            Color for label control (xtpControlLabel)
 	//  XPCOLOR_STATICFRAME               57            WinXP Static frame color
 	//</TABLE>
@@ -655,25 +698,25 @@ private:
 	double GetBDelta(COLORREF clr);
 	XTPCurrentSystemTheme _GetWinThemeWrapperTheme();
 
-	// singleton, instantiate on demand.
-	static CXTPColorManager& AFX_CDECL Instance();
-
 public:
-	CXTPPaintManagerColorGradient grcCaption;            // Office 2003 Caption gradient color.
-	CXTPPaintManagerColorGradient grcDockBar;            // Office 2003 Dockbar gradient color.
+	CXTPPaintManagerColorGradient grcCaption;			 // Office 2003 Caption gradient color.
+	CXTPPaintManagerColorGradient grcDockBar;			 // Office 2003 Dockbar gradient color.
 	CXTPPaintManagerColorGradient grcShortcutBarGripper; // Office 2003 Shortcut bar gripper.
 
-	CXTPPaintManagerColorGradient grcToolBar;            // Office 2003 ToolBar gradient color.
-	CXTPPaintManagerColorGradient grcMenu;               // Office 2003 Menu sidebar gradient color.
-	CXTPPaintManagerColorGradient grcMenuExpanded;       // Office 2003 Expanded menu sidebar gradient color.
-	CXTPPaintManagerColorGradient grcMenuItemPopup;      // Office 2003 Menu item popup gradient color.
+	CXTPPaintManagerColorGradient grcToolBar;		// Office 2003 ToolBar gradient color.
+	CXTPPaintManagerColorGradient grcMenu;			// Office 2003 Menu sidebar gradient color.
+	CXTPPaintManagerColorGradient grcMenuExpanded;  // Office 2003 Expanded menu sidebar gradient
+													// color.
+	CXTPPaintManagerColorGradient grcMenuItemPopup; // Office 2003 Menu item popup gradient color.
 
-	CXTPPaintManagerColorGradient grcLunaChecked;        // Office 2003 checked button gradient color.
-	CXTPPaintManagerColorGradient grcLunaPushed;         // Office 2003 pushed button gradient color.
-	CXTPPaintManagerColorGradient grcLunaSelected;       // Office 2003 selected button gradient color.
+	CXTPPaintManagerColorGradient grcLunaChecked;  // Office 2003 checked button gradient color.
+	CXTPPaintManagerColorGradient grcLunaPushed;   // Office 2003 pushed button gradient color.
+	CXTPPaintManagerColorGradient grcLunaSelected; // Office 2003 selected button gradient color.
 
-	BOOL m_bEnableLunaBlueForRoyaleTheme;                // TRUE if Office2003 blue theme will be used for xtpSystemThemeRoyale
-	BOOL m_bEnableLunaBlueForAeroTheme;                  // TRUE if Office2003 blue theme will be used for xtpSystemThemeAero
+	BOOL m_bEnableLunaBlueForRoyaleTheme; // TRUE if Office2003 blue theme will be used for
+										  // xtpSystemThemeRoyale
+	BOOL m_bEnableLunaBlueForAeroTheme;   // TRUE if Office2003 blue theme will be used for
+										  // xtpSystemThemeAero
 
 private:
 	BOOL m_bDisableLunaColors;
@@ -684,10 +727,21 @@ private:
 	XTPCurrentSystemTheme m_systemTheme;
 	XTPCurrentSystemTheme m_winThemeWrapperTheme;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
-	friend CXTPColorManager* XTPColorManager();
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPColorManager);
+
+	void OleSetColor(int nIndex, OLE_COLOR clr);
+	void OleRefreshColors();
+	virtual void OnFinalRelease();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
-
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -700,7 +754,7 @@ private:
 // COLORREF cr = XTPColorManager()->GetColor(nIndex);
 // </code>
 //---------------------------------------------------------------------------
-CXTPColorManager* XTPColorManager();
+_XTP_EXT_CLASS CXTPColorManager* AFX_CDECL XTPColorManager();
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -724,7 +778,7 @@ CXTPColorManager* XTPColorManager();
 // See Also:
 //     CXTPColorManager::GetColor
 //---------------------------------------------------------------------------
-COLORREF GetXtremeColor(UINT nIndex);
+_XTP_EXT_CLASS COLORREF AFX_CDECL GetXtremeColor(UINT nIndex);
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -753,27 +807,18 @@ COLORREF GetXtremeColor(UINT nIndex);
 // See Also:
 //      CXTPColorManager::GetColor
 //-----------------------------------------------------------------------
-COLORREF GetMSO2003Color(UINT nIndex);
-
-/////////////////////////////////////////////////////////////////////////////
-
-AFX_INLINE CXTPColorManager* XTPColorManager() {
-	return &CXTPColorManager::Instance();
-}
-AFX_INLINE COLORREF GetXtremeColor(UINT nIndex) {
-	return XTPColorManager()->GetColor(nIndex);
-}
-AFX_INLINE COLORREF GetMSO2003Color(UINT nIndex) {
-	return XTPColorManager()->GetLunaColor(nIndex);
-}
+_XTP_EXT_CLASS COLORREF AFX_CDECL GetMSO2003Color(UINT nIndex);
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This global function will refresh the display element
 //     colors defined in the CXTPColorManager class.
+// Parameters:
+//     bResetCustomColors - If FALSE, all custom colors will remain unchanged.
 // See Also:
 //     CXTPColorManager::RefreshColors
 //-----------------------------------------------------------------------
-_XTP_EXT_CLASS void AFX_CDECL RefreshXtremeColors();
+_XTP_EXT_CLASS void AFX_CDECL RefreshXtremeColors(BOOL bResetCustomColors = TRUE);
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCOLORMANAGER_H__)

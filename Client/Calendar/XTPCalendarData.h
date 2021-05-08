@@ -1,7 +1,6 @@
 // XTPCalendarData.h: interface for the CXTPCalendarData class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,30 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARDATA_H__)
-#define _XTPCALENDARDATA_H__
+#	define _XTPCALENDARDATA_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 ////////////////////////////////////////////////////////////////////////////
-#include "Common/XTPNotifyConnection.h"
-
-#include "XTPCalendarOptions.h"
-#include "XTPCalendarEvent.h"
 
 class CXTPCalendarRecurrencePattern;
 class CXTPCalendarEventLabels;
 class CXTPCalendarSchedules;
 class CXTPNotifyConnection;
 class CXTPCalendarOptions;
+class CXTPCalendarEventCategories;
+class CXTPCalendarCustomProperties;
+class CXTPCalendarEvents;
+class CXTPCalendarEvent;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvents)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvent)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarRecurrencePattern)
 
 //===========================================================================
 // Summary:
@@ -47,10 +52,12 @@ class CXTPCalendarOptions;
 //    like: 503, 1021, 1511, 2003, 3001, 4001, 5003, 6007, 8009, 12007, 16001,
 //          32003, 48017, 64007
 //===========================================================================
-#define XTP_OBJECT_CACHE_HASH_TABLE_SIZE 1021
+#	define XTP_OBJECT_CACHE_HASH_TABLE_SIZE 1021
 
-static const LPCTSTR cszProcess_RecurrenceState     = _T("process_RecurrenceState");    // String name for a corresponding property
-static const LPCTSTR cszProcess_RecurrencePatternID = _T("process_RecurrencePatternID");// String name for a corresponding property
+static const LPCTSTR cszProcess_RecurrenceState =
+	_T("process_RecurrenceState"); // String name for a corresponding property
+static const LPCTSTR cszProcess_RecurrencePatternID =
+	_T("process_RecurrencePatternID"); // String name for a corresponding property
 
 //===========================================================================
 // Summary:
@@ -94,7 +101,6 @@ class _XTP_EXT_CLASS CXTPCalendarData : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarData)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -160,7 +166,7 @@ public:
 	// Returns:
 	//     TRUE when a connection is already opened. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsOpen();
+	virtual BOOL IsOpen() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -171,7 +177,7 @@ public:
 	// See also:
 	//     XTPCalendarDataProvider enumeration.
 	//-----------------------------------------------------------------------
-	virtual XTPCalendarDataProvider GetType();
+	virtual XTPCalendarDataProvider GetType() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -220,7 +226,8 @@ public:
 	// Returns:
 	//     Created empty Recurrence Pattern.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarRecurrencePatternPtr CreateNewRecurrencePattern(DWORD dwPatternID = XTP_CALENDAR_UNKNOWN_RECURRENCE_PATTERN_ID);
+	virtual CXTPCalendarRecurrencePatternPtr
+		CreateNewRecurrencePattern(DWORD dwPatternID = XTP_CALENDAR_UNKNOWN_RECURRENCE_PATTERN_ID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -335,7 +342,7 @@ public:
 	// See also;
 	//     CXTPNotifyConnection overview.
 	//-----------------------------------------------------------------------
-	virtual CXTPNotifyConnection* GetConnection();
+	virtual CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -345,7 +352,7 @@ public:
 	// See also;
 	//     CXTPCalendarCustomProperties overview.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarCustomProperties* GetCustomProperties();
+	virtual CXTPCalendarCustomProperties* GetCustomProperties() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -382,6 +389,74 @@ public:
 	virtual void SetLabelList(CXTPCalendarEventLabels* pLabelList);
 
 	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to add a new item to the event
+	//             label list.
+	// Parameters: nID     : Unique identifier for the label.
+	//             strName : Name of the list to add.
+	//             crLabel : Background base color for the list.
+	// Returns:    TRUE if the item was added to the list list, otherwise
+	//             FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL AddEventLabel(int nID, CString strName, COLORREF crLabel);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to add a new item to the event
+	//             category list.
+	// Parameters: uID      : Unique identifier for the category.
+	//             strName  : Name of the category to add.
+	//             crBorder : Border color for the category.
+	//             crBkBase : Background base color for the category.
+	// Returns:    TRUE if the item was added to the category list, otherwise
+	//             FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL AddEventCategory(UINT uID, CString strName, COLORREF crBorder, COLORREF crBkBase);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Update event labels colors when theme is changed
+	// Parameters:
+	//     clrEventColors - An array of colors
+	//     uCount         - Number of items in the array above
+	//-----------------------------------------------------------------------
+	virtual void UpdateEventLabels(COLORREF* clrEventColors, UINT uCount);
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to remove all items from the
+	//          event category list.
+	//-----------------------------------------------------------------------
+	virtual void ClearEventCategoryList();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to remove all items from the
+	//          event label list.
+	//-----------------------------------------------------------------------
+	virtual void ClearEventLabelList();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to restore the event category list
+	//          to default values.
+	//-----------------------------------------------------------------------
+	virtual void RestoreEventCategoryList();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to restore the event label list
+	//          to default values.
+	//-----------------------------------------------------------------------
+	virtual void RestoreEventLabelList();
+
+	//-----------------------------------------------------------------------
+	// Summary: This member function updates default colors of category list
+	//          when theme is changed.
+	// Parameters:
+	//          pClrBkBase : Array of COLORREF values representing the background
+	//                       color for each category item.
+	//          pClrBorder : Array of COLORREF values represening the border
+	//                       color for each category item.
+	//          nCount     : Size of pClrBack and pClrBorder arrays.
+	//-----------------------------------------------------------------------
+	void UpdateEventCategories(COLORREF* pClrBkBase, COLORREF* pClrBorder, int nCount);
+
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns a collection of schedules used in this data source.
 	// Returns:
@@ -409,7 +484,7 @@ public:
 	// See also;
 	//     SetConnectionString(), GetDataSource()
 	//-----------------------------------------------------------------------
-	virtual CString GetConnectionString();
+	virtual CString GetConnectionString() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -471,7 +546,8 @@ public:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr GetUpcomingEvents(COleDateTime dtFrom = (DATE)0, COleDateTimeSpan spPeriod = (DATE)0);
+	virtual CXTPCalendarEventsPtr GetUpcomingEvents(COleDateTime dtFrom		  = (DATE)0,
+													COleDateTimeSpan spPeriod = (DATE)0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -491,9 +567,9 @@ public:
 	virtual CXTPCalendarEventsPtr GetAllEvents_raw();
 
 	BOOL m_bOwnershipMode;
-	//flag to set protected mode of using Calendar when some schedules can be protected and other - public
+	// flag to set protected mode of using Calendar when some schedules can be protected and other -
+	// public
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves day events for a specified day from the data source.
@@ -671,7 +747,8 @@ protected:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom,
+													  COleDateTimeSpan spPeriod);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -701,7 +778,7 @@ protected:
 	// See Also:
 	//    CXTPNotifyConnection overview
 	//-----------------------------------------------------------------------
-	virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam , LPARAM lParam);
+	virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam, LPARAM lParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -716,44 +793,49 @@ protected:
 	// See Also:
 	//    CXTPTopLevelWndMsgNotifier, XTP_WM_TIME_ZONE_CHANGED
 	//-----------------------------------------------------------------------
-	virtual BOOL OnTimeZoneChanged() { return FALSE; };
+	virtual BOOL OnTimeZoneChanged()
+	{
+		return FALSE;
+	};
 
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual BOOL _AddRPatternWithExceptions(CXTPCalendarRecurrencePattern* pPattern);
 	virtual BOOL _RemoveRPatternWithExceptions(CXTPCalendarRecurrencePattern* pPattern);
 	virtual BOOL _ChangeRPatternWithExceptions(CXTPCalendarRecurrencePattern* pRecurrencePattern);
 
-	virtual BOOL _ChangeRExceptionOccurrence_nf(CXTPCalendarEvent* pExcOcc, BOOL bSend_EventDeleted);
+	virtual BOOL _ChangeRExceptionOccurrence_nf(CXTPCalendarEvent* pExcOcc,
+												BOOL bSend_EventDeleted);
 
 	virtual void _PostProcessOccurrencesFromMaster(COleDateTime dtDay, CXTPCalendarEvents* pEvents);
-	virtual void _PostProcessOccurrencesFromMaster2(COleDateTime dtDayFrom, COleDateTime dtDayTo, CXTPCalendarEvents* pEvents);
+	virtual void _PostProcessOccurrencesFromMaster2(COleDateTime dtDayFrom, COleDateTime dtDayTo,
+													CXTPCalendarEvents* pEvents);
 
 	virtual BOOL _PostProcessRecurrenceIfNeed(CXTPCalendarEvent* pEvent);
 	virtual void _PostProcessRecurrenceIfNeed(CXTPCalendarEvents* pEvents);
 
-	virtual void _FilterDayEventsInstancesByEndTime(COleDateTime dtDay, CXTPCalendarEvents* pEvents);
+	virtual void _FilterDayEventsInstancesByEndTime(COleDateTime dtDay,
+													CXTPCalendarEvents* pEvents);
 
 	virtual CXTPCalendarRecurrencePatternPtr _GetRecurrencePattern_raw(DWORD dwPatternID);
 	virtual CXTPCalendarEventPtr _GetEvent_raw(DWORD dwEventID);
-
 
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	BOOL m_bOpened; // Stores a flag whether a data source connection is open
 
-	CXTPNotifyConnection* m_pConnect;    // Connection object to send notifications.
+	CXTPNotifyConnection* m_pConnection; // Connection object to send notifications.
 	BOOL m_bDisableNotificationsSending; // Stores a flag whether notifications sending is disabled.
 
-	CXTPCalendarEventLabels* m_pLabelList; // Event labels list.
-	CXTPCalendarSchedules*   m_pSchedules; // Data source Schedules list
+	CXTPCalendarEventLabels* m_pLabelList;			 // Event labels list.
+	CXTPCalendarSchedules* m_pSchedules;			 // Data source Schedules list
 	CXTPCalendarEventCategories* m_pEventCategories; // Store a collection of Event categories.
 
-	CXTPCalendarCustomProperties* m_pCustomProperties; //Custom properties collection object.
+	CXTPCalendarCustomProperties* m_pCustomProperties; // Custom properties collection object.
 protected:
-	CString m_strConnectionString;         // default connection string;
+	CString m_strConnectionString; // default connection string;
 
-	XTPCalendarDataProvider m_typeProvider;// Data provider type.
+	XTPCalendarDataProvider m_typeProvider; // Data provider type.
 
 	//-----------------------------------------------------------------------
 	// Remarks:
@@ -844,11 +926,12 @@ protected:
 		//-------------------------------------------------------------------
 		virtual void _AddToCacheIfNeed(CXTPCalendarRecurrencePattern* pPattern);
 
-		CXTPCalendarData* m_pCacheDP;   // Cache Data Provider.
-		int               m_eCacheMode; // see XTPCalendarDataProviderCacheMode
+		CXTPCalendarData* m_pCacheDP; // Cache Data Provider.
+		int m_eCacheMode;			  // see XTPCalendarDataProviderCacheMode
 
 	protected:
-		CMap<DWORD, DWORD, BOOL, BOOL> m_mapIsDayInCache; // whether events for this day are already stored in cache
+		CMap<DWORD, DWORD, BOOL, BOOL> m_mapIsDayInCache; // whether events for this day are already
+														  // stored in cache
 	};
 
 protected:
@@ -885,7 +968,7 @@ protected:
 		//     stored objects.
 		// See Also: CMap
 		//-----------------------------------------------------------------------
-		virtual ~EventsMapByID_T() {};
+		virtual ~EventsMapByID_T(){};
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -1031,15 +1114,13 @@ protected:
 		int GetCount()
 		{
 			return (int)m_mapID2Object.GetCount();
-
 		}
 
 	protected:
-
-		//typedef CXTPSmartPtrInternalT<_TObject> TObjPtr;       // Smart pointer object type.
-		// to avoid warning C4786 CCmdTarget used.
-		typedef CXTPSmartPtrInternalT<CCmdTarget> TObjPtr;       // Smart pointer object type.
-		CMap<DWORD, DWORD, TObjPtr, TObjPtr&>  m_mapID2Object; // The map of ID to object.
+		// typedef CXTPSmartPtrInternalT<_TObject> TObjPtr;       // Smart pointer object type.
+		// to avoid warning C4786 CXTPCmdTarget used.
+		typedef CXTPSmartPtrInternalT<CCmdTarget> TObjPtr;	// Smart pointer object type.
+		CMap<DWORD, DWORD, TObjPtr, TObjPtr&> m_mapID2Object; // The map of ID to object.
 	};
 
 	//-----------------------------------------------------------------------
@@ -1048,76 +1129,179 @@ protected:
 	// Returns:
 	//     New value for event ID.
 	//-----------------------------------------------------------------------
-	static DWORD GetNextFreeTempID();
+	static DWORD AFX_CDECL GetNextFreeTempID();
 
 	static DWORD ms_dwNextFreeTempID; // Next unique event ID.
 
-	CXTPCalendarOptions* m_pCalendarOptions;    // This member stores user's calendar view options.
+	CXTPCalendarOptions* m_pCalendarOptions; // This member stores user's calendar view options.
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to create a data provider from
+	//     a specified Calendar connection string.
+	// Parameters:
+	//     lpszConnectionString - A text Calendar connection string.
+	// Remarks:
+	//     This is a helper method which creates calendar's data provider of
+	//     the specified type with settings taken from the connection string.
+	// Returns:
+	//     Pointer to the created Calendar Data Provider object.
+	//-----------------------------------------------------------------------
+	static CXTPCalendarData* AFX_CDECL CreateDataProvider(LPCTSTR lpszConnectionString);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to create a data provider of the
+	//     specified type.
+	// Parameters:
+	//     eDataProvider - A member of XTPCalendarDataProvider enumeration,
+	//                     which specifies a type of the Data Provider to create.
+	// Remarks:
+	//     This is a helper method which creates calendar's data provider of
+	//     the specified type.
+	// Returns:
+	//     Pointer to the created Calendar Data Provider object.
+	//-----------------------------------------------------------------------
+	static CXTPCalendarData* AFX_CDECL CreateDataProvider(XTPCalendarDataProvider eDataProvider);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve a type of the data provider from
+	//     its connection string.
+	// Parameters:
+	//     lpszConnectionString - A text Calendar connection string.
+	//     eDPDefault           - Default data provider type to be returned if
+	//                            it can't be determined from the string.
+	// Remarks:
+	//     This is a helper method which parses a connection string and
+	//     identifies a type of the data provider which is specified there.
+	// Returns:
+	//     One of the values from XTPCalendarDataProvider enumeration.
+	// See Also:
+	//     DataSourceFromConStr(), CreateDataProvider()
+	//-----------------------------------------------------------------------
+	static XTPCalendarDataProvider AFX_CDECL DataProviderTypeFromConStr(
+		LPCTSTR lpszConnectionString,
+		XTPCalendarDataProvider eDPDefault = xtpCalendarDataProviderUnknown);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve a data source connection string from
+	//     a regular Calendar connection string.
+	// Parameters:
+	//     lpszConnectionString - A text Calendar connection string.
+	// Remarks:
+	//     This is a helper method which parses a connection string and
+	//     identifies a data source connection string there.
+	// Returns:
+	//     Identified data source connection string.
+	// See Also:
+	//     DataProviderTypeFromConStr(), CreateDataProvider()
+	//-----------------------------------------------------------------------
+	static CString AFX_CDECL DataSourceFromConStr(LPCTSTR lpszConnectionString);
+
 private:
 	//{{AFX_CODEJOCK_PRIVATE
 	void SetOptionsToUpdate(CXTPCalendarOptions* pOptions);
 	//}}AFX_CODEJOCK_PRIVATE
 protected:
+#	ifdef _XTP_ACTIVEX
 
+	//{{AFX_CODEJOCK_PRIVATE
+
+	virtual BOOL OpenEx(LPDISPATCH pdispADOConnection);
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarData);
+
+	afx_msg LPDISPATCH OleCreateEvent();
+	afx_msg LPDISPATCH OleCreateEventEx(long EventID);
+	afx_msg LPDISPATCH OleCreateRecurrencePattern(long PatternID);
+
+	afx_msg void OleAddEvent(LPDISPATCH Event);
+	afx_msg void OleChangeEvent(LPDISPATCH Event);
+
+	afx_msg BOOL OleOpen();
+	afx_msg BOOL OleOpenEx(LPDISPATCH pdispADOConnection);
+
+	afx_msg BOOL OleCreate();
+	afx_msg void OleDeleteEvent(LPDISPATCH Event);
+	afx_msg BSTR OleGetDataSource();
+	afx_msg void OleClose();
+	afx_msg void OleSave();
+	afx_msg void OleRemoveAllEvents();
+	afx_msg LPDISPATCH OleRetrieveDayEvents(DATE dt);
+	afx_msg LPDISPATCH OleGetEvent(long EventID);
+	afx_msg LPDISPATCH OleGetRecurrencePattern(long PatternID);
+
+	afx_msg LPDISPATCH OleGetLabelList();
+
+	afx_msg long OleGetCacheMode();
+	afx_msg void OleSetCacheMode(long eCacheMode);
+
+	afx_msg BOOL OleGetOwnershipMode();
+	afx_msg void OleSetOwnershipMode(BOOL bMode);
+
+	afx_msg void OleClearCache();
+
+	afx_msg LPDISPATCH OleGetAllEventsRaw();
+	afx_msg LPDISPATCH OleGetSchedules();
+	afx_msg LPDISPATCH OleGetEventCategories();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
 AFX_INLINE BOOL CXTPCalendarData::Open()
 {
-	//ASSERT(!m_bOpened);
+	// ASSERT(!m_bOpened);
 	return m_bOpened = TRUE;
 }
-
 AFX_INLINE BOOL CXTPCalendarData::Create()
 {
-	//ASSERT(!m_bOpened);
+	// ASSERT(!m_bOpened);
 	return m_bOpened = TRUE;
 }
-
-AFX_INLINE BOOL CXTPCalendarData::IsOpen()
+AFX_INLINE BOOL CXTPCalendarData::IsOpen() const
 {
 	return m_bOpened;
 }
-
 AFX_INLINE BOOL CXTPCalendarData::Save()
 {
-	//ASSERT(m_bOpened);
+	// ASSERT(m_bOpened);
 	return TRUE;
 }
-
 AFX_INLINE void CXTPCalendarData::Close()
 {
-	//ASSERT(m_bOpened);
+	// ASSERT(m_bOpened);
 
 	m_cache.SafeClose();
 	m_bOpened = FALSE;
 }
-
-AFX_INLINE CXTPNotifyConnection* CXTPCalendarData::GetConnection()
+AFX_INLINE CXTPNotifyConnection* CXTPCalendarData::GetConnection() const
 {
-	return m_pConnect;
+	return m_pConnection;
 }
-
-AFX_INLINE DWORD CXTPCalendarData::GetNextFreeTempID()
+AFX_INLINE DWORD AFX_CDECL CXTPCalendarData::GetNextFreeTempID()
 {
 	return ms_dwNextFreeTempID--;
 }
-
 AFX_INLINE CXTPCalendarEventLabels* CXTPCalendarData::GetLabelList() const
 {
 	return m_pLabelList;
 }
-
 AFX_INLINE CXTPCalendarEventCategories* CXTPCalendarData::GetEventCategories() const
 {
 	return m_pEventCategories;
 }
-
 AFX_INLINE CXTPCalendarSchedules* CXTPCalendarData::GetSchedules() const
 {
 	return m_pSchedules;
 }
-
 
 AFX_INLINE void CXTPCalendarData::SetConnectionString(LPCTSTR lpszConnectionString)
 {
@@ -1127,25 +1311,22 @@ AFX_INLINE void CXTPCalendarData::SetConnectionString(LPCTSTR lpszConnectionStri
 		m_strConnectionString = lpszConnectionString;
 	}
 }
-
-AFX_INLINE CString CXTPCalendarData::GetConnectionString()
+AFX_INLINE CString CXTPCalendarData::GetConnectionString() const
 {
 	return m_strConnectionString;
 }
-
-AFX_INLINE XTPCalendarDataProvider CXTPCalendarData::GetType()
+AFX_INLINE XTPCalendarDataProvider CXTPCalendarData::GetType() const
 {
 	return m_typeProvider;
 }
-
 AFX_INLINE int CXTPCalendarData::GetCacheMode() const
 {
 	return m_cache.m_eCacheMode;
 }
-
-AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarData::GetCustomProperties()
+AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarData::GetCustomProperties() const
 {
 	return m_pCustomProperties;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARDATA_H__)

@@ -1,0 +1,6 @@
+﻿<Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Width="12" Height="12">
+  <Canvas>
+    <Rectangle Width="12" Height="12" Fill="#FFFFFF" Stroke="#808080" StrokeThickness="1"/>
+    <Path Canvas.Left="-1" Canvas.Top="-1" Stroke="Black" StrokeThickness="2" Data="M 3,7 6,10 11,3"/>
+  </Canvas>
+</Viewbox>

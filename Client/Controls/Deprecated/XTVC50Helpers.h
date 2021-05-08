@@ -1,7 +1,6 @@
 // XTVC50Helpers.h : Visual C++ 5.0 helpers
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTVC50HELPERS_H__)
-#define __XTVC50HELPERS_H__
+#	define __XTVC50HELPERS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ---------------------------------------------------------------------
 // Summary:
@@ -112,36 +112,33 @@ public:
 	int GetNextSelectedItem(POSITION& pos) const;
 };
 
-
 //{{AFX_CODEJOCK_PRIVATE
-#if (_MSC_VER >= 1200) // Using Visual C++ 6.0 or later.
+#	if (_MSC_VER >= 1200) // Using Visual C++ 6.0 or later.
 //}}AFX_CODEJOCK_PRIVATE
-
 
 // ---------------------------------------------------------------------
 // Summary:
 //     Helper macro used for compatibility with Visual C++ 5.0, Visual C++ 6.0
 //     and later should use CString.
 // ---------------------------------------------------------------------
-#define CXTStringHelper CString
+#		define CXTStringHelper CString
 
 // ---------------------------------------------------------------------
 // Summary:
 //     Helper macro used for compatibility with Visual C++ 5.0, Visual C++ 6.0
 //     and later should use CHeaderCtrl.
 // ---------------------------------------------------------------------
-#define CXTHeaderCtrlHelper CHeaderCtrl
+#		define CXTHeaderCtrlHelper CHeaderCtrl
 
 // ---------------------------------------------------------------------
 // Summary:
 //     Helper macro used for compatibility with Visual C++ 5.0, Visual C++ 6.0
 //     and later should use CListCtrl.
 // ---------------------------------------------------------------------
-#define CXTListCtrlHelper CListCtrl
-
+#		define CXTListCtrlHelper CListCtrl
 
 //{{AFX_CODEJOCK_PRIVATE
-#else  // Using Visual C++ 5.0
+#	else // Using Visual C++ 5.0
 
 // ------------------------------------------------------------------------
 // Summary:
@@ -211,7 +208,8 @@ protected:
 	//     Retrieves the bounding rectangle for a given item in a header control.
 	// Parameters:
 	//     nIndex -  The zero-based index of the header control item.
-	//     lpRect -  A pointer to the address of aRECT structure that receives the bounding rectangle information.
+	//     lpRect -  A pointer to the address of aRECT structure that receives the bounding
+	//     rectangle information.
 	// Returns:
 	//     Nonzero if successful; otherwise 0.
 	// Remarks:
@@ -241,7 +239,7 @@ public:
 	// Example:
 	//     The following example demonstrates how to use GetFirstSelectedItemPosition.
 	// <code>
-	//     CListCtrl* pListCtrl = (CListCtrl*) GetDlgItem(IDC_YOURLISTCONTROL);
+	// CListCtrl* pListCtrl = (CListCtrl*) GetDlgItem(IDC_YOURLISTCONTROL);
 	// ASSERT(pListCtrl != NULL);
 	//
 	// POSITION pos = pList-\>GetFirstSelectedItemPosition();
@@ -368,7 +366,7 @@ public:
 	// </code>
 	// ----------------------------------------------------------------------------
 	int Find(TCHAR ch) const;
-	int Find(LPCTSTR lpszSub) const;             //<COMBINE CXTStringHelper::Find@TCHAR@const>
+	int Find(LPCTSTR lpszSub) const;			 //<COMBINE CXTStringHelper::Find@TCHAR@const>
 	int Find(LPCTSTR lpszSub, int nStart) const; //<COMBINE CXTStringHelper::Find@TCHAR@const>
 
 	// --------------------------------------------------------------------------------
@@ -439,7 +437,7 @@ public:
 	//     The following example demonstrates the use of CXTStringHelper::operator
 	//     =.
 	// <code>
-	//     CXTStringHelper s1, s2;   // Empty CXTStringHelper objects
+	// CXTStringHelper s1, s2;   // Empty CXTStringHelper objects
 	//
 	// s1 = "cat";            // s1 = "cat"
 	// s2 = s1;               // s1 and s2 each = "cat"
@@ -448,8 +446,8 @@ public:
 	// </code>
 	// ---------------------------------------------------------------------------------
 	const CString& operator=(TCHAR ch);
-	const CString& operator=(LPCSTR lpsz);              //<COMBINE CXTStringHelper::=@TCHAR>
-	const CString& operator=(LPCWSTR lpsz);             //<COMBINE CXTStringHelper::=@TCHAR>
+	const CString& operator=(LPCSTR lpsz);				//<COMBINE CXTStringHelper::=@TCHAR>
+	const CString& operator=(LPCWSTR lpsz);				//<COMBINE CXTStringHelper::=@TCHAR>
 	const CString& operator=(const CString& stringSrc); //<COMBINE CXTStringHelper::=@TCHAR>
 	const CString& operator=(const unsigned char* psz); //<COMBINE CXTStringHelper::=@TCHAR>
 
@@ -563,46 +561,44 @@ public:
 	CXTStringHelper Left(int nCount) const;
 };
 
-#ifndef VERSION_WIN4
-#define VERSION_WIN4       MAKELONG(0, 4)
-#endif
+#		ifndef VERSION_WIN4
+#			define VERSION_WIN4 MAKELONG(0, 4)
+#		endif
 
-#ifndef VERSION_IE401
-#define VERSION_IE401      MAKELONG(72, 4)
-#endif
+#		ifndef VERSION_IE401
+#			define VERSION_IE401 MAKELONG(72, 4)
+#		endif
 
-#ifndef CBRS_GRIPPER
-#define CBRS_GRIPPER       0x00400000L
-#endif
+#		ifndef CBRS_GRIPPER
+#			define CBRS_GRIPPER 0x00400000L
+#		endif
 
-#ifndef AFX_IDW_REBAR
-#define AFX_IDW_REBAR      0xE804
-#endif
+#		ifndef AFX_IDW_REBAR
+#			define AFX_IDW_REBAR 0xE804
+#		endif
 
-#ifndef ID_VIEW_REBAR
-#define ID_VIEW_REBAR      0xE804
-#endif
+#		ifndef ID_VIEW_REBAR
+#			define ID_VIEW_REBAR 0xE804
+#		endif
 
-#ifndef AFX_IDW_DIALOGBAR
-#define AFX_IDW_DIALOGBAR  0xE805
-#endif
+#		ifndef AFX_IDW_DIALOGBAR
+#			define AFX_IDW_DIALOGBAR 0xE805
+#		endif
 
-#ifndef SPI_GETFLATMENU
-#define SPI_GETFLATMENU    0x1022
-#endif
+#		ifndef SPI_GETFLATMENU
+#			define SPI_GETFLATMENU 0x1022
+#		endif
 
-#ifndef AFX_INLINE
-#define AFX_INLINE         inline
-#endif
+#		ifndef AFX_INLINE
+#			define AFX_INLINE inline
+#		endif
 
-#ifndef AFX_STATIC
-#define AFX_STATIC         static
-#endif
+#		ifndef AFX_STATIC
+#			define AFX_STATIC static
+#		endif
 
-#endif
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
-
-
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -625,8 +621,6 @@ enum XTMouseState
 	xtMouseSelect = 3  // The mouse cursor is hovering the control and the left button is pressed.
 };
 
-
-
 //////////////////////////////////////////////////////////////////////
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTVC50HELPERS_H__)

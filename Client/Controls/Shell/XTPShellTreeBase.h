@@ -1,7 +1,6 @@
 // XTPShellTreeBase.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLTREEBASE_H__)
-#define __XTPSHELLTREEBASE_H__
+#	define __XTPSHELLTREEBASE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // -------------------------------------------------------------------
 // Summary:
@@ -51,10 +52,11 @@ enum XTPFindType
 //     CXTPShellTreeBase is a multiple inheritance class derived from CXTPTreeView
 //     and CXTPShellPidl. It is used to create a CXTPShellTreeBase class object.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPShellTreeBase : public CXTPTreeBase, public CXTPShellPidl
+class _XTP_EXT_CLASS CXTPShellTreeBase
+	: public CXTPTreeBase
+	, public CXTPShellPidl
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellTreeBase object
@@ -68,7 +70,6 @@ public:
 	virtual ~CXTPShellTreeBase();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function fills a branch of the TreeView control. Given
@@ -95,7 +96,6 @@ protected:
 	virtual void GetNormalAndSelectedIcons(LPITEMIDLIST lpifq, LPTV_ITEM lptvitem);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to enable or disable the display of the
@@ -249,7 +249,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual HTREEITEM SearchTree(HTREEITEM hItem, LPCITEMIDLIST pABSPidl);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will "tunnel" the tree to find the specified
@@ -272,7 +271,7 @@ public:
 	//     TRUE if the path is not in the file system (e.g.
 	//     MyComputer); if none is selected, it returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetFolderItemPath(HTREEITEM hItem, CString &strFolderPath);
+	virtual BOOL GetFolderItemPath(HTREEITEM hItem, CString& strFolderPath);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -295,7 +294,6 @@ public:
 	// See Also: PopulateTree()
 	//-----------------------------------------------------------------------
 	virtual BOOL InitializeTree(DWORD dwStyle = TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -331,8 +329,14 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SelectionChanged(HTREEITEM hItem, CString strFolderPath);
 
-protected:
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to enable autohidden triangles for Windows Vista and Windows 7.
+	//-----------------------------------------------------------------------
+	void SetExplorerStyle();
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function sets the shell attribute flags for the specified
@@ -342,7 +346,6 @@ protected:
 	//     dwAttributes - Flags retrieved from SHELLFOLDER::GetAttributesOf.
 	//-----------------------------------------------------------------------
 	void SetAttributes(HTREEITEM hItem, DWORD dwAttributes);
-
 
 	// -------------------------------------------------------------------------------------------
 	// Summary:
@@ -404,7 +407,7 @@ protected:
 	virtual void SortChildren(HTREEITEM hParent);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_MSG(CXTPShellTreeBase)
 	afx_msg void OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult);
@@ -414,31 +417,35 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	UINT             m_uFlags;       // Flags indicating which items to include in the enumeration.
-	bool             m_bTunneling;   // true if tree is currently traversing.
-	BOOL             m_bContextMenu; // TRUE to display the shell context menu on right item click.
-	CWnd*            m_pComboBox;    // CComboBox that is associated with this control. See AssociateCombo(...)
-	CXTPShellSettings m_shSettings;   // Contains SHELLFLAGSTATE info.
-	int              m_nRootFolder;  // Root Folder CSIDL
-	BOOL             m_bShowFiles;   // FALSE to show only directories
+	UINT m_uFlags;		 // Flags indicating which items to include in the enumeration.
+	bool m_bTunneling;   // true if tree is currently traversing.
+	BOOL m_bContextMenu; // TRUE to display the shell context menu on right item click.
+	CWnd* m_pComboBox;   // CComboBox that is associated with this control. See AssociateCombo(...)
+	CXTPShellSettings m_shSettings; // Contains SHELLFLAGSTATE info.
+	int m_nRootFolder;				// Root Folder CSIDL
+	BOOL m_bShowFiles;				// FALSE to show only directories
+	BOOL m_bExplorerStyle;			// Explorer Style
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPShellTreeBase::SetEnumFlags(UINT uFlags) {
+AFX_INLINE void CXTPShellTreeBase::SetEnumFlags(UINT uFlags)
+{
 	m_uFlags = uFlags;
 }
-AFX_INLINE void CXTPShellTreeBase::EnableContextMenu(BOOL bEnable) {
+AFX_INLINE void CXTPShellTreeBase::EnableContextMenu(BOOL bEnable)
+{
 	m_bContextMenu = bEnable;
 }
-AFX_INLINE void CXTPShellTreeBase::SetRootFolder(int nRootFolder /*= CSIDL_DESKTOP*/) {
+AFX_INLINE void CXTPShellTreeBase::SetRootFolder(int nRootFolder /*= CSIDL_DESKTOP*/)
+{
 	m_nRootFolder = nRootFolder;
 }
-AFX_INLINE void CXTPShellTreeBase::ShowFiles(BOOL bShowFiles /*= TRUE*/) {
+AFX_INLINE void CXTPShellTreeBase::ShowFiles(BOOL bShowFiles /*= TRUE*/)
+{
 	m_bShowFiles = bShowFiles;
 }
 
@@ -456,9 +463,9 @@ AFX_INLINE void CXTPShellTreeBase::ShowFiles(BOOL bShowFiles /*= TRUE*/) {
 //     <i>Tree</i> must be an existing class that is derived from either <i>CTreeCtrl</i>
 //     or <i>CTreeView</i>.
 // Example:
-//     The following example demonstrates how to use DECLATE_SHELLTREE_BASE.
+//     The following example demonstrates how to use DECLARE_SHELLTREE_BASE.
 // <code>
-// DECLATE_SHELLTREE_BASE(CXTPShellTreeViewBase, CTreeView, CXTPShellTreeBase)
+// DECLARE_SHELLTREE_BASE(CXTPShellTreeViewBase, CTreeView, CXTPShellTreeBase)
 //
 // class _XTP_EXT_CLASS CXTPShellTreeView : public CXTPShellTreeViewBase
 // {
@@ -467,44 +474,57 @@ AFX_INLINE void CXTPShellTreeBase::ShowFiles(BOOL bShowFiles /*= TRUE*/) {
 // };
 // </code>
 // --------------------------------------------------------------------------------------
-#define DECLATE_SHELLTREE_BASE(ClassName, Tree, Base)
+#	define DECLARE_SHELLTREE_BASE(ClassName, Tree, Base)
 //{{AFX_CODEJOCK_PRIVATE
-#undef DECLATE_SHELLTREE_BASE
-#define DECLATE_SHELLTREE_BASE(ClassName, Tree, Base)\
-DECLATE_TREE_BASE(Base##Tree, Tree, Base)\
-class _XTP_EXT_CLASS ClassName : public Base##Tree\
-{\
-protected:\
-	void OnPaint() {\
-		Base::OnPaint();\
-	}   \
-	void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) {\
-		NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;\
-		BeginDrag(pNMTreeView);\
-		*pResult = 0;\
-	}\
-	void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnSelchanged(pNMHDR, pResult);\
-	}   \
-	void OnDeleteTreeItem(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnDeleteTreeItem(pNMHDR, pResult);\
-	}   \
-	void OnRclick(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnRclick(pNMHDR, pResult);\
-	}   \
-	void OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnItemexpanding(pNMHDR, pResult);\
-	}\
-};
+#	undef DECLARE_SHELLTREE_BASE
+#	define DECLARE_SHELLTREE_BASE(ClassName, Tree, Base)                                          \
+		DECLARE_TREE_BASE(Base##Tree, Tree, Base)                                                  \
+		class _XTP_EXT_CLASS ClassName : public Base##Tree                                         \
+		{                                                                                          \
+		protected:                                                                                 \
+			void OnPaint()                                                                         \
+			{                                                                                      \
+				Base::OnPaint();                                                                   \
+			}                                                                                      \
+			void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)                                      \
+			{                                                                                      \
+				NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;                                   \
+				BeginDrag(pNMTreeView);                                                            \
+				*pResult = 0;                                                                      \
+			}                                                                                      \
+			void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)                                     \
+			{                                                                                      \
+				Base::OnSelchanged(pNMHDR, pResult);                                               \
+			}                                                                                      \
+			void OnDeleteTreeItem(NMHDR* pNMHDR, LRESULT* pResult)                                 \
+			{                                                                                      \
+				Base::OnDeleteTreeItem(pNMHDR, pResult);                                           \
+			}                                                                                      \
+			void OnRclick(NMHDR* pNMHDR, LRESULT* pResult)                                         \
+			{                                                                                      \
+				Base::OnRclick(pNMHDR, pResult);                                                   \
+			}                                                                                      \
+			void OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)                                  \
+			{                                                                                      \
+				Base::OnItemexpanding(pNMHDR, pResult);                                            \
+			}                                                                                      \
+		};
 
-#define ON_SHELLTREE_REFLECT\
-	ON_NOTIFY_REFLECT(NM_RCLICK, OnRclick)\
-	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDING, OnItemexpanding)\
-	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)\
-	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)\
-	ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)\
-	ON_NOTIFY_REFLECT(TVN_DELETEITEM, OnDeleteTreeItem)\
-	ON_TREECTRL_REFLECT
+#	define ON_SHELLTREE_REFLECT                                                                   \
+		ON_NOTIFY_REFLECT(NM_RCLICK, OnRclick)                                                     \
+		ON_NOTIFY_REFLECT(TVN_ITEMEXPANDING, OnItemexpanding)                                      \
+		ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)                                            \
+		ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)                                              \
+		ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)                                             \
+		ON_NOTIFY_REFLECT(TVN_DELETEITEM, OnDeleteTreeItem)                                        \
+		ON_TREECTRL_REFLECT
+
+// This definition is necessary for backward compatibility
+// as previously this macro name has been misspelled.
+#	define DECLATE_SHELLTREE_BASE(ClassName, Tree, Base)                                          \
+		DECLARE_SHELLTREE_BASE(ClassName, Tree, Base)
+
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTPSHELLTREEBASE_H__

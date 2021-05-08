@@ -1,7 +1,6 @@
 // XTPCalendarUtils.h: interface for the CXTPCalendarUtils class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCALENDARUTILS_H_)
-#define __XTPCALENDARUTILS_H_
+#	define __XTPCALENDARUTILS_H_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Remarks:
 //     Half a second, expressed in days.
 // See Also: COleDateTime overview.
 //===========================================================================
-#define XTP_HALF_SECOND  (1.0/172800.0)
+#	define XTP_HALF_SECOND (1.0 / 172800.0)
 
 //---------------------------------------------------------------------------
 // Summary: Defines a lower bound of the time frame for the Calendar control.
@@ -49,6 +49,16 @@ static const COleDateTime xtpCalendarDateTime_max(9999, 12, 31, 0, 0, 0);
 
 class CXTPCalendarEvent;
 
+//---------------------------------------------------------------------------
+// Summary: Interface f for overriding GetCurrentTime() function in calendar control.
+// Allows to set custom date\time for calendar
+//---------------------------------------------------------------------------
+class ITimeProvider
+{
+public:
+	virtual COleDateTime GetCurrentTime() = 0;
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 //===========================================================================
@@ -60,7 +70,7 @@ class CXTPCalendarEvent;
 //     e1       - First operand to compare.
 //     e2       - Second operand to compare.
 // Returns:
-//     0 if e1 == e2; 1 if e1 > e2; -1 if e1 < e2.
+//     0 if e1 == e2; 1 if e1 > e2; -1 if e1 \< e2.
 //===========================================================================
 template<class _Type>
 AFX_INLINE int XTPCompare(_Type e1, _Type e2)
@@ -85,7 +95,7 @@ private:
 	//     Default constructor
 	// Remarks:
 	//     Do not create an instance of this class.
-	//     Use CXTPCalendarUtils::<MemberFunction> form.
+	//     Use CXTPCalendarUtils::MemberFunction form.
 	//-----------------------------------------------------------------------
 	CXTPCalendarUtils();
 
@@ -251,7 +261,7 @@ public:
 	//     successfully. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL ShiftDate_Month(COleDateTime &refDate, int nMonthCount);
+	static BOOL AFX_CDECL ShiftDate_Month(COleDateTime& refDate, int nMonthCount);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -274,7 +284,7 @@ public:
 	//     successfully. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL ShiftDate_Month(COleDateTime &refDate, int nMonthCount, int nMonthDay);
+	static BOOL AFX_CDECL ShiftDate_Month(COleDateTime& refDate, int nMonthCount, int nMonthDay);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -292,7 +302,7 @@ public:
 	//     successfully. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL ShiftDate_Year(COleDateTime &refDate, int nYearCount);
+	static BOOL AFX_CDECL ShiftDate_Year(COleDateTime& refDate, int nYearCount);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -314,7 +324,7 @@ public:
 	//     successfully. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL ShiftDate_Year(COleDateTime &refDate, int nYearCount, int nMonthDay);
+	static BOOL AFX_CDECL ShiftDate_Year(COleDateTime& refDate, int nYearCount, int nMonthDay);
 
 	// ---------------------------------------------------------------------
 	// Summary:
@@ -332,7 +342,8 @@ public:
 	//     An int that contains the number of minutes between two DateTime
 	//     \objects.
 	// ---------------------------------------------------------------------
-	static int AFX_CDECL GetDurationMinutes(const COleDateTime& dtStart, const COleDateTime& dtEnd, BOOL bAllDayEvent);
+	static int AFX_CDECL GetDurationMinutes(const COleDateTime& dtStart, const COleDateTime& dtEnd,
+											BOOL bAllDayEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -354,7 +365,7 @@ public:
 	//     successfully. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL UpdateMonthDay(COleDateTime &refDate, int nMonthDay);
+	static BOOL AFX_CDECL UpdateMonthDay(COleDateTime& refDate, int nMonthDay);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -370,7 +381,8 @@ public:
 	//     A COleDateTime object that contains the updated time part.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static const COleDateTime AFX_CDECL UpdateTime(const COleDateTime& dtDate, int nHour, int nMinutes, int nSeconds);
+	static const COleDateTime AFX_CDECL UpdateTime(const COleDateTime& dtDate, int nHour,
+												   int nMinutes, int nSeconds);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -384,7 +396,8 @@ public:
 	//     A COleDateTime object that contains the updated time part.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static const COleDateTime AFX_CDECL UpdateTime(const COleDateTime& dtDate, const COleDateTime& dtTime);
+	static const COleDateTime AFX_CDECL UpdateTime(const COleDateTime& dtDate,
+												   const COleDateTime& dtTime);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -410,7 +423,8 @@ public:
 	//     A COleDateTime object that contains the updated date part.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static const COleDateTime AFX_CDECL UpdateDate(const COleDateTime& dtTime, const COleDateTime& dtDate);
+	static const COleDateTime AFX_CDECL UpdateDate(const COleDateTime& dtTime,
+												   const COleDateTime& dtDate);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -426,7 +440,8 @@ public:
 	//     A COleDateTime object that contains the updated date part.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static const COleDateTime AFX_CDECL UpdateDate(const COleDateTime& dtTime, int nYear, int nMonth, int nDay);
+	static const COleDateTime AFX_CDECL UpdateDate(const COleDateTime& dtTime, int nYear,
+												   int nMonth, int nDay);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -481,7 +496,8 @@ public:
 	//     precision. FALSE otherwise.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL IsEqual(const COleDateTime& dt1, const COleDateTime& dt2, BOOL bOneSecTimeDiff = FALSE);
+	static BOOL AFX_CDECL IsEqual(const COleDateTime& dt1, const COleDateTime& dt2,
+								  BOOL bOneSecTimeDiff = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -537,7 +553,8 @@ public:
 	//     Date part of the event end DateTime.
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
-	static COleDateTime AFX_CDECL RetriveEventEndDate(const COleDateTime& dtStart, const COleDateTime& dtEnd);
+	static COleDateTime AFX_CDECL RetriveEventEndDate(const COleDateTime& dtStart,
+													  const COleDateTime& dtEnd);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -623,6 +640,18 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Obtains locale string ID for a week day specified.
+	// Parameters:
+	//     nWeekDay - An int that contains the sequential week day number.
+	//     1-Sunday, 2-Monday, ...
+	// Returns:
+	//     Locale string ID for a week day specified.
+	// See Also: GetDayOfWeekIndex, enum XTPCalendarWeekDay
+	//-----------------------------------------------------------------------
+	static int AFX_CDECL GetDayOfWeekLocaleStringId(int nWeekDay);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function is used to make the days mask from Monday
 	//     until the specified day.
 	// Parameters:
@@ -649,7 +678,7 @@ public:
 	// See Also: COleDateTime overview
 	//-----------------------------------------------------------------------
 	static COleDateTime AFX_CDECL ShiftDateToWeekBegin(COleDateTime dtDate,
-											 int nFirstDayOfWeekIndex = 1);
+													   int nFirstDayOfWeekIndex = 1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -686,8 +715,8 @@ public:
 	//      SystemTimeToTzSpecificLocalTime() windows API function.
 	//-----------------------------------------------------------------------
 	static BOOL AFX_CDECL SystemTimeToTzSpecificLocalTime(const TIME_ZONE_INFORMATION* pTZI,
-												const SYSTEMTIME* pUTime,
-												SYSTEMTIME* pTzTime);
+														  const SYSTEMTIME* pUTime,
+														  SYSTEMTIME* pTzTime);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -709,6 +738,10 @@ public:
 	//-----------------------------------------------------------------------
 	static COleDateTimeSpan AFX_CDECL Minutes2Span(int nMinutes);
 
+private:
+	static ITimeProvider* g_TimeProviderOverride;
+
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Returns current local time.
@@ -716,6 +749,25 @@ public:
 	//      COleDateTime object with the calculated local time value.
 	//-----------------------------------------------------------------------
 	static COleDateTime AFX_CDECL GetCurrentTime();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Overrides local time provider with custom provider. The date\time returned
+	//      by custom provider will be used as current time for calendar control.
+	//      All calls to CXTPCalendarUtils::GetCurrentTime() from within calendar control will be
+	//      routed to custom provider
+	// Parameters:
+	//      A pointer to an instance of custom time provider. The instance must remain until the
+	//      time provider is reset by ResetTimeProvider() call The caller should free provider
+	//      instance memory after ResetTimeProvider() call
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL OverrideTimeProvider(ITimeProvider* pTimeProvider);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Resets time provider to default which will use current machine date time
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL ResetTimeProvider();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -852,8 +904,8 @@ public:
 	// Returns:
 	//      A font from the provided array with maximum symbols height.
 	//-----------------------------------------------------------------------
-	static CFont* AFX_CDECL GetMaxHeightFont(CArray<CFont*, CFont*>& arFonts,
-											 CDC* pDC, int* pnMaxHeight = NULL);
+	static CFont* AFX_CDECL GetMaxHeightFont(CArray<CFont*, CFont*>& arFonts, CDC* pDC,
+											 int* pnMaxHeight = NULL);
 
 public:
 	//-----------------------------------------------------------------------
@@ -898,7 +950,7 @@ public:
 	//      nIndex     - Starting index.
 	//      nRemove    - The number of characters to remove.
 	//-----------------------------------------------------------------------
-	static void StripFormat(CString& strFormat, int nIndex, int nRemove);
+	static void AFX_CDECL StripFormat(CString& strFormat, int nIndex, int nRemove);
 
 private:
 	static BOOL AFX_CDECL IsInDst(const TIME_ZONE_INFORMATION* pTZI, COleDateTime dtTime);
@@ -952,16 +1004,20 @@ public:
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      The TrackMouseEvent function posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
+	//      The TrackMouseEvent function posts messages when the mouse pointer leaves a window or
+	//      hovers over a window for a specified amount of time.
 	// Parameters:
 	//      dwFlags     - Specifies the services requested
 	//      hwndTrack   - Specifies a handle to the window to track.
-	//      dwHoverTime - Specifies the hover time-out (if TME_HOVER was specified in dwFlags), in milliseconds.
-	//                    Can be HOVER_DEFAULT, which means to use the system default hover time-out.
+	//      dwHoverTime - Specifies the hover time-out (if TME_HOVER was specified in dwFlags), in
+	//      milliseconds.
+	//                    Can be HOVER_DEFAULT, which means to use the system default hover
+	//                    time-out.
 	// Returns:
 	//      If the function succeeds, the return value is nonzero.
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL TrackMouseEvent(DWORD dwFlags, HWND hwndTrack, DWORD dwHoverTime = HOVER_DEFAULT);
+	static BOOL AFX_CDECL TrackMouseEvent(DWORD dwFlags, HWND hwndTrack,
+										  DWORD dwHoverTime = HOVER_DEFAULT);
 
 public:
 	static BOOL AFX_CDECL GetAsSystemTime(const COleDateTime& dtTime, SYSTEMTIME& sysTime);
@@ -984,10 +1040,10 @@ public:
 template<class _TValue>
 class CXTPAutoResetValue
 {
-	_TValue     m_valReset;
-	_TValue&    m_rData;
-public:
+	_TValue m_valReset;
+	_TValue& m_rData;
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Object constructor.
@@ -997,8 +1053,8 @@ public:
 	//      The original value of rData is stored in separate member and it
 	//      will be restored on destroy.
 	//-----------------------------------------------------------------------
-	CXTPAutoResetValue(_TValue& rData) :
-		m_rData(rData)
+	CXTPAutoResetValue(_TValue& rData)
+		: m_rData(rData)
 	{
 		m_valReset = rData;
 	}
@@ -1013,7 +1069,8 @@ public:
 	//      The original value of rData is ignored.
 	//      valReset value will be used on destroy.
 	//-----------------------------------------------------------------------
-	CXTPAutoResetValue(_TValue& rData, const _TValue& valReset): m_rData(rData)
+	CXTPAutoResetValue(_TValue& rData, const _TValue& valReset)
+		: m_rData(rData)
 	{
 		m_valReset = valReset;
 	}
@@ -1050,7 +1107,7 @@ public:
 	// Returns:
 	//     A reference to this object.
 	//-----------------------------------------------------------------------
-	const _TValue& operator =(const _TValue& rSrc)
+	const _TValue& operator=(const _TValue& rSrc)
 	{
 		return m_rData = rSrc;
 	}
@@ -1069,7 +1126,7 @@ AFX_INLINE double CXTPCalendarUtils::_ResetTime_dbl(double dblDT)
 
 AFX_INLINE double CXTPCalendarUtils::_ResetDate_dbl(double dblDT)
 {
-	double dblDate = _ResetTime_dbl(dblDT);
+	double dblDate   = _ResetTime_dbl(dblDT);
 	double dblResult = dblDT > dblDate ? (dblDT - dblDate) : (dblDate - dblDT);
 
 	double dblDate_raw = (double)((LONGLONG)dblDT);
@@ -1096,13 +1153,6 @@ AFX_INLINE const COleDateTime CXTPCalendarUtils::ResetDate(const COleDateTime& d
 	return (DATE)_ResetDate_dbl((double)dtDateTime);
 }
 
-//AFX_INLINE const COleDateTime CXTPCalendarUtils::ResetDate(const COleDateTime& dtDateTime)
-//{
-//  if ((double) dtDateTime <= 1.0)
-//      return dtDateTime;
-//  return (DATE)_ResetDate_dbl((double)dtDateTime);
-//}
-
 AFX_INLINE const COleDateTime CXTPCalendarUtils::SetTime_235959(const COleDateTime& dtDateTime)
 {
 	double dDate = _ResetTime_dbl((double)dtDateTime);
@@ -1113,32 +1163,32 @@ AFX_INLINE int CXTPCalendarUtils::GetDayOfWeekMask(int nWeekDay)
 {
 	ASSERT(nWeekDay >= 1 && nWeekDay <= 7);
 
-	int nRes = 1 << (nWeekDay-1);
+	int nRes = 1 << (nWeekDay - 1);
 	return nRes;
 }
 
-//return 1 = Sunday, 2 = Monday ...
+// return 1 = Sunday, 2 = Monday ...
 AFX_INLINE int CXTPCalendarUtils::GetDayOfWeekIndex(int nDayOfWeekMask)
 {
-	//int nTestMask[7];
-	//for (int i = 1; i <= 7; i++)
+	// int nTestMask[7];
+	// for (int i = 1; i <= 7; i++)
 	//{
 	//  nTestMask[i - 1] = 1 << (i-1);
 	//}
-	//this loop fill array {1,2,4,8,16,32,64}
-	//by enum XTPCalendarWeekDay
-	//xtpCalendarDaySunday        = 0x001,        // Sunday
-	//xtpCalendarDayMonday        = 0x002,        // Monday
-	//xtpCalendarDayTuesday       = 0x004,        // Tuesday
-	//xtpCalendarDayWednesday     = 0x008,        // Wednesday
-	//xtpCalendarDayThursday      = 0x010,        // Thursday
-	//xtpCalendarDayFriday        = 0x020,        // Friday
-	//xtpCalendarDaySaturday      = 0x040,        // Saturday
+	// this loop fill array {1,2,4,8,16,32,64}
+	// by enum XTPCalendarWeekDay
+	// xtpCalendarDaySunday        = 0x001,        // Sunday
+	// xtpCalendarDayMonday        = 0x002,        // Monday
+	// xtpCalendarDayTuesday       = 0x004,        // Tuesday
+	// xtpCalendarDayWednesday     = 0x008,        // Wednesday
+	// xtpCalendarDayThursday      = 0x010,        // Thursday
+	// xtpCalendarDayFriday        = 0x020,        // Friday
+	// xtpCalendarDaySaturday      = 0x040,        // Saturday
 
 	for (int i = 1; i <= 7; i++)
 	{
-		//if (nTestMask[i-1] == nDayOfWeekMask)
-		int nTestMask = 1 << (i-1);
+		// if (nTestMask[i-1] == nDayOfWeekMask)
+		int nTestMask = 1 << (i - 1);
 		if (nTestMask == nDayOfWeekMask)
 		{
 			return i;
@@ -1155,7 +1205,7 @@ AFX_INLINE int CXTPCalendarUtils::GetMaxMonthDay(COleDateTime dtDate)
 		return 0;
 
 	// days per month  -     _  jan feb mar apr may jun   jul aug sep oct nov dec
-	static int arDays[13] = {0, 31, 28, 31, 30, 31, 30,   31, 31, 30, 31, 30, 31};
+	static int arDays[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	if (sysDate.wMonth == 2 && sysDate.wYear % 4 == 0)
 	{
 		if (sysDate.wYear % 100 != 0 || sysDate.wYear % 400 == 0)
@@ -1169,7 +1219,7 @@ AFX_INLINE int CXTPCalendarUtils::GetMaxMonthDay(COleDateTime dtDate)
 	}
 }
 
-AFX_INLINE BOOL CXTPCalendarUtils::UpdateMonthDay(COleDateTime &refDate, int nMonthDay)
+AFX_INLINE BOOL CXTPCalendarUtils::UpdateMonthDay(COleDateTime& refDate, int nMonthDay)
 {
 	if (nMonthDay > 28)
 	{
@@ -1201,13 +1251,13 @@ AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime &refDate, int nM
 	return COleDateTime::valid == refDate.SetDate(nYearNew, nMonthNew, 1);
 }
 */
-AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime &refDate, int nMonthCount)
+AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime& refDate, int nMonthCount)
 {
 	SYSTEMTIME sysDate;
 	if (!CXTPCalendarUtils::GetAsSystemTime(refDate, sysDate))
 		return FALSE;
 
-	int nYearNew = sysDate.wYear + nMonthCount / 12;
+	int nYearNew  = sysDate.wYear + nMonthCount / 12;
 	int nMonthNew = sysDate.wMonth + nMonthCount % 12;
 
 	if (nMonthNew > 12)
@@ -1226,7 +1276,8 @@ AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime &refDate, int nM
 	return COleDateTime::valid == refDate.SetDate(nYearNew, nMonthNew, 1);
 }
 
-AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime &refDate, int nMonthCount, int nMonthDay)
+AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime& refDate, int nMonthCount,
+												   int nMonthDay)
 {
 	if (ShiftDate_Month(refDate, nMonthCount))
 	{
@@ -1236,7 +1287,7 @@ AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Month(COleDateTime &refDate, int nM
 	return FALSE;
 }
 
-AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime &refDate, int nYearCount)
+AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime& refDate, int nYearCount)
 {
 	SYSTEMTIME sysDate;
 	if (!CXTPCalendarUtils::GetAsSystemTime(refDate, sysDate))
@@ -1247,7 +1298,8 @@ AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime &refDate, int nYe
 	return COleDateTime::valid == refDate.SetDate(nYearNew, sysDate.wMonth, 1);
 }
 
-AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime &refDate, int nYearCount, int nMonthDay)
+AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime& refDate, int nYearCount,
+												  int nMonthDay)
 {
 	if (ShiftDate_Year(refDate, nYearCount))
 	{
@@ -1259,13 +1311,13 @@ AFX_INLINE BOOL CXTPCalendarUtils::ShiftDate_Year(COleDateTime &refDate, int nYe
 
 AFX_INLINE int CXTPCalendarUtils::GetDiff_Months(const COleDateTime& dt1, const COleDateTime& dt2)
 {
-	int nYear1 = dt1.GetYear();
+	int nYear1  = dt1.GetYear();
 	int nMonth1 = dt1.GetMonth();
 
-	int nYear2 = dt2.GetYear();
+	int nYear2  = dt2.GetYear();
 	int nMonth2 = dt2.GetMonth();
 
-	int nYearDiff = nYear1 - nYear2;
+	int nYearDiff  = nYear1 - nYear2;
 	int nMonthDiff = nYearDiff * 12;
 
 	nMonthDiff += nMonth1 - nMonth2;
@@ -1273,7 +1325,8 @@ AFX_INLINE int CXTPCalendarUtils::GetDiff_Months(const COleDateTime& dt1, const 
 	return nMonthDiff;
 }
 
-AFX_INLINE int CXTPCalendarUtils::GetDurationMinutes(const COleDateTime& dtStart, const COleDateTime& dtEnd, BOOL bAllDayEvent)
+AFX_INLINE int CXTPCalendarUtils::GetDurationMinutes(const COleDateTime& dtStart,
+													 const COleDateTime& dtEnd, BOOL bAllDayEvent)
 {
 	COleDateTimeSpan spDuration;
 	if (bAllDayEvent)
@@ -1287,7 +1340,8 @@ AFX_INLINE int CXTPCalendarUtils::GetDurationMinutes(const COleDateTime& dtStart
 	return (int)CXTPCalendarUtils::GetTotalMinutes(spDuration);
 }
 
-AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateTime(const COleDateTime& dtDate, int nHour, int nMinutes, int nSeconds)
+AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateTime(const COleDateTime& dtDate, int nHour,
+															int nMinutes, int nSeconds)
 {
 	SYSTEMTIME stResult;
 	if (!CXTPCalendarUtils::GetAsSystemTime(dtDate, stResult))
@@ -1303,14 +1357,16 @@ AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateTime(const COleDateTime& 
 	return COleDateTime(stResult);
 }
 
-AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateTime(const COleDateTime& dtDate, const COleDateTime& dtTime)
+AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateTime(const COleDateTime& dtDate,
+															const COleDateTime& dtTime)
 {
 	double dDate = _ResetTime_dbl((double)dtDate);
 	double dTime = _ResetDate_dbl((double)dtTime);
 	return (DATE)(dDate + dTime);
 }
 
-AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateDate(const COleDateTime& dtTime, int nYear, int nMonth, int nDay)
+AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateDate(const COleDateTime& dtTime, int nYear,
+															int nMonth, int nDay)
 {
 	SYSTEMTIME stResult;
 	if (!CXTPCalendarUtils::GetAsSystemTime(dtTime, stResult))
@@ -1326,14 +1382,16 @@ AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateDate(const COleDateTime& 
 	return COleDateTime(stResult);
 }
 
-AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateDate(const COleDateTime& dtTime, const COleDateTime& dtDate)
+AFX_INLINE const COleDateTime CXTPCalendarUtils::UpdateDate(const COleDateTime& dtTime,
+															const COleDateTime& dtDate)
 {
 	double dDate = _ResetTime_dbl((double)dtDate);
 	double dTime = _ResetDate_dbl((double)dtTime);
 	return (DATE)(dDate + dTime);
 }
 
-AFX_INLINE COleDateTime CXTPCalendarUtils::RetriveEventEndDate(const COleDateTime& dtStart, const COleDateTime& dtEnd)
+AFX_INLINE COleDateTime CXTPCalendarUtils::RetriveEventEndDate(const COleDateTime& dtStart,
+															   const COleDateTime& dtEnd)
 {
 	COleDateTime dtEndDay = ResetTime(dtEnd);
 
@@ -1350,24 +1408,26 @@ AFX_INLINE COleDateTime CXTPCalendarUtils::RetriveEventEndDate(const COleDateTim
 	return dtEndDay;
 }
 
-AFX_INLINE int CXTPCalendarUtils::GetEventPeriodDays(const COleDateTime& dtStart, const COleDateTime& dtEnd)
+AFX_INLINE int CXTPCalendarUtils::GetEventPeriodDays(const COleDateTime& dtStart,
+													 const COleDateTime& dtEnd)
 {
 	COleDateTime dtStartDay = ResetTime(dtStart);
-	COleDateTime dtEndDay = RetriveEventEndDate(dtStart, dtEnd);
+	COleDateTime dtEndDay   = RetriveEventEndDate(dtStart, dtEnd);
 
 	COleDateTimeSpan spDuration = dtEndDay - dtStartDay;
-	int nDays = (int)CXTPCalendarUtils::GetTotalDays(spDuration) + 1;
+	int nDays					= (int)CXTPCalendarUtils::GetTotalDays(spDuration) + 1;
 
 	return nDays;
 }
 
 AFX_INLINE COleDateTimeSpan CXTPCalendarUtils::Minutes2Span(int nMunutes)
 {
-	double dblSpan =  ((double)nMunutes) / (24 * 60);
+	double dblSpan = ((double)nMunutes) / (24 * 60);
 	return COleDateTimeSpan(dblSpan);
 }
 
-AFX_INLINE COleDateTime CXTPCalendarUtils::ShiftDateToWeekBegin(COleDateTime dtDate, int nFirstDayOfWeekIndex)
+AFX_INLINE COleDateTime CXTPCalendarUtils::ShiftDateToWeekBegin(COleDateTime dtDate,
+																int nFirstDayOfWeekIndex)
 {
 	dtDate = CXTPCalendarUtils::ResetTime(dtDate);
 
@@ -1385,7 +1445,7 @@ AFX_INLINE int CXTPCalendarUtils::GetDayOfWeekCount(int nDayOfWeekMask)
 	int nCount = 0;
 	for (int i = 1; i <= 7; i++)
 	{
-		int nTestMask = 1 << (i-1);
+		int nTestMask = 1 << (i - 1);
 		if (nTestMask & nDayOfWeekMask)
 		{
 			nCount++;
@@ -1423,26 +1483,26 @@ AFX_INLINE LONG CXTPCalendarUtils::GetTotalHours(const COleDateTimeSpan& spSpan)
 
 AFX_INLINE LONG CXTPCalendarUtils::_DoubleToLONG(double dValue)
 {
-	return LONG(dValue > 0 ? min(dValue, double(LONG_MAX)) : max(dValue, double(LONG_MIN)) );
+	return LONG(dValue > 0 ? min(dValue, double(LONG_MAX)) : max(dValue, double(LONG_MIN)));
 }
 
 AFX_INLINE LONG CXTPCalendarUtils::GetTotalMinutes(const COleDateTimeSpan& spSpan)
 {
-	double dSpan = _RoundDateTime_dbl(spSpan);
+	double dSpan	= _RoundDateTime_dbl(spSpan);
 	double dMinutes = dSpan * 24 * 60;
-	LONG nMinutes = _DoubleToLONG(dMinutes);
+	LONG nMinutes   = _DoubleToLONG(dMinutes);
 	return nMinutes;
 }
 
 AFX_INLINE LONG CXTPCalendarUtils::GetTotalSeconds(const COleDateTimeSpan& spSpan)
 {
-	double dSpan = _RoundDateTime_dbl(spSpan);
+	double dSpan	= _RoundDateTime_dbl(spSpan);
 	double dSeconds = dSpan * 24 * 60 * 60;
-	LONG nSeconds = _DoubleToLONG(dSeconds);
+	LONG nSeconds   = _DoubleToLONG(dSeconds);
 	return nSeconds;
 }
 
-
-
 /////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCALENDARUTILS_H_)

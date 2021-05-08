@@ -1,7 +1,6 @@
 // XTPChartAppearance.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTAPPEARANCE_H__)
-#define __XTPCHARTAPPEARANCE_H__
+#	define __XTPCHARTAPPEARANCE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../XTPChartElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartPalette;
 class CXTPChartElement;
@@ -57,6 +55,15 @@ public:
 	//     Destroys a CXTPChartElementAppearance object, handles cleanup
 	//-------------------------------------------------------------------------
 	virtual ~CXTPChartElementAppearance();
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Applies implementation specific appearance settings to
+	//     the device context provided.
+	// Parameters:
+	//     pDC - Target device context pointer.
+	//-------------------------------------------------------------------------
+	virtual void ApplyToDeviceContext(CXTPChartDeviceContext* pDC);
 };
 
 //===========================================================================
@@ -75,7 +82,6 @@ public:
 	CXTPChartTitleAppearance(CXTPChartElement* pOwner);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -89,9 +95,8 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	CXTPChartColor TextColor;        //The text color of chart title.
+	CXTPChartColor TextColor; // The text color of chart title.
 };
-
 
 //===========================================================================
 // Summary:
@@ -100,7 +105,6 @@ public:
 class _XTP_EXT_CLASS CXTPChartLegendAppearance : public CXTPChartElementAppearance
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartLegendAppearance object.
@@ -110,7 +114,6 @@ public:
 	CXTPChartLegendAppearance(CXTPChartElement* pOwner);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -124,9 +127,9 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	CXTPChartColor TextColor;                //The legend text color.
-	CXTPChartColor BackgroundColor;          //The legend background color.
-	CXTPChartColor BorderColor;              //The legend border color.
+	CXTPChartColor TextColor;		// The legend text color.
+	CXTPChartColor BackgroundColor; // The legend background color.
+	CXTPChartColor BorderColor;		// The legend border color.
 };
 
 //===========================================================================
@@ -137,7 +140,6 @@ public:
 class _XTP_EXT_CLASS CXTPChartContentAppearance : public CXTPChartElementAppearance
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartContentAppearance object.
@@ -153,7 +155,6 @@ public:
 	virtual ~CXTPChartContentAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -167,7 +168,6 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the title appearance object pointer.
@@ -185,13 +185,12 @@ public:
 	CXTPChartLegendAppearance* GetLegendAppearance() const;
 
 public:
-	CXTPChartColor BackgroundColor;                      //The background color of the chart.
-	CXTPChartColor BorderColor;                          //The border color of the chart.
+	CXTPChartColor BackgroundColor; // The background color of the chart.
+	CXTPChartColor BorderColor;		// The border color of the chart.
 
 protected:
-
-	CXTPChartTitleAppearance* m_pTitleAppearance;        //Pointer to the chart title appearance object.
-	CXTPChartLegendAppearance* m_pLegendAppearance;      //Pinter to the legend appearance object.
+	CXTPChartTitleAppearance* m_pTitleAppearance;   // Pointer to the chart title appearance object.
+	CXTPChartLegendAppearance* m_pLegendAppearance; // Pinter to the legend appearance object.
 };
 
 //===========================================================================
@@ -202,7 +201,6 @@ protected:
 class _XTP_EXT_CLASS CXTPChartAxisAppearance : public CXTPChartElementAppearance
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartAxisAppearance object.
@@ -218,7 +216,6 @@ public:
 	virtual ~CXTPChartAxisAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -232,27 +229,26 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
+	CXTPChartColor Color;					 // The color of the axis.
+	CXTPChartColor InterlacedColor;			 // The primary interlaced color.
+	CXTPChartColor InterlacedColor2;		 // The secondary interlaced color.
+	CXTPChartFillStyle* InterlacedFillStyle; // The fill style used for interlacing.
 
-	CXTPChartColor Color;                        //The color of the axis.
-	CXTPChartColor InterlacedColor;              //The primary interlaced color.
-	CXTPChartColor InterlacedColor2;             //The secondary interlaced color.
-	CXTPChartFillStyle* InterlacedFillStyle;     //The fill style used for interlacing.
+	CXTPChartColor GridLinesColor;		// The color of the grid lines.
+	CXTPChartColor GridLinesMinorColor; // The minor color of the grid lines.
+	CXTPChartColor AxisLabelTextColor;  // The text color of the axis label.
+	CXTPChartColor AxisTitleTextColor;  // The text color of the axis title.
 
-	CXTPChartColor GridLinesColor;               //The color of the grid lines.
-	CXTPChartColor GridLinesMinorColor;          //The minor color of the grid lines.
-	CXTPChartColor AxisLabelTextColor;           //The text color of the axis label.
-	CXTPChartColor AxisTitleTextColor;           //The text color of the axis title.
+	CXTPChartColor ConstantLineColor;	 // The color of the contant line parallal to the axis.
+	CXTPChartColor ConstantLineTextColor; // The text color of the contant color.
 
-	CXTPChartColor ConstantLineColor;            //The color of the contant line parallal to the axis.
-	CXTPChartColor ConstantLineTextColor;        //The text color of the contant color.
-
-	CXTPChartColor StripColor;                   //The strip color.
-	CXTPChartColor StripColor2;                  //The strip gradient color.
+	CXTPChartColor StripColor;  // The strip color.
+	CXTPChartColor StripColor2; // The strip gradient color.
 };
 
 //===========================================================================
 // Summary:
-//     This class represents the appearance of diagram in 2D.This class
+//     This class represents the appearance of diagram in 2D. This class
 //     is subclassed from CXTPChartElementAppearance class.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartDiagram2DAppearance : public CXTPChartElementAppearance
@@ -273,7 +269,6 @@ public:
 	virtual ~CXTPChartDiagram2DAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -290,15 +285,83 @@ public:
 	CXTPChartAxisAppearance* GetAxisAppearance() const;
 
 public:
-	CXTPChartColor BackgroundColor;              //The first background color of the diagram.
-	CXTPChartColor BackgroundColor2;             //The second background color of the diagram.
-	CXTPChartColor BorderColor;                  //The border color of the diagram.
-	CXTPChartFillStyle* BackgroundFillStyle;     //The background fill style of the diagram.
+	CXTPChartColor BackgroundColor;			 // The first background color of the diagram.
+	CXTPChartColor BackgroundColor2;		 // The second background color of the diagram.
+	CXTPChartColor BorderColor;				 // The border color of the diagram.
+	CXTPChartFillStyle* BackgroundFillStyle; // The background fill style of the diagram.
 
 protected:
-	CXTPChartAxisAppearance* m_pAxisAppearance;  //Pointer to the chart axis appearance object.
+	CXTPChartAxisAppearance* m_pAxisAppearance; // Pointer to the chart axis appearance object.
 };
 
+//===========================================================================
+// Summary:
+//     This class represents the appearance of diagram in 3D. This class
+//     is subclassed from CXTPChartElementAppearance class.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPChartDiagram3DAppearance : public CXTPChartElementAppearance
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChartDiagram3DAppearance object.
+	// Parameters:
+	//     pOwner     - Pointer to an owner element.
+	//-----------------------------------------------------------------------
+	CXTPChartDiagram3DAppearance(CXTPChartElement* pOwner);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Destroys a CXTPChartDiagram3DAppearance object, handles cleanup
+	//-------------------------------------------------------------------------
+	virtual ~CXTPChartDiagram3DAppearance();
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to Store/Load the properties related to the
+	//     appearance of a diagram in 3D, using the specified data object.
+	// Parameters:
+	//     pPX - Source or destination CXTPPropExchange data object reference.
+	// Remarks:
+	//     This member function is used to store or load property data to or
+	//     from a storage.
+	//-----------------------------------------------------------------------
+	void DoPropExchange(CXTPPropExchange* pPX);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Applies implementation specific appearance settings to
+	//     the device context provided.
+	// Parameters:
+	//     pDC - Target device context pointer.
+	//-------------------------------------------------------------------------
+	virtual void ApplyToDeviceContext(CXTPChartDeviceContext* pDC);
+
+public:
+	CXTPPoint3f LightPosition; // Light position vector, each component is a normalized value in
+							   // range [0..1].
+	CXTPChartColor LightAmbientColor;	  // Light ambient color.
+	CXTPChartColor LightDiffuseColor;	  // Light diffuse color.
+	CXTPChartColor LightSpecularColor;	 // Light specular color.
+	CXTPChartColor LightModelAmbientColor; // Light model ambient color.
+	CXTPChartColor MaterialEmissionColor;  // Material emission color.
+	CXTPChartColor MaterialDiffuseColor;   // Material diffuse color.
+	CXTPChartColor MaterialSpecularColor;  // Material specular color.
+	float MaterialShininess;			   // Material shininess factor in range [0..1].
+
+	static const CXTPPoint3f DefaultLightPosition; // Default light position vector, each component
+												   // is a normalized value in range [0..1].
+	static const CXTPChartColor DefaultLightAmbientColor;	  // Default light ambient color.
+	static const CXTPChartColor DefaultLightDiffuseColor;	  // Default light diffuse color.
+	static const CXTPChartColor DefaultLightSpecularColor;	 // Default light specular color.
+	static const CXTPChartColor DefaultLightModelAmbientColor; // Default light model ambient color.
+	static const CXTPChartColor DefaultMaterialEmissionColor;  // Default material emission color.
+	static const CXTPChartColor DefaultMaterialDiffuseColor;   // Default material diffuse color.
+	static const CXTPChartColor DefaultMaterialSpecularColor;  // Default material specular color.
+	static const float DefaultMaterialShininess; // Default material shininess factor in range
+												 // [0..1].
+};
 
 class _XTP_EXT_CLASS CXTPChartSeriesLabelAppearance : public CXTPChartElementAppearance
 {
@@ -318,7 +381,6 @@ public:
 	virtual ~CXTPChartSeriesLabelAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -338,7 +400,6 @@ public:
 	CXTPChartColor ConnectorColor;
 };
 
-
 class _XTP_EXT_CLASS CXTPChartSeriesStyleAppearance : public CXTPChartElementAppearance
 {
 public:
@@ -357,7 +418,6 @@ public:
 	virtual ~CXTPChartSeriesStyleAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -373,15 +433,14 @@ public:
 public:
 	CXTPChartSeriesLabelAppearance* GetLabelAppearance() const;
 
-
 protected:
 	CXTPChartSeriesLabelAppearance* m_pLabelAppearance;
 };
 
 //===========================================================================
 // Summary:
-//     This class represents the finance series appearance of the chart. Chart appearance determined by
-//     the 2D digram appearance, chart content appearance and the color palette used.
+//     This class represents the finance series appearance of the chart. Chart appearance determined
+//     by the 2D digram appearance, chart content appearance and the color palette used.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartFinanceStyleAppearance : public CXTPChartSeriesStyleAppearance
 {
@@ -401,7 +460,6 @@ public:
 	virtual ~CXTPChartFinanceStyleAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -415,8 +473,8 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	CXTPChartColor UpColor;    // Up day line color.
-	CXTPChartColor DownColor;  // Down day line Color.
+	CXTPChartColor UpColor;   // Up day line color.
+	CXTPChartColor DownColor; // Down day line Color.
 };
 
 //===========================================================================
@@ -424,7 +482,7 @@ public:
 //     This class represents the pie series appearance of the chart. Chart appearance determined by
 //     the 2D digram appearance, chart content appearance and the color palette used.
 //===========================================================================
-class CXTPChartPieStyleAppearance : public CXTPChartSeriesStyleAppearance
+class _XTP_EXT_CLASS CXTPChartPieStyleAppearance : public CXTPChartSeriesStyleAppearance
 {
 public:
 	//-----------------------------------------------------------------------
@@ -442,7 +500,6 @@ public:
 	virtual ~CXTPChartPieStyleAppearance();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -456,8 +513,7 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	CXTPChartColor BorderColor;    // Border color.
-
+	CXTPChartColor BorderColor; // Border color.
 };
 
 //===========================================================================
@@ -467,7 +523,6 @@ public:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartAppearance : public CXTPChartElementAppearance
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -484,7 +539,6 @@ public:
 	virtual ~CXTPChartAppearance();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the 2D digram appearance object pointer of the chart.
@@ -492,6 +546,14 @@ public:
 	//     Returns the pointer to CXTPChartDiagram2DAppearance object.
 	//-------------------------------------------------------------------------
 	CXTPChartDiagram2DAppearance* GetDiagram2DAppearance() const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the 3D digram appearance object pointer of the chart.
+	// Returns:
+	//     Returns the pointer to CXTPChartDiagram3DAppearance object.
+	//-------------------------------------------------------------------------
+	CXTPChartDiagram3DAppearance* GetDiagram3DAppearance() const;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -509,8 +571,20 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPChartFinanceStyleAppearance* GetFinanceStyleAppearance() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the series style appearance object pointer of the chart.
+	// Returns:
+	//     Returns the pointer to CXTPChartSeriesStyleAppearance object pointer.
+	//-------------------------------------------------------------------------
 	CXTPChartSeriesStyleAppearance* GetSeriesStyleAppearance() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the pie style appearance object pointer of the chart.
+	// Returns:
+	//     Returns the pointer to CXTPChartPieStyleAppearance object pointer.
+	//-------------------------------------------------------------------------
 	CXTPChartPieStyleAppearance* GetPieStyleAppearance() const;
 
 	//-------------------------------------------------------------------------
@@ -543,7 +617,6 @@ public:
 	static CXTPChartAppearance* AFX_CDECL GetAppearance(const CXTPChartElement* pElement);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to load the properties from a resource XML.
@@ -565,9 +638,9 @@ public:
 public:
 	static CXTPChartColor AFX_CDECL GetLightColor(const CXTPChartColor& clr);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 
@@ -578,50 +651,68 @@ public:
 	afx_msg void OleLoadPalette(LPDISPATCH lpPropExchage);
 	afx_msg LPDISPATCH OleGetPalette();
 	//}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	CXTPChartDiagram2DAppearance* m_pDiagram2DAppearance;         // Pointer to chart diagram 2d appearance object.
-	CXTPChartContentAppearance* m_pContentAppearance;             // Pointer to chart content appearance object.
-	CXTPChartPalette* m_pPalette;                                 // Pointer to chart palette object.
+	CXTPChartDiagram2DAppearance* m_pDiagram2DAppearance; // Pointer to chart diagram 2d appearance
+														  // object.
+	CXTPChartDiagram3DAppearance* m_pDiagram3DAppearance; // Pointer to chart diagram 3d appearance
+														  // object.
+	CXTPChartContentAppearance* m_pContentAppearance; // Pointer to chart content appearance object.
+	CXTPChartPalette* m_pPalette;					  // Pointer to chart palette object.
 
 	CXTPChartSeriesStyleAppearance* m_pSeriesStyleAppearance;
-	CXTPChartFinanceStyleAppearance* m_pFinanceStyleAppearance;   // Pointer to chart financial content appearance object.
-	CXTPChartPieStyleAppearance* m_pPieStyleAppearance;           // Pointer to chart Pie content appearance object.
+	CXTPChartFinanceStyleAppearance* m_pFinanceStyleAppearance; // Pointer to chart financial
+																// content appearance object.
+	CXTPChartPieStyleAppearance* m_pPieStyleAppearance; // Pointer to chart Pie content appearance
+														// object.
 };
 
-
-AFX_INLINE CXTPChartDiagram2DAppearance* CXTPChartAppearance::GetDiagram2DAppearance() const {
+AFX_INLINE CXTPChartDiagram2DAppearance* CXTPChartAppearance::GetDiagram2DAppearance() const
+{
 	return m_pDiagram2DAppearance;
 }
-AFX_INLINE CXTPChartContentAppearance* CXTPChartAppearance::GetContentAppearance() const {
+AFX_INLINE CXTPChartDiagram3DAppearance* CXTPChartAppearance::GetDiagram3DAppearance() const
+{
+	return m_pDiagram3DAppearance;
+}
+AFX_INLINE CXTPChartContentAppearance* CXTPChartAppearance::GetContentAppearance() const
+{
 	return m_pContentAppearance;
 }
 
-AFX_INLINE CXTPChartAxisAppearance* CXTPChartDiagram2DAppearance::GetAxisAppearance() const {
+AFX_INLINE CXTPChartAxisAppearance* CXTPChartDiagram2DAppearance::GetAxisAppearance() const
+{
 	return m_pAxisAppearance;
 }
-AFX_INLINE CXTPChartPalette* CXTPChartAppearance::GetPalette() const {
+AFX_INLINE CXTPChartPalette* CXTPChartAppearance::GetPalette() const
+{
 	return m_pPalette;
 }
-AFX_INLINE CXTPChartTitleAppearance* CXTPChartContentAppearance::GetTitleAppearance() const {
+AFX_INLINE CXTPChartTitleAppearance* CXTPChartContentAppearance::GetTitleAppearance() const
+{
 	return m_pTitleAppearance;
 }
-AFX_INLINE CXTPChartLegendAppearance* CXTPChartContentAppearance::GetLegendAppearance() const {
+AFX_INLINE CXTPChartLegendAppearance* CXTPChartContentAppearance::GetLegendAppearance() const
+{
 	return m_pLegendAppearance;
 }
-AFX_INLINE CXTPChartFinanceStyleAppearance* CXTPChartAppearance::GetFinanceStyleAppearance() const {
+AFX_INLINE CXTPChartFinanceStyleAppearance* CXTPChartAppearance::GetFinanceStyleAppearance() const
+{
 	return m_pFinanceStyleAppearance;
 }
-AFX_INLINE CXTPChartSeriesStyleAppearance* CXTPChartAppearance::GetSeriesStyleAppearance() const {
+AFX_INLINE CXTPChartSeriesStyleAppearance* CXTPChartAppearance::GetSeriesStyleAppearance() const
+{
 	return m_pSeriesStyleAppearance;
 }
-AFX_INLINE CXTPChartPieStyleAppearance* CXTPChartAppearance::GetPieStyleAppearance() const {
+AFX_INLINE CXTPChartPieStyleAppearance* CXTPChartAppearance::GetPieStyleAppearance() const
+{
 	return m_pPieStyleAppearance;
 }
-AFX_INLINE CXTPChartSeriesLabelAppearance* CXTPChartSeriesStyleAppearance::GetLabelAppearance() const {
+AFX_INLINE CXTPChartSeriesLabelAppearance* CXTPChartSeriesStyleAppearance::GetLabelAppearance() const
+{
 	return m_pLabelAppearance;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTAPPEARANCE_H__)

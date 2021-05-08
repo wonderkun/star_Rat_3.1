@@ -1,7 +1,6 @@
 // XTPGraphicBitmapPng.h interface for the XTPGraphicBitmapPng class.
 //
-// This file is a part of the XTREME TOOLKITPRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPGRAPHICBITMAPPNG_H__)
-#define __XTPGRAPHICBITMAPPNG_H__
+#	define __XTPGRAPHICBITMAPPNG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,15 +35,14 @@
 class _XTP_EXT_CLASS CXTPGraphicBitmapPng : public CBitmap
 {
 	struct CCallback;
-public:
 
+public:
 	//-------------------------------------------------------------------------
 	// Summary: Default constructor
 	//-------------------------------------------------------------------------
 	CXTPGraphicBitmapPng();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to load PNG file
 	// Input:   lpszFileName - A string value that contains the name of a file to be loaded.
@@ -73,18 +72,62 @@ public:
 	BOOL IsAlpha() const;
 
 private:
-	HBITMAP ConvertToBitmap(BYTE* pbImage, CSize szImage,  int cImgChannels) const;
+	HBITMAP ConvertToBitmap(BYTE* pbImage, CSize szImage, int cImgChannels) const;
 
 protected:
-	BOOL m_bAlpha;          // TRUE if PNG file has alpha layer.
+	BOOL m_bAlpha; // TRUE if PNG file has alpha layer.
 };
 
-AFX_INLINE BOOL CXTPGraphicBitmapPng::IsAlpha() const {
+AFX_INLINE BOOL CXTPGraphicBitmapPng::IsAlpha() const
+{
 	return m_bAlpha;
 }
 
-_XTP_EXT_CLASS int AFX_CDECL ZLibCompress(BYTE *dest, ULONG* destLen, const BYTE *source, ULONG sourceLen);
-_XTP_EXT_CLASS ULONG AFX_CDECL ZLibCompressBound(ULONG sourceLen);
-_XTP_EXT_CLASS int AFX_CDECL ZLibUncompress (BYTE *dest, ULONG* destLen, const BYTE* source, ULONG sourceLen);
+//-----------------------------------------------------------------------
+// Summary: Possible ZLib compression levels.
+// See Also: ZLibCompressWithLevel
+//-----------------------------------------------------------------------
+enum XTPZlibCompressionLevel
+{
+	xtpZLibNoCompression	  = 0,
+	xtpZLibBestSpeed		  = 1,
+	xtpZLibBestCompression	= 9,
+	xtpZLibDefaultCompression = -1
+};
 
+//-----------------------------------------------------------------------
+// Summary: Compresses a source buffer into a target buffer, using the ZLib library.
+// Input:      dest - Pointer to the target buffer.
+//          destLen - Size of the target buffer. Must be at least 0.1% larger than source_size plus
+//          12 bytes.
+//           source - Pointer to the source buffer.
+//        sourceLen - Size of the source buffer.
+//            level - Optional compression level, one of XTPZlibCompressionLevel constants.
+// Returns: The actual size of the compressed buffer, or 0 if an error occurred.
+// See Also: XTPZlibCompressionLevel
+//-----------------------------------------------------------------------
+_XTP_EXT_CLASS int AFX_CDECL ZLibCompress(BYTE* dest, ULONG* destLen, const BYTE* source,
+										  ULONG sourceLen,
+										  XTPZlibCompressionLevel level = xtpZLibDefaultCompression);
+
+//-----------------------------------------------------------------------
+// Summary: Used before a ZLibCompress call to allocate the destination buffer.
+//   Input: sourceLen - Size of the source buffer.
+// Returns: An upper bound on the compressed size after ZLibCompress on sourceLen bytes.
+//-----------------------------------------------------------------------
+_XTP_EXT_CLASS ULONG AFX_CDECL ZLibCompressBound(ULONG sourceLen);
+
+//-----------------------------------------------------------------------
+// Summary: Decompresses a source buffer into a target buffer, using the ZLib library.
+// Input:      dest - Pointer to the target buffer.
+//          destLen - Size of the target buffer. Must be at least 0.1% larger than source_size plus
+//          12 bytes.
+//           source - Pointer to the source buffer.
+//        sourceLen - Size of the source buffer.
+// Returns: The actual size of the uncompressed buffer, or 0 if an error occurred.
+//-----------------------------------------------------------------------
+_XTP_EXT_CLASS int AFX_CDECL ZLibUncompress(BYTE* dest, ULONG* destLen, const BYTE* source,
+											ULONG sourceLen);
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPGRAPHICBITMAPPNG_H__)

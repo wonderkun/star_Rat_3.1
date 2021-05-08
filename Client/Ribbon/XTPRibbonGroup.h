@@ -1,7 +1,6 @@
 // XTPRibbonGroup.h: interface for the CXTPRibbonGroup class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONGROUP_H__)
-#define __XTPRIBBONGROUP_H__
+#	define __XTPRIBBONGROUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonGroups;
 class CXTPRibbonBar;
@@ -34,11 +35,14 @@ class CXTPRibbonTab;
 class CXTPControl;
 class CXTPControlPopup;
 
-
-#include "CommandBars/XTPControlButton.h"
-#include "CommandBars/XTPControlPopup.h"
-#include "CommandBars/XTPCommandBarsDefines.h"
-
+enum XTPRibbonGroupReductionLevels
+{
+	xtpRibbonGroupReductionDisabled   = 1, // Do not reduce
+	xtpRibbonGroupFullCaptionDontHide = 2, // Don't hide captions and don't hiding all when reduced
+	xtpRibbonGroupReduceCaptionDontHide = 3, // Hide captions but don't allow hiding all when
+											 // reduced
+	xtpRibbonGroupFullReduction = 4,		 // Hide captions and allow hiding all when reduced
+};
 
 //===========================================================================
 // Summary:
@@ -50,8 +54,8 @@ class CXTPControlPopup;
 //     objects that have been added to the RibbonGroup Items Collection (CXTPRibbonGroup::GetAt).
 //
 //     Groups are added to the CXTPRibbonTab Groups Collection using the
-//     CXTPRibbonGroups::AddGroup and CXTPRibbonGroups::InsertAt methods.  Items are added to a group
-//     using the CXTPRibbonGroup::Add method.
+//     CXTPRibbonGroups::AddGroup and CXTPRibbonGroups::InsertAt methods.  Items are added to a
+//     group using the CXTPRibbonGroup::Add method.
 // See Also: CXTPRibbonGroup::GetAt
 //===========================================================================
 class _XTP_EXT_CLASS CXTPRibbonGroup : public CXTPCmdTarget
@@ -59,7 +63,6 @@ class _XTP_EXT_CLASS CXTPRibbonGroup : public CXTPCmdTarget
 	DECLARE_SERIAL(CXTPRibbonGroup)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonGroup object
@@ -73,7 +76,6 @@ public:
 	virtual ~CXTPRibbonGroup();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the text to display in the group title bar.
@@ -99,6 +101,14 @@ public:
 	// See Also: SetCaption, CXTPRibbonGroups::AddGroup, CXTPRibbonGroups::InsertAt
 	//-----------------------------------------------------------------------
 	CString GetCaption() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the parent command bar.
+	// Returns:
+	//     The parent command bar object.
+	//-----------------------------------------------------------------------
+	CXTPCommandBar* GetParent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -180,7 +190,6 @@ public:
 	int IndexOf(CXTPControl* pControl) const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Total number of CXTPControl objects that have been
@@ -216,9 +225,13 @@ public:
 	//     Pointer to the CXTPControl object that was added to the ribbon group.
 	// See Also: CXTPControl, GetAt, GetCount, RemoveAt, RemoveAll
 	//-----------------------------------------------------------------------
-	CXTPControl* Add(XTPControlType controlType, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1, BOOL bTemporary = FALSE);
-	CXTPControl* Add(CXTPControl* pControl, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1, BOOL bTemporary = FALSE); // <combine CXTPRibbonGroup::Add@XTPControlType@int@LPCTSTR@int@BOOL>
-	CXTPControl* AddClone(CXTPControl* pControl, int nBefore,  BOOL bRecursive = FALSE);
+	CXTPControl* Add(XTPControlType controlType, int nId, LPCTSTR lpszParameter = NULL,
+					 int nBefore = -1, BOOL bTemporary = FALSE);
+	CXTPControl*
+		Add(CXTPControl* pControl, int nId, LPCTSTR lpszParameter = NULL, int nBefore = -1,
+			BOOL bTemporary = FALSE); // <combine
+									  // CXTPRibbonGroup::Add@XTPControlType@int@LPCTSTR@int@BOOL>
+	CXTPControl* AddClone(CXTPControl* pControl, int nBefore, BOOL bRecursive = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -443,6 +456,12 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Determines if control grouping is used.
+	// Remarks:
+	//     ControlsGrouping is for controls grouping within a ribbon group. When you set
+	//     begin group to true it starts a new group of controls.
+	//     SetControlsGrouping will group controls like in MS Word within the
+	//     ribbon group. If you pass false it groups them like in a regular
+	//     toolbar (divider line).
 	// See Also: SetControlsGrouping
 	//-----------------------------------------------------------------------
 	BOOL IsControlsGrouping() const;
@@ -452,6 +471,12 @@ public:
 	//     Call this method to group buttons in the group.
 	// Parameters:
 	//     bControlsGrouping - TRUE to use grouping for buttons
+	// Remarks:
+	//     This is for controls grouping within a ribbon group. When you set
+	//     begin group to true it starts a new group of controls.
+	//     SetControlsGrouping will group controls like in MS Word within the
+	//     ribbon group. If you pass false it groups them like in a regular
+	//     toolbar (divider line).
 	// See Also: IsControlsGrouping
 	//-----------------------------------------------------------------------
 	void SetControlsGrouping(BOOL bControlsGrouping = TRUE);
@@ -493,7 +518,9 @@ public:
 	// Summary:
 	//     Call this method to prevent group to be reduced to button
 	// Parameters:
-	//     nAllowReduceLevel - Reduce Level to allow
+	//     nAllowReduceLevel - Reduce Level to allow. One of XTPRibbonGroupReductionLevels
+	//     constants.
+	// See also: XTPRibbonGroupReductionLevels
 	//-----------------------------------------------------------------------
 	void AllowReduce(int nAllowReduceLevel = 0);
 
@@ -501,7 +528,8 @@ public:
 	// Summary:
 	//     Call this method to retutn the reduced to button level.
 	// Returns:
-	//     Current Reduce Level.
+	//     Current Reduce Level. One of XTPRibbonGroupReductionLevels constants.
+	// See also: XTPRibbonGroupReductionLevels
 	//-----------------------------------------------------------------------
 	int GetAllowReduceLevel() const;
 
@@ -572,7 +600,6 @@ public:
 	CXTPRibbonGroups* GetGroups() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Gets the width and height of the group.
@@ -587,7 +614,7 @@ protected:
 	//     A CSize object containing the width and height of the group.
 	// See Also: GetCount
 	//-----------------------------------------------------------------------
-	//virtual CSize GetSize(CDC* pDC);
+	// virtual CSize GetSize(CDC* pDC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -623,9 +650,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual int GetMinimumWidth(CDC* pDC);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before calculate size of ribbon group
@@ -657,9 +682,10 @@ protected:
 	// Summary:
 	///    This method is called to decrease size of ribbon group
 	// Parameters:
-	//     nLevel - Reduce level
+	//     nLevel - One of XTPRibbonGroupReductionLevels constants.
 	//     nWidthAvail - Total pixels need to reduce
 	// Returns: TRUE if group was reduced
+	// See also: XTPRibbonGroupReductionLevels
 	//-----------------------------------------------------------------------
 	virtual BOOL OnReduceSize(int nLevel, int nWidthAvail);
 
@@ -672,7 +698,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnExtendSize(int nWidthAvail);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
 	virtual void OnAdjustBorders(int nWidth, CRect rcBorders);
 	void CenterColumn(int nFirstItem, int nLastItem, int nGroupHeight);
@@ -684,33 +710,58 @@ private:
 	int _GetSizeSpecialDynamicSize();
 	BOOL _FindBestWrapSpecialDynamicSize();
 	void ArrangeEditCaption();
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	afx_msg long OleGetItemCount();
+	afx_msg int OleGetIndex();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+
+	afx_msg LPDISPATCH OleAdd(long controlType, int nId, LPCTSTR strCaption,
+							  const VARIANT& varBefore, const VARIANT& varTemporary);
+	afx_msg LPDISPATCH OleGetControlGroupPopup();
+	afx_msg LPDISPATCH OleGetControlGroupOption();
+	afx_msg LPDISPATCH OleGetRibbonBar();
+	afx_msg LPDISPATCH OleGetGroups();
+	DECLARE_PROPERTY(Visible, BOOL);
+	afx_msg void OleAddControl(LPDISPATCH Control, const VARIANT& varBefore);
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPRibbonGroup);
+	DECLARE_INTERFACE_MAP()
+	DECLARE_ENUM_VARIANT(CXTPRibbonGroup);
+	void OleGetRect(long* pLeft, long* pTop, long* pRight, long* pBottom);
+
 //}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
+	BOOL m_bControlsCentering;						  // TRUE to center controls inside groups
+	BOOL m_bControlsGrouping;						  // TRUE to group controls
+	CString m_strCaption;							  // Caption of the group
+	int m_nIndex;									  // Index of the group
+	CXTPRibbonGroups* m_pGroups;					  // Parent groups collection
+	CRect m_rcGroup;								  // Bounding rectangle of the group
+	CArray<CXTPControl*, CXTPControl*> m_arrControls; // Collection of group's controls
+	CXTPCommandBar* m_pParent;						  // Parent ribbon bar
+	CXTPRibbonBar* m_pRibbonBar;					  // Parent ribbon bar
+	int m_nId;										  // Identifier of the group
+	int m_nIconId;									  // Icon index of the group
 
-protected:
-	BOOL m_bControlsCentering;                  // TRUE to center controls inside groups
-	BOOL m_bControlsGrouping;                   // TRUE to group controls
-	CString m_strCaption;                       // Caption of the group
-	int m_nIndex;                               // Index of the group
-	CXTPRibbonGroups* m_pGroups;                // Parent groups collection
-	CRect m_rcGroup;                            // Bounding rectangle of the group
-	CArray<CXTPControl*, CXTPControl*> m_arrControls;   // Collection of group's controls
-	CXTPCommandBar* m_pParent;                  // Parent ribbon bar
-	CXTPRibbonBar* m_pRibbonBar;                  // Parent ribbon bar
-	int m_nId;                                  // Identifier of the group
-	int m_nIconId;                              // Icon index of the group
+	CXTPControl* m_pControlGroupOption;		// Group option control
+	CXTPControlPopup* m_pControlGroupPopup; // Group popup control
+	BOOL m_bReduced;						// TRUE if group was reduced
+	BOOL m_bShowOptionButton;				// TRUE to show option button
+	BOOL m_bVisible;						// TRUE if group is visible
+	int m_nAllowReduce;						// True to all ow the group to be minimized
 
-	CXTPControl* m_pControlGroupOption;         // Group option control
-	CXTPControlPopup* m_pControlGroupPopup;     // Group popup control
-	BOOL m_bReduced;                            // TRUE if group was reduced
-	BOOL m_bShowOptionButton;                   // TRUE to show option button
-	BOOL m_bVisible;                            // TRUE if group is visible
-	int m_nAllowReduce;                         // True to all ow the group to be minimized
+	int m_nRowCount; // Total rows number of items
 
-	int m_nRowCount;                            // Total rows number of items
-
-	BOOL m_bAutoArrangeEditCaption;             // Specifies whether the group will automatically align caption / edit parts
+	BOOL m_bAutoArrangeEditCaption; // Specifies whether the group will automatically align caption
+									// / edit parts
 
 private:
 	struct LAYOUTINFO;
@@ -743,14 +794,15 @@ class _XTP_EXT_CLASS CXTPRibbonGroupControlPopup : public CXTPControlPopup
 public:
 	CXTPRibbonGroupControlPopup(CXTPRibbonGroup* pGroup = 0);
 
-	virtual CSize GetSize (CDC* pDC);
+	virtual CSize GetSize(CDC* pDC);
 	void Draw(CDC* pDC);
 	BOOL IsTransparent() const;
 
 	CXTPRibbonBar* GetRibbonBar() const;
 
-	virtual void Copy(CXTPControl* pControl, BOOL bRecursive  = FALSE);
-	virtual void GenerateCommandBarList(DWORD& /*nID*/, CXTPCommandBarList* /*pCommandBarList*/, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* /*pParam*/);
+	virtual void Copy(CXTPControl* pControl, BOOL bRecursive = FALSE);
+	virtual void GenerateCommandBarList(DWORD& /*nID*/, CXTPCommandBarList* /*pCommandBarList*/,
+										XTP_COMMANDBARS_PROPEXCHANGE_PARAM* /*pParam*/);
 	virtual void OnLButtonUp(CPoint /*point*/);
 	virtual BOOL IsVisible(DWORD dwSkipFlags = 0) const;
 	virtual BOOL OnSetPopup(BOOL bPopup);
@@ -761,70 +813,115 @@ protected:
 
 //}}AFX_CODEJOCK_PRIVATE
 
-
-AFX_INLINE CString CXTPRibbonGroup::GetCaption() const {
+AFX_INLINE CString CXTPRibbonGroup::GetCaption() const
+{
 	return m_strCaption;
 }
 
-AFX_INLINE CRect CXTPRibbonGroup::GetRect() const {
+AFX_INLINE CXTPCommandBar* CXTPRibbonGroup::GetParent() const
+{
+	return m_pParent;
+}
+
+AFX_INLINE CRect CXTPRibbonGroup::GetRect() const
+{
 	return m_rcGroup;
 }
-AFX_INLINE CXTPRibbonBar* CXTPRibbonGroup::GetRibbonBar() const {
+
+AFX_INLINE CXTPRibbonBar* CXTPRibbonGroup::GetRibbonBar() const
+{
 	return (CXTPRibbonBar*)m_pRibbonBar;
 }
-AFX_INLINE int CXTPRibbonGroup::GetCount() const {
+
+AFX_INLINE int CXTPRibbonGroup::GetCount() const
+{
 	return (int)m_arrControls.GetSize();
 }
-AFX_INLINE CXTPControl* CXTPRibbonGroup::GetAt(int nIndex) const {
+
+AFX_INLINE CXTPControl* CXTPRibbonGroup::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < GetCount() ? m_arrControls.GetAt(nIndex) : NULL;
 }
-AFX_INLINE int CXTPRibbonGroup::GetID() const {
+
+AFX_INLINE int CXTPRibbonGroup::GetID() const
+{
 	return m_nId;
 }
-AFX_INLINE CXTPControl* CXTPRibbonGroup::GetControlGroupOption() const {
+
+AFX_INLINE CXTPControl* CXTPRibbonGroup::GetControlGroupOption() const
+{
 	return m_pControlGroupOption;
 }
-AFX_INLINE CXTPControlPopup* CXTPRibbonGroup::GetControlGroupPopup() const {
+
+AFX_INLINE CXTPControlPopup* CXTPRibbonGroup::GetControlGroupPopup() const
+{
 	return m_pControlGroupPopup;
 }
-AFX_INLINE BOOL CXTPRibbonGroup::IsReduced() const {
+
+AFX_INLINE BOOL CXTPRibbonGroup::IsReduced() const
+{
 	return m_bReduced;
 }
-AFX_INLINE void CXTPRibbonGroup::SetIconId(int nId) {
+
+AFX_INLINE void CXTPRibbonGroup::SetIconId(int nId)
+{
 	m_nIconId = nId;
 }
-AFX_INLINE int CXTPRibbonGroup::GetIconId() const {
+
+AFX_INLINE int CXTPRibbonGroup::GetIconId() const
+{
 	return m_nIconId <= 0 ? m_nId : m_nIconId;
 }
-AFX_INLINE void CXTPRibbonGroup::ShowOptionButton(BOOL bShowOptionButton) {
+
+AFX_INLINE void CXTPRibbonGroup::ShowOptionButton(BOOL bShowOptionButton)
+{
 	m_bShowOptionButton = bShowOptionButton;
 }
-AFX_INLINE int CXTPRibbonGroup::GetIndex() const {
+
+AFX_INLINE int CXTPRibbonGroup::GetIndex() const
+{
 	return m_nIndex;
 }
-AFX_INLINE BOOL CXTPRibbonGroup::IsControlsGrouping() const {
+
+AFX_INLINE BOOL CXTPRibbonGroup::IsControlsGrouping() const
+{
 	return m_bControlsGrouping;
 }
-AFX_INLINE void CXTPRibbonGroup::SetControlsGrouping(BOOL bControlsGrouping) {
+
+AFX_INLINE void CXTPRibbonGroup::SetControlsGrouping(BOOL bControlsGrouping)
+{
 	m_bControlsGrouping = bControlsGrouping;
 }
-AFX_INLINE void CXTPRibbonGroup::SetControlsCentering(BOOL bControlsCentering) {
+
+AFX_INLINE void CXTPRibbonGroup::SetControlsCentering(BOOL bControlsCentering)
+{
 	m_bControlsCentering = bControlsCentering;
 }
-AFX_INLINE BOOL CXTPRibbonGroup::IsControlsCentering() const {
+
+AFX_INLINE BOOL CXTPRibbonGroup::IsControlsCentering() const
+{
 	return m_bControlsCentering;
 }
-AFX_INLINE void CXTPRibbonGroup::AllowReduce(int nAllowReduce) {
+
+AFX_INLINE void CXTPRibbonGroup::AllowReduce(int nAllowReduce)
+{
 	m_nAllowReduce = nAllowReduce;
 }
-AFX_INLINE int CXTPRibbonGroup::GetAllowReduceLevel() const {
+
+AFX_INLINE int CXTPRibbonGroup::GetAllowReduceLevel() const
+{
 	return m_nAllowReduce;
 }
-AFX_INLINE void CXTPRibbonGroup::SetArrangeEditCaption(BOOL bArrangeEditCaption) {
+
+AFX_INLINE void CXTPRibbonGroup::SetArrangeEditCaption(BOOL bArrangeEditCaption)
+{
 	m_bAutoArrangeEditCaption = bArrangeEditCaption;
 }
-AFX_INLINE CXTPRibbonGroups* CXTPRibbonGroup::GetGroups() const {
+
+AFX_INLINE CXTPRibbonGroups* CXTPRibbonGroup::GetGroups() const
+{
 	return m_pGroups;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONGROUP_H__)

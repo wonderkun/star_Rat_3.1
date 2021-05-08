@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ARA))
 #ifdef _WIN32
 LANGUAGE LANG_ARABIC, SUBLANG_ARABIC_SAUDI_ARABIA
 #pragma code_page(1256)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "√·Ê«‰ ﬁÌ«”Ì…"
+	XTP_IDS_RECENT_COLORS    "«·√·Ê«‰ «·√ŒÌ—…"
+	XTP_IDS_THEME_COLORS     "√·Ê«‰ «·”„…"
+	XTP_IDS_TAGCLOUD_TIP     "«·⁄·«„… %s ° Ê‰ﬁ«ÿ %d"
     XTP_IDS_TIPTEXT          "‰’ «· ·„ÌÕ"
     XTP_IDS_DIDYOUKNOW       "Â·  ⁄·„ √‰Â..."
     XTP_IDS_FILE_ABSENT      "˛˛«·„·› «·„Õœœ €Ì— „ÊÃÊœ."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "≈Œ›«¡ «· ›«’Ì·"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Œ·›Ì… 1"
+    XTP_IDS_BACKGROUND2        "Œ·›Ì… 2"
+    XTP_IDS_TEXT1              "«·‰’ 1"
+    XTP_IDS_TEXT2              "«·‰’ 2"
+    XTP_IDS_ACCENT1            " „ÌÌ“ 1"
+    XTP_IDS_ACCENT2            " „ÌÌ“ 2"
+    XTP_IDS_ACCENT3            " „ÌÌ“ 3"
+    XTP_IDS_ACCENT4            " „ÌÌ“ 4"
+    XTP_IDS_ACCENT5            " „ÌÌ“ 5"
+    XTP_IDS_ACCENT6            " „ÌÌ“ 6"
+    XTP_IDS_LIGHTER            "Ê·«⁄…"
+    XTP_IDS_DARKER             "ﬁ «„…"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ARA))

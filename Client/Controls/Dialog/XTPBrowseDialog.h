@@ -1,7 +1,6 @@
 // XTPBrowseDialog.h: interface for the CXTPBrowseDialog class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPBROWSEDIALOG_H__)
-#define __XTPBROWSEDIALOG_H__
+#	define __XTPBROWSEDIALOG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -41,7 +42,6 @@
 class _XTP_EXT_CLASS CXTPBrowseDialog : public CCommonDialog
 {
 public:
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBrowseDialog object
@@ -59,7 +59,6 @@ public:
 	virtual ~CXTPBrowseDialog();
 
 public:
-
 	// --------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to invoke the browse dialog box and to
@@ -306,7 +305,6 @@ public:
 	// ------------------------------------------------------------------
 	int GetImage();
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Application defined callback.
@@ -326,9 +324,7 @@ public:
 	//-----------------------------------------------------------------------
 	static int CALLBACK BrowseCtrlCallback(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     NULL terminated string that represents the selected directory
@@ -337,90 +333,111 @@ protected:
 	BROWSEINFO m_bi;
 
 private:
-
 	CString m_strTitle; // default dialog title.
-
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPBrowseDialog::SetOwner(HWND hWnd) {
+AFX_INLINE void CXTPBrowseDialog::SetOwner(HWND hWnd)
+{
 	m_bi.hwndOwner = hWnd;
 }
-AFX_INLINE HWND CXTPBrowseDialog::GetOwner() {
+AFX_INLINE HWND CXTPBrowseDialog::GetOwner()
+{
 	return m_bi.hwndOwner;
 }
-AFX_INLINE void CXTPBrowseDialog::SetPidlRoot(LPCITEMIDLIST pidl) {
+AFX_INLINE void CXTPBrowseDialog::SetPidlRoot(LPCITEMIDLIST pidl)
+{
 	m_bi.pidlRoot = pidl;
 }
-AFX_INLINE LPCITEMIDLIST CXTPBrowseDialog::GetPidlRoot() {
+AFX_INLINE LPCITEMIDLIST CXTPBrowseDialog::GetPidlRoot()
+{
 	return m_bi.pidlRoot;
 }
-AFX_INLINE void CXTPBrowseDialog::SetDisplayName(LPCTSTR szDisplayName) {
+AFX_INLINE void CXTPBrowseDialog::SetDisplayName(LPCTSTR szDisplayName)
+{
 	m_bi.pszDisplayName = (LPTSTR)szDisplayName;
 }
-AFX_INLINE LPCTSTR CXTPBrowseDialog::GetDisplayName() {
+AFX_INLINE LPCTSTR CXTPBrowseDialog::GetDisplayName()
+{
 	return m_bi.pszDisplayName;
 }
-AFX_INLINE void CXTPBrowseDialog::SetTitle(LPCTSTR szTitle) {
+AFX_INLINE void CXTPBrowseDialog::SetTitle(LPCTSTR szTitle)
+{
 	m_bi.lpszTitle = szTitle;
 }
-AFX_INLINE LPCTSTR CXTPBrowseDialog::GetTitle() {
+AFX_INLINE LPCTSTR CXTPBrowseDialog::GetTitle()
+{
 	return m_bi.lpszTitle;
 }
-AFX_INLINE void CXTPBrowseDialog::SetOptions(UINT uf) {
+AFX_INLINE void CXTPBrowseDialog::SetOptions(UINT uf)
+{
 	m_bi.ulFlags = uf;
 }
-AFX_INLINE UINT CXTPBrowseDialog::GetOptions() {
+AFX_INLINE UINT CXTPBrowseDialog::GetOptions()
+{
 	return m_bi.ulFlags;
 }
-AFX_INLINE void CXTPBrowseDialog::SetCallback(BFFCALLBACK pf) {
+AFX_INLINE void CXTPBrowseDialog::SetCallback(BFFCALLBACK pf)
+{
 	m_bi.lpfn = pf;
 }
-AFX_INLINE BFFCALLBACK CXTPBrowseDialog::GetCallback() {
+AFX_INLINE BFFCALLBACK CXTPBrowseDialog::GetCallback()
+{
 	return m_bi.lpfn;
 }
-AFX_INLINE void CXTPBrowseDialog::SetData(LPARAM lp) {
+AFX_INLINE void CXTPBrowseDialog::SetData(LPARAM lp)
+{
 	m_bi.lParam = lp;
 }
-AFX_INLINE LPARAM CXTPBrowseDialog::GetData() {
+AFX_INLINE LPARAM CXTPBrowseDialog::GetData()
+{
 	return m_bi.lParam;
 }
-AFX_INLINE LPCTSTR CXTPBrowseDialog::GetSelPath() {
+AFX_INLINE LPCTSTR CXTPBrowseDialog::GetSelPath()
+{
 	return m_szSelPath;
 }
-AFX_INLINE int CXTPBrowseDialog::GetImage() {
+AFX_INLINE int CXTPBrowseDialog::GetImage()
+{
 	return m_bi.iImage;
 }
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef BIF_BROWSEINCLUDEURLS
-#define BIF_BROWSEINCLUDEURLS  0x0080   // Allow URLs to be displayed or entered. (Requires BIF_USENEWUI)
-#endif
+#	ifndef BIF_BROWSEINCLUDEURLS
+#		define BIF_BROWSEINCLUDEURLS                                                              \
+			0x0080 // Allow URLs to be displayed or entered. (Requires BIF_USENEWUI)
+#	endif
 
-#ifndef BIF_NEWDIALOGSTYLE
-#define BIF_NEWDIALOGSTYLE     0x0040   // Use the new dialog layout with the ability to resize
-#endif
+#	ifndef BIF_NEWDIALOGSTYLE
+#		define BIF_NEWDIALOGSTYLE 0x0040 // Use the new dialog layout with the ability to resize
+#	endif
 
-#ifndef BIF_NONEWFOLDERBUTTON
-#define BIF_NONEWFOLDERBUTTON  0x0200   // Do not add the "New Folder" button to the dialog.  Only applicable with BIF_NEWDIALOGSTYLE.
-#endif
+#	ifndef BIF_NONEWFOLDERBUTTON
+#		define BIF_NONEWFOLDERBUTTON                                                              \
+			0x0200 // Do not add the "New Folder" button to the dialog.  Only applicable with
+				   // BIF_NEWDIALOGSTYLE.
+#	endif
 
-#ifndef BIF_NOTRANSLATETARGETS
-#define BIF_NOTRANSLATETARGETS 0x0400   // don't traverse target as shortcut
-#endif
+#	ifndef BIF_NOTRANSLATETARGETS
+#		define BIF_NOTRANSLATETARGETS 0x0400 // don't traverse target as shortcut
+#	endif
 
-#ifndef BIF_SHAREABLE
-#define BIF_SHAREABLE          0x8000  // sharable resources displayed (remote shares, requires BIF_USENEWUI)
-#endif
+#	ifndef BIF_SHAREABLE
+#		define BIF_SHAREABLE                                                                      \
+			0x8000 // sharable resources displayed (remote shares, requires BIF_USENEWUI)
+#	endif
 
-#ifndef BIF_UAHINT
-#define BIF_UAHINT             0x0100   // Add a UA hint to the dialog, in place of the edit box. May not be combined with BIF_EDITBOX
-#endif
+#	ifndef BIF_UAHINT
+#		define BIF_UAHINT                                                                         \
+			0x0100 // Add a UA hint to the dialog, in place of the edit box. May not be combined
+				   // with BIF_EDITBOX
+#	endif
 
-#ifndef BIF_USENEWUI
-#define BIF_USENEWUI           (BIF_NEWDIALOGSTYLE | BIF_EDITBOX)
-#endif
+#	ifndef BIF_USENEWUI
+#		define BIF_USENEWUI (BIF_NEWDIALOGSTYLE | BIF_EDITBOX)
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPBROWSEDIALOG_H__)

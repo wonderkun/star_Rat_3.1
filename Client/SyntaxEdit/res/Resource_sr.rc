@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SRL)
 #ifdef _WIN32
 LANGUAGE LANG_SERBIAN, SUBLANG_SERBIAN_LATIN
 #pragma code_page(1250)
@@ -34,7 +33,7 @@ LANGUAGE LANG_SERBIAN, SUBLANG_SERBIAN_LATIN
 
 XTP_IDD_EDIT_PAGEEDITOR DIALOGEX DISCARDABLE  0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Editor"
+CAPTION "Urednik"
 FONT 8, "MS Shell Dlg"
 BEGIN
     GROUPBOX        "Podešavanje prozora",IDC_STATIC,7,7,246,76
@@ -46,38 +45,38 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,43,105,10
     CONTROL         "Izbor &margina",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,54,105,10
-    CONTROL         "C&ollapsible Nodes",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
+    CONTROL         "Na sklapanje èvorova",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,65,105,10
     CONTROL         "&Auto poravnanje",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,20,115,10
-    CONTROL         "Virtual &space",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
+    CONTROL         "Virtualni prostor",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
     CONTROL         "&Boje sintakse",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
-    GROUPBOX        "Tabulacija",IDC_STATIC,7,88,162,43
-    LTEXT           "&Velièina tabulatora:",IDC_STATIC,15,103,30,8
-    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,50,100,46,14,ES_AUTOHSCROLL
+    GROUPBOX        "Tabulacija",IDC_STATIC,7,88,162,48
+    LTEXT           "&Velièina tabulatora:",IDC_STATIC,15,98,65,8
+    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,80,95,46,14,ES_AUTOHSCROLL
     CONTROL         "Unesi r&azmake",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,102,102,58,10
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,110,58,10
     CONTROL         "&Zadrži tabulaciju",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
-                    BS_AUTORADIOBUTTON,102,113,51,10
-    GROUPBOX        "Prepiši znak",XTP_IDC_EDIT_GBOX_CARET,175,88,78,43,
+                    BS_AUTORADIOBUTTON,15,121,71,10
+    GROUPBOX        "Prepiši znak",XTP_IDC_EDIT_GBOX_CARET,175,88,78,48,
                     WS_GROUP
     CONTROL         "&Tanko",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,181,102,31,10
     CONTROL         "&Debelo",XTP_IDC_EDIT_RAD_CARET_THICK,"Button",
                     BS_AUTORADIOBUTTON,181,113,36,10
-    GROUPBOX        "Opcije snimanja",IDC_STATIC,7,135,246,37
+    GROUPBOX        "Opcije snimanja",IDC_STATIC,7,140,246,32
     CONTROL         "Automatski &ponovo uèitaj eksterno izmenjene fajlove",
                     XTP_IDC_EDIT_CHK_AUTO_RELOAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,151,155,10
+                    WS_TABSTOP,15,154,232,10
 END
 XTP_IDD_EDIT_PAGEFONT DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Font editora"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "&Font:",XTP_IDC_EDIT_TXT_FONTNAMES,7,7,40,9
+    LTEXT           "Font",XTP_IDC_EDIT_TXT_FONTNAMES,7,7,40,9
     COMBOBOX        XTP_IDC_EDIT_COMB_NAMES,7,18,119,55,CBS_SIMPLE | 
                     CBS_AUTOHSCROLL | CBS_SORT | CBS_DISABLENOSCROLL | 
                     WS_VSCROLL | WS_TABSTOP
@@ -151,7 +150,7 @@ BEGIN
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_BACKSEL,238,95,13,12
     CONTROL         "&Pojaèano",XTP_IDC_EDIT_CHK_BOLD,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,135,114,30,10
-    CONTROL         "&Italic",XTP_IDC_EDIT_CHK_ITALIC,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Kurziv",XTP_IDC_EDIT_CHK_ITALIC,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,170,114,31,10
     CONTROL         "&Podvuèeno",XTP_IDC_EDIT_CHK_UNDERLINE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,206,114,46,10
@@ -175,7 +174,7 @@ BEGIN
     CONTROL         "Samo cele reèi",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,43,100,10
     CONTROL         "Samo pravilnu velièinu slova",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,58,100,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,58,104,10
     GROUPBOX        "Pravac",IDC_STATIC,126,30,80,45
     CONTROL         "Traži gore",XTP_IDC_EDIT_RADIO_UP,"Button",
                     BS_AUTORADIOBUTTON,134,43,65,10
@@ -201,7 +200,7 @@ BEGIN
     CONTROL         "Samo cele reèi",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,51,100,10
     CONTROL         "Samo pravilnu velièinu slova",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,64,100,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,64,104,10
     GROUPBOX        "Pravac",IDC_STATIC,126,38,80,41
     CONTROL         "Traži gore",XTP_IDC_EDIT_RADIO_UP,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,134,51,65,10
@@ -268,7 +267,7 @@ BEGIN
     XTP_IDS_EDIT_CUSTOM        "Korisnièki"
     XTP_IDS_EDIT_REGULAR       "Redovno"
     XTP_IDS_EDIT_BOLD          "Pojaèano"
-    XTP_IDS_EDIT_ITALIC        "Italic"
+    XTP_IDS_EDIT_ITALIC        "Kurziv"
     XTP_IDS_EDIT_BOLDITALIC    "Pojaèano Italic"
 END
 
@@ -290,4 +289,4 @@ BEGIN
     XTP_IDS_EDIT_OPENSCHEMAMSG "Želite li prekid ""Dialog opcija"" i otvorene šema fajlove ""%s%s"" u prozoru editora?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SRL)

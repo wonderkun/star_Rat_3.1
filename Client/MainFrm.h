@@ -10,6 +10,8 @@
 #endif // _MSC_VER > 1000
 
 
+#include "XTToolkitPro.h"
+
 class CMainFrame : public CXTPFrameWnd
 {
 	

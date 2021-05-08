@@ -1,7 +1,6 @@
 // XTPPropertyGridInplaceButton.h interface for the CXTPPropertyGridInplaceButton class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDINPLACEBUTTON_H__)
-#define __XTPPROPERTYGRIDINPLACEBUTTON_H__
+#	define __XTPPROPERTYGRIDINPLACEBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // class forwards
 
@@ -33,19 +34,19 @@ class CXTPPropertyGridView;
 class CXTPPropertyGridItem;
 class CXTPImageManagerIcon;
 
-const UINT XTP_ID_PROPERTYGRID_EXPANDBUTTON = 100; //<ALIAS CXTPPropertyGridInplaceButton::CXTPPropertyGridInplaceButton@UINT>
-const UINT XTP_ID_PROPERTYGRID_COMBOBUTTON = 101; //<ALIAS CXTPPropertyGridInplaceButton::CXTPPropertyGridInplaceButton@UINT>
-
+const UINT XTP_ID_PROPERTYGRID_EXPANDBUTTON =
+	100; //<ALIAS CXTPPropertyGridInplaceButton::CXTPPropertyGridInplaceButton@UINT>
+const UINT XTP_ID_PROPERTYGRID_COMBOBUTTON =
+	101; //<ALIAS CXTPPropertyGridInplaceButton::CXTPPropertyGridInplaceButton@UINT>
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridInplaceButton is a CCmdTarget derived class.
+//     CXTPPropertyGridInplaceButton is a CXTPCmdTarget derived class.
 //     It represents inplace button in Property Grid control.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridInplaceButton : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceButton object
@@ -182,7 +183,7 @@ public:
 	// Returns:
 	//     TRUE if button is hot, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsHot()  const;
+	BOOL IsHot() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -293,16 +294,17 @@ public:
 	void SetAlignment(int nAlignment);
 
 	//-----------------------------------------------------------------------
-	// Summary: Specifies whether a user can use the TAB key to move the focus to the inplace button.
-	// Returns:
-	//     True if button can participate in tabbing, False if the button cannot participate in tabbing.
+	// Summary: Specifies whether a user can use the TAB key to move the focus to the inplace
+	// button. Returns:
+	//     True if button can participate in tabbing, False if the button cannot participate in
+	//     tabbing.
 	//-----------------------------------------------------------------------
 	BOOL GetTabStop() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
-	BOOL  m_bPressed;    // TRUE if the button is pressed.
+	BOOL m_bPressed; // TRUE if the button is pressed.
 	int m_nIndex;
 
 	CXTPPropertyGridView* m_pGrid;
@@ -318,21 +320,30 @@ protected:
 	BOOL m_bShowAlways;
 	BOOL m_bTabStop;
 	int m_nAlignment;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridInplaceButton);
+	LPDISPATCH OleGetItem();
+	BSTR OleGetCaption();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 private:
 	friend class CXTPPropertyGridItem;
 	friend class CXTPPropertyGridItems;
 	friend class CXTPPropertyGridInplaceButtons;
-
 };
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridInplaceButtons is a CCmdTarget derived class.
+//     CXTPPropertyGridInplaceButtons is a CXTPCmdTarget derived class.
 //     It represents collection of inplace buttons for specified grid item
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridInplaceButtons : public CXTPCmdTarget
@@ -464,65 +475,101 @@ private:
 	CArray<CXTPPropertyGridInplaceButton*, CXTPPropertyGridInplaceButton*> m_arrButtons;
 	CXTPPropertyGridItem* m_pItem;
 
-	friend class CXTPPropertyGridItem;
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridInplaceButtons);
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleItem(long nIndex);
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg void OleClear();
+	afx_msg void OleRemove(long nIndex);
+	afx_msg LPDISPATCH OleAdd(UINT ID);
+	afx_msg LPDISPATCH OleFindButton(long nId);
+
+	DECLARE_ENUM_VARIANT(CXTPPropertyGridInplaceButtons)
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+	friend class CXTPPropertyGridItem;
 };
 
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridInplaceButton::GetItem() const {
+AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridInplaceButton::GetItem() const
+{
 	return m_pItem;
 }
-AFX_INLINE UINT CXTPPropertyGridInplaceButton::GetID() const {
+AFX_INLINE UINT CXTPPropertyGridInplaceButton::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE CRect CXTPPropertyGridInplaceButton::GetRect() const {
+AFX_INLINE CRect CXTPPropertyGridInplaceButton::GetRect() const
+{
 	return m_rcButton;
 }
-AFX_INLINE CString CXTPPropertyGridInplaceButton::GetCaption() const {
+AFX_INLINE CString CXTPPropertyGridInplaceButton::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE int CXTPPropertyGridInplaceButton::GetIconIndex() const {
+AFX_INLINE int CXTPPropertyGridInplaceButton::GetIconIndex() const
+{
 	return m_nIconIndex;
 }
-AFX_INLINE void CXTPPropertyGridInplaceButton::SetIconIndex(int nIconIndex) {
+AFX_INLINE void CXTPPropertyGridInplaceButton::SetIconIndex(int nIconIndex)
+{
 	m_nIconIndex = nIconIndex;
 }
-AFX_INLINE CXTPPropertyGridView* CXTPPropertyGridInplaceButton::GetGrid() const {
+AFX_INLINE CXTPPropertyGridView* CXTPPropertyGridInplaceButton::GetGrid() const
+{
 	return m_pGrid;
 }
-AFX_INLINE void CXTPPropertyGridInplaceButton::SetTooltip(LPCTSTR lpstrTooltip) {
+AFX_INLINE void CXTPPropertyGridInplaceButton::SetTooltip(LPCTSTR lpstrTooltip)
+{
 	m_strTooltip = lpstrTooltip;
 }
-AFX_INLINE CString CXTPPropertyGridInplaceButton::GetTooltip() const {
+AFX_INLINE CString CXTPPropertyGridInplaceButton::GetTooltip() const
+{
 	return m_strTooltip;
 }
 
-AFX_INLINE int CXTPPropertyGridInplaceButtons::GetCount() const {
+AFX_INLINE int CXTPPropertyGridInplaceButtons::GetCount() const
+{
 	return (int)m_arrButtons.GetSize();
 }
-AFX_INLINE CXTPPropertyGridInplaceButton* CXTPPropertyGridInplaceButtons::GetAt(int nIndex) const {
+AFX_INLINE CXTPPropertyGridInplaceButton* CXTPPropertyGridInplaceButtons::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < GetCount() ? m_arrButtons.GetAt(nIndex) : NULL;
 }
-AFX_INLINE void CXTPPropertyGridInplaceButton::SetHyperlink(BOOL bHyperlink) {
+AFX_INLINE void CXTPPropertyGridInplaceButton::SetHyperlink(BOOL bHyperlink)
+{
 	m_bHyperlink = bHyperlink;
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceButton::IsHyperlink() const {
+AFX_INLINE BOOL CXTPPropertyGridInplaceButton::IsHyperlink() const
+{
 	return m_bHyperlink;
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceButton::GetShowAlways() const {
+AFX_INLINE BOOL CXTPPropertyGridInplaceButton::GetShowAlways() const
+{
 	return m_bShowAlways;
 }
-AFX_INLINE void CXTPPropertyGridInplaceButton::SetShowAlways(BOOL bShowAlways) {
+AFX_INLINE void CXTPPropertyGridInplaceButton::SetShowAlways(BOOL bShowAlways)
+{
 	m_bShowAlways = bShowAlways;
 }
-AFX_INLINE int CXTPPropertyGridInplaceButton::GetAlignment() const {
+AFX_INLINE int CXTPPropertyGridInplaceButton::GetAlignment() const
+{
 	return m_nAlignment;
 }
-AFX_INLINE void CXTPPropertyGridInplaceButton::SetAlignment(int nAlignment) {
+AFX_INLINE void CXTPPropertyGridInplaceButton::SetAlignment(int nAlignment)
+{
 	m_nAlignment = nAlignment;
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceButton::GetTabStop() const {
+AFX_INLINE BOOL CXTPPropertyGridInplaceButton::GetTabStop() const
+{
 	return m_bTabStop;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPPROPERTYGRIDINPLACEBUTTON_H__)

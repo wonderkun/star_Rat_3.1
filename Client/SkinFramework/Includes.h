@@ -1,7 +1,6 @@
-// Includes.h
+// Includes.h : header file
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,33 +17,35 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(__XTPSKINFRAMEWORKINCLUDES_H__)
-#define __XTPSKINFRAMEWORKINCLUDES_H__
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPSKINFRAMEWORK_INCLUDES_H__)
+#	define __XTPSKINFRAMEWORK_INCLUDES_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPSkinManagerSchema.h"
-#include "XTPSkinManagerResource.h"
-#include "XTPSkinManager.h"
-#include "XTPSkinManagerApiHook.h"
-#include "XTPSkinImage.h"
-#include "XTPSkinObject.h"
-#include "XTPSkinObjectFrame.h"
-#include "XTPSkinObjectTreeView.h"
-#include "XTPSkinObjectTrackBar.h"
-#include "XTPSkinObjectToolBar.h"
-#include "XTPSkinObjectTab.h"
-#include "XTPSkinObjectSpin.h"
-#include "XTPSkinObjectScrollBar.h"
-#include "XTPSkinObjectProgress.h"
-#include "XTPSkinObjectListView.h"
-#include "XTPSkinObjectListBox.h"
-#include "XTPSkinObjectHeader.h"
-#include "XTPSkinObjectEdit.h"
-#include "XTPSkinObjectComboBox.h"
-#include "XTPSkinObjectButton.h"
+#	include "SkinFramework/XTPSkinObject.h"
+#	include "SkinFramework/XTPSkinObjectFrame.h"
+#	include "SkinFramework/XTPSkinObjectTreeView.h"
+#	include "SkinFramework/XTPSkinObjectTrackBar.h"
+#	include "SkinFramework/XTPSkinObjectToolBar.h"
+#	include "SkinFramework/XTPSkinObjectTab.h"
+#	include "SkinFramework/XTPSkinObjectSpin.h"
+#	include "SkinFramework/XTPSkinObjectScrollBar.h"
+#	include "SkinFramework/XTPSkinObjectProgress.h"
+#	include "SkinFramework/XTPSkinObjectListView.h"
+#	include "SkinFramework/XTPSkinObjectListBox.h"
+#	include "SkinFramework/XTPSkinObjectHeader.h"
+#	include "SkinFramework/XTPSkinObjectEdit.h"
+#	include "SkinFramework/XTPSkinObjectComboBox.h"
+#	include "SkinFramework/XTPSkinObjectButton.h"
+#	include "SkinFramework/XTPSkinImage.h"
+#	include "SkinFramework/XTPSkinManager.h"
+#	include "SkinFramework/XTPSkinManagerSchema.h"
+#	include "SkinFramework/XTPSkinManagerResource.h"
+#	include "SkinFramework/XTPSkinManagerApiHook.h"
+#	include "SkinFramework/XTPSkinManagerColorFilter.h"
 
-
-#endif //#if !defined(__XTPSKINFRAMEWORKINCLUDES_H__)
+#endif //#if !defined(__XTPSKINFRAMEWORK_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

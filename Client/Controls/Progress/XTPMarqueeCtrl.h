@@ -1,7 +1,6 @@
 // XTPMarqueeCtrl.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMARQUEECTRL_H__)
-#define __XTPMARQUEECTRL_H__
+#	define __XTPMARQUEECTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPWinThemeWrapper;
 
 // ---------------------------------------------------------------------
 // Summary:
@@ -86,7 +89,8 @@ public:
 	// m_wndProgress.SetMarquee(TRUE, 50, 2, 12, piAlpha);
 	// </code>
 	// -----------------------------------------------------------------
-	void SetMarquee(BOOL bMarqueeMode = TRUE, int nInterval = 50, int nGap = 2, int cx = 12, int* piTrans = NULL);
+	void SetMarquee(BOOL bMarqueeMode = TRUE, int nInterval = 50, int nGap = 2, int cx = 12,
+					int* piTrans = NULL);
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -130,7 +134,6 @@ public:
 	void SetColors(COLORREF crBack, COLORREF crChunk);
 
 protected:
-
 	// -----------------------------------------------------------------
 	// Summary:
 	//     This member function is called when the progress bar has been
@@ -172,7 +175,6 @@ protected:
 	// ----------------------------------------------------------------------
 	virtual void OnDrawMarquee(CDC* pDC, CRect rect);
 
-
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPMarqueeCtrl)
 	virtual void PreSubclassWindow();
@@ -189,16 +191,16 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	int                     m_nGap;          // Size in pixels between each chunk in the marquee.
-	int                     m_nPos;          // Current position of the marquee animation.
-	int                     m_cxChunk;       // Size in pixels of each chunk in the marquee.
-	BYTE                    m_chAlpha[5];    // Represents transparency for each chunk in the marquee.
-	BOOL                    m_bWinThemed;    // TRUE if Windows themes are used.
-	BOOL                    m_bIsSubclassed; // TRUE if the progress bar was subclassed.
-	CXTPPaintManagerColor   m_crBack;        // RGB background color for non Windows theme progress.
-	CXTPPaintManagerColor   m_crChunk;       // RGB chunk color for each chunk for non Windows theme progress.
-	CXTPWinThemeWrapper     m_themeWrapper;  // Used for access to the Windows theme API.
+	int m_nGap;							  // Size in pixels between each chunk in the marquee.
+	int m_nPos;							  // Current position of the marquee animation.
+	int m_cxChunk;						  // Size in pixels of each chunk in the marquee.
+	BYTE m_chAlpha[5];					  // Represents transparency for each chunk in the marquee.
+	BOOL m_bWinThemed;					  // TRUE if Windows themes are used.
+	BOOL m_bIsSubclassed;				  // TRUE if the progress bar was subclassed.
+	CXTPPaintManagerColor m_crBack;		  // RGB background color for non Windows theme progress.
+	CXTPPaintManagerColor m_crChunk;	  // RGB chunk color for each chunk for non Windows theme
+										  // progress.
+	CXTPWinThemeWrapper* m_themeProgress; // Used for access to the Windows theme API.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -206,4 +208,5 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMARQUEECTRL_H__)

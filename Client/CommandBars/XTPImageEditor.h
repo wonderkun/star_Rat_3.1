@@ -1,7 +1,6 @@
 // XTPImageEditor.h : interface for the CXTPImageEditorDlg class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTP_IMAGEEDITORDLG_H__)
-#define __XTP_IMAGEEDITORDLG_H__
+#	define __XTP_IMAGEEDITORDLG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManagerIconHandle;
 class CXTPImageEditorDlg;
@@ -42,10 +43,7 @@ enum XTPImageEditorTools
 	xtpToolCircle
 };
 
-
-
-#define XTPCOLOR_ERASE (0xFFFEFF)
-
+#	define XTPCOLOR_ERASE (0xFFFEFF)
 
 //===========================================================================
 // Summary:
@@ -74,7 +72,6 @@ private:
 	BOOL m_bSelected;
 };
 
-
 //===========================================================================
 // Summary:
 //     Internal class used int CXTPImageEditorDlg
@@ -89,12 +86,12 @@ public:
 		{
 			m_bAlpha = bAlpha;
 		}
+
 	public:
 		void CreateEditorBitmap(int nWidth, int nHeight);
 
 	public:
 		BOOL m_bAlpha;
-
 	};
 
 public:
@@ -107,7 +104,10 @@ public:
 	XTPImageEditorTools GetSelectedTool();
 	COLORREF GetSelectedColor();
 	CPoint ClientToPicture(CPoint pt);
-	static void CopyBitmap(CAlphaBitmap* pBitmapCopyTo, CAlphaBitmap* pBitmapCopyFrom, CSize sz, CPoint ptOffset = 0, COLORREF clrTransparentFrom = XTPCOLOR_ERASE, COLORREF clrTransparentTo = XTPCOLOR_ERASE, CDC* pDC = 0);
+	static void AFX_CDECL CopyBitmap(CAlphaBitmap* pBitmapCopyTo, CAlphaBitmap* pBitmapCopyFrom,
+									 CSize sz, CPoint ptOffset = 0,
+									 COLORREF clrTransparentFrom = XTPCOLOR_ERASE,
+									 COLORREF clrTransparentTo = XTPCOLOR_ERASE, CDC* pDC = 0);
 	COLORREF GetPicturePixel(CPoint point);
 	void FixAlphaLayer(CAlphaBitmap* pBitmap, CAlphaBitmap* pPictureBitmap);
 	void Undo();
@@ -118,7 +118,6 @@ public:
 	void Load();
 	void MovePicture(CPoint ptOffset);
 	void OnPictureChanged();
-
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -159,7 +158,6 @@ public:
 class _XTP_EXT_CLASS CXTPImageEditorPreview : public CStatic
 {
 public:
-
 	CXTPImageEditorPreview();
 
 public:
@@ -176,8 +174,6 @@ protected:
 
 //}}AFX_CODEJOCK_PRIVATE
 
-
-
 //===========================================================================
 // Summary
 //     CXTPImageEditorDlg is a CDialog derived class. It represents the dialog
@@ -190,27 +186,10 @@ private:
 	// Summary:
 	//     Child Tools bar.
 	//-----------------------------------------------------------------------
-	class CDlgToolBar : public CToolBar
+	class CDlgToolBar : public CXTPToolBar
 	{
 	public:
-
-		CDlgToolBar()
-		{
-			m_sizeImage = CSize(16, 16);
-			m_sizeButton = CSize(23, 23);
-		}
-
-		LRESULT OnIdleUpdateCmdUI(WPARAM wParam, LPARAM)
-		{
-			if (IsWindowVisible())
-			{
-				CFrameWnd* pParent = (CFrameWnd*)GetParent();
-				if (pParent)
-					OnUpdateCmdUI(pParent, (BOOL)wParam);
-			}
-			return 0L;
-		}
-		DECLARE_MESSAGE_MAP()
+		CDlgToolBar();
 	};
 
 public:
@@ -224,7 +203,6 @@ public:
 	CXTPImageEditorDlg(CWnd* pParent = NULL, BOOL bCommandBarsEditor = FALSE);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the icon to edit
@@ -251,12 +229,12 @@ public:
 	void GetIcon(CXTPImageManagerIconHandle* pHandle);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPImageEditorDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	//}}AFX_VIRTUAL
 
@@ -276,7 +254,7 @@ protected:
 	afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void OnPictureChanged();
@@ -289,7 +267,7 @@ private:
 public:
 	enum
 	{
-		IDD = XTP_IDD_IMAGEEDITOR_DIALOG        // Dialog resource identifier
+		IDD = XTP_IDD_IMAGEEDITOR_DIALOG // Dialog resource identifier
 	};
 
 private:
@@ -297,11 +275,7 @@ private:
 	CButton m_gboxMove;
 
 	CDlgToolBar m_wndToolbarTools;
-	CImageList m_ilToolbarTools;
-
 	CDlgToolBar m_wndToolbarMove;
-	CImageList m_ilToolbarMove;
-
 
 	CXTPImageEditorPicker m_wndSelector[16];
 	CXTPImageEditorPicker m_wndPicker;
@@ -320,4 +294,5 @@ private:
 	friend class CXTPImageEditorPreview;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTP_IMAGEEDITORDLG_H__)

@@ -1,7 +1,6 @@
 // XTPChartSplineAreaSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSPLINEAREASERIESSTYLE_H__)
-#define __XTPCHARTSPLINEAREASERIESSTYLE_H__
+#	define __XTPCHARTSPLINEAREASERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartBorder;
 class CXTPChartFillStyle;
 
-#include "XTPChartAreaSeriesStyle.h"
 //===========================================================================
 // Summary:
 //     This class represents a spline area series style, which is a kind of
@@ -74,20 +74,20 @@ protected:
 	//     series.
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartSplineAreaSeriesStyle);
 	DECLARE_OLECREATE_EX(CXTPChartSplineAreaSeriesStyle)
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-
 };
 
 //===========================================================================
@@ -127,24 +127,25 @@ protected:
 	//     CXTPChartSeriesPointView object abstracts the view of a point in a series.
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a spline area series in the chart.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     A CXTPChartDeviceCommand object, this polymorphic object handles
-	//     the rendering of an element in the chart.Here it handles the drawing
+	//     the rendering of an element in the chart. Here it handles the drawing
 	//     of the spline area series of the chart.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
-
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSPLINEAREASERIESSTYLE_H__)

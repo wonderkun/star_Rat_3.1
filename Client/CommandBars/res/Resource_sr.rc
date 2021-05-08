@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SRL)
 #ifdef _WIN32
 LANGUAGE LANG_SERBIAN, SUBLANG_SERBIAN_LATIN
 #pragma code_page(1250)
@@ -78,7 +77,7 @@ BEGIN
     EDITTEXT        XTP_IDC_EDIT_SHORTCUTKEY,100,103,75,12,ES_AUTOHSCROLL
     PUSHBUTTON      "Dodeli",XTP_IDC_BTN_ASSIGN,179,39,49,14
     PUSHBUTTON      "Ukloni",XTP_IDC_BTN_REMOVE,179,56,49,14
-    PUSHBUTTON      "Vrati sve izvorno",XTP_IDC_BTN_ACCEL_RESET,179,73,49,14
+    PUSHBUTTON      "Resetiraj sve",XTP_IDC_BTN_ACCEL_RESET,179,73,49,14
     LTEXT           "Opis:",XTP_IDC_TXT_DESC_TITLE,4,117,89,8
     LTEXT           "",XTP_IDC_TXT_DESC_OVERVIEW,4,127,224,19,0,
                     WS_EX_STATICEDGE
@@ -154,8 +153,8 @@ BEGIN
     PUSHBUTTON      "Vrati sve izvorno",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
     LTEXT           "Predefinisani izbornik\nPredefinisani programski izbornik",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Izaberi izbornik &sadržaja:",IDC_STATIC,10,92,81,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,95,90,118,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Izaberi izbornik &sadržaja:",IDC_STATIC,10,92,91,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,105,90,108,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Vrati sve izvorno",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
@@ -303,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nPomeri na s&ledeæu grupu opcija"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNova hori&zontalna grupa opcija"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNova &vertikal grupa opcija"
-    XTP_ID_WORKSPACE_CANCEL "Odustani"
+    XTP_ID_WORKSPACE_CANCEL "\nOdustani"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktivni fajlovi"
 END
 
@@ -314,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "Idi na sledeæu stranu\nSledeæa strana"
     XTP_ID_PREVIEW_ZOOMIN   "Uveæaj prikaz pregledne stranice\nUveæanje"
     XTP_ID_PREVIEW_ZOOMOUT  "Smanji prikaz pregledne strane\nUmanjenje"
+    XTP_ID_PREVIEW_ONEPAGE  "Jedna stranica"
+    XTP_ID_PREVIEW_TWOPAGE  "Više stranica"
     XTP_ID_PREVIEW_CLOSE    "Zatvori pregled\nZatvori pregled"
     XTP_IDS_PREVIEW_WHOLEPAGE "Cela strana"
     XTP_IDS_PREVIEW_PAGEWIDTH "Širina strane"
@@ -321,4 +322,4 @@ BEGIN
     XTP_IDS_PREVIEW_PAGEIOFI  "Strana %i od %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SRL)

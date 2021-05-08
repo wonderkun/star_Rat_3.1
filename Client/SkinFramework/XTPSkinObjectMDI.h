@@ -1,7 +1,6 @@
 // XTPSkinObjectMDI.h: interface for the CXTPSkinObjectMDI class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,15 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTMDI_H__)
-#define __XTPSKINOBJECTMDI_H__
+#	define __XTPSKINOBJECTMDI_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
 //{{AFX_CODEJOCK_PRIVATE
 
 class _XTP_EXT_CLASS CXTPSkinObjectMDIClient : public CXTPSkinObjectFrame
@@ -63,4 +63,5 @@ protected:
 };
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTMDI_H__)

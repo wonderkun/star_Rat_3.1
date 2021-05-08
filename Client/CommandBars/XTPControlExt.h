@@ -1,7 +1,6 @@
 // XTPControlExt.h
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLEXT_H__)
-#define __XTPCONTROLEXT_H__
+#	define __XTPCONTROLEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-
-#include "XTPCommandBarsDefines.h"
-#include "XTPControlButton.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabClientWnd;
 class CXTPMarkupUIElement;
@@ -42,7 +39,6 @@ class CXTPMarkupUIElement;
 class _XTP_EXT_CLASS CXTPControlWindowList : public CXTPControlButton
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -106,10 +102,10 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Adds the number and an ampersand "&" before the caption of in item that
@@ -125,14 +121,13 @@ public:
 	static CString AFX_CDECL ConstructCaption(const CString& lpszTitle, int nIndex);
 
 public:
-	static UINT m_nFistMDIChild;        // First MDI child id.
-	static UINT m_nItemCount;           // Maximum allowed items.
-	static BOOL m_bShowRadioButtons;    // TRUE to show Radio buttons.
+	static UINT m_nFistMDIChild;	 // First MDI child id.
+	static UINT m_nItemCount;		 // Maximum allowed items.
+	static BOOL m_bShowRadioButtons; // TRUE to show Radio buttons.
 
 private:
 	DECLARE_XTP_CONTROL(CXTPControlWindowList)
 };
-
 
 //===========================================================================
 // Summary:
@@ -142,7 +137,6 @@ private:
 class _XTP_EXT_CLASS CXTPControlWorkspaceActions : public CXTPControlButton
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -218,7 +212,6 @@ private:
 class _XTP_EXT_CLASS CXTPControlToolbars : public CXTPControlButton
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlToolbars object
@@ -252,10 +245,10 @@ public:
 	//      This is the context menu that appears when a toolbar is right-clicked,
 	//      it lists all the toolbars and allows them to be hidden\displayed.
 	//-----------------------------------------------------------------------
-	static void AFX_CDECL CreateToolbarMenu(CXTPCommandBar* pPopupBar, int nInsert, int nID, BOOL bAddCustomize, BOOL bBeginGroup = FALSE);
+	static void AFX_CDECL CreateToolbarMenu(CXTPCommandBar* pPopupBar, int nInsert, int nID,
+											BOOL bAddCustomize, BOOL bBeginGroup = FALSE);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -319,7 +312,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 private:
 	DECLARE_XTP_CONTROL(CXTPControlToolbars)
@@ -333,7 +327,6 @@ private:
 class _XTP_EXT_CLASS CXTPControlOleItems : public CXTPControlButton
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -397,7 +390,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 private:
 	DECLARE_XTP_CONTROL(CXTPControlOleItems)
@@ -411,7 +405,6 @@ private:
 class _XTP_EXT_CLASS CXTPControlRecentFileList : public CXTPControlButton
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -475,7 +468,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -551,8 +545,7 @@ private:
 // See Also:
 //     CXTPControlSelector::SetItemsActive
 //-----------------------------------------------------------------------
-const UINT XTP_SLN_SELCHANGE    = 0x1006;
-
+const UINT XTP_SLN_SELCHANGE = 0x1006;
 
 //===========================================================================
 // Summary:
@@ -587,7 +580,6 @@ class _XTP_EXT_CLASS CXTPControlSelector : public CXTPControl
 {
 	DECLARE_XTP_CONTROL(CXTPControlSelector)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlSelector object.
@@ -710,7 +702,6 @@ protected:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to set the number of active items.
@@ -747,17 +738,20 @@ protected:
 	virtual void OnDrawItem(CDC* pDC, CRect rcItem, COLORREF clrText);
 
 public:
-	CSize m_szItemsCount;   // Number of items to draw in the control selector's view.  By clicking and dragging the mouse, the number of items drawn can be up to m_szItemsMax.
-	CSize m_szItemsMax;     // Maximum number of items to draw in the control selector.
-	CSize m_szItemsActive;  // Number of items currently "active", this is current number of items that are highlighted as the mouse moves across the control selector.
-	CSize m_szItem;         // Size of the items.
-	CSize m_szResult;       // Number of items that were selected from the control selector.
-	CSize m_szItemsVisible; // Number of items currently visible. Item range is from m_szItemsCount to m_szItemsMax.
+	CSize m_szItemsCount;   // Number of items to draw in the control selector's view.  By clicking
+							// and dragging the mouse, the number of items drawn can be up to
+							// m_szItemsMax.
+	CSize m_szItemsMax;		// Maximum number of items to draw in the control selector.
+	CSize m_szItemsActive;  // Number of items currently "active", this is current number of items
+							// that are highlighted as the mouse moves across the control selector.
+	CSize m_szItem;			// Size of the items.
+	CSize m_szResult;		// Number of items that were selected from the control selector.
+	CSize m_szItemsVisible; // Number of items currently visible. Item range is from m_szItemsCount
+							// to m_szItemsMax.
 
 private:
-	BOOL  m_bLockUpdate;
+	BOOL m_bLockUpdate;
 };
-
 
 //===========================================================================
 // Summary:
@@ -768,14 +762,13 @@ class _XTP_EXT_CLASS CXTPControlLabel : public CXTPControl
 {
 	DECLARE_XTP_CONTROL(CXTPControlLabel)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlLabel Object.
 	//-------------------------------------------------------------------------
 	CXTPControlLabel()
 	{
-		m_dwFlags = xtpFlagSkipFocus | xtpFlagNoMovable | xtpFlagManualUpdate;
+		m_dwFlags	 = xtpFlagSkipFocus | xtpFlagNoMovable | xtpFlagManualUpdate;
 		m_controlType = xtpControlLabel;
 	}
 
@@ -787,7 +780,8 @@ public:
 	//     type CXTPControlLabel can not receive focus so this will always
 	//     return FALSE.
 	//-----------------------------------------------------------------------
-	int GetSelected() const {
+	int GetSelected() const
+	{
 		return FALSE;
 	}
 
@@ -810,7 +804,6 @@ class _XTP_EXT_CLASS CXTPControlCheckBox : public CXTPControlButton
 {
 	DECLARE_XTP_CONTROL(CXTPControlCheckBox)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlCheckBox Object.
@@ -818,7 +811,6 @@ public:
 	CXTPControlCheckBox();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The framework calls this member function when a non-system key
@@ -839,6 +831,19 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL IsFocused() const;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlCheckBox);
+
+	afx_msg long OleGetChecked();
+	afx_msg void OleSetChecked(long);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -850,7 +855,6 @@ class _XTP_EXT_CLASS CXTPControlRadioButton : public CXTPControlButton
 {
 	DECLARE_XTP_CONTROL(CXTPControlRadioButton)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlRadioButton Object.
@@ -858,7 +862,6 @@ public:
 	CXTPControlRadioButton();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The framework calls this member function when a non-system key
@@ -880,14 +883,12 @@ protected:
 	BOOL IsFocused() const;
 };
 
-
-
 //===========================================================================
 // Summary:
 //     CXTPControlMarkupLabel is a CXTPControlLabel derived class.
 //     It can be used to draw markup text
 //===========================================================================
-class _XTP_EXT_CLASS  CXTPControlMarkupLabel : public CXTPControlLabel
+class _XTP_EXT_CLASS CXTPControlMarkupLabel : public CXTPControlLabel
 {
 	DECLARE_XTP_CONTROL(CXTPControlMarkupLabel);
 
@@ -905,11 +906,12 @@ public:
 	~CXTPControlMarkupLabel();
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary: This method is called when the control's caption is changed
 	//-------------------------------------------------------------------------
 	void OnCaptionChanged();
+
+	virtual void OnThemeChanged();
 
 protected:
 	//----------------------------------------------------------------------
@@ -931,7 +933,10 @@ protected:
 	virtual void Draw(CDC* pDC);
 
 protected:
-	CXTPMarkupUIElement* m_pMarkupUIElement;            // Markup element
+	CXTPMarkupUIElement* m_pMarkupUIElement; // Markup element
+
+private:
+	void RebuildMarkup();
 };
 
 //===========================================================================
@@ -942,8 +947,8 @@ protected:
 class _XTP_EXT_CLASS CXTPControlHyperlink : public CXTPControl
 {
 	DECLARE_XTP_CONTROL(CXTPControlHyperlink);
-public:
 
+public:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlHyperlink Object.
@@ -969,7 +974,7 @@ protected:
 	//----------------------------------------------------------------------
 	virtual void Draw(CDC* pDC);
 
-		//----------------------------------------------------------------------
+	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the user clicks the control.
 	// Parameters:
@@ -990,7 +995,7 @@ protected:
 	void OnMouseMove(CPoint point);
 
 protected:
-	HCURSOR m_hCursor;          // Cursor display when item is hovered.
+	HCURSOR m_hCursor; // Cursor display when item is hovered.
 };
 
 //===========================================================================
@@ -1003,7 +1008,6 @@ class _XTP_EXT_CLASS CXTPControlBitmap : public CXTPControlLabel
 	DECLARE_XTP_CONTROL(CXTPControlBitmap);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlBitmap Object.
@@ -1028,7 +1032,7 @@ protected:
 	//     pDC - Pointer to a valid device context.
 	//----------------------------------------------------------------------
 	virtual void Draw(CDC* pDC);
-
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLEXT_H__)

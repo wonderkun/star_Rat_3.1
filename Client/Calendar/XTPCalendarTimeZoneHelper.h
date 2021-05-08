@@ -1,7 +1,6 @@
 // XTPCalendarTimeZoneHelper.h: interfaces for Time Zone Helper classes.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARTIMEZONEHELPER_H__)
-#define _XTPCALENDARTIMEZONEHELPER_H__
+#	define _XTPCALENDARTIMEZONEHELPER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarPtrCollectionT.h"
-#include "XTPCalendarPtrs.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPCalendarTimeZone;
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarTimeZone)
 
 //===========================================================================
 // Summary:
@@ -46,8 +47,9 @@
 //          HOWTO: Change Time Zone Information Using Visual Basic
 //          KB221542, Q221542
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarTimeZone : public CXTPCmdTarget,
-											public TIME_ZONE_INFORMATION
+class _XTP_EXT_CLASS CXTPCalendarTimeZone
+	: public CXTPCmdTarget
+	, public TIME_ZONE_INFORMATION
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarTimeZones;
@@ -55,7 +57,6 @@ class _XTP_EXT_CLASS CXTPCalendarTimeZone : public CXTPCmdTarget,
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Default object constructor.
@@ -100,7 +101,7 @@ public:
 	// Returns:
 	//      A time zone order index value.
 	//-----------------------------------------------------------------------
-	DWORD   GetIndex() const;
+	DWORD GetIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -141,8 +142,33 @@ public:
 
 protected:
 	CString m_strDisplayString; // A time zone display string stored value.
-	DWORD   m_dwIndex;          // A time zone order index stored value.
+	DWORD m_dwIndex;			// A time zone order index stored value.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	BSTR OleGetStandardName();
+	void OleSetStandardName(LPCTSTR bstrStandardName);
+
+	BSTR OleGetDaylightName();
+	void OleSetDaylightName(LPCTSTR bstrDaylightName);
+
+	LPDISPATCH OleGetStandardDate();
+	void OleSetStandardDate(LPDISPATCH pDispStandardDate);
+
+	LPDISPATCH OleGetDaylightDate();
+	void OleSetDaylightDate(LPDISPATCH pDispDaylightDate);
+
+	BSTR OleGetDisplayString();
+
+	BOOL OleIsEqual(LPDISPATCH pDispTZI2);
+
+protected:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarTimeZone);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -241,11 +267,17 @@ public:
 	//-----------------------------------------------------------------------
 	struct REGISTRY_TIMEZONE_INFORMATION
 	{
-		LONG       Bias;         // Current bias for local time translation on this computer, in minutes.
-		LONG       StandardBias; // Bias value to be used during local time translations that occur during standard time.
-		LONG       DaylightBias; // Bias value to be used during local time translations that occur during daylight saving time.
-		SYSTEMTIME StandardDate; // A SYSTEMTIME structure that contains a date and local time when the transition from daylight saving time to standard time occurs on this operating system.
-		SYSTEMTIME DaylightDate; // A SYSTEMTIME structure that contains a date and local time when the transition from standard time to daylight saving time occurs on this operating system.
+		LONG Bias;		   // Current bias for local time translation on this computer, in minutes.
+		LONG StandardBias; // Bias value to be used during local time translations that occur during
+						   // standard time.
+		LONG DaylightBias; // Bias value to be used during local time translations that occur during
+						   // daylight saving time.
+		SYSTEMTIME StandardDate; // A SYSTEMTIME structure that contains a date and local time when
+								 // the transition from daylight saving time to standard time occurs
+								 // on this operating system.
+		SYSTEMTIME DaylightDate; // A SYSTEMTIME structure that contains a date and local time when
+								 // the transition from standard time to daylight saving time occurs
+								 // on this operating system.
 	};
 
 	//-----------------------------------------------------------------------
@@ -259,7 +291,7 @@ public:
 	//      TRUE - if successful, otherwise - FALSE.
 	// See Also: GetRegBSTR()
 	//-----------------------------------------------------------------------
-	static BOOL GetRegStr(HKEY hKey, LPCTSTR pcszValueName, CString& rstrValue);
+	static BOOL AFX_CDECL GetRegStr(HKEY hKey, LPCTSTR pcszValueName, CString& rstrValue);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -276,7 +308,7 @@ public:
 	//      TRUE - if successful, otherwise - FALSE.
 	// See Also: GetRegStr()
 	//-----------------------------------------------------------------------
-	static BOOL GetRegBSTR(HKEY hKey, LPCWSTR pcszValueNameW, BSTR& rbstrValue);
+	static BOOL AFX_CDECL GetRegBSTR(HKEY hKey, LPCWSTR pcszValueNameW, BSTR& rbstrValue);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -288,7 +320,7 @@ public:
 	// Returns:
 	//      TRUE - if successful, otherwise - FALSE.
 	//-----------------------------------------------------------------------
-	static BOOL GetRegDWORD(HKEY hKey, LPCTSTR pcszValueName, DWORD& rdwValue);
+	static BOOL AFX_CDECL GetRegDWORD(HKEY hKey, LPCTSTR pcszValueName, DWORD& rdwValue);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -302,26 +334,61 @@ public:
 	// Returns:
 	//      TRUE - if successful, otherwise - FALSE.
 	//-----------------------------------------------------------------------
-	static BOOL GetRegTZI(HKEY hKey, LPCTSTR pcszValueName, REGISTRY_TIMEZONE_INFORMATION& rRegTZI);
+	static BOOL AFX_CDECL GetRegTZI(HKEY hKey, LPCTSTR pcszValueName,
+									REGISTRY_TIMEZONE_INFORMATION& rRegTZI);
 
 protected:
 	//--------------------------------------------------------------
-	CXTPCalendarPtrCollectionT<CXTPCalendarTimeZone> m_arTZInfo; // Collection to store CXTPCalendarTimeZone object pointers;
+	CXTPCalendarPtrCollectionT<CXTPCalendarTimeZone> m_arTZInfo; // Collection to store
+																 // CXTPCalendarTimeZone object
+																 // pointers;
 
 private:
-	int CompareTZI(const CXTPCalendarTimeZone* pTZI1,
-					const CXTPCalendarTimeZone* pTZI2,
-					BOOL bUseIndex) const;
+	int CompareTZI(const CXTPCalendarTimeZone* pTZI1, const CXTPCalendarTimeZone* pTZI2,
+				   BOOL bUseIndex) const;
 
 	void ParseDisplayStr(LPCTSTR str, int& rnBias, CString& rstrPlace) const;
 	int GetDigit(TCHAR ch) const;
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	int OleGetItemCount();
+	LPDISPATCH OleGetItem(long nIndex);
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarTimeZones);
+
+	DECLARE_ENUM_VARIANT(CXTPCalendarTimeZones);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //================================================================
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+class _XTP_EXT_CLASS CXTPCalendarSystemTime
+	: public CXTPCmdTarget
+	, public SYSTEMTIME
+{
+public:
+	CXTPCalendarSystemTime(const SYSTEMTIME* pTime = NULL);
+	virtual ~CXTPCalendarSystemTime();
 
+protected:
+	DECLARE_DYNAMIC(CXTPCalendarSystemTime)
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarSystemTime);
+};
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 ////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARTIMEZONEHELPER_H__)

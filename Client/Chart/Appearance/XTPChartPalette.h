@@ -1,7 +1,6 @@
 // XTPChartPalette.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPALETTE_H__)
-#define __XTPCHARTPALETTE_H__
+#	define __XTPCHARTPALETTE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../XTPChartElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -109,7 +107,6 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPChartPaletteEntries& GetEntries();
 
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -123,10 +120,9 @@ public:
 	//-----------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartPalette);
@@ -139,20 +135,20 @@ public:
 	afx_msg void OleAddEntry(OLE_COLOR clr, OLE_COLOR clr2);
 	afx_msg int OleGetCount();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	CXTPChartPaletteEntries m_arrEntries;    //The palette entry collection object.
+	CXTPChartPaletteEntries m_arrEntries; // The palette entry collection object.
 };
 
-BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pszPropName, CXTPChartColor& clrValue);
-
-AFX_INLINE int CXTPChartPalette::GetCount() const {
+AFX_INLINE int CXTPChartPalette::GetCount() const
+{
 	return (int)m_arrEntries.GetSize();
 }
-AFX_INLINE CXTPChartPaletteEntries& CXTPChartPalette::GetEntries() {
+AFX_INLINE CXTPChartPaletteEntries& CXTPChartPalette::GetEntries()
+{
 	return m_arrEntries;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPALETTE_H__)

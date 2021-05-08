@@ -1,7 +1,6 @@
 // XTPFlowGraphMessages.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHMESSAGES_H__)
-#define __XTPFLOWGRAPHMESSAGES_H__
+#	define __XTPFLOWGRAPHMESSAGES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphNode;
 
@@ -35,10 +36,10 @@ class CXTPFlowGraphNode;
 // ---------------------------------
 struct XTP_NM_FLOWGRAPH_ENDLABELEDIT
 {
-	NMHDR hdr;                  // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
-	CXTPFlowGraphElement* pItem;   // Item that caption is will be changed
-	CString strNewString;       // New Caption of the item
+	CXTPFlowGraphElement* pItem; // Item that caption is will be changed
+	CString strNewString;		 // New Caption of the item
 };
 
 // ---------------------------------------------------------------------
@@ -49,13 +50,11 @@ struct XTP_NM_FLOWGRAPH_ENDLABELEDIT
 // ---------------------------------------------------------------------
 const UINT XTP_FGN_ENDLABELEDIT = (NM_FIRST - 61);
 
-
 // -----------------------------------------------------------
 // Summary:
 //     This notification is sent when a page is set to active.
 // -----------------------------------------------------------
 const UINT XTP_FGN_ACTIVEPAGECHANGED = (NM_FIRST - 62);
-
 
 // -----------------------------
 // Summary:
@@ -63,17 +62,16 @@ const UINT XTP_FGN_ACTIVEPAGECHANGED = (NM_FIRST - 62);
 // -----------------------------
 struct XTP_NM_FLOWGRAPH_CONNECTIONCHANGED
 {
-	NMHDR hdr;                  // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
-	CXTPFlowGraphConnection* pConnection;  // Connection
-	int nAction; // 0 - Added, 1 - Removed;
+	CXTPFlowGraphConnection* pConnection; // Connection
+	int nAction;						  // 0 - Added, 1 - Removed;
 };
-
 
 // ----------------------------------------------------------------------
 // Summary:
 //     This notification is sent when a connection is added or removed. A
-//     XTP_FGN_CONNECTIONCHANGED structure is sent containing information
+//     XTP_NM_FLOWGRAPH_CONNECTIONCHANGED structure is sent containing information
 //     about the connection that changed.
 // ----------------------------------------------------------------------
 const UINT XTP_FGN_CONNECTIONCHANGED = (NM_FIRST - 63);
@@ -91,16 +89,15 @@ const UINT XTP_FGN_SELECTIONCHANGED = (NM_FIRST - 64);
 // -------------------------------------------------------------------
 const UINT XTP_FGN_PAGEZOOMLEVELCHANGED = (NM_FIRST - 65);
 
-
 // -----------------------
 // Summary:
 //     Information about the node that has changed.
 // -----------------------
 struct XTP_NM_FLOWGRAPH_NODECHANGED
 {
-	NMHDR hdr;                  // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
-	CXTPFlowGraphNode* pNode;  // Node
+	CXTPFlowGraphNode* pNode; // Node
 };
 
 // ----------------------------------------------------------------------
@@ -120,16 +117,15 @@ const UINT XTP_FGN_NODELOCATIONCHANGED = (NM_FIRST - 66);
 // ----------------------------------------------------------------------
 const UINT XTP_FGN_PAGESCROLLOFFSETCHANGED = (NM_FIRST - 67);
 
-
 // -----------------------------------
 // Information about the connection that is currently changing.
 // -----------------------------------
 struct XTP_NM_FLOWGRAPH_CONNECTIONCHANGING
 {
-	NMHDR hdr;                  // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
-	CXTPFlowGraphConnection* pConnection;  // Connection
-	CXTPFlowGraphConnectionPoint* pInputConnectionPoint;  // Connection Point
+	CXTPFlowGraphConnection* pConnection;				 // Connection
+	CXTPFlowGraphConnectionPoint* pInputConnectionPoint; // Connection Point
 };
 // --------------------------------------------------------------------
 // Summary:
@@ -141,5 +137,5 @@ struct XTP_NM_FLOWGRAPH_CONNECTIONCHANGING
 // --------------------------------------------------------------------
 const UINT XTP_FGN_CONNECTIONCHANGING = (NM_FIRST - 68);
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHMESSAGES_H__)

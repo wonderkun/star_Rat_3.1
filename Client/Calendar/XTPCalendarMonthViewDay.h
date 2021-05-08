@@ -1,7 +1,6 @@
 // XTPCalendarMonthViewDay.h: interface for the CXTPCalendarMonthViewDay class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARMONTHVIEWDAY_H__)
-#define _XTPCALENDARMONTHVIEWDAY_H__
+#	define _XTPCALENDARMONTHVIEWDAY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarMonthViewEvent.h"
-#include "XTPCalendarViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 class CXTPCalendarMonthView;
@@ -37,7 +35,7 @@ class CXTPCalendarMonthView;
 //===========================================================================
 // Summary: Forward definition of the structure.
 //===========================================================================
-struct XTP_CALENDAR_HITTESTINFO_MONTH_VIEW;
+struct XTP_CALENDAR_HITTESTINFO;
 
 //===========================================================================
 // Summary:
@@ -50,21 +48,18 @@ struct XTP_CALENDAR_HITTESTINFO_MONTH_VIEW;
 //
 // See Also: CXTPCalendarMonthViewDay
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarMonthViewGroup : public CXTPCalendarViewGroupT<
-										CXTPCalendarMonthViewDay,
-										CXTPCalendarMonthViewEvent,
-										XTP_CALENDAR_HITTESTINFO_MONTH_VIEW,
-										CXTPCalendarMonthViewGroup>
+class _XTP_EXT_CLASS CXTPCalendarMonthViewGroup
+	: public CXTPCalendarViewGroupT<CXTPCalendarMonthViewDay, CXTPCalendarMonthViewEvent,
+									CXTPCalendarMonthViewGroup>
 {
 public:
 	//------------------------------------------------------------------------
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewGroupT< CXTPCalendarMonthViewDay,
-									CXTPCalendarMonthViewEvent,
-									XTP_CALENDAR_HITTESTINFO_MONTH_VIEW,
-									CXTPCalendarMonthViewGroup > TBase;
+	typedef CXTPCalendarViewGroupT<CXTPCalendarMonthViewDay, CXTPCalendarMonthViewEvent,
+								   CXTPCalendarMonthViewGroup>
+		TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -97,10 +92,10 @@ public:
 	//     This member function returns a rectangle calculated as a bottom
 	//     cell rect of the day area where user currently holds a mouse on.
 	//-----------------------------------------------------------------------
-	virtual CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo);
+	virtual CRect GetTooltipRect(const CPoint& ptHit,
+								 const XTP_CALENDAR_HITTESTINFO& hitInfo) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain a pointer to itself.
@@ -114,22 +109,20 @@ protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill a
-	//     XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pHitTest - Pointer to XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     pHitTest - Pointer to XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Call this member function to gather hit-test information.
-	// See Also: XTP_CALENDAR_HITTESTINFO_MONTH_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_MONTH_VIEW* pHitTest);
-
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 };
 
 AFX_INLINE CXTPCalendarMonthViewGroup* CXTPCalendarMonthViewGroup::GetPThis()
 {
 	return this;
 }
-
 
 //===========================================================================
 // Summary:
@@ -145,26 +138,22 @@ AFX_INLINE CXTPCalendarMonthViewGroup* CXTPCalendarMonthViewGroup::GetPThis()
 //
 // See Also: CXTPCalendarViewDay, CXTPCalendarViewDayT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarMonthViewDay : public CXTPCalendarViewDayT<
-										CXTPCalendarMonthView,
-										CXTPCalendarMonthViewGroup,
-										XTP_CALENDAR_HITTESTINFO_MONTH_VIEW,
-										CXTPCalendarMonthViewDay >
+class _XTP_EXT_CLASS CXTPCalendarMonthViewDay
+	: public CXTPCalendarViewDayT<CXTPCalendarMonthView, CXTPCalendarMonthViewGroup,
+								  XTP_CALENDAR_HITTESTINFO, CXTPCalendarMonthViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarMonthViewEvent;
 	DECLARE_DYNAMIC(CXTPCalendarMonthViewDay)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Summary:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewDayT<   CXTPCalendarMonthView,
-									CXTPCalendarMonthViewGroup,
-									XTP_CALENDAR_HITTESTINFO_MONTH_VIEW,
-									CXTPCalendarMonthViewDay >  TBase;
+	typedef CXTPCalendarViewDayT<CXTPCalendarMonthView, CXTPCalendarMonthViewGroup,
+								 XTP_CALENDAR_HITTESTINFO, CXTPCalendarMonthViewDay>
+		TBase;
 
 	// --------------------------------------------------------------------
 	// Summary:
@@ -177,7 +166,8 @@ public:
 	// See Also:
 	//     ~CXTPCalendarMonthViewDay()
 	// --------------------------------------------------------------------
-	CXTPCalendarMonthViewDay(CXTPCalendarMonthView* pMonthView, int nWeekIndex, int nWeekDayIndex);
+	CXTPCalendarMonthViewDay(const CXTPCalendarMonthView* pMonthView, int nWeekIndex,
+							 int nWeekDayIndex);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -206,7 +196,7 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-//     This member function is used to draw the view contents using
+	//     This member function is used to draw the view contents using
 	//     the specified device context.
 	// Parameters:
 	//     pDC - Pointer to a valid device context.
@@ -219,30 +209,30 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill a
-	//     XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pInfo - Pointer to XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     pInfo - Pointer to XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Call this member function to gather hit-test information.
-	// See Also: XTP_CALENDAR_HITTESTINFO_MONTH_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_MONTH_VIEW* pInfo);
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to determine which view item,
 	//     if any, is at the specified position index, and returns additional
-	//     info in the _THitTest template object.
+	//     info in the XTP_CALENDAR_HITTESTINFO template object.
 	// Parameters:
 	//     pt       - A CPoint that contains the coordinates of the point test.
-	//     pHitTest - A pointer to a _THitTest structure.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Implements standard functionality for the HitTestEx method.
 	// Returns:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_MONTH_VIEW* pHitTest);
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -268,8 +258,9 @@ public:
 	//-----------------------------------------------------------------------
 	CRect GetDayEventsRect() const;
 
-protected:
+	virtual void SetSelected();
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to processes left mouse button events.
@@ -312,14 +303,16 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarMonthViewDay* GetPThis();
 
-	int m_nWeekIndex;    // Week identifier.
+	int m_nWeekIndex;	// Week identifier.
 	int m_nWeekDayIndex; // Day identifier.
 };
 
 //===========================================================================
 
-AFX_INLINE CXTPCalendarMonthViewDay* CXTPCalendarMonthViewDay::GetPThis() {
+AFX_INLINE CXTPCalendarMonthViewDay* CXTPCalendarMonthViewDay::GetPThis()
+{
 	return this;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARMONTHVIEWDAY_H__)

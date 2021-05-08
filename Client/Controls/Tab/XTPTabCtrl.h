@@ -1,7 +1,6 @@
 // XTPTabCtrl.h interface for the CXTPTabCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABCTRL_H__)
-#define __XTPTABCTRL_H__
+#	define __XTPTABCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabCtrlButtons;
 
-DECLATE_TABCTRLEX_BASE(CXTPTabCtrlBase, CTabCtrl, CXTPTabExBase)
+DECLARE_TABCTRLEX_BASE(CXTPTabCtrlBase, CTabCtrl, CXTPTabExBase)
 
 //===========================================================================
 // Summary:
@@ -57,7 +58,6 @@ public:
 	virtual ~CXTPTabCtrl();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to enable or disable tooltip usage.
@@ -70,17 +70,17 @@ public:
 	virtual BOOL EnableToolTips(BOOL bEnable);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPTabCtrl)
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPTabCtrl)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTABCTRL_H__)

@@ -1,7 +1,6 @@
 // XTPPropertyGridItemColor.h interface for the CXTPPropertyGridItemColor class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEMCOLOR_H__)
-#define __XTPPROPERTYGRIDITEMCOLOR_H__
+#	define __XTPPROPERTYGRIDITEMCOLOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -38,9 +37,9 @@
 //-----------------------------------------------------------------------
 enum XTPPropertyGridItemColorEditor
 {
-	xtpGridItemColorPopup,            // Color popup editor
-	xtpGridItemColorStandardDialog,   // Standard color dialog editor
-	xtpGridItemColorExtendedDialog    // Extended color Editor editor
+	xtpGridItemColorPopup,			// Color popup editor
+	xtpGridItemColorStandardDialog, // Standard color dialog editor
+	xtpGridItemColorExtendedDialog  // Extended color Editor editor
 };
 
 //===========================================================================
@@ -51,7 +50,6 @@ enum XTPPropertyGridItemColorEditor
 class _XTP_EXT_CLASS CXTPPropertyGridItemColor : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemColor object.
@@ -89,7 +87,11 @@ public:
 	// See Also: BindToColor
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemColor(LPCTSTR strCaption, COLORREF clr = 0, COLORREF* pBindColor = NULL);
-	CXTPPropertyGridItemColor(UINT nID, COLORREF clr = 0, COLORREF* pBindColor = NULL);  // <COMBINE CXTPPropertyGridItemColor::CXTPPropertyGridItemColor@LPCTSTR@COLORREF@COLORREF*>
+	CXTPPropertyGridItemColor(
+		UINT nID, COLORREF clr = 0,
+		COLORREF* pBindColor =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemColor::CXTPPropertyGridItemColor@LPCTSTR@COLORREF@COLORREF*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -98,7 +100,6 @@ public:
 	virtual ~CXTPPropertyGridItemColor();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change the item's value.
@@ -163,7 +164,6 @@ public:
 	virtual void BindToColor(COLORREF* pBindColor);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to set editor type for color item
 	// Parameters:
@@ -185,7 +185,6 @@ public:
 	XTPPropertyGridItemColorEditor GetEditorStyle();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when an item is drawn. Override this function if
@@ -248,22 +247,36 @@ protected:
 	virtual void OnBeforeInsert();
 
 protected:
+	COLORREF m_clrValue;	// Color value of the item.
+	COLORREF* m_pBindColor; // Pointer to variable bound to this item, this is the color of the
+							// bound item.
 
-	COLORREF m_clrValue;        // Color value of the item.
-	COLORREF* m_pBindColor;     // Pointer to variable bound to this item, this is the color of the bound item.
-
-
-	XTPPropertyGridItemColorEditor m_colorEditor;           // Editor type of color item
+	XTPPropertyGridItemColorEditor m_colorEditor; // Editor type of color item
 
 private:
 	DECLARE_DYNAMIC(CXTPPropertyGridItemColor)
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemColor)
+
+	void BindDispatch();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE COLORREF CXTPPropertyGridItemColor::GetColor() const {
+AFX_INLINE COLORREF CXTPPropertyGridItemColor::GetColor() const
+{
 	return m_clrValue;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPPROPERTYGRIDITEMCOLOR_H__)

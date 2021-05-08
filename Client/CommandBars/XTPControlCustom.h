@@ -1,7 +1,6 @@
 // XTPControlCustom.h : interface for the CXTPControlCustom class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLCUSTOM_H__)
-#define __XTPCONTROLCUSTOM_H__
+#	define __XTPCONTROLCUSTOM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Common/XTPHookManager.h"
-#include "XTPControlButton.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCommandBars;
 
@@ -37,7 +35,8 @@ class CXTPCommandBars;
 //     Vertical options enumerator.
 // Example:
 // <code>
-// CXTPControlCustom* pControl = (CXTPControlCustom*)pToolBar->GetControls()->Add(xtpControlCustom, ID_VIEW_LOGO);
+// CXTPControlCustom* pControl = (CXTPControlCustom*)pToolBar->GetControls()->Add(xtpControlCustom,
+// ID_VIEW_LOGO);
 // pControl->SetVerticalPositionOption(xtpVerticalShow);
 // </code>
 // See Also: CXTPControlCustom::SetVerticalPositionOption
@@ -51,13 +50,14 @@ enum XTPControlCustomVerticalOptions
 	xtpVerticalButton // To show control as button.
 };
 
-
 //===========================================================================
 // Summary:
 //     CXTPControlCustom is a CXTPControlButton derived class. It represents
 //     the control with some child window.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlCustom : public CXTPControlButton, public CXTPHookManagerHookAble
+class _XTP_EXT_CLASS CXTPControlCustom
+	: public CXTPControlButton
+	, public CXTPHookManagerHookAble
 {
 public:
 	//-----------------------------------------------------------------------
@@ -84,7 +84,6 @@ public:
 	static CXTPControlCustom* AFX_CDECL CreateControlCustom(CWnd* pWndChild);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to attach the window to the control.
@@ -142,9 +141,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void OnEnabledChanged();
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to set the bounding rectangle of the control.
@@ -278,7 +275,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -300,24 +298,40 @@ protected:
 	//-------------------------------------------------------------------------
 	virtual void OnRemoved();
 
-
 private:
 	CWnd* FindChildWindow(CXTPCommandBars* pCommandBars, UINT nID);
 	void ShowHideChildControl();
 
 protected:
-	HWND m_hwndControl;                                 // The child window.
-	CRect m_rcBorders;                                  // Borders.
-	BOOL  m_bControlVisible;                            // TRUE if child window is visible.
-	CSize m_szControl;                                  // Size of the control.
-	XTPControlCustomVerticalOptions m_verticalOptions;  // Vertical options.
-	int   m_nControlID;                                 // Id of the custom control
+	HWND m_hwndControl;								   // The child window.
+	CRect m_rcBorders;								   // Borders.
+	BOOL m_bControlVisible;							   // TRUE if child window is visible.
+	CSize m_szControl;								   // Size of the control.
+	XTPControlCustomVerticalOptions m_verticalOptions; // Vertical options.
+	int m_nControlID;								   // Id of the custom control
 
 public:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	afx_msg long OleGetHandle();
+	afx_msg void OleSetHandle(long nHandle);
+
+	enum
+	{
+		dispidHandle = 50L,
+	};
+	DECLARE_OLETYPELIB_EX(CXTPControlCustom);
+
+	void OleSetSize(int, int);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	DECLARE_XTP_CONTROL(CXTPControlCustom)
 };
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLCUSTOM_H__)

@@ -1,7 +1,6 @@
 // XTPTrackHeader.h: interface for the CXTPTrackHeader class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRACKEADER_H__)
-#define __XTPTRACKEADER_H__
+#	define __XTPTRACKEADER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "../XTPReportHeader.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -50,6 +49,7 @@ public:
 	//     CXTPTrackHeader default destructor
 	//-----------------------------------------------------------------------
 	~CXTPTrackHeader();
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -102,7 +102,6 @@ public:
 	//-----------------------------------------------------------------------
 	void StartDragSlider(BOOL bResize);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This function is called when the marker is about to drag
@@ -144,15 +143,15 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnMoveScrollBar(CPoint pt, BOOL bResize);
 
-
 protected:
-	CPoint m_ptStartDrag;   //The drag start point.
-	int m_nOldWorkAreaMin;  //The old work area minimum value.
-	int m_nOldWorkAreaMax;  //The old work area maximum value.
-	int m_nOldViewPortMin;  //The old view port minimum value.
-	int m_nOldViewPortMax;  //The old view port maximum value.
+	CPoint m_ptStartDrag;  // The drag start point.
+	int m_nOldWorkAreaMin; // The old work area minimum value.
+	int m_nOldWorkAreaMax; // The old work area maximum value.
+	int m_nOldViewPortMin; // The old view port minimum value.
+	int m_nOldViewPortMax; // The old view port maximum value.
 
-	int m_nOldMarkerPos;    //The old marker position.
+	int m_nOldMarkerPos; // The old marker position.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTRACKEADER_H__)

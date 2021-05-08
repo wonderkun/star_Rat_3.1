@@ -1,7 +1,6 @@
 // XTPChartScatterLineSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSCATTERLINESERIESSTYLE_H__)
-#define __XTPCHARTSCATTERLINESERIESSTYLE_H__
+#	define __XTPCHARTSCATTERLINESERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartLineStyle;
-
-#include "XTPChartLineSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -59,7 +58,6 @@ public:
 	//-------------------------------------------------------------------------
 	virtual ~CXTPChartScatterLineSeriesStyle();
 
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -72,20 +70,19 @@ protected:
 	//     CXTPChartSeriesView.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartScatterLineSeriesStyle);
 	DECLARE_OLECREATE_EX(CXTPChartScatterLineSeriesStyle)
 //}}AFX_CODEJOCK_PRIVATE
-#endif
-
-
+#	endif
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSCATTERLINESERIESSTYLE_H__)

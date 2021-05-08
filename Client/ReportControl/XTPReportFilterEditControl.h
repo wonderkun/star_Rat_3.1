@@ -1,7 +1,6 @@
 // XTPReportFilterEditControl.h: interface for the CXTPReportFilterEditControl class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTFILTEREDITCONTROL_H__)
-#define __XTPREPORTFILTEREDITCONTROL_H__
+#	define __XTPREPORTFILTEREDITCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -52,7 +51,6 @@
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportFilterEditControl : public CEdit
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -144,21 +142,20 @@ public:
 	CString GetHint() const;
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPReportFilterEditControl)
 	afx_msg BOOL OnChange();
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPReportControl* m_pReportCtrl;   // Pointer to the main report control.
-	CString             m_strHint;      // Grayed-out text displayed in the edit control to show a helpful description like "Enter filter text here".
+	CXTPReportControl* m_pReportCtrl; // Pointer to the main report control.
+	CString m_strHint; // Grayed-out text displayed in the edit control to show a helpful
+					   // description like "Enter filter text here".
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTFILTEREDITCONTROL_H__)

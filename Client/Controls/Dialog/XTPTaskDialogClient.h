@@ -1,7 +1,6 @@
 // XTPTaskDialogClient.h: interface for the CXTPTaskDialogClient class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKCLIENTWND_H__)
-#define __XTPTASKCLIENTWND_H__
+#	define __XTPTASKCLIENTWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskDialogFrame;
 class CXTPImageManagerIcon;
@@ -34,6 +35,7 @@ class CXTPMarkupContext;
 class CXTPMarkupObject;
 class CXTPMarkupRoutedEventArgs;
 class CXTPButton;
+class CXTPImageManager;
 
 //===========================================================================
 // CXTPTaskDialogClient window
@@ -48,22 +50,25 @@ public:
 		~CStringMarkup();
 
 	public:
-		BOOL IsEmpty() const {
+		BOOL IsEmpty() const
+		{
 			return m_strCaption.IsEmpty();
 		}
 
 		void SetCaption(const CString& strCaption);
-		operator const CString& () const {
+		operator const CString&() const
+		{
 			return m_strCaption;
 		}
 		void SetFinalRect(const CRect& rcFinalRect);
+
 	public:
 		CString m_strCaption;
 		CXTPMarkupUIElement* m_pUIElement;
 		CXTPTaskDialogClient* m_pClient;
 		CRect m_rcFinalRect;
-
 	};
+
 public:
 	CXTPTaskDialogClient();
 	virtual ~CXTPTaskDialogClient();
@@ -90,73 +95,79 @@ public:
 	CXTPMarkupContext* GetMarkupContext() const;
 
 protected:
+	int m_nMaxClientWidth; // Maximum of client width
+	int m_nMinClientWidth; // Minimum of client width
+	int m_nPadding;		   // Padding of elements
+	BOOL m_bExpanded;	  // TRUE if Expanded area is is expanded
+	BOOL m_bVerification;  // TRUE if verification button is checked
+	BOOL m_bUseSysIcons;   // TRUE to use system icons
+	BOOL m_bThemeReady;	// TRUE if System theme used
+	HICON m_hIconFooter;   // Footer icon
+	HICON m_hIconMain;	 // Main instruction icon
 
-	int                                     m_nMaxClientWidth;  // Maximum of client width
-	int                                     m_nMinClientWidth;  // Minimum of client width
-	int                                     m_nPadding;         // Padding of elements
-	BOOL                                    m_bExpanded;        // TRUE if Expanded area is is expanded
-	BOOL                                    m_bVerification;    // TRUE if verification button is checked
-	BOOL                                    m_bUseSysIcons;     // TRUE to use system icons
-	BOOL                                    m_bThemeReady;      // TRUE if System theme used
-	HICON                                   m_hIconFooter;      // Footer icon
-	HICON                                   m_hIconMain;        // Main instruction icon
+	CXTPImageManager* m_pImageManager;
+	CXTPImageManagerIcon* m_pIconLinkGlyph; // Link glyph
+	CSize m_szIconLinkGlyph;
 
-	CXTPImageManagerIcon*                   m_pIconLinkGlyph;   // Link glyph
+	COLORREF m_crContent;	 // Content background color
+	COLORREF m_crContentText; // Content text color
+	COLORREF m_crFooter;	  // Footer color
+	COLORREF m_crFooterText;  // Footer text color
+	COLORREF m_crMainText;	// Main instruction text color
+	COLORREF m_cr3DLight;	 // 3D Ligh color
+	COLORREF m_cr3DShadow;	// 3D Shadow color
+	COLORREF m_cr3DHighLight; // 3D HighLight color
 
-	COLORREF                                m_crContent;        // Content background color
-	COLORREF                                m_crContentText;    // Content text color
-	COLORREF                                m_crFooter;         // Footer color
-	COLORREF                                m_crFooterText;     // Footer text color
-	COLORREF                                m_crMainText;       // Main instruction text color
-	COLORREF                                m_cr3DLight;        // 3D Ligh color
-	COLORREF                                m_cr3DShadow;       // 3D Shadow color
-	COLORREF                                m_cr3DHighLight;    // 3D HighLight color
-	CFont                                   m_font;             // Content font
-	CFont                                   m_fontLarge;        // Main instruction font
-	CPoint                                  m_ptMargin;         // Margin of elements
-	CPoint                                  m_ptPadding;        // Padding of elements
-	CPoint                                  m_ptBtnSpacing;     // Space between buttons
-	CPoint                                  m_ptBorder;         // Border space around dialog
-	CSize                                   m_sizeIconFooter;   // Size of footer icon
-	CSize                                   m_sizeIconMain;     // Size of main icon
-	CSize                                   m_sizeCommandButton;    // Size of push buttons
-	CRect                                   m_rcMainInstruction;    // Position of Main Instruction
-	CRect                                   m_rcContent;            // Position of Content Text
-	CRect                                   m_rcCommandButtons;     // Position of Push buttons
-	CRect                                   m_rcExpandedInformation;    // Expanded Information
-	CRect                                   m_rcFooter;             // Position of Footer
-	CRect                                   m_rcRadioButtons;       // Position of Radio buttons
-	CRect                                   m_rcLinkButtons;        // Position of Link Buttons
-	CStringMarkup                           m_strMainInstruction;   // Main instruction text
-	CStringMarkup                           m_strContent;           // Content text
-	CStringMarkup                           m_strFooter;            // Footer text
-	CStringMarkup                           m_strVerificationText;  // Verification text
-	CStringMarkup                           m_strExpandedInformation;   // Expanded text
-	CStringMarkup                           m_strExpandedControlText;   // Text for expanded button
-	CStringMarkup                           m_strCollapsedControlText;  // Text for collapsed button
-	TASKDIALOGCONFIG*                       m_pConfig;                  // Pointer to TASKDIALOGCONFIG
-	CXTPMarkupContext*                      m_pMarkupContext;           // Markup context
+	CXTPFont m_xtpFont;		 // Content font
+	CXTPFont m_xtpFontLarge; // Main instruction font
 
-	CButton*                                m_pBtnVerify;           // Verify button pointer
-	CXTPButton*                             m_pBtnExpando;          // Expando button pointer
-	CXTPTaskDialogLinkCtrl                  m_wndContent;           // Content window
-	CXTPTaskDialogLinkCtrl                  m_wndExpandedInformation;       // ExpandedInformation window
-	CXTPTaskDialogLinkCtrl                  m_wndFooter;            // Footer window
-	CXTPTaskDialogProgressCtrl              m_wndProgressBar;       // ProgressBar window
-	CEdit                                   m_wndInputBox;          // InputBox window
-	CArray<CButton*,CButton*>               m_arrCommandButtons;    // Array of push buttons
-	CArray<CButton*,CButton*>               m_arrLinkButtons;       // Array of link buttons
-	CArray<CButton*,CButton*>               m_arrRadioButtons;      // Array of radio buttons
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_font, m_xtpFont, GetFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontLarge, m_xtpFontLarge, GetLargeFontHandle);
 
-	int                                     m_nSelRadioButtonID; // ID of the radio button that was selected when the task dialog was closed.
-	CMap<CWnd*,CWnd*,SIZE,SIZE&> m_mapWndSize;          // Size map
-	BOOL                                    m_bMessageBoxStyle;         // TRUE to use extended style
-	BOOL                                    m_bEnableMarkup;            // TRUE to enable markup
-	BOOL                                    m_bShowInputBox;            // TRUE to show input box
-	CString                                 m_strInputBoxText;          // Input box text.
+	CPoint m_ptMargin;						 // Margin of elements
+	CPoint m_ptPadding;						 // Padding of elements
+	CPoint m_ptBtnSpacing;					 // Space between buttons
+	CPoint m_ptBorder;						 // Border space around dialog
+	CSize m_sizeIconFooter;					 // Size of footer icon
+	CSize m_sizeIconMain;					 // Size of main icon
+	CSize m_sizeCommandButton;				 // Size of push buttons
+	CRect m_rcMainInstruction;				 // Position of Main Instruction
+	CRect m_rcContent;						 // Position of Content Text
+	CRect m_rcCommandButtons;				 // Position of Push buttons
+	CRect m_rcExpandedInformation;			 // Expanded Information
+	CRect m_rcFooter;						 // Position of Footer
+	CRect m_rcRadioButtons;					 // Position of Radio buttons
+	CRect m_rcLinkButtons;					 // Position of Link Buttons
+	CStringMarkup m_strMainInstruction;		 // Main instruction text
+	CStringMarkup m_strContent;				 // Content text
+	CStringMarkup m_strFooter;				 // Footer text
+	CStringMarkup m_strVerificationText;	 // Verification text
+	CStringMarkup m_strExpandedInformation;  // Expanded text
+	CStringMarkup m_strExpandedControlText;  // Text for expanded button
+	CStringMarkup m_strCollapsedControlText; // Text for collapsed button
+	TASKDIALOGCONFIG* m_pConfig;			 // Pointer to TASKDIALOGCONFIG
+	CXTPMarkupContext* m_pMarkupContext;	 // Markup context
+
+	CButton* m_pBtnVerify;							 // Verify button pointer
+	CXTPButton* m_pBtnExpando;						 // Expando button pointer
+	CXTPTaskDialogLinkCtrl m_wndContent;			 // Content window
+	CXTPTaskDialogLinkCtrl m_wndExpandedInformation; // ExpandedInformation window
+	CXTPTaskDialogLinkCtrl m_wndFooter;				 // Footer window
+	CXTPTaskDialogProgressCtrl m_wndProgressBar;	 // ProgressBar window
+	CEdit m_wndInputBox;							 // InputBox window
+	CArray<CButton*, CButton*> m_arrCommandButtons;  // Array of push buttons
+	CArray<CButton*, CButton*> m_arrLinkButtons;	 // Array of link buttons
+	CArray<CButton*, CButton*> m_arrRadioButtons;	// Array of radio buttons
+
+	int m_nSelRadioButtonID; // ID of the radio button that was selected when the task dialog was
+							 // closed.
+	CMap<CWnd*, CWnd*, SIZE, SIZE&> m_mapWndSize; // Size map
+	BOOL m_bMessageBoxStyle;					  // TRUE to use extended style
+	BOOL m_bEnableMarkup;						  // TRUE to enable markup
+	BOOL m_bShowInputBox;						  // TRUE to show input box
+	CString m_strInputBoxText;					  // Input box text.
 
 protected:
-
 	BOOL IsWindow(CWnd* pWnd) const;
 
 	virtual void CreateIcons();
@@ -174,7 +185,9 @@ protected:
 
 	CButton* AddCommandButton(int nButtonID, int nIDLabel, CSize sizeButton);
 	CButton* AddCommandButton(int nButtonID, LPCTSTR lpszLabel, CSize sizeButton);
-	CButton* CreateButton(int nButtonID, LPCTSTR lpszLabel, CSize sizeButton, DWORD dwButtonStyle = BS_PUSHBUTTON | BS_MULTILINE, CXTPButtonTheme* pTheme = NULL);
+	CButton* CreateButton(int nButtonID, LPCTSTR lpszLabel, CSize sizeButton,
+						  DWORD dwButtonStyle	 = BS_PUSHBUTTON | BS_MULTILINE,
+						  CXTPButtonTheme* pTheme = NULL);
 
 	HICON CreateIcon(HICON hIcon, PCWSTR lpwzIcon, CSize sizeIcon, BOOL bUseHandle);
 
@@ -184,12 +197,12 @@ protected:
 
 	CSize CalcDynamicLayout(int nIdealWidth);
 
-
 	CRect CalcCommandRect(int nIdealWidth);
 	int CalcIdealTextWidth(const CStringMarkup& strItemText, int nMinWidth, BOOL bLargeFont);
 	CRect CalcTextRect(const CStringMarkup& strItemText, int nWidth, BOOL bLargeFont);
 	int CalcLinkButtonIdealWidth(CString strButton, int cxWidth);
-	void DrawText(CDC* pDC, const CStringMarkup& strItemText, CRect rcItem, COLORREF clrText, CFont* pFont);
+	void DrawText(CDC* pDC, const CStringMarkup& strItemText, CRect rcItem, COLORREF clrText,
+				  CFont* pFont);
 
 	void RecalcLayout(BOOL bMoveWindow = FALSE);
 	BOOL ResizeParentToFit(CSize szClient, BOOL bMoveWindow);
@@ -248,7 +261,7 @@ protected:
 	void DrawIcon(CDC* pDC, HICON hIcon, CPoint pt, CSize sz);
 	void OnExpandExpandoClicked();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_VIRTUAL(CXTPTaskDialogClient)
 
@@ -264,7 +277,8 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnMarkupHyperlinkClick(CXTPMarkupObject* pSender, CXTPMarkupRoutedEventArgs* pArgs);
+	afx_msg void OnMarkupHyperlinkClick(CXTPMarkupObject* pSender,
+										CXTPMarkupRoutedEventArgs* pArgs);
 	afx_msg void OnDestroy();
 	afx_msg void OnInputBoxChanged();
 
@@ -272,51 +286,66 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	friend class CStringMarkup;
 };
 
-AFX_INLINE BOOL CXTPTaskDialogClient::IsLinkButtonsUsed() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsLinkButtonsUsed() const
+{
 	return ((m_pConfig->dwFlags & (TDF_USE_COMMAND_LINKS | TDF_USE_COMMAND_LINKS_NO_ICON)) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsProgressBarVisible() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsProgressBarVisible() const
+{
 	return ((m_pConfig->dwFlags & (TDF_SHOW_PROGRESS_BAR | TDF_SHOW_MARQUEE_PROGRESS_BAR)) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsLinkButtonsIconVisible() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsLinkButtonsIconVisible() const
+{
 	return ((m_pConfig->dwFlags & TDF_USE_COMMAND_LINKS_NO_ICON) == 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::HasLinkButtons() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::HasLinkButtons() const
+{
 	return ((m_pConfig->pButtons != NULL) && (m_pConfig->cButtons > 0) && IsLinkButtonsUsed());
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsExpandedByDefault() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsExpandedByDefault() const
+{
 	return ((m_pConfig->dwFlags & TDF_EXPANDED_BY_DEFAULT) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsExpandFooterArea() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsExpandFooterArea() const
+{
 	return ((m_pConfig->dwFlags & TDF_EXPAND_FOOTER_AREA) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::HasFixedWidth() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::HasFixedWidth() const
+{
 	return (m_pConfig->cxWidth != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsPositionRelativeToWindow() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsPositionRelativeToWindow() const
+{
 	return m_pConfig->hwndParent && (m_pConfig->dwFlags & TDF_POSITION_RELATIVE_TO_WINDOW);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsHyperlinksEnabled() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsHyperlinksEnabled() const
+{
 	return ((m_pConfig->dwFlags & TDF_ENABLE_HYPERLINKS) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsFooterIconHandleUsed() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsFooterIconHandleUsed() const
+{
 	return ((m_pConfig->dwFlags & TDF_USE_HICON_FOOTER) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsMainIconHandleUsed() const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsMainIconHandleUsed() const
+{
 	return ((m_pConfig->dwFlags & TDF_USE_HICON_MAIN) != 0);
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::IsWindow(CWnd* pWnd) const {
+AFX_INLINE BOOL CXTPTaskDialogClient::IsWindow(CWnd* pWnd) const
+{
 	return (pWnd && ::IsWindow(pWnd->GetSafeHwnd()));
 }
-AFX_INLINE BOOL CXTPTaskDialogClient::MoveButton(CButton* pButton, const CRect& rect, BOOL bRedraw /*=FALSE*/) {
+AFX_INLINE BOOL CXTPTaskDialogClient::MoveButton(CButton* pButton, const CRect& rect,
+												 BOOL bRedraw /*=FALSE*/)
+{
 	return MoveButton(pButton, rect.left, rect.top, rect.Width(), rect.Height(), bRedraw);
 }
-AFX_INLINE CXTPMarkupContext* CXTPTaskDialogClient::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPTaskDialogClient::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
 
@@ -325,4 +354,5 @@ AFX_INLINE CXTPMarkupContext* CXTPTaskDialogClient::GetMarkupContext() const {
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKCLIENTWND_H__)

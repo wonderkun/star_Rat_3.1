@@ -1,7 +1,6 @@
 // XTPChartGanttSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTGANTTSERIESSTYLE_H__)
-#define __XTPCHARTGANTTSERIESSTYLE_H__
+#	define __XTPCHARTGANTTSERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "XTPChartRangeBarSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -59,10 +58,7 @@ public:
 	virtual ~CXTPChartGanttSeriesStyle();
 
 public:
-
-
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to create the view of the Gantt series.
@@ -75,21 +71,22 @@ protected:
 	//     A pointer to CXTPChartSeriesView, refers a newly created CXTPChartGanttSeriesView
 	//     object.
 	//-------------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
 public:
 	void DoPropExchange(CXTPPropExchange* pPX);
-protected:
 
-#ifdef _XTP_ACTIVEX
+protected:
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartGanttSeriesStyle);
 	DECLARE_OLECREATE_EX(CXTPChartGanttSeriesStyle)
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 //===========================================================================
 // Summary:
@@ -122,10 +119,11 @@ protected:
 	//     CXTPChartGanttSeriesPointView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 protected:
-
 	friend class CXTPChartGanttSeriesPointView;
 };
 
@@ -138,7 +136,6 @@ protected:
 class _XTP_EXT_CLASS CXTPChartGanttSeriesPointView : public CXTPChartRangeBarSeriesPointView
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartGanttSeriesPointView object.
@@ -147,8 +144,7 @@ public:
 	// Remarks:
 	//-----------------------------------------------------------------------
 	CXTPChartGanttSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
-
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTGANTTSERIESSTYLE_H__)

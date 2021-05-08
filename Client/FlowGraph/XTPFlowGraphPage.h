@@ -1,7 +1,6 @@
 // XTPFlowGraphPage.h: interface for the CXTPFlowGraphPage class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHPAGE_H__)
-#define __XTPFLOWGRAPHPAGE_H__
+#	define __XTPFLOWGRAPHPAGE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphNodes;
@@ -52,6 +53,7 @@ class CXTPFlowGraphConnection;
 class _XTP_EXT_CLASS CXTPFlowGraphPage : public CXTPCmdTarget
 {
 	DECLARE_SERIAL(CXTPFlowGraphPage);
+
 public:
 	// ------------------------------------------
 	// Summary:
@@ -168,7 +170,6 @@ public:
 	// -------------------------------------------------
 	virtual void OnDraw(CXTPFlowGraphDrawContext* pDC);
 
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Converts the page coordinates of a given point or rectangle on the
@@ -232,7 +233,6 @@ public:
 	//
 	// --------------------------------------------------------------------
 	CRect ScreenToPage(LPCRECT lpRect) const;
-
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -352,6 +352,13 @@ protected:
 	// ---------------------------------------------------
 	virtual void OnRemoved();
 
+	// ---------------------------------------------------
+	// Summary:
+	//     Define visible reagons of windows (if it exists) inside nodes
+	// ---------------------------------------------------
+
+	void SetVisibleNodesWindowsRegions();
+
 public:
 	// ------------------------------------------------------------------------
 	// Summary:
@@ -366,87 +373,131 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 private:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void SetArrangeLevel(int v, CArray<CDWordArray*, CDWordArray*>& graph);
-	int SetArrangeLocation(int v, int x, int y, int nLevelWidth, CArray<CDWordArray*, CDWordArray*>& graph);
-//}}AFX_CODEJOCK_PRIVATE
+	int SetArrangeLocation(int v, int x, int y, int nLevelWidth,
+						   CArray<CDWordArray*, CDWordArray*>& graph);
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
 	static CLIPFORMAT m_cfNode; // Clipboard format.
 
 protected:
-	CXTPFlowGraphControl* m_pControl; // Pointer to the parent flow graph control.
-	CXTPFlowGraphNodes* m_pNodes; // Collection of nodes that are displayed on this page.
+	CXTPFlowGraphControl* m_pControl;   // Pointer to the parent flow graph control.
+	CXTPFlowGraphNodes* m_pNodes;		// Collection of nodes that are displayed on this page.
 	CXTPFlowGraphNodeGroups* m_pGroups; // Collection of groups that are displayed on this page.
-	CXTPFlowGraphConnections* m_pConnections; // Collection of connections that are used in this page.
-	CXTPFlowGraphSelectedElements* m_pSelectedElements; // Colleciton of elements that are used in this page.
+	CXTPFlowGraphConnections* m_pConnections; // Collection of connections that are used in this
+											  // page.
+	CXTPFlowGraphSelectedElements* m_pSelectedElements; // Colleciton of elements that are used in
+														// this page.
 
 	CXTPFlowGraphNode* m_pFirstVisibleNode; // Pointer to the first visible node in the page.
-	CXTPFlowGraphConnection* m_pFirstVisibleConnection; // Pointer to the first visible connection in the page.
+	CXTPFlowGraphConnection* m_pFirstVisibleConnection; // Pointer to the first visible connection
+														// in the page.
 
 	CRect m_rcPage; // Bounding rectangle for this page.
 
-	CRect m_rcWorkRect; // Rectangle for the currently visible portion of the page (it might be zoomed or scrolled).
+	CRect m_rcWorkRect; // Rectangle for the currently visible portion of the page (it might be
+						// zoomed or scrolled).
 
-	CPoint m_ptScrollOffset; // The scroll offset (how much the page has been scrolled).  This returns the X and Y coordinates - up/down offset.
-	double m_dZoomLevel; // Current zoom level of the page.
+	CPoint m_ptScrollOffset; // The scroll offset (how much the page has been scrolled).  This
+							 // returns the X and Y coordinates - up/down offset.
+	double m_dZoomLevel;	 // Current zoom level of the page.
 
-	int m_nId; // Id of the page.
+	int m_nId;			  // Id of the page.
 	CString m_strCaption; // Caption of the page.
 
 	friend class CXTPFlowGraphPages;
 	friend class CXTPFlowGraphControl;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphPage)
+
+	afx_msg LPDISPATCH OleGetNodes();
+	afx_msg LPDISPATCH OleGetGroups();
+	afx_msg LPDISPATCH OleGetConnections();
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+	afx_msg BSTR OleGetCaption();
+
+	afx_msg void OleScreenToPage(int* x, int* y);
+	afx_msg void OlePageToScreen(int* x, int* y);
+
+	afx_msg int OleGetScrollOffsetX();
+	afx_msg int OleGetScrollOffsetY();
+	afx_msg void OleSetScrollOffsetX(int x);
+	afx_msg void OleSetScrollOffsetY(int y);
+	afx_msg void OleSetZoomLevel(double dZoomLevel);
+	afx_msg double OleGetZoomLevel();
+	afx_msg LPDISPATCH OleGetSelection();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-AFX_INLINE CXTPFlowGraphSelectedElements* CXTPFlowGraphPage::GetSelection() const {
+AFX_INLINE CXTPFlowGraphSelectedElements* CXTPFlowGraphPage::GetSelection() const
+{
 	return m_pSelectedElements;
 }
 
-AFX_INLINE CXTPFlowGraphNodes* CXTPFlowGraphPage::GetNodes() const {
+AFX_INLINE CXTPFlowGraphNodes* CXTPFlowGraphPage::GetNodes() const
+{
 	return m_pNodes;
 }
-AFX_INLINE CXTPFlowGraphNodeGroups* CXTPFlowGraphPage::GetGroups() const {
+AFX_INLINE CXTPFlowGraphNodeGroups* CXTPFlowGraphPage::GetGroups() const
+{
 	return m_pGroups;
 }
-AFX_INLINE CXTPFlowGraphConnections* CXTPFlowGraphPage::GetConnections() const {
+AFX_INLINE CXTPFlowGraphConnections* CXTPFlowGraphPage::GetConnections() const
+{
 	return m_pConnections;
 }
-AFX_INLINE CXTPFlowGraphControl* CXTPFlowGraphPage::GetControl() const {
+AFX_INLINE CXTPFlowGraphControl* CXTPFlowGraphPage::GetControl() const
+{
 	return m_pControl;
 }
-AFX_INLINE CRect CXTPFlowGraphPage::GetPageRect() const {
+AFX_INLINE CRect CXTPFlowGraphPage::GetPageRect() const
+{
 	return m_rcPage;
 }
-AFX_INLINE CPoint CXTPFlowGraphPage::GetScrollOffset() const {
+AFX_INLINE CPoint CXTPFlowGraphPage::GetScrollOffset() const
+{
 	return m_ptScrollOffset;
 }
-AFX_INLINE void CXTPFlowGraphPage::SetScrollOffset(CPoint ptScrollOffset) {
+AFX_INLINE void CXTPFlowGraphPage::SetScrollOffset(CPoint ptScrollOffset)
+{
 	m_ptScrollOffset = ptScrollOffset;
 	OnGraphChanged();
 }
-AFX_INLINE void CXTPFlowGraphPage::SetID(int nId) {
+AFX_INLINE void CXTPFlowGraphPage::SetID(int nId)
+{
 	m_nId = nId;
 }
-AFX_INLINE int CXTPFlowGraphPage::GetID() const {
+AFX_INLINE int CXTPFlowGraphPage::GetID() const
+{
 	return m_nId;
 }
-AFX_INLINE  CString CXTPFlowGraphPage::GetCaption() const {
+AFX_INLINE CString CXTPFlowGraphPage::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE  void CXTPFlowGraphPage::SetCaption(LPCTSTR lpszCaption) {
+AFX_INLINE void CXTPFlowGraphPage::SetCaption(LPCTSTR lpszCaption)
+{
 	m_strCaption = lpszCaption;
 }
-AFX_INLINE  double CXTPFlowGraphPage::GetZoomLevel() const {
+AFX_INLINE double CXTPFlowGraphPage::GetZoomLevel() const
+{
 	return m_dZoomLevel;
 }
-AFX_INLINE  void CXTPFlowGraphPage::SetZoomLevel(double dZoomLevel) {
+AFX_INLINE void CXTPFlowGraphPage::SetZoomLevel(double dZoomLevel)
+{
 	m_dZoomLevel = dZoomLevel;
 	OnGraphChanged();
 }
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHPAGE_H__)

@@ -1,7 +1,6 @@
 // XTPTaskPanelPaintManager.h interface for the CXTPTaskPanelPaintManager class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELPAINTMANAGER_H__)
-#define __XTPTASKPANELPAINTMANAGER_H__
+#	define __XTPTASKPANELPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanel;
 class CXTPTaskPanelGroupItem;
 class CXTPTaskPanelScrollButton;
+class CXTPWinThemeWrapper;
 
-#include "Common/XTPColorManager.h"
+#	define XTP_TASKPANEL_HIGHLIGHT_OFFICE2003 2
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -47,16 +49,28 @@ class CXTPTaskPanelScrollButton;
 //-----------------------------------------------------------------------
 struct XTP_TASKPANEL_GROUPCOLORS
 {
-	CXTPPaintManagerColorGradient clrHead;       // Color gradient used for the background color of group headers.
-	CXTPPaintManagerColorGradient clrClient;             // Background color of the client area of the group.  This is the group area under group header.
-	CXTPPaintManagerColor clrClientBorder;       // Color of the client group border.  This is the group area under group header.
-	double dHeadGradientFactor;                  // Value used in calculating the gradient of the group header.  Is used to increase or decrease the color as the backcolor of the header is filled in.
-	CXTPPaintManagerColor clrHeadTextNormal;     // Color of normal text in the group header
-	CXTPPaintManagerColor clrHeadTextHot;        // Color of "hot" text in the group header, this is the color of text on mouse over
-	CXTPPaintManagerColor clrClientText;         // Color of text within the client or "body" of the group.  This is the area under the group header.
-	CXTPPaintManagerColor clrClientLink;         // Color of links within the client or "body" of the group.  This is the area under the group header.
-	CXTPPaintManagerColor clrClientLinkHot;      // Color of "hot" links within the client or "body" of the group.  This is the color of link text on mouse over.
-	CXTPPaintManagerColor clrClientLinkSelected; // Color of links within the client or "body" of the group.  This is the area under the group header.
+	CXTPPaintManagerColorGradient clrHead; // Color gradient used for the background color of group
+										   // headers.
+	CXTPPaintManagerColorGradient clrClient; // Background color of the client area of the group.
+											 // This is the group area under group header.
+	CXTPPaintManagerColor clrClientBorder;   // Color of the client group border.  This is the group
+											 // area under group header.
+	double dHeadGradientFactor; // Value used in calculating the gradient of the group header.  Is
+								// used to increase or decrease the color as the backcolor of the
+								// header is filled in.
+	CXTPPaintManagerColor clrHeadTextNormal; // Color of normal text in the group header
+	CXTPPaintManagerColor clrHeadTextHot;	// Color of "hot" text in the group header, this is the
+											 // color of text on mouse over
+	CXTPPaintManagerColor clrClientText; // Color of text within the client or "body" of the group.
+										 // This is the area under the group header.
+	CXTPPaintManagerColor clrClientLink; // Color of links within the client or "body" of the group.
+										 // This is the area under the group header.
+	CXTPPaintManagerColor clrClientLinkHot; // Color of "hot" links within the client or "body" of
+											// the group.  This is the color of link text on mouse
+											// over.
+	CXTPPaintManagerColor clrClientLinkSelected; // Color of links within the client or "body" of
+												 // the group.  This is the area under the group
+												 // header.
 };
 
 //-----------------------------------------------------------------------
@@ -76,16 +90,17 @@ struct XTP_TASKPANEL_GROUPCOLORS
 // See Also:
 //     CXTPTaskPanelPaintManager::m_eGripper
 //
-// <KEYWORDS xtpTaskPanelGripperNone, xtpTaskPanelGripperBitmap, xtpTaskPanelGripperPlain, xtpTaskPanelGripperTriangle>
+// <KEYWORDS xtpTaskPanelGripperNone, xtpTaskPanelGripperBitmap, xtpTaskPanelGripperPlain,
+// xtpTaskPanelGripperTriangle>
 //-----------------------------------------------------------------------
 enum XTPTaskPanelGripper
 {
-	xtpTaskPanelGripperNone,            // Do not draw a gripper in task panel group headers.
-	xtpTaskPanelGripperBitmap,          // Display a bitmap in task panel group header, I.e. Arrows in WinXP theme.
-	xtpTaskPanelGripperPlain,           // Display the default "classic" gripper in task panel group headers.
-	xtpTaskPanelGripperTriangle         // Display a triangle gripper in task panel group headers.
+	xtpTaskPanelGripperNone,   // Do not draw a gripper in task panel group headers.
+	xtpTaskPanelGripperBitmap, // Display a bitmap in task panel group header, I.e. Arrows in WinXP
+							   // theme.
+	xtpTaskPanelGripperPlain,  // Display the default "classic" gripper in task panel group headers.
+	xtpTaskPanelGripperTriangle // Display a triangle gripper in task panel group headers.
 };
-
 
 //===========================================================================
 // Summary:
@@ -95,17 +110,17 @@ class _XTP_EXT_CLASS CXTPTaskPanelPaintManager
 {
 public:
 	static const CRect rectDefault; // System selected default margins.  All parameters
-	                                // of this CRETC are set to CW_USEDEFAULT, which tells
-	                                // the system to select the default position for the object
-	                                // upper-left corner and ignores the y parameter.  This CRECT
-	                                // is used when calculating the margins of the task panel,
-	                                // group items margin, group outer margin, and group inner
-	                                // margin.  If the margins have not been modified, then this
-	                                // CRECT is used to set the margins.
+									// of this CRETC are set to CW_USEDEFAULT, which tells
+									// the system to select the default position for the object
+									// upper-left corner and ignores the y parameter.  This CRECT
+									// is used when calculating the margins of the task panel,
+									// group items margin, group outer margin, and group inner
+									// margin.  If the margins have not been modified, then this
+									// CRECT is used to set the margins.
 
 public:
 	//-----------------------------------------------------------------------
-	//Summary:
+	// Summary:
 	//     Constructs a CXTPTaskPanelPaintManager object
 	//-----------------------------------------------------------------------
 	CXTPTaskPanelPaintManager();
@@ -185,7 +200,8 @@ public:
 	//     CXTPTaskPanelGroup::IsSpecialGroup, CXTPTaskPanelGroup::SetSpecialGroup
 	//-----------------------------------------------------------------------
 	XTP_TASKPANEL_GROUPCOLORS* GetGroupColors(BOOL bSpecial);
-	virtual XTP_TASKPANEL_GROUPCOLORS* GetGroupColors(CXTPTaskPanelGroup* pGroup); // <combine CXTPTaskPanelPaintManager::GetGroupColors@BOOL>
+	virtual XTP_TASKPANEL_GROUPCOLORS* GetGroupColors(
+		CXTPTaskPanelGroup* pGroup); // <combine CXTPTaskPanelPaintManager::GetGroupColors@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -308,12 +324,12 @@ public:
 	//     nTextFormat - New format that will be used for CDC::DrawText calls
 	//     bCaption - TRUE to apply it for caption; FALSE for items.
 	// Example:
-	//     <code>m_wndTaskPanel.GetPaintManager()->SetTextFormat(DT_SINGLELINE | DT_END_ELLIPSIS | DT_VCENTER | DT_NOPREFIX);</code>
+	//     <code>m_wndTaskPanel.GetPaintManager()->SetTextFormat(DT_SINGLELINE | DT_END_ELLIPSIS |
+	//     DT_VCENTER | DT_NOPREFIX);</code>
 	//-----------------------------------------------------------------------
 	void SetTextFormat(int nTextFormat, BOOL bCaption = FALSE);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to set the font used to display task panel
@@ -358,7 +374,6 @@ public:
 	virtual void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to a group item when the layout is xtpTaskItemLayoutImagesWithText.
@@ -384,7 +399,8 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member is called to a group item when the layout is xtpTaskItemLayoutImagesWithTextBelow.
+	//     This member is called to a group item when the layout is
+	//     xtpTaskItemLayoutImagesWithTextBelow.
 	// Parameters:
 	//     pDC   - Pointer to a valid device context.
 	//     pItem - Points to a CXTPTaskPanelGroupItem object.
@@ -403,7 +419,8 @@ protected:
 	// See Also:
 	//     DrawGroupItem, DrawGroupItemImageWithText, DrawGroupItemImage, GetItemInnerMargins
 	//-----------------------------------------------------------------------
-	CRect DrawGroupItemImageWithTextBelow(CDC* pDC, CXTPTaskPanelGroupItem* pItem, CRect rc, BOOL bDraw);
+	CRect DrawGroupItemImageWithTextBelow(CDC* pDC, CXTPTaskPanelGroupItem* pItem, CRect rc,
+										  BOOL bDraw);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -424,12 +441,12 @@ protected:
 	//     DrawGroupItem calls this method to draw items with a layout if type
 	//     xtpTaskItemLayoutImages.
 	// See Also:
-	//     DrawGroupItem, DrawGroupItemImageWithText, DrawGroupItemImageWithTextBelow, GetItemInnerMargins
+	//     DrawGroupItem, DrawGroupItemImageWithText, DrawGroupItemImageWithTextBelow,
+	//     GetItemInnerMargins
 	//-----------------------------------------------------------------------
 	CRect DrawGroupItemImage(CDC* pDC, CXTPTaskPanelGroupItem* pItem, CRect rc, BOOL bDraw);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw the face of the group.
@@ -491,35 +508,70 @@ protected:
 	//     nFormat - [in] Specifies the method of formatting the text.
 	// Remarks:
 	//     The nFormat parameter can be one or more of the following values:
-	//        * <b>DT_BOTTOM</b>          Justifies the text to the bottom of the rectangle. This value is used
+	//        * <b>DT_BOTTOM</b>          Justifies the text to the bottom of the rectangle. This
+	//        value is used
 	//                                    only with the DT_SINGLELINE value.
 	//        * <b>DT_CALCRECT</b>        Determines the width and height of the rectangle.
 	//        * <b>DT_CENTER</b>          Centers text horizontally in the rectangle.
-	//        * <b>DT_EDITCONTROL</b>     Duplicates the text-displaying characteristics of a multiline edit
-	//                                    control. Specifically, the average character width is calculated in the same manner as for an edit control, and the function does not display a partially visible last line.
-	//        * <b>DT_END_ELLIPSIS</b>    For displayed text, if the end of a string does not fit in the rectangle, it is truncated and ellipses are added. If a word that is not at the end of the string goes beyond the limits of the rectangle, it is truncated without ellipses.
-	//                                    The string is not modified unless the DT_MODIFYSTRING flag is specified.
-	//        * <b>DT_EXPANDTABS</b>      Expands tab characters. The default number of characters per tab is eight. The DT_WORD_ELLIPSIS, DT_PATH_ELLIPSIS, and DT_END_ELLIPSIS values cannot be used with the DT_EXPANDTABS value.
-	//        * <b>DT_EXTERNALLEADING</b> Includes the font external leading in line height. Normally, external leading is not included in the height of a line of text.
-	//        * <b>DT_HIDEPREFIX</b>      Ignores the ampersand (&) prefix character in the text. The letter that follows will not be underlined, but other mnemonic-prefix characters are still processed.
+	//        * <b>DT_EDITCONTROL</b>     Duplicates the text-displaying characteristics of a
+	//        multiline edit
+	//                                    control. Specifically, the average character width is
+	//                                    calculated in the same manner as for an edit control, and
+	//                                    the function does not display a partially visible last
+	//                                    line.
+	//        * <b>DT_END_ELLIPSIS</b>    For displayed text, if the end of a string does not fit in
+	//        the rectangle, it is truncated and ellipses are added. If a word that is not at the
+	//        end of the string goes beyond the limits of the rectangle, it is truncated without
+	//        ellipses.
+	//                                    The string is not modified unless the DT_MODIFYSTRING flag
+	//                                    is specified.
+	//        * <b>DT_EXPANDTABS</b>      Expands tab characters. The default number of characters
+	//        per tab is eight. The DT_WORD_ELLIPSIS, DT_PATH_ELLIPSIS, and DT_END_ELLIPSIS values
+	//        cannot be used with the DT_EXPANDTABS value.
+	//        * <b>DT_EXTERNALLEADING</b> Includes the font external leading in line height.
+	//        Normally, external leading is not included in the height of a line of text.
+	//        * <b>DT_HIDEPREFIX</b>      Ignores the ampersand (&) prefix character in the text.
+	//        The letter that follows will not be underlined, but other mnemonic-prefix characters
+	//        are still processed.
 	//        * <b>DT_INTERNAL</b>        Uses the system font to calculate text metrics.
 	//        * <b>DT_LEFT</b>            Aligns text to the left.
-	//        * <b>DT_MODIFYSTRING</b>    Modifies the specified string to match the displayed text. This value has no effect unless DT_END_ELLIPSIS or DT_PATH_ELLIPSIS is specified.
+	//        * <b>DT_MODIFYSTRING</b>    Modifies the specified string to match the displayed text.
+	//        This value has no effect unless DT_END_ELLIPSIS or DT_PATH_ELLIPSIS is specified.
 	//        * <b>DT_NOCLIP</b>          Draws without clipping.
-	//        * <b>DT_NOFULLWIDTHCHARBREAK</b> Prevents a line break at a DBCS (double-wide character string), so that the line breaking rule is equivalent to SBCS strings. For example, this can be used in Korean windows, for more readability of icon labels. This value has no effect unless DT_WORDBREAK is specified.
+	//        * <b>DT_NOFULLWIDTHCHARBREAK</b> Prevents a line break at a DBCS (double-wide
+	//        character string), so that the line breaking rule is equivalent to SBCS strings. For
+	//        example, this can be used in Korean windows, for more readability of icon labels. This
+	//        value has no effect unless DT_WORDBREAK is specified.
 	//        * <b>DT_NOPREFIX</b>        Turns off processing of prefix characters.
-	//        * <b>DT_PATH_ELLIPSIS</b>   For displayed text, replaces characters in the middle of the string with ellipses so that the result fits in the specified rectangle. If the string contains backslash (\) characters, DT_PATH_ELLIPSIS preserves as much as possible of the text after the last backslash.
-	//                                    The string is not modified unless the DT_MODIFYSTRING flag is specified.
-	//        * <b>DT_PREFIXONLY</b>      Draws only an underline at the position of the character following the ampersand (&) prefix character. Does not draw any other characters in the string.
+	//        * <b>DT_PATH_ELLIPSIS</b>   For displayed text, replaces characters in the middle of
+	//        the string with ellipses so that the result fits in the specified rectangle. If the
+	//        string contains backslash (\) characters, DT_PATH_ELLIPSIS preserves as much as
+	//        possible of the text after the last backslash.
+	//                                    The string is not modified unless the DT_MODIFYSTRING flag
+	//                                    is specified.
+	//        * <b>DT_PREFIXONLY</b>      Draws only an underline at the position of the character
+	//        following the ampersand (&) prefix character. Does not draw any other characters in
+	//        the string.
 	//        * <b>DT_RIGHT</b>           Aligns text to the right.
-	//        * <b>DT_RTLREADING</b>      Layout in right-to-left reading order for bi-directional text when the font selected into the hdc is a Hebrew or Arabic font. The default reading order for all text is left-to-right.
-	//        * <b>DT_SINGLELINE</b>      Displays text on a single line only. Carriage returns and line feeds do not break the line.
-	//        * <b>DT_TABSTOP</b>         Sets tab stops. Bits 158 (high-order byte of the low-order word) of the uFormat parameter specify the number of characters for each tab. The default number of characters per tab is eight. The DT_CALCRECT, DT_EXTERNALLEADING, DT_INTERNAL, DT_NOCLIP, and DT_NOPREFIX values cannot be used with the DT_TABSTOP value.
+	//        * <b>DT_RTLREADING</b>      Layout in right-to-left reading order for bi-directional
+	//        text when the font selected into the hdc is a Hebrew or Arabic font. The default
+	//        reading order for all text is left-to-right.
+	//        * <b>DT_SINGLELINE</b>      Displays text on a single line only. Carriage returns and
+	//        line feeds do not break the line.
+	//        * <b>DT_TABSTOP</b>         Sets tab stops. Bits 158 (high-order byte of the low-order
+	//        word) of the uFormat parameter specify the number of characters for each tab. The
+	//        default number of characters per tab is eight. The DT_CALCRECT, DT_EXTERNALLEADING,
+	//        DT_INTERNAL, DT_NOCLIP, and DT_NOPREFIX values cannot be used with the DT_TABSTOP
+	//        value.
 	//        * <b>DT_TOP</b>             Justifies the text to the top of the rectangle.
-	//        * <b>DT_VCENTER</b>         Centers text vertically. This value is used only with the DT_SINGLELINE value.
-	//        * <b>DT_WORDBREAK</b>       Breaks words. Lines are automatically broken between words if a word would extend past the edge of the rectangle specified by the lpRect parameter. A carriage return-line feed sequence also breaks the line.
+	//        * <b>DT_VCENTER</b>         Centers text vertically. This value is used only with the
+	//        DT_SINGLELINE value.
+	//        * <b>DT_WORDBREAK</b>       Breaks words. Lines are automatically broken between words
+	//        if a word would extend past the edge of the rectangle specified by the lpRect
+	//        parameter. A carriage return-line feed sequence also breaks the line.
 	//                                    If this is not specified, output is on one line.
-	//        * <b>DT_WORD_ELLIPSIS</b>   Truncates any word that does not fit in the rectangle and adds ellipses.
+	//        * <b>DT_WORD_ELLIPSIS</b>   Truncates any word that does not fit in the rectangle and
+	//        adds ellipses.
 	//     <p/>
 	//     DrawGroupCaption uses this method to draw the group caption with
 	//     nFormat = DT_SINGLELINE | DT_LEFT | DT_END_ELLIPSIS | DT_VCENTER | DT_NOPREFIX
@@ -543,11 +595,11 @@ protected:
 	//     DrawGroupItemImageWithTextBelow, and DrawGroupCaption to draw the
 	//     image for the item.
 	//-----------------------------------------------------------------------
-	virtual void DrawItemImage(CDC* pDC, CXTPTaskPanelItem* pItem, CPoint ptIcon, CXTPImageManagerIcon* pImage, CSize szIcon);
+	virtual void DrawItemImage(CDC* pDC, CXTPTaskPanelItem* pItem, CPoint ptIcon,
+							   CXTPImageManagerIcon* pImage, CSize szIcon);
 
 	// Helper functions
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to blend from one color to another color
@@ -579,7 +631,8 @@ protected:
 	// See Also:
 	//     CXTPTaskPanelGroup::SetSpecialGroup, CXTPTaskPanelGroup::IsSpecialGroup
 	//-----------------------------------------------------------------------
-	CRect DrawCaptionGripperBitmap(CDC* pDC, CXTPTaskPanelGroup* pGroup, BOOL bExpanded, BOOL bHot, CRect rc);
+	CRect DrawCaptionGripperBitmap(CDC* pDC, CXTPTaskPanelGroup* pGroup, BOOL bExpanded, BOOL bHot,
+								   CRect rc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -669,7 +722,7 @@ protected:
 	// Remarks:
 	//     The "drag arrow" is the line that is placed above or below a group
 	//     item when dragging an item.  The drag arrow is draw for all themes
-	//     except xtpTaskPanelThemeToolbox.
+	//     except xtpTaskPanelThemeVisualStudio2003.
 	// See Also:
 	//     CXTPTaskPanelToolboxTheme::DrawGroupCaption
 	//-----------------------------------------------------------------------
@@ -694,746 +747,98 @@ private:
 	CRect MergeRect(CRect rcSpecified, CRect rcDefault);
 
 public:
-	BOOL m_bEmulateEplorerTheme;        // TRUE to use Explorer theme under WinXP and Office 2000 under older OS.
-	XTPTaskPanelGripper m_eGripper;     // Gripper of the manager.
+	BOOL m_bEmulateEplorerTheme;	// TRUE to use Explorer theme under WinXP and Office 2000 under
+									// older OS.
+	XTPTaskPanelGripper m_eGripper; // Gripper of the manager.
 
-	BOOL m_bBoldCaption;                // TRUE to display caption text in bold font, FALSE to display caption text in normal type.
+	BOOL m_bBoldCaption; // TRUE to display caption text in bold font, FALSE to display caption text
+						 // in normal type.
 
-	CRect m_rcGroupOuterMargins;        // Outer margins of the group.
-	CRect m_rcGroupInnerMargins;        // Inner margins of the group.
-	CRect m_rcItemOuterMargins;         // Outer margins of the group items.
-	CRect m_rcItemInnerMargins;         // Inner margins of the group items.
-	CRect m_rcControlMargins;           // Default margins for all groups.
-	int   m_nGroupSpacing;              // Amount of space placed between groups in the task panel.
-	CRect m_rcImageLayoutIconPadding;   // Padding around images for xtpTaskItemLayoutImages layout.
-	CRect m_rcItemIconPadding;          // Padding around images for items.
-	CRect m_rcGroupIconPadding;         // Padding around images for groups.
+	CRect m_rcGroupOuterMargins;	  // Outer margins of the group.
+	CRect m_rcGroupInnerMargins;	  // Inner margins of the group.
+	CRect m_rcItemOuterMargins;		  // Outer margins of the group items.
+	CRect m_rcItemInnerMargins;		  // Inner margins of the group items.
+	CRect m_rcControlMargins;		  // Default margins for all groups.
+	int m_nGroupSpacing;			  // Amount of space placed between groups in the task panel.
+	CRect m_rcImageLayoutIconPadding; // Padding around images for xtpTaskItemLayoutImages layout.
+	CRect m_rcItemIconPadding;		  // Padding around images for items.
+	CRect m_rcGroupIconPadding;		  // Padding around images for groups.
 
-	BOOL m_bOfficeHighlight;            // TRUE to highlight group items and scroll buttons using the Office XP style (XPCOLOR_HIGHLIGHT, XPCOLOR_HIGHLIGHT_CHECKED, XPCOLOR_HIGHLIGHT_PUSHED)
-	BOOL m_bInvertDragRect;             // Only used when theme is set to xtpTaskPanelThemeToolbox.
-	BOOL m_bCaptionScrollButton;        // TRUE if group caption scroll button is visible, FALSE if it is hidden.
-	BOOL m_bEmbossedDisabledText;       // TRUE to draw disabled text embossed.
+	BOOL m_bOfficeHighlight; // TRUE to highlight group items and scroll buttons using the Office XP
+							 // style (XPCOLOR_HIGHLIGHT, XPCOLOR_HIGHLIGHT_CHECKED,
+							 // XPCOLOR_HIGHLIGHT_PUSHED)
+	BOOL m_bInvertDragRect;  // Only used when theme is set to xtpTaskPanelThemeVisualStudio2003.
+	BOOL m_bCaptionScrollButton;  // TRUE if group caption scroll button is visible, FALSE if it is
+								  // hidden.
+	BOOL m_bEmbossedDisabledText; // TRUE to draw disabled text embossed.
 
 protected:
+	BOOL m_bUseBitmapGrippers; // TRUE to use alpha grippers.
+	HICON m_hGripperNormal;	// Icon of normal group header gripper
+	HICON m_hGripperSpecial;   // Icon of special group header gripper.
 
-	BOOL m_bUseBitmapGrippers;          // TRUE to use alpha grippers.
-	HICON m_hGripperNormal;             // Icon of normal group header gripper
-	HICON m_hGripperSpecial;            // Icon of special group header gripper.
+	HBITMAP m_bmpGrippers[8]; // Bitmaps of alpha grippers.
 
-	HBITMAP m_bmpGrippers[8];           // Bitmaps of alpha grippers.
+	CXTPFont m_xtpFontCaption;	 // Caption font.
+	CXTPFont m_xtpFontIcon;		   // Normal Items font.
+	CXTPFont m_xtpFontIconBold;	// Bold items font.
+	CXTPFont m_xtpFontIconHot;	 // Hot items font.
+	CXTPFont m_xtpFontIconHotBold; // Bold items font.
 
-	CFont m_fntCaption;                 // Caption font.
-	CFont m_fntIcon;                    // Normal Items font.
-	CFont m_fntIconBold;                // Bold items font.
-	CFont m_fntIconHot;                 // Hot items font.
-	CFont m_fntIconHotBold;             // Bold items font.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntCaption, m_xtpFontCaption,
+										  GetCaptionFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntIcon, m_xtpFontIcon, GetIconFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntIconBold, m_xtpFontIconBold,
+										  GetIconBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntIconHot, m_xtpFontIconHot,
+										  GetIconHotFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntIconHotBold, m_xtpFontIconHotBold,
+										  GetIconHotBoldFontHandle);
 
-	CXTPPaintManagerColorGradient m_clrBackground;      // Background color of Task Panel.
+	CXTPPaintManagerColorGradient m_clrBackground; // Background color of Task Panel.
 
-	XTP_TASKPANEL_GROUPCOLORS m_groupNormal;            // Normal colors set.
-	XTP_TASKPANEL_GROUPCOLORS m_groupSpecial;           // Special colors set.
+	XTP_TASKPANEL_GROUPCOLORS m_groupNormal;  // Normal colors set.
+	XTP_TASKPANEL_GROUPCOLORS m_groupSpecial; // Special colors set.
 
-	CXTPPaintManagerColor m_clrHighlightHot;            // Color of items when they are "hot." This the color of the item on mouseover if hot tracking is enabled.
-	CXTPPaintManagerColor m_clrHighlightSelected;       // Color of items when they are selected. This is when the item has focus or is clicked on.
-	CXTPPaintManagerColor m_clrHighlightPressed;        // Color of items when they are pressed.  This is when the item is clicked on.
-	CXTPPaintManagerColorGradient m_clrHighlightBorder; // Border color of items when they are "hot."  This the border color of the item on mouseover if hot tracking is enabled.
+	CXTPPaintManagerColor m_clrHighlightHot; // Color of items when they are "hot." This the color
+											 // of the item on mouseover if hot tracking is enabled.
+	CXTPPaintManagerColor m_clrHighlightSelected; // Color of items when they are selected. This is
+												  // when the item has focus or is clicked on.
+	CXTPPaintManagerColor m_clrHighlightPressed;  // Color of items when they are pressed.  This is
+												  // when the item is clicked on.
+	CXTPPaintManagerColorGradient m_clrHighlightBorder; // Border color of items when they are
+														// "hot."  This the border color of the item
+														// on mouseover if hot tracking is enabled.
 
-	BOOL m_bOfficeBorder;               // TRUE to use office borders.
-	BOOL m_bLeftRoundedCorner;          // TRUE to round left corner of the group caption.
-	BOOL m_bRightRoundedCorner;         // TRUE to round right corner of the group caption.
+	BOOL m_bOfficeBorder;		// TRUE to use office borders.
+	BOOL m_bLeftRoundedCorner;  // TRUE to round left corner of the group caption.
+	BOOL m_bRightRoundedCorner; // TRUE to round right corner of the group caption.
 
-	int m_nCaptionHeight;               // Caption height in pixels.
-	BOOL m_bUseStandardCaptionFont;     // TRUE to use system font for group caption text.
-	BOOL m_bUseStandardItemsFont;       // TRUE to use system font for item caption text.
+	int m_nCaptionHeight;			// Caption height in pixels.
+	BOOL m_bUseStandardCaptionFont; // TRUE to use system font for group caption text.
+	BOOL m_bUseStandardItemsFont;   // TRUE to use system font for item caption text.
 
-	int m_nItemTextFormat;              // Format flags of item text.  See CXTPTaskPanelPaintManager::DrawItemCaption for a list of format flags.
-	int m_nCaptionTextFormat;           // Format flags of caption text.  See CXTPTaskPanelPaintManager::DrawItemCaption for a list of format flags.
+	int m_nItemTextFormat; // Format flags of item text.  See
+						   // CXTPTaskPanelPaintManager::DrawItemCaption for a list of format flags.
+	int m_nCaptionTextFormat; // Format flags of caption text.  See
+							  // CXTPTaskPanelPaintManager::DrawItemCaption for a list of format
+							  // flags.
 
 	friend class CXTPTaskPanelColorSet;
-
 };
 
-namespace XTPTaskPanelPaintThemes
+AFX_INLINE XTP_TASKPANEL_GROUPCOLORS* CXTPTaskPanelPaintManager::GetGroupColors(BOOL bSpecial)
 {
-
-	//===========================================================================
-	// Summary:
-	//     Class that represents an Office 2003 style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelOffice2003Theme : public CXTPTaskPanelPaintManager
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelOffice2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelOffice2003Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     Class that represents an Explorer style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelExplorerTheme : public CXTPTaskPanelPaintManager
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelExplorerTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelExplorerTheme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		BOOL m_bExplorerTheme;  // TRUE to use Explorer theme under WinXP and to use office 2000 under older OSes.
-	};
-
-
-	//===========================================================================
-	// Summary:
-	//     Base class theme that all other themes are derived from.  Use this
-	//     class when creating a custom theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme, CXTPTaskPanel::SetCustomTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelPaintManagerPlain : public CXTPTaskPanelPaintManager
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelPaintManagerPlain object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelPaintManagerPlain();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the face of the group.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc     - Rectangle of group to be draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Fills group rectangle
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		// See Also: DrawGroupClientFace
-		//-----------------------------------------------------------------------
-		void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to fill background of task panel control.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pTaskPanel - Points to a CXTPTaskPanel object
-		//-----------------------------------------------------------------------
-		void FillTaskPanel(CDC* pDC, CXTPTaskPanel* pTaskPanel);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the caption of the group.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     bDraw - TRUE to draw; FALSE to retrieve height of caption.
-		// Returns:
-		//     Height of the caption.
-		//-----------------------------------------------------------------------
-		int DrawGroupCaption(CDC* pDC, CXTPTaskPanelGroup* pGroup, BOOL bDraw);
-
-	protected:
-		BOOL m_bRoundedFrame;           // TRUE to draw a rounded frame around all of the groups in the task panel.  Can bee seen in the Native WinXP theme.  Default is TRUE.
-		BOOL m_bOfficeCaption;          // FALSE to draw a rounded rectangle around caption.  TRUE to not draw a rectangle around caption, caption will not appear in a rectrangle. Default is FALSE.
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelExplorerThemePlain class is used to enable a classic Explorer style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelExplorerThemePlain : public CXTPTaskPanelPaintManagerPlain
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelExplorerThemePlain object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelExplorerThemePlain();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		BOOL m_bExplorerTheme;  // TRUE to use Explorer theme under WinXP and to use Office 2000 under older OSes.
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw gripper of the caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc     - Rectangle of group to be drawn.
-		// Returns:
-		//     Rectangle of caption after draw.
-		// Remarks:
-		//     The caption gripper is the button that allows the group to be
-		//     expanded and collapsed.
-		//
-		//     If the current operating system is Windows Xp and the current theme
-		//     is xtpSystemThemeBlue, xtpSystemThemeOlive, or xtpSystemThemeSilver
-		//     then the gripper bitmap is loaded from the operating system.  The WinXp
-		//     gripper is created with CXTPTaskPanelPaintManager::CreateGripperBitmaps. For
-		//     all other OS and themes, CXTPTaskPanelPaintManager::CreateGripperIcon
-		//     is used to create an emulated version of the Windows Xp gripper.
-		//
-		//     If m_bExplorerTheme is FALSE, then CXTPTaskPanelPaintManager::DrawCaptionGripper
-		//     is used to draw the gripper, so no bitmap is used.
-		//
-		//     If m_bExplorerTheme is TRUE, then CXTPTaskPanelPaintManager::DrawCaptionGripperBitmap
-		//     is used to draw the gripper, this load a bitmap as mentioned before.
-		//
-		// See Also:
-		//     CXTPTaskPanelPaintManager::DrawCaptionGripperBitmap,
-		//     CXTPTaskPanelPaintManager::DrawCaptionGripperSigns
-		//-----------------------------------------------------------------------
-		CRect DrawCaptionGripper(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelOfficeXPThemePlain class is used to enable a classic Office XP style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelOfficeXPThemePlain : public CXTPTaskPanelPaintManagerPlain
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelOfficeXPThemePlain object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelOfficeXPThemePlain();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelOffice2003ThemePlain class is used to enable a classic Office 2003 style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelOffice2003ThemePlain : public CXTPTaskPanelOfficeXPThemePlain
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelOffice2003ThemePlain object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelOffice2003ThemePlain();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelToolboxTheme class is used to enable a Toolbox style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelToolboxTheme : public CXTPTaskPanelPaintManagerPlain
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelToolboxTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelToolboxTheme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the caption of the group.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     bDraw  - TRUE to draw; FALSE to retrieve height of caption.
-		// Returns:
-		//     Height of the caption.
-		//-----------------------------------------------------------------------
-		int DrawGroupCaption(CDC* pDC, CXTPTaskPanelGroup* pGroup, BOOL bDraw);
-
-	protected:
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of text within group caption.
-		// Remarks:
-		//     This member will draw the normal, hot, and pressed background for
-		//     the group caption.
-		//-----------------------------------------------------------------------
-		virtual CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelToolboxWhidbeyTheme class is used to enable a VS.NET Whidbey style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelToolboxWhidbeyTheme : public CXTPTaskPanelToolboxTheme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelToolboxWhidbeyTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelToolboxWhidbeyTheme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of text within group caption.
-		// Remarks:
-		//     This member will draw the Whidbey color gradient in the group
-		//     caption rectangle.
-		//-----------------------------------------------------------------------
-		CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the face of the group.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object.
-		//     rc     - Rectangle of group to be draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Fills group rectangle
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		// See Also: DrawGroupClientFace
-		//-----------------------------------------------------------------------
-		void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to fill background of task panel control.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pTaskPanel - Points to a CXTPTaskPanel object
-		//-----------------------------------------------------------------------
-		void FillTaskPanel(CDC* pDC, CXTPTaskPanel* pTaskPanel);
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelVisualStudio2010Theme class is used to enable a VS.NET 2010 style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelVisualStudio2010Theme : public CXTPTaskPanelToolboxWhidbeyTheme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelToolboxWhidbeyTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelVisualStudio2010Theme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of text within group caption.
-		// Remarks:
-		//     This member will draw the Whidbey color gradient in the group
-		//     caption rectangle.
-		//-----------------------------------------------------------------------
-		CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the face of the group.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object.
-		//     rc     - Rectangle of group to be draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Fills group rectangle
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		// See Also: DrawGroupClientFace
-		//-----------------------------------------------------------------------
-		void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to fill background of task panel control.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pTaskPanel - Points to a CXTPTaskPanel object
-		//-----------------------------------------------------------------------
-		void FillTaskPanel(CDC* pDC, CXTPTaskPanel* pTaskPanel);
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelListViewTheme class is used to enable a List View style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelListViewTheme : public CXTPTaskPanelToolboxTheme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelListViewTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelListViewTheme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelListViewOfficeXPTheme class is used to enable a List View Office XP style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelListViewOfficeXPTheme : public CXTPTaskPanelListViewTheme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelListViewOfficeXPTheme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelListViewOfficeXPTheme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     The CXTPTaskPanelListViewOffice2003Theme class is used to enable a List View Office 2003 style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelListViewOffice2003Theme : public CXTPTaskPanelListViewOfficeXPTheme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelListViewOffice2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelListViewOffice2003Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		CXTPPaintManagerColorGradient m_grcHot;         // Color gradient used to colorize "hot" items for this theme.
-		CXTPPaintManagerColorGradient m_grcPushed;      // Color gradient used to colorize "pushed" items for this theme.
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of group caption.
-		// Remarks:
-		//     This member will draw the normal, hot, and pressed background for
-		//     the group caption.  It will then fill the group caption with the
-		//     Office 2003 color gradient.
-		//-----------------------------------------------------------------------
-		CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-	};
-
-
-	//===========================================================================
-	// Summary:
-	//     CXTPTaskPanelShortcutBarOffice2003Theme is a CXTPTaskPanelListViewOffice2003Theme
-	//     derived class used to enable an Office 2003 ShortcutBar style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelShortcutBarOffice2003Theme : public CXTPTaskPanelListViewOffice2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelShortcutBarOffice2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelShortcutBarOffice2003Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-	protected:
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of text within group caption.
-		// Remarks:
-		//     This member will draw the normal, hot, and pressed background for
-		//     the group caption.  It will then fill the group caption with the
-		//     Office 2003 color gradient.
-		//
-		//     This task panel theme looks similar to the ShortcutBar Office 2003
-		//     theme.
-		//-----------------------------------------------------------------------
-		CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the face of the group.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Fills group rectangle
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		// See Also: DrawGroupClientFace
-		//-----------------------------------------------------------------------
-		void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		//     This method is called to fill background of task panel control.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pTaskPanel - Points to a CXTPTaskPanel object
-		//-----------------------------------------------------------------------
-		void FillTaskPanel(CDC* pDC, CXTPTaskPanel* pTaskPanel);
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPTaskPanelShortcutBarOffice2007Theme is a CXTPTaskPanelShortcutBarOffice2003Theme
-	//     derived class used to enable an Office 2007 ShortcutBar style theme.
-	// See Also:
-	//     CXTPTaskPanel::SetTheme
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPTaskPanelShortcutBarOffice2007Theme : public CXTPTaskPanelShortcutBarOffice2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPTaskPanelShortcutBarOffice2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPTaskPanelShortcutBarOffice2007Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of task panel.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-	protected:
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member is called to draw the background of the group caption.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     pGroup - Fill group caption of this group.
-		//     rc     - Bounding rectangle of the group caption.
-		// Returns:
-		//     Bounding rectangle of text within group caption.
-		// Remarks:
-		//     This member will draw the normal, hot, and pressed background for
-		//     the group caption.  It will then fill the group caption with the
-		//     Office 2003 color gradient.
-		//
-		//     This task panel theme looks similar to the ShortcutBar Office 2003
-		//     theme.
-		//-----------------------------------------------------------------------
-		CRect DrawGroupCaptionBackground(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to draw the face of the group.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Fills group rectangle
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pGroup - Points to a CXTPTaskPanelGroup object
-		//     rc - Rectangle of group to be draw.
-		// See Also: DrawGroupClientFace
-		//-----------------------------------------------------------------------
-		void FillGroupClientFace(CDC* pDC, CXTPTaskPanelGroup* pGroup, CRect rc);
-
-		//-----------------------------------------------------------------------
-		//     This method is called to fill background of task panel control.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pTaskPanel - Points to a CXTPTaskPanel object
-		//-----------------------------------------------------------------------
-		void FillTaskPanel(CDC* pDC, CXTPTaskPanel* pTaskPanel);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This member draws a rectangle around a group item when selected,
-		//     pressed or highlighted.
-		// Parameters:
-		//     pDC - Pointer to a valid device context
-		//     pItem - Points to a CXTPTaskPanelGroupItem object.
-		//     rc    - Bounding rectangle group to draw.
-		//-----------------------------------------------------------------------
-		void DrawGroupItemFrame(CDC* pDC, CXTPTaskPanelGroupItem* pItem, CRect rc);
-
-	protected:
-		COLORREF m_clrShortcutItemShadow;           // Dhadow color of items
-		BOOL m_bPlainStyle;
-
-	};
-}
-
-using namespace XTPTaskPanelPaintThemes;
-
-
-AFX_INLINE XTP_TASKPANEL_GROUPCOLORS* CXTPTaskPanelPaintManager::GetGroupColors(BOOL bSpecial) {
 	return bSpecial ? &m_groupSpecial : &m_groupNormal;
 }
 
-AFX_INLINE void CXTPTaskPanelPaintManager::SetTextFormat(int nTextFormat, BOOL bCaption /*= FALSE*/) {
-	if (bCaption) m_nCaptionTextFormat = nTextFormat; else m_nItemTextFormat = nTextFormat;
+AFX_INLINE void CXTPTaskPanelPaintManager::SetTextFormat(int nTextFormat, BOOL bCaption /*= FALSE*/)
+{
+	if (bCaption)
+		m_nCaptionTextFormat = nTextFormat;
+	else
+		m_nItemTextFormat = nTextFormat;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELPAINTMANAGER_H__)

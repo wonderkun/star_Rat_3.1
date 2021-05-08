@@ -1,7 +1,6 @@
 // XTPCheckListBox.h : interface for the CXTPCheckListBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHECKLISTBOX_H__)
-#define __XTPCHECKLISTBOX_H__
+#	define __XTPCHECKLISTBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPWinThemeWrapper;
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -68,7 +70,6 @@ protected:
 	class _XTP_EXT_CLASS CCheckListState
 	{
 	public:
-
 		// -------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CCheckListState object
@@ -77,6 +78,17 @@ protected:
 		// -------------------------------------------------------------------
 		CCheckListState(BOOL bListBox3D);
 
+		// -------------------------------------------------------------------
+		// Summary:
+		//     Draw state icon
+		// Parameters:
+		//     pDC - CDC
+		//     nCheck - Checkbox state
+		//     pt - A CPoint object that specifies the XY point of drawing
+		//     sz - Size of the checkbox item.
+		// -------------------------------------------------------------------
+		void Draw(CDC* pDC, int nCheck, CPoint pt, CSize sz);
+
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Destroys a CCheckListState object, handles cleanup and deallocation
@@ -84,13 +96,16 @@ protected:
 		virtual ~CCheckListState();
 
 	public:
-		HBITMAP m_hbitmapCheck; // Handle to the check mark image bitmap.
-		CSize   m_sizeCheck;    // Width and height of the check mark bitmap.
+		CSize m_sizeCheck;		 // Width and height of the check mark bitmap.
+		CSize m_sizeCheckThemed; // Width and height of the check mark themed image.
+	protected:
+		int idUnchecked;
+		int idChecked;
+		int idMixed;
 	};
 
 private:
 	struct CHECK_DATA;
-
 
 public:
 	// -------------------------------------------------------------
@@ -109,7 +124,6 @@ public:
 	virtual ~CXTPCheckListBox();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates the Windows checklist box and attaches it to the CXTPListBox
@@ -246,7 +260,6 @@ public:
 	virtual CRect OnGetCheckPosition(CRect rectItem, CRect rectCheckBox);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPListBase class to
@@ -362,9 +375,10 @@ protected:
 	//                            it returns from the message.
 	//
 	//                            itemHeight Specifies the height of an individual item in
-	//                            a list box or a menu. Before it returns from the message, the owner
-	//                            of the owner\-draw combo box, list box, or menu item must fill out
-	//                            this member. The maximum height of a list box item is 255.
+	//                            a list box or a menu. Before it returns from the message, the
+	//                            owner of the owner\-draw combo box, list box, or menu item must
+	//                            fill out this member. The maximum height of a list box item is
+	//                            255.
 	// -------------------------------------------------------------------------------------------
 	virtual void PreMeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
@@ -449,7 +463,7 @@ protected:
 	//     false. Also, if the application is not themed, then this function
 	//     \returns false.
 	// -------------------------------------------------------------------------
-	bool PreDrawItemThemed(CDC* pDC, DRAWITEMSTRUCT &drawItem, int nCheck, int cyItem);
+	bool PreDrawItemThemed(CDC* pDC, DRAWITEMSTRUCT& drawItem, int nCheck, int cyItem);
 
 	// -------------------------------------------------------------------------
 	// Summary:
@@ -468,11 +482,10 @@ protected:
 	//     application. This is used to prevent flickering when re-drawing
 	//     the control.
 	// -------------------------------------------------------------------------
-	void PreDrawItemNonThemed(CDC* pDC, DRAWITEMSTRUCT &drawItem, int nCheck, int cyItem);
+	void PreDrawItemNonThemed(CDC* pDC, DRAWITEMSTRUCT& drawItem, int nCheck, int cyItem);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPCheckListBox)
@@ -498,27 +511,32 @@ protected:
 	afx_msg LRESULT OnLBSetItemData(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnLBSetItemHeight(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-
-	int                 m_cyText;         // Represents the text height for the check list box.
-	UINT                m_nStyle;         // Specifies the style for the check list box.
-	CCheckListState     m_checkListState; // Holds the check mark image information.
-	CXTPWinThemeWrapper m_themeHelper;    // Used for drawing Windows XP themed checkbox.
-
+	int m_cyText;						// Represents the text height for the check list box.
+	UINT m_nStyle;						// Specifies the style for the check list box.
+	CCheckListState m_checkListState;   // Holds the check mark image information.
+	CXTPWinThemeWrapper* m_themeHelper; // Used for drawing Windows XP themed checkbox.
+	BOOL m_bLastItemDrawnThemed;		// TRUE if the last item drawn was themed.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE UINT CXTPCheckListBox::GetCheckStyle() {
+AFX_INLINE UINT CXTPCheckListBox::GetCheckStyle()
+{
 	return m_nStyle;
 }
-AFX_INLINE BOOL CXTPCheckListBox::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPCheckListBox::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCHECKLISTBOX_H__)

@@ -1,7 +1,6 @@
 // XTPWindowPos.h interface for the CXTPWindowPos class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPWINDOWPLACEMENT_H__)
-#define __XTPWINDOWPLACEMENT_H__
+#	define __XTPWINDOWPLACEMENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -58,7 +59,9 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL LoadWindowPos(LPCTSTR lpszWndPos = NULL, LPCTSTR lpszSection = NULL);
-	BOOL LoadWindowPos(CWnd* pWnd, LPCTSTR lpszWndPos = NULL, LPCTSTR lpszSection = NULL); // <combine CXTPWindowPos::LoadWindowPos@LPCTSTR@LPCTSTR>
+	BOOL LoadWindowPos(CWnd* pWnd, LPCTSTR lpszWndPos = NULL,
+					   LPCTSTR lpszSection = NULL); // <combine
+													// CXTPWindowPos::LoadWindowPos@LPCTSTR@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -77,4 +80,5 @@ public:
 	BOOL SaveWindowPos(CWnd* pWnd, LPCTSTR lpszWndPos = NULL, LPCTSTR lpszSection = NULL);
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPWINDOWPLACEMENT_H__)

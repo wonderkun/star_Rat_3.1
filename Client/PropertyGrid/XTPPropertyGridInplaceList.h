@@ -1,7 +1,6 @@
 // XTPPropertyGridInplaceList.h interface for the CXTPPropertyGridInplaceList class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDINPLACELIST_H__)
-#define __XTPPROPERTYGRIDINPLACELIST_H__
+#	define __XTPPROPERTYGRIDINPLACELIST_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // class forwards.
 
@@ -42,7 +43,6 @@ class _XTP_EXT_CLASS CXTPPropertyGridInplaceList : public CListBox
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceList)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceList object
@@ -72,11 +72,9 @@ public:
 	virtual void DestroyItem();
 
 private:
-
 	CXTPPropertyGridItem* m_pItem;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to cancel user changes.
@@ -90,13 +88,14 @@ protected:
 	virtual void Apply();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPPropertyGridInplaceList)
 	void PostNcDestroy();
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+	BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPPropertyGridInplaceList)
@@ -109,18 +108,18 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnNcPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	static BOOL m_bShowShadow; // TRUE to show shadow for inplace list.
+	static BOOL m_bShowShadow;	 // TRUE to show shadow for inplace list.
 	static BOOL m_bTrackSelection; // TRUE to select on Mouse move
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 	friend class CXTPPropertyGridItem;
 };
-
 
 //===========================================================================
 // Summary:
@@ -132,7 +131,6 @@ class _XTP_EXT_CLASS CXTPPropertyGridInplaceMultilineEdit : public CEdit
 	DECLARE_DYNAMIC(CXTPPropertyGridInplaceMultilineEdit)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridInplaceList object
@@ -156,11 +154,9 @@ public:
 	virtual void Create(CXTPPropertyGridItem* pItem, CRect rect);
 
 private:
-
 	CXTPPropertyGridItem* m_pItem;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to cancel user changes.
@@ -174,8 +170,7 @@ protected:
 	virtual void Apply();
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPPropertyGridInplaceList)
@@ -191,10 +186,11 @@ protected:
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	afx_msg UINT OnGetDlgCode();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 	friend class CXTPPropertyGridItem;
@@ -202,19 +198,31 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPPropertyGridInplaceList::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceList::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+													DWORD dwStyle, const RECT& rect,
+													CWnd* pParentWnd, UINT nID,
+													CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceList::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceList::Create(DWORD dwStyle, const RECT& rect,
+													CWnd* pParentWnd, UINT nID)
+{
 	return CListBox::Create(dwStyle, rect, pParentWnd, nID);
 }
 
-AFX_INLINE BOOL CXTPPropertyGridInplaceMultilineEdit::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceMultilineEdit::Create(LPCTSTR lpszClassName,
+															 LPCTSTR lpszWindowName, DWORD dwStyle,
+															 const RECT& rect, CWnd* pParentWnd,
+															 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPPropertyGridInplaceMultilineEdit::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTPPropertyGridInplaceMultilineEdit::Create(DWORD dwStyle, const RECT& rect,
+															 CWnd* pParentWnd, UINT nID)
+{
 	return CEdit::Create(dwStyle, rect, pParentWnd, nID);
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDINPLACELIST_H__)

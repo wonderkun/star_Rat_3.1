@@ -1,7 +1,6 @@
 // XTPDockingPaneAutoHidePanel.h : interface for the CXTPDockingPaneAutoHidePanel class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEAUTOHIDEPANEL_H__)
-#define __XTPDOCKINGPANEAUTOHIDEPANEL_H__
+#	define __XTPDOCKINGPANEAUTOHIDEPANEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBaseContainer.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneLayout;
 class CXTPDockingPaneAutoHidePanel;
@@ -43,7 +42,8 @@ class _XTP_EXT_CLASS CXTPDockingPaneAutoHideWnd : public CMiniFrameWnd
 	DECLARE_DYNAMIC(CXTPDockingPaneAutoHideWnd)
 
 private:
-	CXTPDockingPaneAutoHideWnd(CXTPDockingPaneAutoHidePanel* pPanel, CXTPDockingPaneTabbedContainer* pPane);
+	CXTPDockingPaneAutoHideWnd(CXTPDockingPaneAutoHidePanel* pPanel,
+							   CXTPDockingPaneTabbedContainer* pPane);
 
 public:
 	//-----------------------------------------------------------------------
@@ -53,13 +53,12 @@ public:
 	CXTPDockingPaneTabbedContainer* GetPane() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPDockingPaneAutoHideWnd)
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
-
 
 	//{{AFX_MSG(CXTPDockingPaneAutoHideWnd)
 	afx_msg void OnClose();
@@ -69,13 +68,13 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void CloseWindow();
 	CXTPDockingPaneManager* GetDockingPaneManager() const;
 
-	void GetMinMaxInfo (LPMINMAXINFO pMinMaxInfo, BOOL bIncludeSplitter = TRUE) const;
+	void GetMinMaxInfo(LPMINMAXINFO pMinMaxInfo, BOOL bIncludeSplitter = TRUE) const;
 
 	void RecalcLayout(BOOL bNotify = TRUE);
 	void DoSlideStep();
@@ -83,11 +82,11 @@ private:
 	BOOL GetAvailableRect(CRect& rcAvail, CRect& rc) const;
 
 public:
-	static double m_dAnimationDelay;              // Animation delay
-	static int m_nAnimationInterval;              // Delay in ms between animation steps
-	static int m_nAnimationDuration;              // Duration of sliding animation in ms
-	static DWORD m_nMouseHoverDelay;              // Duration of mouse hover before expanding
-	static UINT m_nInactiveCollapseDelay;          // Delay before collapsing inactive.
+	static double m_dAnimationDelay;	  // Animation delay
+	static int m_nAnimationInterval;	  // Delay in ms between animation steps
+	static int m_nAnimationDuration;	  // Duration of sliding animation in ms
+	static DWORD m_nMouseHoverDelay;	  // Duration of mouse hover before expanding
+	static UINT m_nInactiveCollapseDelay; // Delay before collapsing inactive.
 
 private:
 	CXTPDockingPaneTabbedContainer* m_pPane;
@@ -112,7 +111,10 @@ private:
 //     CWnd and CXTPDockingPaneBase. It is used internally as an auto-hide container
 //     for CXTPDockingPaneBase derived classes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneAutoHidePanel : public CWnd, public CXTPDockingPaneBaseContainer, public CXTPTabManager
+class _XTP_EXT_CLASS CXTPDockingPaneAutoHidePanel
+	: public CWnd
+	, public CXTPDockingPaneBaseContainer
+	, public CXTPTabManager
 {
 private:
 	class CAutoHidePanelTabManager;
@@ -203,7 +205,8 @@ public:
 	//     TRUE if the icon was successfully drawn, FALSE if the icon
 	//     was not drawn.
 	//-----------------------------------------------------------------------
-	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw, CSize& szIcon) const;
+	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw,
+						  CSize& szIcon) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -325,7 +328,7 @@ protected:
 	virtual void InvalidatePane(BOOL bSelectionChanged);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	virtual void RedrawControl(LPCRECT lpRect, BOOL /*bAnimate*/);
@@ -345,20 +348,40 @@ protected:
 	afx_msg LRESULT OnMouseHover(WPARAM, LPARAM lParam);
 	afx_msg void OnMouseLeave();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneAutoHidePanel);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneAutoHidePanel);
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+
+	LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	afx_msg int OleGetPosition();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 private:
 	void Copy(CXTPDockingPaneBase* pClone, CXTPPaneToPaneMap* pMap, DWORD dwIgnoredOptions);
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 public:
-	static BOOL m_bCloseActiveWindow;                             // TRUE to allow the AutoHide window to be closed.
-
+	static BOOL m_bCloseActiveWindow; // TRUE to allow the AutoHide window to be closed.
 
 protected:
-	CXTPDockingPaneAutoHideWnd* m_pActiveWnd;                     // Active window
-	XTPDockingPaneDirection m_direction;                          // Location of hidden panel
+	CXTPDockingPaneAutoHideWnd* m_pActiveWnd; // Active window
+	XTPDockingPaneDirection m_direction;	  // Location of hidden panel
 
 private:
 	CAutoHidePanelTabManagersArray* m_pTabManagers;
@@ -374,17 +397,25 @@ private:
 	friend class CPanelDropTarget;
 };
 
-AFX_INLINE BOOL CXTPDockingPaneAutoHidePanel::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPDockingPaneAutoHidePanel::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+													 DWORD dwStyle, const RECT& rect,
+													 CWnd* pParentWnd, UINT nID,
+													 CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE XTPDockingPaneDirection CXTPDockingPaneAutoHidePanel::GetDirection() const {
+AFX_INLINE XTPDockingPaneDirection CXTPDockingPaneAutoHidePanel::GetDirection() const
+{
 	return m_direction;
 }
-AFX_INLINE HWND CXTPDockingPaneAutoHidePanel::GetPaneHwnd() const {
+AFX_INLINE HWND CXTPDockingPaneAutoHidePanel::GetPaneHwnd() const
+{
 	return CWnd::GetSafeHwnd();
 }
-AFX_INLINE CXTPDockingPaneTabbedContainer* CXTPDockingPaneAutoHideWnd::GetPane() const {
+AFX_INLINE CXTPDockingPaneTabbedContainer* CXTPDockingPaneAutoHideWnd::GetPane() const
+{
 	return m_pPane;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANEAUTOHIDEPANEL_H__)

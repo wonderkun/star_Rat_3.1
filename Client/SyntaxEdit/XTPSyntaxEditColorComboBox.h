@@ -1,7 +1,6 @@
 // XTPSyntaxEditColorComboBox.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITCOLORCOMBOBOX_H__)
-#define __XTPSYNTAXEDITCOLORCOMBOBOX_H__
+#	define __XTPSYNTAXEDITCOLORCOMBOBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -50,7 +51,6 @@ public:
 	virtual ~CXTPSyntaxEditColorComboBox();
 
 public:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Use this member to get selected color.
@@ -98,7 +98,7 @@ public:
 	// Returns:
 	//     Color index or CB_ERR.
 	// -------------------------------------------------------------------
-	int SetUserColor(COLORREF crColor, LPCTSTR lpszUserText=NULL);
+	int SetUserColor(COLORREF crColor, LPCTSTR lpszUserText = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -117,7 +117,7 @@ public:
 	// Returns:
 	//     Color index or CB_ERR.
 	// -------------------------------------------------------------------
-	int SetAutoColor(COLORREF crColor, LPCTSTR lpszAutoText=NULL);
+	int SetAutoColor(COLORREF crColor, LPCTSTR lpszAutoText = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -144,18 +144,18 @@ public:
 	virtual bool Init();
 
 	//{{AFX_CODEJOCK_PRIVATE
-	public:
+public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDIS);
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMIS);
 	virtual int CompareItem(LPCOMPAREITEMSTRUCT lpCIS);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+
+protected:
 	virtual void PreSubclassWindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Use this member to add new color.
@@ -196,18 +196,20 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	int      m_iPrevSel;
-	bool     m_bPreInit;
+	int m_iPrevSel;
+	bool m_bPreInit;
 	COLORREF m_crAuto;
 	COLORREF m_crUser;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE COLORREF CXTPSyntaxEditColorComboBox::GetUserColor() const {
+AFX_INLINE COLORREF CXTPSyntaxEditColorComboBox::GetUserColor() const
+{
 	return m_crUser;
 }
-AFX_INLINE COLORREF CXTPSyntaxEditColorComboBox::GetAutoColor() const {
+AFX_INLINE COLORREF CXTPSyntaxEditColorComboBox::GetAutoColor() const
+{
 	return m_crAuto;
 }
 
@@ -222,10 +224,10 @@ AFX_INLINE COLORREF CXTPSyntaxEditColorComboBox::GetAutoColor() const {
 //===========================================================================
 _XTP_EXT_CLASS void AFXAPI DDX_CBSyntaxColor(CDataExchange* pDX, int nIDC, COLORREF& value);
 
-
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITCOLORCOMBOBOX_H__)

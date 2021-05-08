@@ -1,7 +1,6 @@
 // ReportControl resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -22,7 +21,7 @@
 #include "ReportControl/Resource.h"
 #include "ReportControl/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI)
 #ifdef _WIN32
 LANGUAGE LANG_LATVIAN, SUBLANG_DEFAULT
 #pragma code_page(1257)
@@ -84,20 +83,20 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_REPORT_NOGROUPBY         "Velciet kolonnas galveni uz ?ejieni, lai grup?tu p?c ??s kolonnas."
-    XTP_IDS_REPORT_NOITEMS           "Nav ?aj? skat? par?d?mu vienumu."
+    XTP_IDS_REPORT_NOGROUPBY         "Ðeit velciet sleju galveni, lai grupçtu pçc ðîs kolonnas."
+    XTP_IDS_REPORT_NOITEMS           "Nav parâdâmu vienumu."
     XTP_IDS_REPORT_NOFIELDSAVAILABLE "(neviens lauks nav pieejams)"
     XTP_IDS_REPORT_SORTBY            "Kârtot pçc:"
 
     XTP_IDS_REPORT_MARGINS_MM        "Piemales (milimetros)"
     XTP_IDS_REPORT_MARGINS_INCH      "Piemales (collâs)"
-    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Enter filter text here"
+    XTP_IDS_REPORT_FILERT_TEXT_HINT  "Ievadiet filtru tekstu ðeit"
 
-    XTP_IDS_REPORT_INCREASING        "/Increasing"
-    XTP_IDS_REPORT_DECREASING        "/Decreasing"
-    XTP_IDS_REPORT_EXPAND            "Expand"
-    XTP_IDS_REPORT_COLLAPSE          "Collapse"
+    XTP_IDS_REPORT_INCREASING        "/ Palielinât"
+    XTP_IDS_REPORT_DECREASING        "/ Samazinâs"
+    XTP_IDS_REPORT_EXPAND            "Paplaðinât"
+    XTP_IDS_REPORT_COLLAPSE          "Sakïaut"
 
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_LVI)

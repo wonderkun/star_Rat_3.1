@@ -1,3 +1,4 @@
+
 /**************************************************************************\
 * 
 * Copyright (c) 1999-2000  Microsoft Corporation
@@ -60,6 +61,12 @@ DEFINE_GUID(EncoderTransformation,0x8d0eb2d1,0xa58e,0x4ea8,0xaa,0x14,0x10,0x80,0
 DEFINE_GUID(EncoderLuminanceTable,0xedb33bce,0x0266,0x4a77,0xb9,0x04,0x27,0x21,0x60,0x99,0xe7,0x17);
 DEFINE_GUID(EncoderChrominanceTable,0xf2e455dc,0x09b3,0x4316,0x82,0x60,0x67,0x6a,0xda,0x32,0x48,0x1c);
 DEFINE_GUID(EncoderSaveFlag,0x292266fc,0xac40,0x47bf,0x8c, 0xfc, 0xa8, 0x5b, 0x89, 0xa6, 0x55, 0xde);
+
+#if (GDIPVER >= 0x0110)
+DEFINE_GUID(EncoderColorSpace,0xae7a62a0,0xee2c,0x49d8,0x9d,0x7,0x1b,0xa8,0xa9,0x27,0x59,0x6e);
+DEFINE_GUID(EncoderImageItems,0x63875e13,0x1f1d,0x45ab,0x91, 0x95, 0xa2, 0x9b, 0x60, 0x66, 0xa6, 0x50);
+DEFINE_GUID(EncoderSaveAsCMYK,0xa219bbc9, 0xa9d, 0x4005, 0xa3, 0xee, 0x3a, 0x42, 0x1b, 0x8b, 0xb0, 0x6c);
+#endif //(GDIPVER >= 0x0110)
 
 DEFINE_GUID(CodecIImageBytes,0x025d1823,0x6c7d,0x447b,0xbb, 0xdb, 0xa3, 0xcb, 0xc3, 0xdf, 0xa2, 0xfc);
 
@@ -236,6 +243,33 @@ public:
     UINT Count;                      // Number of parameters in this structure
     EncoderParameter Parameter[1];   // Parameter values
 };
+
+#if (GDIPVER >= 0x0110)
+enum ItemDataPosition
+{
+    ItemDataPositionAfterHeader    = 0x0,
+    ItemDataPositionAfterPalette   = 0x1,
+    ItemDataPositionAfterBits      = 0x2,
+};
+
+//---------------------------------------------------------------------------
+// External Data Item
+//---------------------------------------------------------------------------
+class ImageItemData
+{
+public:
+    UINT  Size;           // size of the structure 
+    UINT  Position;       // flags describing how the data is to be used.
+    VOID *Desc;           // description on how the data is to be saved.
+                          // it is different for every codec type.
+    UINT  DescSize;       // size memory pointed by Desc
+    VOID *Data;           // pointer to the data that is to be saved in the
+                          // file, could be anything saved directly.
+    UINT  DataSize;       // size memory pointed by Data
+    UINT  Cookie;         // opaque for the apps data member used during
+                          // enumeration of image data items.
+};
+#endif //(GDIPVER >= 0x0110)
 
 //---------------------------------------------------------------------------
 // Property Item
@@ -438,6 +472,12 @@ public:
 #define PropertyTagFrameDelay                0x5100
 #define PropertyTagLoopCount                 0x5101
 
+#if (GDIPVER >= 0x0110)
+#define PropertyTagGlobalPalette             0x5102
+#define PropertyTagIndexBackground           0x5103
+#define PropertyTagIndexTransparent          0x5104
+#endif //(GDIPVER >= 0x0110)
+
 #define PropertyTagPixelUnit         0x5110  // Unit specifier for pixel/unit
 #define PropertyTagPixelPerUnitX     0x5111  // Pixels per unit in X
 #define PropertyTagPixelPerUnitY     0x5112  // Pixels per unit in Y
@@ -470,6 +510,7 @@ public:
 #define PropertyTagExifLightSource    0x9208
 #define PropertyTagExifFlash          0x9209
 #define PropertyTagExifFocalLength    0x920A
+#define PropertyTagExifSubjectArea    0x9214  // exif 2.2 Subject Area
 #define PropertyTagExifMakerNote      0x927C
 #define PropertyTagExifUserComment    0x9286
 #define PropertyTagExifDTSubsec       0x9290  // Date & Time subseconds
@@ -493,6 +534,23 @@ public:
 #define PropertyTagExifFileSource     0xA300
 #define PropertyTagExifSceneType      0xA301
 #define PropertyTagExifCfaPattern     0xA302
+
+// New EXIF 2.2 properties
+
+#define PropertyTagExifCustomRendered           0xA401
+#define PropertyTagExifExposureMode             0xA402
+#define PropertyTagExifWhiteBalance             0xA403
+#define PropertyTagExifDigitalZoomRatio         0xA404
+#define PropertyTagExifFocalLengthIn35mmFilm    0xA405
+#define PropertyTagExifSceneCaptureType         0xA406
+#define PropertyTagExifGainControl              0xA407
+#define PropertyTagExifContrast                 0xA408
+#define PropertyTagExifSaturation               0xA409
+#define PropertyTagExifSharpness                0xA40A
+#define PropertyTagExifDeviceSettingDesc        0xA40B
+#define PropertyTagExifSubjectDistanceRange     0xA40C
+#define PropertyTagExifUniqueImageID            0xA420
+
 
 #define PropertyTagGpsVer             0x0000
 #define PropertyTagGpsLatitudeRef     0x0001
@@ -521,6 +579,11 @@ public:
 #define PropertyTagGpsDestBear        0x0018
 #define PropertyTagGpsDestDistRef     0x0019
 #define PropertyTagGpsDestDist        0x001A
+#define PropertyTagGpsProcessingMethod 0x001B
+#define PropertyTagGpsAreaInformation 0x001C
+#define PropertyTagGpsDate            0x001D
+#define PropertyTagGpsDifferential    0x001E
 
 #endif
+
 

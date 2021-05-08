@@ -1,7 +1,6 @@
 // XTOutBarCtrlTheme.h: interface for the CXTOutBarCtrlTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,12 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTOUTBARCTRLTHEME_H__)
-#define __XTOUTBARCTRLTHEME_H__
+#	define __XTOUTBARCTRLTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#include "Common/XTPDrawHelpers.h"
-#include "XTThemeManager.h"
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
 class CXTOutBarCtrl;
 class CXTOutBarItem;
@@ -57,7 +53,6 @@ public:
 	virtual ~CXTOutBarCtrlTheme();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Refresh the colors on the OutBar.  Also, set the default colors
@@ -74,7 +69,6 @@ public:
 	void SetFont(CFont* pFont);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to draw the icon associated with the pBarItem.
@@ -127,7 +121,8 @@ public:
 	//     eHilight   - An int that specifies the height of the folder.  The possible
 	//                  values are: xtMouseNormal, xtMouseSelect, and xtMouseHover.
 	//-----------------------------------------------------------------------
-	virtual void DrawFolder(CDC* pDC, CRect rect, CXTOutBarFolder* pBarFolder, const XTMouseState eHilight);
+	virtual void DrawFolder(CDC* pDC, CRect rect, CXTOutBarFolder* pBarFolder,
+							const XTMouseState eHilight);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -141,16 +136,15 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void DrawIconFrame(CDC* pDC, CRect rcIcon, BOOL bSelected, BOOL bPressed);
 
-
 protected:
-	BOOL m_bFlatIcon;   // Set this to TRUE to draw flat icons.
-	BOOL m_bPlainText;  // Set to TRUE to draw plain text.  Uses the system default font and font attributes.
+	BOOL m_bFlatIcon;  // Set this to TRUE to draw flat icons.
+	BOOL m_bPlainText; // Set to TRUE to draw plain text.  Uses the system default font and font
+					   // attributes.
 
 public:
-	CXTPPaintManagerColor m_clrBack;    // The color used to draw the background of the OutBar.
-	CXTPPaintManagerColor m_clrText;    // The color used to draw the text on the OutBar.
+	CXTPPaintManagerColor m_clrBack; // The color used to draw the background of the OutBar.
+	CXTPPaintManagerColor m_clrText; // The color used to draw the text on the OutBar.
 };
-
 
 //===========================================================================
 // Summary:
@@ -160,7 +154,6 @@ public:
 class _XTP_EXT_CLASS CXTOutBarCtrlThemeOfficeXP : public CXTOutBarCtrlTheme
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarCtrlThemeOfficeXP object.
@@ -185,9 +178,7 @@ public:
 	//     bPressed  - TRUE if the icon is pressed.  FALSE otherwise.
 	//-----------------------------------------------------------------------
 	virtual void DrawIconFrame(CDC* pDC, CRect rcIcon, BOOL bSelected, BOOL bPressed);
-
 };
-
 
 //===========================================================================
 // Summary:
@@ -197,7 +188,6 @@ public:
 class _XTP_EXT_CLASS CXTOutBarCtrlThemeOffice2003 : public CXTOutBarCtrlThemeOfficeXP
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarCtrlThemeOffice2003 object.
@@ -223,7 +213,8 @@ public:
 	//     eHilight   - An int that specifies the height of the folder.  The possible
 	//                  values are: xtMouseNormal, xtMouseSelect, and xtMouseHover.
 	//-----------------------------------------------------------------------
-	virtual void DrawFolder(CDC* pDC, CRect rect, CXTOutBarFolder* pBarFolder, const XTMouseState eHilight);
+	virtual void DrawFolder(CDC* pDC, CRect rect, CXTOutBarFolder* pBarFolder,
+							const XTMouseState eHilight);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -239,11 +230,10 @@ public:
 
 protected:
 	CXTPPaintManagerColorGradient m_grcSelected; // The selected gradient color.
-	CXTPPaintManagerColorGradient m_grcHot;      // The hot gradient color.
+	CXTPPaintManagerColorGradient m_grcHot;		 // The hot gradient color.
 	CXTPPaintManagerColorGradient m_grcPushed;   // The pushed gradient color.
-	BOOL                          m_bLunaTheme;  // TRUE if the current theme is a Luna Theme.
+	BOOL m_bLunaTheme;							 // TRUE if the current theme is a Luna Theme.
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 

@@ -1,0 +1,11 @@
+﻿  Audio.cpp
+  Buffer.cpp
+  ClientSocket.cpp
+  Manager.cpp
+  until.cpp
+  AudioManager.cpp
+  RemoteAudio.cpp
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\RemoteAudio\RemoteAudio.cpp(13,12): warning C4305: “return”: 从“int”到“bool”截断
+  正在生成代码...
+    正在创建库 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\RemoteAudio.lib 和对象 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\RemoteAudio.exp
+  RemoteAudio.vcxproj -> C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\RemoteAudio.dll

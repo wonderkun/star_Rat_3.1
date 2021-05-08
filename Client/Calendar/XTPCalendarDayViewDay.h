@@ -1,7 +1,6 @@
 // XTPCalendarDayViewDay.h: interface for the CXTPCalendarDayViewDay class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARDAYVIEWDAY_H__)
-#define _XTPCALENDARDAYVIEWDAY_H__
+#	define _XTPCALENDARDAYVIEWDAY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarDayViewEvent.h"
-#include "XTPCalendarViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarDayView;
 class CXTPCalendarViewPart;
-struct XTP_CALENDAR_HITTESTINFO_DAY_VIEW;
+class CXTPCalendarDayViewDay;
+class CXTPCalendarDayViewEvent;
+
+struct XTP_CALENDAR_HITTESTINFO;
 
 //===========================================================================
 // Summary:
@@ -45,13 +46,10 @@ struct XTP_CALENDAR_HITTESTINFO_DAY_VIEW;
 //
 // See Also: CXTPCalendarDayViewDay
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarDayViewGroup : public CXTPCalendarViewGroupT<
-											CXTPCalendarDayViewDay,
-											CXTPCalendarDayViewEvent,
-											XTP_CALENDAR_HITTESTINFO_DAY_VIEW,
-											CXTPCalendarDayViewGroup>
+class _XTP_EXT_CLASS CXTPCalendarDayViewGroup
+	: public CXTPCalendarViewGroupT<CXTPCalendarDayViewDay, CXTPCalendarDayViewEvent,
+									CXTPCalendarDayViewGroup>
 {
-
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarDayViewEvent;
 	friend class CXTPCalendarTheme;
@@ -64,12 +62,11 @@ public:
 	// Summary:
 	//     Base class type definition.
 	//-----------------------------------------------------------------------
-	typedef CXTPCalendarViewGroupT<
-									CXTPCalendarDayViewDay,
-									CXTPCalendarDayViewEvent,
-									XTP_CALENDAR_HITTESTINFO_DAY_VIEW,
-									CXTPCalendarDayViewGroup >
+	typedef CXTPCalendarViewGroupT<CXTPCalendarDayViewDay, CXTPCalendarDayViewEvent,
+								   CXTPCalendarDayViewGroup>
 		TBase;
+
+	typedef CXTPCalendarPtrCollectionT<CXTPCalendarDayViewEvent> TViewEventsCollection;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -117,21 +114,25 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void Draw(CDC* pDC);
 
+	virtual void DrawEvents(CDC* pDC);
+
+	void DrawAllDayAreaScrollIcons(CDC* pDC);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill the
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
 	//     pt - A CPoint object that contains the point to test.
-	//     pHitTest - Pointer to an XTP_CALENDAR_HITTESTINFO_DAY_VIEW struct.
+	//     pHitTest - Pointer to an XTP_CALENDAR_HITTESTINFO struct.
 	// Returns:
 	//     TRUE if the test is succesful, FALSE else.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the day view.
-	// See Also: XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pHitTest);
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -143,7 +144,7 @@ public:
 	// Returns:
 	//     XTPCalendarEventBusyStatus value.
 	//-----------------------------------------------------------------------
-	virtual int GetBusyStatus(COleDateTime dtTime);
+	virtual int GetBusyStatus(COleDateTime dtTime) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -253,7 +254,8 @@ public:
 	//     This member function returns a rectangle calculated as a single
 	//     cell rect which user currently holds a mouse on.
 	//-----------------------------------------------------------------------
-	virtual CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo);
+	virtual CRect GetTooltipRect(const CPoint& ptHit,
+								 const XTP_CALENDAR_HITTESTINFO& hitInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -265,7 +267,7 @@ public:
 	// Returns:
 	//     TRUE if the specified date time is work, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsWorkDateTime(const COleDateTime& dtDateTime);
+	BOOL IsWorkDateTime(const COleDateTime& dtDateTime) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -300,7 +302,7 @@ public:
 	// Returns:
 	//     TRUE if ExpandUp sign visible, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsExpandUp();
+	BOOL IsExpandUp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -310,7 +312,101 @@ public:
 	// Returns:
 	//     TRUE if ExpandDown sign visible, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsExpandDown();
+	BOOL IsExpandDown() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Calculates the rectangle to fill with scroll button icon for day view
+	//     when there are too many alldayevents to show without scrolling
+	// Remarks:
+	//     Can be useful to implement visualization themes.
+	// Parameters:
+	//     nButton - xtpHotAllDayEventsScrollUp or xtpHotAllDayEventsScrollDown buttons ids
+	// Returns:
+	//     CRect for scroll icon to show.
+	//-----------------------------------------------------------------------
+	CRect GetAllDayEventsScrollButtonRect(XTP_DAY_VIEW_GROUP_LAYOUT::XTPEnumHotItem nButton) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if all day events scroll
+	//     icons should be shown in day view
+	// Returns:
+	//     TRUE if need to show scroll buttons for alldayevents area
+	//-----------------------------------------------------------------------
+	BOOL NeedScrollAllDayEvents() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if up scroll button for alldayevents
+	//     area will be shown
+	// Returns:
+	//     TRUE if need to show up scroll button for alldayevents area
+	//-----------------------------------------------------------------------
+	BOOL IsShowAllDayEventsUpScrollButton() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if down scroll button for alldayevents
+	//     area will be shown
+	// Returns:
+	//     TRUE if need to show down scroll button for alldayevents area
+	//-----------------------------------------------------------------------
+	BOOL IsShowAllDayEventsDownScrollButton() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to set visibility for up scroll button for
+	//     all day events area
+	// Returns:
+	//     TRUE if need to show scroll button
+	//-----------------------------------------------------------------------
+	void SetShowAllDayEventsUpScrollButton(BOOL bShow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to set visibility for down scroll button for
+	//     all day events area
+	// Returns:
+	//     TRUE if need to show scroll button
+	//-----------------------------------------------------------------------
+	void SetShowAllDayEventsDownScrollButton(BOOL bShow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine the index of the first visible all day
+	//     event in group view
+	// Returns:
+	//     index of the view event object
+	//-----------------------------------------------------------------------
+	int GetFirstVisibleAllDayEvent() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine the index of the last visible all day
+	//     event in group view
+	// Returns:
+	//     index of the view event object
+	//-----------------------------------------------------------------------
+	int GetLastVisibleAllDayEvent() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if the up scroll icon in all day events area is
+	//     visible\highlighted
+	// Returns:
+	//     TRUE if visible, FALSE otherwise
+	//-----------------------------------------------------------------------
+	BOOL IsUpAllDayEventsScrollButtonVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if the down scroll icon in all day events area is
+	//     visible\highlighted
+	// Returns:
+	//     TRUE if visible, FALSE otherwise
+	//-----------------------------------------------------------------------
+	BOOL IsDownAllDayEventsScrollButtonVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -319,7 +415,8 @@ public:
 	//     rpMin - [out] Reference to store pointer to a top event.
 	//     rpMax - [out] Reference to store pointer to a bottom event.
 	//-----------------------------------------------------------------------
-	void FindMinMaxGroupDayEvents(CXTPCalendarDayViewEvent*& rpMin, CXTPCalendarDayViewEvent*& rpMax);
+	void FindMinMaxGroupDayEvents(CXTPCalendarDayViewEvent*& rpMin,
+								  CXTPCalendarDayViewEvent*& rpMax) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -336,10 +433,67 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL UserAction_OnScrollDay(XTPCalendarScrollDayButton eButton);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      This member function used to process user actions
+	//      xtpCalendarUserAction_OnScrollAllDayEvensUp and
+	//      xtpCalendarUserAction_OnScrollAllDayEvensDown.
+	// Parameters:
+	//      eHotBtn - [in] a button from which this action comes.
+	// Remarks:
+	//      Implementation send a XTP_NC_CALENDAR_USERACTION notification.
+	//
+	// Returns:
+	//      TRUE if action was handled by user and default processing must  be
+	//      skipped, FALSE otherwise.
+	// See Also: XTP_NC_CALENDAR_USERACTION
+	//-----------------------------------------------------------------------
+	BOOL UserAction_OnScrollAllDayEvents(XTP_DAY_VIEW_GROUP_LAYOUT::XTPEnumHotItem eHotBtn);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      This member function processes click on up scroll icon in all day events area
+	// Returns:
+	//      TRUE if action was handled by default and FALSE if user canceled default handler
+	// See Also: XTP_NC_CALENDAR_USERACTION
+	//-----------------------------------------------------------------------
+	BOOL ScrollIcon_ScrollAllDayEventsUp();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      This member function processes click on down scroll icon in all day events area
+	// Returns:
+	//      TRUE if action was handled by default and FALSE if user canceled default handler
+	// See Also: XTP_NC_CALENDAR_USERACTION
+	//-----------------------------------------------------------------------
+	BOOL ScrollIcon_ScrollAllDayEventsDown();
+
+	// -----------------------------------------------------------------------
+	// Summary:
+	//       This member function returns events count in all day area of the group
+	// -----------------------------------------------------------------------
+	int GetEventsCountInAllDayArea() const;
+
 	BOOL m_bHide;
 	COLORREF m_GroupColor;
 
 protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to processes left mouse button events.
+	// Parameters:
+	//     nFlags  - A UINT that is used to indicates whether various virtual
+	//               keys are down.
+	//     point   - A CPoint that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
+	// Returns:
+	//      TRUE if the operation is successful, FALSE else.
+	// Remarks:
+	//     This method is called by the CalendarControl when the user
+	//     presses the left mouse button.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnLButtonDown(UINT nFlags, CPoint point);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -351,12 +505,27 @@ protected:
 	//               These coordinates are always relative to the
 	//               upper-left corner of the window.
 	// Returns:
-	//      TRUE if the operation is succesful, FALSE else.
+	//      TRUE if the operation is successful, FALSE else.
 	// Remarks:
 	//     This method is called by the CalendarControl when the user
 	//     presses the left mouse button.
 	//-----------------------------------------------------------------------
-	virtual BOOL OnLButtonDown(UINT nFlags, CPoint point);
+	virtual BOOL OnLButtonDblClk(UINT nFlags, CPoint point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used by OnLButtonDblClk() and OnLButtonDown() to filter scroll
+	//     icons presses in all days events area
+	// Parameters:
+	//     nFlags  - A UINT that is used to indicates whether various virtual
+	//               keys are down.
+	//     point   - A CPoint that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
+	// Returns:
+	//      TRUE if the operation is successful, FALSE else.
+	//-----------------------------------------------------------------------
+	BOOL OnAllDaysAreaClick(UINT nFlags, CPoint point);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -388,7 +557,7 @@ protected:
 	//          Non Work Cell part.
 	// See Also: CXTPCalendarViewPart overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewPart* GetCellViewPart(const COleDateTime& dtDateTime);
+	virtual CXTPCalendarViewPart* GetCellViewPart(const COleDateTime& dtDateTime) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -405,16 +574,15 @@ protected:
 	//                       time for events in the returned collection.
 	// See Also: TViewEventsCollection
 	//-----------------------------------------------------------------------
-	virtual void GetCellEvents(int nCell,
-		CXTPCalendarDayViewGroup::TBase::TViewEventsCollection* pViewEvents,
-		COleDateTime& rdtMinEventTime, COleDateTime& rdtMaxEventTime);
+	virtual void GetCellEvents(int nCell, TViewEventsCollection* pViewEvents,
+							   COleDateTime& rdtMinEventTime, COleDateTime& rdtMaxEventTime);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill an
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pHitTest - A pointer to an XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     pHitTest - A pointer to an XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the day view.
@@ -422,59 +590,58 @@ protected:
 	// Returns: A BOOL.
 	//          TRUE if pHitTest->pt point is on a valid part of the Day View.
 	//          FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestDateTime(XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pHitTest);
+	virtual BOOL HitTestDateTime(XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	// -----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill an
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pHitTest :  A pointer to an XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     pHitTest :  A pointer to an XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Call this member function to gather hit test information from the
 	//     day view.
 	// See Also:
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	//     XTP_CALENDAR_HITTESTINFO
 	// -----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pHitTest);
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 public:
-	//{{AFX_CODEJOCK_PRIVATE
-	struct XTP_DAY_VIEW_GROUP_LAYOUT
-	{
-		CRect m_rcAllDayEvents; // The coordinates of the all day area.
-		CRect m_rcDayDetails;   // The coordinates of days details area.
+	const XTP_DAY_VIEW_GROUP_LAYOUT& GetLayout() const;
 
-		BOOL  m_bShowHeader;    // TRUE to show resource group header; FALSE otherwise.
-
-		// for office 2007 theme
-		int   m_nHotState;  // Last Items Hot state.
-
-		enum XTPEnumHotItem
-		{
-			xtpHotHeader        = 0x001,
-			xtpHotScrollUp      = xtpCalendarHitTestDayViewScrollUp,
-			xtpHotScrollDown    = xtpCalendarHitTestDayViewScrollDown,
-
-			//xtpHotADScrollUp      = 0x010,
-			//xtpHotADScrollDown    = 0x020,
-
-		};
-	};
-	//}}AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to fill an
+	//     XTP_CALENDAR_HITTESTINFO structure.
+	// Parameters:
+	//     pHitTest - A pointer to an XTP_CALENDAR_HITTESTINFO structure.
+	// Remarks:
+	//     Call this member function to gather hit test information from
+	//     the day view.
+	//     It uses pHitTest->pt point for gathering information.
+	// Returns: A BOOL.
+	//          TRUE if pHitTest->pt point is on a valid part of the Day View.
+	//          FALSE otherwise.
+	// See Also: XTP_CALENDAR_HITTESTINFO
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTestAllDayEventsScrollIcons(CPoint pt,
+												XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_DAY_VIEW_GROUP_LAYOUT& GetLayout();
+	XTP_DAY_VIEW_GROUP_LAYOUT& GetLayout();
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	XTP_DAY_VIEW_GROUP_LAYOUT m_LayoutX; // Store group view layout.
 
-	BOOL m_bExpandUP;           // Store is ExpandUP sign visible.
-	BOOL m_bExpandDOWN;         // Store is ExpandDOWN sign visible.
+	BOOL m_bExpandUP;   // Store is ExpandUP sign visible.
+	BOOL m_bExpandDOWN; // Store is ExpandDOWN sign visible.
+
+	BOOL m_bIsShowAllDayEventsUpScrollButton;
+	BOOL m_bIsShowAllDayEventsDownScrollButton;
 
 private:
 	TViewEventsCollection m_arRegionViewEvents;
@@ -490,7 +657,6 @@ AFX_INLINE CXTPCalendarDayViewGroup* CXTPCalendarDayViewGroup::GetPThis()
 	return this;
 }
 
-
 //===========================================================================
 // Summary:
 //     This class represents a day view portion of the Calendar Day View.
@@ -505,11 +671,9 @@ AFX_INLINE CXTPCalendarDayViewGroup* CXTPCalendarDayViewGroup::GetPThis()
 //
 // See Also: CXTPCalendarViewDay, CXTPCalendarViewDayT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarDayViewDay : public CXTPCalendarViewDayT<
-											CXTPCalendarDayView,
-											CXTPCalendarDayViewGroup,
-											XTP_CALENDAR_HITTESTINFO_DAY_VIEW,
-											CXTPCalendarDayViewDay >
+class _XTP_EXT_CLASS CXTPCalendarDayViewDay
+	: public CXTPCalendarViewDayT<CXTPCalendarDayView, CXTPCalendarDayViewGroup,
+								  XTP_CALENDAR_HITTESTINFO, CXTPCalendarDayViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarDayView;
@@ -524,10 +688,9 @@ public:
 	// Summary:
 	//     Base class type definition.
 	//-----------------------------------------------------------------------
-	typedef CXTPCalendarViewDayT<CXTPCalendarDayView,
-								 CXTPCalendarDayViewGroup,
-								 XTP_CALENDAR_HITTESTINFO_DAY_VIEW,
-								 CXTPCalendarDayViewDay >    TBase;
+	typedef CXTPCalendarViewDayT<CXTPCalendarDayView, CXTPCalendarDayViewGroup,
+								 XTP_CALENDAR_HITTESTINFO, CXTPCalendarDayViewDay>
+		TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -560,6 +723,8 @@ public:
 	// See Also: AdjustLayout(CRect rcDay)
 	//-----------------------------------------------------------------------
 	virtual void Draw(CDC* pDC);
+	virtual void DrawEvents(CDC* pDC);
+	virtual void DrawTopmostLayer(CDC* pDC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -575,7 +740,7 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcDay);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcDay);//<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcDay); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -592,21 +757,21 @@ public:
 	// Returns:
 	//     A CString object that contains the day's view caption.
 	//-----------------------------------------------------------------------
-	virtual CString GetCaption();
+	virtual CString GetCaption() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill an
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
-	//     pInfo :  A pointer to an XTP_CALENDAR_HITTESTINFO_DAY_VIEW structure.
+	//     pInfo :  A pointer to an XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     Call this member function to gather hit test information from the
 	//     day view.
 	// See Also:
-	//     XTP_CALENDAR_HITTESTINFO_DAY_VIEW
+	//     XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO_DAY_VIEW* pInfo);
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -623,6 +788,7 @@ protected:
 	//     moves the mouse cursor or stylus.
 	//-----------------------------------------------------------------------
 	virtual void OnMouseMove(UINT nFlags, CPoint point);
+
 private:
 	virtual CXTPCalendarDayViewDay* GetPThis();
 };
@@ -632,41 +798,38 @@ AFX_INLINE CRect CXTPCalendarDayViewGroup::GetAllDayEventsRect() const
 {
 	return m_LayoutX.m_rcAllDayEvents;
 }
-
 AFX_INLINE BOOL CXTPCalendarDayViewGroup::IsGroupHeaderVisible() const
 {
 	return m_LayoutX.m_bShowHeader;
 }
-
-AFX_INLINE CXTPCalendarDayViewGroup::XTP_DAY_VIEW_GROUP_LAYOUT&
-										CXTPCalendarDayViewGroup::GetLayout()
+AFX_INLINE XTP_DAY_VIEW_GROUP_LAYOUT& CXTPCalendarDayViewGroup::GetLayout()
 {
 	return m_LayoutX;
 }
-
+AFX_INLINE const XTP_DAY_VIEW_GROUP_LAYOUT& CXTPCalendarDayViewGroup::GetLayout() const
+{
+	return m_LayoutX;
+}
 AFX_INLINE CXTPCalendarDayViewDay* CXTPCalendarDayViewDay::GetPThis()
 {
 	return this;
 }
-
 AFX_INLINE void CXTPCalendarDayViewGroup::SetExpandUp()
 {
 	m_bExpandUP = TRUE;
 }
-
 AFX_INLINE void CXTPCalendarDayViewGroup::SetExpandDown()
 {
 	m_bExpandDOWN = TRUE;
 }
-
-AFX_INLINE BOOL CXTPCalendarDayViewGroup::IsExpandUp()
+AFX_INLINE BOOL CXTPCalendarDayViewGroup::IsExpandUp() const
 {
 	return m_bExpandUP;
 }
-
-AFX_INLINE BOOL CXTPCalendarDayViewGroup::IsExpandDown()
+AFX_INLINE BOOL CXTPCalendarDayViewGroup::IsExpandDown() const
 {
 	return m_bExpandDOWN;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(AFX_XTPCALENDARDAYVIEWDAY_H__7E299FBF_C671_4648_8919_8ACAFDF38A99__INCLUDED_)

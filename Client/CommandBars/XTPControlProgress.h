@@ -1,7 +1,6 @@
 // XTPControlProgress.h : interface for the CXTPControlProgress class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,110 +19,25 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTOLPROGRESS_H__)
-#define __XTPCONTOLPROGRESS_H__
+#	define __XTPCONTOLPROGRESS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPControl.h"
-#include "Common/XTPWinThemeWrapper.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPProgressPaintManager;
-
-//===========================================================================
-// Summary:
-//     CXTPControlProgressBase is base class for all progress objects
-//===========================================================================
-class _XTP_EXT_CLASS CXTPProgressBase
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPProgressBase object
-	//-----------------------------------------------------------------------
-	CXTPProgressBase();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPProgressBase object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	virtual ~CXTPProgressBase();
-
-public:
-
-	//----------------------------------------------------------------------
-	// Summary:
-	//     Sets the upper and lower limits of the progress bar control's range.
-	// Parameters:
-	//     nLower - Lower limit of the progress bar control's range.
-	//     nUpper - Upper limit of the progress bar control's range.
-	//----------------------------------------------------------------------
-	void SetRange(int nLower, int nUpper);
-
-	//----------------------------------------------------------------------
-	// Summary:
-	//     Gets the upper and lower limits of the progress bar control's range.
-	// Parameters:
-	//     nLower - Lower limit of the progress bar control's range.
-	//     nUpper - Upper limit of the progress bar control's range.
-	//----------------------------------------------------------------------
-	void GetRange(int& nLower, int& nUpper) const;
-
-	//----------------------------------------------------------------------
-	// Summary:
-	//     Gets the current position of the progress bar, whose return value
-	//     is always between the values for the Max and Min properties, inclusive.
-	// Returns:
-	//     Current position of the progress bar.
-	//----------------------------------------------------------------------
-	int GetPos() const;
-
-	//----------------------------------------------------------------------
-	// Summary:
-	//     Sets the current position of the progress bar, whose return value
-	//     is always between the values for the Max and Min properties, inclusive.
-	// Parameters:
-	//     nPos - Position to move progress bar.
-	//----------------------------------------------------------------------
-	void SetPos(int nPos);
-
-public:
-	//----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to get bounding rectangle of progressbar
-	//----------------------------------------------------------------------
-	virtual CRect GetProgressRect() = 0;
-
-protected:
-	//----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to redraw progress bar
-	//----------------------------------------------------------------------
-	virtual void RedrawProgress() = 0;
-
-	//----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to retrieve pointer to CXTPProgressPaintManager
-	//----------------------------------------------------------------------
-	virtual CXTPProgressPaintManager* GetProgressPaintManager() const = 0;
-
-protected:
-	int m_nMin;     // Minimum
-	int m_nMax;     // Maximum
-	int m_nPos;     // Current position
-
-};
-
 
 //===========================================================================
 // Summary:
 //     CXTPControlProgress is a CXTPControl derived class.
 //     It represents an progress control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlProgress : public CXTPControl, public CXTPProgressBase
+class _XTP_EXT_CLASS CXTPControlProgress
+	: public CXTPControl
+	, public CXTPProgressBase
 {
 	DECLARE_XTP_CONTROL(CXTPControlProgress)
 public:
@@ -153,7 +67,6 @@ protected:
 	virtual void Draw(CDC* pDC);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to redraw the progress bar.
@@ -186,9 +99,7 @@ protected:
 	//----------------------------------------------------------------------
 	virtual void OnClick(BOOL bKeyboard = FALSE, CPoint pt = CPoint(0, 0));
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method makes a copy of the progress bar.
@@ -206,65 +117,24 @@ protected:
 	//----------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlProgress);
+	afx_msg void OleRangeChanged();
+	afx_msg void OleSetPos(int nPos);
+	afx_msg int OleGetPos();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-//===========================================================================
-// Summary: CXTPProgressPaintManager object
-//===========================================================================
-class _XTP_EXT_CLASS CXTPProgressPaintManager
+AFX_INLINE int CXTPProgressBase::GetPos() const
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPProgressPaintManager object
-	// Parameters:
-	//     pPaintManager - PaintManager of commandbars
-	//-----------------------------------------------------------------------
-	CXTPProgressPaintManager(CXTPPaintManager* pPaintManager);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPProgressPaintManager object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	virtual ~CXTPProgressPaintManager();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw progress
-	// Parameters:
-	//     pDC - Pointer to device context
-	//     pProgressBar - Progress to draw
-	//-----------------------------------------------------------------------
-	virtual void DrawProgress(CDC* pDC, CXTPProgressBase* pProgressBar);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Recalculates metrics
-	//-------------------------------------------------------------------------
-	virtual void RefreshMetrics();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns parent paintmanager object
-	//-----------------------------------------------------------------------
-	CXTPPaintManager* GetPaintManager() const;
-
-protected:
-	CXTPWinThemeWrapper m_themeProgress;        // Theme wrapper
-	CXTPPaintManager* m_pPaintManager;          // Pointer to parent PaintManager
-
-public:
-	int m_cyProgress;           // Progress height
-};
-
-AFX_INLINE  int CXTPProgressBase::GetPos() const {
 	return m_nPos;
 }
-AFX_INLINE CXTPPaintManager* CXTPProgressPaintManager::GetPaintManager() const {
-	return m_pPaintManager;
-}
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCONTOLPROGRESS_H__)

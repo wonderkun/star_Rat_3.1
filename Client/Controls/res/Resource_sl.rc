@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SLV))
 #ifdef _WIN32
 LANGUAGE LANG_SLOVENIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -108,14 +107,14 @@ BEGIN
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Aktiviraj",XTP_IDC_BTN_ACTIVATE,233,7,62,14
-    PUSHBUTTON      "V redu",IDOK,233,24,62,14
-    PUSHBUTTON      "Shrani",XTP_IDC_BTN_SAVE,233,41,62,14
-    PUSHBUTTON      "Zapri okno",XTP_IDC_BTN_CLOSEWINDOWS,233,58,62,14
-    PUSHBUTTON      "V kaskado",XTP_IDC_BTN_CASCADE,233,75,62,14
-    PUSHBUTTON      "Drugo pod drugim",XTP_IDC_BTN_TILEHORZ,233,92,62,14
-    PUSHBUTTON      "Drugo ob drugem",XTP_IDC_BTN_TILEVERT,233,109,62,14
-    PUSHBUTTON      "Minimiraj",XTP_IDC_BTN_MINIMIZE,233,126,62,14
+    PUSHBUTTON      "Aktiviraj",XTP_IDC_BTN_ACTIVATE,228,7,67,14
+    PUSHBUTTON      "V redu",IDOK,228,24,67,14
+    PUSHBUTTON      "Shrani",XTP_IDC_BTN_SAVE,228,41,67,14
+    PUSHBUTTON      "Zapri okno",XTP_IDC_BTN_CLOSEWINDOWS,228,58,67,14
+    PUSHBUTTON      "V kaskado",XTP_IDC_BTN_CASCADE,228,75,67,14
+    PUSHBUTTON      "Drugo pod drugim",XTP_IDC_BTN_TILEHORZ,228,92,67,14
+    PUSHBUTTON      "Drugo ob drugem",XTP_IDC_BTN_TILEVERT,228,109,67,14
+    PUSHBUTTON      "Minimiraj",XTP_IDC_BTN_MINIMIZE,228,126,67,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standardne barve"
+	XTP_IDS_RECENT_COLORS    "Nedavni Barve"
+	XTP_IDS_THEME_COLORS     "Tema Barve"
+	XTP_IDS_TAGCLOUD_TIP     "Tag %s, povpreèna %d"
     XTP_IDS_TIPTEXT          "Besedilo opisa"
     XTP_IDS_DIDYOUKNOW       "Ali ste vedeli, da ..."
     XTP_IDS_FILE_ABSENT      "Doloèena datoteka ne obstaja."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Skrij podrobnosti"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Ozadje 1"
+    XTP_IDS_BACKGROUND2        "Ozadje 2"
+    XTP_IDS_TEXT1              "Besedilo 1"
+    XTP_IDS_TEXT2              "Besedilo 2"
+    XTP_IDS_ACCENT1            "Poudarek 1"
+    XTP_IDS_ACCENT2            "Poudarek 2"
+    XTP_IDS_ACCENT3            "Poudarek 3"
+    XTP_IDS_ACCENT4            "Poudarek 4"
+    XTP_IDS_ACCENT5            "Poudarek 5"
+    XTP_IDS_ACCENT6            "Poudarek 6"
+    XTP_IDS_LIGHTER            "Vžigalnik"
+    XTP_IDS_DARKER             "Temnejše"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SLV))

@@ -1,7 +1,6 @@
 // XTPShellListCtrlView.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLLISTCTRLVIEW_H__)
-#define __XTPSHELLLISTCTRLVIEW_H__
+#	define __XTPSHELLLISTCTRLVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-DECLATE_SHELLLIST_BASE(CXTPShellListViewBase, CListView, CXTPShellListBase)
-DECLATE_SHELLLIST_BASE(CXTPShellListCtrlBase, CListCtrl, CXTPShellListBase)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+DECLARE_SHELLLIST_BASE(CXTPShellListViewBase, CListView, CXTPShellListBase)
+DECLARE_SHELLLIST_BASE(CXTPShellListCtrlBase, CListCtrl, CXTPShellListBase)
 
 //===========================================================================
 // Summary:
@@ -40,7 +41,6 @@ class _XTP_EXT_CLASS CXTPShellListView : public CXTPShellListViewBase
 	DECLARE_DYNCREATE(CXTPShellListView)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellListView object
@@ -54,7 +54,6 @@ public:
 	virtual ~CXTPShellListView();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Occurs when the user double clicks on the list control.
@@ -69,7 +68,7 @@ protected:
 	void OnDblclk(NMHDR* pNMHDR, LRESULT* pResult);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShellListView)
@@ -81,8 +80,7 @@ protected:
 	afx_msg LRESULT OnUpdateShell(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
@@ -92,9 +90,7 @@ protected:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPShellListCtrl : public CXTPShellListCtrlBase
 {
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellListCtrl object
@@ -117,7 +113,7 @@ public:
 	virtual void AssociateTree(CWnd* pWnd);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPShellListCtrl)
@@ -125,23 +121,23 @@ protected:
 	afx_msg LRESULT OnUpdateShell(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CWnd*               m_pTreeCtrl;    // Window that receives update notification, usually a CXTPShellTreeCtrl.
-	bool                m_bInitControl; // true if the control has not been initialized.
-
+	CWnd* m_pTreeCtrl;   // Window that receives update notification, usually a CXTPShellTreeCtrl.
+	bool m_bInitControl; // true if the control has not been initialized.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTPShellList CXTPShellListCtrl
+#	define CXTPShellList CXTPShellListCtrl
 //}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPShellListCtrl::AssociateTree(CWnd* pWnd) {
-	ASSERT_VALID(pWnd); m_pTreeCtrl = pWnd;
+AFX_INLINE void CXTPShellListCtrl::AssociateTree(CWnd* pWnd)
+{
+	ASSERT(pWnd);
+	m_pTreeCtrl = pWnd;
 }
 
 //===========================================================================
@@ -153,7 +149,6 @@ AFX_INLINE void CXTPShellListCtrl::AssociateTree(CWnd* pWnd) {
 //===========================================================================
 class _XTP_EXT_CLASS CXTPShellListCtrlEx : public CXTPShellListCtrl
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -188,10 +183,8 @@ public:
 	//-----------------------------------------------------------------------
 	void SetSyncWnd(CWnd* pSyncWnd);
 
-
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShellListCtrlEx)
@@ -200,19 +193,20 @@ protected:
 	//{{AFX_MSG(CXTPShellListCtrlEx)
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	CWnd*   m_pSyncWnd;    // Points to the window to synchronize with the shell list control.
-	CString m_strItemPath; // A NULL terminated string that represents the currently selected folder.
+	CWnd* m_pSyncWnd;	  // Points to the window to synchronize with the shell list control.
+	CString m_strItemPath; // A NULL terminated string that represents the currently selected
+						   // folder.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPShellListCtrlEx::SetSyncWnd(CWnd* pSyncWnd) {
+AFX_INLINE void CXTPShellListCtrlEx::SetSyncWnd(CWnd* pSyncWnd)
+{
 	m_pSyncWnd = pSyncWnd;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSHELLLISTCTRLVIEW_H__)

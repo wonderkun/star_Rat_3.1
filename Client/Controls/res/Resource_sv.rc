@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE))
 #ifdef _WIN32
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 #pragma code_page(1252)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standardfärger"
+	XTP_IDS_RECENT_COLORS    "Senaste färger"
+	XTP_IDS_THEME_COLORS     "Temafärger"
+	XTP_IDS_TAGCLOUD_TIP     "Tag %s, poäng %d"
     XTP_IDS_TIPTEXT          "Knappbeskrivning"
     XTP_IDS_DIDYOUKNOW       "Visste du att..."
     XTP_IDS_FILE_ABSENT      "Den angivna filen finns inte."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Dölj information"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Bakgrund 1"
+    XTP_IDS_BACKGROUND2        "Bakgrund 2"
+    XTP_IDS_TEXT1              "Text 1"
+    XTP_IDS_TEXT2              "Text 2"
+    XTP_IDS_ACCENT1            "Accent 1"
+    XTP_IDS_ACCENT2            "Accent 2"
+    XTP_IDS_ACCENT3            "Accent 3"
+    XTP_IDS_ACCENT4            "Accent 4"
+    XTP_IDS_ACCENT5            "Accent 5"
+    XTP_IDS_ACCENT6            "Accent 6"
+    XTP_IDS_LIGHTER            "Lättare"
+    XTP_IDS_DARKER             "Mörkare"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE))

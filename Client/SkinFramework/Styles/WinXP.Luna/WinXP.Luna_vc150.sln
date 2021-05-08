@@ -1,0 +1,4 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinXP.Luna", ".\WinXP.Luna_vc150.vcxproj", "{83383879-9679-9959-4123-483355881165}"
+EndProject

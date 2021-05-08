@@ -1264,6 +1264,17 @@ GdipRemovePropertyItem(GpImage *image, PROPID propId);
 GpStatus WINGDIPAPI
 GdipSetPropertyItem(GpImage *image, GDIPCONST PropertyItem* item);
 
+#if (GDIPVER >= 0x0110)
+GpStatus WINGDIPAPI
+GdipFindFirstImageItem(GpImage *image, ImageItemData* item);
+
+GpStatus WINGDIPAPI
+GdipFindNextImageItem(GpImage *image, ImageItemData* item);
+
+GpStatus WINGDIPAPI
+GdipGetImageItemData(GpImage *image, ImageItemData* item);
+#endif //(GDIPVER >= 0x0110)
+
 GpStatus WINGDIPAPI
 GdipImageForceValidation(GpImage *image);
 
@@ -1360,6 +1371,77 @@ GdipBitmapGetPixel(GpBitmap* bitmap, INT x, INT y, ARGB *color);
 
 GpStatus WINGDIPAPI
 GdipBitmapSetPixel(GpBitmap* bitmap, INT x, INT y, ARGB color);
+
+#if (GDIPVER >= 0x0110)
+GpStatus WINGDIPAPI GdipImageSetAbort(
+    GpImage *pImage, 
+    GdiplusAbort *pIAbort
+    );
+
+GpStatus WINGDIPAPI GdipGraphicsSetAbort(
+    GpGraphics *pGraphics, 
+    GdiplusAbort *pIAbort
+    );
+
+GpStatus WINGDIPAPI
+GdipBitmapConvertFormat(
+    IN GpBitmap *pInputBitmap,
+    PixelFormat format,
+    DitherType dithertype,
+    PaletteType palettetype,
+    ColorPalette *palette,
+    REAL alphaThresholdPercent
+    );
+
+GpStatus WINGDIPAPI
+GdipInitializePalette(
+    OUT ColorPalette *palette,   // output palette. must be allocated.
+    PaletteType palettetype,     // palette enumeration type.
+    INT optimalColors,           // how many optimal colors
+    BOOL useTransparentColor,    // add a transparent color to the palette.
+    GpBitmap *bitmap             // optional bitmap for median cut.
+    );
+    
+GpStatus WINGDIPAPI
+GdipBitmapApplyEffect(
+    GpBitmap* bitmap,
+    CGpEffect *effect,
+    RECT *roi,
+    BOOL useAuxData,
+    VOID **auxData,
+    INT *auxDataSize
+    );
+
+GpStatus WINGDIPAPI
+GdipBitmapCreateApplyEffect(
+    GpBitmap **inputBitmaps,
+    INT numInputs,
+    CGpEffect *effect,
+    RECT *roi,
+    RECT *outputRect,
+    GpBitmap **outputBitmap,
+    BOOL useAuxData,
+    VOID **auxData,
+    INT *auxDataSize
+);
+
+GpStatus WINGDIPAPI
+GdipBitmapGetHistogram(
+    GpBitmap* bitmap, 
+    IN HistogramFormat format,
+    IN UINT NumberOfEntries,
+    UINT *channel0,
+    UINT *channel1,
+    UINT *channel2,
+    UINT *channel3
+);
+
+GpStatus WINGDIPAPI
+GdipBitmapGetHistogramSize(
+    IN HistogramFormat format,
+    OUT UINT *NumberOfEntries
+);
+#endif
 
 GpStatus WINGDIPAPI
 GdipBitmapSetResolution(GpBitmap* bitmap, REAL xdpi, REAL ydpi);
@@ -1800,6 +1882,20 @@ GpStatus WINGDIPAPI
 GdipFillRegion(GpGraphics *graphics, GpBrush *brush,
                         GpRegion *region);
 
+#if (GDIPVER >= 0x0110)
+GpStatus
+WINGDIPAPI
+GdipDrawImageFX(
+    GpGraphics *graphics,
+    GpImage *image,
+    GpRectF *source,
+    GpMatrix *xForm,
+    CGpEffect *effect,
+    GpImageAttributes *imageAttributes,
+    GpUnit srcUnit
+    );
+#endif //(GDIPVER >= 0x0110)
+
 GpStatus WINGDIPAPI
 GdipDrawImage(GpGraphics *graphics, GpImage *image, REAL x, REAL y);
 
@@ -2165,6 +2261,7 @@ GdipCreateMetafileFromWmfFile(GDIPCONST WCHAR* file,
 GpStatus WINGDIPAPI
 GdipCreateMetafileFromStream(IStream * stream, GpMetafile **metafile);
 
+
 GpStatus WINGDIPAPI
 GdipRecordMetafile(
     HDC                 referenceHdc,
@@ -2267,13 +2364,13 @@ GdipComment(GpGraphics* graphics, UINT sizeData, GDIPCONST BYTE * data);
 GpStatus WINGDIPAPI
 GdipCreateFontFamilyFromName(GDIPCONST WCHAR *name,
                              GpFontCollection *fontCollection,
-                             GpFontFamily **FontFamily);
+                             GpFontFamily **fontFamily);
 
 GpStatus WINGDIPAPI
-GdipDeleteFontFamily(GpFontFamily *FontFamily);
+GdipDeleteFontFamily(GpFontFamily *fontFamily);
 
 GpStatus WINGDIPAPI
-GdipCloneFontFamily(GpFontFamily *FontFamily, GpFontFamily **clonedFontFamily);
+GdipCloneFontFamily(GpFontFamily *fontFamily, GpFontFamily **clonedFontFamily);
 
 GpStatus WINGDIPAPI
 GdipGetGenericFontFamilySansSerif(GpFontFamily **nativeFamily);
@@ -2287,9 +2384,9 @@ GdipGetGenericFontFamilyMonospace(GpFontFamily **nativeFamily);
 
 GpStatus WINGDIPAPI
 GdipGetFamilyName(
-    GDIPCONST GpFontFamily  *family,
-    WCHAR                name[LF_FACESIZE],
-    LANGID               language
+    GDIPCONST GpFontFamily              *family,
+    LPWSTR                              name,
+    LANGID                              language
 );
 
 GpStatus   WINGDIPAPI
@@ -2360,19 +2457,6 @@ GdipCreateFont(
     Unit                 unit,
     GpFont             **font
 );
-
-inline GpStatus WINGDIPAPI 
-GdipCreateFontFromLogfont(
-	HDC        hdc,
-	GDIPCONST LOGFONT  *logfont,
-	GpFont   **font
-) {
-#ifdef UNICODE
-	return GdipCreateFontFromLogfontW(hdc, logfont, font); 
-#else
-	return GdipCreateFontFromLogfontA(hdc, logfont, font); 
-#endif
-}
 
 GpStatus WINGDIPAPI
 GdipCloneFont(GpFont* font, GpFont** cloneFont);
@@ -2656,8 +2740,43 @@ GdiplusNotificationUnhook(
     ULONG_PTR token
 );
 
+#if (GDIPVER >= 0x0110)
+GpStatus WINGDIPAPI
+GdipConvertToEmfPlus(
+   const GpGraphics* refGraphics,
+   GpMetafile*  metafile,
+   INT* conversionFailureFlag,
+   EmfType      emfType,
+   const WCHAR* description,
+   GpMetafile** out_metafile
+);
+
+GpStatus WINGDIPAPI
+GdipConvertToEmfPlusToFile(
+   const GpGraphics* refGraphics,
+   GpMetafile*  metafile,
+   INT* conversionFailureFlag,
+   const WCHAR* filename, 
+   EmfType      emfType,
+   const WCHAR* description,
+   GpMetafile** out_metafile
+);
+
+GpStatus WINGDIPAPI
+GdipConvertToEmfPlusToStream(
+   const GpGraphics* refGraphics,
+   GpMetafile*  metafile,
+   INT* conversionFailureFlag,
+   IStream* stream, 
+   EmfType      emfType,
+   const WCHAR* description,
+   GpMetafile** out_metafile
+);
+#endif //(GDIPVER >= 0x0110)
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif // !_FLATAPI_H
+

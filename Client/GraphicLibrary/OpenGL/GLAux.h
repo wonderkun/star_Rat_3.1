@@ -4,12 +4,12 @@ Copyright (c) 1985-95, Microsoft Corporation
 
 Module Name:
 
-    glaux.h
+	glaux.h
 
 Abstract:
 
-    Procedure declarations, constant definitions and macros for the OpenGL
-    Auxiliary Library.
+	Procedure declarations, constant definitions and macros for the OpenGL
+	Auxiliary Library.
 
 --*/
 
@@ -18,14 +18,14 @@ Abstract:
 
 /*
  * (c) Copyright 1993, Silicon Graphics, Inc.
- * ALL RIGHTS RESERVED 
- * Permission to use, copy, modify, and distribute this software for 
+ * ALL RIGHTS RESERVED
+ * Permission to use, copy, modify, and distribute this software for
  * any purpose and without fee is hereby granted, provided that the above
  * copyright notice appear in all copies and that both the copyright notice
- * and this permission notice appear in supporting documentation, and that 
+ * and this permission notice appear in supporting documentation, and that
  * the name of Silicon Graphics, Inc. not be used in advertising
  * or publicity pertaining to distribution of the software without specific,
- * written prior permission. 
+ * written prior permission.
  *
  * THE MATERIAL EMBODIED ON THIS SOFTWARE IS PROVIDED TO YOU "AS-IS"
  * AND WITHOUT WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR OTHERWISE,
@@ -39,8 +39,8 @@ Abstract:
  * ADVISED OF THE POSSIBILITY OF SUCH LOSS, HOWEVER CAUSED AND ON
  * ANY THEORY OF LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE
  * POSSESSION, USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- * US Government Users Restricted Rights 
+ *
+ * US Government Users Restricted Rights
  * Use, duplication, or disclosure by the Government is subject to
  * restrictions set forth in FAR 52.227.19(c)(2) or subparagraph
  * (c)(1)(ii) of the Rights in Technical Data and Computer Software
@@ -83,7 +83,7 @@ extern "C" {
 #define AUX_FIXED_332_PAL   512
 #define AUX_DEPTH           AUX_DEPTH16 /* default is 16-bit depth buffer */
 
-/* 
+/*
 ** Window Masks
 */
 
@@ -104,11 +104,11 @@ extern "C" {
 */
 
 typedef struct _AUX_EVENTREC {
-    GLint event;
-    GLint data[4];
+	GLint event;
+	GLint data[4];
 } AUX_EVENTREC;
 
-/* 
+/*
 ** ToolKit Event Types
 */
 #define AUX_EXPOSE      1
@@ -139,7 +139,7 @@ typedef struct _AUX_EVENTREC {
 #define AUX_SHIFT               1
 #define AUX_CONTROL             2
 
-/* 
+/*
 ** ToolKit Key Codes
 */
 #define AUX_RETURN              0x0D
@@ -237,15 +237,15 @@ typedef struct _AUX_EVENTREC {
 extern float auxRGBMap[20][3];
 
 #define AUX_SETCOLOR(x, y) (AUX_WIND_IS_RGB((x)) ? \
-                           glColor3fv(auxRGBMap[(y)]) : glIndexf((y)))
+						   glColor3fv(auxRGBMap[(y)]) : glIndexf((y)))
 
 /*
 ** RGB Image Structure
 */
 
 typedef struct _AUX_RGBImageRec {
-    GLint sizeX, sizeY;
-    unsigned char *data;
+	GLint sizeX, sizeY;
+	unsigned char *data;
 } AUX_RGBImageRec;
 
 /*
@@ -356,9 +356,9 @@ HGLRC APIENTRY auxGetHGLRC(void);
 */
 /* Display Mode Selection Criteria */
 enum {
-    AUX_USE_ID = 1,
-    AUX_EXACT_MATCH,
-    AUX_MINIMUM_CRITERIA
+	AUX_USE_ID = 1,
+	AUX_EXACT_MATCH,
+	AUX_MINIMUM_CRITERIA
 };
 void   APIENTRY auxInitDisplayModePolicy(GLenum);
 GLenum APIENTRY auxInitDisplayModeID(GLint);

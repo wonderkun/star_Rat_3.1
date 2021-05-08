@@ -1,7 +1,6 @@
 // XTPMaskEditT.h interface for the CXTPMaskEditT class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,29 +19,29 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTMASKEDITEX_H__)
-#define __XTMASKEDITEX_H__
+#	define __XTMASKEDITEX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-// Depricated
-#define CXTMaskEditT CXTPMaskEditT
+#	include "Common/XTPCasting.h"
 
-#include "Common/XTPVC80Helpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+// deprecated
+#	define CXTMaskEditT CXTPMaskEditT
 
 //////////////////////////////////////////////////////////////////////
 // Summary:
 //     CXTPMaskEditT is a template class. It allows text masking to be
 //     applied to the control to format it for special editing restrictions.
 //////////////////////////////////////////////////////////////////////
-template <class TBase>
+template<class TBase>
 class CXTPMaskEditT : public TBase
 {
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPMaskEditT object
@@ -50,22 +49,21 @@ public:
 	CXTPMaskEditT()
 		: m_nStartChar(0)
 		, m_nEndChar(0)
-		, m_bOverType(FALSE)
 		, m_bUseMask(TRUE)
+		, m_bOverType(FALSE)
 		, m_bRedo(FALSE)
 		, m_bModified(FALSE)
-		, m_strWindowText(_T(""))
+		, m_chPrompt(_T('_'))
 		, m_strMask(_T(""))
-		, m_strLiteral(_T(""))
 		, m_strDefault(_T(""))
 		, m_strUndoBuffer(_T(""))
-		, m_chPrompt(_T('_'))
+		, m_strWindowText(_T(""))
+		, m_strLiteral(_T(""))
 		, m_bUpdateUndo(TRUE)
 	{
 	}
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Parameters:
 	//     bUseMask - TRUE to enable the mask. FALSE to disable the mask.
@@ -73,7 +71,8 @@ public:
 	//     Call this member function to enable or disable the mask for the mask
 	//     edit control.
 	//-----------------------------------------------------------------------
-	void SetUseMask(BOOL bUseMask) {
+	void SetUseMask(BOOL bUseMask)
+	{
 		m_bUseMask = bUseMask;
 	}
 
@@ -84,7 +83,8 @@ public:
 	// Returns:
 	//     TRUE if the mask can be used, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL CanUseMask() const {
+	BOOL CanUseMask() const
+	{
 		return m_bUseMask && m_hWnd && ((GetStyle() & ES_READONLY) == 0) && !m_strMask.IsEmpty();
 	}
 
@@ -95,7 +95,8 @@ public:
 	// Parameters:
 	//     bOverType - TRUE to enable type over.
 	//-----------------------------------------------------------------------
-	void SetOverType(BOOL bOverType) {
+	void SetOverType(BOOL bOverType)
+	{
 		m_bOverType = bOverType;
 	}
 
@@ -105,7 +106,8 @@ public:
 	// Returns:
 	//     TRUE if type over is enabled, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL CanOverType() const {
+	BOOL CanOverType() const
+	{
 		return m_bOverType;
 	}
 
@@ -118,7 +120,8 @@ public:
 	// Returns:
 	//     TRUE if the index is valid, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL PosInRange(int iPos) const {
+	BOOL PosInRange(int iPos) const
+	{
 		return ((iPos >= 0) && (iPos < m_strLiteral.GetLength()));
 	}
 
@@ -129,7 +132,8 @@ public:
 	// Returns:
 	//     A TCHAR data type.
 	//-----------------------------------------------------------------------
-	TCHAR GetPromptChar() const {
+	TCHAR GetPromptChar() const
+	{
 		return m_chPrompt;
 	}
 
@@ -141,7 +145,8 @@ public:
 	// Returns:
 	//     CString contains nLength prompt characters
 	//-----------------------------------------------------------------------
-	CString GetPromptString(int nLength) const {
+	CString GetPromptString(int nLength) const
+	{
 		CString strPrompt;
 
 		while (nLength--)
@@ -149,7 +154,6 @@ public:
 
 		return strPrompt;
 	}
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,16 +173,17 @@ public:
 			GetMaskState();
 
 			for (int i = 0; i < m_strLiteral.GetLength(); i++)
-				if (m_strLiteral[i] == m_chPrompt) m_strLiteral.SetAt(i, ch);
+				if (m_strLiteral[i] == m_chPrompt)
+					m_strLiteral.SetAt(i, ch);
 
 			for (int j = 0; j < m_strWindowText.GetLength(); j++)
-				if (m_strWindowText[j] == m_chPrompt) m_strWindowText.SetAt(j, ch);
+				if (m_strWindowText[j] == m_chPrompt)
+					m_strWindowText.SetAt(j, ch);
 
 			SetMaskState();
 		}
 
 		m_chPrompt = ch;
-
 	}
 
 	//-----------------------------------------------------------------------
@@ -224,7 +229,6 @@ public:
 	//-----------------------------------------------------------------------
 	void MaskReplaceSel(LPCTSTR lpszNewText)
 	{
-
 		ASSERT(CanUseMask());
 
 		if (m_nStartChar != m_nEndChar)
@@ -271,11 +275,11 @@ public:
 		if (!OpenClipboard())
 			return FALSE;
 
-	#ifndef _UNICODE
+#	ifndef _UNICODE
 		HGLOBAL hglbPaste = ::GetClipboardData(CF_TEXT);
-	#else
+#	else
 		HGLOBAL hglbPaste = ::GetClipboardData(CF_UNICODETEXT);
-	#endif
+#	endif
 
 		if (hglbPaste != NULL)
 		{
@@ -323,7 +327,6 @@ public:
 		SetMaskState();
 
 		return TRUE;
-
 	}
 
 	//-----------------------------------------------------------------------
@@ -350,7 +353,7 @@ public:
 				SetWindowText(m_strUndoBuffer);
 			}
 
-			m_bRedo = !m_bRedo;
+			m_bRedo		= !m_bRedo;
 			m_bModified = TRUE;
 
 			m_nEndChar = m_nStartChar;
@@ -385,7 +388,8 @@ public:
 	// Returns:
 	//     TRUE if the text has changed, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL IsModified() const {
+	BOOL IsModified() const
+	{
 		return m_bModified;
 	}
 
@@ -409,16 +413,16 @@ public:
 		int nMaskedTextLength = (int)_tcslen(lpszMaskedText);
 
 		m_strWindowText = m_strWindowText.Left(iPos);
-		int nIndex = 0;
+		int nIndex		= 0;
 
-		for (; (iPos <  m_strLiteral.GetLength()) && (nIndex < nMaskedTextLength) ; iPos++)
+		for (; (iPos < m_strLiteral.GetLength()) && (nIndex < nMaskedTextLength); iPos++)
 		{
 			TCHAR uChar = lpszMaskedText[nIndex];
 
 			if (IsPromptPos(iPos) && ((uChar == m_chPrompt) || ProcessMask(uChar, iPos)))
 			{
 				m_strWindowText += (TCHAR)uChar;
-				nIndex ++;
+				nIndex++;
 			}
 			else
 			{
@@ -468,13 +472,13 @@ public:
 	//          <                      Forces characters to lower case (a-z)
 	//     </TABLE>
 	//-----------------------------------------------------------------------
-	virtual BOOL SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault=NULL)
+	virtual BOOL SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault = NULL)
 	{
 		ASSERT(lpszMask);
 		ASSERT(lpszLiteral);
 
 		// initialize the mask for the control.
-		m_strMask    = lpszMask;
+		m_strMask	= lpszMask;
 		m_strLiteral = lpszLiteral;
 
 		ASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
@@ -500,13 +504,12 @@ public:
 		ASSERT(m_strWindowText.GetLength() == m_strLiteral.GetLength());
 
 		// set the window text for the control.
-		m_bRedo = FALSE;
+		m_bRedo		= FALSE;
 		m_bModified = FALSE;
 		SetWindowText(m_strWindowText);
 
 		m_strUndoBuffer = m_strWindowText;
 		return TRUE;
-
 	}
 
 	//-----------------------------------------------------------------------
@@ -521,11 +524,12 @@ public:
 	TCHAR ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const
 	{
 		CString strTemp(nChar);
-		if (bUpperCase) strTemp.MakeUpper(); else strTemp.MakeLower();
+		if (bUpperCase)
+			strTemp.MakeUpper();
+		else
+			strTemp.MakeLower();
 		return strTemp[0];
 	}
-
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -574,76 +578,78 @@ public:
 			return FALSE;
 
 		// check the key against the mask
+		wint_t tChar = static_cast<wint_t>(nChar);
 		switch (m_strMask.GetAt(nEndPos))
 		{
-		case '0':       // digit only //completely changed this
-			return _istdigit(nChar);
+			case '0': // digit only //completely changed this
+				return _istdigit(tChar);
 
-		case '9':       // digit or space
-			return _istdigit(nChar) || _istspace(nChar);
+			case '9': // digit or space
+				return _istdigit(tChar) || _istspace(tChar);
 
-		case '#':       // digit or space or '+' or '-'
-			return _istdigit(nChar) || (_istspace(nChar) || nChar == _T('-') || nChar == _T('+'));
+			case '#': // digit or space or '+' or '-'
+				return _istdigit(tChar) || _istspace(tChar) || tChar == _T('-') || tChar == _T('+');
 
-		case 'd':       // decimal
-			return _istdigit(nChar) || (_istspace(nChar) || nChar == _T('-') || nChar == _T('+') || nChar == _T('.') || nChar == _T(','));
+			case 'd': // decimal
+				return _istdigit(tChar) || _istspace(tChar) || tChar == _T('-') || tChar == _T('+')
+					   || tChar == _T('.') || tChar == _T(',');
 
-		case 'L':       // alpha only
-			return IsAlphaChar(nChar);
+			case 'L': // alpha only
+				return IsAlphaChar(nChar);
 
-		case '?':       // alpha or space
-			return IsAlphaChar(nChar) || _istspace(nChar);
+			case '?': // alpha or space
+				return IsAlphaChar(nChar) || _istspace(tChar);
 
-		case 'A':       // alpha numeric only
-			return _istalnum(nChar) || IsAlphaChar(nChar);
+			case 'A': // alpha numeric only
+				return _istalnum(tChar) || IsAlphaChar(nChar);
 
-		case 'a':       // alpha numeric or space
-			return _istalnum(nChar) || IsAlphaChar(nChar) || _istspace(nChar);
+			case 'a': // alpha numeric or space
+				return _istalnum(tChar) || IsAlphaChar(nChar) || _istspace(tChar);
 
-		case '&':       // all print character only
-			return IsPrintChar(nChar);
+			case '&': // all print character only
+				return IsPrintChar(nChar);
 
-		case 'H':       // hex digit
-			return _istxdigit(nChar);
+			case 'H': // hex digit
+				return _istxdigit(tChar);
 
-		case 'X':       // hex digit or space
-			return _istxdigit(nChar) || _istspace(nChar);
+			case 'X': // hex digit or space
+				return _istxdigit(tChar) || _istspace(tChar);
 
-		case '>':
-			if (IsAlphaChar(nChar))
-			{
-				nChar = ConvertUnicodeAlpha(nChar, TRUE);
-				return TRUE;
-			}
-			return FALSE;
+			case '>':
+				if (IsAlphaChar(nChar))
+				{
+					nChar = ConvertUnicodeAlpha(nChar, TRUE);
+					return TRUE;
+				}
+				return FALSE;
 
-		case '<':
-			if (IsAlphaChar(nChar))
-			{
-				nChar = ConvertUnicodeAlpha(nChar, FALSE);
-				return TRUE;
-			}
-			return FALSE;
+			case '<':
+				if (IsAlphaChar(nChar))
+				{
+					nChar = ConvertUnicodeAlpha(nChar, FALSE);
+					return TRUE;
+				}
+				return FALSE;
 		}
 
 		return FALSE;
 	}
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Used by class CWinApp to translate window messages before they are dispatched to theTranslateMessage andDispatchMessage Windows functions.
+	//     Used by class CWinApp to translate window messages before they are dispatched to
+	//     theTranslateMessage andDispatchMessage Windows functions.
 	// Parameters:
 	//     pMsg - Points to a MSG structure that contains the message to process.
 	// Returns:
-	//     Nonzero if the message was translated and should not be dispatched; 0 if the message was not translated and should be dispatched.
+	//     Nonzero if the message was translated and should not be dispatched; 0 if the message was
+	//     not translated and should be dispatched.
 	//-----------------------------------------------------------------------
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
 		if (!CanUseMask())
 			return TBase::PreTranslateMessage(pMsg);
-
 
 		// intercept Ctrl+C (copy), Ctrl+V (paste), Ctrl+X (cut) and Ctrl+Z (undo)
 		// before CEdit base class gets a hold of them.
@@ -666,40 +672,38 @@ public:
 			{
 				switch (pMsg->wParam)
 				{
-				case 'X':
-				case 'x':
+					case 'X':
+					case 'x':
 					{
 						MaskCut();
 						return TRUE;
 					}
 
-				case 'C':
-				case 'c':
+					case 'C':
+					case 'c':
 					{
 						MaskCopy();
 						return TRUE;
 					}
 
-				case 'V':
-				case 'v':
+					case 'V':
+					case 'v':
 					{
 						MaskPaste();
 						return TRUE;
 					}
 
-				case 'Z':
-				case 'z':
+					case 'Z':
+					case 'z':
 					{
 						MaskUndo();
 						return TRUE;
 					}
 				}
 			}
-
 		}
 
 		return TBase::PreTranslateMessage(pMsg);
-
 	}
 
 	//-----------------------------------------------------------------------
@@ -754,9 +758,8 @@ public:
 
 		::EmptyClipboard();
 
-		int iLen = (strText.GetLength() + 1) * sizeof(TCHAR);
-
-		HGLOBAL hglbCopy = ::GlobalAlloc(GMEM_MOVEABLE, iLen);
+		SIZE_T nLen		 = (strText.GetLength() + 1) * sizeof(TCHAR);
+		HGLOBAL hglbCopy = ::GlobalAlloc(GMEM_MOVEABLE, nLen);
 
 		if (hglbCopy == NULL)
 		{
@@ -765,20 +768,19 @@ public:
 		}
 
 		LPTSTR lptstrCopy = (TCHAR*)GlobalLock(hglbCopy);
-		STRCPY_S(lptstrCopy, strText.GetLength() + 1, (LPCTSTR)strText);
+		STRCPY_S(lptstrCopy, XTPToSizeTChecked(strText.GetLength() + 1), (LPCTSTR)strText);
 		GlobalUnlock(hglbCopy);
 
-	#ifndef _UNICODE
+#	ifndef _UNICODE
 		::SetClipboardData(CF_TEXT, hglbCopy);
-	#else
+#	else
 		::SetClipboardData(CF_UNICODETEXT, hglbCopy);
-	#endif
+#	endif
 
 		if (!::CloseClipboard())
 			return FALSE;
 
 		return TRUE;
-
 	}
 
 	//-----------------------------------------------------------------------
@@ -808,14 +810,10 @@ public:
 		}
 
 		return strBuffer;
-
 	}
 
-
 protected:
-
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		if (!CanUseMask())
@@ -825,13 +823,13 @@ protected:
 		}
 
 		BOOL bShift = (::GetKeyState(VK_SHIFT) < 0);
-		BOOL bCtrl = (::GetKeyState(VK_CONTROL) < 0);
+		BOOL bCtrl  = (::GetKeyState(VK_CONTROL) < 0);
 
 		switch (nChar)
 		{
-		case VK_UP:
-		case VK_LEFT:
-		case VK_HOME:
+			case VK_UP:
+			case VK_LEFT:
+			case VK_HOME:
 			{
 				TBase::OnKeyDown(nChar, nRepCnt, nFlags);
 
@@ -850,11 +848,11 @@ protected:
 
 				SetMaskState();
 			}
-			return;
+				return;
 
-		case VK_DOWN:
-		case VK_RIGHT:
-		case VK_END:
+			case VK_DOWN:
+			case VK_RIGHT:
+			case VK_END:
 			{
 				TBase::OnKeyDown(nChar, nRepCnt, nFlags);
 
@@ -873,10 +871,9 @@ protected:
 
 				SetMaskState();
 			}
-			return;
+				return;
 
-
-		case VK_INSERT:
+			case VK_INSERT:
 			{
 				if (bCtrl)
 				{
@@ -890,17 +887,16 @@ protected:
 				{
 					m_bOverType = !m_bOverType; // set the type-over flag
 				}
-
 			}
-			return;
+				return;
 
-		case VK_DELETE:
+			case VK_DELETE:
 			{
 				GetMaskState();
 
 				if (m_nStartChar == m_nEndChar)
 				{
-					m_nEndChar = m_nStartChar +1;
+					m_nEndChar = m_nStartChar + 1;
 				}
 				else if (bShift)
 				{
@@ -910,9 +906,9 @@ protected:
 				MaskDeleteSel();
 				SetMaskState();
 			}
-			return;
+				return;
 
-		case VK_SPACE:
+			case VK_SPACE:
 			{
 				GetMaskState();
 
@@ -923,22 +919,21 @@ protected:
 				}
 
 				TCHAR chSpace = _T(' ');
-
-				if (!ProcessMask(chSpace, m_nStartChar))
-					chSpace = m_chPrompt;
-
-				ProcessChar(chSpace);
+				if (ProcessMask(chSpace, m_nStartChar))
+				{
+					ProcessChar(chSpace);
+				}
 
 				SetMaskState();
 			}
-			return;
+				return;
 
-		case VK_BACK:
+			case VK_BACK:
 			{
 				GetMaskState(FALSE);
 
-				if (((m_nStartChar > 0) || (m_nStartChar == 0 && m_nEndChar != 0))  &&
-					(m_nStartChar <= m_strLiteral.GetLength()))
+				if (((m_nStartChar > 0) || (m_nStartChar == 0 && m_nEndChar != 0))
+					&& (m_nStartChar <= m_strLiteral.GetLength()))
 				{
 					if (m_nStartChar == m_nEndChar)
 					{
@@ -960,11 +955,10 @@ protected:
 					NotifyPosNotInRange();
 				}
 			}
-			return;
+				return;
 		}
 
 		TBase::OnKeyDown(nChar, nRepCnt, nFlags);
-
 	}
 
 	void ProcessChar(TCHAR nChar)
@@ -1013,9 +1007,8 @@ protected:
 
 		switch (nChar)
 		{
-		case VK_SPACE:
-		case VK_BACK:
-			return; // handled in WM_KEYDOWN
+			case VK_SPACE:
+			case VK_BACK: return; // handled in WM_KEYDOWN
 		}
 
 		GetMaskState();
@@ -1060,7 +1053,6 @@ protected:
 
 		m_nEndChar = m_nStartChar;
 		SetSel(m_nStartChar, m_nEndChar);
-
 	}
 
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI)
@@ -1073,12 +1065,10 @@ protected:
 		{
 			pCmdUI->Enable(m_bModified);
 		}
-
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	// Some goodies
 	BOOL CorrectPosition(int& iPos, BOOL bForward = TRUE) // used internally
@@ -1122,7 +1112,7 @@ protected:
 
 	virtual BOOL IsPrintChar(TCHAR nChar)
 	{
-		return _istprint(nChar) || IsAlphaChar(nChar);
+		return _istprint(static_cast<wint_t>(nChar)) || IsAlphaChar(nChar);
 	}
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1134,7 +1124,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL IsAlphaChar(TCHAR nChar)
 	{
-		if (_istalpha(nChar))
+		if (_istalpha(static_cast<wint_t>(nChar)))
 			return TRUE;
 
 		if (ConvertUnicodeAlpha(nChar, TRUE) != nChar)
@@ -1168,7 +1158,7 @@ protected:
 
 	void CorrectWindowText()
 	{
-		int nLiteralLength = m_strLiteral.GetLength();
+		int nLiteralLength	= m_strLiteral.GetLength();
 		int nWindowTextLength = m_strWindowText.GetLength();
 
 		if (nWindowTextLength > nLiteralLength)
@@ -1177,7 +1167,8 @@ protected:
 		}
 		else if (nWindowTextLength < nLiteralLength)
 		{
-			m_strWindowText += m_strLiteral.Mid(nWindowTextLength, nLiteralLength - nWindowTextLength);
+			m_strWindowText += m_strLiteral.Mid(nWindowTextLength,
+												nLiteralLength - nWindowTextLength);
 		}
 	}
 
@@ -1234,7 +1225,7 @@ protected:
 			if (bUpdateUndo || m_bUpdateUndo)
 				m_strUndoBuffer = strWindowText;
 
-			m_bRedo = FALSE;
+			m_bRedo		= FALSE;
 			m_bModified = TRUE;
 		}
 
@@ -1244,16 +1235,18 @@ protected:
 		ShowCaret();
 	}
 
-
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The framework calls this member function when the user selects an item from a menu
 	// Parameters:
-	//     wParam - The low-order word of wParam identifies the command ID of the menu item, control, or accelerator. The high-order word of wParam specifies the notification message if the message is from a control. If the message is from an accelerator, the high-order word is 1. If the message is from a menu, the high-order word is 0
-	//     lParam - Identifies the control that sends the message if the message is from a control. Otherwise, lParam is 0.
+	//     wParam - The low-order word of wParam identifies the command ID of the menu item,
+	//     control, or accelerator. The high-order word of wParam specifies the notification message
+	//     if the message is from a control. If the message is from an accelerator, the high-order
+	//     word is 1. If the message is from a menu, the high-order word is 0 lParam - Identifies
+	//     the control that sends the message if the message is from a control. Otherwise, lParam is
+	//     0.
 	// Returns:
 	//     An application returns nonzero if it processes this message; otherwise 0.
 	//-----------------------------------------------------------------------
@@ -1261,68 +1254,58 @@ protected:
 	{
 		switch (LOWORD(wParam))
 		{
-			case ID_EDIT_CUT:
-				MaskCut();
-				return TRUE;
+			case ID_EDIT_CUT: MaskCut(); return TRUE;
 
-			case ID_EDIT_COPY:
-				MaskCopy();
-				return TRUE;
+			case ID_EDIT_COPY: MaskCopy(); return TRUE;
 
-			case ID_EDIT_PASTE:
-				MaskPaste();
-				return TRUE;
+			case ID_EDIT_PASTE: MaskPaste(); return TRUE;
 
-			case ID_EDIT_CLEAR:
-				MaskClear();
-				return TRUE;
+			case ID_EDIT_CLEAR: MaskClear(); return TRUE;
 
-			case ID_EDIT_UNDO:
-				MaskUndo();
-				return TRUE;
+			case ID_EDIT_UNDO: MaskUndo(); return TRUE;
 
-			case ID_EDIT_SELECT_ALL:
-				MaskSelectAll();
-				return TRUE;
+			case ID_EDIT_SELECT_ALL: MaskSelectAll(); return TRUE;
 		}
 		return TBase::OnCommand(wParam, lParam);
 	}
 
 protected:
-
-	int         m_nStartChar;       // Current position of the first character in the current selection.
-	int         m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
-	BOOL        m_bUseMask;         // TRUE to use the edit mask.
-	BOOL        m_bOverType;        // TRUE to over type the text, set with VK_INSERT key press.
-	BOOL        m_bRedo;            // TRUE to redo, or FALSE to undo.
-	BOOL        m_bModified;        // TRUE if mask edit has been modified.
-	TCHAR       m_chPrompt;         // Prompt character used to identify the text entry.
-	CString     m_strMask;          // Buffer that holds the actual edit mask value.
-	CString     m_strDefault;       // Contains the edit controls default display text.
-	CString     m_strUndoBuffer;    // Holds the contents of the undo buffer.
-	CString     m_strRedoBuffer;    // Holds the contents of the redo buffer.
-	CString     m_strWindowText;    // Buffer that holds the actual edit text.
-	CString     m_strLiteral;       // Literal format that restricts where the user can enter text.
-	BOOL        m_bUpdateUndo;      // TRUE to update undo
+	int m_nStartChar;  // Current position of the first character in the current selection.
+	int m_nEndChar;	// Current position of the first non-selected character past the end of the
+					   // current selection.
+	BOOL m_bUseMask;   // TRUE to use the edit mask.
+	BOOL m_bOverType;  // TRUE to over type the text, set with VK_INSERT key press.
+	BOOL m_bRedo;	  // TRUE to redo, or FALSE to undo.
+	BOOL m_bModified;  // TRUE if mask edit has been modified.
+	TCHAR m_chPrompt;  // Prompt character used to identify the text entry.
+	CString m_strMask; // Buffer that holds the actual edit mask value.
+	CString m_strDefault;	// Contains the edit controls default display text.
+	CString m_strUndoBuffer; // Holds the contents of the undo buffer.
+	CString m_strRedoBuffer; // Holds the contents of the redo buffer.
+	CString m_strWindowText; // Buffer that holds the actual edit text.
+	CString m_strLiteral;	// Literal format that restricts where the user can enter text.
+	BOOL m_bUpdateUndo;		 // TRUE to update undo
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define ON_MESSAGE_BOOL(message, memberFxn) \
-	{ message, 0, 0, 0, AfxSig_bv, \
-		(AFX_PMSG)(AFX_PMSGW)(BOOL (AFX_MSG_CALL CWnd::*)(void))&memberFxn },
+#	define ON_MESSAGE_BOOL(message, memberFxn)                                                     \
+		{                                                                                           \
+			message, 0,			0,                                                                  \
+			0,		 AfxSig_bv, (AFX_PMSG)(AFX_PMSGW)(BOOL(AFX_MSG_CALL CWnd::*)(void)) & memberFxn \
+		},
 
-#define ON_MASKEDIT_REFLECT\
-	ON_MESSAGE_BOOL(WM_CUT, MaskCut)\
-	ON_MESSAGE_BOOL(WM_PASTE, MaskPaste)\
-	ON_MESSAGE_BOOL(WM_CLEAR, MaskClear)\
-	ON_MESSAGE_BOOL(WM_UNDO, MaskUndo)\
-	ON_MESSAGE_BOOL(WM_COPY, MaskCopy)\
-	ON_WM_KEYDOWN()\
-	ON_WM_CHAR()\
-	ON_WM_SETFOCUS
+#	define ON_MASKEDIT_REFLECT                                                                    \
+		ON_MESSAGE_BOOL(WM_CUT, MaskCut)                                                           \
+		ON_MESSAGE_BOOL(WM_PASTE, MaskPaste)                                                       \
+		ON_MESSAGE_BOOL(WM_CLEAR, MaskClear)                                                       \
+		ON_MESSAGE_BOOL(WM_UNDO, MaskUndo)                                                         \
+		ON_MESSAGE_BOOL(WM_COPY, MaskCopy)                                                         \
+		ON_WM_KEYDOWN()                                                                            \
+		ON_WM_CHAR()                                                                               \
+		ON_WM_SETFOCUS
 
 //}}AFX_CODEJOCK_PRIVATE
 //////////////////////////////////////////////////////////////////////
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTMASKEDITEX_H__)

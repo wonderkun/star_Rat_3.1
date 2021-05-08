@@ -1,7 +1,6 @@
 // XTPSyntaxEditDrawTextProcessor.h: interface for the CXTPSyntaxEditDrawTextProcessor class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITDRAWTEXTPROCESSOR_H__)
-#define __XTPSYNTAXEDITDRAWTEXTPROCESSOR_H__
+#	define __XTPSYNTAXEDITDRAWTEXTPROCESSOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPSmartPtrInternalT.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 template<class TYPE, class ARG_TYPE>
@@ -35,8 +34,8 @@ class CXTPReserveArray : protected CArray<TYPE, ARG_TYPE>
 {
 protected:
 	int m_nDataSize;
-public:
 
+public:
 	CXTPReserveArray()
 	{
 		m_nDataSize = 0;
@@ -79,11 +78,13 @@ public:
 	}
 
 	// Direct Access to the element data (may return NULL)
-	const TYPE* GetData() const {
+	const TYPE* GetData() const
+	{
 		return CArray<TYPE, ARG_TYPE>::GetData();
 	}
 
-	TYPE* GetData() {
+	TYPE* GetData()
+	{
 		return CArray<TYPE, ARG_TYPE>::GetData();
 	}
 };
@@ -98,7 +99,6 @@ public:
 class _XTP_EXT_CLASS CXTPSyntaxEditDrawTextProcessor
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -112,7 +112,7 @@ public:
 	//      A CRect with rectangle to draw text.
 	// See Also: SetTextRect
 	//-----------------------------------------------------------------------
-	CRect GetTextRect();
+	CRect GetTextRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -130,7 +130,7 @@ public:
 	//      A single row height.
 	// See Also: RecalcRowHeight
 	//-----------------------------------------------------------------------
-	int GetRowHeight();
+	int GetRowHeight() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -155,7 +155,7 @@ public:
 	//      A visible rows count.
 	// See Also: SetTextRect
 	//-----------------------------------------------------------------------
-	int GetRowsCount(BOOL bWithPartlyVisible);
+	int GetRowsCount(BOOL bWithPartlyVisible) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -164,7 +164,7 @@ public:
 	//      A tab size.
 	// See Also: SetTabSize
 	//-----------------------------------------------------------------------
-	int GetTabSize();
+	int GetTabSize() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -185,7 +185,7 @@ public:
 	//      A scroll offset for x coordinate.
 	// See Also: SetScrollXOffset
 	//-----------------------------------------------------------------------
-	int GetScrollXOffset();
+	int GetScrollXOffset() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -203,7 +203,7 @@ public:
 	//      A TEXTMETRIC structure.
 	// See Also: RecalcRowHeight
 	//-----------------------------------------------------------------------
-	const TEXTMETRIC& GetTextMetrics();
+	const TEXTMETRIC& GetTextMetrics() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -212,7 +212,7 @@ public:
 	//      A space char width in the pixels.
 	// See Also: RecalcRowHeight
 	//-----------------------------------------------------------------------
-	int GetSpaceWidth();
+	int GetSpaceWidth() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -242,7 +242,7 @@ public:
 	//      A column start x position (in pixels).
 	// See Also: ColFromXPos
 	//-----------------------------------------------------------------------
-	int GetColPosX(int nRow, int nCol, int* pnChawWidth = NULL, BOOL bVirtualSpace = FALSE);
+	int GetColPosX(int nRow, int nCol, int* pnChawWidth = NULL, BOOL bVirtualSpace = FALSE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -257,7 +257,7 @@ public:
 	//      TRUE if succeeded, FALSE otherwise.
 	// See Also: GetColPosX, AlignColIdxToTabs
 	//-----------------------------------------------------------------------
-	BOOL ColFromXPos(int nRow, int nX, int& rnCol, BOOL bVirtualSpace = FALSE);
+	BOOL ColFromXPos(int nRow, int nX, int& rnCol, BOOL bVirtualSpace = FALSE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -268,7 +268,7 @@ public:
 	//      A row width in pixels.
 	// See Also: GetRowsMaxWidth
 	//-----------------------------------------------------------------------
-	int GetRowWidth(int nRow);
+	int GetRowWidth(int nRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -277,7 +277,7 @@ public:
 	//      A maximum row width in pixels.
 	// See Also: GetRowsWidth
 	//-----------------------------------------------------------------------
-	int GetRowsMaxWidth();
+	int GetRowsMaxWidth() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -292,7 +292,7 @@ public:
 	//      TRUE if succeeded, FALSE otherwise.
 	// See Also: GetColPosX, HitTestRow.
 	//-----------------------------------------------------------------------
-	BOOL HitTest(const CPoint& pt, int& rnRow, int& rnCol, BOOL bVirtualSpace = FALSE);
+	BOOL HitTest(const CPoint& pt, int& rnRow, int& rnCol, BOOL bVirtualSpace = FALSE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -304,7 +304,7 @@ public:
 	//      TRUE if succeeded, FALSE otherwise.
 	// See Also: GetColPosX, HitTest.
 	//-----------------------------------------------------------------------
-	BOOL HitTestRow(int nY, int& rnRow);
+	BOOL HitTestRow(int nY, int& rnRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -350,7 +350,7 @@ public:
 	//      DrawRowPart
 	//-----------------------------------------------------------------------
 	int PrintRowPart(CDC* pDC, int nRow, int nPosY, UINT nFlags, LPCTSTR pcszText,
-					 int nchCount = -1, int *pnPrintedTextLen = NULL);
+					 int nchCount = -1, int* pnPrintedTextLen = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -385,7 +385,7 @@ public:
 	// Returns:
 	//      The string position.
 	//-----------------------------------------------------------------------
-	int DispPosToStrPos(int nRow, int nDispPos, BOOL bVirtualSpace);
+	int DispPosToStrPos(int nRow, int nDispPos, BOOL bVirtualSpace) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -397,7 +397,7 @@ public:
 	// Returns:
 	//      The display position.
 	//-----------------------------------------------------------------------
-	int StrPosToDispPos(int nRow, int nStrPos, BOOL bVirtualSpace = FALSE);
+	int StrPosToDispPos(int nRow, int nStrPos, BOOL bVirtualSpace = FALSE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -414,7 +414,7 @@ public:
 	//      Point of the caret position.
 	//-----------------------------------------------------------------------
 	CPoint SetCaretPos(CWnd* pWnd, const CSize& szSize, int nRow, int& rnCol,
-					 BOOL bHideCaret = FALSE, BOOL bVirtualSpace = FALSE);
+					   BOOL bHideCaret = FALSE, BOOL bVirtualSpace = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -430,18 +430,17 @@ public:
 	// Returns:
 	//      Point of the caret position.
 	//-----------------------------------------------------------------------
-	CPoint SetCaretByPoint(CWnd* pWnd, const CPoint& pt, const CSize& szSize,
-						 int& rnRow, int& rnCol, BOOL bVirtualSpace = FALSE);
+	CPoint SetCaretByPoint(CWnd* pWnd, const CPoint& pt, const CSize& szSize, int& rnRow,
+						   int& rnCol, BOOL bVirtualSpace = FALSE);
 
 public:
-
-//{{AFX_CODEJOCK_PRIVATE
-	class _XTP_EXT_CLASS CXTPRowInfo : public CCmdTarget
+	//{{AFX_CODEJOCK_PRIVATE
+	class _XTP_EXT_CLASS CXTPRowInfo : public CXTPCmdTarget
 	{
 	public:
 		CXTPRowInfo()
 		{
-			nMaxWidth = 0;
+			nMaxWidth				 = 0;
 			const int cnReservedSize = 4096;
 			arCharsEnds.SetDataSize(0, cnReservedSize, cnReservedSize);
 
@@ -465,85 +464,82 @@ public:
 		CXTPReserveArray<int, int> arStrPos2DispCol;
 	};
 
-	CXTPRowInfo* GetRowInfo(int nRow);
-//}}AFX_CODEJOCK_PRIVATE
+	CXTPRowInfo* GetRowInfo(int nRow) const;
+	//}}AFX_CODEJOCK_PRIVATE
+
+private:
+	void DrawTextOfSize(CDC* pDC, int nX, int nY, const SIZE& textSize, const RECT& rcText,
+						LPCTSTR pcszText, int nchCount) const;
 
 protected:
-	int         m_nTabSize;     // Store the tab size.
-	TEXTMETRIC  m_tmText;       // Store text metrics.
-	int         m_nSpaceWidth;  // Store space char width.
+	int m_nTabSize;		 // Store the tab size.
+	TEXTMETRIC m_tmText; // Store text metrics.
+	int m_nSpaceWidth;   // Store space char width.
 
-	CRect m_rcTextRect;     // Store text rect.
-	int m_nRowHeight;       // Store row height.
-	int m_nScrollXOffset;   // Store scroll offset for x coordinate.
+	CRect m_rcTextRect;   // Store text rect.
+	int m_nRowHeight;	 // Store row height.
+	int m_nScrollXOffset; // Store scroll offset for x coordinate.
 
-	int m_nDrawingRow;      // Store currently drawing row.
-	int m_nNextRowPosX;     // Store x offset to draw next row part.
+	int m_nDrawingRow;  // Store currently drawing row.
+	int m_nNextRowPosX; // Store x offset to draw next row part.
 
-	int     m_nPrintingRow;     // Store currently printing row.
-	CPoint  m_ptNextPrintPos;   // Store (x, y) offset to print next row part.
-	BOOL    m_bUseOutputDC;     // Use output DC for calculations.
+	int m_nPrintingRow;		 // Store currently printing row.
+	CPoint m_ptNextPrintPos; // Store (x, y) offset to print next row part.
+	BOOL m_bUseOutputDC;	 // Use output DC for calculations.
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	typedef CXTPInternalCollectionT<CXTPRowInfo> CXTPRowsInfoArray; //
-	CXTPRowsInfoArray m_arRows;
-//}}AFX_CODEJOCK_PRIVATE
+	mutable CXTPRowsInfoArray m_arRows;
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// temporary buffers
-	CArray<int, int>                m_arBuf_aDx;
-	CXTPReserveArray<TCHAR, TCHAR>  m_arExpandCharsBuffer;
-//}}AFX_CODEJOCK_PRIVATE
+	CArray<int, int> m_arBuf_aDx;
+	CXTPReserveArray<TCHAR, TCHAR> m_arExpandCharsBuffer;
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-AFX_INLINE const TEXTMETRIC& CXTPSyntaxEditDrawTextProcessor::GetTextMetrics()
+AFX_INLINE const TEXTMETRIC& CXTPSyntaxEditDrawTextProcessor::GetTextMetrics() const
 {
 	return m_tmText;
 }
-
-AFX_INLINE CRect CXTPSyntaxEditDrawTextProcessor::GetTextRect()
+AFX_INLINE CRect CXTPSyntaxEditDrawTextProcessor::GetTextRect() const
 {
 	return m_rcTextRect;
 }
-
 AFX_INLINE void CXTPSyntaxEditDrawTextProcessor::SetTextRect(const CRect& rcRect)
 {
 	m_rcTextRect = rcRect;
 }
-
-AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetRowHeight()
+AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetRowHeight() const
 {
 	return m_nRowHeight;
 }
-
-AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetTabSize()
+AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetTabSize() const
 {
 	return m_nTabSize;
 }
-
 AFX_INLINE void CXTPSyntaxEditDrawTextProcessor::SetTabSize(int nTabSize)
 {
 	m_nTabSize = nTabSize;
 }
-
-AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetScrollXOffset()
+AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetScrollXOffset() const
 {
 	return m_nScrollXOffset;
 }
-
-AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetRowsCount(BOOL bWithPartlyVisible)
+AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetRowsCount(BOOL bWithPartlyVisible) const
 {
 	int nHeight = m_rcTextRect.Height();
-	int nRowH = max(1, m_nRowHeight);
+	int nRowH   = max(1, m_nRowHeight);
 	int nPartly = bWithPartlyVisible ? 1 : 0;
 
 	return nHeight / nRowH + ((nHeight % nRowH) ? nPartly : 0);
 }
-
-AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetSpaceWidth()
+AFX_INLINE int CXTPSyntaxEditDrawTextProcessor::GetSpaceWidth() const
 {
 	return m_nSpaceWidth;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITDRAWTEXTPROCESSOR_H__)

@@ -1,7 +1,7 @@
 // ClientSocket.cpp: implementation of the CClientSocket class.
 //
 //////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
+#include "pcl.h"
 #include "ClientSocket.h"
 #include <process.h>
 #include <MSTcpIP.h>

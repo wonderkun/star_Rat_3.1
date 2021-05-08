@@ -1,7 +1,6 @@
 // XTPChartCandleStickSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTCANDLESTICKSERIESSTYLE_H__)
-#define __XTPCHARTCANDLESTICKSERIESSTYLE_H__
+#	define __XTPCHARTCANDLESTICKSERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "../../XTPChartSeriesStyle.h"
-#include "../../XTPChartSeries.h"
-#include "../../XTPChartSeriesView.h"
-
-#include "XTPChartHighLowSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -64,7 +59,6 @@ public:
 	virtual ~CXTPChartCandleStickSeriesStyle();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to create the view of the candlestick series.
@@ -73,18 +67,19 @@ protected:
 	//     a kind of CXTPChartSeriesView*.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
 protected:
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartCandleStickSeriesStyle);
 	DECLARE_OLECREATE_EX(CXTPChartCandleStickSeriesStyle)
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
 //===========================================================================
@@ -112,7 +107,6 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPChartCandleStickSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
 
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -126,9 +120,21 @@ protected:
 	//     CXTPChartSeriesPointView.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
-	CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     This function creates a label view drawing command object.
+	// Parameters:
+	//     pDC      - Pointer to a CXTPChartDeviceContext object.
+	//     rcBounds - The rectangular boundary of the legend.
+	// Returns:
+	//     Returns a new label view drawing command object.
+	//-------------------------------------------------------------------------
+	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC,
+															  CRect rcBounds);
 };
 
 //===========================================================================
@@ -147,7 +153,8 @@ public:
 	//     pPoint - A pointer to chart series point object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartCandleStickSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartCandleStickSeriesPointView(CXTPChartSeriesPoint* pPoint,
+										CXTPChartElementView* pParentView);
 
 public:
 	//-------------------------------------------------------------------------
@@ -158,15 +165,14 @@ public:
 	//     pDC - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of a candlestick series point.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the screen point from a series index.
@@ -178,8 +184,7 @@ public:
 	// See Also:
 	//-------------------------------------------------------------------------
 	CXTPChartPointF GetScreenPoint(int nIndex);
-
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTCANDLESTICKSERIESSTYLE_H__)

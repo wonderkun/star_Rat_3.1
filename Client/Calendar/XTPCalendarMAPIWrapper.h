@@ -1,7 +1,6 @@
 // XTPCalendarMAPIWrapper.h: interface for the CXTPCalendarMAPIWrapper class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,44 +17,47 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _XTP_INCLUDE_CALENDAR_MAPI
+#	error Use _XTP_INCLUDE_CALENDAR_MAPI to enable Calendar MAPI support.
+#else
+
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(__XTPCALENDARMAPIWRAPPER_H__)
-#define __XTPCALENDARMAPIWRAPPER_H__
+#	if !defined(__XTPCALENDARMAPIWRAPPER_H__)
+#		define __XTPCALENDARMAPIWRAPPER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#		if _MSC_VER > 1000
+#			pragma once
+#		endif // _MSC_VER > 1000
 
-#include "Calendar/mapi/mapidefs.h"
-#include "Calendar/mapi/mapicode.h"
-#include "Calendar/mapi/mapiguid.h"
-#include "Calendar/mapi/mapitags.h"
-#include "Calendar/mapi/mapix.h"
+#		include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
-#define TYPEDEF_WRAPPER_POINTER(val, type, proc)\
-	const int xtpWrapper##proc = val;\
-	const LPCSTR xtpWrapperProc##proc = #proc;\
-	typedef type (__stdcall* PFN##proc)
+#		define TYPEDEF_WRAPPER_POINTER(val, type, proc)                                           \
+			const int xtpWrapper##proc		  = val;                                               \
+			const LPCSTR xtpWrapperProc##proc = #proc;                                             \
+			typedef type(__stdcall* PFN##proc)
 
-#define TYPEDEF_WRAPPER_PTR_NUM(val, type, proc, num)\
-	const int xtpWrapper##proc = val;\
-	const LPCSTR xtpWrapperProc##proc = #proc"@"#num;\
-	typedef type (__stdcall* PFN##proc)
+#		define TYPEDEF_WRAPPER_PTR_NUM(val, type, proc, num)                                      \
+			const int xtpWrapper##proc		  = val;                                               \
+			const LPCSTR xtpWrapperProc##proc = #proc "@" #num;                                    \
+			typedef type(__stdcall* PFN##proc)
 
 TYPEDEF_WRAPPER_POINTER(0, HRESULT, MAPIInitialize)(LPVOID);
 TYPEDEF_WRAPPER_POINTER(1, void, MAPIUninitialize)();
-TYPEDEF_WRAPPER_POINTER(2, HRESULT, MAPILogonEx)(ULONG, LPTSTR, LPTSTR, FLAGS, LPMAPISESSION FAR *);
+TYPEDEF_WRAPPER_POINTER(2, HRESULT, MAPILogonEx)(ULONG, LPTSTR, LPTSTR, FLAGS, LPMAPISESSION FAR*);
 TYPEDEF_WRAPPER_POINTER(3, ULONG, MAPIFreeBuffer)(LPVOID);
 TYPEDEF_WRAPPER_PTR_NUM(4, ULONG, UlRelease, 4)(LPVOID);
 TYPEDEF_WRAPPER_PTR_NUM(5, void, FreeProws, 4)(LPSRowSet);
-TYPEDEF_WRAPPER_PTR_NUM(6, HRESULT, HrQueryAllRows, 24)(LPMAPITABLE, LPSPropTagArray, LPSRestriction, LPSSortOrderSet, LONG, LPSRowSet FAR *);
-TYPEDEF_WRAPPER_PTR_NUM(7, HRESULT, HrGetOneProp, 12)(LPMAPIPROP, ULONG, LPSPropValue FAR *);
+TYPEDEF_WRAPPER_PTR_NUM(6, HRESULT, HrQueryAllRows, 24)
+(LPMAPITABLE, LPSPropTagArray, LPSRestriction, LPSSortOrderSet, LONG, LPSRowSet FAR*);
+TYPEDEF_WRAPPER_PTR_NUM(7, HRESULT, HrGetOneProp, 12)(LPMAPIPROP, ULONG, LPSPropValue FAR*);
 TYPEDEF_WRAPPER_PTR_NUM(8, HRESULT, HrSetOneProp, 8)(LPMAPIPROP, LPSPropValue);
-TYPEDEF_WRAPPER_POINTER(9, SCODE, MAPIAllocateBuffer)(ULONG, LPVOID FAR *);
-TYPEDEF_WRAPPER_PTR_NUM(10, HRESULT, HrThisThreadAdviseSink, 8)(LPMAPIADVISESINK, LPMAPIADVISESINK FAR *);
-TYPEDEF_WRAPPER_PTR_NUM(11, HRESULT, HrAllocAdviseSink, 12)(LPNOTIFCALLBACK, LPVOID, LPMAPIADVISESINK FAR *);
+TYPEDEF_WRAPPER_POINTER(9, SCODE, MAPIAllocateBuffer)(ULONG, LPVOID FAR*);
+TYPEDEF_WRAPPER_PTR_NUM(10, HRESULT, HrThisThreadAdviseSink, 8)
+(LPMAPIADVISESINK, LPMAPIADVISESINK FAR*);
+TYPEDEF_WRAPPER_PTR_NUM(11, HRESULT, HrAllocAdviseSink, 12)
+(LPNOTIFCALLBACK, LPVOID, LPMAPIADVISESINK FAR*);
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -65,7 +67,6 @@ TYPEDEF_WRAPPER_PTR_NUM(11, HRESULT, HrAllocAdviseSink, 12)(LPNOTIFCALLBACK, LPV
 class _XTP_EXT_CLASS CXTPCalendarMAPIWrapper
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCalendarMAPIWrapper object.
@@ -113,7 +114,8 @@ public:
 	//                       when logging on. This string is limited to 64 characters.
 	//     lpszPassword    - [in] Pointer to a string containing the password of the profile.
 	//                       The lpszPassword parameter can be NULL whether or not the
-	//                       lpszProfileName parameter is NULL. This string is limited to 64 characters. .
+	//                       lpszProfileName parameter is NULL. This string is limited to 64
+	//                       characters. .
 	//     flFlags         - [in] Bitmask of flags used to control how logon is performed.
 	//                       See API MAPILogonEx description for more info.
 	//     lppSession      - [out] Pointer to a pointer to the MAPI session interface.
@@ -123,11 +125,13 @@ public:
 	//                           parameters to MAPILogonEx were invalid or because there were
 	//                           too many sessions open already.
 	//     MAPI_E_TIMEOUT      - MAPI serializes all logons through a mutex. This is returned if
-	//                           the MAPI_TIMEOUT_SHORT flag was set and another thread held the mutex.
+	//                           the MAPI_TIMEOUT_SHORT flag was set and another thread held the
+	//                           mutex.
 	//     MAPI_E_USER_CANCEL  - The user canceled the operation, typically by clicking
 	//                           the Cancel button in a dialog box.
 	//-----------------------------------------------------------------------
-	HRESULT MAPILogonEx(ULONG ulUIParam, LPTSTR lpszProfileName, LPTSTR lpszPassword, FLAGS flFlags, LPMAPISESSION FAR * lppSession);
+	HRESULT MAPILogonEx(ULONG ulUIParam, LPTSTR lpszProfileName, LPTSTR lpszPassword, FLAGS flFlags,
+						LPMAPISESSION FAR* lppSession);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -195,13 +199,8 @@ public:
 	//     rows of a table. MAPI_E_TABLE_TOO_BIG - The number of rows in the
 	//     table is larger than the number passed for the crowsMax parameter.
 	// -----------------------------------------------------------------------
-	HRESULT HrQueryAllRows(
-		LPMAPITABLE ptable,
-		LPSPropTagArray ptaga,
-		LPSRestriction pres,
-		LPSSortOrderSet psos,
-		LONG crowsMax,
-		LPSRowSet FAR * pprows);
+	HRESULT HrQueryAllRows(LPMAPITABLE ptable, LPSPropTagArray ptaga, LPSRestriction pres,
+						   LPSSortOrderSet psos, LONG crowsMax, LPSRowSet FAR* pprows);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -217,7 +216,7 @@ public:
 	//     MAPI_E_NOT_FOUND - The requested property is not available from
 	//                        the specified interface.
 	//-----------------------------------------------------------------------
-	HRESULT HrGetOneProp(LPMAPIPROP pmp, ULONG ulPropTag, LPSPropValue FAR * ppprop);
+	HRESULT HrGetOneProp(LPMAPIPROP pmp, ULONG ulPropTag, LPSPropValue FAR* ppprop);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -244,7 +243,7 @@ public:
 	//     Returns S_OK if the call succeeded and has returned
 	//     the expected value or values.
 	//-----------------------------------------------------------------------
-	SCODE MAPIAllocateBuffer(ULONG cbSize, LPVOID FAR * lppBuffer);
+	SCODE MAPIAllocateBuffer(ULONG cbSize, LPVOID FAR* lppBuffer);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -259,7 +258,8 @@ public:
 	//     Returns S_OK if the call succeeded and has returned
 	//     the expected value or values,else E_FAIL
 	//-----------------------------------------------------------------------
-	HRESULT HrThisThreadAdviseSink(LPMAPIADVISESINK lpAdviseSink, LPMAPIADVISESINK FAR * lppAdviseSink);
+	HRESULT HrThisThreadAdviseSink(LPMAPIADVISESINK lpAdviseSink,
+								   LPMAPIADVISESINK FAR* lppAdviseSink);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -282,14 +282,17 @@ public:
 	//     Returns S_OK if the call succeeded and has returned
 	//     the expected value or values,else E_FAIL
 	//-----------------------------------------------------------------------
-	HRESULT HrAllocAdviseSink(LPNOTIFCALLBACK lpfnCallback, LPVOID lpvContext, LPMAPIADVISESINK FAR * lppAdviseSink);
+	HRESULT HrAllocAdviseSink(LPNOTIFCALLBACK lpfnCallback, LPVOID lpvContext,
+							  LPMAPIADVISESINK FAR* lppAdviseSink);
 
 private:
-	LPVOID m_ptrWrappers[12];   // Wrapper pointer
-	HMODULE m_hMapiDll;         // Handle to the mapi32 dll.
-
+	LPVOID m_ptrWrappers[12]; // Wrapper pointer
+	HMODULE m_hMapiDll;		  // Handle to the mapi32 dll.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined(__XTPCALENDARMAPIWRAPPER_H__)
+#	endif // !defined(__XTPCALENDARMAPIWRAPPER_H__)
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#endif /*!_XTP_INCLUDE_CALENDAR_MAPI*/

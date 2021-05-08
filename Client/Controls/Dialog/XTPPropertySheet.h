@@ -1,7 +1,6 @@
 // XTPPropertySheet.h : interface for the CXTPPropertySheet class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYSHEET_H__)
-#define __XTPPROPERTYSHEET_H__
+#	define __XTPPROPERTYSHEET_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropertyPageNavigator;
 class CXTPPropertyPage;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     XTPPropertyPageBorder is an enumeration used to set the client frame style drawn around the client of tabs.
+//     XTPPropertyPageBorder is an enumeration used to set the client frame style drawn around the
+//     client of tabs.
 // Example:
 //     <code>wndSheet.SetPageBorderStyle(xtpPageBorderFrame);</code>
 // See Also: CXTPPropertySheet
@@ -50,7 +52,8 @@ enum XTPPropertyPageBorder
 // Summary:
 //     CXTPPropertySheet is a CDialog derived class
 //     It represents property sheet, otherwise known as tab dialog box.
-//     A property sheet consists of a CXTPPropertySheet object and one or more CXTPPropertyPage objects.
+//     A property sheet consists of a CXTPPropertySheet object and one or more CXTPPropertyPage
+//     objects.
 // See Also:
 //     CXTPPropertySheet::DoModal, CXTPPropertyPage, CXTPPropertyPageNavigator
 //===========================================================================
@@ -64,17 +67,22 @@ public:
 	//     Constructs a CXTPPropertySheet object.
 	// Parameters:
 	//     nIDCaption - ID of the caption to be used for the property sheet.
-	//     pParentWnd - Points to the parent window of the property sheet. If NULL, the parent window will be the main window of the application.
-	//     iSelectPage  - The index of the page that will initially be on top. Default is the first page added to the sheet
-	//     pszCaption  - Points to a string containing the caption to be used for the property sheet. Cannot be NULL
+	//     pParentWnd - Points to the parent window of the property sheet. If NULL, the parent
+	//     window will be the main window of the application. iSelectPage  - The index of the page
+	//     that will initially be on top. Default is the first page added to the sheet pszCaption  -
+	//     Points to a string containing the caption to be used for the property sheet. Cannot be
+	//     NULL
 	// Remarks:
 	//     Use this member function to construct a CPropertySheet object.
 	//     To display the property sheet, call DoModal or Create.
-	//     The string contained in the first parameter will be placed in the caption bar for the property sheet.
+	//     The string contained in the first parameter will be placed in the caption bar for the
+	//     property sheet.
 	//-----------------------------------------------------------------------
 	CXTPPropertySheet();
-	CXTPPropertySheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0); // <combine CXTPPropertySheet::CXTPPropertySheet>
-	CXTPPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0); // <combine CXTPPropertySheet::CXTPPropertySheet>
+	CXTPPropertySheet(UINT nIDCaption, CWnd* pParentWnd = NULL,
+					  UINT iSelectPage = 0); // <combine CXTPPropertySheet::CXTPPropertySheet>
+	CXTPPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL,
+					  UINT iSelectPage = 0); // <combine CXTPPropertySheet::CXTPPropertySheet>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -100,6 +108,11 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL Create(CWnd* pParentWnd = NULL, DWORD dwStyle = (DWORD)-1, DWORD dwExStyle = 0);
 
+	using CDialog::Create;
+#	if (1200 < _MSC_VER)
+	using CWnd::Create;
+#	endif
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Displays a modal property sheet.
@@ -108,8 +121,8 @@ public:
 	// Remarks:
 	//     Call this member function to display a modal property sheet.
 	//     The return value corresponds to the ID of the control that closed the property sheet.
-	//     After this function returns, the windows corresponding to the property sheet and all the pages
-	//     will have been destroyed.
+	//     After this function returns, the windows corresponding to the property sheet and all the
+	//     pages will have been destroyed.
 	//
 	//     To display a modeless property sheet, call Create instead.
 	// See Also:
@@ -127,19 +140,23 @@ public:
 	//     This member function adds the supplied page with the rightmost tab in the property sheet.
 	//     Add pages to the property sheet in the left-to-right order you want them to appear.
 	//
-	//     AddPage adds the CPropertyPage object to the CPropertySheet object's list of pages but does
-	//     not actually create the window for the page. The framework postpones creation of the window for the page until the user selects that page.
+	//     AddPage adds the CPropertyPage object to the CPropertySheet object's list of pages but
+	//     does not actually create the window for the page. The framework postpones creation of the
+	//     window for the page until the user selects that page.
 	// See Also:
 	//     CXTPPropertySheet::GetPageCount
 	//-----------------------------------------------------------------------
 	void AddPage(CXTPPropertyPage* pPage);
+	void InsertPage(int nIndex, CXTPPropertyPage* pPage);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member function removes a page from the property sheet and destroys the associated window.
+	//     This member function removes a page from the property sheet and destroys the associated
+	//     window.
 	// Parameters:
 	//     pPage - Points to the page to be removed from the property sheet. Cannot be NULL.
-	//     nPage  - Index of the page to be removed. Must be between 0 and one less than the number of pages in the property sheet, inclusive.
+	//     nPage  - Index of the page to be removed. Must be between 0 and one less than the number
+	//     of pages in the property sheet, inclusive.
 	// See Also:
 	//     CXTPPropertySheet::AddPage
 	//-----------------------------------------------------------------------
@@ -152,7 +169,8 @@ public:
 	// Returns:
 	//     The number of pages in the property sheet.
 	// Remarks:
-	//     Call this member function to determine the number of pages currently in the property sheet.
+	//     Call this member function to determine the number of pages currently in the property
+	//     sheet.
 	// See Also:
 	//     CXTPPropertySheet::AddPage, CXTPPropertySheet::GetPage
 	//-----------------------------------------------------------------------
@@ -163,16 +181,17 @@ public:
 	//     Retrieves a pointer to the specified page.
 	// Parameters:
 	//     nPage - Index of the desired page, starting at 0.
-	//             Must be between 0 and one less than the number of pages in the property sheet, inclusive.
+	//             Must be between 0 and one less than the number of pages in the property sheet,
+	//             inclusive.
 	// Returns:
 	//     The pointer to the page corresponding to the nPage parameter.
 	// Remarks:
-	//     Call this member function to determine the number of pages currently in the property sheet.
+	//     Call this member function to determine the number of pages currently in the property
+	//     sheet.
 	// See Also:
 	//     CXTPPropertySheet::AddPage, CXTPPropertySheet::GetPageCount
 	//-----------------------------------------------------------------------
 	CXTPPropertyPage* GetPage(int nPage) const;
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -182,8 +201,9 @@ public:
 	// Returns:
 	//     The index number of a page.
 	// Remarks:
-	//     Use this member function to retrieve the index number of the specified page in the property sheet.
-	//     For example, you would use GetPageIndex to get the page index in order to use SetActivePage or GetPage..
+	//     Use this member function to retrieve the index number of the specified page in the
+	//     property sheet. For example, you would use GetPageIndex to get the page index in order to
+	//     use SetActivePage or GetPage..
 	// See Also:
 	//     CXTPPropertySheet::GetActivePage
 	//-----------------------------------------------------------------------
@@ -208,36 +228,39 @@ public:
 	// Returns:
 	//     The index number of the active page.
 	// Remarks:
-	//     Call this member function to get the index number of the property sheet window's active page,
-	//     then use the returned index number as the parameter for GetPage.
+	//     Call this member function to get the index number of the property sheet window's active
+	//     page, then use the returned index number as the parameter for GetPage.
 	// See Also:
 	//     CXTPPropertySheet::GetActivePage
 	//-----------------------------------------------------------------------
 	int GetActiveIndex() const;
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Programmatically sets the active page object.
 	// Parameters:
 	//     pPage - Points to the page to set in the property sheet. It cannot be NULL.
-	//     nPage - Index of the page to set. It must be between 0 and one less than the number of pages in the property sheet, inclusive.
+	//     nPage - Index of the page to set. It must be between 0 and one less than the number of
+	//     pages in the property sheet, inclusive.
 	// Returns:
 	//     Nonzero if the property sheet is activated successfully; otherwise 0.
 	// Remarks:
 	//     Use this member function to change the active page.
-	//     For example, use SetActivePage if a user's action on one page should cause another page to become the active page.
+	//     For example, use SetActivePage if a user's action on one page should cause another page
+	//     to become the active page.
 	// See Also:
 	//     CXTPPropertySheet::GetActivePage
 	//-----------------------------------------------------------------------
-	BOOL SetActivePage(int nPage);
-	BOOL SetActivePage(CXTPPropertyPage* pPage); // <combine CXTPPropertySheet::SetActivePage@int>
+	virtual BOOL SetActivePage(int nPage);
+	virtual BOOL SetActivePage(CXTPPropertyPage* pPage); // <combine
+														 // CXTPPropertySheet::SetActivePage@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the caption of the property sheet.
 	// Parameters:
-	//     lpszText - Points to the text to be used as the caption in the title bar of the property sheet.
+	//     lpszText - Points to the text to be used as the caption in the title bar of the property
+	//     sheet.
 	// Remarks:
 	//     Call this member function to specify the property sheet's caption
 	//     (the text displayed in the title bar of a frame window).
@@ -287,7 +310,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetNavigator(CXTPPropertyPageNavigator* pNavigator);
 
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -300,7 +322,7 @@ public:
 	// See Also:
 	//     CXTPPropertySheet::RemoveButtons
 	//-----------------------------------------------------------------------
-	BOOL AddButton(UINT nIDCaption, UINT nID);
+	virtual BOOL AddButton(UINT nIDCaption, UINT nID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -384,6 +406,13 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL AutoLoadPlacement(LPCTSTR pszSection);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Forces all pages to update themselves as the data they rely on
+	//     is supposed to be changed from outside.
+	//-----------------------------------------------------------------------
+	void UpdatePages();
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -399,12 +428,13 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL CreatePage(CXTPPropertyPage* pPage);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	CFont* GetFont();
 	void EndDialog(int nEndID);
-	void RecalcLayout(LPSIZE pPageSize = NULL, BOOL bMoveWindow = FALSE);
+	virtual void RecalcLayout(LPSIZE pPageSize = NULL, BOOL bMoveWindow = FALSE);
 	BOOL IsWizard() const;
+	HWND GetNavigatorHwnd() const;
 
 protected:
 	void CommonConstruct(CWnd* pParentWnd, UINT iSelectPage);
@@ -413,24 +443,27 @@ protected:
 	virtual BOOL CreateClient();
 	void ResizeParentToFit(CSize szClient, BOOL bMoveWindow);
 	BOOL IsPositionRelativeToWindow();
-	void MoveButtons(AFX_SIZEPARENTPARAMS* pLayout, CSize szClient);
+	virtual void MoveButtons(AFX_SIZEPARENTPARAMS* pLayout, CSize szClient);
 	void CreateFont(CXTPPropertyPage* pActivePage);
+
+	virtual CButton* CreateButton();
 
 private:
 	void PageInfoChanged(CXTPPropertyPage* pPage, BOOL bModified);
 	BOOL OnButtonClick(UINT nButton);
 	LRESULT SendPageNotify(CXTPPropertyPage* pPage, int code, LPARAM lParam = 0);
 	TCHAR ToUpper(TCHAR vkTCHAR);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	//{{AFX_VIRTUAL(CXTPPropertySheet)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
@@ -447,58 +480,57 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT HandleInitDialog(WPARAM, LPARAM);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CString m_strCaption;           // Caption of the dialog
-	LPDLGTEMPLATE m_lpDlgTemplate;  // Dialog template
-	CArray<CButton*, CButton*> m_arrButtons;    // Array of buttons of property sheet
-	CXTPPropertyPageNavigator* m_pNavigator;    // Currently used navigator
-	CFont m_fntNormal;                          // Font used to draw buttons and navigator
-	CArray<CXTPPropertyPage*, CXTPPropertyPage*> m_arrPages;  // Array of propety pages
-	CXTPPropertyPage* m_pActivePage;            // Pointer to active property page
-	CRect m_rcPage;         // Bounding rectangle of active page
-	BOOL m_bAllowApply;     // TRUE to allow enable apply button
-	BOOL m_bModeless;       // TRUE if property sheet was created as modeless window
-	BOOL m_bResizable;      // TRUE if dialog can be resized
-	CSize m_szWindow;       // Last window size of property sheet
-	CSize m_szButton;       // Button size
-	CScrollBar m_scSizeIcon;    // Resize glyph
-	XTPPropertyPageBorder  m_nPageBorderStyle;  // Client border style
+	CString m_strCaption;					 // Caption of the dialog
+	LPDLGTEMPLATE m_lpDlgTemplate;			 // Dialog template
+	CArray<CButton*, CButton*> m_arrButtons; // Array of buttons of property sheet
+	CXTPPropertyPageNavigator* m_pNavigator; // Currently used navigator
+	CXTPFont m_xtpFontNormal;				 // Font used to draw buttons and navigator
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntNormal, m_xtpFontNormal, GetNormalFontHandle);
+	CArray<CXTPPropertyPage*, CXTPPropertyPage*> m_arrPages; // Array of propety pages
+	CXTPPropertyPage* m_pActivePage;						 // Pointer to active property page
+	CRect m_rcPage;											 // Bounding rectangle of active page
+	BOOL m_bAllowApply;										 // TRUE to allow enable apply button
+	BOOL m_bModeless;		 // TRUE if property sheet was created as modeless window
+	BOOL m_bResizable;		 // TRUE if dialog can be resized
+	CSize m_szWindow;		 // Last window size of property sheet
+	CSize m_szButton;		 // Button size
+	CScrollBar m_scSizeIcon; // Resize glyph
+	XTPPropertyPageBorder m_nPageBorderStyle; // Client border style
 
 	CString m_strSection;
 
 public:
-	PROPSHEETHEADER m_psh;  // The Windows PROPSHEETHEADER structure. Provides access to basic property sheet parameters.
+	PROPSHEETHEADER m_psh; // The Windows PROPSHEETHEADER structure. Provides access to basic
+						   // property sheet parameters.
 };
 
-AFX_INLINE int CXTPPropertySheet::GetPageCount() const {
+AFX_INLINE int CXTPPropertySheet::GetPageCount() const
+{
 	return (int)m_arrPages.GetSize();
 }
-AFX_INLINE CXTPPropertyPage* CXTPPropertySheet::GetPage(int nPage) const {
-	return nPage >= 0 && nPage < m_arrPages.GetSize() ? m_arrPages.GetAt(nPage) : NULL;
-}
-AFX_INLINE CXTPPropertyPage* CXTPPropertySheet::GetActivePage() const {
-	return m_hWnd ? m_pActivePage : GetPage(m_psh.nStartPage);
-}
-AFX_INLINE int CXTPPropertySheet::GetActiveIndex() const {
-	return m_hWnd ? GetPageIndex(m_pActivePage) : m_psh.nStartPage;
-}
-AFX_INLINE CXTPPropertyPageNavigator* CXTPPropertySheet::GetNavigator() const {
+AFX_INLINE CXTPPropertyPageNavigator* CXTPPropertySheet::GetNavigator() const
+{
 	return m_pNavigator;
 }
-AFX_INLINE CFont* CXTPPropertySheet::GetFont() {
-	return &m_fntNormal;
+AFX_INLINE CFont* CXTPPropertySheet::GetFont()
+{
+	return &m_xtpFontNormal;
 }
-AFX_INLINE CRect CXTPPropertySheet::GetPageRect() const {
+AFX_INLINE CRect CXTPPropertySheet::GetPageRect() const
+{
 	return m_rcPage;
 }
-AFX_INLINE XTPPropertyPageBorder CXTPPropertySheet::GetPageBorderStyle() const {
+AFX_INLINE XTPPropertyPageBorder CXTPPropertySheet::GetPageBorderStyle() const
+{
 	return m_nPageBorderStyle;
 }
-AFX_INLINE INT_PTR CXTPPropertySheet::DoModal() {
+AFX_INLINE INT_PTR CXTPPropertySheet::DoModal()
+{
 	return CDialog::DoModal();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPPROPERTYSHEET_H__)

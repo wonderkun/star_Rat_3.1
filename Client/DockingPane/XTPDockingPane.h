@@ -1,7 +1,6 @@
 // XTPDockingPane.h : interface for the CXTPDockingPane class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANE_H__)
-#define __XTPDOCKINGPANE_H__
+#	define __XTPDOCKINGPANE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBase.h"
-#include "Common/XTPSystemHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManagerIcon;
 
@@ -37,9 +35,11 @@ class CXTPImageManagerIcon;
 //     CXTPDockingPane is a CXTPDockingPaneBase derived class.
 //     It is used as a container for a user window.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPane : public CXTPCmdTarget, public CXTPDockingPaneBase, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPDockingPane
+	: public CXTPCmdTarget
+	, public CXTPDockingPaneBase
+	, public CXTPAccessible
 {
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -173,6 +173,18 @@ public:
 	BOOL IsFloating() const;
 
 	//-----------------------------------------------------------------------
+	// Summary: Call this member to check if the pane is a side panel.
+	// Returns: TRUE if the pane is a side panel.
+	//-----------------------------------------------------------------------
+	BOOL IsSidePanel() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member to determine if the tab bar is visible.
+	// Returns: TRUE if the tab bar is visible.
+	//-----------------------------------------------------------------------
+	BOOL IsTabsVisible() const;
+
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to associate the pane with a user window.
 	// Parameters:
@@ -202,7 +214,8 @@ public:
 	//     A CWnd* pointer to the newly created view if successful,
 	//     otherwise returns NULL.
 	//-----------------------------------------------------------------------
-	CWnd* AttachView(CWnd* pParentWnd, CRuntimeClass *pViewClass, CDocument *pDocument = NULL, CCreateContext* pContext = NULL);
+	CWnd* AttachView(CWnd* pParentWnd, CRuntimeClass* pViewClass, CDocument* pDocument = NULL,
+					 CCreateContext* pContext = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -393,7 +406,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetEnabled(XTPDockingPaneEnableOptions bEnabled);
 
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -466,14 +478,15 @@ private:
 	virtual void Copy(CXTPDockingPaneBase* pClone, CXTPPaneToPaneMap* pMap, DWORD dwIgnoredOptions);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleDescription(VARIANT varChild, BSTR* pszDescription);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
@@ -482,25 +495,76 @@ protected:
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
 
 	DECLARE_INTERFACE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	HWND m_hwndChild;            // Child window handle
-	int m_nID;                   // Pane identifier
-	int m_nIconID;               // Icon identifier
-	CString m_strTitle;          // Caption of the pane
-	CString m_strTabCaption;     // Tab caption, text inside tab button
-	CString m_strTitleToolTip;   // Tooltip text for the tab button
+	HWND m_hwndChild;		   // Child window handle
+	int m_nID;				   // Pane identifier
+	int m_nIconID;			   // Icon identifier
+	CString m_strTitle;		   // Caption of the pane
+	CString m_strTabCaption;   // Tab caption, text inside tab button
+	CString m_strTitleToolTip; // Tooltip text for the tab button
 
-	DWORD m_dwOptions;            // Options of the pane. See XTPDockingPaneOptions
-	DWORD_PTR m_dwData;           // User item data
-	CPoint m_ptMinTrackSize;      // Minimum pane size.
-	CPoint m_ptMaxTrackSize;      // Maximum pane size.
-	COLORREF m_clrItemTab;        // Color used to fill the docking pane tab buttons.
-	int m_nIDHelp;                // Context-sensitive help ID for a child pane
-	XTPDockingPaneEnableOptions m_bEnabled;          // Pane enabled options
+	DWORD m_dwOptions;						// Options of the pane. See XTPDockingPaneOptions
+	DWORD_PTR m_dwData;						// User item data
+	CPoint m_ptMinTrackSize;				// Minimum pane size.
+	CPoint m_ptMaxTrackSize;				// Maximum pane size.
+	COLORREF m_clrItemTab;					// Color used to fill the docking pane tab buttons.
+	int m_nIDHelp;							// Context-sensitive help ID for a child pane
+	XTPDockingPaneEnableOptions m_bEnabled; // Pane enabled options
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DYNAMIC(CXTPDockingPane)
+	DECLARE_DISPATCH_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPDockingPane);
+
+	afx_msg void OleSetHandle(long nHandle);
+	afx_msg long OleGetHandle();
+	afx_msg void OleAttachTo(LPDISPATCH pNeighbourDisp);
+	afx_msg void OleSetHidden(BOOL bHidden);
+	afx_msg void OleSetClosed(BOOL bClosed);
+	afx_msg void OleSetSelected(BOOL bSelected);
+	afx_msg void OleSetFloating(BOOL bFloating);
+	afx_msg LPDISPATCH OleGetMinTrackSize();
+	afx_msg LPDISPATCH OleGetMaxTrackSize();
+	afx_msg BOOL OleGetHidden();
+	DECLARE_PROPERTY(TabColor, COLORREF);
+	DECLARE_PROPERTY(Maximized, BOOL);
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetDispatch(BOOL bAddRef);
+	afx_msg int OleGetPosition();
+	afx_msg void OleGetClientRect(long* pLeft, long* pTop, long* pRight, long* pBottom);
+	afx_msg BSTR OleGetTabCaption();
+	afx_msg BSTR OleGetTitleToolTip();
+
+	afx_msg BSTR OleGetTitle();
+	afx_msg void OleSetTitle(LPCTSTR sTitle);
+
+	enum
+	{
+		dispidTitle	= 1L,
+		dispidId	   = 2L,
+		dispidIconId   = 3L,
+		dispidHidden   = 4L,
+		dispidClosed   = 5L,
+		dispidSelected = 6L,
+		dispidOptions  = 7L,
+		dispidFloating = 8L,
+		dispidHide	 = 10L,
+		dispidClose	= 11L,
+		dispidSelect   = 12L,
+		dispidAttachTo = 13L,
+		dispidTag	  = 14L,
+	};
+
+	static CXTPDockingPane* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 
 private:
 	friend class CXTPDockingPaneMiniWnd;
@@ -508,45 +572,53 @@ private:
 	friend class CXTPDockingPaneTabbedContainer;
 	friend class CXTPDockingPaneLayout;
 	friend class CDockingPaneCtrl;
-
 };
 
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
 
-AFX_INLINE int  CXTPDockingPane::GetID() const {
+class _XTP_EXT_CLASS CXTPDockingPaneTrackSize : public CXTPCmdTarget
+{
+public:
+	CXTPDockingPaneTrackSize(CPoint*);
+
+public:
+	void OnPropertyChanged();
+
+protected:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneTrackSize);
+	afx_msg void OleSetSize(long nWidth, long nHeight);
+
+protected:
+	CPoint* m_pPoint;
+	long m_nWidth;
+	long m_nHeight;
+};
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+
+AFX_INLINE int CXTPDockingPane::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE int CXTPDockingPane::GetIconID() const {
-	return m_nIconID == -1 ? m_nID : m_nIconID;
-}
-AFX_INLINE void CXTPDockingPane::SetIconID(UINT nID) {
-	m_nIconID = nID;
-}
-AFX_INLINE CWnd* CXTPDockingPane::GetChild() const {
-	return m_hwndChild ? CWnd ::FromHandle(m_hwndChild): NULL;
-}
-AFX_INLINE void CXTPDockingPane::SetOptions(DWORD dwOptions) {
+AFX_INLINE void CXTPDockingPane::SetOptions(DWORD dwOptions)
+{
 	m_dwOptions = dwOptions;
 }
-
-AFX_INLINE DWORD_PTR CXTPDockingPane::GetPaneData() const {
+AFX_INLINE DWORD_PTR CXTPDockingPane::GetPaneData() const
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTPDockingPane::SetPaneData(DWORD_PTR dwData) {
+AFX_INLINE void CXTPDockingPane::SetPaneData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE CSize CXTPDockingPane::SetMinTrackSize(CSize sz) {
-	CSize szMinTrackSize(m_ptMinTrackSize);
-	m_ptMinTrackSize = CPoint(sz);
-	return szMinTrackSize;
-}
-AFX_INLINE CSize CXTPDockingPane::SetMaxTrackSize(CSize sz) {
-	CSize szMaxTrackSize(m_ptMaxTrackSize);
-	m_ptMaxTrackSize = CPoint(sz);
-	return szMaxTrackSize;
-}
-AFX_INLINE void CXTPDockingPane::SetHelpID(int nIDR) {
+AFX_INLINE void CXTPDockingPane::SetHelpID(int nIDR)
+{
 	m_nIDHelp = nIDR;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANE_H__)

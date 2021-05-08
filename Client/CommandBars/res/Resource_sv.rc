@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
 #ifdef _WIN32
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 #pragma code_page(1252)
@@ -48,7 +47,7 @@ BEGIN
                     SS_NOTIFY,7,17,86,80
     CTEXT           "",XTP_IDC_STATIC_PREVIEW,14,117,73,54,SS_CENTERIMAGE,
                     WS_EX_STATICEDGE
-    LTEXT           "Transparent",IDC_STATIC,135,156,42,8
+    LTEXT           "Genomskinlig",IDC_STATIC,135,156,42,8
     LTEXT           "",XTP_IDC_CLR_ERASE,116,153,15,15,SS_NOTIFY
     CTEXT           "Verktyg",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menyer"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Programmenyer",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "Snabbmenyer",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Visa menyn:",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Återställa",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Standard-menyn\nStandard program-menyn",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           "Välj snabbmenyn:",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Återställa",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -179,7 +178,7 @@ END
 
 XTP_IDR_CUSTOMIZEMENU MENU DISCARDABLE 
 BEGIN
-    POPUP "Office-genvägar - anpassa"
+    POPUP "Anpassa"
     BEGIN
         MENUITEM "Återställ",                      XTP_ID_CUSTOMIZE_RESET
         MENUITEM "Ta bort",                     XTP_ID_CUSTOMIZE_DELETE
@@ -219,9 +218,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_CUSTOMIZE       "Office-genvägar - anpassa"
+    XTP_IDS_CUSTOMIZE       "Anpassa"
     XTP_IDS_NEWMENU         "Ny meny"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Anpassa statusfältet"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -257,18 +256,18 @@ BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
                             "Är du säker på att du vill återställa tangentbord tilldelningarna?  Denna kommandot kommer att ta bort alla tangentbords tilldelningar på textnivån."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Denna genväg är för närvarande är tilldelad.\nvill du tilldela igen denna genväg?"
+    XTP_IDS_CONFIRM_UPDATE  "På grund av en programuppdatering har i verktygsfältet '%s' ändrats. Vill du återställa dina anpassade verktygsfält och ladda den nya en?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Alla bildfiler|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmappar(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiler(*.Wmf;*.Emf)|*.wmf;*.emf|Ikoner(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Alla filer(*.*)|*.*||"
+                            "Alla bild Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmappar (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiler (*.wmf;*.emf)|*.wmf;*.emf|Ikoner (*.ico;*.cur)|*.ico;*.cur|Alla filer (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nAlternativ för verktygsfält"
     XTP_ID_TOOLBAR_HIDE     "\nStäng"
-    XTP_ID_POPUPBAR_EXPAND  "\nExpand"
+    XTP_ID_POPUPBAR_EXPAND  "\nExpandera"
     XTP_ID_MENUBAR_CLOSE    "\nStäng fönster"
     XTP_ID_MENUBAR_RESTORE  "\nÅterskapa fönster "
     XTP_ID_MENUBAR_MINIMIZE "\nMinimera fönster "
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) trycktes. Väntar på andra nyckel av ackord..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Avbryt"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nFlytta till föregående TABB grupp"
+    XTP_ID_WORKSPACE_MOVENEXT "Flytta till nästa TABB grupp"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNy horisontell TABB grupp"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNy lodrät TABB grupp"
+    XTP_ID_WORKSPACE_CANCEL "\nAvbryt"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktiva filer"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Skriva ut förhandsgranskade objekt\nPrint"
+    XTP_ID_PREVIEW_PREV     "Gå till den föregående sidan\nföregående sida"
+    XTP_ID_PREVIEW_NEXT     "Gå till nästa sida\nnästa sida"
+    XTP_ID_PREVIEW_ZOOMIN   "Öka förstoringen av förhandsvisning sida\nzooma In"
+    XTP_ID_PREVIEW_ZOOMOUT  "Minska förstoringen av förhandsvisning sida\nzooma ut"
+    XTP_ID_PREVIEW_ONEPAGE  "En sida"
+    XTP_ID_PREVIEW_TWOPAGE  "Flera sidor"
+    XTP_ID_PREVIEW_CLOSE    "Stäng förhandsgranskning\nStäng förhandsgranskning"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Hela sidan"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Sidbredden"
+    XTP_IDS_PREVIEW_PAGEI     "Sida %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Sida %i av %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)

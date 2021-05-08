@@ -1,0 +1,37 @@
+﻿  ClientSocket.cpp
+  Buffer.cpp
+  ddos.cpp
+  Dialupass.cpp
+  DllManager.cpp
+  FileManager.cpp
+  install.cpp
+  KernelManager.cpp
+  KeyboardManager.cpp
+  Manager.cpp
+  RegEditEx.cpp
+  RegeditOpt.cpp
+  Registry.cpp
+  RegManager.cpp
+  ScreenManager.cpp
+  ScreenSpy.cpp
+  ShellManager.cpp
+  SysInfo.cpp
+  SystemManager.cpp
+  until.cpp
+  正在生成代码...
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\common\SysInfo.cpp(995): warning C4715: “CSysInfo::DelUserName”: 不是所有的控件路径都返回值
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\common\SysInfo.cpp(1574): warning C4715: “CSysInfo::Open3389”: 不是所有的控件路径都返回值
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\common\CursorInfo.h(73): warning C4700: 使用了未初始化的局部变量“i”
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\common\RegeditOpt.cpp(127): warning C4700: 使用了未初始化的局部变量“NameSize”
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\common\FileManager.cpp(239): warning C4715: “CFileManager::OpenFile”: 不是所有的控件路径都返回值
+  正在编译...
+  ZXPortMap.cpp
+  svchost.cpp
+  正在生成代码...
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\common\login.h(40): warning C4700: 使用了未初始化的局部变量“p”
+svchost.obj : warning LNK4229: 遇到无效的指令“/OPT:NOWIN98”；已忽略
+svchost.obj : warning LNK4229: 遇到无效的指令“/OPT:NOWIN98”；已忽略
+    正在创建库 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\svchost.lib 和对象 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\svchost.exp
+svchost.obj : warning LNK4254: 节“.rdata”(40000040)合并到具有不同特性的“.data”(C0000040)
+svchost.obj : warning LNK4254: 节“.text”(60000020)合并到具有不同特性的“.data”(C0000040)
+  svchost.vcxproj -> C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\svchost.dll

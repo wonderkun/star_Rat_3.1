@@ -1,7 +1,6 @@
 // XTPSortClass.h interface for the CXTPSortClass  class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSORTCLASS_H__)
-#define __XTPSORTCLASS_H__
+#	define __XTPSORTCLASS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -222,13 +223,15 @@ public:
 	//-----------------------------------------------------------------------
 	struct ITEMDATA
 	{
-		CString   strItem; // NULL terminated string that represents the list item's text.
-		DWORD_PTR dwData;   // List item's application defined value (if any).
+		CString strItem;  // NULL terminated string that represents the list item's text.
+		DWORD_PTR dwData; // List item's application defined value (if any).
 	};
 
 protected:
-	CListCtrl*   m_pListCtrl;  // Pointer to the CListCtrl object to perform the sort on
-	PFNLVCOMPARE m_pfnCompare; // Address of the application-defined comparison function, see CListCtrl::SortItems for more details.
+	CListCtrl* m_pListCtrl;	// Pointer to the CListCtrl object to perform the sort on
+	PFNLVCOMPARE m_pfnCompare; // Address of the application-defined comparison function, see
+							   // CListCtrl::SortItems for more details.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPSORTCLASS_H__)

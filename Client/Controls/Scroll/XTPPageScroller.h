@@ -1,7 +1,6 @@
 // XTPPageScroller.h interface for the CXTPPageScroller class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPAGERSCROLLER_H__)
-#define __XTPPAGERSCROLLER_H__
+#	define __XTPPAGERSCROLLER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -46,7 +47,6 @@ class _XTP_EXT_CLASS CXTPPageScroller : public CWnd
 	DECLARE_DYNAMIC(CXTPPageScroller)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPageScroller object
@@ -60,14 +60,13 @@ public:
 	virtual ~CXTPPageScroller();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function creates a pager child window and attaches it to
 	//     this CWnd object. Returns nonzero if successful, otherwise returns zero.
 	// Parameters:
-	//     dwStyle    - Specifies the window style attributes. See the Remarks section for a list of style to use.
-	//     rect       - The size and position of the window, in client coordinates of
+	//     dwStyle    - Specifies the window style attributes. See the Remarks section for a list of
+	//     style to use. rect       - The size and position of the window, in client coordinates of
 	//                  'pParentWnd'.
 	//     pParentWnd - The parent window.
 	//     nID        - The ID of the child window.
@@ -228,7 +227,7 @@ public:
 	void GetDropTarget(IDropTarget** ppdt);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPPageScroller)
@@ -236,49 +235,76 @@ protected:
 
 	//{{AFX_MSG(CXTPPageScroller)
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPPageScroller::SetChild(HWND hwndChild) {
-	ASSERT(::IsWindow(m_hWnd)); Pager_SetChild(m_hWnd, hwndChild);
+AFX_INLINE void CXTPPageScroller::SetChild(HWND hwndChild)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	Pager_SetChild(m_hWnd, hwndChild);
 }
-AFX_INLINE void CXTPPageScroller::RecalcSize() {
-	ASSERT(::IsWindow(m_hWnd)); Pager_RecalcSize(m_hWnd);
+AFX_INLINE void CXTPPageScroller::RecalcSize()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	Pager_RecalcSize(m_hWnd);
 }
-AFX_INLINE void CXTPPageScroller::ForwardMouse(BOOL bForward) {
-	ASSERT(::IsWindow(m_hWnd)); Pager_ForwardMouse(m_hWnd, bForward);
+AFX_INLINE void CXTPPageScroller::ForwardMouse(BOOL bForward)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	Pager_ForwardMouse(m_hWnd, bForward);
 }
-AFX_INLINE COLORREF CXTPPageScroller::SetBkColor(COLORREF clr) {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_SetBkColor(m_hWnd, clr);
+AFX_INLINE COLORREF CXTPPageScroller::SetBkColor(COLORREF clr)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_SetBkColor(m_hWnd, clr);
 }
-AFX_INLINE COLORREF CXTPPageScroller::GetBkColor() {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_GetBkColor(m_hWnd);
+AFX_INLINE COLORREF CXTPPageScroller::GetBkColor()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_GetBkColor(m_hWnd);
 }
-AFX_INLINE int CXTPPageScroller::SetBorder(int iBorder) {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_SetBorder(m_hWnd, iBorder);
+AFX_INLINE int CXTPPageScroller::SetBorder(int iBorder)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_SetBorder(m_hWnd, iBorder);
 }
-AFX_INLINE int CXTPPageScroller::GetBorder() {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_GetBorder(m_hWnd);
+AFX_INLINE int CXTPPageScroller::GetBorder()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_GetBorder(m_hWnd);
 }
-AFX_INLINE void CXTPPageScroller::SetPos(int iPos) {
-	ASSERT(::IsWindow(m_hWnd)); Pager_SetPos(m_hWnd, iPos);
+AFX_INLINE void CXTPPageScroller::SetPos(int iPos)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	Pager_SetPos(m_hWnd, iPos);
 }
-AFX_INLINE int CXTPPageScroller::GetPos() {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_GetPos(m_hWnd);
+AFX_INLINE int CXTPPageScroller::GetPos()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_GetPos(m_hWnd);
 }
-AFX_INLINE int CXTPPageScroller::SetButtonSize(int iSize) {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_SetButtonSize(m_hWnd, iSize);
+AFX_INLINE int CXTPPageScroller::SetButtonSize(int iSize)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_SetButtonSize(m_hWnd, iSize);
 }
-AFX_INLINE int CXTPPageScroller::GetButtonSize() {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_GetButtonSize(m_hWnd);
+AFX_INLINE int CXTPPageScroller::GetButtonSize()
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_GetButtonSize(m_hWnd);
 }
-AFX_INLINE DWORD CXTPPageScroller::GetButtonState(int iButton) {
-	ASSERT(::IsWindow(m_hWnd)); return Pager_GetButtonState(m_hWnd, iButton);
+AFX_INLINE DWORD CXTPPageScroller::GetButtonState(int iButton)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return Pager_GetButtonState(m_hWnd, iButton);
 }
-AFX_INLINE void CXTPPageScroller::GetDropTarget(IDropTarget** ppdt) {
-	ASSERT(::IsWindow(m_hWnd)); Pager_GetDropTarget(m_hWnd, ppdt);
+AFX_INLINE void CXTPPageScroller::GetDropTarget(IDropTarget** ppdt)
+{
+	ASSERT(::IsWindow(m_hWnd));
+	Pager_GetDropTarget(m_hWnd, ppdt);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPAGERSCROLLER_H__)

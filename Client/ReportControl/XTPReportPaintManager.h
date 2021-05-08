@@ -1,8 +1,6 @@
-
 // XTPReportPaintManager.h: interface for the CXTPReportPaintManager class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,202 +19,36 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTPAINTMANAGER_H__)
-#define __XTPREPORTPAINTMANAGER_H__
+#	define __XTPREPORTPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
-#include "Common/XTPColorManager.h"
-#include "Common/XTPWinThemeWrapper.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+class CXTPMarkupUIElement;
+class CXTPImageManager;
+class CXTPWinThemeWrapper;
+
+struct XTP_REPORTRECORDITEM_DRAWARGS;
+struct XTP_REPORTRECORDITEM_METRICS;
 
 class CXTPReportControl;
 class CXTPReportRow;
 class CXTPReportHeader;
 class CXTPReportColumn;
+class CXTPReportColumns;
 class CXTPReportGroupRow;
 class CXTPReportInplaceButton;
 class CXTPReportHyperlink;
 class CXTPReportRecordItem;
 class CXTPReportRecordItemControl;
-class CXTPMarkupUIElement;
-class CXTPImageManager;
-
-struct XTP_REPORTRECORDITEM_DRAWARGS;
-struct XTP_REPORTRECORDITEM_METRICS;
-
-//===========================================================================
-// Summary:
-//      This class used to store MulDivC formula parameters and perform calculation.
-//      MulDivC formula if the folowing:
-//      x = y * Mul / Div + C
-//===========================================================================
-class _XTP_EXT_CLASS CXTPFormulaMulDivC : public CXTPCmdTarget
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default object constructor.
-	//-----------------------------------------------------------------------
-	CXTPFormulaMulDivC();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default object destructor.
-	//-----------------------------------------------------------------------
-	virtual ~CXTPFormulaMulDivC();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Perform formula calculation.
-	// Parameters:
-	//     nY - A 'y' formula parameter value.
-	// Returns:
-	//      Returns value calculated by formula: y * Mul / Div + C
-	//-----------------------------------------------------------------------
-	virtual int Calculate(int nY) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Set formula parameters.
-	// Parameters:
-	//      nMul - A multiplier value.
-	//      nDiv - A divisor value.
-	//      nC   - A constant value.
-	//-----------------------------------------------------------------------
-	virtual void SetStandardValue(int nMul, int nDiv, int nC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Get formula parameters.
-	// Parameters:
-	//      rnMul - An int reference to receive multiplier value.
-	//      rnDiv - An int reference to receive divisor value.
-	//      rnC   - An int reference to receive constant value.
-	//-----------------------------------------------------------------------
-	virtual void GetStandardValue(int& rnMul, int& rnDiv, int& rnC);
-
-protected:
-	int m_nMultiplier;  // Store a multiplier value.
-	int m_nDivisor;     // Store a divisor value.
-	int m_nConstant;    // Store a constant value.
-
-};
-
-
-//===========================================================================
-// Summary:
-//     Represents predefined grid line styles:
-// Example:
-//     <code>m_wndReport.SetGridStyle(FALSE, xtpReportGridLargeDots);</code>
-// See Also: CXTPReportControl::SetGridStyle
-//
-// <KEYWORDS xtpReportGridNoLines, xtpReportGridSmallDots, xtpReportGridLargeDots, xtpReportGridDashes, xtpReportGridSolid>
-//===========================================================================
-enum XTPReportGridStyle
-{
-	xtpReportGridNoLines,       // empty line
-	xtpReportGridSmallDots,     // line is drawn with small dots
-	xtpReportGridLargeDots,     // line is drawn with large dots
-	xtpReportGridDashes,        // line is drawn with dashes
-	xtpReportGridSolid          // draws solid line
-};
-
-//===========================================================================
-// Summary:
-//     Represents predefined freeze column line styles:
-//===========================================================================
-enum XTPReportFreezeColsDividerStyle
-{
-	xtpReportFreezeColsDividerThin      = 0x01,  // thin line style
-	xtpReportFreezeColsDividerBold      = 0x02,  // bold line style
-	xtpReportFreezeColsDividerHeader    = 0x04,  // header line style
-	xtpReportFreezeColsDividerShade     = 0x08,  // shade line style
-	xtpReportFreezeColsDividerShowAlways = 0x10,  // show event if AutoColumnSizing is On
-};
-
-//{{AFX_CODEJOCK_PRIVATE
-
-// deprecated
-#define xtpGridNoLines      xtpReportGridNoLines
-#define xtpGridSmallDots    xtpReportGridSmallDots
-#define xtpGridLargeDots    xtpReportGridLargeDots
-#define xtpGridDashes       xtpReportGridDashes
-#define xtpGridSolid        xtpReportGridSolid
-
-//}}AFX_CODEJOCK_PRIVATE
-
-//===========================================================================
-// Summary:
-//     Represents predefined column styles.
-// Example:
-//     <code>m_wndReport.GetPaintManager()->m_columnStyle = xtpReportColumnFlat;</code>
-// See Also: CXTPReportPaintManager::m_columnStyle, CXTPReportPaintManager
-//
-// <KEYWORDS xtpReportColumnShaded, xtpReportColumnFlat>
-//===========================================================================
-enum XTPReportColumnStyle
-{
-	xtpReportColumnShaded,      // Columns are gray shaded.
-	xtpReportColumnFlat,        // Flat style for drawing columns.
-	xtpReportColumnExplorer,    // Explorer column style
-	xtpReportColumnOffice2003,  // Gradient column style
-	xtpReportColumnResource   // Office 2007/2010 column style
-};
-
-//{{AFX_CODEJOCK_PRIVATE
-
-// deprecated
-#define xtpColumnShaded xtpReportColumnShaded
-#define xtpColumnFlat   xtpReportColumnFlat
-#define xtpReportColumnOffice2007 xtpReportColumnResource
-
-//}}AFX_CODEJOCK_PRIVATE
-
-//-----------------------------------------------------------------------
-// Summary:
-//     Represent the style of lines used to draw a hierarchical tree structure.
-// Example:
-//     <code>m_wndReport.GetPaintManager()->m_treeStructureStyle = xtpReportTreeStructureSolid;</code>
-// See Also: CXTPReportPaintManager::m_treeStructureStyle, CXTPReportPaintManager
-//
-// <KEYWORDS xtpReportTreeStructureNone, xtpReportTreeStructureSolid>
-//-----------------------------------------------------------------------
-enum XTPReportTreeStructureStyle
-{
-	xtpReportTreeStructureNone,     // No lines will be drawn from the parent node to each child node.
-	xtpReportTreeStructureSolid,    // Lines will be drawn from the parent node to each child node at the next level.
-	xtpReportTreeStructureDots      // Dots will be drawn from the parent node to each child node at the next level.
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     Represent the Header/Footer rows divider style.
-//-----------------------------------------------------------------------
-enum XTPReportFixedRowsDividerStyle
-{
-	xtpReportFixedRowsDividerNone       = 0x00, // no line
-	xtpReportFixedRowsDividerThin       = 0x01, // thin style
-	xtpReportFixedRowsDividerBold       = 0x02, // bold style
-	xtpReportFixedRowsDividerShade      = 0x04, // shaded line style
-	xtpReportFixedRowsDividerOutlook    = 0x08  // outlook line style
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     Represent the Report Draw Sort Triangle logic
-//-----------------------------------------------------------------------
-enum XTPReportDrawSortTriangleStyle
-{
-	xtpReportDrawSortTriangleDefault = 0,   // The triangle will be removed when the column size is too small to display
-	                                        // the full caption and triangle
-	xtpReportDrawSortTriangleAlways  = 1,   // The sort triangle displayed in column header when a column is sorted and
-	                                        // the caption will cut will ellipsis
-	xtpReportDrawSortTriangleNever   = 2    //Never draw the triangle.
-};
+class CXTPReportHyperlinkStyle;
+class CXTPReportBorder;
+class CXTPTrackBlock;
+class CXTPComboBox;
 
 //===========================================================================
 // Summary:
@@ -239,6 +71,8 @@ enum XTPReportDrawSortTriangleStyle
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportPaintManager : public CXTPCmdTarget
 {
+	DECLARE_DYNAMIC(CXTPReportPaintManager);
+
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPReportControl;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -268,6 +102,12 @@ public:
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Loads default images used by report control.
+	//-----------------------------------------------------------------------
+	virtual void LoadGlyphs();
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Initializes all drawings defaults (fonts, colors, etc.). Most
 	//     of them are system defaults.
 	// See Also: CXTPReportPaintManager
@@ -287,7 +127,64 @@ public:
 	//     <code>int nRowHeight = GetRowHeight(pDC, pRow)</code>
 	//-----------------------------------------------------------------------
 	virtual int GetRowHeight(CDC* pDC, CXTPReportRow* pRow);
-	virtual int GetRowHeight(CDC* pDC, CXTPReportRow* pRow, int nTotalWidth); // <combine CXTPReportPaintManager::GetRowHeight@CDC*@CXTPReportRow*>
+	virtual int GetRowHeight(
+		CDC* pDC, CXTPReportRow* pRow,
+		int nTotalWidth); // <combine CXTPReportPaintManager::GetRowHeight@CDC*@CXTPReportRow*>
+	int GetRowHeightEx(CDC* pDC, CXTPReportRow* pRow, int nTotalWidth,
+					   const BOOL firstLevel = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns record item height for given width.
+	// Parameters:
+	//     pDrawArgs - Reference to structure with drawing arguments
+	//     nWidth    - Width of rectangle where item will be drawn
+	// Returns:
+	//     The height of the record item for given width.
+	//-----------------------------------------------------------------------
+	int GetItemHeight(XTP_REPORTRECORDITEM_DRAWARGS& drawArgs, int nWidth);
+
+	//-----------------------------------------------------------------------
+	// Summary: Search topmost or bottommost row witch depend on heigh of current row.
+	//          Height of rows depend through merge cells which can contain big text or other
+	//          content.
+	// Parameters:
+	//     pColumns  - Pointer to CXTPReportColumns object
+	//     pRow      - Pointer to CXTPReportRow object.
+	//     bUpward   - BOOL flag to set searching direction up or down from current row.
+	//     nAdjRowIndex - output parameter which contain index of adjacent row.
+	// Returns:
+	//     The index of the topmost or bottommost row witch depend on heigh of current row.
+	//-----------------------------------------------------------------------
+	BOOL FindRowAdjacentToMergedEx(const CXTPReportColumns* pColumns, const CXTPReportRow* pRow,
+								   int& nAdjRowIndex, BOOL bUpward);
+
+	//-----------------------------------------------------------------------
+	// Summary: wrapper for method FindRowAdjacentToMergedEx. Search topmost or bottommost row witch
+	// depend on heigh of current row. Parameters:
+	//     pColumns  - Pointer to CXTPReportColumns object
+	//     pRow      - Pointer to CXTPReportRow object.
+	//     bUpward   - BOOL flag to set searching direction up or down from current row.
+	// Returns:
+	//     The index of the topmost or bottommost row witch depend on heigh of current row.
+	//-----------------------------------------------------------------------
+	int FindRowAdjacentToMerged(const CXTPReportColumns* pColumns, const CXTPReportRow* pRow,
+								BOOL bUpward);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Recalc row height considering height of merge items.
+	// Parameters:
+	//     pColumns    - Pointer to CXTPReportColumns object
+	//     pDC         - Pointer to the used Device Context.
+	//     pRow        - Pointer to CXTPReportRow object.
+	//     nRowHeight  - Height of pRow without merge cells.
+	//     nTotalWidth - Width of the row for print mode.
+	// Returns:
+	//     The height of the default rectangle where row's items will draw.
+	//-----------------------------------------------------------------------
+	int RecalcTotalHightOfMergedRows(CXTPReportColumns* pColumns, CDC* pDC, CXTPReportRow* pRow,
+									 int nRowHeight, int nTotalWidth);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -326,6 +223,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Sets new column header height.
+	// Parameters:
+	//     nHeight      -  Header Height to use.
+	//-----------------------------------------------------------------------
+	virtual void SetHeaderHeight(int nHeight);
+
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     Calculate optimal footer height.
 	// Parameters:
@@ -381,16 +285,16 @@ public:
 	// pPaintManager->DrawGrid(pDC, FALSE, rcGridItem);
 	// </code>
 	//-----------------------------------------------------------------------
-	virtual void DrawGrid(CDC* pDC, BOOL bVertical, CRect rc);
+	virtual void DrawGrid(CDC* pDC, XTPReportOrientation orientation, CRect rcGrid);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draws the freeze column divider.
 	// Parameters:
-	//     pDC   - Pointer to the used Device Context.
-	//     rc - Rectangle coordinates.
-	//     pControl - Pointer to a report control.
-	//     pRow  - Pointer to the Row.
+	//     pDC       - Pointer to the used Device Context.
+	//     rc        - Rectangle coordinates.
+	//     pControl  - Pointer to a report control.
+	//     pRow      - Pointer to the Row.
 	//-----------------------------------------------------------------------
 	virtual void DrawFreezeColsDivider(CDC* pDC, const CRect& rc, CXTPReportControl* pControl,
 									   CXTPReportRow* pRow = NULL);
@@ -404,10 +308,19 @@ public:
 	//     pControl - Pointer to a report control.
 	//     color    - The color of the marker.
 	//-----------------------------------------------------------------------
-	virtual void DrawVerticalTimeLineMarker(CDC* pDC, int xPos, CXTPReportControl* pControl, COLORREF color = RGB(0,255,0));
+	virtual void DrawVerticalTimeLineMarker(CDC* pDC, int xPos, CXTPReportControl* pControl,
+											COLORREF color = RGB(0, 255, 0));
 
-	//Return current Print Page Width after Preview mode was call and set value
-	int GetPrintPageWidth() { return m_PrintPageWidth; }
+	// Return current Print Page Width after Preview mode was call and set value
+	int GetPrintPageWidth();
+
+	virtual CRect GetGroupRowBmpSize(CRect rcRow, int nBitmapOffset);
+
+	virtual CRect GetGroupRowTextSize(CRect rcBitmap, CRect rcRow, int nBitmapWidth,
+									  int nNoIconWidth, int nTextOffset);
+
+	virtual void DrawGroupRowBack(CDC* pDC, CRect rcRow, XTP_REPORTRECORDITEM_METRICS* pMetrics);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draws group row.
@@ -423,7 +336,8 @@ public:
 	// pPaintManager->DrawGroupRow(pDC, this, rcRow);
 	// </code>
 	//-----------------------------------------------------------------------
-	virtual void DrawGroupRow(CDC* pDC, CXTPReportGroupRow* pRow, CRect rcRow, XTP_REPORTRECORDITEM_METRICS* pMetrics);
+	virtual void DrawGroupRow(CDC* pDC, CXTPReportGroupRow* pRow, CRect rcRow,
+							  XTP_REPORTRECORDITEM_METRICS* pMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -434,7 +348,8 @@ public:
 	//      pMetrics    - Pointer to the metrics structure to be filled.
 	//      bPrinting   - Is printing mode.
 	//-----------------------------------------------------------------------
-	virtual void FillGroupRowMetrics(CXTPReportGroupRow* pRow, XTP_REPORTRECORDITEM_METRICS* pMetrics, BOOL bPrinting);
+	virtual void FillGroupRowMetrics(CXTPReportGroupRow* pRow,
+									 XTP_REPORTRECORDITEM_METRICS* pMetrics, BOOL bPrinting);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -497,6 +412,19 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Draws text for column header.
+	// Parameters:
+	//     pDC              - Pointer to the used Device Context.
+	//     rcText           - Size and position of the text to render.
+	//     strCaption       - NULL terminated string representing caption text.
+	//     nHeaderAlignment - DT_ text alignment flags.
+	//     bIsHeader        - TRUE if column is to be rendered for header.
+	//-----------------------------------------------------------------------
+	virtual void DrawColumnText(CDC* pDC, CRect rcText, CString strCaption, int nHeaderAlignment,
+								BOOL bIsHeader, BOOL bColumnPressed);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Draws column header with all related attributes (sort order, icon, etc).
 	// Parameters:
 	//     pDC           - Pointer to the used Device Context.
@@ -504,6 +432,7 @@ public:
 	//     pHeader       - Pointer to report header.
 	//     rcColumn      - Column area rectangle coordinates.
 	//     bDrawExternal - whether draw Column on Header area, default is FALSE.
+	//     nShadowWidth  - size in pixels for bottom shadow, default is 0.
 	// Example:
 	// <code>
 	// CXTPReportPaintManager* pPaintManager = m_pControl->GetPaintManager();
@@ -515,7 +444,17 @@ public:
 	// </code>
 	//-----------------------------------------------------------------------
 	virtual void DrawColumn(CDC* pDC, CXTPReportColumn* pColumn, CXTPReportHeader* pHeader,
-							CRect rcColumn, BOOL bDrawExternal = FALSE);
+							CRect rcColumn, BOOL bDrawExternal = FALSE, int nShadowWidth = 0);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws column footer divider.
+	// Parameters:
+	//     pDC           - Pointer to the used Device Context.
+	//     pColumn       - Column header area rectangle coordinates.
+	//     rcColumn      - Column area rectangle coordinates.
+	//-----------------------------------------------------------------------
+	virtual void DrawColumnFooterDivider(CDC* pDC, CXTPReportColumn* pColumn, CRect rcColumn);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -526,7 +465,8 @@ public:
 	//     pHeader       - Pointer to report header.
 	//     rcColumn      - Column area rectangle coordinates.
 	//-----------------------------------------------------------------------
-	virtual void DrawColumnFooter(CDC* pDC, CXTPReportColumn* pColumn, CXTPReportHeader* pHeader, CRect rcColumn);
+	virtual void DrawColumnFooter(CDC* pDC, CXTPReportColumn* pColumn, CXTPReportHeader* pHeader,
+								  CRect rcColumn);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -534,11 +474,12 @@ public:
 	// Returns:
 	//     TRUE if enabled; FALSE otherwise
 	// Remarks:
-	//     Hot Tracking can be used only for xtpReportColumnOffice2003 and xtpReportColumnExplorer styles.
+	//     Hot Tracking can be used only for xtpReportColumnOffice2003 and xtpReportColumnExplorer
+	//     styles.
 	// See Also:
 	//     m_columnStyle, m_bHotTracking
 	//-----------------------------------------------------------------------
-	BOOL IsColumHotTrackingEnabled() const;
+	virtual BOOL IsColumHotTrackingEnabled() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -569,7 +510,6 @@ public:
 	// </code>
 	//-----------------------------------------------------------------------
 	virtual void FillGroupByControl(CDC* pDC, CRect& rcGroupBy);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -639,7 +579,11 @@ public:
 	// DrawTriangle(pDC, rcTriangle, FALSE);
 	// </code>
 	//-----------------------------------------------------------------------
-	void DrawTriangle(CDC* pDC, CRect rcTriangle, BOOL bToDown, int nShadowWidth = 0);
+	virtual void DrawTriangle(CDC* pDC, CRect rcTriangle, BOOL bToDown, BOOL bDraggingFromHeader,
+							  int nShadowWidth, BOOL bColumnPressed);
+
+	virtual void DrawColumnInverted(CDC* pDC, CRect rcColumn, BOOL bColumnPressed,
+									BOOL bDraggingFromHeader, int nShadowWidth);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -653,7 +597,8 @@ public:
 	//     chain of columns in GroupBy box. It connects columns
 	//     in GroupBy box altogether
 	// Example:
-	//     <code>DrawConnector(pDC, CPoint(rcItem.right - 5, rcItem.bottom), CPoint(x, rcItem.bottom + 4));</code>
+	//     <code>DrawConnector(pDC, CPoint(rcItem.right - 5, rcItem.bottom), CPoint(x, rcItem.bottom
+	//     + 4));</code>
 	//-----------------------------------------------------------------------
 	void DrawConnector(CDC* pDC, CPoint ptFrom, CPoint ptTo);
 
@@ -667,7 +612,7 @@ public:
 	// Returns:
 	//     Size of drawn bitmap.
 	//-----------------------------------------------------------------------
-	CSize DrawCollapsedBitmap(CDC* pDC, const CXTPReportRow* pRow, CRect& rcBitmap);
+	virtual CSize DrawCollapsedBitmap(CDC* pDC, const CXTPReportRow* pRow, CRect& rcBitmap);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -704,7 +649,8 @@ public:
 	// Returns:
 	//      Width of drawn bitmap.
 	//-----------------------------------------------------------------------
-	virtual int DrawColumnIcon(CDC* pDC, CXTPReportColumn* pColumn, CRect rcColumn, CRect rcIcon, int iIcon);
+	virtual int DrawColumnIcon(CDC* pDC, CXTPReportColumn* pColumn, CRect rcColumn, CRect rcIcon,
+							   int iIcon);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -728,24 +674,6 @@ public:
 	// Returns:
 	//     Size of drawn bitmap.
 	virtual CSize DrawShellIcon(CDC* pDC, CRect rcColumn, int iImage);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Changes report control grid lines color.
-	// Parameters:
-	//     clrGridLine - New grid color.
-	// Returns:
-	//     Previous grid color
-	// Example:
-	// <code>
-	// // Set new color, save old one
-	// COLORREF clrNew;
-	// clrNew = RGB(0, 255, 0);
-	// COLORREF clrOld;
-	// clrOld = SetGridColor(clrNew);
-	// </code>
-	//-----------------------------------------------------------------------
-	COLORREF SetGridColor(COLORREF clrGridLine);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -838,6 +766,17 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Return visibility of grid line
+	// Parameters:
+	//     orientation - determines which grid lines will be tested,
+	//                   vertical or horizontal.
+	// Returns:
+	//     BOOL value which identifies the visibility of the line
+	//-----------------------------------------------------------------------
+	BOOL IsGridVisible(XTPReportOrientation orientation) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//      Use this member function to set a header style.
 	// Parameters:
 	//      columnStyle - A value from XTPReportColumnStyle enum.
@@ -876,35 +815,6 @@ public:
 	//-----------------------------------------------------------------------
 	COLORREF GetColumnOffice2007CustomThemeBaseColor() const;
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sets one of the predefined grid line styles
-	// Parameters:
-	//     bVertical - Determines which grid lines settings,
-	//                 vertical or horizontal
-	//     gridStyle - Grid style. Can be one of the values listed
-	//                 in the remarks section.
-	// Remarks:
-	//     Grid style can be one of the following:
-	//          * <b>xtpReportGridNoLines</b>   Empty line
-	//          * <b>xtpReportGridSmallDots</b> Line drawn by small dots
-	//          * <b>xtpReportGridLargeDots</b> Line drawn by large dots
-	//          * <b>xtpReportGridDashes</b>    Line drawn by dashes
-	//          * <b>xtpReportGridSolid</b>     Draws solid line
-	// See Also: XTPReportGridStyle
-	//-----------------------------------------------------------------------
-	void SetGridStyle(BOOL bVertical, XTPReportGridStyle gridStyle);
-
-	//--------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the grid style.
-	// Parameters:
-	//     bVertical - TRUE to get the vertical grid style and FALSE to get the
-	//                 horizontal grid style.
-	// Returns:
-	//     A XTPReportGridStyle denoting the grid style.
-	//-----------------------------------------------------------------------
-	XTPReportGridStyle GetGridStyle(BOOL bVertical);
 	//--------------------------------------------------------------------------
 	// Summary:
 	//     Creates and sets default text font
@@ -985,7 +895,9 @@ public:
 	//     rcItem    - Item area rectangle coordinates.
 	//     sizeGlyph - Item glyph rectangle coordinates.
 	//-----------------------------------------------------------------------
-	virtual void DrawTreeStructure(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pMetrics, CRect rcItem, CSize sizeGlyph);
+	virtual void DrawTreeStructure(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								   XTP_REPORTRECORDITEM_METRICS* pMetrics, CRect rcItem,
+								   CSize sizeGlyph);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -995,7 +907,8 @@ public:
 	//     rcItem    - Item rectangle.
 	//     nImage    - Image index.
 	//-----------------------------------------------------------------------
-	virtual void DrawItemBitmap(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, CRect& rcItem, int nImage);
+	virtual void DrawItemBitmap(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, CRect& rcItem,
+								int nImage);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1004,7 +917,8 @@ public:
 	//     pDrawArgs - pointer to structure with drawing arguments
 	//     pMetrics  - Metrics of the item
 	//-----------------------------------------------------------------------
-	virtual void DrawItemCaption(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pMetrics);
+	virtual void DrawItemCaption(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								 XTP_REPORTRECORDITEM_METRICS* pMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1024,7 +938,7 @@ public:
 	//      rcItem - rectangle to draw
 	//-----------------------------------------------------------------------
 	virtual void DrawItemControl(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
-		CXTPReportRecordItemControl* pControl, CRect& rcItem);
+								 CXTPReportRecordItemControl* pControl, CRect& rcItem);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1071,7 +985,7 @@ public:
 	// Returns:
 	//     TRUE if the WYSIWYG markers are shown FALSE else.
 	//-----------------------------------------------------------------------
-	BOOL CXTPReportPaintManager::IsShowWYSIWYGMarkers() const;
+	BOOL IsShowWYSIWYGMarkers() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1080,7 +994,7 @@ public:
 	// Parameters:
 	//      bSet - BOOL flag to show or not
 	//-----------------------------------------------------------------------
-	void CXTPReportPaintManager::ShowWYSIWYGMarkers(BOOL bSet);
+	void ShowWYSIWYGMarkers(BOOL bSet);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1185,6 +1099,7 @@ public:
 	// This method get flag is group row collapse-expand icon draw in print mode.
 	// Returns:
 	//     TRUE if GroupRowIcon used during printing
+	//-----------------------------------------------------------------------
 	BOOL IsPrintGroupRowIcon() const;
 
 	//-----------------------------------------------------------------------
@@ -1200,6 +1115,7 @@ public:
 	// This method get flag of ColumnPlusMinusSign
 	// Returns:
 	//     TRUE if [+] or [-] icon used
+	//-----------------------------------------------------------------------
 	BOOL IsColumnPlusMinusSign() const;
 
 	//-----------------------------------------------------------------------
@@ -1209,32 +1125,77 @@ public:
 	//  bDraw - BOOL flag to use or not
 	void SetColumnPlusMinusSign(BOOL bDraw);
 
-protected:
+	CXTPReportBorder* GetDefaultItemBorder() const;
+
+	CXTPReportBorder* GetItemBorder(const CXTPReportRecordItem* pItem) const;
+
+	virtual int DrawTrackBlock(CDC* pDC, CRect rc, BOOL bSelected, CXTPTrackBlock* pTrackBlock)
+	{
+		ASSERT(FALSE); // not handled.
+		UNREFERENCED_PARAMETER(pDC);
+		UNREFERENCED_PARAMETER(rc);
+		UNREFERENCED_PARAMETER(bSelected);
+		UNREFERENCED_PARAMETER(pTrackBlock);
+		return 0;
+	};
+
+#	if XTP_REPORT_DEPRECATED()
+
+	//--------------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the grid style.
+	// Parameters:
+	//     bVertical - TRUE to get the vertical grid style and FALSE to get the
+	//                 horizontal grid style.
+	// Returns:
+	//     A XTPReportLineStyle denoting the grid style.
+	//-----------------------------------------------------------------------
+	XTPReportLineStyle GetGridStyle(BOOL bVertical) const;
+
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Draw hyperlink string using hyperlinks text settings.
+	//     Sets one of the predefined grid line styles
 	// Parameters:
-	//     pnCurrDrawPos - pointer to current drawing position (is updated after each call of function)
-	//     pDrawArgs     - pointer to structure with drawing arguments
-	//     pHyperlink    - pointer to hyperlink object
-	//     strText       - string of text
-	//     rcLink        - link hot spot area rectangle coordinates
-	//     nFlag         - Flag can allow next values:
-	//                     DT_END_ELLIPSIS - truncate text by ellipses
-	//                     DT_WORDBREAK - - truncate text by word end
+	//     bVertical - Determines which grid lines settings,
+	//                 vertical or horizontal
+	//     gridStyle - Grid style. Can be one of the values listed
+	//                 in the remarks section.
 	// Remarks:
-	//     Its member function is internally used by DrawTextLine and draws hyperlink
-	//     chunk of text string, updates hyperlink's hot spot.
-	// Returns:
-	//     Position in CString where drawing of one link text was stopped
+	//     Grid style can be one of the following:
+	//          * <b>xtpReportGridNoLines</b>   Empty line
+	//          * <b>xtpReportGridSmallDots</b> Line drawn by small dots
+	//          * <b>xtpReportGridLargeDots</b> Line drawn by large dots
+	//          * <b>xtpReportGridDashes</b>    Line drawn by dashes
+	//          * <b>xtpReportGridSolid</b>     Draws solid line
+	// See Also: XTPReportGridStyle
 	//-----------------------------------------------------------------------
-	virtual int DrawLink(int* pnCurrDrawPos,
-		XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
-		CXTPReportHyperlink* pHyperlink,
-		CString strText,
-		CRect rcLink,
-		int nFlag);
+	void SetGridStyle(BOOL bVertical, XTPReportLineStyle lineStyle);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the current grid line color.
+	//-----------------------------------------------------------------------
+	COLORREF GetGridColor() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Changes report control grid lines color.
+	// Parameters:
+	//     clrGridLine - New grid color.
+	// Returns:
+	//     Previous grid color
+	// Example:
+	// <code>
+	// // Set new color, save old one
+	// COLORREF clrOld;
+	// clrOld = SetGridColor(RGB(0, 255, 0));
+	// </code>
+	//-----------------------------------------------------------------------
+	COLORREF SetGridColor(COLORREF clrGridLine);
+
+#	endif
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draw a line of text with respect to the drawing rect
@@ -1245,8 +1206,9 @@ protected:
 	//     nFlag            - Flag can allow next values:
 	//                        DT_END_ELLIPSIS - truncate text by ellipses
 	//                        DT_WORDBREAK - - truncate text by word end
-	//     nCharCounter     - Reference to printed char counted, accepts value before, returns value after drawing
-	//     nHyperlikCounter - Reference to printed hyperlinks counted, accepts value before, returns value after drawing
+	//     nCharCounter     - Reference to printed char counted, accepts value before, returns value
+	//     after drawing nHyperlinkCounter- Reference to printed hyperlinks counted, accepts value
+	//     before, returns value after drawing
 	// Remarks:
 	//     Its member function is internally used by DrawText() and draws one line of text.
 	//     It processes plain text/ hyperlink text for one line. For multi-line text
@@ -1255,19 +1217,15 @@ protected:
 	//     Position in CString where drawing of one line of text was stopped
 	//-----------------------------------------------------------------------
 	virtual void DrawTextLine(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
-		const CString& strText,
-		CRect rcItem,
-		int nFlag,
-		int& nCharCounter,
-		int& nHyperlikCounter);
+							  XTP_REPORTRECORDITEM_METRICS* pMetrics, const CString& strText,
+							  CRect rcItem, int nFlag, int& nCharCounter, int& nHyperlinkCounter);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draw simple string into rectangle
 	// Parameters:
-	//     pnCurrDrawPos - Pointer to current drawing position (is updated after each call of function)
-	//     pDC           - Point to used Device Context
-	//     strDraw       - String of text
+	//     pnCurrDrawPos - Pointer to current drawing position (is updated after each call of
+	//     function) pDC           - Point to used Device Context strDraw       - String of text
 	//     rcDraw        - Text area rectangle coordinates
 	//     nFormat       - Flag can allow next values:
 	//                     DT_END_ELLIPSIS - truncate text by ellipses
@@ -1278,11 +1236,8 @@ protected:
 	// Returns:
 	//     Position in CString where drawing of one string of text line was stopped
 	//-----------------------------------------------------------------------
-	virtual int DrawString(int* pnCurrDrawPos,
-		CDC* pDC,
-		const CString& strDraw,
-		CRect rcDraw,
-		UINT nFormat);
+	virtual int DrawString(int* pnCurrDrawPos, CDC* pDC, const CString& strDraw, CRect rcDraw,
+						   UINT nFormat);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1292,18 +1247,41 @@ protected:
 	//     pColumn - Column needs to draw
 	//     rcColumn - Bounding rectangle of the column
 	//     bColumnPressed - TRUE if column is pressed by user.
+	//     bDraggingFromHeader - TRUE if column is begin dragged from header area.
 	//     pHeader - Pointer to a header the column belongs to.
 	//-----------------------------------------------------------------------
-	virtual void DrawColumnBackground(CDC* pDC,
-		CXTPReportColumn* pColumn,
-		CRect rcColumn,
-		BOOL& bColumnPressed,
-		CXTPReportHeader* pHeader = NULL);
+	virtual void DrawColumnBackground(CDC* pDC, CXTPReportColumn* pColumn, CRect rcColumn,
+									  BOOL& bColumnPressed, BOOL& bDraggingFromHeader,
+									  CXTPReportHeader* pHeader = NULL);
+
+	virtual void DrawPlainColumnBackground(CDC* /*pDC*/, CRect /*rcColumn*/);
+
 protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Generates a custom grid pattern if needed or uses initially created one.
+	// Parameters:
+	//     pDC      -  Pointer to device context.
+	//     pBrush   -  Pointer to brush object.
+	//     rc       -  Rectangle area.
+	//     pPattern -  Points to a short-integer array that contains the
+	//                 initial bitmap bit values. If it is NULL, the new
+	//                 bitmap is left uninitialized.
+	//     clr      -  COLORREF object representing the pattern color.
+	//     bUpdateBrush - BOOL flag to recreate pBrush object from new pPattern.
+	//                 Set it TRUE if needed, else FALSE.
+	//-----------------------------------------------------------------------
+	virtual void DrawGridPattern(CDC* pDC, CBrush* pBrush, CRect rc, const void* pPattern,
+								 COLORREF clr, BOOL bUpdateBrush);
+	virtual void DrawGridPattern(
+		CDC* pDC, CXTPBrush* pBrush, CRect rc, const void* pPattern, COLORREF clr,
+		BOOL bUpdateBrush); // <combine
+							// CXTPReportPaintManager::DrawGridPattern@CDC*@CBrush*@CRect@const
+							// void *@COLORREF@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Generates a custom grid pattern
+	//     Generates a custom grid pattern. Uses pPattern only initially.
 	// Parameters:
 	//     pDC      -  Pointer to device context.
 	//     pBrush   -  Pointer to brush object.
@@ -1313,7 +1291,8 @@ protected:
 	//                 bitmap is left uninitialized.
 	//     clr      -  COLORREF object representing the pattern color.
 	//-----------------------------------------------------------------------
-	virtual void DrawGridPat(CDC* pDC, CBrush* pBrush, CRect rc, CONST VOID*pPattern, COLORREF clr);
+	virtual void DrawGridPattern(CDC* pDC, CBrush* pBrush, CRect rc, const void* pPattern,
+								 COLORREF clr);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1354,9 +1333,11 @@ protected:
 	//     pDrawArgs     - Pointer to structure with drawing arguments.
 	//     strText       - String of text.
 	//     rcItem        - Item area rectangle coordinates.
-	//     bWordBreak    - Whether to break the line by words. If FALSE - only new line characters force new lines.
+	//     bWordBreak    - Whether to break the line by words. If FALSE - only new line characters
+	//     force new lines.
 	//-----------------------------------------------------------------------
-	virtual void DrawMultiLineText(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, const CString& strText,
+	virtual void DrawMultiLineText(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								   XTP_REPORTRECORDITEM_METRICS* pMetrics, const CString& strText,
 								   CRect rcItem, BOOL bWordBreak = TRUE);
 
 	//-----------------------------------------------------------------------
@@ -1370,8 +1351,9 @@ protected:
 	//     nEndPos       - End position in strText.
 	//     nActualWidth  - Width of text to be drawn.
 	//-----------------------------------------------------------------------
-	virtual void DrawSingleLineText(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,const CString& strText,
-									CRect rcItem, int nStartPos, int nEndPos,int nActualWidth);
+	virtual void DrawSingleLineText(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+									XTP_REPORTRECORDITEM_METRICS* pMetrics, const CString& strText,
+									CRect rcItem, int nStartPos, int nEndPos, int nActualWidth);
 
 public:
 	//-----------------------------------------------------------------------
@@ -1381,30 +1363,31 @@ public:
 	//     pDC        - Pointer to device context.
 	//     strText    - String of text.
 	//     nMaxWidth  - Max width of the rectangle, bounding the text.
-	//     bWordBreak - Whether to break the line by words. If FALSE - only new line characters can increase the row height.
+	//     bWordBreak - Whether to break the line by words. If FALSE - only new line characters can
+	//     increase the row height.
 	// Returns:
 	//     Necessary height to draw the multiline text.
 	//-----------------------------------------------------------------------
-	virtual int CalculateRowHeight(CDC* pDC, const CString& strText, int nMaxWidth, BOOL bWordBreak = TRUE);
+	virtual int CalculateRowHeight(CDC* pDC, const CString& strText, int nMaxWidth,
+								   BOOL bWordBreak = TRUE);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	virtual CRect CalculateMaxTextRect(CDC* pDC, const CString& strText, const CRect& rcMaxRect,
-		BOOL bWordBreak = TRUE, BOOL bLimitSize = TRUE, UINT uiFlags = 0);
+									   BOOL bWordBreak = TRUE, BOOL bLimitSize = TRUE,
+									   UINT uiFlags = 0);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draw hyperlink string using hyperlinks text settings (removing blanks).
 	// Parameters:
-	//     pnCurrDrawPos - pointer to current drawing position (is updated after each call of function)
-	//     pDrawArgs     - pointer to structure with drawing arguments
-	//     pHyperlink    - pointer to hyperlink object
-	//     strText       - string of text
-	//     rcLink        - link hot spot area rectangle coordinates
-	//     nFlag         - Flag can allow next values:
+	//     pnCurrDrawPos - pointer to current drawing position (is updated after each call of
+	//     function) pDrawArgs     - pointer to structure with drawing arguments pHyperlink    -
+	//     pointer to hyperlink object strText       - string of text rcLink        - link hot spot
+	//     area rectangle coordinates nFlag         - Flag can allow next values:
 	//                     DT_END_ELLIPSIS - truncate text by ellipses
 	//                     DT_WORDBREAK - - truncate text by word end
 	//     bTrim         - whether to trim the hyperlink
@@ -1415,90 +1398,38 @@ protected:
 	// Returns:
 	//     Position in CString where drawing of one link text was stopped
 	//-----------------------------------------------------------------------
-	virtual int DrawLink2(int* pnCurrDrawPos,
-		XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
-		CXTPReportHyperlink* pHyperlink,
-		CString strText,
-		CRect rcLink,
-		int nFlag,
-		BOOL bTrim = FALSE);
+	virtual int DrawLink(int* pnCurrDrawPos, XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+						 XTP_REPORTRECORDITEM_METRICS* pMetrics, CXTPReportHyperlink* pHyperlink,
+						 CString strText, CRect rcLink, int nFlag, BOOL bTrim = FALSE);
+
+	virtual void DrawWindowFrame(CDC* pDC, CRect rcWindow);
 
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      Get style of header divider line.
-	// Returns:
-	//      A value from enum XTPReportFixedRowsDividerStyle.
-	// See Also:
-	//      XTPReportFixedRowsDividerStyle
-	//-----------------------------------------------------------------------
-	int GetHeaderRowsDividerStyle() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Get style of footer divider line.
-	// Returns:
-	//      A value from enum XTPReportFixedRowsDividerStyle.
-	// See Also:
-	//      XTPReportFixedRowsDividerStyle
-	//-----------------------------------------------------------------------
-	int GetFooterRowsDividerStyle() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Set style of header divider line.
-	// Parameters:
-	//      nStyle - A value from enum XTPReportFixedRowsDividerStyle.
-	// See Also:
-	//      XTPReportFixedRowsDividerStyle
-	//-----------------------------------------------------------------------
-	void SetHeaderRowsDividerStyle(int nStyle);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Set style of footer divider line.
-	// Parameters:
-	//      nStyle - A value from enum XTPReportFixedRowsDividerStyle.
-	// See Also:
-	//      XTPReportFixedRowsDividerStyle
-	//-----------------------------------------------------------------------
-	void SetFooterRowsDividerStyle(int nStyle);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws the Fixed Rows divider (for ex. dividing header record rows and body rows).
+	//     Draws the divider between report sections (e.g. dividing header record rows and body
+	//     rows).
 	// Parameters:
 	//     pDC   - Pointer to the used Device Context.
 	//     rc - Rectangle coordinates.
-	//     pControl - Pointer to a report control.
-	//     bHeaderRows - whether the divider is under header rows or above footer rows.
-	//     bVScrollBarVisible - TRUE, if vertical scrollbar is visible, FALSE otherwise.
+	//     dividerPosition - position of section divider.
+	//     dividerStyle - style of section divider.
+	//     dividerColor - color of section divider.
 	//-----------------------------------------------------------------------
-	void DrawFixedRowsDivider(CDC* pDC,
-		const CRect& rc,
-		CXTPReportControl* pControl,
-		BOOL bHeaderRows,
-		BOOL bVScrollBarVisible = TRUE);
+	void DrawSectionDivider(CDC* pDC, const CRect& rc,
+							XTPReportSectionDividerPosition dividerPosition,
+							XTPReportSectionDividerStyle dividerStyle,
+							CXTPPaintManagerColor dividerColor);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      Get height of header divider line.
+	//      Get height of section divider.
 	// Returns:
-	//      Header divider height.
+	//      Section divider height.
 	// See Also:
 	//      XTPReportFixedRowsDividerStyle
 	//-----------------------------------------------------------------------
-	int GetHeaderRowsDividerHeight();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Get height of footer divider line.
-	// Returns:
-	//      Footer divider height.
-	// See Also:
-	//      XTPReportFixedRowsDividerStyle
-	//-----------------------------------------------------------------------
-	int GetFooterRowsDividerHeight();
+	int GetSectionDividerHeight(XTPReportFixedRowsDividerStyle dividerStyle);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1509,8 +1440,8 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL IsUseDropMarker() const;
 
-//private:
-//{{AFX_CODEJOCK_PRIVATE
+	// private:
+	//{{AFX_CODEJOCK_PRIVATE
 
 	COLORREF MixColor(COLORREF clrLight, COLORREF clrDark, double dFactor);
 
@@ -1518,191 +1449,428 @@ public:
 
 	virtual void DrawTreeStructureLine(CDC* pDC, int x, int y, int cx, int cy, COLORREF clr);
 
-	virtual void ReplaceInHyperLinks(CXTPReportRecordItem* pItem, CString& rstrText, TCHAR chReplace);
+	virtual void ReplaceInHyperLinks(CXTPReportRecordItem* pItem, CString& rstrText,
+									 TCHAR chReplace);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CFont m_fontText;           // Report items default text.
-	CFont m_fontBoldText;       // Report items default bold text.
-	CFont m_fontCaption;        // Column header caption font.
-	CFont m_fontPreview;        // Column header caption font.
+	CXTPFont m_xtpFontText;		// Report items default text.
+	CXTPFont m_xtpFontBoldText; // Report items default bold text.
+	CXTPFont m_xtpFontCaption;  // Column header caption font.
+	CXTPFont m_xtpFontPreview;  // Column header caption font.
 
-	CXTPPaintManagerColor m_clrHighlight;       // Background color of the highlighted row.
-	CXTPPaintManagerColor m_clrGridLine;        // Grid lines color.
-	CXTPPaintManagerColor m_clrWindowText;      // Report items default text color.
-	CXTPPaintManagerColor m_clrHighlightText;   // Text color of the highlighted text.
-	CXTPPaintManagerColor m_clrHeaderControl;   // Background color of the report header.
-	CXTPPaintManagerColor m_clrCaptionText;     // Column header text color.
-	CXTPPaintManagerColor m_clrControlBack;     // Background color of the control report area.
-	CXTPPaintManagerColor m_clrGroupRowText;    // Row text color.
-	CXTPPaintManagerColor m_clrGroupShadeBack;  // Group row background color when indentation shade is enabled.
-	CXTPPaintManagerColor m_clrGroupShadeText;  // Group row foreground color when indentation shade is enabled.
-	CXTPPaintManagerColor m_clrGroupShadeBorder;// Color for group border's shade.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontText, m_xtpFontText, GetTextFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontBoldText, m_xtpFontBoldText,
+										  GetBoldTextFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontCaption, m_xtpFontCaption,
+										  GetCaptionFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontPreview, m_xtpFontPreview,
+										  GetPreviewFontHandle);
 
-	CXTPPaintManagerColor m_clrGroupBoxBack;    // Color of group box.
-	CXTPPaintManagerColor m_clrControlDark;     // Dark background color of the report control (used on Group By area).
-	CXTPPaintManagerColor m_clrControlLightLight;// Light background color used for drawing shades (used on column header area).
-	CXTPPaintManagerColor m_clrHotDivider;      // Color of the column hot divider window (2 arrows).
-	CXTPPaintManagerColor m_clrHyper;           // Hyperlink color.
-	CXTPPaintManagerColor m_clrIndentControl;   // Color of the tree indentation area.
-	CXTPPaintManagerColor m_clrItemShade;       // Color of the shade on sorted by column items.
-	CXTPPaintManagerColor m_clrBtnFace;         // Standard button face color.
-	CXTPPaintManagerColor m_clrBtnText;         // Standard button text color.
-	CXTPPaintManagerColor m_clrPreviewText;     // Preview text color.
-	CXTPPaintManagerColor m_clrSelectedRow;     // Selected row background color.
-	CXTPPaintManagerColor m_clrSelectedRowText; // Selected row text color.
+	CXTPReportHyperlinkStyle* m_pHyperlinkStyle;	  // Style for links
+	CXTPReportHyperlinkStyle* m_pHyperlinkHoverStyle; // Style for hovered links
 
-	CXTPPaintManagerColorGradient m_grcGradientColumn;          // Color of column used with xtpReportColumnOffice2003 style
-	CXTPPaintManagerColorGradient m_grcGradientColumnHot;       // HotTracking Color of column used with xtpReportColumnOffice2003 style
-	CXTPPaintManagerColorGradient m_grcGradientColumnPushed;    // Pushed Color of column used with xtpReportColumnOffice2003 style
-	CXTPPaintManagerColor m_clrGradientColumnShadow;            // Bottom shadow of column used with xtpReportColumnOffice2003 style
-	CXTPPaintManagerColor m_clrGradientColumnSeparator;         // Separator of column used with xtpReportColumnOffice2003 style
-	CXTPPaintManagerColor m_crlNoGroupByText;           // A color for "No items" text in GroupBy area (see m_strNoGroupBy member)
-	CXTPPaintManagerColor m_clrFreezeColsDivider;       // Freeze Columns Divider color.
-	CXTPPaintManagerColor m_clrHeaderRowsDivider;       // Color of header divider.
-	CXTPPaintManagerColor m_clrFooterRowsDivider;       // Color of footer divider.
-	COLORREF m_clrColumnOffice2007CustomTheme;          // Base color for Office2007 custom theme.
+	CXTPPaintManagerColor m_clrHighlight;		   // Background color of the highlighted row.
+	CXTPPaintManagerColor m_clrBoldText;		   // Report items bold text color.
+	CXTPPaintManagerColor m_clrBoldTextHighlight;  // Report items bold text highlight color.
+	CXTPPaintManagerColor m_clrWindowText;		   // Report items default text color.
+	CXTPPaintManagerColor m_clrHighlightText;	  // Text color of the highlighted text.
+	CXTPPaintManagerColor m_clrHeaderControl;	  // Background color of the report header.
+	CXTPPaintManagerColor m_clrCaptionText;		   // Column header text color.
+	CXTPPaintManagerColor m_clrCaptionTextPressed; // Column header text color when pressed.
+	CXTPPaintManagerColor m_clrControlBack;		   // Background color of the control report area.
+	CXTPPaintManagerColor m_clrGroupRowText;	   // Row text color.
+	CXTPPaintManagerColor m_clrGroupShadeBack; // Group row background color when indentation shade
+											   // is enabled.
+	CXTPPaintManagerColor m_clrGroupShadeText; // Group row foreground color when indentation shade
+											   // is enabled.
+	CXTPPaintManagerColor m_clrGroupShadeBorder; // Color for group border's shade.
+	CXTPPaintManagerColor m_clrGroupBoxBack;	 // Color of group box.
+	CXTPPaintManagerColor m_clrControlDark; // Dark background color of the report control (used on
+											// Group By area).
+	CXTPPaintManagerColor m_clrControlLightLight; // Light background color used for drawing shades
+												  // (used on column header area).
+	CXTPPaintManagerColor m_clrHotDivider;	// Color of the column hot divider window (2 arrows).
+	CXTPPaintManagerColor m_clrIndentControl; // Color of the tree indentation area.
+	CXTPPaintManagerColor m_clrItemShade;	 // Color of the shade on sorted by column items.
+	CXTPPaintManagerColor m_clrBtnFace;		  // Standard button face color.
+	CXTPPaintManagerColor m_clrBtnText;		  // Standard button text color.
+	CXTPPaintManagerColor m_clrPreviewText;   // Preview text color.
+	CXTPPaintManagerColor m_clrSelectedRow;   // Selected row background color.
+	CXTPPaintManagerColor m_clrSelectedRowText;		  // Selected row text color.
+	CXTPPaintManagerColor m_clrBtnFacePressed;		  // Standard button face color when pressed.
+	CXTPPaintManagerColor m_clrConnector;			  // Header column connector line color.
+	CXTPPaintManagerColor m_clrDisableBitmapLightest; // The lightest color of bitmap which covers
+													  // disabled report.
+	CXTPPaintManagerColor m_clrDisableBitmapDarkest;  // The darkest color of bitmap which covers
+													  // disabled report.
 
-	COLORREF m_clrFormulaSum;   // Color for Formula Sum fields
+#	if XTP_REPORT_DEPRECATED()
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Get style of header divider line.
+	// Returns:
+	//      A value from enum XTPReportFixedRowsDividerStyle.
+	// See Also:
+	//      XTPReportFixedRowsDividerStyle
+	//-----------------------------------------------------------------------
+	XTPReportFixedRowsDividerStyle GetHeaderRowsDividerStyle() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Set style of header divider line.
+	// Parameters:
+	//      nStyle - A value from enum XTPReportFixedRowsDividerStyle.
+	// See Also:
+	//      XTPReportFixedRowsDividerStyle
+	//-----------------------------------------------------------------------
+	void SetHeaderRowsDividerStyle(XTPReportFixedRowsDividerStyle style);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Get style of footer divider line.
+	// Returns:
+	//      A value from enum XTPReportFixedRowsDividerStyle.
+	// See Also:
+	//      XTPReportFixedRowsDividerStyle
+	//-----------------------------------------------------------------------
+	XTPReportFixedRowsDividerStyle GetFooterRowsDividerStyle() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Set style of footer divider line.
+	// Parameters:
+	//      nStyle - A value from enum XTPReportFixedRowsDividerStyle.
+	// See Also:
+	//      XTPReportFixedRowsDividerStyle
+	//-----------------------------------------------------------------------
+	void SetFooterRowsDividerStyle(XTPReportFixedRowsDividerStyle style);
+
+	__declspec(property(get = GetHeaderRowsDividerStyle,
+						put = SetHeaderRowsDividerStyle)) XTPReportFixedRowsDividerStyle
+		m_HeaderRowsDividerStyle; // Style of a divider line between the header and body rows.
+
+	__declspec(property(get = GetFooterRowsDividerStyle,
+						put = SetFooterRowsDividerStyle)) XTPReportFixedRowsDividerStyle
+		m_FooterRowsDividerStyle; // Style of a divider line between the footer and body rows.
+
+#	endif // XTP_REPORT_DEPRECATED()
+
+#	if XTP_REPORT_DEPRECATED()
+
+	CXTPPaintManagerColor GetHeaderRowsDividerColor() const;
+	void SetHeaderRowsDividerColor(CXTPPaintManagerColor clrDivider);
+
+	CXTPPaintManagerColor GetFooterRowsDividerColor() const;
+	void SetFooterRowsDividerColor(CXTPPaintManagerColor clrDivider);
+
+	__declspec(property(get = GetHeaderRowsDividerColor, put = SetHeaderRowsDividerColor))
+		CXTPPaintManagerColor m_clrHeaderRowsDivider;
+
+	__declspec(property(get = GetFooterRowsDividerColor, put = SetFooterRowsDividerColor))
+		CXTPPaintManagerColor m_clrFooterRowsDivider;
+
+	__declspec(property(get = GetGridColor, put = SetGridColor)) COLORREF m_clrGridLine;
+#	endif
+
+	CXTPPaintManagerColorGradient m_grcGradientColumn;	// Color of column used with
+														  // xtpReportColumnOffice2003 style
+	CXTPPaintManagerColorGradient m_grcGradientColumnHot; // HotTracking Color of column used with
+														  // xtpReportColumnOffice2003 style
+	CXTPPaintManagerColorGradient m_grcGradientColumnPushed; // Pushed Color of column used with
+															 // xtpReportColumnOffice2003 style
+	CXTPPaintManagerColor m_clrGradientColumnShadow;		 // Bottom shadow of column used with
+															 // xtpReportColumnOffice2003 style
+	CXTPPaintManagerColor m_clrGradientColumnSeparator;		 // Separator of column used with
+															 // xtpReportColumnOffice2003 style
+	CXTPPaintManagerColor m_crlNoGroupByText; // A color for "No items" text in GroupBy area (see
+											  // m_strNoGroupBy member)
+	CXTPPaintManagerColor m_clrFreezeColsDivider; // Freeze Columns Divider color.
+	COLORREF m_clrColumnOffice2007CustomTheme;	// Base color for Office2007 custom theme.
+
+	COLORREF m_clrFormulaSum;	// Color for Formula Sum fields
 	COLORREF m_clrFormulaSubSum; // Color for Formula SubSum fields
 
 	COLORREF m_clrAlternativeBackground; // Color for Alternative Row Background
-	BOOL m_bUseAlternativeBackground;    // Flag to use for Alternative Row Background
-	BOOL m_bAllowMergeCells;             // Flag to Allow or not Merge Cells
+	BOOL m_bUseAlternativeBackground;	// Flag to use for Alternative Row Background
+	BOOL m_bAllowMergeCells;			 // Flag to Allow or not Merge Cells
 
-	int m_nTextIndentForGroupRowsWithNoIcon;  // Specifies Text indent if a group row icon is not used
+	int m_nTextIndentForGroupRowsWithNoIcon; // Specifies Text indent if a group row icon is not
+											 // used
 
-	BOOL m_bGroupRowTextBold;       // TRUE to draw group rows with bold text.
-	BOOL m_bShadeGroupHeadings;     // Show or not show the indentation shade.
-	BOOL m_bShadeSortColumn;        // Show or not show the items shade in the sorted by column.
-	BOOL m_bHotTracking;            // TRUE to allow column hot tracking
-	BOOL m_bInvertColumnOnClick;    // TRUE to invert column on click
+	int m_nTreeIndent;				  // Tree indentation.
+	int m_nTreeStructureStyle;		  // Tree structure style.
+	int m_nTreeTextIndentRowParent;   // Text indent in pixels for rows with children
+	int m_nTreeTextIndentRowChildren; // Text indent in pixels for rows without children
+	int m_nTreeTextIndentGroupRow;	// Text indent in pixels for group rows
 
-	CString m_strNoItems; // A string which contains customized "No Items" text for displaying in view when there are no visible rows.
-	CString m_strSortBy; // A string which contains customized "Sort By" text for displaying in tooltip
-	CString m_strIncreasing; // A string which contains customized "Increasing" text for displaying in tooltip
-	CString m_strDecreasing; // A string which contains customized "Decreasing" text for displaying in tooltip
-	CString m_strNoGroupBy; // A string which contains customized "No items" text message for displaying in Group By area when there are no items inside it.
-	CString m_strNoFieldsAvailable; // A string which contains customized "No Fields Available" text message for displaying in Field Chooser.
-	CString m_strExpand; // A string which contains customized "Expand" text for displaying in tooltip
-	CString m_strCollapse; // A string which contains customized "Collapse" text for displaying in tooltip
-	BOOL m_bHideSelection; // TRUE when hiding report control's selection by drawing selected items as others, FALSE otherwise.
-	BOOL m_bPrintSortTriangle; //If true - show sort triangle in printout also
+	BOOL m_bGroupRowTextBold; // TRUE to draw group rows with bold text.
+
+	BOOL m_bShadeGroupHeadings;  // Show or not show the indentation shade.
+	BOOL m_bShadeSortColumn;	 // Show or not show the items shade in the sorted by column.
+	BOOL m_bHotTracking;		 // TRUE to allow column hot tracking
+	BOOL m_bInvertColumnOnClick; // TRUE to invert column on click
+
+	CString m_strNoItems;	// A string which contains customized "No Items" text for displaying in
+							 // view when there are no visible rows.
+	CString m_strSortBy;	 // A string which contains customized "Sort By" text for displaying in
+							 // tooltip
+	CString m_strIncreasing; // A string which contains customized "Increasing" text for displaying
+							 // in tooltip
+	CString m_strDecreasing; // A string which contains customized "Decreasing" text for displaying
+							 // in tooltip
+	CString m_strNoGroupBy;  // A string which contains customized "No items" text message for
+							 // displaying in Group By area when there are no items inside it.
+	CString m_strNoFieldsAvailable; // A string which contains customized "No Fields Available" text
+									// message for displaying in Field Chooser.
+	CString m_strExpand;   // A string which contains customized "Expand" text for displaying in
+						   // tooltip
+	CString m_strCollapse; // A string which contains customized "Collapse" text for displaying in
+						   // tooltip
+	BOOL m_bHideSelection; // TRUE when hiding report control's selection by drawing selected items
+						   // as others, FALSE otherwise.
+	BOOL m_bPrintSortTriangle; // If true - show sort triangle in printout also
+	//{{AFX_CODEJOCK_PRIVATE
+	__declspec(property(get = GetDrawSortTriangleAlways,
+						put = SetDrawSortTriangleAlways)) BOOL m_bDrawSortTriangleAlways;
+	_XTP_DEPRECATE("The member is deprecated, use m_bPrintSortTriangle instead")
+	BOOL GetDrawSortTriangleAlways() const;
+	_XTP_DEPRECATE("The member is deprecated, use m_bPrintSortTriangle instead")
+	void SetDrawSortTriangleAlways(BOOL bValue);
+	//}}AFX_CODEJOCK_PRIVATE
+
 	XTPReportDrawSortTriangleStyle m_DrawSortTriangleStyle;
-	//xtpReportDrawSortTriangleAlways - the sort triangle displayed in column header when a column is sorted and
-	//the caption will cut will ellipsis
-	//xtpReportDrawSortTriangleDefault - the triangle will be removed when the column size is too small to display
-	//the full caption and triangle
-	//xtpReportDrawSortTriangleNever - the sort triangle never used
-	BOOL m_bUseColumnTextAlignment;     // TRUE to draw caption text accordingly to its alignment
+	// xtpReportDrawSortTriangleAlways - the sort triangle displayed in column header when a column
+	// is sorted and the caption will cut will ellipsis xtpReportDrawSortTriangleDefault - the
+	// triangle will be removed when the column size is too small to display the full caption and
+	// triangle xtpReportDrawSortTriangleNever - the sort triangle never used
+	BOOL m_bUseColumnTextAlignment; // TRUE to draw caption text accordingly to its alignment
 
-	BOOL m_bRevertAlignment;            // TRUE to revert column alignments
-	BOOL m_bUseEditTextAlignment;       //  TRUE to automatically apply edit alignment using column alignment
+	BOOL m_bRevertAlignment;	  // TRUE to revert column alignments
+	BOOL m_bUseEditTextAlignment; //  TRUE to automatically apply edit alignment using column
+								  //  alignment
 
-	BOOL m_bShowLockIcon;               //TRUE to show the lock icon FALSE to hide.
-	BOOL m_bUseShellIcon;               //TRUE to use the shell icon FALSE else.
-	int m_iRecOrRowStart;               //start position in numbering (0 or 1 or something user want)
-	BOOL m_bRecOrRowNum;                // flag for Record (TRUE) or Row (FALSE) number to display if supported mode used
+	BOOL m_bShowLockIcon; // TRUE to show the lock icon FALSE to hide.
+	BOOL m_bUseShellIcon; // TRUE to use the shell icon FALSE else.
+	int m_iRecOrRowStart; // start position in numbering (0 or 1 or something user want)
+	BOOL m_bRecOrRowNum;  // flag for Record (TRUE) or Row (FALSE) number to display if supported
+						  // mode used
 
-	int m_nTreeStructureStyle;          // Tree structure style.
+	BOOL m_bMakeUpper; // TRUE to display column header and group row text in all caps
 
-	XTPReportTreeStructureStyle m_treeStructureStyle;   // Tree structure style
-	XTPReportFixedRowsDividerStyle m_HeaderRowsDividerStyle; // Style of a divider line between the header and body rows.
-	XTPReportFixedRowsDividerStyle m_FooterRowsDividerStyle; // Style of a divider line between the footer and body rows.
+	XTPReportTreeStructureStyle m_treeStructureStyle; // Tree structure style
 
-	CRect m_rcPreviewIndent;            // Preview indentation.
-	int m_nTreeIndent;                  // Tree indentation.
-	int m_nFixedColumnsIndent;          // Fixed Column total width.
-	BOOL m_bMoveScrollbarOnFixedColumnsIndent;  //Move Scrollbar right follow FixedColumnsIndent
+	CRect m_rcPreviewIndent;				   // Preview indentation.
+	int m_nFixedColumnsIndent;				   // Fixed Column total width.
+	BOOL m_bMoveScrollbarOnFixedColumnsIndent; // Move Scrollbar right follow FixedColumnsIndent
 
-	BOOL m_bThemedInplaceButtons;       // Draw in-place buttons using current theme settings.
-	BOOL m_bBaseTreeIndent;             // Flag to add Extra Tree indentation to cover initial TreeColumn.
+	BOOL m_bThemedInplaceButtons; // Draw in-place buttons using current theme settings.
+	BOOL m_bBaseTreeIndent;		  // Flag to add Extra Tree indentation to cover initial TreeColumn.
 
-	CUIntArray m_arStartCol;            //hold start column in each virtual page
-	CUIntArray m_arStartRow;            //hold start row in each virtual page
+	CUIntArray m_arStartCol; // hold start column in each virtual page
 
-	int m_PrintPageWidth;               //width of print page (run-time)
-	BOOL m_bPrintVirtualPageNumber;     //print horizontal page #
-	BOOL m_bPrintPageRectangle;         //flag to draw rectangle around page
-	int m_RecordNumberWidth;            //column width for row / record numbers
-	BOOL m_bForceDynamicMarkupForCell;  // TRUE if use Markup for Report Record Item
-	BOOL m_bForceShowDropMarker;        // TRUE if Force Show Drop Marker
-	                                    //used to support external (OLE) drag & drop handler and take care of drop marker line drawing and auto-scrolling
-	BOOL m_bShowNonActiveInPlaceButton; // TRUE if use Show NonActive InPlace Button (Combo, Expand, Spin)
-	BOOL m_bPrintWatermark;             //flag to print watermark
+	int m_PrintPageWidth;			   // width of print page (run-time)
+	BOOL m_bPrintVirtualPageNumber;	// print horizontal page #
+	BOOL m_bPrintPageRectangle;		   // flag to draw rectangle around page
+	int m_RecordNumberWidth;		   // column width for row / record numbers
+	BOOL m_bForceDynamicMarkupForCell; // TRUE if use Markup for Report Record Item
+	BOOL m_bForceShowDropMarker;	   // TRUE if Force Show Drop Marker
+								 // used to support external (OLE) drag & drop handler and take care
+								 // of drop marker line drawing and auto-scrolling
+	BOOL m_bShowNonActiveInPlaceButton; // TRUE if use Show NonActive InPlace Button (Combo, Expand,
+										// Spin)
+	BOOL m_bPrintWatermark;				// flag to print watermark
 	BOOL m_bUseGroupRowSelectionState;  // TRUE if use GroupSelectionState Glyph
-	BOOL m_bForceShowTooltip;           // TRUE if use show tooltip for any cell width case
-	BOOL m_bCleanTooltip;               // TRUE if use show tooltip without markup
-	BOOL m_bGrayIfDisable;              //TRUE is disable draw in gray (standard behavior)
-	int m_nRowHeightDefault;            //The default row height.
-	BOOL m_bCompactText;                // Flag to ignore Icon for Narrow column to show more text
+	BOOL m_bForceShowTooltip;			// TRUE if use show tooltip for any cell width case
+	BOOL m_bCleanTooltip;				// TRUE if use show tooltip without markup
+	BOOL m_bGrayIfDisable;				// TRUE is disable draw in gray (standard behavior)
+	int m_nRowHeightDefault;			// The default row height.
+	BOOL m_bCompactText;				// Flag to ignore Icon for Narrow column to show more text
 
-	BOOL m_bUseDropMarker;                              // FALSE to not draw drop marked when dragging\dropping, TRUE by default
-	BOOL m_bSortTriangleOffsetFromRight;    // Offset of sort triangle
-	int m_nTreeColumnLineLength;            // This is the extra line length to apply to tree column lines if there is no expand button
-	int m_nBaseParentRecordIndent;          // This is initial number of pixels a parent node will be indented when in a group
-
-	CMap<CXTPReportColumn*, CXTPReportColumn*, CRect, CRect> m_mapColumnPrintPosition;
-
-//{{AFX_CODEJOCK_PRIVATE
+	BOOL m_bUseDropMarker; // FALSE to not draw drop marked when dragging\dropping, TRUE by default
+	BOOL m_bSortTriangleOffsetFromRight; // Offset of sort triangle
+	int m_nTreeColumnLineLength;   // This is the extra line length to apply to tree column lines if
+								   // there is no expand button
+	int m_nBaseParentRecordIndent; // This is initial number of pixels a parent node will be
+								   // indented when in a group
 
 protected:
-	int m_nPageCols;
-	int m_nPageRows;
-	int m_nPageCount;
-	int m_nRowCount;
-	int m_nColumnHeight;
-	int* m_nColumns;
-	int* m_nColumnsWidth;
+	int m_nRowHeight;			// Report row default height.
+	int m_nHeaderHeight;		// Column header height.
+	int m_nFooterHeight;		// Column footer height.
+	int m_nGroupGridLineHeight; // The height of the group grid line.
+
+	CXTPImageManager* m_pGlyphs; // Contains an additional image list for report control
+	BOOL m_bIsPreviewMode;		 // Show or not show the item preview.
+	int m_nResizingWidth;		 // The width of the column resizing marker area.
+	int m_nMaxPreviewLines;		 // Restrict maximum lines for preview text
+	CSize m_szGlyph;			 // Glyph size
+
+	CXTPBrush m_xtpBrushTreeStructure; // Stores brush to draw tree nodes
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushTreeStructure, m_xtpBrushTreeStructure,
+										  GetTreeStructureBrushHandle);
+
+	CXTPBrush m_xtpBrushGroupGridLineStyle; // Stores brush to draw group row grid lines
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushGroupGridLineStyle,
+										  m_xtpBrushGroupGridLineStyle,
+										  GetGroupGridLineStyleBrushHandle);
+
+	int m_nFreezeColsDividerStyle; // A set of flags from XTPReportFreezeColsDividerStyle
+
+	BOOL m_bFixedRowHeight;			// TRUE if fixed rows used.
+	BOOL m_bColumnWidthWYSIWYG;		// TRUE if columns width WYSIWYG mode used.
+	BOOL m_bShowWYSIWYGMarkers;		// TRUE if in non-print mode header show red page-end markers
+	BOOL m_bLastColumnWidthWYSIWYG; // TRUE if last column width WYSIWYG mode used.
+	BOOL m_bDrawGridForEmptySpace;  // TRUE if grid fills the empty space (if any) after the body
+									// rows.
+	BOOL m_bPrintGroupRowIcon;		// TRUE if printout draw collapse-expand icon for group row
+	BOOL m_bColumnPlusMinusSign; // TRUE if use Expand/Collapse icon, FALSE if use DirectionalArrows
+
+	BOOL m_bFixedInplaceButtonHeight; // TRUE if fixed In place Buttons height used.
+
+	XTPReportGridStyle m_nGroupGridLineStyle; // Stores current style for group row grid lines
+	XTPReportColumnStyle m_columnStyle;		  // Contains column drawing style.
+
+	CXTPReportBorder* m_pBorder;
+
+	CXTPWinThemeWrapper* m_themeHeader; // Header theme wrapper.
+	CXTPWinThemeWrapper* m_themeButton; // In-place button theme wrapper.
+	CXTPWinThemeWrapper* m_themeCombo;  // Combo box in-place button theme wrapper.
+	CXTPWinThemeWrapper* m_themeSpin;   // Spin in-place button theme wrapper.
+
+#	ifdef _XTP_INCLUDE_CONTROLS
+	void SetControlsTheme(int eTheme); // XTPControlTheme
+
+	CXTPComboBox* m_pCombo;
+	BOOL m_bUseThemedControls;
+#	else
+	CXTPExcludedMemberPadding<CXTPComboBox*> m_pCombo;
+	CXTPExcludedMemberPadding<BOOL> m_bUseThemedControls;
+#	endif
+
+	CXTPReportControl* m_pControl; // Pointer to the report control object.
+
+	CXTPMarkupUIElement* m_pMarkupUIElement_NoGroupBy; // The no group by markup UI element.
+	CString m_strMarkupUIElement_NoGroupBy;			   // The no group by markup UI element string.
+
+	void DrawPattern(CDC* pDC, XTPReportLineStyle lineStyle, XTPReportOrientation orientation,
+					 CRect rcLine);
+	void CreateLineStyleBrushes();
+
+	CXTPBrush m_xtpBrushDotsSmallH;
+	CXTPBrush m_xtpBrushDotsLargeH;
+	CXTPBrush m_xtpBrushDashH;
+	CXTPBrush m_xtpBrushDotsSmallV;
+	CXTPBrush m_xtpBrushDotsLargeV;
+	CXTPBrush m_xtpBrushDashV;
+	CXTPBrush m_xtpBrushVeriticalGrid;  // Stores brush to draw vertical grid lines
+	CXTPBrush m_xtpBrushHorizontalGrid; // Stores brush to draw horizontal grid lines
+
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDotsSmallH, m_xtpBrushDotsSmallH,
+										  GetDotsSmallHBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDotsLargeH, m_xtpBrushDotsLargeH,
+										  GetDotsLargeHBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDashH, m_xtpBrushDashH,
+										  GetDashHBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDotsSmallV, m_xtpBrushDotsSmallV,
+										  GetDotsSmallVBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDotsLargeV, m_xtpBrushDotsLargeV,
+										  GetDotsLargeVBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushDashV, m_xtpBrushDashV,
+										  GetDashVBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushVeriticalGrid, m_xtpBrushVeriticalGrid,
+										  GetVeriticalGridBrushHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushHorizontalGrid, m_xtpBrushHorizontalGrid,
+										  GetHorizontalGridBrushHandle);
+
+	XTPReportGridStyle m_nGridLineStylePreviousV; // Stores previous style for vertical   grid
+												  // lines. Used for update brush.
+	XTPReportGridStyle m_nGridLineStylePreviousH; // Stores previous style for horizontal grid
+												  // lines. Used for update brush.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportPaintManager);
+
+	afx_msg int OleGetVerticalGridStyle();
+	afx_msg void OleSetVerticalGridStyle(int nGridStyle);
+	afx_msg int OleGetHorizontalGridStyle();
+	afx_msg void OleSetHorizontalGridStyle(int nGridStyle);
+	afx_msg void OleRefreshMetrics();
+	afx_msg void OleSetColumnStyle();
+
+	afx_msg int OleGetHeaderRowsDividerStyle();
+	afx_msg void OleSetHeaderRowsDividerStyle(int nDividerStyle);
+	afx_msg int OleGetFooterRowsDividerStyle();
+	afx_msg void OleSetFooterRowsDividerStyle(int nDividerStyle);
+
+	afx_msg LPFONTDISP OleGetTextFont();
+	afx_msg void OleSetTextFont(LPFONTDISP pFontDisp);
+	afx_msg LPDISPATCH OleGetGlyphs();
+	afx_msg LPFONTDISP OleGetCaptionFont();
+	afx_msg void OleSetCaptionFont(LPFONTDISP pFontDisp);
+	afx_msg LPFONTDISP OleGetPreviewTextFont();
+	afx_msg void OleSetPreviewTextFont(LPFONTDISP pFontDisp);
+
+	afx_msg LPDISPATCH OleGetHyperlinkStyle();
+	afx_msg LPDISPATCH OleGetHyperlinkHoverStyle();
+
+	afx_msg int OleGetHeaderHeight();
+	afx_msg void OleSetHeaderHeight(int nHeaderHeight);
+
+	XTP_DECLARE_PROPERTY(BackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(ForeColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GridLineColor, COLORREF);
+	XTP_DECLARE_PROPERTY(ShadeSortColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupIndentColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupShadeBackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupShadeForeColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupShadeBorderColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupForeColor, COLORREF);
+	XTP_DECLARE_PROPERTY(CaptionBackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(CaptionForeColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupBoxBackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(GroupByNoItemsTextColor, COLORREF);
+	XTP_DECLARE_PROPERTY(HighlightBackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(HighlightForeColor, COLORREF);
+	XTP_DECLARE_PROPERTY(BoldTextHighlight, COLORREF);
+	XTP_DECLARE_PROPERTY(BoldText, COLORREF);
+	XTP_DECLARE_PROPERTY(PreviewTextColor, COLORREF);
+	XTP_DECLARE_PROPERTY(SelectedRowBackColor, COLORREF);
+	XTP_DECLARE_PROPERTY(SelectedRowForeColor, COLORREF);
+
+	XTP_DECLARE_PROPERTY(CaptionBackGradientColorLight, COLORREF);
+	XTP_DECLARE_PROPERTY(CaptionBackGradientColorDark, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnHotGradientColorLight, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnHotGradientColorDark, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnPushedGradientColorLight, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnPushedGradientColorDark, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnShadowGradient, COLORREF);
+
+	XTP_DECLARE_PROPERTY(FreezeColsDividerColor, COLORREF);
+	XTP_DECLARE_PROPERTY(HotDividerColor, COLORREF);
+	XTP_DECLARE_PROPERTY(HeaderRowsDividerColor, COLORREF);
+	XTP_DECLARE_PROPERTY(FooterRowsDividerColor, COLORREF);
+	XTP_DECLARE_PROPERTY(ColumnOffice2007CustomThemeBaseColor, COLORREF);
+	//  DECLARE_PROPERTY_UN(HyperLinkColor, COLORREF);
+	XTP_DECLARE_PROPERTY(FormulaSumColor, COLORREF);
+	XTP_DECLARE_PROPERTY(FormulaSubSumColor, COLORREF);
+	XTP_DECLARE_PROPERTY(AlternativeBackgroundColor, COLORREF);
+
+	XTP_DECLARE_PROPERTY(TextIndentForGroupRowsWithNoIcon, int);
+	XTP_DECLARE_PROPERTY(SortTriangleOffsetFromRight, BOOL);
+	XTP_DECLARE_PROPERTY(TreeColumnLineLength, int);
+	XTP_DECLARE_PROPERTY(BaseParentRecordIndent, int);
+
+	XTP_DECLARE_PROPERTY(GroupGridLineHeight, int);
 
 //}}AFX_CODEJOCK_PRIVATE
-
-	int m_nRowHeight;               // Report row default height.
-	int m_nHeaderHeight;            // Column header height.
-	int m_nFooterHeight;            // Column footer height.
-	int m_nGroupGridLineHeight;     // The height of the group grid line.
-
-	CXTPImageManager* m_pGlyphs;    // Contains an additional image list for report control
-	BOOL m_bIsPreviewMode;          // Show or not show the item preview.
-	int m_nResizingWidth;           // The width of the column resizing marker area.
-	int m_nMaxPreviewLines;         // Restrict maximum lines for preview text
-	CSize m_szGlyph;                // Glyph size
-	CBrush m_brushVeriticalGrid;    // Stores brush to draw vertical grid lines
-	CBrush m_brushHorizontalGrid;   // Stores brush to draw horizontal grid lines
-	CBrush m_brushTreeStructure;    // Stores brush to draw tree nodes
-	CBrush m_brushGroupGridLineStyle;       // Stores brush to draw group row grid lines
-
-	int m_nFreezeColsDividerStyle;  // A set of flags from XTPReportFreezeColsDividerStyle
-
-	BOOL m_bFixedRowHeight;         // TRUE if fixed rows used.
-	BOOL m_bColumnWidthWYSIWYG;     // TRUE if columns width WYSIWYG mode used.
-	BOOL m_bShowWYSIWYGMarkers;     // TRUE if in non-print mode header show red page-end markers
-	BOOL m_bLastColumnWidthWYSIWYG; // TRUE if last column width WYSIWYG mode used.
-	BOOL m_bDrawGridForEmptySpace;  // TRUE if grid fills the empty space (if any) after the body rows.
-	BOOL m_bPrintGroupRowIcon;      // TRUE if printout draw collapse-expand icon for group row
-	BOOL m_bColumnPlusMinusSign;    // TRUE if use Expand/Collapse icon, FALSE if use DirectionalArrows
-
-	BOOL m_bFixedInplaceButtonHeight;           // TRUE if fixed In place Buttons height used.
-
-	XTPReportGridStyle m_nGroupGridLineStyle;   // Stores current style for group row grid lines
-	XTPReportGridStyle m_verticalGridStyle;     // Stores current style for vertical grid lines
-	XTPReportGridStyle m_horizontalGridStyle;   // Stores current style for horizontal grid lines
-	XTPReportColumnStyle m_columnStyle;         // Contains column drawing style.
-
-	CXTPWinThemeWrapper m_themeWrapper;         // Header theme wrapper.
-	CXTPWinThemeWrapper m_themeButton;          // In-place button theme wrapper.
-	CXTPWinThemeWrapper m_themeCombo;           // Combo box in-place button theme wrapper.
-	CXTPWinThemeWrapper m_themeSpin;            // Spin in-place button theme wrapper.
-
-	CXTPFormulaMulDivC* m_pHeaderHeightFormula; // MulDivC formula for header height calculation
-
-	CXTPReportControl* m_pControl;              //Pointer to the report control object.
-
-	CXTPMarkupUIElement* m_pMarkupUIElement_NoGroupBy;  //The no group by markup UI element.
-	CString m_strMarkupUIElement_NoGroupBy;             //The no group by markup UI element string.
-
-
+#	endif
 };
 
 AFX_INLINE BOOL CXTPReportPaintManager::IsUseDropMarker() const
@@ -1715,11 +1883,6 @@ AFX_INLINE int CXTPReportPaintManager::GetHeaderHeight()
 	return m_nHeaderHeight;
 }
 
-AFX_INLINE BOOL CXTPReportPaintManager::IsGridVisible(BOOL bVertical) const
-{
-	return bVertical ? (m_verticalGridStyle != xtpReportGridNoLines) : (m_horizontalGridStyle != xtpReportGridNoLines);
-}
-
 AFX_INLINE void CXTPReportPaintManager::EnablePreviewMode(BOOL bIsPreviewMode)
 {
 	m_bIsPreviewMode = bIsPreviewMode;
@@ -1730,21 +1893,14 @@ AFX_INLINE BOOL CXTPReportPaintManager::IsPreviewMode() const
 	return m_bIsPreviewMode;
 }
 
-AFX_INLINE COLORREF CXTPReportPaintManager::SetGridColor(COLORREF clrGridLine)
-{
-	COLORREF clrOldColor = m_clrGridLine;
-	m_clrGridLine.SetCustomValue(clrGridLine);
-	return clrOldColor;
-}
-
 AFX_INLINE CFont* CXTPReportPaintManager::GetTextFont()
 {
-	return &m_fontText;
+	return &m_xtpFontText;
 }
 
 AFX_INLINE int CXTPReportPaintManager::SetMaxPreviewLines(int nMaxLines)
 {
-	int nOldMaxLines = m_nMaxPreviewLines;
+	int nOldMaxLines   = m_nMaxPreviewLines;
 	m_nMaxPreviewLines = nMaxLines;
 	return nOldMaxLines;
 }
@@ -1752,11 +1908,6 @@ AFX_INLINE int CXTPReportPaintManager::SetMaxPreviewLines(int nMaxLines)
 AFX_INLINE int CXTPReportPaintManager::GetMaxPreviewLines()
 {
 	return m_nMaxPreviewLines;
-}
-
-AFX_INLINE int CXTPReportPaintManager::GetPreviewItemHeight(CDC* /*pDC*/, CXTPReportRow* /*pRow*/, int /*nWidth*/, int nHeight)
-{
-	return nHeight;
 }
 
 AFX_INLINE CXTPImageManager* CXTPReportPaintManager::GetGlyphs() const
@@ -1767,11 +1918,6 @@ AFX_INLINE CXTPImageManager* CXTPReportPaintManager::GetGlyphs() const
 AFX_INLINE BOOL CXTPReportPaintManager::IsFixedRowHeight() const
 {
 	return m_bFixedRowHeight;
-}
-
-AFX_INLINE void CXTPReportPaintManager::SetFixedRowHeight(BOOL bFixedRowHeight)
-{
-	m_bFixedRowHeight = bFixedRowHeight;
 }
 
 AFX_INLINE BOOL CXTPReportPaintManager::IsLastColumnWidthWYSIWYG() const
@@ -1811,10 +1957,10 @@ AFX_INLINE BOOL CXTPReportPaintManager::IsFixedInplaceButtonHeight() const
 
 AFX_INLINE void CXTPReportPaintManager::SetInplaceButtonHeight(BOOL bFixedInplaceButtonHeight)
 {
-	m_bFixedInplaceButtonHeight= bFixedInplaceButtonHeight;
+	m_bFixedInplaceButtonHeight = bFixedInplaceButtonHeight;
 }
 
-AFX_INLINE int  CXTPReportPaintManager::GetFreezeColsDividerStyle() const
+AFX_INLINE int CXTPReportPaintManager::GetFreezeColsDividerStyle() const
 {
 	return m_nFreezeColsDividerStyle;
 }
@@ -1822,47 +1968,6 @@ AFX_INLINE int  CXTPReportPaintManager::GetFreezeColsDividerStyle() const
 AFX_INLINE void CXTPReportPaintManager::SetFreezeColsDividerStyle(int nStyle)
 {
 	m_nFreezeColsDividerStyle = nStyle;
-}
-
-AFX_INLINE int  CXTPReportPaintManager::GetHeaderRowsDividerStyle() const
-{
-	return m_HeaderRowsDividerStyle;
-}
-
-AFX_INLINE void CXTPReportPaintManager::SetHeaderRowsDividerStyle(int nStyle)
-{
-	m_HeaderRowsDividerStyle = (XTPReportFixedRowsDividerStyle) nStyle;
-}
-
-AFX_INLINE int  CXTPReportPaintManager::GetFooterRowsDividerStyle() const
-{
-	return m_FooterRowsDividerStyle;
-}
-
-AFX_INLINE void CXTPReportPaintManager::SetFooterRowsDividerStyle(int nStyle)
-{
-	m_FooterRowsDividerStyle = (XTPReportFixedRowsDividerStyle) nStyle;
-}
-
-AFX_INLINE COLORREF CXTPReportPaintManager::MixColor(COLORREF clrLight, COLORREF clrDark, double dFactor)
-{
-	return RGB(GetRValue(clrLight) - dFactor * (GetRValue(clrLight) - GetRValue(clrDark)),
-		GetGValue(clrLight) - dFactor * (GetGValue(clrLight) - GetGValue(clrDark)),
-		GetBValue(clrLight) - dFactor * (GetBValue(clrLight) - GetBValue(clrDark)));
-}
-
-AFX_INLINE void CXTPReportPaintManager::Line(CDC* pDC, int x, int y, int cx, int cy, CPen* pPen)
-{
-	CPen* pOldPen = pDC->SelectObject(pPen);
-	pDC->MoveTo(x, y);
-	pDC->LineTo(x + cx, y + cy);
-	pDC->SelectObject(pOldPen);
-}
-
-AFX_INLINE BOOL CXTPReportPaintManager::OnDrawAction(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs)
-{
-	UNREFERENCED_PARAMETER(pDrawArgs);
-	return TRUE;
 }
 
 AFX_INLINE XTPReportColumnStyle CXTPReportPaintManager::GetColumnStyle() const
@@ -1900,7 +2005,8 @@ AFX_INLINE void CXTPReportPaintManager::SetDrawGridForEmptySpace(BOOL bDrawGrid)
 	m_bDrawGridForEmptySpace = bDrawGrid;
 }
 
-AFX_INLINE void CXTPReportPaintManager::SetColumnOffice2007CustomThemeBaseColor(COLORREF clrBaseColor)
+AFX_INLINE void
+	CXTPReportPaintManager::SetColumnOffice2007CustomThemeBaseColor(COLORREF clrBaseColor)
 {
 	m_clrColumnOffice2007CustomTheme = clrBaseColor;
 	RefreshMetrics();
@@ -1916,14 +2022,15 @@ AFX_INLINE void CXTPReportPaintManager::SetReportControl(CXTPReportControl* pCon
 	m_pControl = pControl;
 }
 
-AFX_INLINE XTPReportGridStyle CXTPReportPaintManager::GetGridStyle(BOOL bVertical)
+AFX_INLINE BOOL CXTPReportPaintManager::GetDrawSortTriangleAlways() const
 {
-	if (bVertical)
-		return m_verticalGridStyle;
-
-	return m_horizontalGridStyle;
+	return m_bPrintSortTriangle;
 }
 
-#define  m_bDrawSortTriangleAlways m_bPrintSortTriangle
+AFX_INLINE void CXTPReportPaintManager::SetDrawSortTriangleAlways(BOOL bValue)
+{
+	m_bPrintSortTriangle = bValue;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTPAINTMANAGER_H__)

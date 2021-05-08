@@ -1,7 +1,6 @@
 // XTPHexEdit.h interface for the CXTPHexEdit class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPHEXEDIT_H__)
-#define __XTPHEXEDIT_H__
+#	define __XTPHEXEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000j
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000j
 
-#ifdef _XTP_ACTIVEX
-#define CXTPHexEditBase CXTPOleControl
-#else
-#define CXTPHexEditBase CEdit
-#endif
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+#	ifdef _XTP_ACTIVEX
+#		define CXTPHexEditBase CXTPOleControl
+#	else
+#		define CXTPHexEditBase CEdit
+#	endif
 
 //===========================================================================
 // Summary:
@@ -59,7 +60,7 @@ protected:
 		editNone,  // No editing mode specified.
 		editAscii, // ASCII editing mode.
 		editHigh,  // High editing mode.
-		editLow    // Low editing mode.
+		editLow	// Low editing mode.
 	};
 
 public:
@@ -75,9 +76,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPHexEdit();
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method creates the HexEdit control.
@@ -90,7 +89,6 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -106,7 +104,9 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+						const RECT& rect, CWnd* pParentWnd, UINT nID,
+						CCreateContext* pContext = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -406,8 +406,9 @@ public:
 	// Summary:
 	//     Call this member function to get the size of the current selection.
 	// Input:
-	//     nSelStart - Reference to an integer that will receive the position of the first character in the current selection.
-	//     nSelEnd   - Reference to an integer that will receive the position of the first nonselected character past the end of the current selection
+	//     nSelStart - Reference to an integer that will receive the position of the first character
+	//     in the current selection. nSelEnd   - Reference to an integer that will receive the
+	//     position of the first nonselected character past the end of the current selection
 	// Returns:
 	//     A CSize object.
 	//-----------------------------------------------------------------------
@@ -458,7 +459,7 @@ public:
 	virtual void OnChange();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPHexEdit)
@@ -492,7 +493,7 @@ protected:
 	afx_msg void OnNcPaint();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void ScrollIntoView(int pData);
@@ -510,119 +511,173 @@ private:
 	void DoVScroll(UINT nSBCode, bool bMoveCaret);
 
 public:
-	int      m_nLength;         // Length of data.
-	int      m_nTopIndex;       // Offset of first visible byte on the screen.
-	int      m_nCurrentAddress; // Address under the cursor.
-	int      m_nSelStart;       // Start address of the selection.
-	int      m_nSelEnd;         // End address of the selection.
-	int      m_nBytePerRow;     // Bytes per row.
-	int      m_nLinesPerPage;   // Lines per page.
-	int      m_nLineHeight;     // Height in pixels of a single line displayed in the control.
-	int      m_nNullWidth;      // Width in pixels of a single character displayed in the control (uniform width).
-	int      m_nOffHex;         // Internally used value - X position where hex part starts.
-	int      m_nOffAscii;       // Internally used value - X position where ASCII part starts.
-	int      m_nOffAddress;     // Internally used value - X position where address part starts.
-	bool     m_bAllowDeletes;   // A boolean value indicating whether or not deletions are allowed.
-	BOOL     m_bDynamicBPR;     // Calculate bytes-per-row dynamically.
-	BOOL     m_bShowAddress;    // TRUE when showing the address part.
-	BOOL     m_bShowAscii;      // TRUE when showing the ASCII part.
-	BOOL     m_bShowHex;        // TRUE when showing the hex part.
-	BOOL     m_bAddressIsWide;  // 4/8 byte address.
-	BOOL     m_bUpdate;         // Value used internally to indicate that the font and size info need to be updated on the next paint cycle.
-	UINT     m_nMaxLength;      // Maximum size of data.
-	DWORD    m_dwBaseAddress;   // Base address for data.
-	CPoint   m_ptEditPos;       // Current caret position.
-	LPBYTE   m_pData;           // Pointer to data.
-	EditMode m_eEditMode;       // Current editing mode: address/hex/ASCII.
+	int m_nLength;		   // Length of data.
+	int m_nTopIndex;	   // Offset of first visible byte on the screen.
+	int m_nCurrentAddress; // Address under the cursor.
+	int m_nSelStart;	   // Start address of the selection.
+	int m_nSelEnd;		   // End address of the selection.
+	int m_nBytePerRow;	 // Bytes per row.
+	int m_nLinesPerPage;   // Lines per page.
+	int m_nLineHeight;	 // Height in pixels of a single line displayed in the control.
+	int m_nNullWidth;	 // Width in pixels of a single character displayed in the control (uniform
+						  // width).
+	int m_nOffHex;		  // Internally used value - X position where hex part starts.
+	int m_nOffAscii;	  // Internally used value - X position where ASCII part starts.
+	int m_nOffAddress;	// Internally used value - X position where address part starts.
+	bool m_bAllowDeletes; // A boolean value indicating whether or not deletions are allowed.
+	BOOL m_bDynamicBPR;   // Calculate bytes-per-row dynamically.
+	BOOL m_bShowAddress;  // TRUE when showing the address part.
+	BOOL m_bShowAscii;	// TRUE when showing the ASCII part.
+	BOOL m_bShowHex;	  // TRUE when showing the hex part.
+	BOOL m_bAddressIsWide; // 4/8 byte address.
+	BOOL m_bUpdate;	// Value used internally to indicate that the font and size info need to be
+					   // updated on the next paint cycle.
+	UINT m_nMaxLength; // Maximum size of data.
+	DWORD m_dwBaseAddress; // Base address for data.
+	CPoint m_ptEditPos;	// Current caret position.
+	LPBYTE m_pData;		   // Pointer to data.
+	EditMode m_eEditMode;  // Current editing mode: address/hex/ASCII.
 
 protected:
-	BOOL     m_bShowCaret;               // TRUE to display a flashing caret at the current caret position.
-	CSize    m_szCaret;                  // Current size of caret.
-	CFont    m_fontHex;                  // Represents the default font used by the hex edit control.
-	COLORREF m_crBack;                   // RGB value that represents the background color of the hex edit control.
-	COLORREF m_crText;                   // RGB value that represents the text color of the hex edit control.
-	COLORREF m_crDisabledBack;           // RGB value that represents the disabled background color for the hex edit control.
-	COLORREF m_crDisabledText;           // RGB value that represents the disabled text color of the hex edit control.
-	COLORREF m_crHighlightText;          // RGB value that represents the highlighted text color of the hex edit control.
-	COLORREF m_crHighlightBack;          // RGB value that represents the highlighted background color of the hex edit control.
-	COLORREF m_crDisabledHighlightText;  // RGB value that represents the disabled highlighted text color of the hex edit control.
-	COLORREF m_crDisabledHighlightBack;  // RGB value that represents the disabled highlighted background color of the hex edit control.
+	BOOL m_bShowCaret; // TRUE to display a flashing caret at the current caret position.
+	CSize m_szCaret;   // Current size of caret.
 
+	CXTPFont m_xtpFontHex; // Represents the default font used by the hex edit control.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontHex, m_xtpFontHex, GetHexFontHandle);
+
+	COLORREF m_crBack; // RGB value that represents the background color of the hex edit control.
+	COLORREF m_crText; // RGB value that represents the text color of the hex edit control.
+	COLORREF m_crDisabledBack;  // RGB value that represents the disabled background color for the
+								// hex edit control.
+	COLORREF m_crDisabledText;  // RGB value that represents the disabled text color of the hex edit
+								// control.
+	COLORREF m_crHighlightText; // RGB value that represents the highlighted text color of the hex
+								// edit control.
+	COLORREF m_crHighlightBack; // RGB value that represents the highlighted background color of the
+								// hex edit control.
+	COLORREF m_crDisabledHighlightText; // RGB value that represents the disabled highlighted text
+										// color of the hex edit control.
+	COLORREF m_crDisabledHighlightBack; // RGB value that represents the disabled highlighted
+										// background color of the hex edit control.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE UINT CXTPHexEdit::OnGetDlgCode() {
+AFX_INLINE UINT CXTPHexEdit::OnGetDlgCode()
+{
 	return DLGC_WANTALLKEYS;
 }
-AFX_INLINE void CXTPHexEdit::SetOptions(BOOL bShowAddress, BOOL bShowHex, BOOL bShowAscii, BOOL bAddressIsWide) {
-	m_bShowHex = bShowHex; m_bShowAscii = bShowAscii; m_bShowAddress = bShowAddress; m_bAddressIsWide = bAddressIsWide; m_bUpdate = TRUE; RepositionCaret(m_nCurrentAddress);
+AFX_INLINE void CXTPHexEdit::SetOptions(BOOL bShowAddress, BOOL bShowHex, BOOL bShowAscii,
+										BOOL bAddressIsWide)
+{
+	m_bShowHex		 = bShowHex;
+	m_bShowAscii	 = bShowAscii;
+	m_bShowAddress   = bShowAddress;
+	m_bAddressIsWide = bAddressIsWide;
+	m_bUpdate		 = TRUE;
+	RepositionCaret(m_nCurrentAddress);
 }
-AFX_INLINE void CXTPHexEdit::SetBPR(int nBytePerRow) {
-	m_nBytePerRow = nBytePerRow; m_bUpdate = TRUE; RepositionCaret(m_nCurrentAddress);
+AFX_INLINE void CXTPHexEdit::SetBPR(int nBytePerRow)
+{
+	if (nBytePerRow < 1)
+		nBytePerRow = 1;
+
+	if (nBytePerRow > 256)
+		nBytePerRow = 256;
+
+	if (nBytePerRow != m_nBytePerRow)
+	{
+		m_nBytePerRow = nBytePerRow;
+		m_bUpdate	 = TRUE;
+		RepositionCaret(m_nCurrentAddress);
+	}
 }
-AFX_INLINE BOOL CXTPHexEdit::IsSelected() {
+AFX_INLINE BOOL CXTPHexEdit::IsSelected()
+{
 	return m_nSelStart != 0xffffffff;
 }
-AFX_INLINE CSize CXTPHexEdit::GetSel() {
+AFX_INLINE CSize CXTPHexEdit::GetSel()
+{
 	return CSize(m_nSelStart, m_nSelEnd);
 }
-AFX_INLINE void CXTPHexEdit::SetBackColor(COLORREF crBack) {
+AFX_INLINE void CXTPHexEdit::SetBackColor(COLORREF crBack)
+{
 	m_crBack = crBack;
 }
-AFX_INLINE void CXTPHexEdit::SetTextColor(COLORREF crText) {
+AFX_INLINE void CXTPHexEdit::SetTextColor(COLORREF crText)
+{
 	m_crText = crText;
 }
-AFX_INLINE void CXTPHexEdit::SetDisabledBackColor(COLORREF crDisabledBack) {
+AFX_INLINE void CXTPHexEdit::SetDisabledBackColor(COLORREF crDisabledBack)
+{
 	m_crDisabledBack = crDisabledBack;
 }
-AFX_INLINE void CXTPHexEdit::SetDisabledTextColor(COLORREF crDisabledText) {
+AFX_INLINE void CXTPHexEdit::SetDisabledTextColor(COLORREF crDisabledText)
+{
 	m_crDisabledText = crDisabledText;
 }
-AFX_INLINE void CXTPHexEdit::SetHighlightTextColor(COLORREF crHighlightText) {
+AFX_INLINE void CXTPHexEdit::SetHighlightTextColor(COLORREF crHighlightText)
+{
 	m_crHighlightText = crHighlightText;
 }
-AFX_INLINE void CXTPHexEdit::SetHighlightBackColor(COLORREF crHighlightBack) {
+AFX_INLINE void CXTPHexEdit::SetHighlightBackColor(COLORREF crHighlightBack)
+{
 	m_crHighlightBack = crHighlightBack;
 }
-AFX_INLINE void CXTPHexEdit::SetDisabledHighlightTextColor(COLORREF crDisabledHighlightText) {
+AFX_INLINE void CXTPHexEdit::SetDisabledHighlightTextColor(COLORREF crDisabledHighlightText)
+{
 	m_crDisabledHighlightText = crDisabledHighlightText;
 }
-AFX_INLINE void CXTPHexEdit::SetDisabledHighlightBackColor(COLORREF crDisabledHighlightBack) {
+AFX_INLINE void CXTPHexEdit::SetDisabledHighlightBackColor(COLORREF crDisabledHighlightBack)
+{
 	m_crDisabledHighlightBack = crDisabledHighlightBack;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetBackColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetBackColor()
+{
 	return m_crBack;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetTextColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetTextColor()
+{
 	return m_crText;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetDisabledBackColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetDisabledBackColor()
+{
 	return m_crDisabledBack;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetDisabledTextColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetDisabledTextColor()
+{
 	return m_crDisabledText;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetHighlightTextColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetHighlightTextColor()
+{
 	return m_crHighlightText;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetHighlightBackColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetHighlightBackColor()
+{
 	return m_crHighlightBack;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetDisabledHighlightTextColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetDisabledHighlightTextColor()
+{
 	return m_crDisabledHighlightText;
 }
-AFX_INLINE COLORREF CXTPHexEdit::GetDisabledHighlightBackColor() {
+AFX_INLINE COLORREF CXTPHexEdit::GetDisabledHighlightBackColor()
+{
 	return m_crDisabledHighlightBack;
 }
-AFX_INLINE void CXTPHexEdit::EnableCaret(bool bEnable) {
+AFX_INLINE void CXTPHexEdit::EnableCaret(bool bEnable)
+{
 	m_bShowCaret = bEnable;
 }
-AFX_INLINE bool CXTPHexEdit::SetAllowDeletes(bool bVal) {
-	const bool bOldVal = m_bAllowDeletes; m_bAllowDeletes = bVal; return bOldVal;
+AFX_INLINE bool CXTPHexEdit::SetAllowDeletes(bool bVal)
+{
+	const bool bOldVal = m_bAllowDeletes;
+	m_bAllowDeletes	= bVal;
+	return bOldVal;
 }
-AFX_INLINE bool CXTPHexEdit::GetAllowDeletes() const {
+AFX_INLINE bool CXTPHexEdit::GetAllowDeletes() const
+{
 	return m_bAllowDeletes;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPHEXEDIT_H__)

@@ -1,7 +1,6 @@
 // XTPWinThemeWrapper.h: interface for the CXTPWinThemeWrapper class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,37 +19,42 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPWINTHEMEWRAPPER_H__)
-#define __XTPWINTHEMEWRAPPER_H__
+#	define __XTPWINTHEMEWRAPPER_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "uxtheme.h"
-#include "schemadef.h"
-#include "tmschema.h"
+//{{AFX_CODEJOCK_PRIVATE
+#	define XTP_INTERNAL_UXTHEME_INCLUSION
+//}}AFX_CODEJOCK_PRIVATE
+#	include "Uxtheme.h"
+#	include "SchemaDef.h"
+#	include "Tmschema.h"
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 BEGIN_TM_CLASS_PARTS(XTP_MENU)
-	TM_PART(1, XTP_MP, MENUITEM)
-	TM_PART(2, XTP_MP, MENUDROPDOWN)
-	TM_PART(3, XTP_MP, MENUBARITEM)
-	TM_PART(4, XTP_MP, MENUBARDROPDOWN)
-	TM_PART(5, XTP_MP, CHEVRON)
-	TM_PART(6, XTP_MP, SEPARATOR)
-	TM_PART(7, XTP_MP, BARBACKGROUND)
-	TM_PART(8, XTP_MP, BARITEM)
-	TM_PART(9, XTP_MP, POPUPBACKGROUND)
-	TM_PART(10, XTP_MP, POPUPBORDERS)
-	TM_PART(11, XTP_MP, POPUPCHECK)
-	TM_PART(12, XTP_MP, POPUPCHECKBACKGROUND)
-	TM_PART(13, XTP_MP, POPUPGUTTER)
-	TM_PART(14, XTP_MP, POPUPITEM)
-	TM_PART(15, XTP_MP, POPUPSEPARATOR)
-	TM_PART(16, XTP_MP, POPUPSUBMENU)
-	TM_PART(17, XTP_MP, SYSTEMCLOSE)
-	TM_PART(18, XTP_MP, SYSTEMMAXIMIZE)
-	TM_PART(19, XTP_MP, SYSTEMMINIMIZE)
-	TM_PART(20, XTP_MP, SYSTEMRESTORE)
+TM_PART(1, XTP_MP, MENUITEM)
+TM_PART(2, XTP_MP, MENUDROPDOWN)
+TM_PART(3, XTP_MP, MENUBARITEM)
+TM_PART(4, XTP_MP, MENUBARDROPDOWN)
+TM_PART(5, XTP_MP, CHEVRON)
+TM_PART(6, XTP_MP, SEPARATOR)
+TM_PART(7, XTP_MP, BARBACKGROUND)
+TM_PART(8, XTP_MP, BARITEM)
+TM_PART(9, XTP_MP, POPUPBACKGROUND)
+TM_PART(10, XTP_MP, POPUPBORDERS)
+TM_PART(11, XTP_MP, POPUPCHECK)
+TM_PART(12, XTP_MP, POPUPCHECKBACKGROUND)
+TM_PART(13, XTP_MP, POPUPGUTTER)
+TM_PART(14, XTP_MP, POPUPITEM)
+TM_PART(15, XTP_MP, POPUPSEPARATOR)
+TM_PART(16, XTP_MP, POPUPSUBMENU)
+TM_PART(17, XTP_MP, SYSTEMCLOSE)
+TM_PART(18, XTP_MP, SYSTEMMAXIMIZE)
+TM_PART(19, XTP_MP, SYSTEMMINIMIZE)
+TM_PART(20, XTP_MP, SYSTEMRESTORE)
 END_TM_CLASS_PARTS()
 
 typedef HANDLE HPAINTBUFFER;
@@ -58,50 +62,50 @@ typedef HANDLE HPAINTBUFFER;
 // BP_BUFFERFORMAT
 enum XTP_UX_BUFFERFORMAT
 {
-	XTP_BPBF_COMPATIBLEBITMAP,    // Compatible bitmap
-	XTP_BPBF_DIB,                 // Device-independent bitmap
-	XTP_BPBF_TOPDOWNDIB,          // Top-down device-independent bitmap
-	XTP_BPBF_TOPDOWNMONODIB       // Top-down monochrome device-independent bitmap
+	XTP_BPBF_COMPATIBLEBITMAP, // Compatible bitmap
+	XTP_BPBF_DIB,			   // Device-independent bitmap
+	XTP_BPBF_TOPDOWNDIB,	   // Top-down device-independent bitmap
+	XTP_BPBF_TOPDOWNMONODIB	// Top-down monochrome device-independent bitmap
 };
 
 // BP_PAINTPARAMS
 struct XTP_UX_PAINTPARAMS
 {
-	DWORD                       cbSize;
-	DWORD                       dwFlags; // BPPF_ flags
-	const RECT *                prcExclude;
-	const BLENDFUNCTION *       pBlendFunction;
+	DWORD cbSize;
+	DWORD dwFlags; // BPPF_ flags
+	const RECT* prcExclude;
+	const BLENDFUNCTION* pBlendFunction;
 };
-
 
 struct XTP_UX_DTTOPTS
 {
-	DWORD             dwSize;              // size of the struct
-	DWORD             dwFlags;             // which options have been specified
-	COLORREF          crText;              // color to use for text fill
-	COLORREF          crBorder;            // color to use for text outline
-	COLORREF          crShadow;            // color to use for text shadow
-	int               iTextShadowType;     // TST_SINGLE or TST_CONTINUOUS
-	POINT             ptShadowOffset;      // where shadow is drawn (relative to text)
-	int               iBorderSize;         // Border radius around text
-	int               iFontPropId;         // Font property to use for the text instead of TMT_FONT
-	int               iColorPropId;        // Color property to use for the text instead of TMT_TEXTCOLOR
-	int               iStateId;            // Alternate state id
-	BOOL              fApplyOverlay;       // Overlay text on top of any text effect?
-	int               iGlowSize;           // Glow radius around text
-	VOID*             pfnDrawTextCallback; // Callback for DrawText
-	LPARAM            lParam;              // Parameter for callback
+	DWORD dwSize;			   // size of the struct
+	DWORD dwFlags;			   // which options have been specified
+	COLORREF crText;		   // color to use for text fill
+	COLORREF crBorder;		   // color to use for text outline
+	COLORREF crShadow;		   // color to use for text shadow
+	int iTextShadowType;	   // TST_SINGLE or TST_CONTINUOUS
+	POINT ptShadowOffset;	  // where shadow is drawn (relative to text)
+	int iBorderSize;		   // Border radius around text
+	int iFontPropId;		   // Font property to use for the text instead of TMT_FONT
+	int iColorPropId;		   // Color property to use for the text instead of TMT_TEXTCOLOR
+	int iStateId;			   // Alternate state id
+	BOOL fApplyOverlay;		   // Overlay text on top of any text effect?
+	int iGlowSize;			   // Glow radius around text
+	VOID* pfnDrawTextCallback; // Callback for DrawText
+	LPARAM lParam;			   // Parameter for callback
 };
 
 struct _DTBGOPTS;
 typedef _DTBGOPTS* PDTBGOPTS;
 
-#define TYPEDEF_WRAPPER_POINTER(val, type, proc)\
-	const int xtpWrapper##proc = val;\
-	const LPCSTR xtpWrapperProc##proc = #proc;\
-	typedef type (__stdcall* PFN##proc)
+#	define TYPEDEF_WRAPPER_POINTER(val, type, proc)                                               \
+		const int xtpWrapper##proc		  = val;                                                   \
+		const LPCSTR xtpWrapperProc##proc = #proc;                                                 \
+		typedef type(__stdcall* PFN##proc)
 
-TYPEDEF_WRAPPER_POINTER(0, HRESULT, DrawThemeBackground)(HTHEME, HDC, int, int, const RECT*, const RECT*);
+TYPEDEF_WRAPPER_POINTER(0, HRESULT, DrawThemeBackground)
+(HTHEME, HDC, int, int, const RECT*, const RECT*);
 TYPEDEF_WRAPPER_POINTER(1, HRESULT, CloseThemeData)(HTHEME);
 TYPEDEF_WRAPPER_POINTER(2, HRESULT, SetWindowTheme)(HWND, LPCWSTR, LPCWSTR);
 TYPEDEF_WRAPPER_POINTER(3, void, SetThemeAppProperties)(DWORD);
@@ -111,11 +115,13 @@ TYPEDEF_WRAPPER_POINTER(6, BOOL, IsThemeDialogTextureEnabled)(HWND hWnd);
 TYPEDEF_WRAPPER_POINTER(7, BOOL, IsThemeBackgroundPartiallyTransparent)(HTHEME, int, int);
 TYPEDEF_WRAPPER_POINTER(8, BOOL, IsThemeActive)();
 TYPEDEF_WRAPPER_POINTER(9, BOOL, IsAppThemed)();
-TYPEDEF_WRAPPER_POINTER(10, HRESULT, HitTestThemeBackground)(HTHEME, HDC, int, int, DWORD, const RECT*, HRGN, POINT, WORD*);
+TYPEDEF_WRAPPER_POINTER(10, HRESULT, HitTestThemeBackground)
+(HTHEME, HDC, int, int, DWORD, const RECT*, HRGN, POINT, WORD*);
 TYPEDEF_WRAPPER_POINTER(11, HTHEME, GetWindowTheme)(HWND);
 TYPEDEF_WRAPPER_POINTER(12, HRESULT, GetThemeSysString)(HTHEME, int, LPWSTR, int);
 TYPEDEF_WRAPPER_POINTER(13, HRESULT, GetThemeTextMetrics)(HTHEME, HDC, int, int, TEXTMETRIC*);
-TYPEDEF_WRAPPER_POINTER(14, HRESULT, GetThemeTextExtent)(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, const RECT*, RECT*);
+TYPEDEF_WRAPPER_POINTER(14, HRESULT, GetThemeTextExtent)
+(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, const RECT*, RECT*);
 TYPEDEF_WRAPPER_POINTER(15, int, GetThemeSysSize)(HTHEME, int);
 TYPEDEF_WRAPPER_POINTER(16, HRESULT, GetThemeSysInt)(HTHEME, int, int*);
 TYPEDEF_WRAPPER_POINTER(17, HRESULT, GetThemeSysFont)(HTHEME, int, LOGFONT*);
@@ -124,9 +130,11 @@ TYPEDEF_WRAPPER_POINTER(19, COLORREF, GetThemeSysColor)(HTHEME, int);
 TYPEDEF_WRAPPER_POINTER(20, BOOL, GetThemeSysBool)(HTHEME, int);
 TYPEDEF_WRAPPER_POINTER(21, HRESULT, GetThemeString)(HTHEME, int, int, int, LPWSTR, int);
 TYPEDEF_WRAPPER_POINTER(22, HRESULT, GetThemeRect)(HTHEME, int, int, int, RECT*);
-TYPEDEF_WRAPPER_POINTER(23, HRESULT, GetThemePropertyOrigin)(HTHEME, int, int, int, PROPERTYORIGIN*);
+TYPEDEF_WRAPPER_POINTER(23, HRESULT, GetThemePropertyOrigin)
+(HTHEME, int, int, int, PROPERTYORIGIN*);
 TYPEDEF_WRAPPER_POINTER(24, HRESULT, GetThemePosition)(HTHEME, int, int, int, POINT*);
-TYPEDEF_WRAPPER_POINTER(25, HRESULT, GetThemePartSize)(HTHEME, HDC, int, int, RECT*, THEMESIZE, SIZE*);
+TYPEDEF_WRAPPER_POINTER(25, HRESULT, GetThemePartSize)
+(HTHEME, HDC, int, int, RECT*, THEMESIZE, SIZE*);
 TYPEDEF_WRAPPER_POINTER(26, HRESULT, GetThemeMetric)(HTHEME, HDC, int, int, int, int*);
 TYPEDEF_WRAPPER_POINTER(27, HRESULT, GetThemeMargins)(HTHEME, HDC, int, int, int, RECT*, MARGINS*);
 TYPEDEF_WRAPPER_POINTER(28, HRESULT, GetThemeIntList)(HTHEME, int, int, int, INTLIST*);
@@ -137,26 +145,36 @@ TYPEDEF_WRAPPER_POINTER(32, HRESULT, GetThemeEnumValue)(HTHEME, int, int, int, i
 TYPEDEF_WRAPPER_POINTER(33, HRESULT, GetThemeDocumentationProperty)(LPCWSTR, LPCWSTR, LPWSTR, int);
 TYPEDEF_WRAPPER_POINTER(34, HRESULT, GetThemeColor)(HTHEME, int, int, int, COLORREF*);
 TYPEDEF_WRAPPER_POINTER(35, HRESULT, GetThemeBool)(HTHEME, int, int, int, BOOL*);
-TYPEDEF_WRAPPER_POINTER(36, HRESULT, GetThemeBackgroundRegion)(HTHEME, HDC, int, int, const RECT*, HRGN*);
-TYPEDEF_WRAPPER_POINTER(37, HRESULT, GetThemeBackgroundExtent)(HTHEME, HDC, int, int, const RECT*, RECT*);
-TYPEDEF_WRAPPER_POINTER(38, HRESULT, GetThemeBackgroundContentRect)(HTHEME, HDC, int, int, const RECT*, RECT*);
+TYPEDEF_WRAPPER_POINTER(36, HRESULT, GetThemeBackgroundRegion)
+(HTHEME, HDC, int, int, const RECT*, HRGN*);
+TYPEDEF_WRAPPER_POINTER(37, HRESULT, GetThemeBackgroundExtent)
+(HTHEME, HDC, int, int, const RECT*, RECT*);
+TYPEDEF_WRAPPER_POINTER(38, HRESULT, GetThemeBackgroundContentRect)
+(HTHEME, HDC, int, int, const RECT*, RECT*);
 TYPEDEF_WRAPPER_POINTER(39, DWORD, ThemeAppProperties)();
 TYPEDEF_WRAPPER_POINTER(40, HRESULT, GetCurrentThemeName)(LPWSTR, int, LPWSTR, int, LPWSTR, int);
 TYPEDEF_WRAPPER_POINTER(41, HRESULT, EnableTheming)(BOOL);
 TYPEDEF_WRAPPER_POINTER(42, HRESULT, EnableThemeDialogTexture)(HWND, DWORD);
-TYPEDEF_WRAPPER_POINTER(43, HRESULT, DrawThemeText)(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, DWORD, const RECT*);
+TYPEDEF_WRAPPER_POINTER(43, HRESULT, DrawThemeText)
+(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, DWORD, const RECT*);
 TYPEDEF_WRAPPER_POINTER(44, HRESULT, DrawThemeParentBackground)(HWND, HDC, RECT*);
-TYPEDEF_WRAPPER_POINTER(45, HRESULT, DrawThemeIcon)(HTHEME, HDC, int, int, const RECT*, HIMAGELIST, int);
-TYPEDEF_WRAPPER_POINTER(46, HRESULT, DrawThemeEdge)(HTHEME, HDC, int, int, const RECT*, UINT, UINT, RECT*);
-TYPEDEF_WRAPPER_POINTER(47, HRESULT, DrawThemeBackgroundEx)(HTHEME, HDC, int, int, const RECT*, const PDTBGOPTS);
+TYPEDEF_WRAPPER_POINTER(45, HRESULT, DrawThemeIcon)
+(HTHEME, HDC, int, int, const RECT*, HIMAGELIST, int);
+TYPEDEF_WRAPPER_POINTER(46, HRESULT, DrawThemeEdge)
+(HTHEME, HDC, int, int, const RECT*, UINT, UINT, RECT*);
+TYPEDEF_WRAPPER_POINTER(47, HRESULT, DrawThemeBackgroundEx)
+(HTHEME, HDC, int, int, const RECT*, const PDTBGOPTS);
 TYPEDEF_WRAPPER_POINTER(48, DWORD, GetThemeAppProperties)();
 
-TYPEDEF_WRAPPER_POINTER(49, HPAINTBUFFER, BeginBufferedPaint)(HDC, const RECT*, XTP_UX_BUFFERFORMAT, XTP_UX_PAINTPARAMS*, HDC*);
+TYPEDEF_WRAPPER_POINTER(49, HPAINTBUFFER, BeginBufferedPaint)
+(HDC, const RECT*, XTP_UX_BUFFERFORMAT, XTP_UX_PAINTPARAMS*, HDC*);
 TYPEDEF_WRAPPER_POINTER(50, HRESULT, EndBufferedPaint)(HPAINTBUFFER, BOOL);
-TYPEDEF_WRAPPER_POINTER(51, HRESULT, DrawThemeTextEx)(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, LPRECT, const XTP_UX_DTTOPTS*);
+TYPEDEF_WRAPPER_POINTER(51, HRESULT, DrawThemeTextEx)
+(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, LPRECT, const XTP_UX_DTTOPTS*);
 
+TYPEDEF_WRAPPER_POINTER(52, HRESULT, BufferedPaintSetAlpha)(HPAINTBUFFER, const RECT*, BYTE);
 
-#define XTP_UXTHEME_HANDLE (HMODULE)0x21FFFF1
+#	define XTP_UXTHEME_HANDLE (HMODULE)0x21FFFF1
 
 //}}AFX_CODEJOCK_PRIVATE
 
@@ -176,7 +194,6 @@ private:
 	class CSharedData
 	{
 	public:
-
 		//-------------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CSharedData object.
@@ -184,13 +201,12 @@ private:
 		CSharedData();
 
 	public:
-		LPVOID m_ptrWrappers[52];   // Wrapper pointer
-		HMODULE m_hThemeDll;        // Handle to the theme dll.
-		DWORD m_dwComCtlVersion;    // ComCtl version.
+		LPVOID m_ptrWrappers[53]; // Wrapper pointer
+		HMODULE m_hThemeDll;	  // Handle to the theme dll.
+		DWORD m_dwComCtlVersion;  // ComCtl version.
 	};
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPWinThemeWrapper object.
@@ -225,7 +241,7 @@ public:
 	//                    class name) to provide the class an
 	//                    opportunity to get the "best" match between
 	//                    the class and the current theme.  For example,
-	//                    a button might pass L"OkButton, Button" if its
+	//                    a button might pass L"OkButton;Button" if its
 	//                    ID=ID_OK.  If the current theme has an entry
 	//                    for OkButton, that will be used.  Otherwise,
 	//                    we fall back on the normal Button entry.
@@ -255,7 +271,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeBackground(HDC hDC, int iPartID, int iStateID, const RECT *pRect, const RECT* pClipRect);
+	HRESULT DrawThemeBackground(HDC hDC, int iPartID, int iStateID, const RECT* pRect,
+								const RECT* pClipRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -273,7 +290,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeText(HDC hDC, int iPartID, int iStateID, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, DWORD dwTextFlags2, const RECT* pRect);
+	HRESULT DrawThemeText(HDC hDC, int iPartID, int iStateID, LPCWSTR pszText, int iCharCount,
+						  DWORD dwTextFlags, DWORD dwTextFlags2, const RECT* pRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -290,7 +308,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeBackgroundContentRect(HDC hDC, int iPartID, int iStateID, const RECT *pBoundingRect, RECT* pContentRect);
+	HRESULT GetThemeBackgroundContentRect(HDC hDC, int iPartID, int iStateID,
+										  const RECT* pBoundingRect, RECT* pContentRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -307,7 +326,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeBackgroundExtent(HDC hDC, int iPartID, int iStateID, const RECT *pContentRect, RECT* pExtentRect);
+	HRESULT GetThemeBackgroundExtent(HDC hDC, int iPartID, int iStateID, const RECT* pContentRect,
+									 RECT* pExtentRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -323,7 +343,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeBackgroundEx(HDC hDC, int iPartID, int iStateID, const RECT *pRect, const PDTBGOPTS pOptions);
+	HRESULT DrawThemeBackgroundEx(HDC hDC, int iPartID, int iStateID, const RECT* pRect,
+								  const PDTBGOPTS pOptions);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -341,7 +362,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeEdge(HDC hDC, int iPartID, int iStateID, const RECT *pDestRect, UINT uEdge, UINT uFlags, RECT* pContentRect);
+	HRESULT DrawThemeEdge(HDC hDC, int iPartID, int iStateID, const RECT* pDestRect, UINT uEdge,
+						  UINT uFlags, RECT* pContentRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -357,7 +379,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeIcon(HDC hDC, int iPartID, int iStateID, const RECT* pRect, HIMAGELIST himl, int iImageIndex);
+	HRESULT DrawThemeIcon(HDC hDC, int iPartID, int iStateID, const RECT* pRect, HIMAGELIST himl,
+						  int iImageIndex);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -424,7 +447,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetCurrentThemeName(LPWSTR pszThemeFileName, int dwMaxNameChars, LPWSTR pszColorBuff, int cchMaxColorChars, LPWSTR pszSizeBuff, int cchMaxSizeChars);
+	HRESULT GetCurrentThemeName(LPWSTR pszThemeFileName, int dwMaxNameChars, LPWSTR pszColorBuff,
+								int cchMaxColorChars, LPWSTR pszSizeBuff, int cchMaxSizeChars);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -460,7 +484,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeBackgroundRegion(HDC hDC, int iPartID, int iStateID, const RECT *pRect, HRGN* pRegion);
+	HRESULT GetThemeBackgroundRegion(HDC hDC, int iPartID, int iStateID, const RECT* pRect,
+									 HRGN* pRegion);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -504,7 +529,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeDocumentationProperty(LPCWSTR pszThemeName, LPCWSTR pszPropertyName, LPWSTR pszValueBuff, int cchMaxValChars);
+	HRESULT GetThemeDocumentationProperty(LPCWSTR pszThemeName, LPCWSTR pszPropertyName,
+										  LPWSTR pszValueBuff, int cchMaxValChars);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -531,7 +557,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeFilename(int iPartID, int iStateID, int iPropID, LPWSTR pszThemeFilename, int cchMaxBuffChars);
+	HRESULT GetThemeFilename(int iPartID, int iStateID, int iPropID, LPWSTR pszThemeFilename,
+							 int cchMaxBuffChars);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -587,7 +614,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeMargins(HDC hDC, int iPartID, int iStateID, int iPropID, RECT *pRect, MARGINS* pMargins);
+	HRESULT GetThemeMargins(HDC hDC, int iPartID, int iStateID, int iPropID, RECT* pRect,
+							MARGINS* pMargins);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -616,7 +644,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemePartSize(HDC hDC, int iPartID, int iStateID, RECT *pRect, THEMESIZE eSize, SIZE* pSize);
+	HRESULT GetThemePartSize(HDC hDC, int iPartID, int iStateID, RECT* pRect, THEMESIZE eSize,
+							 SIZE* pSize);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -670,7 +699,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeString(int iPartID, int iStateID, int iPropID, LPWSTR pszBuff, int cchMaxBuffChars);
+	HRESULT GetThemeString(int iPartID, int iStateID, int iPropID, LPWSTR pszBuff,
+						   int cchMaxBuffChars);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -782,7 +812,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT GetThemeTextExtent(HDC hDC, int iPartID, int iStateID, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, const RECT *pBoundingRect, RECT* pExtentRect);
+	HRESULT GetThemeTextExtent(HDC hDC, int iPartID, int iStateID, LPCWSTR pszText, int iCharCount,
+							   DWORD dwTextFlags, const RECT* pBoundingRect, RECT* pExtentRect);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -833,7 +864,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT HitTestThemeBackground(HDC hDC, int iPartID, int iStateID, DWORD dwOptions, const RECT *pRect, HRGN hRgn, POINT ptTest, WORD* pwHitTestCode);
+	HRESULT HitTestThemeBackground(HDC hDC, int iPartID, int iStateID, DWORD dwOptions,
+								   const RECT* pRect, HRGN hRgn, POINT ptTest, WORD* pwHitTestCode);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -876,6 +908,19 @@ public:
 	//     TRUE if the application can display Windows XP themes, otherwise FALSE.
 	//-----------------------------------------------------------------------
 	BOOL IsAppThemeReady() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Checks whether the current application's user interface
+	//     displays using visual styles and the theme is opened and
+	//     ready for for being used.
+	// Returns:
+	//     Returns one of the following values.
+	//     TRUE  - The application has a visual style applied and the theme is opened.
+	//     FALSE - The application does not have a visual style applied or
+	//             the theme is not opened.
+	//-----------------------------------------------------------------------
+	BOOL IsAppThemeActive() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -968,46 +1013,62 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Retrieves the property flags that control how visual styles are applied in the current application.
+	//     Retrieves the property flags that control how visual styles are applied in the current
+	//     application.
 	//-----------------------------------------------------------------------
 	DWORD GetThemeAppProperties();
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	static BOOL m_bDllDetached;
 
-	//for compatibility with older versions.
-	void CloseTheme() {
+	// for compatibility with older versions.
+	void CloseTheme()
+	{
 		CloseThemeData();
 	}
-	void OpenTheme(HWND hWnd, LPCWSTR pszClassList) {
+	void OpenTheme(HWND hWnd, LPCWSTR pszClassList)
+	{
 		OpenThemeData(hWnd, pszClassList);
 	}
-	void DrawBackground(HDC hdc, int iPartId, int iStateId, const RECT *pRect,  const RECT* pClipRect) {
+	void DrawBackground(HDC hdc, int iPartId, int iStateId, const RECT* pRect,
+						const RECT* pClipRect)
+	{
 		DrawThemeBackground(hdc, iPartId, iStateId, pRect, pClipRect);
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the alpha to a specified value in a given rectangle.
+	//     The alpha controls the amount of transparency applied when blending
+	//     with the buffer onto the destination target device context (DC).
+	//-----------------------------------------------------------------------
+	HRESULT BufferedPaintSetAlpha(HPAINTBUFFER hBufferedPaint, const RECT* prc, BYTE alpha);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Begins a buffered paint operation
 	// Parameters:
 	//     hdcTarget - Handle of the target device context (DC) on which the buffer will be painted.
-	//     prcTarget - Pointer to a RECT structure that specifies the area of the target DC in which to paint.
-	//     dwFormat - A member of the BP_BUFFERFORMAT enumeration that specifies the format of the buffer.
-	//     pPaintParams - [in] Pointer to a BP_PAINTPARAMS structure that defines the paint operation parameters. This value can be NULL.
-	//     phdc - [out] When this function returns, this value points to the handle of the new device context.
+	//     prcTarget - Pointer to a RECT structure that specifies the area of the target DC in which
+	//     to paint. dwFormat - A member of the BP_BUFFERFORMAT enumeration that specifies the
+	//     format of the buffer. pPaintParams - [in] Pointer to a BP_PAINTPARAMS structure that
+	//     defines the paint operation parameters. This value can be NULL. phdc - [out] When this
+	//     function returns, this value points to the handle of the new device context.
 	// Returns: A handle to the buffered paint context
 	// See Also: EndBufferedPaint
 	//-----------------------------------------------------------------------
-	HPAINTBUFFER BeginBufferedPaint(HDC hdcTarget, const RECT* prcTarget, XTP_UX_BUFFERFORMAT dwFormat, XTP_UX_PAINTPARAMS *pPaintParams, HDC *phdc);
+	HPAINTBUFFER BeginBufferedPaint(HDC hdcTarget, const RECT* prcTarget,
+									XTP_UX_BUFFERFORMAT dwFormat, XTP_UX_PAINTPARAMS* pPaintParams,
+									HDC* phdc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Completes a buffered paint operation and frees the associated buffered paint handle
 	// Parameters:
-	//     hBufferedPaint - Handle of the buffered paint context, obtained through BeginBufferedPaint
-	//     fUpdateTarget - TRUE to copy the buffer to the target device context (DC)
+	//     hBufferedPaint - Handle of the buffered paint context, obtained through
+	//     BeginBufferedPaint fUpdateTarget - TRUE to copy the buffer to the target device context
+	//     (DC)
 	// See Also: BeginBufferedPaint
 	//-----------------------------------------------------------------------
 	void EndBufferedPaint(HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
@@ -1028,7 +1089,8 @@ public:
 	// Returns:
 	//     Returns S_OK if successful, or an error value otherwise.
 	//-----------------------------------------------------------------------
-	HRESULT DrawThemeTextEx(HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int cchText, DWORD dwTextFlags, LPRECT pRect, const XTP_UX_DTTOPTS *pOptions);
+	HRESULT DrawThemeTextEx(HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int cchText,
+							DWORD dwTextFlags, LPRECT pRect, const XTP_UX_DTTOPTS* pOptions);
 
 	//-----------------------------------------------------------------------
 	// Parameters:
@@ -1045,9 +1107,10 @@ private:
 	void ReloadLibrary() const;
 
 private:
-	HTHEME  m_hTheme;     // Handle to the theme data.
+	HTHEME m_hTheme; // Handle to the theme data.
 	BOOL m_bUseSkinFramework;
-	CSharedData* m_pSharedDara;
+
+	CSharedData* m_pSharedData;
 	CSharedData& GetSharedData() const;
 };
 
@@ -1055,14 +1118,15 @@ private:
 
 struct XTP_DWM_MARGINS
 {
-	int cxLeftWidth;      // width of left border that retains its size
-	int cxRightWidth;     // width of right border that retains its size
-	int cyTopHeight;      // height of top border that retains its size
-	int cyBottomHeight;   // height of bottom border that retains its size
+	int cxLeftWidth;	// width of left border that retains its size
+	int cxRightWidth;   // width of right border that retains its size
+	int cyTopHeight;	// height of top border that retains its size
+	int cyBottomHeight; // height of bottom border that retains its size
 };
 
-TYPEDEF_WRAPPER_POINTER(0, HRESULT, DwmDefWindowProc)(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT *plResult);
-TYPEDEF_WRAPPER_POINTER(1, HRESULT, DwmIsCompositionEnabled)( BOOL*);
+TYPEDEF_WRAPPER_POINTER(0, HRESULT, DwmDefWindowProc)
+(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* plResult);
+TYPEDEF_WRAPPER_POINTER(1, HRESULT, DwmIsCompositionEnabled)(BOOL*);
 TYPEDEF_WRAPPER_POINTER(2, HRESULT, DwmExtendFrameIntoClientArea)(HWND, const XTP_DWM_MARGINS*);
 
 //===========================================================================
@@ -1079,7 +1143,6 @@ private:
 	class CSharedData
 	{
 	public:
-
 		//-------------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CSharedData object.
@@ -1087,20 +1150,19 @@ private:
 		CSharedData();
 
 	public:
-		LPVOID m_ptrWrappers[3];   // Wrapper pointer
-		HMODULE m_hDwmDll;        // Handle to the theme dll.
+		LPVOID m_ptrWrappers[3]; // Wrapper pointer
+		HMODULE m_hDwmDll;		 // Handle to the theme dll.
 	};
 
 public:
-
 	CXTPWinDwmWrapper();
 	~CXTPWinDwmWrapper();
 
 public:
-
-	HRESULT DefWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT *plResult);
+	HRESULT DefWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* plResult);
 	BOOL IsCompositionEnabled();
-	HRESULT ExtendFrameIntoClientArea(HWND hWnd, int cxLeftWidth, int cyTopHeight, int cxRightWidth, int cyBottomHeight);
+	HRESULT ExtendFrameIntoClientArea(HWND hWnd, int cxLeftWidth, int cyTopHeight, int cxRightWidth,
+									  int cyBottomHeight);
 
 public:
 	void LogicalToPhysicalPoint(HWND hWnd, LPPOINT lpPoint);
@@ -1113,5 +1175,5 @@ private:
 //}}AFX_CODEJOCK_PRIVATE
 
 /////////////////////////////////////////////////////////////////////////////
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPWINTHEMEWRAPPER_H__)

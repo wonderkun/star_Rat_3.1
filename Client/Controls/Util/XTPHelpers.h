@@ -1,7 +1,6 @@
 // XTPHelpers.h interface
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,23 +19,27 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTHELPERS_H__)
-#define __XTHELPERS_H__
+#	define __XTHELPERS_H__
 
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // Safely selects object into device context
-template <class T>
+template<class T>
 class CXTPContextObjectHandler
 {
 	T* m_pObject;
 	CDC* m_pDC;
+
 public:
 	CXTPContextObjectHandler(CDC* pDC, T* object)
-	: m_pDC(pDC), m_pObject(pDC->SelectObject(object))
-	{  }
+		: m_pDC(pDC)
+		, m_pObject(pDC->SelectObject(object))
+	{
+	}
 
 	~CXTPContextObjectHandler()
 	{
@@ -52,16 +55,18 @@ class CXTPContextBkModeHandler
 {
 	int m_nMode;
 	CDC* m_pDC;
+
 public:
 	CXTPContextBkModeHandler(CDC* pDC, int nNewMode)
-	: m_pDC(pDC), m_nMode(pDC->SetBkMode(nNewMode))
-	{ }
+		: m_pDC(pDC)
+		, m_nMode(pDC->SetBkMode(nNewMode))
+	{
+	}
 
 	~CXTPContextBkModeHandler()
 	{
 		m_pDC->SetBkMode(m_nMode);
 	}
-
 };
 
 // Text color context handler
@@ -69,16 +74,18 @@ class CXTPContextTextColorHandler
 {
 	COLORREF m_clrFore;
 	CDC* m_pDC;
+
 public:
 	CXTPContextTextColorHandler(CDC* pDC, int clrFore)
-	: m_pDC(pDC), m_clrFore(pDC->SetTextColor(clrFore))
-	{ }
+		: m_pDC(pDC)
+		, m_clrFore(pDC->SetTextColor(clrFore))
+	{
+	}
 
 	~CXTPContextTextColorHandler()
 	{
 		m_pDC->SetTextColor(m_clrFore);
 	}
-
 };
 
 // Background color context handler
@@ -86,10 +93,13 @@ class CXTPContextBkColorHandler
 {
 	COLORREF m_clrBack;
 	CDC* m_pDC;
+
 public:
 	CXTPContextBkColorHandler(CDC* pDC, int clrBack)
-	: m_pDC(pDC), m_clrBack(pDC->SetBkColor(clrBack))
-	{ }
+		: m_pDC(pDC)
+		, m_clrBack(pDC->SetBkColor(clrBack))
+	{
+	}
 
 	~CXTPContextBkColorHandler()
 	{
@@ -100,12 +110,15 @@ public:
 // Handles viewport origin
 class CXTPContextViewPortOrgHandler
 {
-	CPoint  m_pointOrigin;
+	CPoint m_pointOrigin;
 	CDC* m_pDC;
+
 public:
 	CXTPContextViewPortOrgHandler(CDC* pDC, const CPoint& pointOrigin)
-	: m_pDC(pDC), m_pointOrigin(pDC->SetViewportOrg(pointOrigin))
-	{ }
+		: m_pDC(pDC)
+		, m_pointOrigin(pDC->SetViewportOrg(pointOrigin))
+	{
+	}
 
 	~CXTPContextViewPortOrgHandler()
 	{
@@ -113,6 +126,7 @@ public:
 	}
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTHELPERS_H__)
 
 //}}AFX_CODEJOCK_PRIVATE

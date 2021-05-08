@@ -21,7 +21,7 @@
 	<Match FindString="XTResize" ReplaceString="XTPResize"/>
 	<Match FindString="xtResizeNoSizeIcon" ReplaceString="xtpResizeNoSizeIcon"/>
 	<Match FindString="xtResizeNoHorizontal" ReplaceString="xtpResizeNoHorizontal"/>
-	<Match FindString="xtResizeNoVertica" ReplaceString="xtpResizeNoVertical"/>
+	<Match FindString="xtResizeNoVertical" ReplaceString="xtpResizeNoVertical"/>
 	<Match FindString="xtResizeNoMinsize" ReplaceString="xtpResizeNoMinsize"/>
 	<Match FindString="xtResizeNoClipChildren" ReplaceString="xtpResizeNoClipChildren"/>
 	<Match FindString="xtResizeNoTransparentGroup" ReplaceString="xtpResizeNoTransparentGroup"/>
@@ -201,6 +201,7 @@
 	<Match FindString="CXTSplitPath" ReplaceString="CXTPSplitPath"/>
 	<Match FindString="CXTWindowList" ReplaceString="CXTPWindowList"/>
 	<Match FindString="CXTWindowPos" ReplaceString="CXTPWindowPos"/>
+	<Match FindString="CXTFlatHeaderCtrl" ReplaceString="CXTPHeaderCtrl"/>
 
 	<!--functions-->
 
@@ -323,7 +324,7 @@
 	<Match FindString="OBN_XT_BEGINDRAG" ReplaceString="OBN_XTP_BEGINDRAG"/>     
 	<Match FindString="OBN_XT_ITEMRCLICK" ReplaceString="OBN_XTP_ITEMRCLICK"/>    
 
-	<Match FindString="XTWM_SHELL_NOTIFY" ReplaceString="XTWM_SHELL_NOTIFY"/>
+	<Match FindString="XTWM_SHELL_NOTIFY" ReplaceString="WM_XTP_SHELL_NOTIFY"/>
 	<Match FindString="SHN_XT_SHELLMENU" ReplaceString="SHN_XTP_SHELLMENU"/>
 	<Match FindString="SHN_XT_TREESELCHANGE" ReplaceString="SHN_XTP_TREESELCHANGE"/>
 	<Match FindString="SHN_XT_SELECTCHILD" ReplaceString="SHN_XTP_SELECTCHILD"/>

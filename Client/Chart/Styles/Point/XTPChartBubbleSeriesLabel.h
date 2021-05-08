@@ -1,7 +1,6 @@
 // XTPChartBubbleSeriesLabel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTBUBBLESERIESLABEL_H__)
-#define __XTPCHARTBUBBLESERIESLABEL_H__
+#	define __XTPCHARTBUBBLESERIESLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "XTPChartDiagram2DSeriesLabel.h"
 
 //===========================================================================
 // Summary:
@@ -41,6 +40,7 @@ class CXTPChartSeriesView;
 class _XTP_EXT_CLASS CXTPChartBubbleSeriesLabel : public CXTPChartSeriesLabel
 {
 	DECLARE_SERIAL(CXTPChartBubbleSeriesLabel);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -56,7 +56,6 @@ public:
 	virtual ~CXTPChartBubbleSeriesLabel();
 
 public:
-
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -71,7 +70,10 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartSeriesPointView* pPointView,
+											 CXTPChartElementView* pParentView);
+
 protected:
 };
 
@@ -93,24 +95,29 @@ public:
 	//     pPointView - A pointer to chart series point view object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartBubbleSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	CXTPChartBubbleSeriesLabelView(CXTPChartSeriesLabel* pLabel,
+								   CXTPChartSeriesPointView* pPointView,
+								   CXTPChartElementView* pParentView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a bubble series label.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of the bubble series label.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	using CXTPChartDiagram2DSeriesLabelView::CreateDeviceCommand;
+
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 	void CalculateLayout(CXTPChartDeviceContext* pDC);
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTBUBBLESERIESLABEL_H__)

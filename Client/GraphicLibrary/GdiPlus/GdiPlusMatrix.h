@@ -305,3 +305,4 @@ protected:
     GpMatrix *nativeMatrix;
     mutable Status lastResult;
 };
+

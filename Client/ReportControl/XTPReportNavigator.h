@@ -1,7 +1,6 @@
 // XTPReportNavigator.h: interface for the CXTPReportNavigator class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTNAVIGATOR_H__)
-#define __XTPREPORTNAVIGATOR_H__
+#	define __XTPREPORTNAVIGATOR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
-#include "XTPReportRow.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportControl;
 class CXTPReportRow;
@@ -37,7 +35,7 @@ class CXTPReportColumn;
 
 //===========================================================================
 // Summary:
-//     Utility class, handling Report Control items' navigation activities.
+//     Utility class, handling Report Control item navigation.
 // Remarks:
 //
 // See Also: CXTPReportControl overview
@@ -45,6 +43,7 @@ class CXTPReportColumn;
 class _XTP_EXT_CLASS CXTPReportNavigator : public CXTPCmdTarget
 {
 	friend class CXTPReportControl;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -65,7 +64,7 @@ public:
 	// Summary:
 	//     Call this method to start edit currently focused item.
 	//-----------------------------------------------------------------------
-	void BeginEdit();
+	virtual void BeginEdit();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -306,23 +305,13 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Determines the place for the focused row: body, header, or footer.
-	// Parameters:
-	//     RowType     - type of the focused row.
-	// Remarks:
-	//     Call this member function if you want to move (or reflect) the currently focused row.
-	// See Also:
-	//     SetCurrentFocusInHeadersRows, SetCurrentFocusInFootersRows
-	//-----------------------------------------------------------------------
-	void SetMovePosition(XTPReportRowType RowType);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Moves the focused row to the first visible body row of a target place: body, header, or footer.
+	//     Moves the focused row to the first visible body row of a target place: body, header, or
+	//     footer.
 	// Parameters:
 	//     RowType     - target type of the focused row.
 	// Remarks:
-	//     Call this member function if you want to move the focused row to the first visible target row.
+	//     Call this member function if you want to move the focused row to the first visible target
+	//     row.
 	// See Also:
 	//     SetCurrentFocusInHeadersRows, SetCurrentFocusInFootersRows
 	//-----------------------------------------------------------------------
@@ -334,7 +323,8 @@ protected:
 	// Parameters:
 	//     RowType     - target type of the focused row.
 	// Remarks:
-	//     Call this member function if you want to move the focused row to the last visible target row.
+	//     Call this member function if you want to move the focused row to the last visible target
+	//     row.
 	// See Also:
 	//     SetCurrentFocusInHeadersRows, SetCurrentFocusInFootersRows
 	//-----------------------------------------------------------------------
@@ -354,11 +344,79 @@ protected:
 
 protected:
 	CXTPReportControl* m_pReportControl; // Associated report control.
-	BOOL    m_bCurrentFocusInHeadersRows;   // TRUE if a focused row belongs to header rows.
-	BOOL    m_bCurrentFocusInFootersRows;   // TRUE if a focused row belongs to footer rows.
-								// If both above properties are FALSE - focused row belongs to body rows.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportNavigator);
+
+#		define DECLARE_OLE_MOVE(Direction)                                                        \
+			void OleMove##Direction(const VARIANT& oleSelectBlock,                                 \
+									const VARIANT& oleIgnoreSelection);
+
+	DECLARE_OLE_MOVE(Up)
+	DECLARE_OLE_MOVE(Down)
+	DECLARE_OLE_MOVE(PageUp)
+	DECLARE_OLE_MOVE(PageDown)
+	DECLARE_OLE_MOVE(FirstRow)
+	DECLARE_OLE_MOVE(LastRow)
+	DECLARE_OLE_MOVE(Left)
+	DECLARE_OLE_MOVE(Right)
+
+	void OleMoveToColumn(int nColumnIndex, const VARIANT& oleClearIfNonFocusable);
+	void OleMoveToRow(int nRowIndex, const VARIANT& oleSelectBlock,
+					  const VARIANT& oleIgnoreSelection);
+
+	void OleMoveFirstVisibleRow();
+	void OleMoveLastVisibleRow();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
+//===========================================================================
+// Summary:
+//     Utility class, handling Report Control icon navigation.
+// Remarks:
+//
+// See Also: CXTPReportControl overview
+//===========================================================================
+class _XTP_EXT_CLASS CXTPReportIconNavigator : public CXTPReportNavigator
+{
+	friend class CXTPReportControl;
 
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default navigator constructor, handles properties initialization.
+	// Parameters:
+	// pReportControl - pointer to CXTPReportControl object
+	// See Also: RefreshMetrics
+	//-----------------------------------------------------------------------
+	CXTPReportIconNavigator(CXTPReportControl* pReportControl);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default navigator destructor, handles member items deallocation.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPReportIconNavigator();
+
+public:
+	virtual void BeginEdit();
+
+	virtual void MoveDown(BOOL bShiftKey = FALSE, BOOL bControlKey = FALSE);
+	virtual void MoveUp(BOOL bShiftKey = FALSE, BOOL bControlKey = FALSE);
+
+	virtual void MoveDownStep(BOOL bShiftKey = FALSE, BOOL bControlKey = FALSE);
+	virtual void MoveUpStep(BOOL bShiftKey = FALSE, BOOL bControlKey = FALSE);
+
+	virtual void MovePageDown(BOOL bShiftKey, BOOL bControlKey);
+	virtual void MovePageUp(BOOL bShiftKey, BOOL bControlKey);
+
+	virtual void MoveLeftRight(BOOL bBack, BOOL bShiftKey = FALSE, BOOL bControlKey = FALSE);
+};
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTNAVIGATOR_H__)

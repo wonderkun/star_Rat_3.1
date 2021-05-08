@@ -1,7 +1,6 @@
 // XTPReportHeader.h: interface for the CXTPReportHeader class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTHEADER_H__)
-#define __XTPREPORTHEADER_H__
+#	define __XTPREPORTHEADER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropExchange;
 
@@ -38,7 +39,23 @@ class CXTPReportHeaderDropWnd;
 class CXTPReportHeaderDragWnd;
 class CXTPReportPaintManager;
 
-#include "Common/XTPSystemHelpers.h"
+//===========================================================================
+// Summary:
+//===========================================================================
+struct XTP_NM_REPORTSCROLL : public NMHDR
+{
+	int nSection;  // Index of the section
+	int nPosition; // New scroll position
+};
+
+//===========================================================================
+// Summary:
+//===========================================================================
+struct XTP_NM_REPORTGIVEFEEDBACK : public NMHDR
+{
+	DROPEFFECT dropEffect;
+	BOOL bDragStarted;
+};
 
 //===========================================================================
 // Summary:
@@ -50,10 +67,24 @@ class CXTPReportPaintManager;
 //===========================================================================
 struct XTP_NM_REPORTCOLUMNRESIZE
 {
-	NMHDR hdr;                 // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 	CXTPReportColumn* pColumn; // Resized column.
-	int nPrevWidth;            // Previous width.
-	int nNewWidth;             // New width.
+	int nPrevWidth;			   // Previous width.
+	int nNewWidth;			   // New width.
+};
+
+//===========================================================================
+// Summary:
+//     This structure is sent to Main window in a WM_NOTIFY message after
+//     row is resized.
+//     XTP_NM_REPORT_ROWHEIHGTCHANGED.
+//===========================================================================
+struct XTP_NM_REPORTROWRESIZE
+{
+	NMHDR hdr;			 // Standard structure, containing information about a notification message.
+	CXTPReportRow* pRow; // Resized row.
+	int nPrevHeight;	 // Previous height.
+	int nNewHeight;		 // New height.
 };
 
 //===========================================================================
@@ -66,9 +97,9 @@ struct XTP_NM_REPORTCOLUMNRESIZE
 //===========================================================================
 struct XTP_NM_REPORTCOLUMNORDERCHANGED
 {
-	NMHDR hdr;                 // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 	CXTPReportColumn* pColumn; // Affected column.
-	int nReason;               // Change reason.
+	int nReason;			   // Change reason.
 };
 
 //===========================================================================
@@ -81,24 +112,31 @@ struct XTP_NM_REPORTCOLUMNORDERCHANGED
 //===========================================================================
 enum XTPReportColumnOrderChangedReason
 {
-	xtpReportColumnChangeOther              = 0x0000, // Neither column order nor group order is changed.
-	xtpReportColumnOrderChanged             = 0x0001, // Column order changed.
-	xtpReportColumnGroupOrderChanged        = 0x0002, // Group order changed.
-	xtpReportColumnOrderChangedMask         = 0x000F, // A mask for order change flags.
+	xtpReportColumnChangeOther		 = 0x0000, // Neither column order nor group order is changed.
+	xtpReportColumnOrderChanged		 = 0x0001, // Column order changed.
+	xtpReportColumnGroupOrderChanged = 0x0002, // Group order changed.
+	xtpReportColumnOrderChangedMask  = 0x000F, // A mask for order change flags.
 
-	xtpReportColumnAdded                    = 0x0010, // A column is added to the column list.
-	xtpReportColumnRemoved                  = 0x0020, // A column is removed from the column list.
-	xtpReportColumnPropExchange             = 0x0040, // The column properties changed during properties exchange procedure.
-	xtpReportColumnCaptionChanged           = 0x0080, // The column caption is changed.
-	xtpReportColumnWidthChanged             = 0x0100, // The column width is changed.
-	xtpReportColumnShown                    = 0x0200, // A column visibility property is changed to "visible".
-	xtpReportColumnHidden                   = 0x0400, // A column visibility property is changed to "hidden".
-	xtpReportColumnMoved                    = 0x0800, // A column is moved.
-	xtpReportColumnAddedToGroupby           = 0x1000, // A column is added to the GroupBy box.
-	xtpReportColumnRemovedFromGroupby       = 0x2000, // A column is removed from the GroupBy box.
-	xtpReportColumnAddedToFieldChooser      = 0x4000, // A column is added to the Field Chooser.
-	xtpReportColumnRemovedFromFieldChooser  = 0x8000, // A column is removed from the Field Chooser.
-	xtpReportColumnChangeMask               = 0xFFF0, // A mask for column change flags.
+	xtpReportColumnAdded		= 0x0010,   // A column is added to the column list.
+	xtpReportColumnRemoved		= 0x0020,   // A column is removed from the column list.
+	xtpReportColumnPropExchange = 0x0040,   // The column properties changed during properties
+											// exchange procedure.
+	xtpReportColumnCaptionChanged = 0x0080, // The column caption is changed.
+	xtpReportColumnWidthChanged   = 0x0100, // The column width is changed.
+	xtpReportColumnShown		  = 0x0200, // A column visibility property is changed to "visible".
+	xtpReportColumnHidden		  = 0x0400, // A column visibility property is changed to "hidden".
+	xtpReportColumnMoved		  = 0x0800, // A column is moved.
+	xtpReportColumnAddedToGroupby = 0x1000, // A column is added to the GroupBy box.
+	xtpReportColumnRemovedFromGroupby	  = 0x2000, // A column is removed from the GroupBy box.
+	xtpReportColumnAddedToFieldChooser	 = 0x4000, // A column is added to the Field Chooser.
+	xtpReportColumnRemovedFromFieldChooser = 0x8000, // A column is removed from the Field Chooser.
+	xtpReportColumnChangeMask			   = 0xFFF0, // A mask for column change flags.
+};
+
+enum XTPReportColumnDirection
+{
+	xtpReportColumnDirectionLeft  = -1,
+	xtpReportColumnDirectionRight = +1
 };
 
 //===========================================================================
@@ -122,13 +160,16 @@ enum XTPReportColumnOrderChangedReason
 //
 // See Also: CXTPReportControl, CXTPReportColumn, CXTPReportSubListControl
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportHeader : public CXTPCmdTarget, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPReportHeader
+	: public CXTPCmdTarget
+	, public CXTPAccessible
 {
 	DECLARE_INTERFACE_MAP()
 	friend class CXTPReportSubListControl;
 	friend class CXTPReportControl;
 	friend class CXTPReportColumn;
 	friend class CXTPReportHeaderDragWnd;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -282,7 +323,6 @@ protected:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Determines if dragging the header now.
@@ -467,7 +507,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual int FindGroupByColumn(CPoint ptPoint, BOOL bExactSearch = FALSE) const;
 
-//private:
+	// private:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Finds header column index by provided point.
@@ -496,16 +536,16 @@ public:
 	// Parameters:
 	//      rpPrev      - [out] A reference to store next column to scroll left.
 	//                          NULL is returned if current position is on last left column.
-	//      rpCurr      - [out] A reference to store current column (first visible column on the left).
-	//      rpNext      - [out] A reference to store next column to scroll right.
+	//      rpCurr      - [out] A reference to store current column (first visible column on the
+	//      left). rpNext      - [out] A reference to store next column to scroll right.
 	//                          NULL is returned if current position is on last right column.
 	//      rnScrollPos - [out] A reference to store current scrollBar position.
 	//      rnScrollMax - [out] A reference to store scrollBar positions count.
 	// Returns:
 	//      A freezed columns width in pixels.
 	//-----------------------------------------------------------------------
-	int GetFulColScrollInfo(CXTPReportColumn*& rpPrev, CXTPReportColumn*& rpCurr, CXTPReportColumn*& rpNext,
-							int& rnScrollPos, int& rnScrollMax) const;
+	int GetFullColScrollInfo(CXTPReportColumn*& rpPrev, CXTPReportColumn*& rpCurr,
+							 CXTPReportColumn*& rpNext, int& rnScrollPos, int& rnScrollMax) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -804,7 +844,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to retrieve the total width of the header (total combined column widths).
+	//     Call this member to retrieve the total width of the header (total combined column
+	//     widths).
 	// Returns:
 	//     The total combined column widths, which make up the header width.
 	//-----------------------------------------------------------------------
@@ -819,14 +860,13 @@ public:
 	//-----------------------------------------------------------------------
 	void SetLastColumnExpand(BOOL bLastColumnExpand, BOOL bLastColumnExpandKeep);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get maximum column width for all columns.
 	// Returns:
 	//     m_nMaxColumnWidth - Maximum column width
 	//-----------------------------------------------------------------------
-	int GetMaxColumnWidth();
+	int GetMaxColumnWidth() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -836,6 +876,30 @@ public:
 	//     nMaxColumnWidth - Maximum column width
 	//-----------------------------------------------------------------------
 	void SetMaxColumnWidth(int nMaxColumnWidth);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get cursor to horizontal resizing.
+	// Returns:
+	//     m_hResizeCursor - Handler of user's horizontal resizing cursor.
+	//-----------------------------------------------------------------------
+	HCURSOR GetResizeCursor() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get cursor to vertical resizing.
+	// Returns:
+	//     m_hResizeVCursor - Handler of user's vertical resizing cursor.
+	//-----------------------------------------------------------------------
+	HCURSOR GetResizeVCursor() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get cursor which show restriction of dropping.
+	// Returns:
+	//     m_hDontDropCursor - Handler of user's Don't Drop cursor.
+	//-----------------------------------------------------------------------
+	HCURSOR GetDontDropCursor() const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -852,7 +916,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 
-//private:
+	// private:
 	//{{AFX_CODEJOCK_PRIVATE
 	void TrackColumn(CXTPReportColumn* pColumn, CPoint pt);
 	void DestroyDropWnd();
@@ -861,178 +925,182 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPReportColumns* m_pColumns;  // Contains associated columns list.
-	CXTPReportControl* m_pControl;  // Pointer to the parent Report control.
+	CXTPReportColumns* m_pColumns; // Contains associated columns list.
+	CXTPReportControl* m_pControl; // Pointer to the parent Report control.
 
-	int m_nDropIndex;                           // Item index of the column to drop to.
-	int m_nVisIndex;                            // Item visual index of the column to drag from.
+	int m_nDropIndex; // Item index of the column to drop to.
+	int m_nVisIndex;  // Item visual index of the column to drag from.
 	// Release 13.1
-	CXTPReportHeaderDropWnd* m_pDropWnd;        // Column drop window.
-	CXTPReportHeaderDragWnd* m_pDragWnd;        // Column drag window.
+	CXTPReportHeaderDropWnd* m_pDropWnd; // Column drop window.
+	CXTPReportHeaderDragWnd* m_pDragWnd; // Column drag window.
 
-	HCURSOR m_hDontDropCursor;                  // Handler of user's Don't Drop cursor.
+	CXTPReportColumn* m_pDragColumn;		// Dragging column.
+	CXTPReportColumn* m_pResizeColumn;		// Resizing column.
+	CXTPReportColumn* m_pHotTrackingColumn; // Hot column
+	BOOL m_bDragHeader;   // Determines whether control is in header dragging mode or group by
+						  // dragging mode.
+	BOOL m_bDragGroupBox; // Determines whether control is in group box dragging mode.
 
-	CXTPReportColumn* m_pDragColumn;            // Dragging column.
-	CXTPReportColumn* m_pResizeColumn;          // Resizing column.
-	CXTPReportColumn* m_pHotTrackingColumn;     // Hot column
-	BOOL m_bDragHeader;                         // Determines whether control is in header dragging mode or group by dragging mode.
-	BOOL m_bDragGroupBox;                       // Determines whether control is in group box dragging mode.
-
-	CXTPReportSubListControl* m_pSubList;       // Field chooser list control.
+	CXTPReportSubListControl* m_pSubList;		// Field chooser list control.
 	CXTPReportFilterEditControl* m_pFilterEdit; // Filter edit control
 
-	CRect m_rcGroupBy;      // Group By area coordinates.
-	CRect m_rcHeader;       // Header coordinates.
-	CPoint m_ptMouse;       // Stores mouse coordinates for processing when required (resizing, etc).
+	CRect m_rcGroupBy; // Group By area coordinates.
+	CRect m_rcHeader;  // Header coordinates.
+	CPoint m_ptMouse;  // Stores mouse coordinates for processing when required (resizing, etc).
 
-	HCURSOR m_hResizeCursor;    // Handler of user's Resizing cursor.
+	HCURSOR m_hResizeCursor;   // Handler of user's horizontal resizing cursor.
+	HCURSOR m_hResizeVCursor;  // Handler of user's vertical resizing cursor.
+	HCURSOR m_hDontDropCursor; // Handler of user's Don't Drop cursor.
 
 	BOOL m_bAllowColumnRemove;  // FALSE if columns removing is not allowed.
 	BOOL m_bAllowColumnResize;  // FALSE if columns resizing is not allowed.
 	BOOL m_bAllowColumnReorder; // FALSE if columns reordering is not allowed.
-	BOOL m_bAllowColumnSort;    // FALSE if columns sorting is not allowed.
+	BOOL m_bAllowColumnSort;	// FALSE if columns sorting is not allowed.
 
-	BOOL m_bAutoColumnSizing;   // TRUE if AutoColumnSizing should be used.
-	int m_nResizeCaptureRange;  // Distance around column divider where column re-sizer is shown.
-	int m_nIndentLevel;         // Width indent at the left of the column.
-	BOOL m_bShowItemsInGroups;  // TRUE when showing items in groups, FALSE when grouping is not used.
-	int m_nHeaderWidth;         // The combined width of all the visible column headers.
+	BOOL m_bAutoColumnSizing;  // TRUE if AutoColumnSizing should be used.
+	int m_nResizeCaptureRange; // Distance around column divider where column re-sizer is shown.
+	int m_nIndentLevel;		   // Width indent at the left of the column.
+	BOOL m_bShowItemsInGroups; // TRUE when showing items in groups, FALSE when grouping is not
+							   // used.
+	int m_nHeaderWidth;		   // The combined width of all the visible column headers.
 	int m_nForceLayoutAdjustment;
-	//internal flag to Force Layout Adjustment (and also show scrollbar) if positive
+	// internal flag to Force Layout Adjustment (and also show scrollbar) if positive
 
-	BOOL m_bLastColumnExpand;   // Tells whether the last column expand or not.
-	BOOL m_bLastColumnExpandKeep;//Not used currently.
+	BOOL m_bLastColumnExpand;	 // Tells whether the last column expand or not.
+	BOOL m_bLastColumnExpandKeep; // Not used currently.
 
 	int m_nMaxColumnWidth; // Custom maximum column width
 
-//private:
+	// private:
 	enum ReportDraggingMode
 	{
-		dragNothing      = 0,    // User is dragging nothing.
-		dragOutTarget    = 1,    // User is dragging an item outside the drop target.
-		dragInHeader     = 2,    // User is dragging an item inside header
-		dragInGroupBox   = 4,    // User is dragging an item inside group box
-		dragInTarget     = 6,    // User is dragging an item inside the drop target.
-		dragFieldChooser = 8     // User is dragging an item inside field chooser.
-	} m_dragMode;                // Column dragging mode.
+		dragNothing		 = 0, // User is dragging nothing.
+		dragOutTarget	= 1, // User is dragging an item outside the drop target.
+		dragInHeader	 = 2, // User is dragging an item inside header
+		dragInGroupBox   = 4, // User is dragging an item inside group box
+		dragInTarget	 = 6, // User is dragging an item inside the drop target.
+		dragFieldChooser = 8  // User is dragging an item inside field chooser.
+	} m_dragMode;			  // Column dragging mode.
 
 public:
 	static int s_nMinAutoScrollStep; // Minimal horizontal autoscrolling step in pixels.
 
-	static BOOL s_bShowItemsInGroupsPXDefault; // Store default value of m_bShowItemsInGroups member for serialization (PropExchange).
-	static BOOL s_bSendContextMenuForWholeHeaderArea;  // If set as TRUE report control send ContextMenu event for clicks on whole header area (not only for columns) rectangles.
+	static BOOL s_bShowItemsInGroupsPXDefault; // Store default value of m_bShowItemsInGroups member
+											   // for serialization (PropExchange).
+	static BOOL s_bSendContextMenuForWholeHeaderArea; // If set as TRUE report control send
+													  // ContextMenu event for clicks on whole
+													  // header area (not only for columns)
+													  // rectangles.
 
-	BOOL m_bHideColumnAfterGroupBoxDrop;    //Tell whether to hide the column after group box drop.
+	BOOL m_bHideColumnAfterGroupBoxDrop; // Tell whether to hide the column after group box drop.
 };
-
 
 AFX_INLINE CXTPReportFilterEditControl* CXTPReportHeader::GetFilterEditCtrl() const
 {
 	return m_pFilterEdit;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsDragHeader() const
 {
 	return m_bDragHeader;
 }
-
-AFX_INLINE int CXTPReportHeader::GetIndentLevel()const
+AFX_INLINE int CXTPReportHeader::GetIndentLevel() const
 {
 	return m_nIndentLevel;
 }
-
 AFX_INLINE void CXTPReportHeader::AllowColumnRemove(BOOL bAllow)
 {
 	m_bAllowColumnRemove = bAllow;
 }
-
 AFX_INLINE void CXTPReportHeader::AllowColumnResize(BOOL bAllow)
 {
 	m_bAllowColumnResize = bAllow;
 }
-
 AFX_INLINE void CXTPReportHeader::AllowColumnReorder(BOOL bAllow)
 {
 	m_bAllowColumnReorder = bAllow;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsAllowColumnRemove() const
 {
 	return m_bAllowColumnRemove;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsAllowColumnReorder() const
 {
 	return m_bAllowColumnReorder;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsAllowColumnResize() const
 {
 	return m_bAllowColumnResize;
 }
-
 AFX_INLINE void CXTPReportHeader::AllowColumnSort(BOOL bAllow)
 {
 	m_bAllowColumnSort = bAllow;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsAllowColumnSort() const
 {
 	return m_bAllowColumnSort;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsShowItemsInGroups() const
 {
 	return m_bShowItemsInGroups;
 }
-
 AFX_INLINE CXTPReportControl* CXTPReportHeader::GetControl() const
 {
 	return m_pControl;
 }
-
 AFX_INLINE CXTPReportSubListControl* CXTPReportHeader::GetSubListCtrl() const
 {
 	return m_pSubList;
 }
-
 AFX_INLINE int CXTPReportHeader::GetWidth() const
 {
 	return m_nHeaderWidth;
 }
-
 AFX_INLINE BOOL CXTPReportHeader::IsAutoColumnSizing() const
 {
 	return m_bAutoColumnSizing;
 }
-
 AFX_INLINE int CXTPReportHeader::ForceLayoutAdjustment() const
 {
 	return m_nForceLayoutAdjustment;
 }
-
 AFX_INLINE void CXTPReportHeader::SetMaxColumnWidth(int nMaxColumnWidth)
 {
 	m_nMaxColumnWidth = nMaxColumnWidth;
 }
-
-AFX_INLINE int CXTPReportHeader::GetMaxColumnWidth()
+AFX_INLINE int CXTPReportHeader::GetMaxColumnWidth() const
 {
 	return m_nMaxColumnWidth;
 }
 
+AFX_INLINE HCURSOR CXTPReportHeader::GetResizeCursor() const
+{
+	return m_hResizeCursor;
+}
+
+AFX_INLINE HCURSOR CXTPReportHeader::GetResizeVCursor() const
+{
+	return m_hResizeVCursor;
+}
+
+AFX_INLINE HCURSOR CXTPReportHeader::GetDontDropCursor() const
+{
+	return m_hDontDropCursor;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTHEADER_H__)

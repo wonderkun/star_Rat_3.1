@@ -1,7 +1,6 @@
 // XTPChartElement.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,28 +19,91 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTELEMENT_H__)
-#define __XTPCHARTELEMENT_H__
+#	define __XTPCHARTELEMENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartFont;
 class CXTPChartContent;
 class CXTPChartElementView;
-
+class CXTPPropExchange;
+class CXTPChartDeviceContext;
+class CXTPChartDeviceCommand;
+class CXTPChartAppearance;
 
 enum XTPChartUpdateOptions
 {
-	xtpChartUpdateView      = 1,    // Recreate View
-	xtpChartUpdateLayout    = 2,    // Don't recreate View but call Calculate
-	xtpChartUpdateRedraw    = 4,    // Rebuild Command Tree
+	xtpChartUpdateView   = 1, // Recreate View
+	xtpChartUpdateLayout = 2, // Don't recreate View but call Calculate
+	xtpChartUpdateRedraw = 4, // Rebuild Command Tree
 };
 
-#include "Types/XTPChartTypes.h"
+//-----------------------------------------------------------------------
+// Summary:
+//      A base class for all chart object.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartObject
+#	ifdef _XTP_ACTIVEX
+	: public CXTPCmdTarget
+#	else
+	: public CObject
+#	endif
+{
+	DECLARE_DYNAMIC(CXTPChartObject);
 
-typedef CObject CXTPChartObject;
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Constructs an empty chart object.
+	// Parameters:
+	//      bIs3D - By default all derived objects are assumed to work in 2D
+	//              mode whnic corresponds to FALSE used as a value for this parameter.
+	//              However if a derived object is associated with 3D mode,
+	//              e.g. a command the render 3D graphics or 3D device context,
+	//              this value must be TRUE.
+	//-----------------------------------------------------------------------
+	CXTPChartObject();
+	CXTPChartObject(BOOL bIs3D); // <combine CXTPChartObject::CXTPChartObject>
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines if a derived object is used in 3D mode.
+	// Returns:
+	//      TRUE if a derived object is used in 3D mode.
+	//-----------------------------------------------------------------------
+	BOOL Is3D() const;
+
+	//{{AFX_CODEJOCK_PRIVATE
+protected:
+	void Set3D();
+	//}}AFX_CODEJOCK_PRIVATE
+
+private:
+	BOOL m_bIs3D; // TRUE indicated the derived object is used in 3D mode.
+};
+
+AFX_INLINE CXTPChartObject::CXTPChartObject()
+	: m_bIs3D(FALSE)
+{
+}
+AFX_INLINE CXTPChartObject::CXTPChartObject(BOOL bIs3D)
+	: m_bIs3D(bIs3D)
+{
+}
+AFX_INLINE void CXTPChartObject::Set3D()
+{
+	m_bIs3D = TRUE;
+}
+AFX_INLINE BOOL CXTPChartObject::Is3D() const
+{
+	return m_bIs3D;
+}
 
 //===========================================================================
 // Summary:
@@ -54,6 +116,7 @@ typedef CObject CXTPChartObject;
 class _XTP_EXT_CLASS CXTPChartElement : public CXTPChartObject
 {
 	DECLARE_DYNAMIC(CXTPChartElement);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -102,6 +165,15 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPChartContent* GetContent() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the the appearance of the chart.
+	// Returns:
+	//     A pointer to CXTPChartAppearance object.
+	// Remarks:
+	//-----------------------------------------------------------------------
+	CXTPChartAppearance* GetAppearance() const;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -112,17 +184,26 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
+#	ifdef _XTP_ACTIVEX
 
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPChartElement);
+//}}AFX_CODEJOCK_PRIVATE
+#	else
 	DWORD InternalAddRef();
 	DWORD InternalRelease();
 
 	long m_dwRef;
+#	endif
 
 protected:
-	CXTPChartElement* m_pOwner;  //Owner of the element.
+	CXTPChartElement* m_pOwner; // Owner of the element.
 
 	friend class CXTPChartElementCollection;
-
 };
 
 //===========================================================================
@@ -134,7 +215,6 @@ protected:
 class _XTP_EXT_CLASS CXTPChartContainer
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartContainer object.
@@ -156,8 +236,6 @@ public:
 	//-------------------------------------------------------------------------
 	virtual void OnChartChanged(XTPChartUpdateOptions updateOptions = xtpChartUpdateView);
 
-public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to set capture to View.
@@ -166,8 +244,45 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetCapture(CXTPChartElementView* pView);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Enters a mode in which a container is expected to be frequently
+	//      updated.
+	// See also:
+	//      EndFrequentUpdates, IsBeingFrequentlyUpdated
+	//-----------------------------------------------------------------------
+	void BeginFrequentUpdates();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines if the container is currently being frequently updated.
+	// Returns:
+	//      TRUE if the container is currently being frequently update.
+	// See also:
+	//      BeginFrequentUpdates, EndFrequentUpdates
+	//-----------------------------------------------------------------------
+	BOOL IsBeingFrequentlyUpdated() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Leave the frequent update mode and performs the final update.
+	// Parameters:
+	//      updateOptions - The final update type.
+	// Returns:
+	//
+	// See also:
+	//      BeginFrequentUpdates, IsBeingFrequentlyUpdated
+	//-----------------------------------------------------------------------
+	void EndFrequentUpdates(XTPChartUpdateOptions updateOptions = xtpChartUpdateRedraw);
+
+private:
+	BOOL m_bBeingFrequentlyUpdated;
 };
+
+AFX_INLINE BOOL CXTPChartContainer::IsBeingFrequentlyUpdated() const
+{
+	return m_bBeingFrequentlyUpdated;
+}
 
 //===========================================================================
 // Summary:
@@ -179,7 +294,8 @@ protected:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartTextElement : public CXTPChartElement
 {
-	DECLARE_DYNAMIC(CXTPChartTextElement)
+	DECLARE_DYNAMIC(CXTPChartTextElement);
+
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -200,13 +316,13 @@ public:
 	virtual BOOL GetAntialiasing() const = 0;
 };
 
-
 //===========================================================================
 // Summary:
 //     This class abstracts a chart collection, this class is a kind of
 //     CXTPChartElement class.
 // Remarks:
-//     This class act as an abstract base class for collection objects such as collection of points, titles, panels, strips.
+//     This class act as an abstract base class for collection objects such as collection of points,
+//     titles, panels, strips.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartElementCollection : public CXTPChartElement
 {
@@ -234,7 +350,7 @@ public:
 	// Remarks:
 	// See Also: RemoveAt
 	//-------------------------------------------------------------------------
-	void RemoveAll();
+	virtual void RemoveAll();
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -245,7 +361,7 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	int GetCount() const;
+	virtual int GetCount() const;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -253,7 +369,7 @@ public:
 	// Parameters:
 	//     nIndex - Index of object to remove
 	//-------------------------------------------------------------------------
-	void RemoveAt(int nIndex);
+	virtual void RemoveAt(int nIndex);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -261,7 +377,7 @@ public:
 	// Parameters:
 	//     pElement - Object to remove
 	//-------------------------------------------------------------------------
-	void Remove(CXTPChartElement* pElement);
+	virtual void Remove(CXTPChartElement* pElement);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -296,21 +412,26 @@ public:
 	// Summary:
 	//     Call this function to decrease the usage count of the object.
 	//-------------------------------------------------------------------------
-	void Release();
+	virtual void Release();
 
 protected:
-	CArray<CXTPChartElement*, CXTPChartElement*> m_arrElements;       //Array of CXTPChartElement pointer.
+	CArray<CXTPChartElement*, CXTPChartElement*> m_arrElements; // Array of CXTPChartElement
+																// pointer.
 };
 
-AFX_INLINE CXTPChartElement* CXTPChartElement::GetOwner() const {
+AFX_INLINE CXTPChartElement* CXTPChartElement::GetOwner() const
+{
 	return m_pOwner;
 }
 
-AFX_INLINE CXTPChartElement* CXTPChartElementCollection::GetAt(int nIndex) const {
+AFX_INLINE CXTPChartElement* CXTPChartElementCollection::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrElements.GetSize() ? m_arrElements.GetAt(nIndex) : NULL;
 }
-AFX_INLINE int CXTPChartElementCollection::GetCount() const {
+AFX_INLINE int CXTPChartElementCollection::GetCount() const
+{
 	return (int)m_arrElements.GetSize();
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTELEMENT_H__)

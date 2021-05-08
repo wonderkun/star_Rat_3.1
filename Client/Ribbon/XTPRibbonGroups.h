@@ -1,7 +1,6 @@
 // XTPRibbonGroups.h: interface for the CXTPRibbonGroups class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONGROUPS_H__)
-#define __XTPRIBBONGROUPS_H__
+#	define __XTPRIBBONGROUPS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonGroup;
 class CXTPRibbonTab;
-
 
 //===========================================================================
 // Summary:
@@ -47,7 +47,6 @@ class CXTPRibbonTab;
 class _XTP_EXT_CLASS CXTPRibbonGroups : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonGroups object
@@ -61,7 +60,6 @@ public:
 	virtual ~CXTPRibbonGroups();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Copies all groups
@@ -109,7 +107,9 @@ public:
 	// See Also: Add, Remove, GetCount, GetAt, RemoveAll
 	//-----------------------------------------------------------------------
 	CXTPRibbonGroup* InsertAt(int nIndex, LPCTSTR lpszCaption, int nId = -1);
-	CXTPRibbonGroup* InsertAt(int nIndex, CXTPRibbonGroup* pGroup); // <combine CXTPRibbonGroups::InsertAt@int@LPCTSTR@int>
+	CXTPRibbonGroup*
+		InsertAt(int nIndex,
+				 CXTPRibbonGroup* pGroup); // <combine CXTPRibbonGroups::InsertAt@int@LPCTSTR@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -207,7 +207,6 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to get group scroll position
 	// Returns: Position of scroll offset
@@ -215,37 +214,59 @@ public:
 	int GetScrollPos() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	int _CalcSmartLayoutToolBar(int* pWidth);
 	void _ReduceSmartLayoutToolBar(CDC* pDC, int* pWidth, int nWidth);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void RefreshIndexes();
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	afx_msg LPDISPATCH OleInsertGroup(int nIndex, LPCTSTR lpszTitle, int nId);
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddGroup(LPCTSTR lpszTitle, int nId);
+	afx_msg LPDISPATCH OleGetRibbonTab();
+	afx_msg void OleRemoveAt(int nIndex);
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPRibbonGroups);
+	DECLARE_INTERFACE_MAP()
+	DECLARE_ENUM_VARIANT(CXTPRibbonGroups);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CArray<CXTPRibbonGroup*, CXTPRibbonGroup*> m_arrGroups;     // Collection of groups.
-	CXTPRibbonTab* m_pParentTab;    // A pointer to the CXTPRibbonTab object the CXTPRibbonGroup belongs to.
-	                                // This is the tab that the group is displayed in.
-	int m_nGroupsScrollPos;         // Scroll position
+	CArray<CXTPRibbonGroup*, CXTPRibbonGroup*> m_arrGroups; // Collection of groups.
+	CXTPRibbonTab* m_pParentTab; // A pointer to the CXTPRibbonTab object the CXTPRibbonGroup
+								 // belongs to. This is the tab that the group is displayed in.
+	int m_nGroupsScrollPos;		 // Scroll position
 	friend class CXTPRibbonTab;
 	friend class CXTPRibbonBar;
 };
 
-AFX_INLINE int CXTPRibbonGroups::GetCount() const {
+AFX_INLINE int CXTPRibbonGroups::GetCount() const
+{
 	return (int)m_arrGroups.GetSize();
 }
-AFX_INLINE CXTPRibbonGroup* CXTPRibbonGroups::GetAt(int nIndex) const {
+AFX_INLINE CXTPRibbonGroup* CXTPRibbonGroups::GetAt(int nIndex) const
+{
 	ASSERT(nIndex < m_arrGroups.GetSize());
 	return (nIndex >= 0 && nIndex < m_arrGroups.GetSize()) ? m_arrGroups.GetAt(nIndex) : NULL;
 }
-AFX_INLINE CXTPRibbonTab* CXTPRibbonGroups::GetParentTab() const {
-	return  m_pParentTab;
+AFX_INLINE CXTPRibbonTab* CXTPRibbonGroups::GetParentTab() const
+{
+	return m_pParentTab;
 }
-AFX_INLINE int CXTPRibbonGroups::GetScrollPos() const {
+AFX_INLINE int CXTPRibbonGroups::GetScrollPos() const
+{
 	return m_nGroupsScrollPos;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONGROUPS_H__)

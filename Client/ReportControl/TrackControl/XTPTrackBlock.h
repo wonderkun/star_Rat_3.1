@@ -1,7 +1,6 @@
 // XTPTrackBlock.h: interface for the CXTPTrackBlock class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRACKBLOCK_H__)
-#define __XTPTRACKBLOCK_H__
+#	define __XTPTRACKBLOCK_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTrackControlItem;
 
@@ -38,14 +39,15 @@ class CXTPTrackControlItem;
 class _XTP_EXT_CLASS CXTPTrackBlock : public CXTPCmdTarget
 {
 	DECLARE_SERIAL(CXTPTrackBlock);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs the CXTPTrackBlock object.
 	//-----------------------------------------------------------------------
 	CXTPTrackBlock();
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to draw the block.
@@ -324,7 +326,6 @@ public:
 	int GetMaxLength() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to Store/Load the properties related to the
@@ -338,42 +339,39 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to remove block
 	//-----------------------------------------------------------------------
 	void Remove();
+
 public:
+	CRect m_rcBlock;			   // Drawing bounding rectangle of block
+	CXTPTrackControlItem* m_pItem; // Pointer to parent item of block.
+	int m_nPosition;			   // Position that resolve overlaps with items on same track.
+	int m_nLength;				   // Length of block
+	BOOL m_bLocked;				   // TRUE if block is not movable.
+	COLORREF m_clrBlock;		   // Color of block.
+	CString m_strCaption;		   // Caption text.
+	double m_dHeightPercent;	   // Percent of whole row.
+	int m_nHeightFixed;
+	int m_nVerticalAlignment; // Vertical alignment of blocks with m_dHeightPercent < 1
 
 protected:
-	CRect m_rcBlock;                // Drawing bounding rectangle of block
-	CXTPTrackControlItem* m_pItem;  // Pointer to parent item of block.
-	int m_nMRUPosition;             // Last position that was set by user
-	int m_nPosition;                // Position that resolve overlaps with items on same track.
-	int m_nLength;                  // Length of block
-	BOOL m_bLocked;                 // TRUE if block is not movable.
-	COLORREF m_clrBlock;            // Color of block.
-	CString m_strToolTip;           // Tooltip text
-	CString m_strDescription;       // Description text
-	CString m_strCaption;           // Caption text.
-	int m_nIndex;                   // Index in parent track collection.
-	double m_dHeightPercent;        // Percent of whole row.
-	int m_nHeightFixed;
-	int m_nVerticalAlignment;       // Vertical alignment of blocks with m_dHeightPercent < 1
-	int m_nLastDragTime;            // Last drag moment of user (used as priority for flexible draging)
-	int m_nMinLength;               // Minimum resize length
-	int m_nMaxLength;               // Maximum resize length
+	int m_nMRUPosition;		  // Last position that was set by user
+	CString m_strToolTip;	 // Tooltip text
+	CString m_strDescription; // Description text
+	int m_nIndex;			  // Index in parent track collection.
+	int m_nLastDragTime;	  // Last drag moment of user (used as priority for flexible draging)
+	int m_nMinLength;		  // Minimum resize length
+	int m_nMaxLength;		  // Maximum resize length
+	BOOL m_bDragging;		  // Block is currently dragging
 
-	BOOL m_bDragging;               // Block is currently dragging
-
-
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPTrackBlock);
-
 
 	int OleGetPosition();
 	void OleSetPosition(int nPosition);
@@ -403,7 +401,7 @@ protected:
 	BSTR OleGetCaption();
 	void OleSetCaption(LPCTSTR lpszCaption);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 private:
 	friend class CXTPTrackControlItem;
 	friend class CXTPTrackControl;
@@ -425,6 +423,7 @@ public:
 	//     Constructs the CXTPTrackKey object.
 	//-----------------------------------------------------------------------
 	CXTPTrackKey();
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -463,12 +462,14 @@ public:
 class _XTP_EXT_CLASS CXTPTrackMarker : public CXTPCmdTarget
 {
 	DECLARE_SERIAL(CXTPTrackMarker);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs the CXTPTrackMarker object.
 	//-----------------------------------------------------------------------
 	CXTPTrackMarker();
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -541,18 +542,18 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-	CString m_strCaption;       // Caption of marker
-	int m_nPosition;            // Position of marker.
-	CRect m_rcMarker;           // Drawing position of marker
+	CString m_strCaption;		  // Caption of marker
+	int m_nPosition;			  // Position of marker.
+	CRect m_rcMarker;			  // Drawing position of marker
 	CXTPTrackControl* m_pControl; // Parent control.
 
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPTrackMarker);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 private:
 	friend class CXTPTrackPaintManager;
@@ -684,11 +685,11 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-	CXTPTrackControl* m_pControl;                               // Parent control
-	CArray<CXTPTrackMarker*, CXTPTrackMarker*> m_arrMarkers;    // Array of markers
+	CXTPTrackControl* m_pControl;							 // Parent control
+	CArray<CXTPTrackMarker*, CXTPTrackMarker*> m_arrMarkers; // Array of markers
 
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPTrackMarkers);
@@ -698,7 +699,7 @@ protected:
 	LPDISPATCH OleGetItem(long nIndex);
 	int OleGetItemCount();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 private:
 	friend class CXTPTrackControl;
@@ -781,10 +782,9 @@ public:
 	//-----------------------------------------------------------------------
 	void Remove(CXTPTrackBlock* pBlock);
 
-
 protected:
-#ifdef _XTP_ACTIVEX
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPTrackSelectedBlocks);
@@ -793,106 +793,137 @@ protected:
 	LPDISPATCH OleGetItem(long nIndex);
 	int OleGetItemCount();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 protected:
 	CArray<CXTPTrackBlock*, CXTPTrackBlock*> m_arrBlocks;
 };
 
-AFX_INLINE BOOL CXTPTrackBlock::IsKey() const {
+AFX_INLINE BOOL CXTPTrackBlock::IsKey() const
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPTrackBlock::SetColor(COLORREF clr) {
+AFX_INLINE void CXTPTrackBlock::SetColor(COLORREF clr)
+{
 	m_clrBlock = clr;
 }
-AFX_INLINE CRect CXTPTrackBlock::GetRect() const {
+AFX_INLINE CRect CXTPTrackBlock::GetRect() const
+{
 	return m_rcBlock;
 }
-AFX_INLINE int CXTPTrackBlock::GetPosition() const {
+AFX_INLINE int CXTPTrackBlock::GetPosition() const
+{
 	return m_nPosition;
 }
-AFX_INLINE int CXTPTrackBlock::GetLength() const {
+AFX_INLINE int CXTPTrackBlock::GetLength() const
+{
 	return m_nLength;
 }
-AFX_INLINE CString CXTPTrackBlock::GetTooltip() const {
+AFX_INLINE CString CXTPTrackBlock::GetTooltip() const
+{
 	return m_strToolTip;
 }
-AFX_INLINE  void CXTPTrackBlock::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPTrackBlock::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strToolTip = lpszTooltip;
 }
-AFX_INLINE CString CXTPTrackBlock::GetCaption() const {
+AFX_INLINE CString CXTPTrackBlock::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE  void CXTPTrackBlock::SetCaption(LPCTSTR lpszCaption) {
+AFX_INLINE void CXTPTrackBlock::SetCaption(LPCTSTR lpszCaption)
+{
 	m_strCaption = lpszCaption;
 }
-AFX_INLINE void CXTPTrackBlock::SetDescriptionText(LPCTSTR lpszDescriptionText) {
+AFX_INLINE void CXTPTrackBlock::SetDescriptionText(LPCTSTR lpszDescriptionText)
+{
 	m_strDescription = lpszDescriptionText;
 }
-AFX_INLINE CString CXTPTrackBlock::GetDescriptionText() const {
+AFX_INLINE CString CXTPTrackBlock::GetDescriptionText() const
+{
 	return m_strDescription;
 }
-AFX_INLINE void CXTPTrackBlock::SetLocked(BOOL bLocked) {
+AFX_INLINE void CXTPTrackBlock::SetLocked(BOOL bLocked)
+{
 	m_bLocked = bLocked;
 }
-AFX_INLINE void CXTPTrackBlock::SetHeightPercent(double dHeightPercent) {
+AFX_INLINE void CXTPTrackBlock::SetHeightPercent(double dHeightPercent)
+{
 	m_dHeightPercent = dHeightPercent;
 }
-AFX_INLINE double CXTPTrackBlock::GetHeightPercent() const {
+AFX_INLINE double CXTPTrackBlock::GetHeightPercent() const
+{
 	return m_dHeightPercent;
 }
-AFX_INLINE void CXTPTrackBlock::SetHeightFixed(int nHeightFixed) {
+AFX_INLINE void CXTPTrackBlock::SetHeightFixed(int nHeightFixed)
+{
 	m_nHeightFixed = nHeightFixed;
 }
-AFX_INLINE int CXTPTrackBlock::GetHeightFixed() const {
+AFX_INLINE int CXTPTrackBlock::GetHeightFixed() const
+{
 	return m_nHeightFixed;
 }
-AFX_INLINE void CXTPTrackBlock::SetVerticalAlignment(int nAlignment) {
+AFX_INLINE void CXTPTrackBlock::SetVerticalAlignment(int nAlignment)
+{
 	m_nVerticalAlignment = nAlignment;
 }
-AFX_INLINE int CXTPTrackBlock::GetVerticalAlignment() const {
+AFX_INLINE int CXTPTrackBlock::GetVerticalAlignment() const
+{
 	return m_nVerticalAlignment;
 }
-AFX_INLINE CXTPTrackControlItem* CXTPTrackBlock::GetItem() const {
+AFX_INLINE CXTPTrackControlItem* CXTPTrackBlock::GetItem() const
+{
 	return m_pItem;
 }
-AFX_INLINE int CXTPTrackBlock::GetIndex() const {
+AFX_INLINE int CXTPTrackBlock::GetIndex() const
+{
 	return m_nIndex;
 }
-AFX_INLINE BOOL CXTPTrackBlock::IsResizable() const {
+AFX_INLINE BOOL CXTPTrackBlock::IsResizable() const
+{
 	return !IsKey();
 }
-AFX_INLINE void CXTPTrackBlock::SetMinLength(int nMinLength) {
+AFX_INLINE void CXTPTrackBlock::SetMinLength(int nMinLength)
+{
 	m_nMinLength = nMinLength;
 }
-AFX_INLINE int CXTPTrackBlock::GetMinLength() const {
+AFX_INLINE int CXTPTrackBlock::GetMinLength() const
+{
 	return m_nMinLength;
 }
-AFX_INLINE void CXTPTrackBlock::SetMaxLength(int nMaxLength) {
+AFX_INLINE void CXTPTrackBlock::SetMaxLength(int nMaxLength)
+{
 	m_nMaxLength = nMaxLength;
 }
-AFX_INLINE int CXTPTrackBlock::GetMaxLength() const {
+AFX_INLINE int CXTPTrackBlock::GetMaxLength() const
+{
 	return m_nMaxLength;
 }
-AFX_INLINE BOOL CXTPTrackKey::IsKey() const {
+AFX_INLINE BOOL CXTPTrackKey::IsKey() const
+{
 	return TRUE;
 }
-AFX_INLINE int CXTPTrackMarker::GetPosition() const {
+AFX_INLINE int CXTPTrackMarker::GetPosition() const
+{
 	return m_nPosition;
 }
-AFX_INLINE void CXTPTrackMarker::SetCaption(LPCTSTR lpszCaption) {
+AFX_INLINE void CXTPTrackMarker::SetCaption(LPCTSTR lpszCaption)
+{
 	m_strCaption = lpszCaption;
 }
-AFX_INLINE CString CXTPTrackMarker::GetCaption() const {
+AFX_INLINE CString CXTPTrackMarker::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE CRect CXTPTrackMarker::GetRect() const {
+AFX_INLINE CRect CXTPTrackMarker::GetRect() const
+{
 	return m_rcMarker;
 }
-AFX_INLINE CXTPTrackControl* CXTPTrackMarker::GetControl() const {
+AFX_INLINE CXTPTrackControl* CXTPTrackMarker::GetControl() const
+{
 	return m_pControl;
 }
 
 typedef CArray<CXTPTrackBlock*, CXTPTrackBlock*> CXTPTrackBlockArray;
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTRACKBLOCK_H__)

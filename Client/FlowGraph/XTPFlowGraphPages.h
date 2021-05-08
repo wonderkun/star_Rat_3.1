@@ -1,7 +1,6 @@
 // XTPFlowGraphPages.h: interface for the CXTPFlowGraphPages class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHPAGES_H__)
-#define __XTPFLOWGRAPHPAGES_H__
+#	define __XTPFLOWGRAPHPAGES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphPage;
-
-#include "XTPFlowGraphPage.h"
-
 
 // ----------------------------------------------------------------------
 //
@@ -150,18 +148,38 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-	CArray<CXTPFlowGraphPage*, CXTPFlowGraphPage*> m_arrPages; // Collection of pages in the flow graph control.
+	CArray<CXTPFlowGraphPage*, CXTPFlowGraphPage*> m_arrPages; // Collection of pages in the flow
+															   // graph control.
 	CXTPFlowGraphControl* m_pControl; // Pointer to the parent flow graph control.
 
 	friend class CXTPFlowGraphControl;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphPages)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphPages)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddPage();
+	afx_msg LPDISPATCH OleFindPage(int nId);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphPages::GetCount() const {
+AFX_INLINE int CXTPFlowGraphPages::GetCount() const
+{
 	return (int)m_arrPages.GetSize();
 }
-AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphPages::GetAt(int nIndex) const {
+AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphPages::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrPages.GetSize() ? m_arrPages[nIndex] : NULL;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHPAGES_H__)

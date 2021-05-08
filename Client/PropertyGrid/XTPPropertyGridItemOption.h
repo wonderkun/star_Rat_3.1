@@ -1,7 +1,6 @@
 // XTPPropertyGridItemOption.h interface for the CXTPPropertyGridItemOption class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEMOPTION_H__)
-#define __XTPPROPERTYGRIDITEMOPTION_H__
+#	define __XTPPROPERTYGRIDITEMOPTION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -36,7 +36,6 @@ class _XTP_EXT_CLASS CXTPPropertyGridItemOption : public CXTPPropertyGridItem
 {
 	DECLARE_DYNAMIC(CXTPPropertyGridItemOption)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemOption object.
@@ -74,7 +73,11 @@ public:
 	// See Also: BindToOption
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemOption(LPCTSTR strCaption, int nValue = 0, int* pBindOption = NULL);
-	CXTPPropertyGridItemOption(UINT nID, int nValue = 0, int* pBindOption = NULL);  // <COMBINE CXTPPropertyGridItemOption::CXTPPropertyGridItemOption@LPCTSTR@int@int*>
+	CXTPPropertyGridItemOption(
+		UINT nID, int nValue = 0,
+		int* pBindOption =
+			NULL); // <COMBINE
+				   // CXTPPropertyGridItemOption::CXTPPropertyGridItemOption@LPCTSTR@int@int*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -83,7 +86,6 @@ public:
 	virtual ~CXTPPropertyGridItemOption();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change the item's value.
@@ -146,7 +148,6 @@ public:
 	BOOL IsCheckBoxStyle() const;
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This member is called before the item becomes visible in the
@@ -255,22 +256,39 @@ private:
 	void _Init(int nValue);
 
 protected:
-	int    m_nValue;      // Value of the item.  This will contain the value of the selected constraint, not the text
-	int*   m_pBindOption; // Binded value.  This is a pointer to the variable bound to this item.
-	BOOL m_bCheckBoxStyle; //     True if the option button will be displayed as a check box, FALSE if
-	                       //     the option button will be displayed as a option\radio button.
+	int m_nValue; // Value of the item.  This will contain the value of the selected constraint, not
+				  // the text
+	int* m_pBindOption;	// Binded value.  This is a pointer to the variable bound to this item.
+	BOOL m_bCheckBoxStyle; //     True if the option button will be displayed as a check box, FALSE
+						   //     if the option button will be displayed as a option\radio button.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemBool)
+
+	void BindDispatch();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPPropertyGridItemOption::GetOption() const {
+AFX_INLINE int CXTPPropertyGridItemOption::GetOption() const
+{
 	return m_nValue;
 }
-AFX_INLINE void CXTPPropertyGridItemOption::SetCheckBoxStyle(BOOL bCheckBoxStyle /*= TRUE*/) {
+AFX_INLINE void CXTPPropertyGridItemOption::SetCheckBoxStyle(BOOL bCheckBoxStyle /*= TRUE*/)
+{
 	m_bCheckBoxStyle = bCheckBoxStyle;
 }
-AFX_INLINE BOOL CXTPPropertyGridItemOption::IsCheckBoxStyle() const {
+AFX_INLINE BOOL CXTPPropertyGridItemOption::IsCheckBoxStyle() const
+{
 	return m_bCheckBoxStyle;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPPROPERTYGRIDITEMOPTION_H__)

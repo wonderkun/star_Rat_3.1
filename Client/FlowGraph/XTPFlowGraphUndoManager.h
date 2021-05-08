@@ -1,7 +1,6 @@
 // XTPFlowGraphUndoManager.h: interface for the CXTPFlowGraphUndoManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,22 +19,27 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHUNDOMANAGER_H__)
-#define __XTPFLOWGRAPHUNDOMANAGER_H__
+#	define __XTPFLOWGRAPHUNDOMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-const int XTP_ID_FLOWGRAPHUNDO_GROUP = -1;                 // The undo group command.
-const int XTP_ID_FLOWGRAPHUNDO_ADDNODE = 1003;             // The undo add Node command.
-const int XTP_ID_FLOWGRAPHUNDO_DELETENODE = 1004;          // The undo delete Node command.
-const int XTP_ID_FLOWGRAPHUNDO_SETNODEPOSITION = 1005;     // The undo set Node position command.
-const int XTP_ID_FLOWGRAPHUNDO_DELETECONNECTION= 1006;     // The undo delete Connection command.
-const int XTP_ID_FLOWGRAPHUNDO_SETCONNECTIONPOSITION = 1007;     // The undo set Connection position command.
-const int XTP_ID_FLOWGRAPHUNDO_ADDCONNECTION = 1008;             // The undo add Connection command.
-const int XTP_ID_FLOWGRAPHUNDO_SETNODECAPTION = 1009;       // The set node caption command.
-const int XTP_ID_FLOWGRAPHUNDO_SETNODESIZE = 1010;          // The set node size command.
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+const int XTP_ID_FLOWGRAPHUNDO_GROUP				 = -1;   // The undo group command.
+const int XTP_ID_FLOWGRAPHUNDO_ADDNODE				 = 1003; // The undo add Node command.
+const int XTP_ID_FLOWGRAPHUNDO_DELETENODE			 = 1004; // The undo delete Node command.
+const int XTP_ID_FLOWGRAPHUNDO_SETNODEPOSITION		 = 1005; // The undo set Node position command.
+const int XTP_ID_FLOWGRAPHUNDO_DELETECONNECTION		 = 1006; // The undo delete Connection command.
+const int XTP_ID_FLOWGRAPHUNDO_SETCONNECTIONPOSITION = 1007; // The undo set Connection position
+															 // command.
+const int XTP_ID_FLOWGRAPHUNDO_ADDCONNECTION		 = 1008; // The undo add Connection command.
+const int XTP_ID_FLOWGRAPHUNDO_SETNODECAPTION		 = 1009; // The set node caption command.
+const int XTP_ID_FLOWGRAPHUNDO_SETNODESIZE			 = 1010; // The set node size command.
+const int XTP_ID_FLOWGRAPHUNDO_DELETECONNECTIONPOINT = 1011; // The undo delete point command.
+const int XTP_ID_FLOWGRAPHUNDO_ADDCONNECTIONPOINT	= 1012; // The undo add point command.
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -66,6 +70,7 @@ public:
 	//     An integer value denoting the contained command id.
 	//-----------------------------------------------------------------------
 	int GetID() const;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -77,7 +82,7 @@ protected:
 	virtual void Undo();
 
 protected:
-	const int m_nID;                        //The command id.
+	const int m_nID; // The command id.
 
 	friend class CXTPFlowGraphUndoManager;
 	friend class CXTPFlowGraphUndoGroupCommand;
@@ -90,7 +95,6 @@ protected:
 class _XTP_EXT_CLASS CXTPFlowGraphUndoGroupCommand : public CXTPFlowGraphUndoCommand
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructor, creates a CXTPFlowGraphUndoCommand object.
@@ -133,12 +137,11 @@ public:
 	//-----------------------------------------------------------------------
 	void Add(CXTPFlowGraphUndoCommand* pCommand);
 
-
 protected:
-	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrUndoCommands; //The command collection.
-	CXTPFlowGraphUndoManager* m_pManager;                                       //The undo manager.
+	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrUndoCommands; // The command
+																					// collection.
+	CXTPFlowGraphUndoManager* m_pManager; // The undo manager.
 	friend class CXTPFlowGraphUndoManager;
-
 };
 
 //-----------------------------------------------------------------------
@@ -174,8 +177,46 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphNode* m_pNode;           //The FlowGraph Node object.
-	CXTPFlowGraphPage* m_pPage;           //The FlowGraph Page object.
+	CXTPFlowGraphNode* m_pNode; // The FlowGraph Node object.
+	CXTPFlowGraphPage* m_pPage; // The FlowGraph Page object.
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     This class abstracts the undo delete Commection Point command.This is a kind of
+//     CXTPFlowGraphUndoCommand.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPFlowGraphUndoDeleteConnectionPointCommand : public CXTPFlowGraphUndoCommand
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructor, creates a CXTPFlowGraphUndoDeleteConnectionPointCommand object.
+	// Parameters:
+	//     pConnectionPoint       - Pointer to the FlowGraph point object.
+	//-----------------------------------------------------------------------
+	CXTPFlowGraphUndoDeleteConnectionPointCommand(CXTPFlowGraphConnectionPoint* pConnectionPoint);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     CXTPFlowGraphUndoDeleteConnectionPointCommand destructor, does the cleanups.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPFlowGraphUndoDeleteConnectionPointCommand();
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Use this function to do the undo operation.
+	// Remarks:
+	//     It a virtual function, so the derived classes can give their
+	//     specific implementations
+	//-----------------------------------------------------------------------
+	virtual void Undo();
+
+protected:
+	CXTPFlowGraphNode* m_pNode;						  // The FlowGraph Node object.
+	CXTPFlowGraphConnectionPoint* m_pConnectionPoint; // The FlowGraph Connection point object.
+	int m_nIndex;
 };
 
 //-----------------------------------------------------------------------
@@ -211,8 +252,10 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphConnection* m_pConnection;       //The FlowGraph Connection object.
-	CXTPFlowGraphPage* m_pPage;           //The FlowGraph Page object.
+	CXTPFlowGraphConnection* m_pConnection; // The FlowGraph Connection object.
+	CXTPFlowGraphConnectionPoint* m_pInputPoint;
+	CXTPFlowGraphConnectionPoint* m_pOutputPoint;
+	CXTPFlowGraphPage* m_pPage; // The FlowGraph Page object.
 };
 
 //-----------------------------------------------------------------------
@@ -248,9 +291,44 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphNode* m_pNode;   //Pointer to the FlowGraph Node object.
+	CXTPFlowGraphNode* m_pNode; // Pointer to the FlowGraph Node object.
 };
 
+//-----------------------------------------------------------------------
+// Summary:
+//     This class abstracts the undo add Point command.This is a kind of
+//     CXTPFlowGraphUndoCommand.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPFlowGraphUndoAddConnectionPointCommand : public CXTPFlowGraphUndoCommand
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructor, creates a CXTPFlowGraphUndoAddConnectionPointCommand object.
+	// Parameters:
+	//     pConnectionPoint       - Pointer to the FlowGraph Point object.
+	//-----------------------------------------------------------------------
+	CXTPFlowGraphUndoAddConnectionPointCommand(CXTPFlowGraphConnectionPoint* pConnectionPoint);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     CXTPFlowGraphUndoAddConnectionPointCommand destructor, does the cleanups.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPFlowGraphUndoAddConnectionPointCommand();
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Use this function to do the undo operation.
+	// Remarks:
+	//     It a virtual function, so the derived classes can give their
+	//     specific implementations
+	//-----------------------------------------------------------------------
+	virtual void Undo();
+
+protected:
+	CXTPFlowGraphConnectionPoint* m_pConnectionPoint; // Pointer to the FlowGraph Point object.
+};
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -285,9 +363,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphConnection* m_pConnection;   //Pointer to the FlowGraph Node object.
+	CXTPFlowGraphConnection* m_pConnection; // Pointer to the FlowGraph Node object.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -323,8 +400,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphNode* m_pNode;   //Pointer to the FlowGraph Node object.
-	CPoint m_ptOldPosition;         //Old position of the Node.
+	CXTPFlowGraphNode* m_pNode; // Pointer to the FlowGraph Node object.
+	CPoint m_ptOldPosition;		// Old position of the Node.
 };
 
 //-----------------------------------------------------------------------
@@ -361,10 +438,9 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphNode* m_pNode;   //Pointer to the FlowGraph Node object.
-	CPoint m_szOldSize;         //Old size of the Node.
+	CXTPFlowGraphNode* m_pNode; // Pointer to the FlowGraph Node object.
+	CPoint m_szOldSize;			// Old size of the Node.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -400,8 +476,8 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphElement* m_pNode;   //Pointer to the FlowGraph Node object.
-	CString m_strOldCaption;         //Old position of the Node.
+	CXTPFlowGraphElement* m_pNode; // Pointer to the FlowGraph Node object.
+	CString m_strOldCaption;	   // Old position of the Node.
 };
 
 //-----------------------------------------------------------------------
@@ -419,7 +495,8 @@ public:
 	//     pNode       - Pointer to the FlowGraph Node object.
 	//     nOldPosition - The old position of the Node.
 	//-----------------------------------------------------------------------
-	CXTPFlowGraphUndoSetConnectionPositionCommand(CXTPFlowGraphConnection* pConnection, CPoint ptOldPosition);
+	CXTPFlowGraphUndoSetConnectionPositionCommand(CXTPFlowGraphConnection* pConnection,
+												  CPoint ptOldPosition);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -438,10 +515,9 @@ protected:
 	virtual void Undo();
 
 protected:
-	CXTPFlowGraphConnection* m_pConnection;   //Pointer to the FlowGraph Connection object.
-	CPoint m_ptOldPosition;         //Old position of the Node.
+	CXTPFlowGraphConnection* m_pConnection; // Pointer to the FlowGraph Connection object.
+	CPoint m_ptOldPosition;					// Old position of the Node.
 };
-
 
 // ---------------------------------------------------------------------
 // Summary:
@@ -549,23 +625,37 @@ public:
 	void EnableUndoManager(BOOL bEnabled);
 
 protected:
-	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrUndoCommands; //The undo commands array.
-	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrRedoCommands; //The redo command array.
+	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrUndoCommands; // The undo
+																					// commands
+																					// array.
+	CArray<CXTPFlowGraphUndoCommand*, CXTPFlowGraphUndoCommand*> m_arrRedoCommands; // The redo
+																					// command
+																					// array.
 
-	CArray<CXTPFlowGraphUndoGroupCommand*, CXTPFlowGraphUndoGroupCommand*> m_arrGroupStack; // The groups stack.
+	CArray<CXTPFlowGraphUndoGroupCommand*, CXTPFlowGraphUndoGroupCommand*>
+		m_arrGroupStack; // The groups stack.
 
-	int m_nUndoContext;                                                     //The undo context.
-	BOOL m_bEnabled;                                                        // Specifies whether the undo manager is enabled or disabled.
-	CXTPFlowGraphUndoGroupCommand* m_pUndoGroup;                                //The undo group command.
+	int m_nUndoContext; // The undo context.
+	BOOL m_bEnabled;	// Specifies whether the undo manager is enabled or disabled.
+	CXTPFlowGraphUndoGroupCommand* m_pUndoGroup; // The undo group command.
 
-
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphUndoManager);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphUndoCommand::GetID() const {
+AFX_INLINE int CXTPFlowGraphUndoCommand::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE void CXTPFlowGraphUndoManager::EnableUndoManager(BOOL bEnabled) {
+AFX_INLINE void CXTPFlowGraphUndoManager::EnableUndoManager(BOOL bEnabled)
+{
 	m_bEnabled = bEnabled;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHUNDOMANAGER_H__)

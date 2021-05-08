@@ -1,7 +1,6 @@
 // XTPTabCtrlButtons.h : interface for the CXTPTabCtrlButtons class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,31 +19,34 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABCTRLBUTTONS_H_)
-#define __XTPTABCTRLBUTTONS_H_
+#	define __XTPTABCTRLBUTTONS_H_
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabCtrlButtons;
 class CXTPTabBase;
 
-#define XTP_IDC_TAB_CLOSE                106
+#	define XTP_IDC_TAB_CLOSE 106
 
 //////////////////////////////////////////////////////////////////////
-// Summary: CXTPTabCtrlButton is a stand alone structure class.  It is internal used in CXTPTabCtrlButtons class.
+// Summary: CXTPTabCtrlButton is a stand alone structure class.  It is internal used in
+// CXTPTabCtrlButtons class.
 class _XTP_EXT_CLASS CXTPTabCtrlButton
 {
 public:
-	CXTPTabCtrlButton (DWORD wStyle);
+	CXTPTabCtrlButton(DWORD wStyle);
 
 	void Draw(CDC* pDC, COLORREF clrButton);
 	DWORD Click(CXTPTabCtrlButtons* pWnd, CPoint pt, BOOL bRepeat = FALSE);
 	void SetRect(CRect rc);
 	CRect GetRect();
 	BOOL PtInRect(POINT pt) const;
-	void CheckForMouseOver (CWnd* pWnd, CPoint pt);
+	void CheckForMouseOver(CWnd* pWnd, CPoint pt);
 	void SetEnable(BOOL bEnable);
 
 	CRect m_Rect;
@@ -55,25 +57,30 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPTabCtrlButton::CXTPTabCtrlButton(DWORD wStyle) {
-	m_wStyle = wStyle;
+AFX_INLINE CXTPTabCtrlButton::CXTPTabCtrlButton(DWORD wStyle)
+{
+	m_wStyle   = wStyle;
 	m_pButtons = 0;
 	m_pTabCtrl = 0;
 	m_Rect.SetRectEmpty();
 }
-AFX_INLINE void CXTPTabCtrlButton::SetRect (CRect rc) {
+AFX_INLINE void CXTPTabCtrlButton::SetRect(CRect rc)
+{
 	m_Rect = rc;
 }
-AFX_INLINE CRect CXTPTabCtrlButton::GetRect() {
+AFX_INLINE CRect CXTPTabCtrlButton::GetRect()
+{
 	return m_Rect;
 }
-AFX_INLINE BOOL CXTPTabCtrlButton::PtInRect (POINT pt) const {
-	return m_Rect.PtInRect (pt) != 0;
+AFX_INLINE BOOL CXTPTabCtrlButton::PtInRect(POINT pt) const
+{
+	return m_Rect.PtInRect(pt) != 0;
 }
 
 //////////////////////////////////////////////////////////////////////
-// Summary: CXTPTabCtrlButtonsis a CWnd derived class.  It is internally used in the CXTPTabBase class.
-class _XTP_EXT_CLASS CXTPTabCtrlButtons: public CWnd
+// Summary: CXTPTabCtrlButtonsis a CWnd derived class.  It is internally used in the CXTPTabBase
+// class.
+class _XTP_EXT_CLASS CXTPTabCtrlButtons : public CWnd
 {
 public:
 	CXTPTabCtrlButtons();
@@ -94,6 +101,7 @@ public:
 
 private:
 	CRect AdjustRect();
+
 private:
 	CXTPTabCtrlButton m_btnClose;
 	CXTPTabCtrlButton m_btnLeft;
@@ -108,7 +116,6 @@ private:
 	HWND m_hwndPrimary;
 
 private:
-
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -116,19 +123,25 @@ private:
 	afx_msg void OnMouseLeave();
 	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	DECLARE_MESSAGE_MAP()
 
 	friend class CXTPTabBase;
 	friend class CXTPTabCtrlButton;
 };
 
-AFX_INLINE CTabCtrl* CXTPTabCtrlButtons::GetTabCtrl() const {
+AFX_INLINE CTabCtrl* CXTPTabCtrlButtons::GetTabCtrl() const
+{
 	return m_pTabCtrl;
 }
 
-AFX_INLINE BOOL CXTPTabCtrlButtons::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPTabCtrlButtons::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										   DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										   UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTABCTRLBUTTONS_H_)

@@ -1,7 +1,6 @@
 // XTPChartPanel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPANEL_H__)
-#define __XTPCHARTPANEL_H__
+#	define __XTPCHARTPANEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartDiagram;
 class CXTPChartPanelCollection;
@@ -61,7 +60,6 @@ public:
 	virtual ~CXTPChartPanel();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the the title collection object.
@@ -77,7 +75,6 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 protected:
 	CXTPChartTitleCollection* m_pTitles;
 
@@ -112,7 +109,6 @@ public:
 	virtual ~CXTPChartPanelCollection();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to add a  panel to the collection.
@@ -120,7 +116,6 @@ public:
 	//     pPanel - A pointer to the panel object which is to be added.
 	//-------------------------------------------------------------------------
 	CXTPChartPanel* Add(CXTPChartPanel* pPanel);
-
 
 	// Summary:
 	//     Call this function to get the panel at a particular index in  the
@@ -136,17 +131,35 @@ public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+public:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPChartPanelCollection);
 
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	void OleAdd(LPDISPATCH lpDisp);
+	DECLARE_ENUM_VARIANT(CXTPChartPanelCollection)
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 protected:
 	friend class CXTPChartContent;
 };
 
-AFX_INLINE CXTPChartPanel* CXTPChartPanelCollection::GetAt(int nIndex) const {
-	return nIndex >= 0 && nIndex < m_arrElements.GetSize() ? (CXTPChartPanel*)m_arrElements.GetAt(nIndex) : NULL;
+AFX_INLINE CXTPChartPanel* CXTPChartPanelCollection::GetAt(int nIndex) const
+{
+	return nIndex >= 0 && nIndex < m_arrElements.GetSize()
+			   ? (CXTPChartPanel*)m_arrElements.GetAt(nIndex)
+			   : NULL;
 }
-AFX_INLINE CXTPChartTitleCollection* CXTPChartPanel::GetTitles() const {
+AFX_INLINE CXTPChartTitleCollection* CXTPChartPanel::GetTitles() const
+{
 	return m_pTitles;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPANEL_H__)

@@ -1,7 +1,6 @@
 // XTPReportDataManager.h: interface for the CXTPReportDataManager class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTDATAMANAGER_H__)
-#define __XTPREPORTDATAMANAGER_H__
+#	define __XTPREPORTDATAMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
-#include "XTPReportDefines.h"
-#include "XTPReportADO.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRecord;
 class CXTPReportRecords;
@@ -38,7 +35,7 @@ class CXTPReportDataManager;
 class CXTPReportControl;
 class CXTPReportRecordItem;
 
-#define XTP_REPORTDATAMANAGER_MAX_LAST_COM_ERRORS 3
+#	define XTP_REPORTDATAMANAGER_MAX_LAST_COM_ERRORS 3
 
 //===========================================================================
 // Summary:
@@ -55,9 +52,9 @@ class CXTPReportRecordItem;
 //===========================================================================
 struct XTP_REPORTDATAMANAGER_COM_ERROR
 {
-	HRESULT hResult;        //The HRESULT error value.
-	CString strMessage;     //The error message.
-	CString strSource;      //The error source.
+	HRESULT hResult;	// The HRESULT error value.
+	CString strMessage; // The error message.
+	CString strSource;  // The error source.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -75,89 +72,69 @@ struct XTP_REPORTDATAMANAGER_COM_ERROR
 	//     Overloaded assignment operator, copies the data values from an existing
 	//     CXTPReportDataManager object.
 	//-----------------------------------------------------------------------
-	const XTP_REPORTDATAMANAGER_COM_ERROR& operator =(const XTP_REPORTDATAMANAGER_COM_ERROR& errorSrc)
+	const XTP_REPORTDATAMANAGER_COM_ERROR& operator=(const XTP_REPORTDATAMANAGER_COM_ERROR& errorSrc)
 	{
-		this->hResult = errorSrc.hResult;
+		this->hResult	= errorSrc.hResult;
 		this->strMessage = errorSrc.strMessage;
-		this->strSource = errorSrc.strSource;
+		this->strSource  = errorSrc.strSource;
 
 		return *this;
 	}
 };
 
-//===========================================================================
-// Summary:
-// Example:
-// <code>
-// </code>
-// See Also:
-//===========================================================================
-class CRstEvent : public XTPREPORTADODB::RecordsetEventsVt
+class _XTP_EXT_CLASS CRstEvent : public XTPREPORTADODB::RecordsetEventsVt
 {
 private:
 	ULONG m_cRef;
 	CXTPReportDataManager* m_pDataManager;
+
 public:
 	CRstEvent(CXTPReportDataManager* pDataManager);
-	~CRstEvent();
+	virtual ~CRstEvent();
 
-	STDMETHODIMP QueryInterface(REFIID riid, void ** ppv);
+	STDMETHODIMP QueryInterface(REFIID riid, void** ppv);
 	STDMETHODIMP_(ULONG) AddRef(void);
 	STDMETHODIMP_(ULONG) Release(void);
 
-	virtual HRESULT __stdcall raw_WillChangeField(
-		long cFields,
-		VARIANT Fields,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_WillChangeField(long cFields, VARIANT Fields,
+												  enum XTPREPORTADODB::EventStatusEnum* adStatus,
+												  struct XTPREPORTADODB::_Recordset* pRecordset);
 	virtual HRESULT __stdcall raw_FieldChangeComplete(
-		long cFields,
-		VARIANT Fields,
-		struct XTPREPORTADODB::Error* pError,
+		long cFields, VARIANT Fields, struct XTPREPORTADODB::Error* pError,
 		enum XTPREPORTADODB::EventStatusEnum* adStatus,
 		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_WillChangeRecord(
-		enum XTPREPORTADODB::EventReasonEnum adReason,
-		long cRecords,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_WillChangeRecord(enum XTPREPORTADODB::EventReasonEnum adReason,
+												   long cRecords,
+												   enum XTPREPORTADODB::EventStatusEnum* adStatus,
+												   struct XTPREPORTADODB::_Recordset* pRecordset);
 	virtual HRESULT __stdcall raw_RecordChangeComplete(
-		enum XTPREPORTADODB::EventReasonEnum adReason,
-		long cRecords,
-		struct XTPREPORTADODB::Error* pError,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
+		enum XTPREPORTADODB::EventReasonEnum adReason, long cRecords,
+		struct XTPREPORTADODB::Error* pError, enum XTPREPORTADODB::EventStatusEnum* adStatus,
 		struct XTPREPORTADODB::_Recordset* pRecordset);
 	virtual HRESULT __stdcall raw_WillChangeRecordset(
 		enum XTPREPORTADODB::EventReasonEnum adReason,
 		enum XTPREPORTADODB::EventStatusEnum* adStatus,
 		struct XTPREPORTADODB::_Recordset* pRecordset);
 	virtual HRESULT __stdcall raw_RecordsetChangeComplete(
-		enum XTPREPORTADODB::EventReasonEnum adReason,
-		struct XTPREPORTADODB::Error* pError,
+		enum XTPREPORTADODB::EventReasonEnum adReason, struct XTPREPORTADODB::Error* pError,
 		enum XTPREPORTADODB::EventStatusEnum* adStatus,
 		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_WillMove(
-		enum XTPREPORTADODB::EventReasonEnum adReason,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_MoveComplete(
-		enum XTPREPORTADODB::EventReasonEnum adReason,
-		struct XTPREPORTADODB::Error* pError,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_EndOfRecordset(
-		VARIANT_BOOL* fMoreData,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_FetchProgress(
-		long Progress,
-		long MaxProgress,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
-	virtual HRESULT __stdcall raw_FetchComplete(
-		struct XTPREPORTADODB::Error* pError,
-		enum XTPREPORTADODB::EventStatusEnum* adStatus,
-		struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_WillMove(enum XTPREPORTADODB::EventReasonEnum adReason,
+										   enum XTPREPORTADODB::EventStatusEnum* adStatus,
+										   struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_MoveComplete(enum XTPREPORTADODB::EventReasonEnum adReason,
+											   struct XTPREPORTADODB::Error* pError,
+											   enum XTPREPORTADODB::EventStatusEnum* adStatus,
+											   struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_EndOfRecordset(VARIANT_BOOL* fMoreData,
+												 enum XTPREPORTADODB::EventStatusEnum* adStatus,
+												 struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_FetchProgress(long Progress, long MaxProgress,
+												enum XTPREPORTADODB::EventStatusEnum* adStatus,
+												struct XTPREPORTADODB::_Recordset* pRecordset);
+	virtual HRESULT __stdcall raw_FetchComplete(struct XTPREPORTADODB::Error* pError,
+												enum XTPREPORTADODB::EventStatusEnum* adStatus,
+												struct XTPREPORTADODB::_Recordset* pRecordset);
 
 protected:
 	CArray<XTPREPORTADODB::EventReasonEnum, XTPREPORTADODB::EventReasonEnum&> m_adReasonStack;
@@ -171,24 +148,21 @@ protected:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportDataManager : public CXTPCmdTarget
 {
+	DECLARE_DYNAMIC(CXTPReportDataManager);
+
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPReportControl;
 	friend class CRstEvent;
-	void AFX_CDECL TRACE_ComError(_com_error &e);
+	void AFX_CDECL TRACE_ComError(_com_error& e);
 	void AFX_CDECL TRACE_ProviderError(XTPREPORTADODB::_Connection* pConnDB);
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportDataManager object.
 	// Parameters:
 	// pReportControl - pointer to CXTPReportControl object
-	// Remarks:
-	// Example:
-	// <code>
-	// </code>
 	//-----------------------------------------------------------------------
 	CXTPReportDataManager(CXTPReportControl* pReportControl);
 
@@ -335,7 +309,8 @@ public:
 	// Remarks:
 	//     It is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual HRESULT UpdateRecord(CXTPReportRecord* pRecord, CXTPReportRecordItem* pItemChanged = NULL);
+	virtual HRESULT UpdateRecord(CXTPReportRecord* pRecord,
+								 CXTPReportRecordItem* pItemChanged = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -401,34 +376,55 @@ protected:
 	void ClearReportControl();
 
 protected:
-	CXTPReportControl* m_pReportControl;            //Pointer to the report control.
-	XTPREPORTADODB::_ConnectionPtr m_pConnection;   //The custom ADODB connection point.
-	XTPREPORTADODB::_RecordsetPtr m_pDataSource;    //The data source.
-	CRstEvent* m_pRstEvent;                         //Pointer to the record set event object.
-	DWORD m_dwRstEvent;                             //The record set event.
-	CXTPReportRecords* m_pDeleteRecords;            //The delete records.
-	volatile BOOL m_bLocalUpdate;                   //Tells whether the update is local only.
+	CXTPReportControl* m_pReportControl;		  // Pointer to the report control.
+	XTPREPORTADODB::_ConnectionPtr m_pConnection; // The custom ADODB connection point.
+	XTPREPORTADODB::_RecordsetPtr m_pDataSource;  // The data source.
+	CRstEvent* m_pRstEvent;						  // Pointer to the record set event object.
+	DWORD m_dwRstEvent;							  // The record set event.
+	CXTPReportRecords* m_pDeleteRecords;		  // The delete records.
+	volatile BOOL m_bLocalUpdate;				  // Tells whether the update is local only.
 	CArray<XTP_REPORTDATAMANAGER_COM_ERROR*, XTP_REPORTDATAMANAGER_COM_ERROR*> m_LastComError;
-public:
 
+public:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportDataManager);
+
+public:
+	static CXTPReportDataManager* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+	LPDISPATCH OleGetDataSource();
+	void OleSetDataSource(LPDISPATCH lpDispatch);
+	BOOL OleUpdateField(LPDISPATCH lpDispatch);
+	BOOL OleUpdateRecord(LPDISPATCH lpDispatch);
+	BOOL OleUpdateRecordItem(LPDISPATCH lpDispatch);
+	BOOL OleAddRecord(LPDISPATCH lpDispatch, BOOL bAddToReport);
+	BOOL OleDeleteRecord(LPDISPATCH lpDispatch);
+	LPDISPATCH OleCreateEmptyRecord();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 
 // CXTPReportDataManager diagnostics
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-	friend CDumpContext& AFXAPI operator<<(CDumpContext& dc,
-				const CXTPReportDataManager& obj);
-#endif
+	friend _XTP_EXT_CLASS CDumpContext& AFXAPI operator<<(CDumpContext& dc,
+														  const CXTPReportDataManager& obj);
+#	endif
 
 }; // class _XTP_EXT_CLASS CXTPReportDataManager
 
-
-AFX_INLINE XTPREPORTADODB::_RecordsetPtr CXTPReportDataManager::GetDataSource() const{
+AFX_INLINE XTPREPORTADODB::_RecordsetPtr CXTPReportDataManager::GetDataSource() const
+{
 	return m_pDataSource;
 }
 
-#ifdef _DEBUG
-CDumpContext& AFXAPI operator<<(CDumpContext& dc, const CXTPReportDataManager& obj);
-#endif
+#	ifdef _DEBUG
+_XTP_EXT_CLASS CDumpContext& AFXAPI operator<<(CDumpContext& dc, const CXTPReportDataManager& obj);
+#	endif
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTDATAMANAGER_H__)

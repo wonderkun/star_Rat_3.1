@@ -1,7 +1,7 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 
 #include "MainFrm.h"

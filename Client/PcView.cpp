@@ -1,7 +1,7 @@
 // PcView.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "PcView.h"
 
@@ -239,12 +239,16 @@ void CPcView::OnSize(UINT nType, int cx, int cy)
 	GetClientRect(rcClient);
 	
 	int	nClientWidth = rcClient.Width();
+	if (nClientWidth < 0) {
+		nClientWidth = 1;
+	}
+
 	int nIndex = g_Column_Count - 1;
 	
 	if (nClientWidth < g_Column_Width)
 		return;
 	
-	m_pListCtrl->SetColumnWidth(nIndex, nClientWidth - g_Column_Width + g_Column_Data[nIndex].nWidth);
+	//m_pListCtrl->SetColumnWidth(nIndex, nClientWidth - g_Column_Width + g_Column_Data[nIndex].nWidth);
 }
 
 void CPcView::ModifyDrawStyle(UINT uFlag, BOOL bRemove)

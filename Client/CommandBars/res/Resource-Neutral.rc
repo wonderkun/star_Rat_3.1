@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -33,11 +32,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Bitmap
 //
 
-XTP_IDB_TOOLBAR_TOOLS              BITMAP  DISCARDABLE     "CommandBars/res/ImageEditorIcons.bmp"
-XTP_IDB_TOOLBAR_TOOLS32            BITMAP  DISCARDABLE     "CommandBars/res/ImageEditorIcons32.bmp "
 XTP_IDB_MENUBAR_ICONS              BITMAP  DISCARDABLE     "CommandBars/res/MenuBarIcons.bmp"
 XTP_IDB_CUSTOMIZE_ICONS            BITMAP  DISCARDABLE     "CommandBars/res/UserIcons.bmp"
-XTP_IDB_WORKSPACE_ICONS            BITMAP  DISCARDABLE     "CommandBars/res/TabGroups.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -81,8 +77,52 @@ END
 // PNG
 //
 
-XTP_IDR_PREVIEW_TOOLBAR PNG     DISCARDABLE     "CommandBars/res/ToolbarPreview.png"
+XTP_IDB_TOOLBAR_TOOLS   PNG     DISCARDABLE     "CommandBars/res/ImageEditorIcons.png"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// XAML
+//
+
+XTP_XAML_SMALL_ICON_NORMAL_CLOSE						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/close.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_PRINTER						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/printer.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_SYMBOL_ARROW_LEFT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/symbol-arrow-left.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_SYMBOL_ARROW_RIGHT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/symbol-arrow-right.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_ZOOM_IN						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/zoom-in.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_ZOOM_OUT						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/zoom-out.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_WINDOW_ARRANGE_HORIZONTAL	RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/window-arrange-horizontal.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_WINDOW_ARRANGE_VERTICAL		RT_XAML		"CommandBars/res/xaml/Office2019-Basic/small/window-arrange-vertical.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_VIEW_PAGE_ONE				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing/small/view-page-one.xaml"
+XTP_XAML_SMALL_ICON_NORMAL_VIEW_PAGE_FOUR				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing/small/view-page-four.xaml"
+
+XTP_XAML_LARGE_ICON_NORMAL_CLOSE						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/close.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_PRINTER						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/printer.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_SYMBOL_ARROW_LEFT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/symbol-arrow-left.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_SYMBOL_ARROW_RIGHT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/symbol-arrow-right.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_ZOOM_IN						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/zoom-in.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_ZOOM_OUT						RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/zoom-out.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_WINDOW_ARRANGE_HORIZONTAL	RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/window-arrange-horizontal.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_WINDOW_ARRANGE_VERTICAL		RT_XAML		"CommandBars/res/xaml/Office2019-Basic/large/window-arrange-vertical.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_VIEW_PAGE_ONE				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing/large/view-page-one.xaml"
+XTP_XAML_LARGE_ICON_NORMAL_VIEW_PAGE_FOUR				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing/large/view-page-four.xaml"
+
+XTP_XAML_SMALL_ICON_DISABLED_CLOSE						RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/close.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_PRINTER					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/printer.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_SYMBOL_ARROW_LEFT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/symbol-arrow-left.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_SYMBOL_ARROW_RIGHT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/symbol-arrow-right.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_ZOOM_IN					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/zoom-in.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_ZOOM_OUT					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/small/zoom-out.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_VIEW_PAGE_ONE				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing-LightGray/small/view-page-one.xaml"
+XTP_XAML_SMALL_ICON_DISABLED_VIEW_PAGE_FOUR				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing-LightGray/small/view-page-four.xaml"
+
+XTP_XAML_LARGE_ICON_DISABLED_CLOSE						RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/close.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_PRINTER					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/printer.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_SYMBOL_ARROW_LEFT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/symbol-arrow-left.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_SYMBOL_ARROW_RIGHT			RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/symbol-arrow-right.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_ZOOM_IN					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/zoom-in.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_ZOOM_OUT					RT_XAML		"CommandBars/res/xaml/Office2019-Basic-LightGray/large/zoom-out.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_VIEW_PAGE_ONE				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing-LightGray/large/view-page-one.xaml"
+XTP_XAML_LARGE_ICON_DISABLED_VIEW_PAGE_FOUR				RT_XAML		"CommandBars/res/xaml/Office2019-WordProcessing-LightGray/large/view-page-four.xaml"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -1,7 +1,6 @@
 // XTPReportRecords.h: interface for the CXTPReportRecords class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTRECORDS_H__)
-#define __XTPREPORTRECORDS_H__
+#	define __XTPREPORTRECORDS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRecord;
 class CXTPPropExchange;
 class CXTPMarkupContext;
 class CXTPReportRecordItem;
+class CXTPReportRecordItemRange;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -38,17 +40,17 @@ class CXTPReportRecordItem;
 // Remarks:
 //     Call CXTPReportRecords::FindRecordItem to search for a record item by text
 // Example:
-//     <code>m_wndReport.GetRecords()->FindRecordItem(... , xtpReportTextSearchWholeWord | xtpReportTextSearchBackward);</code>
+//     <code>m_wndReport.GetRecords()->FindRecordItem(... , xtpReportTextSearchWholeWord |
+//     xtpReportTextSearchBackward);</code>
 // See Also: CXTPReportRecords::FindRecordItem
 //-----------------------------------------------------------------------
-enum  XTPReportTextSearchParms
+enum XTPReportTextSearchParms
 {
-	xtpReportTextSearchExactPhrase = 1,         // Search exact phrase
-	xtpReportTextSearchMatchCase   = 2,         // Match case during search
-	xtpReportTextSearchBackward    = 4,         // Search backward
-	xtpReportTextSearchExactStart  = 8,         // Search phrase starting in the beginning of item caption
+	xtpReportTextSearchExactPhrase = 1, // Search exact phrase
+	xtpReportTextSearchMatchCase   = 2, // Match case during search
+	xtpReportTextSearchBackward	= 4, // Search backward
+	xtpReportTextSearchExactStart  = 8, // Search phrase starting in the beginning of item caption
 };
-
 
 //===========================================================================
 // Summary:
@@ -58,10 +60,15 @@ enum  XTPReportTextSearchParms
 //     See example for CXTPReportRecords::Add method.
 // See Also: CXTPReportRecord
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportRecords : public CXTPHeapObjectT<CCmdTarget, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportRecords
+	: public CXTPHeapObjectT<CXTPCmdTarget, CXTPReportDataAllocator>
 {
 	DECLARE_DYNAMIC(CXTPReportRecords)
+
 	void _Init();
+	void _swapIndexes(int& A, int& B);
+	void _clampIndexes(int& nOrig, const int& nMin, const int& nMax);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -227,17 +234,24 @@ public:
 
 public:
 	//-----------------------------------------------------------------------
-	// Summary: get markup context
+	// Summary: Gets markup context
 	// Returns: Returns markup context
 	//-----------------------------------------------------------------------
 	CXTPMarkupContext* GetMarkupContext() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Sets the markup context
+	//-----------------------------------------------------------------------
+	void SetMarkupContext(CXTPMarkupContext* pMarkupContext);
 
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets a value indicating whether string comparisons are case-sensitive.
 	// Parameters:
-	//     bCaseSensitive - TRUE if string comparisons are case-sensitive; otherwise, FALSE. The default is FALSE.
+	//     bCaseSensitive - TRUE if string comparisons are case-sensitive; otherwise, FALSE. The
+	//     default is FALSE.
 	// See Also: IsCaseSensitive
 	//-----------------------------------------------------------------------
 	void SetCaseSensitive(BOOL bCaseSensitive);
@@ -264,7 +278,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual int Compare(const CString& str1, const CString& str2) const;
 
-		//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to change the array size.
 	// Parameters:
@@ -321,10 +335,40 @@ public:
 	// Returns:
 	//     Report record item found or NULL otherwise.
 	//-----------------------------------------------------------------------
-	virtual CXTPReportRecordItem* FindRecordItem(int nStartRecord, int nEndRecord,
-												int nStartColumn, int nEndColumn,
-												int nRecord, int nItem,
-												LPCTSTR pcszText, int nFlags);
+	virtual CXTPReportRecordItem* FindRecordItem(int nStartRecord, int nEndRecord, int nStartColumn,
+												 int nEndColumn, int nRecord, int nItem,
+												 LPCTSTR pcszText, int nFlags);
+
+	void MergeItems(const CXTPReportRecordItemRange& range);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Solve recursion and change parent of dropped records to allow
+	//     moving by pTargetRecords->Move(nInsert, pDropRecords)
+	// Parameters:
+	//     pTargetRecord  - Record which is target for dropping.
+	//                     Set NULL to skip recursion checking. Also can be NULL
+	//                     when records are dropped on top level of ReportControl.
+	//     pTargetRecords - Records which are target for dropping.
+	//     bChangeParent  - TRUE to change parent of current CXTPReportRecords.
+	// Remarks:
+	//     Method do nothing if pTargetRecords and pTargetRecord are NULL.
+	//-----------------------------------------------------------------------
+	virtual void PrepareToDropping(CXTPReportRecord* pTargetRecord,
+								   CXTPReportRecords* pTargetRecords, BOOL bChangeParent);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Removes  records  which has parent record  in  m_arrRecords
+	//     to prevent breaking hierarchy on separate moving or copying.
+	// Remarks:
+	//     When  m_arrRecords  contains  parent  with  children  which
+	//     were selected together for moving  then this method removes
+	//     children which will be moved or copied with parents anyway.
+	//     If don't remove then that children will be moved separately
+	//     from their parents to target records.
+	//-----------------------------------------------------------------------
+	virtual void CleanOfRedundant();
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
@@ -334,9 +378,11 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CArray<CXTPReportRecord*, CXTPReportRecord*> m_arrRecords;  // Internal storage array for Record items.
-	CXTPReportRecord* m_pVirtualRecord;                // Virtual record.
-	int m_nVirtualRecordsCount;                        // Virtual records count.
+	CArray<CXTPReportRecord*, CXTPReportRecord*> m_arrRecords; // Internal storage array for Record
+															   // items.
+	CXTPReportRecord* m_pVirtualRecord;						   // Virtual record.
+	int m_nVirtualRecordsCount;								   // Virtual records count.
+	CXTPReportControl* m_pControl; // Pointer to the parent report control.
 	//{{AFX_CODEJOCK_PRIVATE
 	BOOL m_bArray;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -347,10 +393,43 @@ protected:
 
 	CXTPMarkupContext* m_pMarkupContext; // Markup Context;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportRecords);
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg LPDISPATCH OleAdd();
+
+	afx_msg LPDISPATCH OleInsert(int nIndex);
+	afx_msg void OleInsertAt(int nIndex, LPDISPATCH pdispRecord);
+
+	afx_msg LPDISPATCH OleFindRecordItem(int nStartRecord, int nEndRecord, int nStartColumn,
+										 int nEndColumn, int nRecord, int nItem, LPCTSTR pcszText,
+										 int nFlags);
+
+	afx_msg void OleMergeItems(int nRecordFrom, int nRecordTo, int nColumnFrom, int nColumnTo);
+
+	afx_msg void OleDoPropExchange(LPDISPATCH lpPropExchage);
+
+	DECLARE_ENUM_VARIANT(CXTPReportRecords)
+
+	enum
+	{
+		dispidCount		 = 1L,
+		dispidAdd		 = 2L,
+		dispidFindColumn = 4L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPReportControl;
 	friend class CXTPReportRecord;
+	friend class CXTPReportSection;
 };
 
 AFX_INLINE BOOL CXTPReportRecords::IsVirtualMode() const
@@ -378,4 +457,10 @@ AFX_INLINE CXTPMarkupContext* CXTPReportRecords::GetMarkupContext() const
 	return m_pMarkupContext;
 }
 
+AFX_INLINE void CXTPReportRecords::SetMarkupContext(CXTPMarkupContext* pMarkupContext)
+{
+	m_pMarkupContext = pMarkupContext;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTRECORDS_H__)

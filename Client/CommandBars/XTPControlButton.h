@@ -1,7 +1,6 @@
 // XTPControlButton.h : interface for the CXTPControlButton class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLBUTTON_H__)
-#define __XTPCONTROLBUTTON_H__
+#	define __XTPCONTROLBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-
-#include "XTPControl.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -38,7 +36,6 @@
 class _XTP_EXT_CLASS CXTPControlButton : public CXTPControl
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlButton object
@@ -51,6 +48,29 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPControlButton();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to set the style of the button containing vector icon.
+	// Parameters:
+	//     buttonStyle - The style to be set. Can be any of the values listed in the Remarks
+	//     section.
+	// Remarks:
+	//     buttonStyle parameter can be one of the following:
+	//         * <b>xtpButtonAutomatic</b> Indicates the default style.
+	//         * <b>xtpButtonCaption</b> Indicates caption drawing only.
+	//         * <b>xtpButtonIcon</b> Indicates icon drawing only.
+	//         * <b>xtpButtonIconAndCaption</b> Indicates icon and caption drawing.
+	//-----------------------------------------------------------------------
+	void SetStyleEx(XTPButtonStyle buttonStyle);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the button's style containing vector icon.
+	// Returns:
+	//     The style of the button.
+	//-----------------------------------------------------------------------
+	XTPButtonStyle GetStyleEx() const;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -60,9 +80,7 @@ public:
 	//----------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the user clicks the control.
@@ -89,15 +107,32 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void Copy(CXTPControl* pControl, BOOL bRecursive = FALSE);
 
+	XTPButtonStyle m_buttonStyleEx; // User defined style of button containing vector icon.
 
 private:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlButton)
+
+	afx_msg XTPButtonStyle OleGetStyleEx();
+	afx_msg void OleSetStyleEx(XTPButtonStyle nStyle);
+
+	enum
+	{
+		dispidStyle = 50L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	DECLARE_XTP_CONTROL(CXTPControlButton)
-
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLBUTTON_H__)

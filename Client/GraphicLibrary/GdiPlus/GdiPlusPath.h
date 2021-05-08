@@ -106,19 +106,19 @@ public:
             pathData->Count = 0;
             if (pathData->Points)
             {
-                delete pathData->Points;
+                delete [] pathData->Points;
                 pathData->Points = NULL;
             }
 
             if (pathData->Types) 
             {
-                delete pathData->Types;
+                delete [] pathData->Types;
                 pathData->Types = NULL;
             }
 
             if (count <= 0)
             {
-                return lastResult;
+                return Ok;
             }
         }
 
@@ -133,7 +133,7 @@ public:
             pathData->Types = new byte[count];
             if (pathData->Types == NULL) 
             {
-                delete pathData->Points;
+                delete [] pathData->Points;
                 pathData->Points = NULL;
 
                 return SetStatus(OutOfMemory);
@@ -1534,3 +1534,4 @@ protected:
 };
 
 #endif // !_GRAPHICSPATH_HPP
+

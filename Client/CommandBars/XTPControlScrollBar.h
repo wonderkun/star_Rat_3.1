@@ -1,7 +1,6 @@
 // XTPControlScrollBar.h : interface for the CXTPControlScrollBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,25 +19,25 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLSCROLLBAR_H__)
-#define __XTPCONTROLSCROLLBAR_H__
+#	define __XTPCONTROLSCROLLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPControl.h"
-#include "XTPScrollBase.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControlScrollBar;
-
 
 //===========================================================================
 // Summary:
 //     CXTPControlScrollBar is a CXTPControl derived class.
 //     It represents an scrollbar control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlScrollBar : public CXTPControl, public CXTPScrollBase
+class _XTP_EXT_CLASS CXTPControlScrollBar
+	: public CXTPControl
+	, public CXTPScrollBase
 {
 	DECLARE_XTP_CONTROL(CXTPControlScrollBar)
 public:
@@ -55,7 +54,6 @@ public:
 	virtual ~CXTPControlScrollBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the scrollbar current position
@@ -84,9 +82,7 @@ public:
 	//-----------------------------------------------------------------------
 	void SetRange(int nMin, int nMax);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when position of scrollbar was changed
@@ -97,7 +93,7 @@ protected:
 	virtual void OnScroll(UINT nSBCode, UINT nPos);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	CSize GetSize(CDC* pDC);
 	BOOL HasFocus() const;
 	void Draw(CDC* pDC);
@@ -108,11 +104,10 @@ protected:
 	void Copy(CXTPControl* pControl, BOOL bRecursive = FALSE);
 	void DoPropExchange(CXTPPropExchange* pPX);
 	void OnMouseMove(CPoint point);
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual CRect GetScrollBarRect();
 	virtual void GetScrollInfo(SCROLLINFO* psi);
 	virtual void DoScroll(int cmd, int pos);
@@ -120,27 +115,38 @@ protected:
 	virtual CXTPScrollBarPaintManager* GetScrollBarPaintManager() const;
 	virtual BOOL IsScrollBarEnabled() const;
 	virtual CWnd* GetParentWindow() const;
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int m_nMin;             // Lower range
-	int m_nMax;             // Upper range
-	int m_nPos;             // Current position of scrollbar
-	int m_nPage;            // Current page of the scrollbar
+	int m_nMin;  // Lower range
+	int m_nMax;  // Upper range
+	int m_nPos;  // Current position of scrollbar
+	int m_nPage; // Current page of the scrollbar
 
 	BOOL m_bInScroll;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlSlider);
+	void OleRangeChanged();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPControlScrollBarCtrl;
 };
 
-AFX_INLINE BOOL CXTPControlScrollBar::IsCustomizeResizeAllow() const {
+AFX_INLINE BOOL CXTPControlScrollBar::IsCustomizeResizeAllow() const
+{
 	return TRUE;
 }
-AFX_INLINE int CXTPControlScrollBar::GetCustomizeMinWidth() const {
+AFX_INLINE int CXTPControlScrollBar::GetCustomizeMinWidth() const
+{
 	return 20;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCONTROLSCROLLBAR_H__)

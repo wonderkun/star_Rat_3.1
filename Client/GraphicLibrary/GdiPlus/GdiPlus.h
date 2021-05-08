@@ -20,6 +20,12 @@ struct IDirectDrawSurface7;
 typedef signed   short   INT16;
 typedef unsigned short  UINT16;
 
+
+// Define the Current GDIPlus Version
+#ifndef GDIPVER
+#define GDIPVER 0x0100
+#endif
+
 #include <pshpack8.h>   // set structure packing to 8
 
 namespace Gdiplus
@@ -39,7 +45,9 @@ namespace Gdiplus
     #include "GdiplusMetaHeader.h"
     #include "GdiplusImaging.h"
     #include "GdiplusColorMatrix.h"
-
+#if (GDIPVER >= 0x0110)    
+    #include "GdiplusEffects.h"
+#endif
     #include "GdiplusGpStubs.h"
     #include "GdiplusHeaders.h"
 
@@ -56,8 +64,8 @@ namespace Gdiplus
     #include "GdiplusStringFormat.h"
     #include "GdiplusPath.h"
     #include "GdiplusLineCaps.h"
-    #include "GdiplusMetafile.h"
     #include "GdiplusGraphics.h"
+    #include "GdiplusMetafile.h"
     #include "GdiplusCachedBitmap.h"
     #include "GdiplusRegion.h"
     #include "GdiplusFontCollection.h"
@@ -71,3 +79,4 @@ namespace Gdiplus
 #include <poppack.h>    // pop structure packing back to previous state
 
 #endif // !_GDIPLUS_HPP
+

@@ -1,7 +1,6 @@
 // XTPMarkupFrameworkElement.h: interface for the CXTPMarkupFrameworkElement class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,23 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMARKUPFRAMEWORKELEMENT_H__)
-#define __XTPMARKUPFRAMEWORKELEMENT_H__
+#	define __XTPMARKUPFRAMEWORKELEMENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPMarkupUIElement.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupResourceDictionary;
 class CXTPMarkupStyle;
 class CXTPMarkupTriggerCollection;
+class CXTPMarkupThickness;
 
 //===========================================================================
-// Summary: This class represents the provided framework-level implementation built on CXTPMarkupUIElement.
+// Summary: This class represents the provided framework-level implementation built on
+// CXTPMarkupUIElement.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPMarkupFrameworkElement : public CXTPMarkupUIElement
 {
@@ -144,7 +145,6 @@ public:
 	//-----------------------------------------------------------------------
 	int GetMinWidth() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get user maximum width constraint
@@ -203,8 +203,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set horizontal alignment characteristics applied to this element when it is composed within a parent element,
-	//     such as a panel or items control
+	//     Call this method to set horizontal alignment characteristics applied to this element when
+	//     it is composed within a parent element, such as a panel or items control
 	//  Parameters:
 	//     alignment - New alignment
 	//-----------------------------------------------------------------------
@@ -212,8 +212,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set vertical alignment characteristics applied to this element when it is composed within a parent element,
-	//     such as a panel or items control
+	//     Call this method to set vertical alignment characteristics applied to this element when
+	//     it is composed within a parent element, such as a panel or items control
 	//  Parameters:
 	//     alignment - New alignment
 	//-----------------------------------------------------------------------
@@ -221,8 +221,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to get horizontal alignment characteristics applied to this element when it is composed within a parent element,
-	//     such as a panel or items control
+	//     Call this method to get horizontal alignment characteristics applied to this element when
+	//     it is composed within a parent element, such as a panel or items control
 	//  Returns:
 	//     Alignment value
 	//-----------------------------------------------------------------------
@@ -230,8 +230,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to get vertical alignment characteristics applied to this element when it is composed within a parent element,
-	//     such as a panel or items control
+	//     Call this method to get vertical alignment characteristics applied to this element when
+	//     it is composed within a parent element, such as a panel or items control
 	//  Returns:
 	//     Alignment value
 	//-----------------------------------------------------------------------
@@ -239,7 +239,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to return actual size of element after it was measured and arranged inside parent element
+	//     Call this method to return actual size of element after it was measured and arranged
+	//     inside parent element
 	//-----------------------------------------------------------------------
 	CSize GetActualSize() const;
 
@@ -268,7 +269,7 @@ public:
 	CXTPMarkupStyle* GetStyle() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// Implementation
 
 	virtual CSize MeasureCore(CXTPMarkupDrawingContext* pDC, CSize szAvailableSize);
@@ -278,7 +279,8 @@ protected:
 	virtual CSize ArrangeOverride(CSize szFinalSize);
 
 	BOOL GetLayoutClip(CRect& rc) const;
-	virtual void OnPropertyChanged(CXTPMarkupDependencyProperty* pProperty, CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
+	virtual void OnPropertyChanged(CXTPMarkupDependencyProperty* pProperty,
+								   CXTPMarkupObject* pOldValue, CXTPMarkupObject* pNewValue);
 
 private:
 	CPoint ComputeAlignmentOffset(CSize clientSize, CSize inkSize) const;
@@ -302,85 +304,124 @@ public:
 	static CXTPMarkupDependencyProperty* m_pMaxWidthProperty;
 	static CXTPMarkupDependencyProperty* m_pMaxHeightProperty;
 	static CXTPMarkupDependencyProperty* m_pTagProperty;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_DISPATCH_MAP()
+#	ifdef _XTP_ACTIVEX
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMarkupFrameworkElement);
+#	endif
 
+	afx_msg long OleGetMinWidth();
+	afx_msg long OleGetWidth();
+	afx_msg long OleGetMaxWidth();
+	afx_msg void OleSetMinWidth(int nWidth);
+	afx_msg void OleSetWidth(int nWidth);
+	afx_msg void OleSetMaxWidth(int nWidth);
+	afx_msg long OleGetMinHeight();
+	afx_msg long OleGetHeight();
+	afx_msg long OleGetMaxHeight();
+	afx_msg void OleSetMinHeight(int nHeight);
+	afx_msg void OleSetHeight(int nHeight);
+	afx_msg void OleSetMaxHeight(int nHeight);
+	afx_msg LPDISPATCH OleGetMargin();
+	afx_msg void OleSetMargin(LPDISPATCH lpMarginDisp);
+	afx_msg long OleGetHorizontalAlignment();
+	afx_msg long OleGetVerticalAlignment();
+	afx_msg void OleSetHorizontalAlignment(long nValue);
+	afx_msg void OleSetVerticalAlignment(long nValue);
+	afx_msg VARIANT OleGetTag();
+	afx_msg void OleSetTag(const VARIANT& va);
 
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMargin(int nLeft, int nTop, int nRight, int nBottom) {
-	SetValue(m_pMarginProperty, new CXTPMarkupThickness(nLeft, nTop, nRight, nBottom));
-}
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMargin(int nMargin) {
-	SetValue(m_pMarginProperty, new CXTPMarkupThickness(nMargin));
-}
-AFX_INLINE CXTPMarkupThickness* CXTPMarkupFrameworkElement::GetMargin() const {
-	return MARKUP_STATICCAST(CXTPMarkupThickness, GetValue(m_pMarginProperty));
-}
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMinWidth(int nWidth) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetMinWidth(int nWidth)
+{
 	SetValue(m_pMinWidthProperty, new CXTPMarkupInt(nWidth));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMaxWidth(int nWidth) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetMaxWidth(int nWidth)
+{
 	SetValue(m_pMaxWidthProperty, new CXTPMarkupInt(nWidth));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetWidth(int nWidth) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetWidth(int nWidth)
+{
 	SetValue(m_pWidthProperty, new CXTPMarkupInt(nWidth));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMinHeight(int nHeight) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetMinHeight(int nHeight)
+{
 	SetValue(m_pMinHeightProperty, new CXTPMarkupInt(nHeight));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetMaxHeight(int nHeight) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetMaxHeight(int nHeight)
+{
 	SetValue(m_pMaxHeightProperty, new CXTPMarkupInt(nHeight));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetHeight(int nHeight) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetHeight(int nHeight)
+{
 	SetValue(m_pHeightProperty, new CXTPMarkupInt(nHeight));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetHorizontalAlignment(XTPMarkupHorizontalAlignment alignment) {
+AFX_INLINE void
+	CXTPMarkupFrameworkElement::SetHorizontalAlignment(XTPMarkupHorizontalAlignment alignment)
+{
 	SetValue(m_pHorizontalAlignmentProperty, CXTPMarkupEnum::CreateValue(alignment));
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetVerticalAlignment(XTPMarkupVerticalAlignment alignment) {
+AFX_INLINE void
+	CXTPMarkupFrameworkElement::SetVerticalAlignment(XTPMarkupVerticalAlignment alignment)
+{
 	SetValue(m_pVerticalAlignmentProperty, CXTPMarkupEnum::CreateValue(alignment));
 }
-AFX_INLINE CSize CXTPMarkupFrameworkElement::GetActualSize() const {
+AFX_INLINE CSize CXTPMarkupFrameworkElement::GetActualSize() const
+{
 	return m_szRenderSize;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetMinWidth() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetMinWidth() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pMinWidthProperty));
 	return pValue != NULL ? (int)*pValue : 0;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetMaxWidth() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetMaxWidth() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pMaxWidthProperty));
 	return pValue != NULL ? (int)*pValue : INT_MAX;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetWidth() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetWidth() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pWidthProperty));
 	return pValue != NULL ? (int)*pValue : 0;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetMinHeight() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetMinHeight() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pMinHeightProperty));
 	return pValue != NULL ? (int)*pValue : 0;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetMaxHeight() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetMaxHeight() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pMaxHeightProperty));
 	return pValue != NULL ? (int)*pValue : INT_MAX;
 }
-AFX_INLINE int CXTPMarkupFrameworkElement::GetHeight() const {
+AFX_INLINE int CXTPMarkupFrameworkElement::GetHeight() const
+{
 	CXTPMarkupInt* pValue = MARKUP_STATICCAST(CXTPMarkupInt, GetValue(m_pHeightProperty));
 	return pValue != NULL ? (int)*pValue : 0;
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetTag(CXTPMarkupObject* pTag) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetTag(CXTPMarkupObject* pTag)
+{
 	SetValue(m_pTagProperty, pTag);
 }
-AFX_INLINE CXTPMarkupObject* CXTPMarkupFrameworkElement::GetTag() const {
+AFX_INLINE CXTPMarkupObject* CXTPMarkupFrameworkElement::GetTag() const
+{
 	return GetValue(m_pTagProperty);
 }
-AFX_INLINE CXTPMarkupStyle* CXTPMarkupFrameworkElement::GetStyle() const {
+AFX_INLINE CXTPMarkupStyle* CXTPMarkupFrameworkElement::GetStyle() const
+{
 	return m_pStyleCache;
 }
-AFX_INLINE void CXTPMarkupFrameworkElement::SetClipToBounds(BOOL bClipToBounds) {
+AFX_INLINE void CXTPMarkupFrameworkElement::SetClipToBounds(BOOL bClipToBounds)
+{
 	SetValue(m_pClipToBoundsProperty, CXTPMarkupBool::CreateValue(bClipToBounds));
 }
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMARKUPFRAMEWORKELEMENT_H__)

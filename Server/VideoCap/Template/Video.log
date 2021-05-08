@@ -1,0 +1,12 @@
+﻿  Buffer.cpp
+  ClientSocket.cpp
+  Manager.cpp
+  until.cpp
+  CaptureVideo.cpp
+  Video.cpp
+C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\VideoCap\Video.cpp(13,12): warning C4305: “return”: 从“int”到“bool”截断
+  VideoManager.cpp
+  XvidEnc.cpp
+  正在生成代码...
+    正在创建库 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\Video.lib 和对象 C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\Video.exp
+  Video.vcxproj -> C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\Video.dll

@@ -1,7 +1,6 @@
 // XTPChartDrawThread.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTDRAWTHREAD_H__)
-#define __XTPCHARTDRAWTHREAD_H__
+#	define __XTPCHARTDRAWTHREAD_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartDeviceCommand.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartDeviceCommand;
 class CXTPChartDeviceContext;
@@ -67,7 +66,7 @@ public:
 	void StartDraw(CSize sz, CXTPChartDrawThreadDeviceCommand* pCommand);
 
 protected:
-	HANDLE          m_dwMonitorEvents[2];   // Change event handles.
+	HANDLE m_dwMonitorEvents[2]; // Change event handles.
 
 	CXTPChartDrawThreadDeviceCommand* m_pCommand;
 	CSize m_szImage;
@@ -77,8 +76,8 @@ protected:
 	CXTPChartControl* m_pControl;
 	CRITICAL_SECTION m_cs;
 
-
 	friend class CXTPChartControl;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTDRAWTHREAD_H__)

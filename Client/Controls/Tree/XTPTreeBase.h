@@ -1,7 +1,6 @@
 // XTPTreeBase.h interface for the CXTPTreeBase class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTTREEBASE_H__)
-#define __XTTREEBASE_H__
+#	define __XTTREEBASE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPTreeTheme;
+class CXTPWinThemeWrapper;
 
 //===========================================================================
 // Summary:
@@ -51,8 +55,8 @@ protected:
 		// ----------------------------------------------------------------------
 		CLRFONT();
 
-		LOGFONT  logfont;   // A LOGFONT object that represents the tree item font.
-		COLORREF color;     // An RGB value that represents the text color for a tree item.
+		LOGFONT logfont;	// A LOGFONT object that represents the tree item font.
+		COLORREF color;		// An RGB value that represents the text color for a tree item.
 		COLORREF colorBack; // An RGB value that represents the background color for a tree item.
 	};
 
@@ -83,7 +87,6 @@ protected:
 	virtual ~CXTPTreeBase();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will retrieve the tree view item that has the
@@ -118,7 +121,8 @@ public:
 	//     NULL.
 	//-----------------------------------------------------------------------
 	virtual HTREEITEM GetNextItem(HTREEITEM hItem) const;
-	virtual HTREEITEM GetNextItem(HTREEITEM hItem, UINT nCode) const; // <combine CXTPTreeBase::GetNextItem@HTREEITEM@const>
+	virtual HTREEITEM GetNextItem(
+		HTREEITEM hItem, UINT nCode) const; // <combine CXTPTreeBase::GetNextItem@HTREEITEM@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -158,7 +162,27 @@ public:
 	// See Also:
 	//     IsFindValid
 	//-----------------------------------------------------------------------
-	virtual HTREEITEM FindItem(LPCTSTR lpszSearch, BOOL bCaseSensitive = FALSE, BOOL bDownDir = TRUE, BOOL bWholeWord = FALSE, HTREEITEM hItem = NULL);
+	virtual HTREEITEM FindItem(LPCTSTR lpszSearch, BOOL bCaseSensitive = FALSE,
+							   BOOL bDownDir = TRUE, BOOL bWholeWord = FALSE,
+							   HTREEITEM hItem = NULL);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function searches the entire tree for an item label
+	//     that contains exactly the same text as search string.
+	// Parameters:
+	//     lpszSearch     - String to search for.
+	//     bCaseSensitive - TRUE if the search should be case sensitive.
+	//     bDownDir       - TRUE for down.
+	//     hItem          - Handle of the tree item to start searching from, NULL to use
+	//     the currently selected tree item.
+	// Returns:
+	//     The handle to the item, or returns NULL.
+	// See Also:
+	//     IsFindValid
+	//-----------------------------------------------------------------------
+	virtual HTREEITEM FindItemExact(LPCTSTR lpszSearch, BOOL bCaseSensitive = FALSE,
+									BOOL bDownDir = TRUE, HTREEITEM hItem = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -175,7 +199,8 @@ public:
 	// See Also:
 	//     IsFindValid
 	//-----------------------------------------------------------------------
-	virtual HTREEITEM FindItemInBranch(LPCTSTR lpszSearch, BOOL bCaseSensitive /*= FALSE*/, BOOL bWholeWord /*= FALSE*/, HTREEITEM htiItem /*= NULL*/);
+	virtual HTREEITEM FindItemInBranch(LPCTSTR lpszSearch, BOOL bCaseSensitive /*= FALSE*/,
+									   BOOL bWholeWord /*= FALSE*/, HTREEITEM htiItem /*= NULL*/);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -290,7 +315,7 @@ public:
 	// Returns:
 	//     A handle to the next selected tree item.
 	//-----------------------------------------------------------------------
-	HTREEITEM GetNextSelectedItem(HTREEITEM hItem) const;
+	virtual HTREEITEM GetNextSelectedItem(HTREEITEM hItem) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -299,7 +324,7 @@ public:
 	// Returns:
 	//     A handle to the first selected tree item.
 	//-----------------------------------------------------------------------
-	HTREEITEM GetFirstSelectedItem() const;
+	virtual HTREEITEM GetFirstSelectedItem() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -307,7 +332,7 @@ public:
 	// Returns:
 	//     A UNIT value that represents the number of tree items selected.
 	//-----------------------------------------------------------------------
-	UINT GetSelectedCount() const;
+	virtual UINT GetSelectedCount() const;
 
 	// --------------------------------------------------------------------------
 	// Summary:
@@ -384,7 +409,7 @@ public:
 	//     bSelect - TRUE to select all the items, or FALSE to clear the selection.
 	//     htItem  - Tree item to start selection from. If NULL selection will begin at the root.
 	//-----------------------------------------------------------------------
-	void SelectAll(BOOL bSelect = TRUE, HTREEITEM htItem = NULL);
+	virtual void SelectAll(BOOL bSelect = TRUE, HTREEITEM htItem = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -398,7 +423,7 @@ public:
 	//     bOnly     - TRUE to only select the specified range, or FALSE to keep existing
 	//                 selections.
 	//-----------------------------------------------------------------------
-	void SelectItems(HTREEITEM hItemFrom, HTREEITEM hItemTo, BOOL bOnly = TRUE);
+	virtual void SelectItems(HTREEITEM hItemFrom, HTREEITEM hItemTo, BOOL bOnly = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -408,7 +433,7 @@ public:
 	// Returns:
 	//     TRUE if the specified item is selected, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL IsSelected(HTREEITEM hItem) const;
+	virtual BOOL IsSelected(HTREEITEM hItem) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -444,6 +469,21 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     This member function checks to see if the tree control has Explorer theme
+	//     applied.
+	// Returns:
+	//     TRUE if the tree control has Explorer theme applied (Vista+)
+	//-----------------------------------------------------------------------
+	BOOL IsExplorerTheme() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function sets the Explorer theme applied. (Vista+
+	//-----------------------------------------------------------------------
+	void SetExplorerTheme(BOOL bSet);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function sets the banding mode for a multi-selection tree
 	//     control. If 'bLabel' is TRUE, then items are selected only when the
 	//     banding rect passes over the tree item label. If FALSE, passing
@@ -458,8 +498,39 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL SetBandingHit(BOOL bLabel);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function checks if the tree control uses default
+	//     (system specific) item drawing method.
+	// Returns:
+	//     TRUE if the tree control has uses default item drawing method.
+	//     FALSE if items are drawn by the framework.
+	//-----------------------------------------------------------------------
+	BOOL IsDefaultItemDrawingEnabled() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Enables or disables default item drawing method. By default
+	//     items are drawn by the framework, which means default item
+	//     drawing is set to TRUE.
+	// Parameters:
+	//     bEnable - TRUE to enable default item drawing method.
+	//-----------------------------------------------------------------------
+	void EnableDefaultItemDrawing(BOOL bEnable = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Allow to change ident between icon/text/expander
+	//-----------------------------------------------------------------------
+	int SetIconIndent(int iconIndent);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Allow get ident between text/image/expander
+	//-----------------------------------------------------------------------
+	int GetIconIndent() const;
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPTreeBase class to
@@ -509,7 +580,7 @@ protected:
 	//              section for a list of values.
 	//     point  - xy cursor location.
 	// Remarks:
-	//     <i>nFlags, /i> can be any combination of the following values:<p/>
+	//     <i>nFlags</i> can be any combination of the following values:<p/>
 	//     * <b>MK_CONTROL</b> Set if the CTRL key is down.
 	//     * <b>MK_LBUTTON</b> Set if the left mouse button is down.
 	//     * <b>MK_MBUTTON</b> Set if the middle mouse button is down.
@@ -529,7 +600,7 @@ protected:
 	//     nFlags - Indicates whether various virtual keys are down. See Remarks
 	//              section for a list of values.
 	// Remarks:
-	//     <i>nFlags, /i> can be any combination of the following values:<p/>
+	//     <i>nFlags</i> can be any combination of the following values:<p/>
 	//     * <b>MK_CONTROL</b> Set if the CTRL key is down.
 	//     * <b>MK_LBUTTON</b> Set if the left mouse button is down.
 	//     * <b>MK_MBUTTON</b> Set if the middle mouse button is down.
@@ -548,7 +619,7 @@ protected:
 	//              section for a list of values.
 	//     point  - Mouse cursor position.
 	// Remarks:
-	//     <i>nFlags, /i> can be any combination of the following values:<p/>
+	//     <i>nFlags</i> can be any combination of the following values:<p/>
 	//     * <b>MK_CONTROL</b> Set if the CTRL key is down.
 	//     * <b>MK_LBUTTON</b> Set if the left mouse button is down.
 	//     * <b>MK_MBUTTON</b> Set if the middle mouse button is down.
@@ -565,7 +636,7 @@ protected:
 	//     nFlags - Indicates whether various virtual keys are down. See Remarks
 	//              section for a list of values.
 	// Remarks:
-	//     <i>nFlags, /i> can be any combination of the following values:<p/>
+	//     <i>nFlags</i> can be any combination of the following values:<p/>
 	//     * <b>MK_CONTROL</b> Set if the CTRL key is down.
 	//     * <b>MK_LBUTTON</b> Set if the left mouse button is down.
 	//     * <b>MK_MBUTTON</b> Set if the middle mouse button is down.
@@ -585,14 +656,15 @@ protected:
 	// Remarks:
 	//     Called by the tree control to select tree items based upon the area
 	//     specified by <i>pRect</i>.
-	//     <i>nFlags, /i> can be any combination of the following values:<p/>
+	//     <i>nFlags</i> can be any combination of the following values:<p/>
 	//     * <b>MK_CONTROL</b> Set if the CTRL key is down.
 	//     * <b>MK_LBUTTON</b> Set if the left mouse button is down.
 	//     * <b>MK_MBUTTON</b> Set if the middle mouse button is down.
 	//     * <b>MK_RBUTTON</b> Set if the right mouse button is down.
 	//     * <b>MK_SHIFT</b>   Set if the SHIFT key is down.
 	//-----------------------------------------------------------------------
-	virtual void UpdateSelectionForRect(LPCRECT pRect, UINT nFlags, CTypedPtrList<CPtrList, HTREEITEM>& list);
+	virtual void UpdateSelectionForRect(LPCRECT pRect, UINT nFlags,
+										CTypedPtrList<CPtrList, HTREEITEM>& list);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -649,6 +721,65 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Computes item icon rectangle.
+	// Parameters:
+	//     hItem - item handle for which icon rectangle has to be computed.
+	// Returns:
+	//     Item icon rectangle. Returns an empty rectangle if the item provided
+	//     has no icon.
+	//-----------------------------------------------------------------------
+	CRect GetItemIconRect(HTREEITEM hItem) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Computes item state icon rectangle.
+	// Parameters:
+	//     hItem - item handle for which state icon rectangle has to be computed.
+	// Returns:
+	//     Item state icon rectangle. Returns an empty rectangle if the item provided
+	//     has no state icon.
+	//-----------------------------------------------------------------------
+	CRect GetItemStateIconRect(HTREEITEM hItem, const CRect& rcIcon) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Computes item expander rectangle.
+	// Parameters:
+	//     hItem - item handle for which expander rectangle has to be computed.
+	// Returns:
+	//     Item expander rectangle. Returns an empty rectangle if the item provided
+	//     has no expander.
+	//-----------------------------------------------------------------------
+	CRect GetItemExpanderRect(HTREEITEM hItem, CDC* pDC, const CRect& rcIcon,
+							  const CRect& rcStateIcon) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Custom drawing of an item along with its icon and lines if necessary.
+	//-----------------------------------------------------------------------
+	void DrawItem(CDC* pDC, HTREEITEM hItem, const COLORREF crBack);
+
+	_XTP_DEPRECATE("The method is deprecated and will be removed in future versions. Use "
+				   "'DrawItem(CDC *pDC, HTREEITEM hItem, const COLORREF crBack)' instead.")
+	void DrawItem(CDC* pDC, HTREEITEM hItem);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Drawing expander with explorer style when used dark themes.
+	// Parameters:
+	//     pDC        - Points to the current device context.
+	//     crBack     - Item back color
+	//     rcItem     - Item rectangle
+	//     nItemState - State
+	//     rcExpander - Expander rectangle
+	//     nPart      - Part number to draw
+	//     nState     - State number (of the part) to draw
+	//-----------------------------------------------------------------------
+	void DrawDarkThemeExpander(CDC* pDC, COLORREF crBack, CRect rcItem, CRect rcExpander, int nPart,
+							   int nState) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Retrieves a tree items background color.
 	// Parameters:
 	//     uState        - Mask indicating which states are to be retrieved. For
@@ -667,7 +798,8 @@ protected:
 	// See Also:
 	//     GetTreeBackColor, GetTreeTextColor, GetItemTextColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetItemBackColor(UINT uState, bool bTreeHasFocus, DWORD dwStyle, COLORREF crBack) const;
+	virtual COLORREF GetItemBackColor(UINT uState, bool bTreeHasFocus, DWORD dwStyle,
+									  COLORREF crBack) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -689,7 +821,8 @@ protected:
 	// See Also:
 	//     GetTreeBackColor, GetTreeTextColor, GetItemBackColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetItemTextColor(UINT uState, bool bTreeHasFocus, DWORD dwStyle, COLORREF crText) const;
+	virtual COLORREF GetItemTextColor(UINT uState, bool bTreeHasFocus, DWORD dwStyle,
+									  COLORREF crText) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -699,10 +832,44 @@ protected:
 	//-----------------------------------------------------------------------
 	bool HasEditLabels() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function searches the entire tree for an item label
+	//     that contains the search string.
+	// Parameters:
+	//     lpszSearch     - String to search for.
+	//     bCaseSensitive - TRUE if the search should be case sensitive.
+	//     bDownDir       - TRUE for down.
+	//     bWholeWord     - TRUE if search should match whole words.
+	//     hItem          - Handle of the tree item to start searching from, NULL to use
+	//     the currently selected tree item.
+	//     bExactlySameText - TRUE if item label and input search string should have exactly the
+	//     same text. If this parameter is TRUE the value of bWholeWord is not take in account.
+	// Returns:
+	//     The handle to the item, or returns NULL.
+	// See Also:
+	//     IsFindValid
+	//-----------------------------------------------------------------------
+	virtual HTREEITEM FindItemImpl(LPCTSTR lpszSearch, BOOL bCaseSensitive = FALSE,
+								   BOOL bDownDir = TRUE, BOOL bWholeWord = FALSE,
+								   HTREEITEM hItem = NULL, BOOL bExactlySameStr = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Member allow override style of row selection
+	virtual BOOL IsFullRowSelectionEnabled();
+
+public:
+	void SetTheme(int nTheme); // XTPControlTheme
+
+	void RefreshMetrics();
+
+	CTreeCtrl* GetSelfTreeCtrl() const;
+
+	int GetTheme() const;
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPTreeBase)
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -722,178 +889,282 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
-
-
-protected:
-//{{AFX_CODEJOCK_PRIVATE
-	// Needed in order to access protected functions.
-	class CTreeCtrl_Friendly : public CTreeCtrl { friend class CXTPTreeBase; };
-//}}AFX_CODEJOCK_PRIVATE
-
-protected:
-	BOOL                m_bMultiSelect; // TRUE for a multi-selection tree control.
-	BOOL                m_bBandLabel;   // TRUE to include the label when selecting tree items.
-	HTREEITEM           m_hSelect;      // For shift selection.
-	HTREEITEM           m_htiEdit;      // Tree item that is currently edited.
-	HTREEITEM           m_htiLast;      // Tree item that was last had the mouse over.
-	CColorFontMap       m_mapColorFont; // Maps HTREEITEM handles with CLRFONT structures that contains the color and logfont information for the tree item.
-	CTreeCtrl_Friendly* m_pTreeCtrl;    // Self tree pointer.
 
 private:
+	void DrawDottedLine(CDC* pDC, const CPoint& ptStart, const CPoint& ptEnd);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Find first visible item by first symbol.
+	// Parameters:
+	//     nChar       -  Specifies the virtual key code of the given key.
+	//     nFlags      -  Specifies the scan code.
+	// Remarks:
+	//     This member function is called to retrieve first visible item which
+	//     has first symbol such as nChar code.
+	// Returns:
+	//     HTREEITEM value or NULL if not found.
+	// See Also:
+	//     CWnd::OnKeyDown
+	//-----------------------------------------------------------------------
+	HTREEITEM FindVisibleItem(UINT nChar, UINT nFlags);
+
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	// Needed in order to access protected functions.
+	class CTreeCtrl_Friendly : public CTreeCtrl
+	{
+		friend class CXTPTreeBase;
+	};
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	BOOL m_bMultiSelect;		  // TRUE for a multi-selection tree control.
+	BOOL m_bBandLabel;			  // TRUE to include the label when selecting tree items.
+	BOOL m_bExplorerTheme;		  // TRUE if Explorer theme is On for tree control (Windows Vista+)
+	HTREEITEM m_hSelect;		  // For shift selection.
+	HTREEITEM m_htiEdit;		  // Tree item that is currently edited.
+	HTREEITEM m_htiLast;		  // Tree item that was last had the mouse over.
+	CColorFontMap m_mapColorFont; // Maps HTREEITEM handles with CLRFONT structures that contains
+								  // the color and logfont information for the tree item.
+	CTreeCtrl_Friendly* m_pTreeCtrl; // Self tree pointer.
+
+	int m_nTheme; // This variable will be removed with themes support.
+
+	CXTPTreeTheme* m_pTheme;
+
+	CXTPWinThemeWrapper* m_pWindowsTreeTheme;
+
+	BOOL m_bDoDefaultItemDrawing; // FALSE by default, which means an item will be drawn by
+								  // framework. If TRUE, items will be drawn in a standard way.
+	int m_iconIndent;			  // indent between icon/text/expander
+
+private:
+	CPen m_penLines;
 	bool m_bActionDone;
 	bool m_bOkToEdit;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE HTREEITEM CXTPTreeBase::GetNextItem(HTREEITEM hItem, UINT nCode) const {
-	ASSERT(::IsWindow(m_pTreeCtrl->m_hWnd)); return m_pTreeCtrl->GetNextItem(hItem, nCode);
+AFX_INLINE HTREEITEM CXTPTreeBase::GetNextItem(HTREEITEM hItem, UINT nCode) const
+{
+	ASSERT(::IsWindow(m_pTreeCtrl->m_hWnd));
+	return m_pTreeCtrl->GetNextItem(hItem, nCode);
 }
-AFX_INLINE HTREEITEM CXTPTreeBase::GetFocusedItem() const {
-	ASSERT(m_bMultiSelect); return m_pTreeCtrl->GetSelectedItem();
+AFX_INLINE HTREEITEM CXTPTreeBase::GetFocusedItem() const
+{
+	ASSERT(m_bMultiSelect);
+	return m_pTreeCtrl->GetSelectedItem();
 }
-AFX_INLINE BOOL CXTPTreeBase::IsSelected(HTREEITEM hItem) const {
+AFX_INLINE BOOL CXTPTreeBase::IsSelected(HTREEITEM hItem) const
+{
 	return !!(TVIS_SELECTED & m_pTreeCtrl->GetItemState(hItem, TVIS_SELECTED));
 }
-AFX_INLINE BOOL CXTPTreeBase::IsMultiSelect() const {
+AFX_INLINE BOOL CXTPTreeBase::IsMultiSelect() const
+{
 	return m_bMultiSelect;
 }
-AFX_INLINE BOOL CXTPTreeBase::SetBandingHit(BOOL bLabel) {
-	BOOL bReturn = m_bBandLabel; m_bBandLabel = bLabel; return bReturn;
+AFX_INLINE BOOL CXTPTreeBase::IsExplorerTheme() const
+{
+	return m_bExplorerTheme;
 }
-AFX_INLINE CXTPTreeBase::CLRFONT::CLRFONT() : color((COLORREF)-1), colorBack((COLORREF)-1) {
+AFX_INLINE BOOL CXTPTreeBase::SetBandingHit(BOOL bLabel)
+{
+	BOOL bReturn = m_bBandLabel;
+	m_bBandLabel = bLabel;
+	return bReturn;
+}
+AFX_INLINE CXTPTreeBase::CLRFONT::CLRFONT()
+	: color((COLORREF)-1)
+	, colorBack((COLORREF)-1)
+{
 	::ZeroMemory(&logfont, sizeof(LOGFONT));
 }
 
-//{{AFX_CODEJOCK_PRIVATE
-#define DECLATE_TREE_BASE(ClassName, Tree, Base)\
-class _XTP_EXT_CLASS ClassName : public Tree, public Base\
-{\
-public:\
-	ClassName() {\
-		m_bPreSubclassInit = true;\
-	}   \
-	virtual UINT GetItemState(HTREEITEM hItem, UINT nStateMask) const  {\
-		return Base::GetItemState(hItem, nStateMask);\
-	}\
-	virtual BOOL SelectItem(HTREEITEM hItem) {\
-		return Base::SelectItem(hItem);\
-	}\
-	virtual BOOL SetItemState(HTREEITEM hItem, UINT nState, UINT nStateMask) {\
-		return Base::SetItemState(hItem, nState, nStateMask);\
-	}\
-	virtual HTREEITEM GetNextItem(HTREEITEM hItem, UINT nCode) const {\
-		return Base::GetNextItem(hItem, nCode);\
-	}\
-	virtual HTREEITEM GetNextItem(HTREEITEM hItem) const {\
-		return Base::GetNextItem(hItem);\
-	}\
-	UINT GetSelectedCount() const {\
-		return Base::GetSelectedCount();\
-	}\
-protected:\
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) {\
-		return Base::OnNotify(wParam, lParam, pResult);\
-	}   \
-	virtual BOOL PreTranslateMessage(MSG* pMsg) {\
-		return Base::PreTranslateMessage(pMsg);\
-	}   \
-	virtual bool Init() {\
-		return Base::Init();\
-	}   \
-	virtual void PreSubclassWindow()\
-	{\
-		Tree::PreSubclassWindow();\
-		if (m_bPreSubclassInit)\
-			Init();\
-	}   \
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs)\
-	{\
-		if (!Tree::PreCreateWindow(cs))\
-			return FALSE;\
-		m_bPreSubclassInit = false;\
-		return TRUE;\
-	}   \
-	bool m_bPreSubclassInit;\
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point) {\
-		Base::OnLButtonDown(nFlags, point);\
-	}   \
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point) {\
-		Base::OnRButtonDown(nFlags, point);\
-	}   \
-	afx_msg void OnSetFocus(CWnd* pOldWnd) {\
-		Base::OnSetFocus(pOldWnd);\
-	}   \
-	afx_msg void OnKillFocus(CWnd* pNewWnd) {\
-		Base::OnKillFocus(pNewWnd); \
-	}   \
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {\
-		Base::OnKeyDown(nChar, nRepCnt, nFlags);\
-	}   \
-	afx_msg BOOL OnBeginLabelEdit(NMHDR* pNMHDR, LRESULT* pResult) {\
-		return Base::OnBeginLabelEdit(pNMHDR, pResult); \
-	}   \
-	afx_msg BOOL OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult) {\
-		return Base::OnEndLabelEdit(pNMHDR, pResult);\
-	}   \
-	afx_msg BOOL OnItemExpanding(NMHDR* pNMHDR, LRESULT* pResult) {\
-		return Base::OnItemExpanding(pNMHDR, pResult);\
-	}   \
-	afx_msg BOOL OnDeleteItem(NMHDR* pNMHDR, LRESULT* pResult) {\
-		return Base::OnDeleteItem(pNMHDR, pResult);\
-	}   \
-	afx_msg void OnSize(UINT nType, int cx, int cy) {\
-		Base::OnSize(nType, cx, cy);\
-	}   \
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point) {   \
-		Base::OnMouseMove(nFlags, point);\
-	}   \
-	afx_msg void OnTimer(UINT_PTR nIDEvent) {       \
-		Base::OnTimer(nIDEvent);\
-	}   \
-	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point) {\
-		Base::OnNcMouseMove(nHitTest, point);\
-	}\
-	afx_msg BOOL OnEraseBkgnd(CDC*) {\
-		return TRUE;\
-	}\
-	afx_msg void OnPaint() {\
-		CPaintDC dc(this);\
-		DoPaint(dc); \
-	}\
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)\
-	{\
-		if (Tree::OnCreate(lpCreateStruct) == -1)\
-			return -1;\
-		Init();\
-		return 0;\
-	}   \
-};
+AFX_INLINE CTreeCtrl* CXTPTreeBase::GetSelfTreeCtrl() const
+{
+	return m_pTreeCtrl;
+}
 
-#define ON_TREECTRL_REFLECT\
-	ON_WM_LBUTTONDOWN()\
-	ON_WM_SETFOCUS()\
-	ON_WM_KILLFOCUS()\
-	ON_WM_RBUTTONDOWN()\
-	ON_WM_KEYDOWN()\
-	ON_WM_ERASEBKGND()\
-	ON_WM_PAINT()\
-	ON_WM_SIZE()\
-	ON_NOTIFY_REFLECT_EX(TVN_DELETEITEM, OnDeleteItem)\
-	ON_NOTIFY_REFLECT_EX(TVN_ITEMEXPANDING, OnItemExpanding)\
-	ON_NOTIFY_REFLECT_EX(TVN_BEGINLABELEDIT, OnBeginLabelEdit)\
-	ON_NOTIFY_REFLECT_EX(TVN_ENDLABELEDIT, OnEndLabelEdit)\
-	ON_WM_MOUSEMOVE()\
-	ON_WM_TIMER()\
-	ON_WM_NCMOUSEMOVE()\
-	ON_WM_CREATE
+AFX_INLINE int CXTPTreeBase::GetTheme() const
+{
+	return m_nTheme;
+}
+
+AFX_INLINE BOOL CXTPTreeBase::IsDefaultItemDrawingEnabled() const
+{
+	return m_bDoDefaultItemDrawing;
+}
+
+AFX_INLINE void CXTPTreeBase::EnableDefaultItemDrawing(BOOL bEnable /*= TRUE*/)
+{
+	m_bDoDefaultItemDrawing = bEnable;
+}
+
+//{{AFX_CODEJOCK_PRIVATE
+#	define DECLARE_TREE_BASE(ClassName, Tree, Base)                                               \
+		class _XTP_EXT_CLASS ClassName                                                             \
+			: public Tree                                                                          \
+			, public Base                                                                          \
+		{                                                                                          \
+		public:                                                                                    \
+			ClassName()                                                                            \
+			{                                                                                      \
+				m_bPreSubclassInit = true;                                                         \
+			}                                                                                      \
+			virtual UINT GetItemState(HTREEITEM hItem, UINT nStateMask) const                      \
+			{                                                                                      \
+				return Base::GetItemState(hItem, nStateMask);                                      \
+			}                                                                                      \
+			virtual BOOL SelectItem(HTREEITEM hItem)                                               \
+			{                                                                                      \
+				return Base::SelectItem(hItem);                                                    \
+			}                                                                                      \
+			virtual BOOL SetItemState(HTREEITEM hItem, UINT nState, UINT nStateMask)               \
+			{                                                                                      \
+				return Base::SetItemState(hItem, nState, nStateMask);                              \
+			}                                                                                      \
+			virtual HTREEITEM GetNextItem(HTREEITEM hItem, UINT nCode) const                       \
+			{                                                                                      \
+				return Base::GetNextItem(hItem, nCode);                                            \
+			}                                                                                      \
+			virtual HTREEITEM GetNextItem(HTREEITEM hItem) const                                   \
+			{                                                                                      \
+				return Base::GetNextItem(hItem);                                                   \
+			}                                                                                      \
+			UINT GetSelectedCount() const                                                          \
+			{                                                                                      \
+				return Base::GetSelectedCount();                                                   \
+			}                                                                                      \
+                                                                                                   \
+		protected:                                                                                 \
+			virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)                  \
+			{                                                                                      \
+				return Base::OnNotify(wParam, lParam, pResult);                                    \
+			}                                                                                      \
+			virtual BOOL PreTranslateMessage(MSG* pMsg)                                            \
+			{                                                                                      \
+				return Base::PreTranslateMessage(pMsg);                                            \
+			}                                                                                      \
+			virtual bool Init()                                                                    \
+			{                                                                                      \
+				return Base::Init();                                                               \
+			}                                                                                      \
+			virtual void PreSubclassWindow()                                                       \
+			{                                                                                      \
+				Tree::PreSubclassWindow();                                                         \
+				if (m_bPreSubclassInit)                                                            \
+					Init();                                                                        \
+			}                                                                                      \
+			virtual BOOL PreCreateWindow(CREATESTRUCT& cs)                                         \
+			{                                                                                      \
+				if (!Tree::PreCreateWindow(cs))                                                    \
+					return FALSE;                                                                  \
+				m_bPreSubclassInit = false;                                                        \
+				return TRUE;                                                                       \
+			}                                                                                      \
+			bool m_bPreSubclassInit;                                                               \
+			afx_msg void OnLButtonDown(UINT nFlags, CPoint point)                                  \
+			{                                                                                      \
+				Base::OnLButtonDown(nFlags, point);                                                \
+			}                                                                                      \
+			afx_msg void OnRButtonDown(UINT nFlags, CPoint point)                                  \
+			{                                                                                      \
+				Base::OnRButtonDown(nFlags, point);                                                \
+			}                                                                                      \
+			afx_msg void OnSetFocus(CWnd* pOldWnd)                                                 \
+			{                                                                                      \
+				Base::OnSetFocus(pOldWnd);                                                         \
+			}                                                                                      \
+			afx_msg void OnKillFocus(CWnd* pNewWnd)                                                \
+			{                                                                                      \
+				Base::OnKillFocus(pNewWnd);                                                        \
+			}                                                                                      \
+			afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)                          \
+			{                                                                                      \
+				Base::OnKeyDown(nChar, nRepCnt, nFlags);                                           \
+			}                                                                                      \
+			afx_msg BOOL OnBeginLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)                         \
+			{                                                                                      \
+				return Base::OnBeginLabelEdit(pNMHDR, pResult);                                    \
+			}                                                                                      \
+			afx_msg BOOL OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)                           \
+			{                                                                                      \
+				return Base::OnEndLabelEdit(pNMHDR, pResult);                                      \
+			}                                                                                      \
+			afx_msg BOOL OnItemExpanding(NMHDR* pNMHDR, LRESULT* pResult)                          \
+			{                                                                                      \
+				return Base::OnItemExpanding(pNMHDR, pResult);                                     \
+			}                                                                                      \
+			afx_msg BOOL OnDeleteItem(NMHDR* pNMHDR, LRESULT* pResult)                             \
+			{                                                                                      \
+				return Base::OnDeleteItem(pNMHDR, pResult);                                        \
+			}                                                                                      \
+			afx_msg void OnSize(UINT nType, int cx, int cy)                                        \
+			{                                                                                      \
+				Base::OnSize(nType, cx, cy);                                                       \
+			}                                                                                      \
+			afx_msg void OnMouseMove(UINT nFlags, CPoint point)                                    \
+			{                                                                                      \
+				Base::OnMouseMove(nFlags, point);                                                  \
+			}                                                                                      \
+			afx_msg void OnTimer(UINT_PTR nIDEvent)                                                \
+			{                                                                                      \
+				Base::OnTimer(nIDEvent);                                                           \
+			}                                                                                      \
+			afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point)                                \
+			{                                                                                      \
+				Base::OnNcMouseMove(nHitTest, point);                                              \
+			}                                                                                      \
+			afx_msg BOOL OnEraseBkgnd(CDC*)                                                        \
+			{                                                                                      \
+				return TRUE;                                                                       \
+			}                                                                                      \
+			afx_msg void OnPaint()                                                                 \
+			{                                                                                      \
+				CPaintDC dc(this);                                                                 \
+				DoPaint(dc);                                                                       \
+			}                                                                                      \
+			afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)                                    \
+			{                                                                                      \
+				if (Tree::OnCreate(lpCreateStruct) == -1)                                          \
+					return -1;                                                                     \
+				Init();                                                                            \
+				return 0;                                                                          \
+			}                                                                                      \
+			afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam)                               \
+			{                                                                                      \
+				return Base::OnSetTheme(wParam, lParam);                                           \
+			}                                                                                      \
+		};
+
+#	define ON_TREECTRL_REFLECT                                                                    \
+		ON_MESSAGE(WM_XTP_SETCONTROLTHEME, OnSetTheme)                                             \
+		ON_WM_LBUTTONDOWN()                                                                        \
+		ON_WM_SETFOCUS()                                                                           \
+		ON_WM_KILLFOCUS()                                                                          \
+		ON_WM_RBUTTONDOWN()                                                                        \
+		ON_WM_KEYDOWN()                                                                            \
+		ON_WM_ERASEBKGND()                                                                         \
+		ON_WM_PAINT()                                                                              \
+		ON_WM_SIZE()                                                                               \
+		ON_NOTIFY_REFLECT_EX(TVN_DELETEITEM, OnDeleteItem)                                         \
+		ON_NOTIFY_REFLECT_EX(TVN_ITEMEXPANDING, OnItemExpanding)                                   \
+		ON_NOTIFY_REFLECT_EX(TVN_BEGINLABELEDIT, OnBeginLabelEdit)                                 \
+		ON_NOTIFY_REFLECT_EX(TVN_ENDLABELEDIT, OnEndLabelEdit)                                     \
+		ON_WM_MOUSEMOVE()                                                                          \
+		ON_WM_TIMER()                                                                              \
+		ON_WM_NCMOUSEMOVE()                                                                        \
+		ON_WM_CREATE
 
 //}}AFX_CODEJOCK_PRIVATE
 
-const DWORD TVIS_FOCUSED           = 0x0001;   //<ALIAS CXTPTreeBase::SetItemState@HTREEITEM@UINT@UINT>
+const DWORD TVIS_FOCUSED = 0x0001; //<ALIAS CXTPTreeBase::SetItemState@HTREEITEM@UINT@UINT>
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTTREEBASE_H__)

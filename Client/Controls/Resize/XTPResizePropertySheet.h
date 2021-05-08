@@ -1,7 +1,6 @@
 // XTPResizePropertySheet.h: interface for the CXTPResizePropertySheet class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZEPROPERTYSHEET_H__)
-#define __XTPRESIZEPROPERTYSHEET_H__
+#	define __XTPRESIZEPROPERTYSHEET_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -34,7 +35,9 @@
 //     a resizable CPropertySheet type object that allows its dialog items
 //     to be resized or moved dynamically.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPResizePropertySheet : public CPropertySheet, public CXTPResize
+class _XTP_EXT_CLASS CXTPResizePropertySheet
+	: public CPropertySheet
+	, public CXTPResize
 {
 	DECLARE_DYNCREATE(CXTPResizePropertySheet)
 
@@ -51,7 +54,8 @@ public:
 	//     nSelectPage - The index of the page that will initially be on top. Default is the
 	//                   first page added to the sheet.
 	//     nFlags      - Flags that are to be passed to CXTPResize that specify the attributes
-	//                   of the resizing property page. They can be one or more of the values in the Remarks section.
+	//                   of the resizing property page. They can be one or more of the values in the
+	//                   Remarks section.
 	// Remarks:
 	//     Styles to be added or removed can be combined by using the bitwise
 	//     OR (|) operator. It can be one or more of the following:<p/>
@@ -65,11 +69,14 @@ public:
 	//
 	//----------------------------------------------------------------------
 	CXTPResizePropertySheet();
-	CXTPResizePropertySheet(const UINT nCaption, CWnd* pParent = 0, const UINT nSelectPage = 0, const UINT nFlags = 0); // <combine CXTPResizePropertySheet::CXTPResizePropertySheet>
-	CXTPResizePropertySheet(LPCTSTR pszCaption, CWnd* pParent = 0, const UINT nSelectPage = 0, const UINT nFlags = 0); // <combine CXTPResizePropertySheet::CXTPResizePropertySheet>
+	CXTPResizePropertySheet(
+		const UINT nCaption, CWnd* pParent = 0, const UINT nSelectPage = 0,
+		const UINT nFlags = 0); // <combine CXTPResizePropertySheet::CXTPResizePropertySheet>
+	CXTPResizePropertySheet(
+		LPCTSTR pszCaption, CWnd* pParent = 0, const UINT nSelectPage = 0,
+		const UINT nFlags = 0); // <combine CXTPResizePropertySheet::CXTPResizePropertySheet>
 
 protected:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This member function determines if the property sheet is in wizard mode.
@@ -79,7 +86,7 @@ protected:
 	BOOL IsWizard();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPResizePropertySheet)
@@ -89,11 +96,10 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg BOOL OnPageChanging(NMHDR* pNotifyStruct, LRESULT* pResult);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CXTPNoFlickerWnd <CTabCtrl> m_tabCtrl;  // Tab control.
-
+	CXTPNoFlickerWnd<CTabCtrl> m_tabCtrl; // Tab control.
 
 	friend class CXTPResizePropertyPage;
 };
@@ -101,13 +107,15 @@ public:
 //////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef PSH_WIZARD_LITE
-#define PSH_WIZARD_LITE         0x00400000
-#endif  // PSH_WIZARD_LITE
+#	ifndef PSH_WIZARD_LITE
+#		define PSH_WIZARD_LITE 0x00400000
+#	endif // PSH_WIZARD_LITE
 //}}AFX_CODEJOCK_PRIVATE
 
-AFX_INLINE BOOL CXTPResizePropertySheet::IsWizard() {
+AFX_INLINE BOOL CXTPResizePropertySheet::IsWizard()
+{
 	return ((m_psh.dwFlags & (PSH_WIZARD | PSH_WIZARD97 | PSH_WIZARD_LITE)) != 0);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZEPROPERTYSHEET_H__)

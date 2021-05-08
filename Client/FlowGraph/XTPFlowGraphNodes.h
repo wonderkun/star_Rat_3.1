@@ -1,7 +1,6 @@
 // XTPFlowGraphNodes.h: interface for the CXTPFlowGraphNodes class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHNODES_H__)
-#define __XTPFLOWGRAPHNODES_H__
+#	define __XTPFLOWGRAPHNODES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPage;
 class CXTPFlowGraphNode;
+class CXTPFlowGraphNodeCustom;
 
 // -----------------------------------------------------------------------
 //
@@ -74,6 +76,10 @@ public:
 	//     Reference to the node to added.
 	// ------------------------------------------
 	CXTPFlowGraphNode* AddNode(CXTPFlowGraphNode* pNode);
+
+	// TODO: description
+	CXTPFlowGraphNodeCustom* AddCustomNode(CXTPFlowGraphNodeCustom* pNode = NULL);
+	CXTPFlowGraphNodeCustom* AddResourceNode(UINT uResShapeID);
 
 	// ---------------------------------------------
 	//
@@ -154,13 +160,34 @@ protected:
 
 	friend class CXTPFlowGraphPage;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphNodes)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphNodes)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddNode();
+	afx_msg LPDISPATCH OleAddCustomNode();
+	afx_msg LPDISPATCH OleAddResourceNode(int nResShapeID);
+	afx_msg LPDISPATCH OleFindNode(int nId);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphNodes::GetCount() const {
+AFX_INLINE int CXTPFlowGraphNodes::GetCount() const
+{
 	return (int)m_arrNodes.GetSize();
 }
-AFX_INLINE CXTPFlowGraphNode* CXTPFlowGraphNodes::GetAt(int nIndex) const {
+AFX_INLINE CXTPFlowGraphNode* CXTPFlowGraphNodes::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrNodes.GetSize() ? m_arrNodes[nIndex] : NULL;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHNODES_H__)

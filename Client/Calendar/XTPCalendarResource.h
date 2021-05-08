@@ -1,7 +1,6 @@
 // XTPCalendarResource.h: interface for the CXTPCalendarResource class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,30 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARRESOURCE_H_)
-#define _XTPCALENDARRESOURCE_H_
+#	define _XTPCALENDARRESOURCE_H_
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPNotifyConnection.h"
-
-#include "XTPCalendarDefines.h"
-#include "XTPCalendarPtrCollectionT.h"
-#include "XtpCalendarPtrs.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarControl;
-class CXTPCalendarView;
-class CXTPCalendarPaintManager;
 class CXTPCalendarData;
-class CXTPCalendarDayView;
-class CXTPCalendarWeekView;
-class CXTPCalendarMonthView;
-class CXTPCalendarOptions;
 class CXTPNotifyConnection;
-class CXTPCalendarRemindersManager;
 class CXTPCalendarCustomProperties;
+class CXTPPropExchange;
+class CXTPCalendarEvents;
+class CXTPCalendarEvent;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvents)
 
 //===========================================================================
 // Summary:
@@ -60,7 +53,6 @@ class _XTP_EXT_CLASS CXTPCalendarSchedule : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarSchedule)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -98,7 +90,7 @@ public:
 	//     A CString object that contains the schedule name text.
 	// See Also: SetName
 	//-----------------------------------------------------------------------
-	LPCTSTR GetName() const;
+	CString GetName() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -109,10 +101,10 @@ public:
 	//-----------------------------------------------------------------------
 	void SetID(UINT uScheduleID);
 
-#ifdef _BUSINESS_MODEL_
+#	ifdef _BUSINESS_MODEL_
 	UINT GetSecType() const;
 	void SetSecType(UINT uScheduleSec);
-#endif
+#	endif
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -131,19 +123,30 @@ public:
 	// See Also:
 	//      CXTPCalendarCustomProperties.
 	//-----------------------------------------------------------------------
-	CXTPCalendarCustomProperties* GetCustomProperties();
+	CXTPCalendarCustomProperties* GetCustomProperties() const;
 
 protected:
 	CString m_strScheduleName; // Stores Schedule Name
-	UINT    m_uScheduleID;     // Stores numeric positive ID of the schedule
+	UINT m_uScheduleID;		   // Stores numeric positive ID of the schedule
 
-#ifdef _BUSINESS_MODEL_
-	UINT    m_uScheduleSec;    // Stores Schedule Security Type
-#endif
+#	ifdef _BUSINESS_MODEL_
+	UINT m_uScheduleSec; // Stores Schedule Security Type
+#	endif
 
-	CXTPCalendarCustomProperties* m_pCustomProperties;  // Stores custom properties collection for this Schedule
+	CXTPCalendarCustomProperties* m_pCustomProperties; // Stores custom properties collection for
+													   // this Schedule
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarSchedule);
+
+	afx_msg LPDISPATCH OleCustomProperties();
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -242,7 +245,6 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//       Finds next available ID which does not exist in the array.
@@ -277,6 +279,18 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void _Save(CXTPPropExchange* pPX);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarSchedules);
+	DECLARE_ENUM_VARIANT(CXTPCalendarSchedules)
+
+	BSTR OleGetScheduleName(UINT uScheduleID);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -301,7 +315,6 @@ class _XTP_EXT_CLASS CXTPCalendarResource : public CXTPCmdTarget
 	DECLARE_DYNCREATE(CXTPCalendarResource)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -335,7 +348,7 @@ public:
 	//     A CXTPCalendarData pointer to the associated data provider object.
 	// See Also: CXTPCalendarData overview, SetDataProvider
 	//-----------------------------------------------------------------------
-	CXTPCalendarData* GetDataProvider();
+	CXTPCalendarData* GetDataProvider() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -351,7 +364,8 @@ public:
 	//     custom data provider must be a descendant of CXTPCalendarData.
 	// See Also: CXTPCalendarData overview, GetDataProvider
 	//-----------------------------------------------------------------------
-	void SetDataProvider(CXTPCalendarData* pDataProvider, BOOL bCloseDataProviderWhenDestroy = FALSE);
+	void SetDataProvider(CXTPCalendarData* pDataProvider,
+						 BOOL bCloseDataProviderWhenDestroy = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -422,7 +436,7 @@ public:
 	//     A string with the name of the resource object.
 	// See Also: SetName
 	//-----------------------------------------------------------------------
-	virtual LPCTSTR GetName();
+	virtual CString GetName() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -439,7 +453,7 @@ public:
 	// Returns: A COLORREF with the color of the resource object.
 	// See Also: SetColor
 	//-----------------------------------------------------------------------
-	virtual COLORREF GetColor();
+	virtual COLORREF GetColor() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -451,19 +465,34 @@ public:
 	virtual void SetColor(COLORREF color);
 
 protected:
-	CString m_strResourceName;            // Text name of the resource
+	CString m_strResourceName;			  // Text name of the resource
 	CXTPCalendarControl* m_pCalendarCtrl; // Parent Calendar control
-	CXTPCalendarData* m_pDataProvider;    // Associated data provider
-	CUIntArray m_arScheduleIDs; // which schedules are used for this resource.
-	COLORREF m_Color;           //color of resource
+	CXTPCalendarData* m_pDataProvider;	// Associated data provider
+	CUIntArray m_arScheduleIDs;			  // which schedules are used for this resource.
+	COLORREF m_Color;					  // color of resource
 
-	BOOL m_bCloseDataProviderWhenDestroy;   // If TRUE - call Close() method if the data provider when control is destroyed.
-
-	// Returns reminders manager associated with the main Calendar control
-	//CXTPCalendarRemindersManager* GetRemindersManager();
+	BOOL m_bCloseDataProviderWhenDestroy; // If TRUE - call Close() method if the data provider when
+										  // control is destroyed.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarResource);
+	DECLARE_OLECREATE_EX(CXTPCalendarResource);
+
+	LPDISPATCH OleGetDataProvider();
+	LPDISPATCH OleGetScheduleIDs();
+
+	void OleSetDataProvider(LPDISPATCH pDispDataProvider, BOOL bCloseDataProviderWhenDestroy);
+	void OleSetDataProvider2(LPCTSTR pcszConnectionString, BOOL bCloseDataProviderWhenDestroy);
+
+	LPDISPATCH OleRetrieveDayEvents(DATE dtDay);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -505,7 +534,9 @@ public:
 	//     A pointer to the calendar resource.
 	// See Also: ExistsScheduleID
 	//-----------------------------------------------------------------------
-	CXTPCalendarResource* Find(CXTPCalendarEvent* pEvent);
+	CXTPCalendarResource* Find(CXTPCalendarEvent* pEvent) const;
+
+	using CXTPCalendarPtrCollectionT<CXTPCalendarResource>::Find;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -517,10 +548,24 @@ public:
 	//     A calendar events pointer object.
 	// See Also: ExistsScheduleID
 	//-----------------------------------------------------------------------
-	CXTPCalendarEventsPtr RetrieveDayEvents(COleDateTime dtDay);
+	CXTPCalendarEventsPtr RetrieveDayEvents(COleDateTime dtDay) const;
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarResources)
+	DECLARE_ENUM_VARIANT(CXTPCalendarResources)
+
+	DECLARE_OLECREATE_EX(CXTPCalendarResources)
+
+	void OleAdd(LPDISPATCH pResourceDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -530,11 +575,11 @@ protected:
 // See also:
 //     CXTPCalendarResource overview, CXTPNotifySink overview.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarResourcesNf : public  CXTPCalendarResources,
-											   private CXTPNotifySink
+class _XTP_EXT_CLASS CXTPCalendarResourcesNf
+	: public CXTPCalendarResources
+	, private CXTPNotifySinkBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -563,7 +608,7 @@ public:
 	// See Also: CXTPNotifyConnection overview,
 	//           IXTPNotificationSink overview
 	//-----------------------------------------------------------------------
-	virtual CXTPNotifyConnection* GetConnection();
+	CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -590,7 +635,7 @@ public:
 	//     during the ReBuildInternalData method execution.
 	// See Also: ReBuildInternalData
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarResources* GetResourcesGroupedByDP();
+	virtual const CXTPCalendarResources* GetResourcesGroupedByDP() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -605,9 +650,9 @@ public:
 	//     during the ReBuildInternalData method execution.
 	// See Also: GetResourcesGroupedByDP, ReBuildInternalData
 	//-----------------------------------------------------------------------
-	CXTPCalendarResource* FindByDataProvider(CXTPCalendarData* pData);
-protected:
+	CXTPCalendarResource* FindByDataProvider(CXTPCalendarData* pData) const;
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function catches all the events from the associated
@@ -619,19 +664,20 @@ protected:
 	//     lParam - Second user's parameter.
 	//     dwFlags - Unused parameter.
 	//-----------------------------------------------------------------------
-	virtual void OnEvent(XTP_NOTIFY_CODE dwNotifyCode, WPARAM wParam, LPARAM lParam,
-						 DWORD dwFlags);
+	virtual void OnEvent(XTP_NOTIFY_CODE dwNotifyCode, WPARAM wParam, LPARAM lParam, DWORD dwFlags);
+
 private:
 	//{{AFX_CODEJOCK_PRIVATE
-	static CXTPCalendarResource* AFX_CDECL FindByDataProvider(CXTPCalendarResources* pResources, CXTPCalendarData* pData);
+	static CXTPCalendarResource* AFX_CDECL
+		FindByDataProvider(const CXTPCalendarResources* pResources, CXTPCalendarData* pData);
 
 	CXTPCalendarResources m_arResourcesGroupedByDP;
 
 	class CXTPNotifyConnection_internal : public CXTPNotifyConnection
 	{
-		public:
-			using CXTPNotifyConnection::CONNECTION_DESCRIPTOR;
-			using CXTPNotifyConnection::m_arrConnections;
+	public:
+		using CXTPNotifyConnection::CONNECTION_DESCRIPTOR;
+		using CXTPNotifyConnection::m_arrConnections;
 	};
 	CXTPNotifyConnection_internal* m_pConnection;
 	//}}AFX_CODEJOCK_PRIVATE
@@ -642,91 +688,77 @@ AFX_INLINE UINT CXTPCalendarSchedule::GetID() const
 {
 	return m_uScheduleID;
 }
-
-AFX_INLINE LPCTSTR CXTPCalendarSchedule::GetName() const
+AFX_INLINE CString CXTPCalendarSchedule::GetName() const
 {
 	return m_strScheduleName;
 }
-
 AFX_INLINE void CXTPCalendarSchedule::SetID(UINT uScheduleID)
 {
 	m_uScheduleID = uScheduleID;
 }
-
 AFX_INLINE void CXTPCalendarSchedule::SetName(LPCTSTR pcszScheduleName)
 {
 	ASSERT(pcszScheduleName);
 	m_strScheduleName = pcszScheduleName ? pcszScheduleName : _T("");
 }
-
-#ifdef _BUSINESS_MODEL_
+#	ifdef _BUSINESS_MODEL_
 AFX_INLINE UINT CXTPCalendarSchedule::GetSecType() const
 {
 	return m_uScheduleSec;
 }
-
 AFX_INLINE void CXTPCalendarSchedule::SetSecType(UINT uScheduleSec)
 {
 	m_uScheduleSec = uScheduleSec;
 }
-#endif
+#	endif
 
 AFX_INLINE CUIntArray* CXTPCalendarResource::GetSchedules()
 {
 	return &m_arScheduleIDs;
 }
-
 AFX_INLINE BOOL CXTPCalendarResource::IsSchedulesSetEmpty() const
 {
 	return m_arScheduleIDs.GetSize() == 0;
 }
-
-AFX_INLINE CXTPCalendarData* CXTPCalendarResource::GetDataProvider()
+AFX_INLINE CXTPCalendarData* CXTPCalendarResource::GetDataProvider() const
 {
 	ASSERT(this);
 	return this ? m_pDataProvider : NULL;
 }
-
-AFX_INLINE LPCTSTR CXTPCalendarResource::GetName()
+AFX_INLINE CString CXTPCalendarResource::GetName() const
 {
 	return m_strResourceName;
 }
-
 AFX_INLINE void CXTPCalendarResource::SetName(LPCTSTR pcszResourceName)
 {
 	ASSERT(pcszResourceName);
 	m_strResourceName = pcszResourceName ? pcszResourceName : m_strResourceName;
 }
-
-AFX_INLINE COLORREF CXTPCalendarResource::GetColor()
+AFX_INLINE COLORREF CXTPCalendarResource::GetColor() const
 {
 	return m_Color;
 }
-
 AFX_INLINE void CXTPCalendarResource::SetColor(COLORREF color)
 {
 	m_Color = color;
 }
-/////////////////////////////////////////////////////////////////////////////
-
-AFX_INLINE CXTPNotifyConnection* CXTPCalendarResourcesNf::GetConnection()
+AFX_INLINE CXTPNotifyConnection* CXTPCalendarResourcesNf::GetConnection() const
 {
 	return m_pConnection;
 }
-
-AFX_INLINE CXTPCalendarResources* CXTPCalendarResourcesNf::GetResourcesGroupedByDP()
+AFX_INLINE const CXTPCalendarResources* CXTPCalendarResourcesNf::GetResourcesGroupedByDP() const
 {
 	return &m_arResourcesGroupedByDP;
 }
-
-AFX_INLINE CXTPCalendarResource* CXTPCalendarResourcesNf::FindByDataProvider(CXTPCalendarData* pData)
+AFX_INLINE CXTPCalendarResource*
+	CXTPCalendarResourcesNf::FindByDataProvider(CXTPCalendarData* pData) const
 {
 	return FindByDataProvider(GetResourcesGroupedByDP(), pData);
 }
-
-AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarSchedule::GetCustomProperties()
+AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarSchedule::GetCustomProperties() const
 {
 	return m_pCustomProperties;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARRESOURCE_H_)

@@ -1,7 +1,6 @@
 // XTPDrawHelpers.h: interface for the CXTPDrawHelpers class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,22 +19,28 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDRAWHELPERS_H__)
-#define __XTPDRAWHELPERS_H__
+#	define __XTPDRAWHELPERS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPaintManagerColorGradient;
 
-#ifndef LAYOUT_BITMAPORIENTATIONPRESERVED
-#define LAYOUT_BITMAPORIENTATIONPRESERVED 0x00000008
-#endif
+#	ifndef DT_HIDEPREFIX
+#		define DT_HIDEPREFIX 0x00100000
+#	endif
 
-#ifndef LAYOUT_RTL
-#define LAYOUT_RTL 0x00000001
-#endif
+#	ifndef LAYOUT_BITMAPORIENTATIONPRESERVED
+#		define LAYOUT_BITMAPORIENTATIONPRESERVED 0x00000008
+#	endif
+
+#	ifndef LAYOUT_RTL
+#		define LAYOUT_RTL 0x00000001
+#	endif
 
 //===========================================================================
 // Summary:
@@ -46,7 +51,6 @@ class CXTPPaintManagerColorGradient;
 class _XTP_EXT_CLASS CXTPTransparentBitmap
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructor.  Construct a new CXTPTransparentBitmap from a
@@ -76,8 +80,7 @@ public:
 	HICON ConvertToIcon() const;
 
 protected:
-
-	HBITMAP m_hBitmap;  // A handle to a BtiMap.
+	HBITMAP m_hBitmap; // A handle to a BtiMap.
 };
 
 //===========================================================================
@@ -88,7 +91,6 @@ protected:
 class _XTP_EXT_CLASS CXTPClientCursorPos : public CPoint
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPClientCursorPos object used to retrieve the
@@ -108,7 +110,6 @@ public:
 class _XTP_EXT_CLASS CXTPEmptyRect : public CRect
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPEmptyRect object used to instantiate an
@@ -155,7 +156,6 @@ public:
 class _XTP_EXT_CLASS CXTPWindowRect : public CRect
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPWindowRect object used to retrieve the
@@ -176,7 +176,6 @@ public:
 class _XTP_EXT_CLASS CXTPClientRect : public CRect
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPClientRect object used to retrieve the
@@ -199,7 +198,6 @@ public:
 class _XTP_EXT_CLASS CXTPBufferDC : public CDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBufferDC object used to create a memory
@@ -208,11 +206,13 @@ public:
 	//     hDestDC - Handle to the destination device context the memory
 	//               device is BitBlt to.
 	//     rcPaint - Size of the area to paint.
-	//     clrBack - Represents background color for fill, can be COLORREF or gradient values using CXTPPaintManagerColorGradient.
-	//     bHorz   - Used when drawing gradient background, TRUE to draw gradient from left to right, otherwise drawn top to bottom.
+	//     clrBack - Represents background color for fill, can be COLORREF or gradient values using
+	//     CXTPPaintManagerColorGradient. bHorz   - Used when drawing gradient background, TRUE to
+	//     draw gradient from left to right, otherwise drawn top to bottom.
 	//-----------------------------------------------------------------------
 	CXTPBufferDC(HDC hDestDC, const CRect& rcPaint);
-	CXTPBufferDC(HDC hDestDC, const CRect& rcPaint, const CXTPPaintManagerColorGradient& clrBack, const BOOL bHorz = FALSE);
+	CXTPBufferDC(HDC hDestDC, const CRect& rcPaint, const CXTPPaintManagerColorGradient& clrBack,
+				 const BOOL bHorz = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -252,10 +252,9 @@ public:
 	void TakeSnapshot();
 
 protected:
-
-	HDC     m_hDestDC;    // Handle to the destination device context.
-	CBitmap m_bitmap;     // Bitmap in memory device context
-	CRect   m_rect;       // Size of the area to paint.
+	HDC m_hDestDC;		  // Handle to the destination device context.
+	HBITMAP m_hBitmap;	// Bitmap in memory device context
+	CRect m_rect;		  // Size of the area to paint.
 	HGDIOBJ m_hOldBitmap; // Handle to the previously selected bitmap.
 };
 
@@ -269,7 +268,6 @@ protected:
 class _XTP_EXT_CLASS CXTPBufferDCEx : public CDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBufferDCEx object used to create a memory
@@ -289,10 +287,9 @@ public:
 	virtual ~CXTPBufferDCEx();
 
 protected:
-
-	HDC     m_hDestDC;    // Handle to the destination device context.
-	HBITMAP m_bitmap;     // Bitmap in memory device context
-	CRect   m_rect;       // Size of the area to paint.
+	HDC m_hDestDC;		  // Handle to the destination device context.
+	HBITMAP m_hBitmap;	// Bitmap in memory device context
+	CRect m_rect;		  // Size of the area to paint.
 	HGDIOBJ m_hOldBitmap; // Handle to the previously selected bitmap.
 };
 
@@ -303,9 +300,14 @@ protected:
 //     selects the previous bitmap back into the device context to
 //     handle GDI resource cleanup.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPBitmapDC
+class _XTP_EXT_CLASS CXTPBitmapDC : public CDC
 {
 public:
+	//---------------------------------------------------------------
+	// Summary:
+	//      Constructs CXTPBitmapDC
+	//---------------------------------------------------------------
+	CXTPBitmapDC();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -318,7 +320,7 @@ public:
 	//     hBitmap - Bitmap handle
 	//-----------------------------------------------------------------------
 	CXTPBitmapDC(CDC* pDC, CBitmap* pBitmap);
-	CXTPBitmapDC(CDC* pDC, HBITMAP hBitmap);  // <combine CXTPBitmapDC::CXTPBitmapDC@CDC*@CBitmap*>
+	CXTPBitmapDC(CDC* pDC, HBITMAP hBitmap); // <combine CXTPBitmapDC::CXTPBitmapDC@CDC*@CBitmap*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -335,12 +337,18 @@ public:
 	//     pBitmap - Pointer to a CBitmap object to select into the device
 	//               context.
 	//-----------------------------------------------------------------------
-	void SetBitmap(CBitmap* pBitmap);
+	void SetBitmap(HBITMAP hBitmap);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Releases the currently selected bitmap and selects the initial bitmap into device
+	//     context.
+	//-----------------------------------------------------------------------
+	void SelectOld();
 
 protected:
-
-	HDC     m_hDC;        // Device context handle.
-	HGDIOBJ m_hOldBitmap; // Handle to the previously selected bitmap.
+	HBITMAP m_hOldBitmap;	 // Handle to the previously selected bitmap.
+	HBITMAP m_hCurrentBitmap; // Currently selected bitmap handle
 };
 
 //===========================================================================
@@ -353,7 +361,6 @@ protected:
 class _XTP_EXT_CLASS CXTPFontDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPFontDC object and selects the specified font
@@ -365,7 +372,8 @@ public:
 	//     clrTextColor - Text color to set in the DC.
 	//-----------------------------------------------------------------------
 	CXTPFontDC(CDC* pDC, CFont* pFont = NULL);
-	CXTPFontDC(CDC* pDC, CFont* pFont, COLORREF clrTextColor); // <combine CXTPFontDC::CXTPFontDC@CDC*@CFont*>
+	CXTPFontDC(CDC* pDC, CFont* pFont,
+			   COLORREF clrTextColor); // <combine CXTPFontDC::CXTPFontDC@CDC*@CFont*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -422,9 +430,17 @@ public:
 	//-----------------------------------------------------------------------
 	void ReleaseColor();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Disables handle leak detection in debug mode. Must be used cautiously
+	//     and only when there is no control over the code being executed.
+	//-----------------------------------------------------------------------
+	void DisableHandleLeakDetection();
+
 protected:
-	CDC*     m_pDC;             // Stored pointer to a device context.
-	CFont*   m_pOldFont;        // Stored pointer to an initial font from the device context.
+	CDC* m_pDC;					// Stored pointer to a device context.
+	CFont* m_pOldFont;			// Stored pointer to an initial font from the device context.
+	CFont* m_pCurrentFont;		// Stored pointer to the current font from the device context.
 	COLORREF m_clrOldTextColor; // Stored an initial text color from the device context.
 };
 
@@ -439,7 +455,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPenDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPenDC object using an existing CPen object.  The
@@ -449,6 +464,8 @@ public:
 	//     pPen - Pointer to a CPen object to select into the device
 	//             context.
 	//     hDC     - Handle to a valid device context.
+	//     nStyle  - Pen style, one of PS_* constants.
+	//     nWidth  - Pen width in pixels
 	//     crColor - RGB value used to create pen.
 	// Remarks:
 	//     The crColor version constructs a CXTPPenDC object and creates a pen using
@@ -456,7 +473,10 @@ public:
 	//     into the device context specified by hDC.
 	//-----------------------------------------------------------------------
 	CXTPPenDC(CDC* pDC, CPen* pPen);
-	CXTPPenDC(HDC hDC, COLORREF crColor); // <combine CXTPPenDC::CXTPPenDC@CDC*@CPen*>
+	CXTPPenDC(HDC hDC, COLORREF crColor);			  // <combine CXTPPenDC::CXTPPenDC@CDC*@CPen*>
+	CXTPPenDC(HDC hDC, int nStyle, COLORREF crColor); // <combine CXTPPenDC::CXTPPenDC@CDC*@CPen*>
+	CXTPPenDC(HDC hDC, int nStyle, int nWidth,
+			  COLORREF crColor); // <combine CXTPPenDC::CXTPPenDC@CDC*@CPen*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -464,6 +484,8 @@ public:
 	//     allocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPPenDC();
+
+	void Create(HDC hDC, int nStyle, int nWidth, COLORREF crColor);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -480,11 +502,17 @@ public:
 	COLORREF Color();
 	void Color(COLORREF crColor); // <combine CXTPPenDC::Color>
 
-protected:
+private:
+	void ReleasePen();
 
-	CPen m_pen;     // Pen selected into device context.
-	HDC  m_hDC;     // Device context handle.
-	HPEN m_hOldPen; // Handle to the previously selected pen.
+protected:
+	CPen m_pen;			// Pen selected into device context.
+	HDC m_hDC;			// Device context handle.
+	HPEN m_hOldPen;		// Handle to the previously selected pen.
+	HPEN m_hCurrentPen; // Handle to the currently selected pen.
+	int m_nStyle;		// Pen style, one of PS_* constants.
+	int m_nWidth;		// Pen width in pixels
+	COLORREF m_crColor; // Pen color
 };
 
 //===========================================================================
@@ -498,7 +526,6 @@ protected:
 class _XTP_EXT_CLASS CXTPBrushDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBrushDC object and creates a brush using
@@ -526,11 +553,51 @@ public:
 	//-----------------------------------------------------------------------
 	void Color(COLORREF crColor);
 
-protected:
+private:
+	void ReleaseBrush();
 
-	CBrush m_brush;     // Brush selected into device context.
-	HDC    m_hDC;       // Device context handle.
+protected:
+	CBrush m_brush;		// Brush selected into device context.
+	HDC m_hDC;			// Device context handle.
 	HBRUSH m_hOldBrush; // Handle to the previously selected brush.
+};
+
+//{{AFX_CODEJOCK_PRIVATE
+#	ifndef COLORREF_NULL
+#		define COLORREF_NULL (COLORREF) - 1
+#	endif
+//}}AFX_CODEJOCK_PRIVATE
+
+//===========================================================================
+// Summary:
+//     CXTPDCSaveState is a helper class used to save the current state of the
+//     specified device context by copying state information (such as clipping
+//     region, selected objects, and mapping mode) to a context stack maintained
+//     by Windows. The saved device context will be restored once the object is
+//     destroyed.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPDCSaveState
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPDCSaveState object and saves the state of the
+	//     specified device context.
+	// Parameters:
+	//     pDC - Points to to a valid device context.
+	//-----------------------------------------------------------------------
+	CXTPDCSaveState(CDC* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Destroys a CXTPDCSaveState object, handles cleanup and de-
+	//     allocation.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPDCSaveState();
+
+private:
+	CDC* m_pDC;   // Pointer to a valid device context.
+	int m_nState; // Integer identifying the saved device context
 };
 
 //===========================================================================
@@ -543,7 +610,6 @@ protected:
 class _XTP_EXT_CLASS CXTPCompatibleDC : public CDC
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCompatibleDC object and creates a memory
@@ -556,7 +622,8 @@ public:
 	//     hBitmap - Points to the previously selected bitmap.
 	//-----------------------------------------------------------------------
 	CXTPCompatibleDC(CDC* pDC, CBitmap* pBitmap);
-	CXTPCompatibleDC(CDC* pDC, HBITMAP hBitmap); // <combine CXTPCompatibleDC::CXTPCompatibleDC@CDC*@CBitmap*>
+	CXTPCompatibleDC(CDC* pDC,
+					 HBITMAP hBitmap); // <combine CXTPCompatibleDC::CXTPCompatibleDC@CDC*@CBitmap*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -566,7 +633,6 @@ public:
 	virtual ~CXTPCompatibleDC();
 
 protected:
-
 	HBITMAP m_hOldBitmap; // Pointer to the previously selected bitmap.
 };
 
@@ -578,7 +644,6 @@ protected:
 class _XTP_EXT_CLASS CXTPSplitterTracker
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSplitterTracker object.
@@ -604,7 +669,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Controls the accumulation of bounding-rectangle information for the specified device context.
+	//     Controls the accumulation of bounding-rectangle information for the specified device
+	//     context.
 	// Parameters:
 	//     rcBoundRect - A CRect object that specifies the boundaries of the bounding rectangle.
 	//-----------------------------------------------------------------------
@@ -628,7 +694,7 @@ private:
 	CWnd* m_pWnd;
 	BOOL m_bDesktopDC;
 	CWnd* m_pSplitterWnd;
-	PVOID m_pfnSetLayeredWindowAttributes;              // Pointer to SetLayeredWindowAttributes method.
+	PVOID m_pfnSetLayeredWindowAttributes; // Pointer to SetLayeredWindowAttributes method.
 };
 
 //===========================================================================
@@ -656,7 +722,6 @@ public:
 	static BOOL AFX_CDECL IsMouseHooked();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The MouseProc hook procedure is an application-defined or
@@ -668,25 +733,28 @@ protected:
 	//     nCode  - Specifies a code the hook procedure uses to determine
 	//          how to process the message. This parameter can be one of the
 	//          following values: HC_ACTION and HC_NOREMOVE.
-	//          HC_ACTION   - The wParam and lParam parameters contain information about a mouse message.
-	//          HC_NOREMOVE - The wParam and lParam parameters contain information about a mouse message,
+	//          HC_ACTION   - The wParam and lParam parameters contain information about a mouse
+	//          message. HC_NOREMOVE - The wParam and lParam parameters contain information about a
+	//          mouse message,
 	//                        and the mouse message has not been removed from the message queue. (An
-	//                        application called the PeekMessage function, specifying the PM_NOREMOVE flag.)
+	//                        application called the PeekMessage function, specifying the
+	//                        PM_NOREMOVE flag.)
 	//     wParam - Specifies the identifier of the mouse message.
 	//     lParam - Pointer to a MOUSEHOOKSTRUCT structure.
 	// Returns:
-	//     If nCode is less than zero, the hook procedure must return the value returned by CallNextHookEx.
-	//     If nCode is greater than or equal to zero, and the hook procedure did not process the message,
-	//     it is highly recommended that you call CallNextHookEx and return the value it returns; otherwise,
-	//     other applications that have installed WH_MOUSE hooks will not receive hook notifications and may
-	//     behave incorrectly as a result. If the hook procedure processed the message, it may return a nonzero
-	//     value to prevent the system from passing the message to the target window procedure.
+	//     If nCode is less than zero, the hook procedure must return the value returned by
+	//     CallNextHookEx. If nCode is greater than or equal to zero, and the hook procedure did not
+	//     process the message, it is highly recommended that you call CallNextHookEx and return the
+	//     value it returns; otherwise, other applications that have installed WH_MOUSE hooks will
+	//     not receive hook notifications and may behave incorrectly as a result. If the hook
+	//     procedure processed the message, it may return a nonzero value to prevent the system from
+	//     passing the message to the target window procedure.
 	//-----------------------------------------------------------------------
 	static LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 private:
-	static HHOOK m_hHookMouse;      // A handle to a hook.
-	static CWnd* m_pWndMonitor;     // A pointer to the in-place control.
+	static HHOOK m_hHookMouse;  // A handle to a hook.
+	static CWnd* m_pWndMonitor; // A pointer to the in-place control.
 };
 
 //-----------------------------------------------------------------------
@@ -756,7 +824,8 @@ private:
 //     If the function succeeds, the return value is nonzero.  If the function fails,
 //     return value is zero. To get extended error information, call GetLastError.
 //-----------------------------------------------------------------------
-_XTP_EXT_CLASS BOOL AFX_CDECL XTPTrackMouseEvent(HWND hWndTrack, DWORD dwFlags = TME_LEAVE, DWORD dwHoverTime = HOVER_DEFAULT);
+_XTP_EXT_CLASS BOOL AFX_CDECL XTPTrackMouseEvent(HWND hWndTrack, DWORD dwFlags = TME_LEAVE,
+												 DWORD dwHoverTime = HOVER_DEFAULT);
 
 //===========================================================================
 // Summary:
@@ -766,10 +835,15 @@ _XTP_EXT_CLASS BOOL AFX_CDECL XTPTrackMouseEvent(HWND hWndTrack, DWORD dwFlags =
 //===========================================================================
 class _XTP_EXT_CLASS CXTPDrawHelpers
 {
+	friend class CXTPSingleton<CXTPDrawHelpers>;
+
 public:
-	typedef BOOL (__stdcall* PFNGRADIENTFILL)(HDC, PTRIVERTEX, ULONG, PVOID, ULONG, ULONG); // Function pointer used to access the Windows API GradientFill function.
-	typedef BOOL (__stdcall* PFNALPHABLEND) (HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION); // AlphaBlend function declaration
-	typedef BOOL (WINAPI* PFNTRANSPARENTBLT)(HDC, int, int, int, int, HDC, int, int, int, int, UINT);
+	typedef BOOL(__stdcall* PFNGRADIENTFILL)(HDC, PTRIVERTEX, ULONG, PVOID, ULONG,
+											 ULONG); // Function pointer used to access the Windows
+													 // API GradientFill function.
+	typedef BOOL(__stdcall* PFNALPHABLEND)(HDC, int, int, int, int, HDC, int, int, int, int,
+										   BLENDFUNCTION); // AlphaBlend function declaration
+	typedef BOOL(WINAPI* PFNTRANSPARENTBLT)(HDC, int, int, int, int, HDC, int, int, int, int, UINT);
 
 public:
 	//-----------------------------------------------------------------------
@@ -780,12 +854,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Destroys a CXCSplitPath object, handles cleanup and de-
-	//     allocation.
+	//     Destroys a CXCSplitPath object, handles cleanup and de-allocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPDrawHelpers();
 
 public:
+	void SolidRectangle(CDC* pDC, CRect rc, COLORREF clrRect, COLORREF clrFill);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to perform a gradient fill using
@@ -818,9 +893,32 @@ public:
 	//     The HDC version TRUE if successful; otherwise FALSE.
 	//-----------------------------------------------------------------------
 	void GradientFill(CDC* pDC, LPCRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz);
-	void GradientFill(CDC* pDC, LPCRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz, LPCRECT lpRectClip); // <combine CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
-	void GradientFill(CDC* pDC, LPCRECT lpRect, const CXTPPaintManagerColorGradient& grc, BOOL bHorz, LPCRECT lpRectClip = NULL); // <combine CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
-	BOOL GradientFill(HDC hdc, PTRIVERTEX pVertex, ULONG dwNumVertex, PVOID pMesh, ULONG dwNumMesh, ULONG dwMode); // <combine CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
+	void GradientFill(
+		CDC* pDC, LPCRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz,
+		LPCRECT lpRectClip); // <combine
+							 // CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
+	void GradientFill(
+		CDC* pDC, LPCRECT lpRect, const CXTPPaintManagerColorGradient& grc, BOOL bHorz,
+		LPCRECT lpRectClip =
+			NULL); // <combine CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
+	BOOL GradientFill(
+		HDC hdc, PTRIVERTEX pVertex, ULONG dwNumVertex, PVOID pMesh, ULONG dwNumMesh,
+		ULONG dwMode); // <combine
+					   // CXTPDrawHelpers::GradientFill@CDC*@LPCRECT@COLORREF@COLORREF@BOOL>
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to draw a 1 or 2 pixel wide border
+	//             using the colors specified by pOutsideClr and pInsideClr.  If
+	//             pInsideClr is NULL, a 1 pixel border is drawn.
+	// Parameters: pDC        : Points to a valid device context.
+	//             rBorder    : Size of the border to draw.
+	//             clrOutside : An array of 4 colors that represent the left,
+	//                          top, right and bottom outside border color.
+	//             clrInside  : An array of 4 colors that represent the left,
+	//                          top, right and bottom inside border color.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawBorder(CDC* pDC, CRect rBorder, COLORREF* pOutsideClr,
+									 COLORREF* pInsideClr = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -830,7 +928,7 @@ public:
 	//     pDC - Points to the device context
 	//     rc  - Area to exclude corners from
 	//-----------------------------------------------------------------------
-	void ExcludeCorners(CDC* pDC, CRect rc);
+	void ExcludeCorners(CDC* pDC, CRect rc, BOOL bTopCornersOnly = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -841,7 +939,8 @@ public:
 	//     lpszClear - Text needed to strip.
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL StripMnemonics(CString& strClear);
-	static void AFX_CDECL StripMnemonics(LPTSTR lpszClear); // <combine CXTPDrawHelpers::StripMnemonics@CString&>
+	static void AFX_CDECL
+		StripMnemonics(LPTSTR lpszClear); // <combine CXTPDrawHelpers::StripMnemonics@CString&>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -867,7 +966,38 @@ public:
 	//-----------------------------------------------------------------------
 	static COLORREF AFX_CDECL BlendColors(COLORREF crA, COLORREF crB, double fAmountA);
 
-	static BOOL AFX_CDECL GetIconLogFont(LOGFONT* plf);
+	static BOOL AFX_CDECL GetIconLogFont(LOGFONT* pLogFont);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Checks for the system for non standard character set and
+	//             retrieves DEFAULT_GUI_FONT object.  If a standard character
+	//             set is used then SPI_GETICONTITLELOGFONT is used to retrieve
+	//             system font information.  If bModernFont is specified the
+	//             system is checked for the existence of "Segoe UI" or "Tahoma"
+	//             fonts and sets the lfFaceName member to the first value found.
+	//             If the modern fonts do not exist then the default value for
+	//             SPI_GETICONTITLELOGFONT will be used.
+	// Parameters: pLogFont    : Destination LOGFONT structure to recive font
+	//                           information.
+	//             bModernFont : TRUE to search for "Segoe UI" and "Tahoma"
+	//                           fonts and use those values for lfFaceName if
+	//                           found.
+	//             bVertFont   : TRUE if the font is to be used for vertical
+	//                           display.
+	// Returns:    TRUE if successful, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL GetDefaultLogFont(LOGFONT* pLogFont, BOOL bModernFont = TRUE,
+											BOOL bVertFont = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to search for and replace a single
+	//             color using the specified device context.
+	// Parameters: pDC       - Points to a valid device context.
+	//             rArea     - Area on device context to replace colors.
+	//             crFind    - RGB value specifying which color to locate.
+	//             crReplace - RGB value specifying which color to replace crFind with.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL ReplaceColor(CDC* pDC, CRect rArea, COLORREF crFind, COLORREF crReplace);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -899,8 +1029,7 @@ public:
 	// See Also: HSLtoRGB
 	//-----------------------------------------------------------------------
 	static COLORREF AFX_CDECL RGBtoHSL(COLORREF rgb);
-	static void RGBtoHSL(COLORREF clr, double& h, double& s, double& l);
-
+	static void AFX_CDECL RGBtoHSL(COLORREF clr, double& h, double& s, double& l);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -914,6 +1043,45 @@ public:
 	static COLORREF AFX_CDECL HSLtoRGB(COLORREF hsl);
 	static COLORREF AFX_CDECL HSLtoRGB(double h, double s, double l);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to darken or lighten the color specified
+	//     by clr.  Unlike DarkenColor() which modifies the red, green and blue
+	//     color values, DarkenColorLum() adjusts the luminosity (brightness)
+	//     for the color.
+	// Parameters:
+	//           clr - RGB representing the color to adjust.
+	//      dPercent - A double value representing the percentage in decimal
+	//                 format to darken the color by.  For example if you
+	//                 wanted to darken the color by 75% you would use 0.25.
+	// Returns:
+	//     A COLORREF value representing the adjusted color value.
+	//-----------------------------------------------------------------------
+	static COLORREF AFX_CDECL DarkenColorLum(COLORREF clr, double dPercent);
+
+	//-----------------------------------------------------------------------
+	// Summary:    This member function will either lighten or darken the color
+	//             specified by clr using the value specified by nPercent. The
+	//             value must be a value between -100 and +100.  Negative values
+	//             will darken the color, positive values will lighten it.
+	// Parameters: clr      - RGB value representing the color to adjust.
+	//             nPercent - Amount to adjust the color by, must be a value
+	//                        between -100 and +100 percent.
+	// Returns:    An RGB value representing the adjusted color value. If the
+	//             value specified by nPercent is 0, then the return value will
+	//             be the same value as clr.  If nPercent is not a valid value,
+	//             the return value will be COLORREF_NULL (-1).
+	//-----------------------------------------------------------------------
+	static COLORREF AFX_CDECL AdjustBrightness(COLORREF clr, int nPercent);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to convert the specified color to
+	//             greyscale values.
+	// Parameters: clr : RGB value of the color to convert to greyscale.
+	// Returns:    An RGB value representing a greyscale version of the
+	//             color specified by clr.
+	//-----------------------------------------------------------------------
+	static COLORREF AFX_CDECL GreyScaleColor(COLORREF clr);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -935,6 +1103,61 @@ public:
 	//-----------------------------------------------------------------------
 	static CString AFX_CDECL GetDefaultFontName();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws text using the font name and height provided.
+	// Parameters:
+	//     hDC - Device context handle
+	//     lpszFontFaceName - Pointer to font name string
+	//     nFontHeight - Font height. If 0, the text will be fit into the rectangle.
+	//     nCount - The length, in characters, of the string. If nCount is -1,
+	//         then string length will be computed.
+	//     lpRect - A pointer to a RECT structure that contains the rectangle
+	//         (in logical coordinates) in which the text is to be formatted.
+	//     uFormat - The method of formatting the text. Refer to DrawText SDK
+	//         function documentation for more details.
+	//     crForeColor - Foreground text color. When equals to COLORREF_NULL, no
+	//         foreground text color is used.
+	//     crBackColor - Background text color. When equals to COLORREF_NULL, no
+	//         background text color is used.
+	// Returns:
+	//     If the function succeeds, the return value is the height of the text
+	//     in logical units. If DT_VCENTER or DT_BOTTOM is specified, the return
+	//     value is the offset from lpRect->top to the bottom of the drawn text
+	//      If the function fails, the return value is zero.
+	//-----------------------------------------------------------------------
+	static int AFX_CDECL DrawFontText(CDC* pDC, LPCTSTR lpszFontFaceName, int nFontHeight,
+									  LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat,
+									  COLORREF crForeColor = COLORREF_NULL,
+									  COLORREF crBackColor = COLORREF_NULL);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws text using the font name and height provided.
+	// Parameters:
+	//     hDC - Device context handle
+	//     pFont - Pointer to font
+	//     nCount - The length, in characters, of the string. If nCount is -1,
+	//         then string length will be computed.
+	//     lpRect - A pointer to a RECT structure that contains the rectangle
+	//         (in logical coordinates) in which the text is to be formatted.
+	//     uFormat - The method of formatting the text. Refer to DrawText SDK
+	//         function documentation for more details.
+	//     crForeColor - Foreground text color. When equals to COLORREF_NULL, no
+	//         foreground text color is used.
+	//     crBackColor - Background text color. When equals to COLORREF_NULL, no
+	//         background text color is used.
+	// Returns:
+	//     If the function succeeds, the return value is the height of the text
+	//     in logical units. If DT_VCENTER or DT_BOTTOM is specified, the return
+	//     value is the offset from lpRect->top to the bottom of the drawn text
+	//      If the function fails, the return value is zero.
+	//-----------------------------------------------------------------------
+	static int AFX_CDECL DrawFontText(CDC* pDC, CFont* pFont, LPCTSTR lpchText, int nCount,
+									  LPRECT lpRect, UINT uFormat,
+									  COLORREF crForeColor = COLORREF_NULL,
+									  COLORREF crBackColor = COLORREF_NULL);
+
 	static CPoint AFX_CDECL Dlu2Pix(int dluX, int dluY);
 
 	//-----------------------------------------------------------------------
@@ -952,30 +1175,60 @@ public:
 	//     Call this member function to draw a triangle onto the
 	//     specified device context.
 	// Parameters:
-	//     pDC - Points to the device context
-	//     pt0 - First point of the triangle
-	//     pt1 - Second point of the triangle
-	//     pt2 - Third point of the triangle
-	//     clr - An RGB value that represents the fill color.
+	//     pDC      - Points to the device context
+	//     pt0      - First point of the triangle
+	//     pt1      - Second point of the triangle
+	//     pt2      - Third point of the triangle
+	//     clrPen   - An RGB value that represents the border color.
+	//     clrBrush - An RGB value that represents the fill color, if COLORREF_NULL
+	//                the value specified by clrPen is used.
 	//-----------------------------------------------------------------------
-	static void AFX_CDECL Triangle(CDC* pDC, CPoint pt0, CPoint pt1, CPoint pt2, COLORREF clr);
-	static void AFX_CDECL Triangle(CDC* pDC, CPoint pt0, CPoint pt1, CPoint pt2); // <combine CXTPDrawHelpers::Triangle@CDC*@CPoint@CPoint@CPoint@COLORREF>
+	static void AFX_CDECL Triangle(CDC* pDC, CPoint pt0, CPoint pt1, CPoint pt2, COLORREF clrPen,
+								   COLORREF clrBrush = COLORREF_NULL);
+	static void AFX_CDECL Triangle(
+		CDC* pDC, CPoint pt0, CPoint pt1,
+		CPoint pt2); // <combine CXTPDrawHelpers::Triangle@CDC*@CPoint@CPoint@CPoint@COLORREF>
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to draw an expand triangle commonly
+	//          used on tree controls or other controls that need to show the
+	//          expanded state of a list or group of items.
+	// Input:   pDC       - Points to the device context
+	//          pt        - Top left anchor point for the triangle.
+	//          bExpanded - TRUE to draw the expanded triangle.
+	//          clrPen    - An RGB value that represents the border color.
+	//          clrBrush  - An RGB value that represents the fill color, if
+	//                      COLORREF_NULL the value specified by clrPen is used.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawExpandTriangle(CDC* pDC, CPoint pt, BOOL bExpanded, COLORREF clrPen,
+											 COLORREF clrBrush = COLORREF_NULL);
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to draw an expand arrow commonly
+	//          used on popup windows or other controls that need to show the
+	//          expanded state of a docked window.
+	// Input:   pDC       - Points to the device context
+	//          pt        - Top left anchor point for the triangle.
+	//          bExpanded - TRUE to draw the expanded triangle.
+	//          clrArrow  - An RGB value that represents the arrow color.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawExpandArrow(CDC* pDC, CRect rc, BOOL bExpanded, COLORREF clrArrow);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to draw a vertical or horizontal line using
 	//     the specified device context.
 	// Parameters:
-	//     pDC     - Points to the device context
-	//     xPos    - Specifies the logical x-coordinate of the start position.
-	//     yPos    - Specifies the logical y-coordinate of the start position.
-	//     nLength - Specifies the length of the line to draw, for vertical lines set this value to 0.
-	//     nHeight - Specifies the height of the line to draw, for horizontal lines set this value to 0.
-	//     crLine  - Specifies the RGB color value used to draw the line.
+	//     pDC    - Points to the device context
+	//     x1     - Specifies the logical x-coordinate of the start position.
+	//     y1     - Specifies the logical y-coordinate of the start position.
+	//     x2     - Specifies the logical x-coordinate of the end position.
+	//     y2     - Specifies the logical y-coordinate of the end position.
+	//     crLine - Specifies the RGB color value used to draw the line.
 	// Returns:
 	//     TRUE if the specified device context is valid, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL DrawLine(CDC* pDC, int xPos, int yPos, int nLength, int nHeight, COLORREF crLine);
+	static BOOL AFX_CDECL DrawLine(CDC* pDC, int x1, int y1, int x2, int y2, COLORREF crLine);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1057,9 +1310,16 @@ public:
 	//    Converts the screen coordinates of a given point on the display to window coordinates.
 	// Parameters:
 	//     pWnd - window whose area is used for the conversion
-	//     lpPoint - Points to a CPoint object or POINT structure that contains the screen coordinates to be converted.
+	//     lpPoint - Points to a CPoint object or POINT structure that contains the screen
+	//     coordinates to be converted.
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL ScreenToWindow(CWnd* pWnd, LPPOINT lpPoint);
+
+	static DWORD AFX_CDECL GetLayout(CDC* pDC);
+	static DWORD AFX_CDECL GetLayout(HDC hDC);
+
+	static DWORD AFX_CDECL SetLayout(CDC* pDC, DWORD dwLayout);
+	static DWORD AFX_CDECL SetLayout(HDC hDC, DWORD dwLayout);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1080,7 +1340,29 @@ public:
 	//     bLayoutRTL - TRUE to set right to left layout
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL SetContextRTL(CDC* pDC, BOOL bLayoutRTL);
-	static void AFX_CDECL SetContextRTL(HDC hDC, BOOL bLayoutRTL); // <combine CXTPDrawHelpers::SetContextRTL@CDC*@BOOL>
+	static void AFX_CDECL SetContextRTL(
+		HDC hDC, BOOL bLayoutRTL); // <combine CXTPDrawHelpers::SetContextRTL@CDC*@BOOL>
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if window has right-to-left layout.
+	// Parameters:
+	//     pWnd - Window handle to test
+	//     hWnd - Window handle to test
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL IsWindowRTL(CWnd* pWnd);
+	static BOOL AFX_CDECL IsWindowRTL(HWND hWnd); // <combine CXTPDrawHelpers::IsWindowRTL@CWnd*>
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if window has vertical scroll bar on the left side.
+	// Parameters:
+	//     pWnd - Window handle to test
+	//     hWnd - Window handle to test
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL IsVScrollOnTheLeft(CWnd* pWnd);
+	static BOOL AFX_CDECL
+		IsVScrollOnTheLeft(HWND hWnd); // <combine CXTPDrawHelpers::IsVScrollOnTheLeft@CWnd*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1092,7 +1374,8 @@ public:
 	//     hIcon - Handle to the class icon
 	//     hbrBackground - Handle to the class background brush.
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL RegisterWndClass(HINSTANCE hInstance, LPCTSTR lpszClassName, UINT style, HICON hIcon = 0, HBRUSH hbrBackground = 0);
+	static BOOL AFX_CDECL RegisterWndClass(HINSTANCE hInstance, LPCTSTR lpszClassName, UINT style,
+										   HICON hIcon = 0, HBRUSH hbrBackground = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1105,20 +1388,128 @@ public:
 	//-----------------------------------------------------------------------
 	static void AFX_CDECL GetWindowCaption(HWND hWnd, CString& strWindowText);
 
-//{{AFX_CODEJOCK_PRIVATE
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPSystemVersion()->GetComCtlVersion' instead")
-	static DWORD GetComCtlVersion();
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPMultiMonitor()->GetWorkArea' instead")
-	static CRect GetWorkArea();
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPMultiMonitor()->GetWorkArea' instead")
-	static CRect GetWorkArea(const POINT& point);
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPMultiMonitor()->GetWorkArea' instead")
-	static CRect GetWorkArea(LPCRECT rect);
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPMultiMonitor()->GetWorkArea' instead")
-	static CRect GetWorkArea(const CWnd* pWnd);
-	_XTP_DEPRECATE("This function or variable is no longer available. Please use 'XTPMultiMonitor()->GetScreenArea' instead")
-	static CRect GetScreenArea(const CWnd* pWnd);
-//}}AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Call this function to render a color rectangle with a border.
+	// Parameters:
+	//		pDC       : Pointer to a valid device context.
+	//		rColor    : Size of the color rectangle to draw.
+	//      l         : Left edge of rectangle.
+	//      t         : Top edge of rectangle.
+	//      cx        : Width of rectangle.
+	//      cy        : Height of rectangle.
+	//		clrFill   : Background color for the rectangle.
+	//		clrBorder : Border color for the rectangle.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawColorRect(CDC* pDC, CRect rColor, COLORREF clrFill,
+										COLORREF clrBorder);
+	static void AFX_CDECL DrawColorRect(CDC* pDC, int l, int t, int cx, int cy, COLORREF clrFill,
+										COLORREF clrBorder);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Call this function to render a hatch pattern rectangle with a border.
+	// Parameters:
+	//		pDC       : Pointer to a valid device context.
+	//		rColor    : Size of the hatch rectangle to draw.
+	//		clrFill   : Background color for the hatch rectangle.
+	//		clrBorder : Border color for the hatch rectangle.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawHatchRect(CDC* pDC, CRect rColor, COLORREF clrFill,
+										COLORREF clrBorder);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Call this function to create a pattern brush used for fill.
+	// Parameters:
+	//		bmp        : Reference to a bitmap object.
+	//		brush      : Reference to a brush object.
+	//		clrFill    : Background color for the hatch rectangle.
+	//      pBitsBrush : Pattern defined as a WORD array containing 8 hex
+	//                   values that represent an 8 x 8 pixel pattern.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL CreatePatternBrush(CBitmap& bmp, CBrush& brush, COLORREF clrFill,
+											 const void* pBitsBrush);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Call this function to render a pattern rectangle with a border.
+	// Parameters:
+	//		pDC        : Pointer to a valid device context.
+	//		rColor     : Size of the hatch rectangle to draw.
+	//		clrFill    : Background color for the hatch rectangle.
+	//		clrBorder  : Border color for the hatch rectangle.
+	//      pBitsBrush : Pattern defined as a WORD array containing 8 hex
+	//                   values that represent an 8 x 8 pixel pattern.
+	//-----------------------------------------------------------------------
+	static void AFX_CDECL DrawBrushRect(CDC* pDC, CRect rColor, COLORREF clrFill,
+										COLORREF clrBorder, const void* pBitsBrush);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Computes font height such that the string provided fits the specified rectangle
+	//		as tight as possible.
+	// Parameters:
+	//		pDC       - Pointer to a valid device context.
+	//		lpStr     - Pointer to a string which is to be fitted into the specified rectangle.
+	//		cch       - Number of characters to use from the string provided or -1 to
+	//		            compute the length of the string.
+	//		rc        - Rectangle to contain the string specified.
+	//		fntTest   - Font used to draw the text specified. Font height is ignored. Font width has
+	// to be 0.
+	// Returns:
+	//		If succeedes the return value is the height of the font necessary to fit the specified
+	//		rectangle as tight as possible, oterwise the return value is 0.
+	//-----------------------------------------------------------------------
+	static int ComputeFittingFontHeight(CDC* pDC, LPCTSTR lpStr, int cch, const CRect& rc,
+										CFont& fntTest);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Draws a stretched image from image list.
+	// Parameters:
+	//		pDC        - Pointer to a valid device context where the image is to be drawn to.
+	//		rcDest     - Destination rectangle.
+	//		pImageList - A valid image list pointer.
+	//		nImage     - Image index to draw.
+	// Returns:
+	//		TRUE is an image is drawn successfully.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL StretchImageListImage(CDC* pDC, CRect rcDest, CImageList* pImageList,
+												int nImage);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//		Processes all pending WM_PAINT message in the message queue of the calling thread.
+	//		Ensures the painting never causes deadlock.
+	// Parameters:
+	//		hWnd       - Window handle for which the painting messages have to be processed,
+	//		             or NULL to process painting message for all thread windows.
+	// Returns:
+	//		FALSE if message loop is broken due to either WM_QUIT or error in ::GetMessage.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL ProcessPendingPaintMessages(HWND hWnd = NULL);
+
+	//{{AFX_CODEJOCK_PRIVATE
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPSystemVersion()->GetComCtlVersion' instead")
+	static DWORD AFX_CDECL GetComCtlVersion();
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPMultiMonitor()->GetWorkArea' instead")
+	static CRect AFX_CDECL GetWorkArea();
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPMultiMonitor()->GetWorkArea' instead")
+	static CRect AFX_CDECL GetWorkArea(const POINT& point);
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPMultiMonitor()->GetWorkArea' instead")
+	static CRect AFX_CDECL GetWorkArea(LPCRECT rect);
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPMultiMonitor()->GetWorkArea' instead")
+	static CRect AFX_CDECL GetWorkArea(const CWnd* pWnd);
+	_XTP_DEPRECATE("This function is no longer available. Please use "
+				   "'XTPMultiMonitor()->GetScreenArea' instead")
+	static CRect AFX_CDECL GetScreenArea(const CWnd* pWnd);
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	//-----------------------------------------------------------------------
@@ -1141,18 +1532,16 @@ public:
 	PFNGRADIENTFILL m_pfnFastGradientFill;
 
 private:
-
-	HMODULE m_hMsImgDll;  // Handle to MsImg32.dll.
+	HMODULE m_hMsImgDll; // Handle to MsImg32.dll.
 
 	// private members used for draw routines.
 	void GradientFillFast(CDC* pDC, LPCRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz);
 	void GradientFillSlow(CDC* pDC, LPCRECT lpRect, COLORREF crFrom, COLORREF crTo, BOOL bHorz);
 
 	// singleton
-	friend _XTP_EXT_CLASS CXTPDrawHelpers* AFX_CDECL XTPDrawHelpers();   // Used to access the CXTPDrawHelpers object.
+	friend _XTP_EXT_CLASS CXTPDrawHelpers* AFX_CDECL XTPDrawHelpers(); // Used to access the
+																	   // CXTPDrawHelpers object.
 };
-
-
 
 //===========================================================================
 // Summary:
@@ -1162,16 +1551,16 @@ private:
 //     derived class. For example, to create a tab control that is
 //     flicker free you would use the following declaration:
 // Example:
-//      The following example demonstrates how to use CXTPNoFlickerWnd to create a flicker free object.
+//      The following example demonstrates how to use CXTPNoFlickerWnd to create a flicker free
+//      object.
 // <code>
 // CXTPNoFlickerWnd <CTabCtrl> m_tabCtrl;
 // </code>
 //===========================================================================
-template <class TBase>
+template<class TBase>
 class CXTPNoFlickerWnd : public TBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPNoFlickerWnd object.
@@ -1226,7 +1615,7 @@ public:
 	{
 		switch (message)
 		{
-		case WM_PAINT:
+			case WM_PAINT:
 			{
 				CPaintDC dc(this);
 
@@ -1241,13 +1630,10 @@ public:
 				CXTPBufferDC memDC(dc.GetSafeHdc(), rc);
 				memDC.FillSolidRect(rc, m_crBack);
 
-				return TBase::DefWindowProc(WM_PAINT,
-					(WPARAM)memDC.m_hDC, 0);
+				return TBase::DefWindowProc(WM_PAINT, (WPARAM)memDC.m_hDC, 0);
 			}
 
-		case WM_ERASEBKGND:
-			{
-				return TRUE;
+			case WM_ERASEBKGND: { return TRUE;
 			}
 		}
 
@@ -1256,7 +1642,6 @@ public:
 
 protected:
 	COLORREF m_crBack; // An RGB value.
-
 };
 
 //===========================================================================
@@ -1288,11 +1673,10 @@ protected:
 // };
 // </code>
 //========================================================================
-template <class TBase, bool bCalcSize = true>
+template<class TBase, bool bCalcSize = true>
 class CXTPOfficeBorder : public TBase
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to return the color used for drawing non-client
@@ -1305,17 +1689,23 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual COLORREF GetBorderColor(bool bTopLeft) const
 	{
+#	ifndef _XTP_ACTIVEX
+#		if defined(_XTP_INCLUDE_COMMANDBARS)
 
-#if defined(_XTP_INCLUDE_COMMANDBARS)
+		CXTPPaintManager* pPaintManager = CXTPPaintManager::GetInstanceAddRef();
+		XTPPaintTheme nPaintTheme		= pPaintManager->BaseTheme();
+		CXTPPaintManager::ReleaseInstance();
 
-		switch (XTPPaintManager()->BaseTheme())
+		switch (nPaintTheme)
 		{
-		case xtpThemeOfficeXP:
-		case xtpThemeOffice2000:  return GetXtremeColor(bTopLeft? COLOR_3DSHADOW: COLOR_3DHIGHLIGHT);
-		case xtpThemeOffice2003:  return GetXtremeColor(XPCOLOR_FRAME);
-		case xtpThemeNativeWinXP: return GetXtremeColor(XPCOLOR_STATICFRAME);
+			case xtpThemeOfficeXP:
+			case xtpThemeOffice2000:
+				return GetXtremeColor(bTopLeft ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
+			case xtpThemeOffice2003: return GetXtremeColor(XPCOLOR_FRAME);
+			case xtpThemeNativeWinXP: return GetXtremeColor(XPCOLOR_STATICFRAME);
 		}
-#endif
+#		endif
+#	endif
 
 		return GetXtremeColor(XPCOLOR_3DSHADOW);
 	}
@@ -1325,7 +1715,7 @@ protected:
 	{
 		switch (message)
 		{
-		case WM_NCPAINT:
+			case WM_NCPAINT:
 			{
 				TBase::WindowProc(message, wParam, lParam);
 
@@ -1344,50 +1734,62 @@ protected:
 
 				if (nBorderWidth > 1)
 				{
-					rWindow.DeflateRect(1,1);
-					dc.Draw3dRect(&rWindow,
-						XTPColorManager()->GetColor(COLOR_WINDOW),
-						XTPColorManager()->GetColor(COLOR_WINDOW));
+					rWindow.DeflateRect(1, 1);
+					dc.Draw3dRect(&rWindow, XTPColorManager()->GetColor(COLOR_WINDOW),
+								  XTPColorManager()->GetColor(COLOR_WINDOW));
 				}
 
 				return 0; // Handled.
 			}
 
-		case WM_CREATE:
+			case WM_CREATE:
 			{
 				if (TBase::WindowProc(message, wParam, lParam) == -1)
 					return -1;
 
+#	if (_MSC_VER > 1300)
+#		pragma warning(push)
+#		pragma warning(disable : 4127) // conditional expression is constant
+#	endif
 				if (bCalcSize)
+#	if (_MSC_VER > 1300)
+#		pragma warning(pop)
+#	endif
 				{
 					// remove 3D borders.
-					long lStyle = ::GetWindowLong(m_hWnd, GWL_STYLE) &~WS_BORDER;
+					long lStyle = ::GetWindowLong(m_hWnd, GWL_STYLE) & ~WS_BORDER;
 					::SetWindowLong(m_hWnd, GWL_STYLE, lStyle);
 
-					long lExStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE) &~WS_EX_CLIENTEDGE;
+					long lExStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE) & ~WS_EX_CLIENTEDGE;
 					::SetWindowLong(m_hWnd, GWL_EXSTYLE, lExStyle);
 
 					// force non-client area to be recalculated.
 					::SetWindowPos(m_hWnd, NULL, NULL, NULL, NULL, NULL,
-						SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_FRAMECHANGED);
+								   SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE
+									   | SWP_FRAMECHANGED);
 				}
 
 				return 0; // Handled.
 			}
 			break;
 
-		case WM_NCCALCSIZE:
-			{
-				LRESULT lResult = TBase::WindowProc(message, wParam, lParam);
+			case WM_NCCALCSIZE: { LRESULT lResult = TBase::WindowProc(message, wParam, lParam);
 
+#	if (_MSC_VER > 1300)
+#		pragma warning(push)
+#		pragma warning(disable : 4127) // conditional expression is constant
+#	endif
 				if (bCalcSize)
+#	if (_MSC_VER > 1300)
+#		pragma warning(pop)
+#	endif
 				{
 					NCCALCSIZE_PARAMS FAR* lpncsp = (NCCALCSIZE_PARAMS FAR*)lParam;
 
 					// adjust non-client area for border space
-					lpncsp->rgrc[0].left   += 1;
-					lpncsp->rgrc[0].top    += 1;
-					lpncsp->rgrc[0].right  -= 1;
+					lpncsp->rgrc[0].left += 1;
+					lpncsp->rgrc[0].top += 1;
+					lpncsp->rgrc[0].right -= 1;
 					lpncsp->rgrc[0].bottom -= 1;
 				}
 
@@ -1411,7 +1813,6 @@ protected:
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS CXTPDrawHelpers* AFX_CDECL XTPDrawHelpers();
 
-
 //---------------------------------------------------------------------------
 // Summary:
 //    Prepare a printer device context for printing and calculates
@@ -1426,8 +1827,8 @@ _XTP_EXT_CLASS CXTPDrawHelpers* AFX_CDECL XTPDrawHelpers();
 // See Also:
 //    CWinApp::GetPrinterDeviceDefaults, DEVMODE, DEVNAMES
 //---------------------------------------------------------------------------
-_XTP_EXT_CLASS BOOL AFX_CDECL XTPGetPrinterDeviceDefaults(HGLOBAL& ref_hDevMode, HGLOBAL& ref_hDevNames);
-
+_XTP_EXT_CLASS BOOL AFX_CDECL XTPGetPrinterDeviceDefaults(HGLOBAL& ref_hDevMode,
+														  HGLOBAL& ref_hDevNames);
 
 //===========================================================================
 // Summary:
@@ -1437,7 +1838,6 @@ class _XTP_EXT_CLASS CXTPPrinterInfo : public CXTPCmdTarget
 {
 	DECLARE_DYNAMIC(CXTPPrinterInfo)
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary: Default object constructor.
 	// See Also: ~CXTPPrinterInfo
@@ -1450,7 +1850,6 @@ public:
 	//-------------------------------------------------------------------------
 	virtual ~CXTPPrinterInfo();
 
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//      This enum defines some printer properties IDs.
@@ -1458,9 +1857,9 @@ public:
 	//-------------------------------------------------------------------------
 	enum XTPEnumDeviceName
 	{
-		xtpDevName_Driver = 0,  // Define Driver name property.
-		xtpDevName_Device = 1,  // Define Device name property.
-		xtpDevName_Port   = 2   // Define Port name property.
+		xtpDevName_Driver = 0, // Define Driver name property.
+		xtpDevName_Device = 1, // Define Device name property.
+		xtpDevName_Port   = 2  // Define Port name property.
 	};
 
 	//-----------------------------------------------------------------------
@@ -1477,7 +1876,6 @@ public:
 	CString GetName(XTPEnumDeviceName eNameID);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      This member function returns name offset by name ID.
@@ -1490,8 +1888,19 @@ protected:
 	//-----------------------------------------------------------------------
 	WORD _GetNameOffset(LPDEVNAMES pDevNames, XTPEnumDeviceName eNameID);
 
-};
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPPrinterInfo);
+
+	afx_msg BSTR OleGetDeviceName();
+	afx_msg BSTR OleGetDriverName();
+	afx_msg BSTR OleGetPortName();
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
 
 //===========================================================================
 // Summary:
@@ -1508,7 +1917,6 @@ class _XTP_EXT_CLASS CXTPPrintPageHeaderFooter : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPPrintPageHeaderFooter)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Object constructor.
@@ -1551,7 +1959,8 @@ public:
 	//  [li]<b>&P</b>  Total number of pages
 	//
 	//  [li]<b>&b</b>  The text immediately following these characters as centered.
-	//  [li]<b>&b&b</b>    The text immediately following the first "&b" as centered, and the text following the second "&b" as right-justified.
+	//  [li]<b>&b&b</b>    The text immediately following the first "&b" as centered, and the text
+	//  following the second "&b" as right-justified.
 	//
 	//  [li]<b>&w</b>  Window title
 	//
@@ -1601,38 +2010,878 @@ public:
 	//-------------------------------------------------------------------------
 	virtual BOOL IsEmpty();
 
-	LOGFONT m_lfFont;           // Font details
-	COLORREF m_clrColor;        // Text color
-	CString m_strFormatString;  // Text as Format string
+	LOGFONT m_lfFont;		   // Font details
+	COLORREF m_clrColor;	   // Text color
+	CString m_strFormatString; // Text as Format string
 
-	CString m_strLeft;    // A string to show with left align
-	CString m_strCenter;  // A string to show with center align
-	CString m_strRight;   // A string to show with right align
+	CString m_strLeft;   // A string to show with left align
+	CString m_strCenter; // A string to show with center align
+	CString m_strRight;  // A string to show with right align
 
 	//{{AFX_CODEJOCK_PRIVATE
-	static CString GetParentFrameTitle(CWnd* pWnd);
-	static void DoInsertHFFormatSpecifierViaMenu(CWnd* pParent, CEdit* pEdit, CButton* pButton);
+	static CString AFX_CDECL GetParentFrameTitle(CWnd* pWnd);
+	static void AFX_CDECL DoInsertHFFormatSpecifierViaMenu(CWnd* pParent, CEdit* pEdit,
+														   CButton* pButton);
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL m_bHeader;             // If TRUE object represents a Header, otherwise footer.
+	BOOL m_bHeader;				// If TRUE object represents a Header, otherwise footer.
 	CXTPPrintOptions* m_pOwner; // Store pointer to owner object.
 
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual int Calc3ColSizes(CDC* pDC, int nW, const CString& str1, const CString& str2,
-					  const CString& str3, CSize& rsz1, CSize& rsz2, CSize& rsz3);
-	virtual int _Calc3ColSizesIfSingleCol(CDC* pDC, int nW,
-					  const CString& str1, const CString& str2, const CString& str3,
-					  CSize& rsz1, CSize& rsz2, CSize& rsz3);
+							  const CString& str3, CSize& rsz1, CSize& rsz2, CSize& rsz3);
+	virtual int _Calc3ColSizesIfSingleCol(CDC* pDC, int nW, const CString& str1,
+										  const CString& str2, const CString& str3, CSize& rsz1,
+										  CSize& rsz2, CSize& rsz3);
 
 	virtual void _SplitFormatLCR(CString strFormat);
 	virtual void _FormatDateTime(CString& strFormat, LCID lcidLocale);
 	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	afx_msg LPFONTDISP OleGetFont();
+	afx_msg void OleSetFont(LPFONTDISP pFontDisp);
+	afx_msg void OleClear();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPrintPageHeaderFooter);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 private:
 	int fnYi(int Xi, int Wi);
 };
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Obtains native handle of the object specified.
+// Returns:
+//      A native handle value.
+//-------------------------------------------------------------------------
+AFX_INLINE HDC XTPGetHandle(CDC* pDC)
+{
+	ASSERT(NULL != pDC);
+	return pDC->m_hDC;
+}
+
+AFX_INLINE HDC XTPGetHandle(CDC& dc) // <combine XTPGetHandle@CDC*>
+{
+	return dc.m_hDC;
+}
+
+AFX_INLINE HDC XTPGetHandle(HDC hDC) // <combine XTPGetHandle@CDC*>
+{
+	return hDC;
+}
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Specifies process DPI awareness level. Refer to platform SDK
+//      documentation for it's analogue called PROCESS_DPI_AWARENESS.
+//-------------------------------------------------------------------------
+enum XTPDpiAwareness
+{
+	xtpDpiUnaware		  = 0, // Same as PROCESS_DPI_AWARENESS::PROCESS_DPI_UNAWARE
+	xtpDpiSystemAware	 = 1, // Same as PROCESS_DPI_AWARENESS::PROCESS_SYSTEM_DPI_AWARE
+	xtpDpiPerMonitorAware = 2  // Same as PROCESS_DPI_AWARENESS::PROCESS_PER_MONITOR_DPI_AWARE
+};
+
+//-------------------------------------------------------------------------
+// Summary:
+//      This helper class is used in drawing when DPI are different than 96
+// Definition: relative pixel = 1 pixel at 96 DPI and scaled based on actual DPI.
+// Original code comes from:
+// http://msdn.microsoft.com/en-us/library/windows/desktop/dd464660(v=vs.85).aspx
+//-------------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPDpi
+{
+	friend class CXTPSingleton<CXTPDpi>;
+
+public:
+	enum
+	{
+		DefaultDpi = 96 // Normal DPI
+	};
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Constructs DPI helper object that works with global DPI settings.
+	//-------------------------------------------------------------------------
+	CXTPDpi();
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Constructs DPI helper object that works with provided device context's settings.
+	// Parameters:
+	//		hDC - Device context for which DPI settings to be used.
+	//-------------------------------------------------------------------------
+	CXTPDpi(HDC hDC);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Constructs DPI helper object that works with provided window's
+	//      device context's settings.
+	// Parameters:
+	//		hWnd - Window handle for which DPI settings to be used.
+	//-------------------------------------------------------------------------
+	CXTPDpi(HWND hWnd);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Handles object destruction.
+	//-------------------------------------------------------------------------
+	~CXTPDpi();
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Sets process DPI awareness level. Whenever possible prefer setting
+	//      DPI awareness level in application's manifest file. Refer to platform
+	//      SDK's documentation for SetProcessDpiAwareness and SetProcessDpiAware
+	//      details and support OS versions.
+	// Parameters:
+	//      dpiAwareness - DPI awareness level that is to be set only if supported
+	//      by OS.
+	// Returns:
+	//      TRUE if succeeded.
+	//-------------------------------------------------------------------------
+	BOOL SetDpiAwareness(XTPDpiAwareness dpiAwareness);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Obtains process DPI awareness level if possible. Refer to platform
+	//      SDK's documentation for GetProcessDpiAwareness details and support OS versions.
+	// Returns:
+	//      DPI awareness level that enabled for the calling process.
+	//-------------------------------------------------------------------------
+	XTPDpiAwareness GetDpiAwareness() const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Processes DPI related message. Must not be called for DPI helper
+	//      object specific to device context or window handle.
+	// Parameters:
+	//      hWnd - Window handle.
+	//      message - Message code.
+	//      wParam, lParam - Message arguments.
+	//      pResult - Pointer to the result of message processing.
+	// Returns:
+	//      TRUE if a message has been processed.
+	//-------------------------------------------------------------------------
+	BOOL OnWndMsg(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Obtains horizontal and vertical DPI values for the system, device
+	//      context or window handle.
+	// Returns:
+	//      DPI values.
+	//-------------------------------------------------------------------------
+	int GetDPIX() const;
+	int GetDPIY() const; // <combine CXTPDpi::GetDPIX>
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Determines if system, device context or window handle DPI settings are default.
+	// Returns:
+	//      TRUE if DPI setting are default for the target context.
+	//-------------------------------------------------------------------------
+	BOOL IsDefaultDpiX() const;
+	BOOL IsDefaultDpiY() const; // <combine CXTPDpi::IsDefaultDpiX>
+	BOOL IsDefaultDpi() const;  // <combine CXTPDpi::IsDefaultDpiX>
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Perform scalling/unscalling of X, Y coordinates, rectangle,
+	//      size and point objects according to active DPI settings.
+	// Parameters:
+	//      x       - X-coordinate to scale/unscale using current horizontal DPI settings.
+	//      y       - Y-coordinate to scale/unscale using current vertical DPI settings.
+	//      pRect   - a pointer to rectangle object to scale/unscale using current DPI settings.
+	//      rc      - a reference to rectangle object to scale/unscale using current DPI settings.
+	//      pPoint  - a pointer to point object to scale/unscale using current DPI settings.
+	//      pt      - a reference to point object to scale/unscale using current DPI settings.
+	//      pSize   - a pointer to size object to scale/unscale using current DPI settings.
+	//      sz      - a reference to size object to scale/unscale using current DPI settings.
+	//      iDpiScaleAbove - Scaled only if current DPI larger than specified.
+	// Returns:
+	//      Scaled/unscaled value.
+	//-------------------------------------------------------------------------
+	int ScaleX(int x, int iDpiScaleAbove = CXTPDpi::DefaultDpi) const;
+	int ScaleY(int y,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	float ScaleX(float x,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	float ScaleY(float y,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	double ScaleX(double x,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	double ScaleY(double y,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	unsigned int ScaleX(unsigned int x,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	unsigned int ScaleY(unsigned int y,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	int UnscaleX(int x, int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	int UnscaleY(int y, int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	float UnscaleX(float x,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	float UnscaleY(float y,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	double UnscaleX(double x,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	double UnscaleY(double y,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	unsigned int UnscaleX(unsigned int x, int iDpiScaleAbove = CXTPDpi::DefaultDpi)
+		const; // <combine CXTPDpi::ScaleX@int@int>
+	unsigned int UnscaleY(unsigned int y, int iDpiScaleAbove = CXTPDpi::DefaultDpi)
+		const; // <combine CXTPDpi::ScaleX@int@int>
+
+	int ScaleX(HDC hDC, int x, int iDpiScaleAbove = CXTPDpi::DefaultDpi) const;
+	int ScaleY(HDC hDC, int y,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	float ScaleX(HDC hDC, float x,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	float ScaleY(HDC hDC, float y,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	double ScaleX(HDC hDC, double x,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	double ScaleY(HDC hDC, double y,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	unsigned int ScaleX(HDC hDC, unsigned int x,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	unsigned int ScaleY(HDC hDC, unsigned int y,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	int UnscaleX(HDC hDC, int x,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	int UnscaleY(HDC hDC, int y,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	float UnscaleX(HDC hDC, float x,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	float UnscaleY(HDC hDC, float y,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	double UnscaleX(HDC hDC, double x,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	double UnscaleY(HDC hDC, double y,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	unsigned int UnscaleX(HDC hDC, unsigned int x, int iDpiScaleAbove = CXTPDpi::DefaultDpi)
+		const; // <combine CXTPDpi::ScaleX@int@int>
+	unsigned int UnscaleY(HDC hDC, unsigned int y, int iDpiScaleAbove = CXTPDpi::DefaultDpi)
+		const; // <combine CXTPDpi::ScaleX@int@int>
+
+	void ScaleRect(RECT* pRect,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	RECT ScaleRect(const RECT& rc,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	void UnscaleRect(RECT* pRect,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	RECT UnscaleRect(const RECT& rc,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void Scale(RECT* pRect,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	RECT Scale(const RECT& rc,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	void Unscale(RECT* pRect,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	RECT Unscale(const RECT& rc,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void ScaleRect(CRect* pRect,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	CRect ScaleRect(const CRect& rc,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	void UnscaleRect(CRect* pRect,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	CRect UnscaleRect(const CRect& rc,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void Scale(CRect* pRect,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CRect Scale(const CRect& rc,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(CRect* pRect,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CRect Unscale(const CRect& rc,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+
+	void ScaleRect(HDC hDC, RECT* pRect,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	RECT ScaleRect(HDC hDC, const RECT& rc,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	void UnscaleRect(HDC hDC, RECT* pRect,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	RECT UnscaleRect(HDC hDC, const RECT& rc,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, RECT* pRect,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	RECT Scale(HDC hDC, const RECT& rc,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, RECT* pRect,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	RECT Unscale(HDC hDC, const RECT& rc,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void ScaleRect(HDC hDC, CRect* pRect,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	CRect ScaleRect(HDC hDC, const CRect& rc,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	void UnscaleRect(HDC hDC, CRect* pRect,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	CRect UnscaleRect(HDC hDC, const CRect& rc,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, CRect* pRect,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CRect Scale(HDC hDC, const CRect& rc,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, CRect* pRect,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CRect Unscale(HDC hDC, const CRect& rc,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+
+	void ScalePoint(POINT* pPoint,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	POINT ScalePoint(const POINT& pt,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void UnscalePoint(POINT* pPoint,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	POINT UnscalePoint(const POINT& pt,
+					   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		// CXTPDpi::ScaleX@int@int>
+	void Scale(POINT* pPoint,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	POINT Scale(const POINT& pt,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(POINT* pPoint,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	POINT Unscale(const POINT& pt,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	void ScalePoint(CPoint* pPoint,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	CPoint ScalePoint(const CPoint& pt,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void UnscalePoint(CPoint* pPoint,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	CPoint UnscalePoint(const CPoint& pt,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	void Scale(CPoint* pPoint,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CPoint Scale(const CPoint& pt,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void Unscale(CPoint* pPoint,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CPoint Unscale(const CPoint& pt,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+
+	void ScalePoint(HDC hDC, POINT* pPoint,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	POINT ScalePoint(HDC hDC, const POINT& pt,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void UnscalePoint(HDC hDC, POINT* pPoint,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	POINT UnscalePoint(HDC hDC, const POINT& pt,
+					   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		// CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, POINT* pPoint,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	POINT Scale(HDC hDC, const POINT& pt,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, POINT* pPoint,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	POINT Unscale(HDC hDC, const POINT& pt,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+	void ScalePoint(HDC hDC, CPoint* pPoint,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	CPoint ScalePoint(HDC hDC, const CPoint& pt,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void UnscalePoint(HDC hDC, CPoint* pPoint,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	CPoint UnscalePoint(HDC hDC, const CPoint& pt,
+						int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																		 // CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, CPoint* pPoint,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CPoint Scale(HDC hDC, const CPoint& pt,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, CPoint* pPoint,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CPoint Unscale(HDC hDC, const CPoint& pt,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+
+	void ScaleSize(SIZE* pSize,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	SIZE ScaleSize(const SIZE& sz,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	void UnscaleSize(SIZE* pSize,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	SIZE UnscaleSize(const SIZE& sz,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void Scale(SIZE* pSize,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	SIZE Scale(const SIZE& sz,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	void Unscale(SIZE* pSize,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	SIZE Unscale(const SIZE& sz,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void ScaleSize(CSize* pSize,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	CSize ScaleSize(const CSize& sz,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	void UnscaleSize(CSize* pSize,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	CSize UnscaleSize(const CSize& sz,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void Scale(CSize* pSize,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CSize Scale(const CSize& sz,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(CSize* pSize,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CSize Unscale(const CSize& sz,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+
+	void ScaleSize(HDC hDC, SIZE* pSize,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	SIZE ScaleSize(HDC hDC, const SIZE& sz,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	void UnscaleSize(HDC hDC, SIZE* pSize,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	SIZE UnscaleSize(HDC hDC, const SIZE& sz,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, SIZE* pSize,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	SIZE Scale(HDC hDC, const SIZE& sz,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, SIZE* pSize,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	SIZE Unscale(HDC hDC, const SIZE& sz,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	void ScaleSize(HDC hDC, CSize* pSize,
+				   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	// CXTPDpi::ScaleX@int@int>
+	CSize ScaleSize(HDC hDC, const CSize& sz,
+					int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	 // CXTPDpi::ScaleX@int@int>
+	void UnscaleSize(HDC hDC, CSize* pSize,
+					 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	  // CXTPDpi::ScaleX@int@int>
+	CSize UnscaleSize(HDC hDC, const CSize& sz,
+					  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																	   // CXTPDpi::ScaleX@int@int>
+	void Scale(HDC hDC, CSize* pSize,
+			   int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine CXTPDpi::ScaleX@int@int>
+	CSize Scale(HDC hDC, const CSize& sz,
+				int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																 // CXTPDpi::ScaleX@int@int>
+	void Unscale(HDC hDC, CSize* pSize,
+				 int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																  // CXTPDpi::ScaleX@int@int>
+	CSize Unscale(HDC hDC, const CSize& sz,
+				  int iDpiScaleAbove = CXTPDpi::DefaultDpi) const; // <combine
+																   // CXTPDpi::ScaleX@int@int>
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Selects one of the provided values that is specific to the current screen DPI.
+	// Parameters:
+	//      upToDpi120 - The value that is selected if current DPI is in range [96-120).
+	//      upToDpi144 - The value that is selected if current DPI is in range [120-144).
+	//      upToDpi192 - The value that is selected if current DPI is in range [144-192).
+	//      theLargest - The value that is selected if current DPI is in range [192-*).
+	// Returns:
+	//      Scaled screen size according to active DPI settings.
+	//-------------------------------------------------------------------------
+	int SelectDpiSpecific(int upToDpi120, int upToDpi144, int upToDpi192, int theLargest) const;
+	LPCTSTR SelectDpiSpecific(
+		LPCTSTR upToDpi120, LPCTSTR upToDpi144, LPCTSTR upToDpi192,
+		LPCTSTR theLargest) const; // <combine CXTPDpi::SelectDpiSpecific@int@int@int@int>
+	void* SelectDpiSpecific(void* upToDpi120, void* upToDpi144, void* upToDpi192,
+							void* theLargest) const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Scale screen width and height according to active DPI settings.
+	// Returns:
+	//      Scaled screen size according to active DPI settings.
+	//-------------------------------------------------------------------------
+	int ScaledScreenWidth() const;
+	int ScaledScreenHeight() const; // <combine CXTPDpi::ScaledScreenWidth>
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Determine if screen resolution meets minimum requirements in relative pixels.
+	// Returns:
+	//      TRUE if screen resolution meets minimum requirements in relative pixels.
+	//-------------------------------------------------------------------------
+	bool IsResolutionAtLeast(int cxMin, int cyMin) const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Convert a point size (1/72 of an inch) to raw pixels.
+	// Returns:
+	//      Converted point size.
+	//-------------------------------------------------------------------------
+	int PointsToPixels(int pt) const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Invalidates any cached metrics.
+	//-------------------------------------------------------------------------
+	void Invalidate();
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Tries to obtain physical scaling factors for a window regardless window
+	//      or process DPI awareness.
+	// Parameters:
+	//      hWnd - Windows handle for which physical scaling factors are to be obtained.
+	//      xScale - Gets set to the horizontal physical scaling factor upon successful completion.
+	//      yScale - Gets set to the vertical physical scaling factor upon successful completion.
+	// Returns:
+	//      TRUE if the physical scaling factors are obtained successfully.
+	//-------------------------------------------------------------------------
+	BOOL GetPhysicalWindowScaleFactors(HWND hWnd, double& xScale, double& yScale) const;
+
+private:
+	void Construct(HDC hDC = NULL, HWND hWnd = NULL);
+	void Init(int dpiX = 0, int dpiY = 0, BOOL bUpdate = FALSE);
+	void InitDpiAwareness();
+	int ScaleSystemMetricX(int nIndex) const;
+	int ScaleSystemMetricY(int nIndex) const;
+
+	LRESULT OnWmCreate(HWND hWnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnWmDpiChanged(HWND hWnd, WPARAM wParam, LPARAM lParam);
+
+private:
+	enum
+	{
+		DpiValueCount = 0x100
+	};
+
+	BOOL m_bInitialized;
+	BOOL m_bSupportsDpiChange;
+
+	HDC m_hDC;
+	HWND m_hWnd;
+	BOOL m_bReleaseDC;
+
+	int m_dpiX;
+	int m_dpiY;
+
+	POINT m_nPositiveDpiValues[DpiValueCount + 1];
+	POINT m_nNegativeDpiValues[DpiValueCount + 1];
+
+	static BOOL m_bDpiAwarenessInitialized;
+	typedef HRESULT(WINAPI* PFNSetProcessDpiAwareness)(XTPDpiAwareness dpiAwareness);
+	typedef HRESULT(WINAPI* PFNGetProcessDpiAwareness)(HANDLE hProcess,
+													   XTPDpiAwareness* dpiAwareness);
+	static PFNSetProcessDpiAwareness m_pfnSetProcessDpiAwareness;
+	static PFNGetProcessDpiAwareness m_pfnGetProcessDpiAwareness;
+
+	typedef BOOL(WINAPI* PFNSetProcessDPIAware)();
+	static PFNSetProcessDPIAware m_pfnSetProcessDPIAware;
+	static BOOL m_bSetProcessDPIAwareResult;
+
+	typedef HANDLE(WINAPI* PFNMonitorFromWindow)(HWND hWnd, DWORD dwFlags);
+	static PFNMonitorFromWindow m_pfnMonitorFromWindow;
+
+	enum MonitorDpiType
+	{
+		xtpEffectiveDpiType = 0,				  // Same as MONITOR_DPI_TYPE::MDT_EFFECTIVE_DPI
+		xtpAngularDpiType   = 1,				  // Same as MONITOR_DPI_TYPE::MDT_ANGULAR_DPI
+		xtpRawDpiType		= 2,				  // Same as MONITOR_DPI_TYPE::MDT_RAW_DPI
+		xtpDefaultDpiType   = xtpEffectiveDpiType // Same as MONITOR_DPI_TYPE::MDT_DEFAULT
+	};
+
+	typedef HRESULT(WINAPI* PFNGetDpiForMonitor)(HANDLE hMonitor, MonitorDpiType dpiType,
+												 UINT* dpiX, UINT* dpiY);
+	static PFNGetDpiForMonitor m_pfnGetDpiForMonitor;
+};
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Provides access to a global DPI helper object instance.
+// Returns:
+//      A pointer to a global DPI helper object instance.
+//-------------------------------------------------------------------------
+_XTP_EXT_CLASS CXTPDpi* AFX_CDECL XTPDpiHelper();
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Helper macros for scalling of X and Y coordinates, rectangle,
+//      size and point objects according to active DPI settings.
+//-------------------------------------------------------------------------
+#	define XTP_DPI_X(n) XTPDpiHelper()->ScaleX(n)
+#	define XTP_DPI_Y(n) XTPDpiHelper()->ScaleY(n)	// <combine XTP_DPI_X>
+#	define XTP_DPI(what) XTPDpiHelper()->Scale(what) // <combine XTP_DPI_X>
+#	define XTP_DPI_RECT(rc) XTP_DPI(rc)			  // <combine XTP_DPI_X>
+#	define XTP_DPI_POINT(pt) XTP_DPI(pt)			  // <combine XTP_DPI_X>
+#	define XTP_DPI_SIZE(sz) XTP_DPI(sz)			  // <combine XTP_DPI_X>
+#	define XTP_DC_DPI_X(dc, n) XTPDpiHelper()->ScaleX(XTPGetHandle(dc), n)
+#	define XTP_DC_DPI_Y(dc, n) XTPDpiHelper()->ScaleY(XTPGetHandle(dc), n) // <combine XTP_DPI_X>
+#	define XTP_DC_DPI(dc, what)                                                                   \
+		XTPDpiHelper()->Scale(XTPGetHandle(dc), what)   // <combine XTP_DPI_X>
+#	define XTP_DC_DPI_RECT(dc, rc) XTP_DC_DPI(dc, rc)  // <combine XTP_DPI_X>
+#	define XTP_DC_DPI_POINT(dc, pt) XTP_DC_DPI(dc, pt) // <combine XTP_DPI_X>
+#	define XTP_DC_DPI_SIZE(dc, sz) XTP_DC_DPI(dc, sz)  // <combine XTP_DPI_X>
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Helper macros for unscalling of X and Y coordinates, rectangle,
+//      size and point objects according to active DPI settings.
+//-------------------------------------------------------------------------
+#	define XTP_UNDPI_X(n) XTPDpiHelper()->UnscaleX(n)
+#	define XTP_UNDPI_Y(n) XTPDpiHelper()->UnscaleY(n)	// <combine XTP_UNDPI_X>
+#	define XTP_UNDPI(what) XTPDpiHelper()->Unscale(what) // <combine XTP_UNDPI_X>
+#	define XTP_UNDPI_RECT(rc) XTP_UNDPI(rc)			  // <combine XTP_UNDPI_X>
+#	define XTP_UNDPI_POINT(pt) XTP_UNDPI(pt)			  // <combine XTP_UNDPI_X>
+#	define XTP_UNDPI_SIZE(sz) XTP_UNDPI(sz)			  // <combine XTP_UNDPI_X>
+#	define XTP_DC_UNDPI_X(dc, n) XTPDpiHelper()->UnscaleX(XTPGetHandle(dc), n)
+#	define XTP_DC_UNDPI_Y(dc, n)                                                                  \
+		XTPDpiHelper()->UnscaleY(XTPGetHandle(dc), n) // <combine XTP_UNDPI_X>
+#	define XTP_DC_UNDPI(dc, what)                                                                 \
+		XTPDpiHelper()->Unscale(XTPGetHandle(dc), what)		// <combine XTP_UNDPI_X>
+#	define XTP_DC_UNDPI_RECT(dc, rc) XTP_DC_UNDPI(dc, rc)  // <combine XTP_UNDPI_X>
+#	define XTP_DC_UNDPI_POINT(dc, pt) XTP_DC_UNDPI(dc, pt) // <combine XTP_UNDPI_X>
+#	define XTP_DC_UNDPI_SIZE(dc, sz) XTP_DC_UNDPI(dc, sz)  // <combine XTP_UNDPI_X>
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Identifies supported primitive symbols rendered from internal primitive font.
+//-------------------------------------------------------------------------
+enum XTPPrimitiveSymbol
+{
+	xtpPrimitiveSymbolInvalid = -1,
+	xtpPrimitiveSymbolFirst   = 0x27,
+
+	// Common glyphs
+	xtpPrimitiveSymbolMinimize = xtpPrimitiveSymbolFirst,
+	xtpPrimitiveSymbolMaximize,
+	xtpPrimitiveSymbolRestore,
+	xtpPrimitiveSymbolQuestionMark,
+	xtpPrimitiveSymbolClose,
+	xtpPrimitiveSymbolHome,
+	xtpPrimitiveSymbolCheckMark,
+	xtpPrimitiveSymbolCheckMarkRTL,
+	xtpPrimitiveSymbolRadioMark,
+
+	// Normal Play glyph
+	xtpPrimitiveSymbolPlayLeft,
+	xtpPrimitiveSymbolPlayRight,
+	xtpPrimitiveSymbolPlayUp,
+	xtpPrimitiveSymbolPlayDown,
+
+	// Small Play glyph
+	xtpPrimitiveSymbolPlayLeft2,
+	xtpPrimitiveSymbolPlayRight2,
+	xtpPrimitiveSymbolPlayUp2,
+	xtpPrimitiveSymbolPlayDown2,
+
+	// Rewind glyph
+	xtpPrimitiveSymbolRewindLeft,
+	xtpPrimitiveSymbolRewindRight,
+	xtpPrimitiveSymbolRewindUp,
+	xtpPrimitiveSymbolRewindDown,
+
+	// Shift glyph
+	xtpPrimitiveSymbolShiftLeft,
+	xtpPrimitiveSymbolShiftRight,
+	xtpPrimitiveSymbolShiftDown,
+	xtpPrimitiveSymbolShiftUp,
+
+	// Eject glyph
+	xtpPrimitiveSymbolEjectLeft,
+	xtpPrimitiveSymbolEjectRight,
+	xtpPrimitiveSymbolEjectUp,
+	xtpPrimitiveSymbolEjectDown,
+
+	// Inject glyph
+	xtpPrimitiveSymbolInjectLeft,
+	xtpPrimitiveSymbolInjectRight,
+	xtpPrimitiveSymbolInjectUp,
+	xtpPrimitiveSymbolInjectDown,
+
+	// Pin glyph
+	xtpPrimitiveSymbolPinLeft,
+	xtpPrimitiveSymbolPinRight,
+	xtpPrimitiveSymbolPinDown,
+
+	xtpPrimitiveSymbolPlus,
+	xtpPrimitiveSymbolMinus,
+	xtpPrimitiveSymbolEllipsis,
+
+	xtpPrimitiveSymbolTabClose,
+	xtpPrimitiveSymbolTabPlayLeft,
+	xtpPrimitiveSymbolTabPlayRight,
+	xtpPrimitiveSymbolTabPlayLeftDisabled,
+	xtpPrimitiveSymbolTabPlayRightDisabled,
+
+	xtpPrimitiveSymbolLast = xtpPrimitiveSymbolTabPlayRightDisabled
+};
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Provides tools for drawing predefined primitives.
+//-------------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPPrimitiveDrawer
+{
+	friend class CXTPSingleton<CXTPPrimitiveDrawer>;
+
+	CXTPPrimitiveDrawer();
+	~CXTPPrimitiveDrawer();
+
+public:
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      Draws a primitive symbol.
+	// Parameters:
+	//		pDC - Target device context pointer.
+	//		nSymbol - Primitive symbol identifier.
+	//		rc - Target rectangle.
+	//		crForeColor - Foregroung color value or COLORREF_NULL if left it unchanged.
+	//		crBackColor - Backgroung color value or COLORREF_NULL if left it unchanged.
+	//		bOutline - If TRUE, the primitive symbol will be outlined instead of filled.
+	//		hOutlinePen - If bOutline is TRUE, this argument specifies outline pen.
+	// Remarks:
+	//		Starting from Windows 10 when Untrusted Font Blocking feature was added to OS
+	//		this method may stop working which results in no primitives drawn.
+	//		The Untrusted Font Blocking feature prevents applications from loading memory
+	//		fonts which is required for the correct work of this method.
+	//
+	//		The issue can be fixed in 2 possible ways:
+	//			1. Installing Codejock.ttf file into %WINDIR%\Fonts of that host OS prior
+	//				to executing an application that draws Codejock primitives.
+	//			2. Less recommended. Exclude application process from Untrusted Font Blocking by
+	// adding 				a new empty registry key HKEY_LOCAL_MACHINE\Software\Microsoft\Windows
+	// NT\CurrentVersion\Image File Execution Options\<process_image_name>.
+	//			3. No recommended. Disabling Untrusted Font Blocking in Group Policy editor
+	//(dpedit.msc): 				Computer Configuration\Administrative
+	// Templates\System\Mitigation Options\Untrusted Font Blocking
+	//
+	//		Read more about Untrusted Font Blocking at:
+	// https://docs.microsoft.com/en-us/windows/threat-protection/block-untrusted-fonts-in-enterprise
+	//-------------------------------------------------------------------------
+	void DrawSymbol(CDC* pDC, XTPPrimitiveSymbol nSymbol, const CRect& rc,
+					COLORREF crForeColor = COLORREF_NULL, COLORREF crBackColor = COLORREF_NULL,
+					BOOL bOutline = FALSE, HPEN hOutlinePen = NULL);
+
+private:
+	void InitFont();
+	void InitMemFont();
+
+	CRITICAL_SECTION m_fontAccess;
+	CXTPFont m_fntCodejock;
+	LOGFONT m_lfCodejock;
+	HANDLE m_hCodejockMemFont;
+	BOOL m_bCodejockFontLoadingAttempted;
+
+	typedef HANDLE(WINAPI* PFNAddFontMemResourceEx)(PVOID, DWORD, PVOID, DWORD*);
+	typedef BOOL(WINAPI* PFNRemoveFontMemResourceEx)(HANDLE);
+
+	PFNAddFontMemResourceEx m_pfnAddFontMemResourceEx;
+	PFNRemoveFontMemResourceEx m_pfnRemoveFontMemResourceEx;
+};
+
+//-------------------------------------------------------------------------
+// Summary:
+//      Provides access to global primitive drawer instance.
+// See Also: CXTPPrimitiveDrawer
+//-------------------------------------------------------------------------
+_XTP_EXT_CLASS CXTPPrimitiveDrawer* AFX_CDECL XTPPrimitiveDrawer();
 
 //-------------------------------------------------------------------------
 // Summary:
@@ -1645,7 +2894,6 @@ class _XTP_EXT_CLASS CXTPPrintOptions : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPPrintOptions)
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary: Default Object constructor.
 	//-------------------------------------------------------------------------
@@ -1656,10 +2904,10 @@ public:
 	//-------------------------------------------------------------------------
 	virtual ~CXTPPrintOptions();
 
-	CRect        m_rcMargins;   // Margins (mm*100 or inches*1000)
+	CRect m_rcMargins; // Margins (mm*100 or inches*1000)
 
-	BOOL    m_bBlackWhitePrinting; // Store printing mode: Color or Black&White.
-	int     m_nBlackWhiteContrast; // Black&White printing contrast: 0 ... 255. (default value is 0)
+	BOOL m_bBlackWhitePrinting; // Store printing mode: Color or Black&White.
+	int m_nBlackWhiteContrast;  // Black&White printing contrast: 0 ... 255. (default value is 0)
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -1725,12 +2973,25 @@ public:
 	virtual LCID GetActiveLCID();
 
 protected:
-
 	CXTPPrintPageHeaderFooter* m_pPageHeader; // A page Header properties.
 	CXTPPrintPageHeaderFooter* m_pPageFooter; // A page Footer properties.
 
-};
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
 
+	afx_msg BOOL OleGetMarginsMeasureMetrics();
+
+	afx_msg BOOL OleGetLandscape();
+	afx_msg void OleSetLandscape(BOOL bLandscape);
+
+	afx_msg LPDISPATCH OleGetHeader();
+	afx_msg LPDISPATCH OleGetFooter();
+
+	afx_msg LPDISPATCH OleGetPrinterInfo();
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
 
 //{{AFX_CODEJOCK_PRIVATE
 /////////////////////////////////////////////////////////////////////////////
@@ -1741,11 +3002,15 @@ _XTP_EXT_CLASS BOOL CALLBACK _XTPAbortProc(HDC, int);
 class _XTP_EXT_CLASS CXTPPrintingDialog : public CDialog
 {
 public:
-
-	enum { IDD = AFX_IDD_PRINTDLG };
+	enum
+	{
+		IDD = AFX_IDD_PRINTDLG
+	};
 
 	CXTPPrintingDialog(CWnd* pParent);
-	virtual ~CXTPPrintingDialog() { }
+	virtual ~CXTPPrintingDialog()
+	{
+	}
 
 	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
@@ -1754,17 +3019,21 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPDrawHelpers::IsFastFillAvailable() const {
+AFX_INLINE BOOL CXTPDrawHelpers::IsFastFillAvailable() const
+{
 	return m_pfnFastGradientFill != NULL;
 }
-AFX_INLINE void CXTPDrawHelpers::Triangle(CDC* pDC, CPoint pt0, CPoint pt1, CPoint pt2) {
-	CPoint pts[] = {pt0, pt1, pt2};
+AFX_INLINE void CXTPDrawHelpers::Triangle(CDC* pDC, CPoint pt0, CPoint pt1, CPoint pt2)
+{
+	CPoint pts[] = { pt0, pt1, pt2 };
 	pDC->Polygon(pts, 3);
 }
-AFX_INLINE void CXTPSplitterTracker::SetBoundRect(CRect rcBoundRect) {
+AFX_INLINE void CXTPSplitterTracker::SetBoundRect(CRect rcBoundRect)
+{
 	m_rcBoundRect = rcBoundRect;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPDRAWHELPERS_H__)

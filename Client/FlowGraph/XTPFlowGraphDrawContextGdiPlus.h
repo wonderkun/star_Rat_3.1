@@ -1,7 +1,6 @@
 // XTPFlowGraphDrawContextGdiPlus.h: interface for the CXTPFlowGraphDrawContextGdiPlus class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,30 +19,30 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHDRAWCONTEXTGDIPLUS_H__)
-#define __XTPFLOWGRAPHDRAWCONTEXTGDIPLUS_H__
+#	define __XTPFLOWGRAPHDRAWCONTEXTGDIPLUS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphImage;
 
-
 namespace Gdiplus
 {
-	class Brush;
-	class Pen;
-	class Graphics;
-	class GraphicsPath;
-};
-
-#include "XTPFlowGraphDrawContext.h"
+class Brush;
+class Pen;
+class Graphics;
+class GraphicsPath;
+} // namespace Gdiplus
 
 class _XTP_EXT_CLASS CXTPFlowGraphDrawContextGdiPlus : public CXTPFlowGraphDrawContext
 {
 	class CGdiPlus;
+
 public:
 	// --------------------------------------------------------
 	// Summary:
@@ -78,30 +77,31 @@ public:
 	// Returns:
 	//     A pointer to GpGraphics object.
 	//-------------------------------------------------------------------------
-	Gdiplus::Graphics* GetGraphics() const;
+	virtual Gdiplus::Graphics* GetGraphics() const;
 
 public:
 	virtual CSize MeasureMarkupElement(CXTPMarkupUIElement* pMarkupUIElement);
-	virtual void DrawMarkupElement(CXTPMarkupUIElement* pMarkupUIElement, LPCRECT lpRect, UINT uFormat);
-
+	virtual void DrawMarkupElement(CXTPMarkupUIElement* pMarkupUIElement, LPCRECT lpRect,
+								   UINT uFormat);
 
 	virtual CSize MeasureString(const CString& str);
 
 	virtual void SetClipRect(CRect rc);
 	virtual CRect GetClipRect() const;
 
-	virtual void DrawGrid(CRect rc, CPoint ptScrollOffset, double dZoomLevel, COLORREF clrGridColor);
+	virtual void DrawGrid(CRect rc, CPoint ptScrollOffset, double dZoomLevel,
+						  COLORREF clrGridColor);
 
 	virtual void SetSmoothingMode(int nMode);
 
 public:
-
 	virtual void FillSolidRect(LPCRECT lpRect, COLORREF clr);
 	virtual void FillSolidRect(int x, int y, int cx, int cy, COLORREF clr);
 
 	virtual void GradientFill(CRect rc, COLORREF clrFrom, COLORREF clrTo, BOOL bHoriz);
 
-	virtual void Draw3dRect(int x, int y, int cx, int cy, COLORREF clrTopLeft, COLORREF clrBottomRight);
+	virtual void Draw3dRect(int x, int y, int cx, int cy, COLORREF clrTopLeft,
+							COLORREF clrBottomRight);
 	virtual void Draw3dRect(LPCRECT lpRect, COLORREF clrTopLeft, COLORREF clrBottomRight);
 
 	virtual void DrawFrame(int x, int y, int cx, int cy, int sz, COLORREF clr);
@@ -112,15 +112,17 @@ public:
 
 	virtual void Clear(COLORREF clr);
 
+	using CXTPFlowGraphDrawContext::Line;
+
 	virtual void Line(float x1, float y1, float x2, float y2);
 
 	virtual void Ellipse(LPCRECT lpRect);
 
 	virtual void SetWorldTransform(CPoint ptOffset, double dZoomLevel);
 
-	virtual void SelectBrush(COLORREF clr);
-	virtual void SelectPen(COLORREF clrPen, int nWidth);
-	virtual void SelectFont(LOGFONT* lf);
+	virtual void SetBrush(COLORREF clr);
+	virtual void SetPen(COLORREF clrPen, int nWidth, BOOL bDashed = FALSE);
+	virtual void SetFont(LOGFONT* lf);
 	virtual void SetTextColor(COLORREF clr);
 
 	virtual void DrawImage(CXTPFlowGraphImage* pImage, CRect rc);
@@ -130,12 +132,11 @@ public:
 	Gdiplus::Brush* CreateBrush(COLORREF clr);
 	static DWORD AFX_CDECL ColorRefToARGB(COLORREF clr);
 
-#ifdef _XTP_DEMOMODE
+#	ifdef _XTP_DEMOMODE
 	virtual void CXTPFlowGraphDrawContextGdiPlus::DrawWatermarkBackground(CRect rc);
-#endif
+#	endif
 
 protected:
-
 	Gdiplus::Brush* m_pActiveBrush;
 	Gdiplus::Brush* m_pActiveTextBrush;
 	Gdiplus::Pen* m_pActivePen;
@@ -143,7 +144,6 @@ protected:
 	LOGFONT m_lfActiveFont;
 	COLORREF m_clrTextColor;
 	Gdiplus::Graphics* m_pGraphics;
-
 
 	struct BRUSHREC
 	{
@@ -160,9 +160,10 @@ protected:
 	BRUSHREC m_arrBrushes[MAX_BRUSH];
 };
 
-AFX_INLINE Gdiplus::Graphics* CXTPFlowGraphDrawContextGdiPlus::GetGraphics() const {
+AFX_INLINE Gdiplus::Graphics* CXTPFlowGraphDrawContextGdiPlus::GetGraphics() const
+{
 	return m_pGraphics;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHDRAWCONTEXTGDIPLUS_H__)

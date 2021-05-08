@@ -1,7 +1,6 @@
 // XTOutBarCtrl.h interface for the CXTOutBarCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTOUTBARCTRL_H__)
-#define __XTOUTBARCTRL_H__
+#	define __XTOUTBARCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTOutBarCtrlTheme.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // forwards
 class CXTOutBarItem;
@@ -35,29 +34,40 @@ class CXTOutBarFolder;
 class CXTOutBarEditItem;
 class CXTOutBarCtrlTheme;
 
-const DWORD OBS_XT_SMALLICON       = 0x0001;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_LARGEICON       = 0x0002;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_EDITGROUPS      = 0x0004;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_EDITITEMS       = 0x0008;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_REMOVEGROUPS    = 0x0010;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_REMOVEITEMS     = 0x0020;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_ADDGROUPS       = 0x0040;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_DRAGITEMS       = 0x0080;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_ANIMATION       = 0x0100;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_SELHIGHLIGHT    = 0x0200;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
-const DWORD OBS_XT_DEFAULT         = 0x00FC;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const DWORD&@const bool>
+const DWORD OBS_XT_SMALLICON = 0x0001;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_LARGEICON = 0x0002;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_EDITGROUPS = 0x0004;   //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_EDITITEMS = 0x0008;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_REMOVEGROUPS = 0x0010; //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_REMOVEITEMS = 0x0020;  //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_ADDGROUPS = 0x0040;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_DRAGITEMS = 0x0080;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_ANIMATION = 0x0100;	//<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_SELHIGHLIGHT = 0x0200; //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
+const DWORD OBS_XT_DEFAULT = 0x00FC;	  //<ALIAS CXTOutBarCtrl::ModifyFlag@const DWORD&@const
+										  // DWORD&@const bool>
 
-const UINT XTWM_OUTBAR_NOTIFY = (WM_XTP_CONTROLS_BASE + 19);
-const int OBN_XT_ITEMCLICK        = 1;
-const int OBN_XT_ONLABELENDEDIT   = 2;
-const int OBN_XT_ONGROUPENDEDIT   = 3;
-const int OBN_XT_DRAGITEM         = 4;
-const int OBN_XT_FOLDERCHANGE     = 5;
-const int OBN_XT_ITEMHOVER        = 6;
-const int OBN_XT_DELETEITEM       = 7;
-const int OBN_XT_DELETEFOLDER     = 8;
-const int OBN_XT_BEGINDRAG        = 9;
-const int OBN_XT_ITEMRCLICK       =10;
+const UINT XTWM_OUTBAR_NOTIFY   = (WM_XTP_CONTROLS_BASE + 19);
+const int OBN_XT_ITEMCLICK		= 1;
+const int OBN_XT_ONLABELENDEDIT = 2;
+const int OBN_XT_ONGROUPENDEDIT = 3;
+const int OBN_XT_DRAGITEM		= 4;
+const int OBN_XT_FOLDERCHANGE   = 5;
+const int OBN_XT_ITEMHOVER		= 6;
+const int OBN_XT_DELETEITEM		= 7;
+const int OBN_XT_DELETEFOLDER   = 8;
+const int OBN_XT_BEGINDRAG		= 9;
+const int OBN_XT_ITEMRCLICK		= 10;
 
 // ---------------------------------------------------------------------
 // Summary:
@@ -68,12 +78,12 @@ const int OBN_XT_ITEMRCLICK       =10;
 // ---------------------------------------------------------------------
 struct XT_OUTBAR_INFO
 {
-	int     nIndex;    // Index of the item.
-	int     nDragTo;   // Ending drag index.
-	int     nDragFrom; // Starting drag index.
-	bool    bFolder;   // true if the item is a folder
-	LPCTSTR lpszText;  // Item text.
-	HWND    hWnd;      // CXTOutBarCtrl window handle
+	int nIndex;		  // Index of the item.
+	int nDragTo;	  // Ending drag index.
+	int nDragFrom;	// Starting drag index.
+	bool bFolder;	 // true if the item is a folder
+	LPCTSTR lpszText; // Item text.
+	HWND hWnd;		  // CXTOutBarCtrl window handle
 };
 
 //===========================================================================
@@ -81,7 +91,9 @@ struct XT_OUTBAR_INFO
 //     CXTOutBarCtrl is a CWnd derived class. It is used to create a shortcut
 //     bar window similar to the shortcut bar seen in Outlook(tm).
 //===========================================================================
-class _XTP_EXT_CLASS CXTOutBarCtrl : public CWnd, public CXTThemeManagerStyleHostBase
+class _XTP_EXT_CLASS CXTOutBarCtrl
+	: public CWnd
+	, public CXTThemeManagerStyleHostBase
 {
 	DECLARE_DYNCREATE(CXTOutBarCtrl)
 	DECLARE_THEME_HOST(CXTOutBarCtrl)
@@ -101,11 +113,11 @@ public:
 	// ----------------------------------------------------------------------
 	enum HitTestCode
 	{
-		hitNone      =-1, // No item was found.
-		hitFolder    = 0, // The item found was a folder.
-		hitItem      = 1, // The item found was a shortcut.
-		hitUpScroll  = 2, // The item found was a up arrow.
-		hitDnScroll  = 3  // The item found was a down arrow.
+		hitNone		= -1, // No item was found.
+		hitFolder   = 0,  // The item found was a folder.
+		hitItem		= 1,  // The item found was a shortcut.
+		hitUpScroll = 2,  // The item found was a up arrow.
+		hitDnScroll = 3   // The item found was a down arrow.
 	};
 
 	// ----------------------------------------------------------------------
@@ -122,13 +134,12 @@ public:
 	// ----------------------------------------------------------------------
 	enum RectItem
 	{
-		rectItemIcon = 1,  // Area is the size of an item icon.
+		rectItemIcon  = 1, // Area is the size of an item icon.
 		rectItemLabel = 2, // Area is the size of an item label.
-		rectItemBoth = 3   // Area is the size of both the item icon and label combined.
+		rectItemBoth  = 3  // Area is the size of both the item icon and label combined.
 	};
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarCtrl object
@@ -251,7 +262,7 @@ public:
 	// Returns:
 	//     An integer value that represents the index of the desired image.
 	//-----------------------------------------------------------------------
-	virtual int  GetItemImage(const int iIndex) const;
+	virtual int GetItemImage(const int iIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -359,7 +370,8 @@ public:
 	//     A pointer to the previously set image list, or NULL if no previous
 	//     image list exists.
 	//-----------------------------------------------------------------------
-	virtual CImageList* SetFolderImageList(const int iFolder, CImageList* pImageList, DWORD dwImageList);
+	virtual CImageList* SetFolderImageList(const int iFolder, CImageList* pImageList,
+										   DWORD dwImageList);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -434,7 +446,8 @@ public:
 	// Returns:
 	//     The index of the newly inserted item.
 	//-----------------------------------------------------------------------
-	virtual int InsertItem(const int iFolder, const int iIndex, LPCTSTR lpszItemName, const int iImage = -1, const DWORD dwData = 0);
+	virtual int InsertItem(const int iFolder, const int iIndex, LPCTSTR lpszItemName,
+						   const int iImage = -1, const DWORD dwData = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -542,7 +555,8 @@ public:
 	// See Also:
 	//     CreateEx, ModifyFlag
 	// -----------------------------------------------------------------------------------------------
-	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, const DWORD dwFlag = OBS_XT_DEFAULT);
+	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
+						const DWORD dwFlag = OBS_XT_DEFAULT);
 
 	// --------------------------------------------------------------------------------------------------
 	// Summary:
@@ -562,7 +576,8 @@ public:
 	// See Also:
 	//     Create, ModifyFlag
 	// --------------------------------------------------------------------------------------------------
-	virtual BOOL CreateEx(DWORD dwExStyle, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, const DWORD dwFlag = OBS_XT_DEFAULT);
+	virtual BOOL CreateEx(DWORD dwExStyle, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+						  UINT nID, const DWORD dwFlag = OBS_XT_DEFAULT);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -648,7 +663,8 @@ public:
 	//                   GetInsideRect will be used to determine the client
 	//                   area size.
 	//-----------------------------------------------------------------------
-	virtual void GetIconRect(const int iFolder, const int iIndex, CRect& rect, CRect* pInsideRect = NULL);
+	virtual void GetIconRect(const int iFolder, const int iIndex, CRect& rect,
+							 CRect* pInsideRect = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -673,7 +689,8 @@ public:
 	//                   GetInsideRect will be used to determine the client
 	//                   area size.
 	//-----------------------------------------------------------------------
-	virtual void GetItemRect(const int iFolder, const int iIndex, CRect& rect, CRect* pInsideRect = NULL);
+	virtual void GetItemRect(const int iFolder, const int iIndex, CRect& rect,
+							 CRect* pInsideRect = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -726,9 +743,7 @@ public:
 	//-----------------------------------------------------------------------
 	void EnableItem(int iFolder, int iItem, bool bEnable);
 
-
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Called by the CXTOutBarCtrl to draw the up or down scroll button.
@@ -756,7 +771,8 @@ protected:
 	//     iIndex     - Index of the item to render.
 	//     bOnlyImage - TRUE if only the image is to be drawn.
 	//-----------------------------------------------------------------------
-	virtual void DrawItem(CDC* pDC, const int iFolder, CRect rc, const int iIndex, const BOOL bOnlyImage = false);
+	virtual void DrawItem(CDC* pDC, const int iFolder, CRect rc, const int iIndex,
+						  const BOOL bOnlyImage = false);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -955,7 +971,7 @@ protected:
 	virtual LRESULT NotifyOwner(UINT nCode, XT_OUTBAR_INFO* pobi);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTOutBarCtrl)
@@ -980,66 +996,74 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = NULL);
-
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+				  const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = NULL);
 
 protected:
-
-	int m_nFolderHeight;           // Size in pixels of the folder caption bar.
-	int m_nSelFolder;              // Index of the currently selected folder.
-	int m_nFolderHilighted;        // Index of the currently highlighted folder.
-	int m_nItemHilighted;          // Index of the currently highlighted item.
-	int m_nLastFolderSelected;     // Index of the last folder that was selected.
-	int m_nLastItemSelected;       // Index of the last item that was selected.
-	int m_nFirstItem;              // Index of the first visible item.
-	int m_nIconSpacingLarge;       // Amount in pixels of the gap between large icons.
-	int m_nIconSpacingSmall;       // Amount in pixels of the gap between small icons.
-	int m_nHitInternal1;           // Used internally to test folder and item indexes.
-	int m_nHitInternal2;           // Used internally to test folder and item indexes.
-	int m_nLastDragItemDraw;       // Insertion index for drag and drop operations.
-	int m_nLastDragItemDrawType;   // Style of last drag item that was rendered.
-	int m_nSelAnimCount;           // Selected item animation sequence count
-	int m_nSelAnimTiming;          // Specifies the time in milliseconds that the selected item will animate.
-	int m_nAnimationTickCount;     // Specifies the time in milliseconds between animation.
-	CPen m_penBlack;               // Pen used to render drag arrow.
-	BOOL m_bUpArrow;               // TRUE when the up scroll arrow is displayed.
-	BOOL m_bDownArrow;             // TRUE when the down scroll arrow is displayed.
-	BOOL m_bUpPressed;             // TRUE when the up scroll arrow is selected.
-	BOOL m_bDownPressed;           // TRUE when the down scroll arrow is selected.
-	BOOL m_bIconPressed;           // TRUE when the selected item's icon should be rendered selected.
-	BOOL m_bLooping;               // TRUE when scrolling to continue iteration.
-	BOOL m_bPressedHighlight;      // TRUE when the selected item should be rendered.
-	CFont m_font;                  // Font used by the outlook bar.
-	DWORD m_dwFlags;               // Style for the Outlook bar.
-	CRect m_rcUpArrow;             // Size and location of the up scroll arrow.
-	CRect m_rcDownArrow;           // Size and location of the down scroll arrow.
-	CSize m_sizeOffset;            // Amount in pixels of the gap between an item icon and text.
-	CSize m_sizeMargin;            // Amount in pixels of the gap between the border and item text and icon.
-	CPtrArray m_arFolder;          // Array of folders added to the outlook bar.
+	int m_nFolderHeight;		 // Size in pixels of the folder caption bar.
+	int m_nSelFolder;			 // Index of the currently selected folder.
+	int m_nFolderHilighted;		 // Index of the currently highlighted folder.
+	int m_nItemHilighted;		 // Index of the currently highlighted item.
+	int m_nLastFolderSelected;   // Index of the last folder that was selected.
+	int m_nLastItemSelected;	 // Index of the last item that was selected.
+	int m_nFirstItem;			 // Index of the first visible item.
+	int m_nIconSpacingLarge;	 // Amount in pixels of the gap between large icons.
+	int m_nIconSpacingSmall;	 // Amount in pixels of the gap between small icons.
+	int m_nHitInternal1;		 // Used internally to test folder and item indexes.
+	int m_nHitInternal2;		 // Used internally to test folder and item indexes.
+	int m_nLastDragItemDraw;	 // Insertion index for drag and drop operations.
+	int m_nLastDragItemDrawType; // Style of last drag item that was rendered.
+	int m_nSelAnimCount;		 // Selected item animation sequence count
+	int m_nSelAnimTiming; // Specifies the time in milliseconds that the selected item will animate.
+	int m_nAnimationTickCount; // Specifies the time in milliseconds between animation.
+	CPen m_penBlack;		   // Pen used to render drag arrow.
+	BOOL m_bUpArrow;		   // TRUE when the up scroll arrow is displayed.
+	BOOL m_bDownArrow;		   // TRUE when the down scroll arrow is displayed.
+	BOOL m_bUpPressed;		   // TRUE when the up scroll arrow is selected.
+	BOOL m_bDownPressed;	   // TRUE when the down scroll arrow is selected.
+	BOOL m_bIconPressed;	   // TRUE when the selected item's icon should be rendered selected.
+	BOOL m_bLooping;		   // TRUE when scrolling to continue iteration.
+	BOOL m_bPressedHighlight;  // TRUE when the selected item should be rendered.
+	CFont m_font;			   // Font used by the outlook bar.
+	DWORD m_dwFlags;		   // Style for the Outlook bar.
+	CRect m_rcUpArrow;		   // Size and location of the up scroll arrow.
+	CRect m_rcDownArrow;	   // Size and location of the down scroll arrow.
+	CSize m_sizeOffset;		   // Amount in pixels of the gap between an item icon and text.
+	CSize m_sizeMargin;   // Amount in pixels of the gap between the border and item text and icon.
+	CPtrArray m_arFolder; // Array of folders added to the outlook bar.
 	CImageList* m_pLargeImageList; // Points to the large image list for the outlook bar.
 	CImageList* m_pSmallImageList; // Points to the small image list for the outlook bar.
-
 
 	friend class CXTOutBarEditItem;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTOutBarCtrl::GetCurSel() {
+AFX_INLINE int CXTOutBarCtrl::GetCurSel()
+{
 	return m_nItemHilighted;
 }
-AFX_INLINE void CXTOutBarCtrl::SetCurSel(int iItem, const BOOL bPressed/*=false*/) {
+AFX_INLINE void CXTOutBarCtrl::SetCurSel(int iItem, const BOOL bPressed /*=false*/)
+{
 	HighlightItem(NULL, iItem, bPressed);
 }
-AFX_INLINE BOOL CXTOutBarCtrl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTOutBarCtrl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									  const RECT& rect, CWnd* pParentWnd, UINT nID,
+									  CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTOutBarCtrl::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam) {
-	return CWnd::CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, lpParam);
+AFX_INLINE BOOL CXTOutBarCtrl::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName,
+										LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+										CWnd* pParentWnd, UINT nID, LPVOID lpParam)
+{
+	return CWnd::CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID,
+						  lpParam);
 }
 
 // ----------------------------------------------------------------------
@@ -1051,7 +1075,6 @@ AFX_INLINE BOOL CXTOutBarCtrl::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, 
 class _XTP_EXT_CLASS CXTOutBarItem
 {
 public:
-
 	// --------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarItem object
@@ -1158,28 +1181,31 @@ public:
 	bool IsEnabled();
 
 protected:
-
-	int     m_nIndex;       // Item index.
-	bool    m_bEnabled;     // true if the icon is enabled.
-	bool    m_bSelected;    // true if selected.
-	DWORD   m_dwData;       // User data.
-	CString m_strName;      // label of the folder item.
+	int m_nIndex;	  // Item index.
+	bool m_bEnabled;   // true if the icon is enabled.
+	bool m_bSelected;  // true if selected.
+	DWORD m_dwData;	// User data.
+	CString m_strName; // label of the folder item.
 
 	friend class CXTOutBarCtrl;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTOutBarItem::SelectItem(bool bSelected) {
+AFX_INLINE void CXTOutBarItem::SelectItem(bool bSelected)
+{
 	m_bSelected = bSelected;
 }
-AFX_INLINE bool CXTOutBarItem::IsSelected() {
+AFX_INLINE bool CXTOutBarItem::IsSelected()
+{
 	return m_bSelected;
 }
-AFX_INLINE void CXTOutBarItem::EnableItem(bool bEnable) {
+AFX_INLINE void CXTOutBarItem::EnableItem(bool bEnable)
+{
 	m_bEnabled = bEnable;
 }
-AFX_INLINE bool CXTOutBarItem::IsEnabled() {
+AFX_INLINE bool CXTOutBarItem::IsEnabled()
+{
 	return m_bEnabled;
 }
 
@@ -1192,7 +1218,6 @@ AFX_INLINE bool CXTOutBarItem::IsEnabled() {
 class _XTP_EXT_CLASS CXTOutBarFolder
 {
 public:
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarFolder object.
@@ -1408,99 +1433,125 @@ public:
 	CXTOutBarCtrl* GetControl();
 
 protected:
-
-	BOOL                            m_bSmallIcons;  // TRUE to use small icons.
-	CWnd*                           m_pChild;       // Child window pointer.
-	DWORD                           m_dwData;       // Application data.
-	CString                         m_strName;      // Folder label.
-	CImageList*                     m_pLargeList;   // Image list for large icons.
-	CImageList*                     m_pSmallList;   // Image list for small icons.
-	CList<CXTOutBarItem*, CXTOutBarItem*> m_barItems;     // Folder items.
-	CXTOutBarCtrl*                  m_pControl;     // Pointer to the parent CXTOutBarCtrl object.
+	BOOL m_bSmallIcons;								  // TRUE to use small icons.
+	CWnd* m_pChild;									  // Child window pointer.
+	DWORD m_dwData;									  // Application data.
+	CString m_strName;								  // Folder label.
+	CImageList* m_pLargeList;						  // Image list for large icons.
+	CImageList* m_pSmallList;						  // Image list for small icons.
+	CList<CXTOutBarItem*, CXTOutBarItem*> m_barItems; // Folder items.
+	CXTOutBarCtrl* m_pControl;						  // Pointer to the parent CXTOutBarCtrl object.
 
 	friend class CXTOutBarCtrl;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTOutBarCtrl::SetFontX(CFont* pFont) {
-	ASSERT_VALID(pFont); LOGFONT lf; pFont->GetLogFont(&lf); m_font.DeleteObject(); m_font.CreateFontIndirect(&lf);
+AFX_INLINE void CXTOutBarCtrl::SetFontX(CFont* pFont)
+{
+	ASSERT(pFont);
+	LOGFONT lf;
+	pFont->GetLogFont(&lf);
+	m_font.DeleteObject();
+	m_font.CreateFontIndirect(&lf);
 }
-AFX_INLINE CFont* CXTOutBarCtrl::GetFontX() {
+AFX_INLINE CFont* CXTOutBarCtrl::GetFontX()
+{
 	return &m_font;
 }
-AFX_INLINE void CXTOutBarCtrl::SetAnimationTickCount(const long lValue) {
+AFX_INLINE void CXTOutBarCtrl::SetAnimationTickCount(const long lValue)
+{
 	m_nAnimationTickCount = lValue;
 }
-AFX_INLINE int CXTOutBarCtrl::GetAnimationTickCount() {
+AFX_INLINE int CXTOutBarCtrl::GetAnimationTickCount()
+{
 	return m_nAnimationTickCount;
 }
-AFX_INLINE CXTOutBarFolder* CXTOutBarCtrl::GetBarFolder(const int iFolder) {
+AFX_INLINE CXTOutBarFolder* CXTOutBarCtrl::GetBarFolder(const int iFolder)
+{
 	return (CXTOutBarFolder*)m_arFolder.GetAt(iFolder);
 }
-AFX_INLINE CXTOutBarItem* CXTOutBarCtrl::GetBarFolderItem(const int iFolder, const int iIndex) {
+AFX_INLINE CXTOutBarItem* CXTOutBarCtrl::GetBarFolderItem(const int iFolder, const int iIndex)
+{
 	return GetBarFolder(iFolder)->GetItemAt(iIndex);
 }
 
-
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTOutBarItem::GetIndex() {
+AFX_INLINE int CXTOutBarItem::GetIndex()
+{
 	return m_nIndex;
 }
-AFX_INLINE void CXTOutBarItem::SetIndex(int iIndex) {
+AFX_INLINE void CXTOutBarItem::SetIndex(int iIndex)
+{
 	m_nIndex = iIndex;
 }
-AFX_INLINE DWORD CXTOutBarItem::GetData() {
+AFX_INLINE DWORD CXTOutBarItem::GetData()
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTOutBarItem::SetData(DWORD dwData) {
+AFX_INLINE void CXTOutBarItem::SetData(DWORD dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE CString CXTOutBarItem::GetName() {
+AFX_INLINE CString CXTOutBarItem::GetName()
+{
 	return m_strName;
 }
-AFX_INLINE void CXTOutBarItem::SetName(LPCTSTR strName) {
+AFX_INLINE void CXTOutBarItem::SetName(LPCTSTR strName)
+{
 	m_strName = strName;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTOutBarFolder::GetItemCount() {
+AFX_INLINE int CXTOutBarFolder::GetItemCount()
+{
 	return (int)m_barItems.GetCount();
 }
-AFX_INLINE CString CXTOutBarFolder::GetName() {
+AFX_INLINE CString CXTOutBarFolder::GetName()
+{
 	return m_strName;
 }
-AFX_INLINE void CXTOutBarFolder::SetName(LPCTSTR strName) {
+AFX_INLINE void CXTOutBarFolder::SetName(LPCTSTR strName)
+{
 	m_strName = strName;
 }
-AFX_INLINE DWORD CXTOutBarFolder::GetData() {
+AFX_INLINE DWORD CXTOutBarFolder::GetData()
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTOutBarFolder::SetData(DWORD dwData) {
+AFX_INLINE void CXTOutBarFolder::SetData(DWORD dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE CImageList* CXTOutBarFolder::GetLargeImageList() {
+AFX_INLINE CImageList* CXTOutBarFolder::GetLargeImageList()
+{
 	return m_pLargeList;
 }
-AFX_INLINE void CXTOutBarFolder::SetLargeImageList(CImageList* pLargeList) {
+AFX_INLINE void CXTOutBarFolder::SetLargeImageList(CImageList* pLargeList)
+{
 	m_pLargeList = pLargeList;
 }
-AFX_INLINE CImageList* CXTOutBarFolder::GetSmallImageList() {
+AFX_INLINE CImageList* CXTOutBarFolder::GetSmallImageList()
+{
 	return m_pSmallList;
 }
-AFX_INLINE void CXTOutBarFolder::SetSmallImageList(CImageList* pSmallList) {
+AFX_INLINE void CXTOutBarFolder::SetSmallImageList(CImageList* pSmallList)
+{
 	m_pSmallList = pSmallList;
 }
-AFX_INLINE CWnd* CXTOutBarFolder::GetChild() {
+AFX_INLINE CWnd* CXTOutBarFolder::GetChild()
+{
 	return m_pChild;
 }
-AFX_INLINE void CXTOutBarFolder::SetChild(CWnd* pChild) {
+AFX_INLINE void CXTOutBarFolder::SetChild(CWnd* pChild)
+{
 	m_pChild = pChild;
 }
 
-AFX_INLINE CXTOutBarCtrl* CXTOutBarFolder::GetControl() {
+AFX_INLINE CXTOutBarCtrl* CXTOutBarFolder::GetControl()
+{
 	return m_pControl;
 }
 //////////////////////////////////////////////////////////////////////
@@ -1516,7 +1567,6 @@ class _XTP_EXT_CLASS CXTOutBarEditItem : public CXTPEdit
 	DECLARE_DYNAMIC(CXTOutBarEditItem)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTOutBarEditItem object
@@ -1530,17 +1580,16 @@ public:
 	virtual ~CXTOutBarEditItem();
 
 protected:
-
-	int             m_iIndex;       // Index of the folder or item.
-	bool            m_bEscapeKey;   // true if the escape key was pressed.
-	bool            m_bSmallIcons;  // true if the folder is using small icons.
-	bool            m_bIsFolder;    // true if the edit box is for a folder.
-	CRect           m_rcOriginal;   // Original size of the edit box when it was first created.
-	CString         m_strText;      // Original string of the edit box when it was first created, and the new text on edit completion.
-	CXTOutBarCtrl*  m_pParentWnd;   // Parent Outlook bar control.
+	int m_iIndex;		// Index of the folder or item.
+	bool m_bEscapeKey;  // true if the escape key was pressed.
+	bool m_bSmallIcons; // true if the folder is using small icons.
+	bool m_bIsFolder;   // true if the edit box is for a folder.
+	CRect m_rcOriginal; // Original size of the edit box when it was first created.
+	CString m_strText;  // Original string of the edit box when it was first created, and the new
+						// text on edit completion.
+	CXTOutBarCtrl* m_pParentWnd; // Parent Outlook bar control.
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to return the index of the folder or item
@@ -1577,19 +1626,20 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, UINT nIndex, bool bIsFolder, bool bSmallIcons);
+	virtual BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+						UINT nID, UINT nIndex, bool bIsFolder, bool bSmallIcons);
 
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTOutBarEditItem)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+
+protected:
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG(CXTOutBarEditItem)
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
@@ -1600,22 +1650,30 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTOutBarEditItem::GetIndex() const {
+AFX_INLINE int CXTOutBarEditItem::GetIndex() const
+{
 	return m_iIndex;
 }
-AFX_INLINE CString CXTOutBarEditItem::GetText() const {
+AFX_INLINE CString CXTOutBarEditItem::GetText() const
+{
 	return m_strText;
 }
-AFX_INLINE BOOL CXTOutBarEditItem::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTOutBarEditItem::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										  DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										  UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTOutBarEditItem::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTOutBarEditItem::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										  UINT nID)
+{
 	return CEdit::Create(dwStyle, rect, pParentWnd, nID);
 }
 
@@ -1642,13 +1700,11 @@ public:
 	virtual ~CXTToolBox();
 
 protected:
-
-	int  m_iFirst;      // Index of the first visible item.
-	int  m_iLast;       // Index of the last visible item.
-	bool m_bAnimating;  // true if the folder selection is changing.
+	int m_iFirst;	  // Index of the first visible item.
+	int m_iLast;	   // Index of the last visible item.
+	bool m_bAnimating; // true if the folder selection is changing.
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to create the toolbox control.
@@ -1665,7 +1721,8 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL CreateEx(DWORD dwExStyle, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, const DWORD dwFlag = OBS_XT_DEFAULT);
+	virtual BOOL CreateEx(DWORD dwExStyle, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+						  UINT nID, const DWORD dwFlag = OBS_XT_DEFAULT);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1680,7 +1737,8 @@ public:
 	//                   GetInsideRect will be used to determine the client
 	//                   area size.
 	//-----------------------------------------------------------------------
-	virtual void GetIconRect(const int iFolder, const int iIndex, CRect& rect, CRect* pInsideRect = NULL);
+	virtual void GetIconRect(const int iFolder, const int iIndex, CRect& rect,
+							 CRect* pInsideRect = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1695,7 +1753,8 @@ public:
 	//                   GetInsideRect will be used to determine the client
 	//                   area size.
 	//-----------------------------------------------------------------------
-	virtual void GetItemRect(const int iFolder, const int iIndex, CRect& rect, CRect* pInsideRect = NULL);
+	virtual void GetItemRect(const int iFolder, const int iIndex, CRect& rect,
+							 CRect* pInsideRect = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1706,7 +1765,6 @@ public:
 	virtual void SetSelFolder(const int iIndex);
 
 protected:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTToolBox)
 	//}}AFX_VIRTUAL
@@ -1733,7 +1791,8 @@ protected:
 	//     iIndex     - Index of the item to render.
 	//     bOnlyImage - TRUE if only the image is to be drawn.
 	//-----------------------------------------------------------------------
-	virtual void DrawItem(CDC* pDC, const int iFolder, CRect rc, const int iIndex, const BOOL bOnlyImage);
+	virtual void DrawItem(CDC* pDC, const int iFolder, CRect rc, const int iIndex,
+						  const BOOL bOnlyImage);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1774,11 +1833,17 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = NULL);
+	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+				  const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = NULL);
 };
 
-AFX_INLINE BOOL CXTToolBox::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam) {
-	return CWnd::CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, lpParam);
+AFX_INLINE BOOL CXTToolBox::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+									 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
+									 LPVOID lpParam)
+{
+	return CWnd::CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID,
+						  lpParam);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTOUTBARCTRL_H__)

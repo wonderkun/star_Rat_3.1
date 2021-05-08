@@ -1,7 +1,6 @@
 // XTPControlComboBox.h : interface for the CXTPControlComboBox class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,190 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTOLCOMBOBOX_H__)
-#define __XTPCONTOLCOMBOBOX_H__
+#	define __XTPCONTOLCOMBOBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPControl.h"
-#include "XTPControlPopup.h"
-#include "XTPPopupBar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-//{{AFX_CODEJOCK_PRIVATE
-
-#ifndef SHACF_DEFAULT
-#define SHACF_FILESYSTEM                0x00000001  // This includes the File System as well as the rest of the shell (Desktop\My Computer\Control Panel\)
-#define SHACF_URLALL                    (SHACF_URLHISTORY | SHACF_URLMRU)  // Include the URL's in the users History and Recently Used lists. Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
-#define SHACF_URLHISTORY                0x00000002  // URLs in the User's History
-#define SHACF_URLMRU                    0x00000004  // URLs in the User's Recently Used list.
-#define SHACF_FILESYS_ONLY              0x00000010  // Include only the file system. Do not include virtual folders such as Desktop or Control Panel.
-#define SHACF_USETAB                    0x00000008  // Use the tab to move thru the autocomplete possibilities instead of to the next dialog/window control.
-#endif
-
-//}}AFX_CODEJOCK_PRIVATE
-
+#	define WM_XTP_SHELLAUTOCOMPLETESTART (WM_XTP_COMMANDBARS_BASE + 30)
 
 class CXTPControlComboBox;
 class CXTPControlComboBoxAutoCompleteWnd;
-
-//===========================================================================
-// Summary:
-//     CXTPCommandBarEditCtrl is a CEdit derived class. It is for internal usage only.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBarEditCtrl : public CEdit
-{
-private:
-	class _XTP_EXT_CLASS CRichEditContext
-	{
-	public:
-		CRichEditContext();
-		~CRichEditContext();
-
-	public:
-		HINSTANCE m_hInstance;
-		CString m_strClassName;
-		BOOL m_bRichEdit2;
-	};
-
-
-	DECLARE_DYNCREATE(CXTPCommandBarEditCtrl)
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPCommandBarEditCtrl object
-	//-----------------------------------------------------------------------
-	CXTPCommandBarEditCtrl();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Called by the framework to route and dispatch command messages
-	//     and to handle the update of command user-interface objects.
-	// Parameters:
-	//     nID          - Contains the command ID.
-	//     nCode        - Identifies the command notification code.
-	//     pExtra       - Used according to the value of nCode.
-	//     pHandlerInfo - If not NULL, OnCmdMsg fills in the pTarget and
-	//                    pmf members of the pHandlerInfo structure instead
-	//                    of dispatching the command. Typically, this parameter
-	//                    should be NULL.
-	// Returns:
-	//     Nonzero if the message is handled; otherwise 0.
-	//-----------------------------------------------------------------------
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     The framework calls this member function when the user selects
-	//     an item from a menu, when a child control sends a notification
-	//     message, or when an accelerator keystroke is translated.
-	// Parameters:
-	//     wParam - The low-order word of wParam identifies the command
-	//              ID of the menu item, control, or accelerator. The
-	//              high-order word of wParam specifies the notification
-	//              message if the message is from a control. If the message
-	//              is from an accelerator, the high-order word is 1. If
-	//              the message is from a menu, the high-order word is 0.
-	//     lParam   - Specifies additional message-dependent information.
-	// Returns:
-	//     An application returns nonzero if it processes this message;
-	//     otherwise 0.
-	//-----------------------------------------------------------------------
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function displays a popup context menu.
-	// Parameters:
-	//     pControl - Pointer to a CXTPControl control.
-	//     point - CPoint object specifies xy coordinates.
-	// Returns:
-	//     TRUE if successful; otherwise returns FALSE.
-	//-----------------------------------------------------------------------
-	virtual BOOL ShowContextMenu(CXTPControl* pControl, CPoint point);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function displays a popup context menu.
-	// Parameters:
-	//     dwStyle - Specifies object's style flags.
-	//     pParentWnd - Pointer to the parent window.
-	// Returns:
-	//     TRUE if successful; otherwise returns FALSE.
-	//-----------------------------------------------------------------------
-	virtual BOOL CreateEdit(DWORD dwStyle, CWnd* pParentWnd);
-
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method determines whether the specified character is intended for a edit. If it is, this method processes the message.
-	// Parameters:
-	//     nChar - Specifies the virtual key code of the given key.
-	//     lParam   - Specifies additional message-dependent information.
-	// Returns:
-	//     TRUE if successful; otherwise returns FALSE.
-	//-----------------------------------------------------------------------
-	BOOL IsDialogCode(UINT nChar, LPARAM lParam);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns window text of edit
-	// Parameters:
-	//     rString - String to return text
-	//-----------------------------------------------------------------------
-	void GetWindowTextEx(CString& rString);
-
-	//-----------------------------------------------------------------------
-	// Input:   lpszString - String to set text
-	// Summary: Sets the window text of edit
-	//-----------------------------------------------------------------------
-	void SetWindowTextEx(LPCTSTR lpszString);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines if the Input Method Editor(IME) is being used.
-	// Returns:
-	//     TRUE if the Input Method Editor(IME) is being used, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsImeMode() const;
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get rich edit version information.
-	//-----------------------------------------------------------------------
-	CRichEditContext& GetRichEditContext();
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines if edit command is enable,
-	// Parameters:
-	//     nID - Edit command
-	// Returns:
-	//     TRUE if edit command is enabled for control
-	//-----------------------------------------------------------------------
-	BOOL IsCommandEnabled(UINT nID);
-
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_MSG(CXTPCommandBarEditCtrl)
-	afx_msg void OnImeStartComposition();
-	afx_msg void OnImeEndComposition();
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnPaint();
-	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
-protected:
-	BOOL m_bImeMode;            // TRUE if IME editor currently enabled.
-	BOOL m_bComposited;         // TRUE if control is AERO composited.
-	BOOL m_bIgonoreEditChanged;       // Don't send OnEditChanged.
-
-};
 
 //{{AFX_CODEJOCK_PRIVATE
 
@@ -225,7 +53,8 @@ public:
 private:
 	static CXTPControlComboBoxAutoCompleteWnd* m_pWndMonitor;
 	static LRESULT CALLBACK CallWndProc(int code, WPARAM wParam, LPARAM lParam);
-	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
+	virtual int OnHookMessage(HWND hWnd, UINT nMessage, WPARAM& wParam, LPARAM& lParam,
+							  LRESULT& lResult);
 	void SetAutoCompeteHandle(HWND);
 
 public:
@@ -237,7 +66,6 @@ private:
 };
 
 //}}AFX_CODEJOCK_PRIVATE
-
 
 ///===========================================================================
 // Summary:
@@ -255,28 +83,40 @@ public:
 	CXTPControlComboBoxPopupBar();
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRUAL(CXTPControlComboBoxPopupBar)
-	virtual int GetCurSel() const {
-		return LB_ERR;
+	virtual int GetCurSel() const
+	{
+		return CB_ERR;
 	}
-	virtual int FindString(int /*nStartAfter*/, LPCTSTR /*lpszItem*/) const{
-		return LB_ERR;
+	virtual int FindString(int /*nStartAfter*/, LPCTSTR /*lpszItem*/) const
+	{
+		return CB_ERR;
 	}
-	virtual int FindStringExact(int /*nIndexStart*/, LPCTSTR /*lpsz*/) const {
-		return LB_ERR;
+	virtual int FindStringExact(int /*nIndexStart*/, LPCTSTR /*lpsz*/) const
+	{
+		return CB_ERR;
 	}
-	virtual int SetTopIndex(int /*nIndex*/) {
-		return LB_ERR;
+	virtual int SetTopIndex(int /*nIndex*/)
+	{
+		return CB_ERR;
 	}
-	virtual void SetCurSel(int /*nIndex*/) {
+	virtual void SetCurSel(int /*nIndex*/)
+	{
 	}
-	virtual void GetText(int /*nIndex*/, CString& /*rString*/) const {
+	virtual void GetText(int /*nIndex*/, CString& /*rString*/) const
+	{
 	}
 	virtual BOOL ProcessHookKeyDown(CXTPControlComboBox* pComboBox, UINT nChar, LPARAM lParam);
 	BOOL OnHookKeyDown(UINT nChar, LPARAM lParam);
+
+	virtual int GetCount() const
+	{
+		return CB_ERR;
+	}
+
 	//}}AFX_VIRUAL
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
@@ -287,7 +127,6 @@ public:
 class _XTP_EXT_CLASS CXTPControlComboBoxList : public CXTPControlComboBoxPopupBar
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlButton object
@@ -308,7 +147,6 @@ public:
 	CListBox* GetListBoxCtrl() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by WindowProc, or is called during
@@ -376,7 +214,10 @@ protected:
 	//     TRUE if command bars are in customized mode; otherwise returns
 	//     FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizable() const { return FALSE; }
+	virtual BOOL IsCustomizable() const
+	{
+		return FALSE;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -396,32 +237,37 @@ protected:
 	virtual void Copy(CXTPCommandBar* pCommandBar, BOOL bRecursive = FALSE);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRUAL(CXTPControlComboBoxList)
-	virtual int GetCurSel() const {
+	virtual int GetCurSel() const
+	{
 		return GetListBoxCtrl()->GetCurSel();
 	}
-	virtual int FindString(int nStartAfter, LPCTSTR lpszItem) const {
+	virtual int FindString(int nStartAfter, LPCTSTR lpszItem) const
+	{
 		return GetListBoxCtrl()->FindString(nStartAfter, lpszItem);
 	}
-	virtual int FindStringExact(int nIndexStart, LPCTSTR lpsz) const {
+	virtual int FindStringExact(int nIndexStart, LPCTSTR lpsz) const
+	{
 		return GetListBoxCtrl()->FindStringExact(nIndexStart, lpsz);
 	}
-	virtual int SetTopIndex(int nIndex) {
+	virtual int SetTopIndex(int nIndex)
+	{
 		return GetListBoxCtrl()->SetTopIndex(nIndex);
 	}
-	virtual void SetCurSel(int nIndex) {
+	virtual void SetCurSel(int nIndex)
+	{
 		GetListBoxCtrl()->SetCurSel(nIndex);
 	}
-	virtual void GetText(int nIndex, CString& rString) const {
+	virtual void GetText(int nIndex, CString& rString) const
+	{
 		GetListBoxCtrl()->GetText(nIndex, rString);
 	}
 	//}}AFX_VIRUAL
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPControlComboBoxList)
@@ -433,8 +279,7 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -454,7 +299,7 @@ protected:
 	//          to be drawn and the type of drawing required.
 	// Summary: This member function is called to draw the combobox.
 	//-----------------------------------------------------------------------
-	virtual void DrawItem (LPDRAWITEMSTRUCT lpDrawItemStruct);
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
 	//-----------------------------------------------------------------------
 	// Input:   lpMeasureItemStruct - Override this method and fill in the
@@ -468,8 +313,7 @@ private:
 	DECLARE_XTP_COMMANDBAR(CXTPControlComboBoxList)
 	friend class CXTPControlComboBox;
 
-	int m_nListIconId;          // Icon identifier
-
+	int m_nListIconId; // Icon identifier
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -480,7 +324,6 @@ private:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPControlComboBoxEditCtrl : public CXTPCommandBarEditCtrl
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -491,14 +334,13 @@ public:
 	CXTPControlComboBox* GetControlComboBox() const;
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to refresh char format of edit control
 	//-------------------------------------------------------------------------
 	void UpdateCharFormat();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -512,19 +354,19 @@ protected:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnEditChanged();
+	afx_msg LRESULT OnEnableDisable(WPARAM, LPARAM);
 	afx_msg LRESULT OnWindowFromPoint(WPARAM, LPARAM);
 	afx_msg void OnShellAutoCompleteStart();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPControlComboBox* m_pControl;        // Parent Combo Box.
+	CXTPControlComboBox* m_pControl; // Parent Combo Box.
 
 private:
 	friend class CXTPControlComboBox;
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -533,7 +375,6 @@ private:
 class _XTP_EXT_CLASS CXTPControlComboBox : public CXTPControlPopup
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPControlComboBox object
@@ -778,11 +619,14 @@ public:
 	// Remarks:
 	//     Flags can be combined by using the bitwise
 	//     OR (|) operator. It can be one or more of the following:
-	//     * <b>SHACF_FILESYSTEM</b> This includes the File System as well as the rest of the shell (Desktop\My Computer\Control Panel\)
-	//     * <b>SHACF_URLALL</b>  Include the URL's in the users History and Recently Used lists. Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
+	//     * <b>SHACF_FILESYSTEM</b> This includes the File System as well as the rest of the shell
+	//     (Desktop\My Computer\Control Panel\)
+	//     * <b>SHACF_URLALL</b>  Include the URL's in the users History and Recently Used lists.
+	//     Equivalent to SHACF_URLHISTORY | SHACF_URLMRU.
 	//     * <b>HACF_URLHISTORY</b> URLs in the User's History
 	//     * <b>SHACF_URLMRU</b> URLs in the User's Recently Used list.
-	//     * <b>SHACF_FILESYS_ONLY</b> Include only the file system. Do not include virtual folders such as Desktop or Control Panel.
+	//     * <b>SHACF_FILESYS_ONLY</b> Include only the file system. Do not include virtual folders
+	//     such as Desktop or Control Panel.
 	// ---------------------------------------------------------------------------
 	void EnableShellAutoComplete(DWORD dwFlags = SHACF_FILESYSTEM | SHACF_URLALL);
 
@@ -800,12 +644,13 @@ public:
 	//     without changing the list-box selection
 	// Parameters:
 	//     nStartAfter - Contains the zero-based index of the item before the first item to be
-	//                   searched. When the search reaches the bottom of the list box, it continues from the
-	//                   top of the list box back to the item specified by nStartAfter. If nStartAfter is -1,
-	//                   the entire list box is searched from the beginning.
-	//     lpszItem    - Points to the null-terminated string that contains the prefix to search for.
-	//                   The search is case independent, so this string may contain any combination of uppercase
-	//                   and lowercase letters.
+	//                   searched. When the search reaches the bottom of the list box, it continues
+	//                   from the top of the list box back to the item specified by nStartAfter. If
+	//                   nStartAfter is -1, the entire list box is searched from the beginning.
+	//     lpszItem    - Points to the null-terminated string that contains the prefix to search
+	//     for.
+	//                   The search is case independent, so this string may contain any combination
+	//                   of uppercase and lowercase letters.
 	// Returns:
 	//     The zero-based index of the matching item, or LB_ERR if the search was unsuccessful.
 	// See Also: FindStringExact
@@ -1059,7 +904,6 @@ public:
 	int GetTextLimit() const;
 
 protected:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to check if control accept focus
@@ -1256,12 +1100,12 @@ protected:
 	//----------------------------------------------------------------------
 	virtual void OnMouseMove(CPoint point);
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
-	public:
+public:
 	void UpdatePopupSelection();
-	protected:
+
+protected:
 	BOOL IsValidList() const;
 	void _SetEditText(const CString& lpszText);
 	CString _GetEditText() const;
@@ -1269,39 +1113,92 @@ protected:
 	virtual void OnThemeChanged();
 	void ShowHideEditControl();
 
-	virtual void DrawItem (LPDRAWITEMSTRUCT lpDrawItemStruct);
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlComboBox);
+
+	afx_msg void OleSetDropDownWidth(long nWidth);
+	afx_msg void OleSetDropDownListStyle(BOOL bSet);
+	afx_msg void OleAddItem(LPCTSTR strText, const VARIANT* varIndex);
+	afx_msg BSTR OleList(long nIndex);
+	afx_msg void OleClear();
+	afx_msg void OleRemoveItem(long nIndex);
+
+	afx_msg BSTR OleGetText();
+	afx_msg void OleSetText(LPCTSTR str);
+	afx_msg long OleGetListIndex();
+	afx_msg void OleSetListIndex(long nIndex);
+	afx_msg long OleFindItem(LPCTSTR strText);
+	afx_msg int OleGetCount();
+	afx_msg HWND OleGetEditHandle();
+
+	afx_msg long OleGetItemData(int nIndex);
+	afx_msg void OleSetItemData(int nIndex, long nNumber);
+	afx_msg BSTR OleGetEditHint();
+	afx_msg DWORD OleGetShellAutoComplete();
+	afx_msg void OleSetShellAutoComplete(DWORD dwShellAutoCompleteFlags);
+	afx_msg BOOL OleGetThemedItems();
+	afx_msg void OleSetThemedItems(BOOL bThemedItems);
+
+	afx_msg void OleSetEditIconId(int nId);
+	afx_msg int OleGetEditIconId();
+	afx_msg void OleSetListIconId(int nId);
+	afx_msg int OleGetListIconId();
+
+	enum
+	{
+		dispidStyle				= 50L,
+		dispidAddItem			= 51L,
+		dispidDropDownWidth		= 52L,
+		dispidDropDownListStyle = 53L,
+		dispidWidth				= 54L,
+		dispidList				= 55L,
+		dispidClear				= 56L,
+		dispidListCount			= 57L,
+		dispidRemoveItem		= 58L,
+		dispidText				= 59L,
+		dispidListIndex			= 60L,
+		dispidFindItem			= 61L,
+	};
+
 //}}AFX_CODEJOCK_PRIVATE
-
-
+#	endif
 	DECLARE_XTP_CONTROL(CXTPControlComboBox)
 
 protected:
+	CXTPControlComboBoxEditCtrl* m_pEdit; // Child edit control.
+	BOOL m_bDropDown;					  // TRUE if the combo is dropdown.
+	XTPButtonStyle m_comboStyle;		  // Style of the combo box.
+	int m_nLastSel;			 // Last user selected index, (used during display of list box)
+	CString m_strLastText;   // Last Text before user select focus and change it.
+	BOOL m_bDelayDestroy;	// TRUE if need to recreate control.
+	BOOL m_bDelayReposition; // Need to reposition control.
+	int m_nLabelWidth;		 // Width of the label.
+	int m_nThumbWidth;		 // Width of the thumb area.
+	CString m_strEditHint; // Grayed-out text displayed in the edit control that displayed a helpful
+						   // description
+	BOOL m_bAutoComplete;  // TRUE if Auto Complete enabled
+	BOOL m_bIgnoreAutoComplete;		  // TRUE to disable auto complete till next key event.
+	DWORD m_dwShellAutoCompleteFlags; // Shell auto complete flags.
+	BOOL m_bFocused;				  // TRUE if control is focused
+	int m_nEditIconId;				  // Edit Icon identifier
+	BOOL m_bSelEndOk;				  // TRUE if user selects a list item.
+	int m_nDropDownItemCount;		  // Maximum drop down items
 
-	CXTPControlComboBoxEditCtrl* m_pEdit;   // Child edit control.
-	BOOL m_bDropDown;           // TRUE if the combo is dropdown.
-	XTPButtonStyle m_comboStyle; // Style of the combo box.
-	int m_nLastSel;             // Last user selected index, (used during display of list box)
-	CString m_strLastText;      // Last Text before user select focus and change it.
-	BOOL m_bDelayDestroy;       // TRUE if need to recreate control.
-	BOOL m_bDelayReposition;    // Need to reposition control.
-	int m_nLabelWidth;          // Width of the label.
-	int m_nThumbWidth;          // Width of the thumb area.
-	CString m_strEditHint;      // Grayed-out text displayed in the edit control that displayed a helpful description
-	BOOL m_bAutoComplete;       // TRUE if Auto Complete enabled
-	BOOL m_bIgnoreAutoComplete; // TRUE to disable auto complete till next key event.
-	DWORD m_dwShellAutoCompleteFlags;    // Shell auto complete flags.
-	BOOL m_bFocused;            // TRUE if control is focused
-	int m_nEditIconId;          // Edit Icon identifier
-	BOOL m_bSelEndOk;           // TRUE if user selects a list item.
-	int m_nDropDownItemCount;   // Maximum drop down items
-
-	mutable CString m_strEditText;      // Edit text.
-	mutable BOOL m_bEditChanged;        // TRUE if Edit Text was changed.
-	int m_nTextLimit;               // The maximum number of characters that can be entered into the combo
+	mutable CString m_strEditText; // Edit text.
+	mutable BOOL m_bEditChanged;   // TRUE if Edit Text was changed.
+	int m_nTextLimit; // The maximum number of characters that can be entered into the combo
 
 	CXTPControlComboBoxAutoCompleteWnd* m_pAutoCompleteWnd; // Auto Complete hook window.
-	DWORD m_dwEditStyle;        // Edit style
+	DWORD m_dwEditStyle;									// Edit style
 
 private:
 	int m_nCurSel;
@@ -1309,87 +1206,82 @@ private:
 
 	friend class CXTPControlComboBoxList;
 	friend class CXTPControlComboBoxEditCtrl;
-
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CListBox* CXTPControlComboBox::GetListBoxCtrl() const {
-	return ((CListBox*)m_pCommandBar);
-}
-AFX_INLINE void CXTPControlComboBox::SetDropDownWidth(int nWidth) {
+AFX_INLINE void CXTPControlComboBox::SetDropDownWidth(int nWidth)
+{
 	m_pCommandBar->SetWidth(nWidth);
 }
-AFX_INLINE int CXTPControlComboBox::AddString(LPCTSTR lpsz) {
+AFX_INLINE int CXTPControlComboBox::AddString(LPCTSTR lpsz)
+{
 	return GetListBoxCtrl()->AddString(lpsz);
 }
-AFX_INLINE int CXTPControlComboBox::GetCount() const{
+AFX_INLINE int CXTPControlComboBox::GetCount() const
+{
 	return GetListBoxCtrl()->GetCount();
 }
-AFX_INLINE void CXTPControlComboBox::GetLBText(int nIndex, CString& str) const{
+AFX_INLINE void CXTPControlComboBox::GetLBText(int nIndex, CString& str) const
+{
 	GetComboBoxPopupBar()->GetText(nIndex, str);
 }
-AFX_INLINE void CXTPControlComboBox::ResetContent() {
+AFX_INLINE void CXTPControlComboBox::ResetContent()
+{
 	GetListBoxCtrl()->ResetContent();
 }
-AFX_INLINE int CXTPControlComboBox::FindStringExact(int nIndexStart, LPCTSTR lpsz) const {
+AFX_INLINE int CXTPControlComboBox::FindStringExact(int nIndexStart, LPCTSTR lpsz) const
+{
 	return GetComboBoxPopupBar()->FindStringExact(nIndexStart, lpsz);
 }
-AFX_INLINE int CXTPControlComboBox::InsertString(int nIndex, LPCTSTR lpsz) {
+AFX_INLINE int CXTPControlComboBox::InsertString(int nIndex, LPCTSTR lpsz)
+{
 	return GetListBoxCtrl()->InsertString(nIndex, lpsz);
 }
-AFX_INLINE CXTPControlComboBoxEditCtrl* CXTPControlComboBox::GetEditCtrl() const {
+AFX_INLINE CXTPControlComboBoxEditCtrl* CXTPControlComboBox::GetEditCtrl() const
+{
 	return m_pEdit;
 }
-AFX_INLINE int CXTPControlComboBox::FindString(int nStartAfter, LPCTSTR lpszItem) const {
+AFX_INLINE int CXTPControlComboBox::FindString(int nStartAfter, LPCTSTR lpszItem) const
+{
 	return GetComboBoxPopupBar()->FindString(nStartAfter, lpszItem);
 }
-AFX_INLINE DWORD_PTR CXTPControlComboBox::GetItemData(int nIndex) const {
+AFX_INLINE DWORD_PTR CXTPControlComboBox::GetItemData(int nIndex) const
+{
 	return (DWORD_PTR)GetListBoxCtrl()->GetItemData(nIndex);
 }
-AFX_INLINE int CXTPControlComboBox::SetItemData(int nIndex, DWORD_PTR dwItemData) {
+AFX_INLINE int CXTPControlComboBox::SetItemData(int nIndex, DWORD_PTR dwItemData)
+{
 	return GetListBoxCtrl()->SetItemData(nIndex, dwItemData);
 }
-AFX_INLINE void CXTPControlComboBox::DeleteItem(long nIndex) {
-	if (nIndex < GetCount()) GetListBoxCtrl()->DeleteString(nIndex);
-}
-AFX_INLINE BOOL CXTPControlComboBox::IsCustomizeResizeAllow() const {
+AFX_INLINE BOOL CXTPControlComboBox::IsCustomizeResizeAllow() const
+{
 	return TRUE;
 }
-AFX_INLINE CXTPControlComboBox* CXTPControlComboBoxEditCtrl::GetControlComboBox() const {
+AFX_INLINE CXTPControlComboBox* CXTPControlComboBoxEditCtrl::GetControlComboBox() const
+{
 	return m_pControl;
 }
-AFX_INLINE int CXTPControlComboBox::GetLabelWidth() const {
+AFX_INLINE int CXTPControlComboBox::GetLabelWidth() const
+{
 	return m_nLabelWidth;
 }
-AFX_INLINE void CXTPControlComboBox::SetLabelWidth(int nLabelWidth) {
-	if (m_nLabelWidth != nLabelWidth)
-	{
-		m_nLabelWidth = nLabelWidth;
-		m_bDelayReposition = TRUE;
-	}
-}
-AFX_INLINE void CXTPControlComboBox::SetEditIconId(int nId) {
-	if (m_nEditIconId != nId) {m_nEditIconId = nId; RedrawParent();m_bDelayReposition = TRUE;}
-}
-AFX_INLINE int CXTPControlComboBox::GetEditIconId() const{
+AFX_INLINE int CXTPControlComboBox::GetEditIconId() const
+{
 	return m_nEditIconId;
 }
-AFX_INLINE int CXTPControlComboBox::GetThumbWidth() const {
+AFX_INLINE int CXTPControlComboBox::GetThumbWidth() const
+{
 	return m_nThumbWidth;
 }
-AFX_INLINE void CXTPControlComboBox::SetThumbWidth(int nThumbWidth) {
-	if (m_nThumbWidth != nThumbWidth)
-	{
-		m_nThumbWidth = nThumbWidth;
-		m_bDelayReposition = TRUE;
-	}
-}
-AFX_INLINE void CXTPControlComboBox::OnThemeChanged() {
+AFX_INLINE void CXTPControlComboBox::OnThemeChanged()
+{
 	m_bDelayReposition = TRUE;
 }
-AFX_INLINE void CXTPControlComboBox::SetDropDownItemCount(int nDropDownItemCount) {
+AFX_INLINE void CXTPControlComboBox::SetDropDownItemCount(int nDropDownItemCount)
+{
 	m_nDropDownItemCount = nDropDownItemCount;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCONTOLCOMBOBOX_H__)

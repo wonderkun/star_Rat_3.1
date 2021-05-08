@@ -1,7 +1,6 @@
 // XTPListBase.h interface for the CXTPListCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPLISTBASE_H__)
-#define __XTPLISTBASE_H__
+#	define __XTPLISTBASE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -45,10 +46,10 @@ public:
 	// --------------------------------------------------------------------
 	struct ROWCOLOR
 	{
-		int      iRow;   // List control row index.
+		int iRow;		 // List control row index.
 		COLORREF crBack; // RGB value for text background color.
 		COLORREF crText; // RGB value for text foreground color.
-		LPARAM   lParam; // User defined data.
+		LPARAM lParam;   // User defined data.
 	};
 
 	// ----------------------------------------------------------------------
@@ -132,12 +133,14 @@ public:
 	// Summary:
 	//     Automatically sizes a specified column.
 	// Parameters:
-	//     nCol -  Zero\-based index of the column.
-	// Remarks:
-	//     This member function will automatically size a given column. Pass
-	//     in a -1 to auto-fit all columns.
+	//     nCol -  Zero-based index of the column or -1 to indicate all columns.
+	//     bUseHeader - Automatically sizes the column to fit the header text.
+	//                  If you use this value with the last column, its width
+	//                  is set to fill the remaining width of the list-view control.
 	// ---------------------------------------------------------------------
 	virtual void AutoSizeColumn(int nCol = -1);
+	virtual void AutoSizeColumn(int nCol,
+								BOOL bUseHeader); // <COMBINE CXTPListBase::AutoSizeColumn@int>
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -153,7 +156,8 @@ public:
 	//     called, column widths will be saved to the system registry when
 	//     the list control window is destroyed.
 	// -------------------------------------------------------------------
-	virtual void AutoSaveColumns(LPCTSTR lpszSection = NULL, LPCTSTR lpszEntry = NULL, LPCTSTR lpszDefault = NULL);
+	virtual void AutoSaveColumns(LPCTSTR lpszSection = NULL, LPCTSTR lpszEntry = NULL,
+								 LPCTSTR lpszDefault = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -237,7 +241,7 @@ public:
 	// Returns:
 	//     The row index, or -1 if 'point' is not over a row.
 	//-----------------------------------------------------------------------
-	virtual int HitTestEx(CPoint &point, int* col) const;
+	virtual int HitTestEx(CPoint& point, int* col) const;
 
 	// --------------------------------------------------------------------------
 	// Summary:
@@ -296,7 +300,9 @@ public:
 	//     true if successful, or false if an error occurred.
 	// ---------------------------------------------------------------------------
 	virtual bool BuildColumns(int nCols, int* nWidth, int* nColString);
-	virtual bool BuildColumns(int nCols, int* nWidth, CString* strColString); //<combine CXTPListBase::BuildColumns@int@int*@int*>
+	virtual bool BuildColumns(int nCols, int* nWidth,
+							  CString* strColString); //<combine
+													  // CXTPListBase::BuildColumns@int@int*@int*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -335,7 +341,7 @@ public:
 	// Returns:
 	//     A CHeaderCtrl pointer to the associated header control.
 	//-----------------------------------------------------------------------
-	CHeaderCtrl *_xtGetHeaderCtrl() const;
+	CHeaderCtrl* _xtGetHeaderCtrl() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -545,7 +551,6 @@ public:
 	void SetAutoFont(bool bAutoFont);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPListBase class to
@@ -602,7 +607,7 @@ protected:
 	void RefreshMetrics();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG
 	afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDestroy();
@@ -611,178 +616,227 @@ protected:
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// Needed in order to access protected functions.
-	class CListCtrl_Friendly : public CListCtrl { friend class CXTPListBase; };
-//}}AFX_CODEJOCK_PRIVATE
+	class CListCtrl_Friendly : public CListCtrl
+	{
+		friend class CXTPListBase;
+	};
+	//}}AFX_CODEJOCK_PRIVATE
 
-	int                 m_nMinColWidth; // Minimum width for columns.
-	int                 m_nMaxColWidth; // Maximum width for columns.
-	int                 m_nSortedCol;   // Index of the currently selected column.
-	bool                m_bAutoFont;    // If true, the font will automatically be set for the control
-	bool                m_bAutoSave;    // true if saving the column widths.
-	bool                m_bListColor;   // true if user defined colors are used for background and text.
-	bool                m_bRowColor;    // true if rows are drawn with user defined colors.
-	bool                m_bSortColor;   // true if the sorted column is drawn in color.
-	bool                m_bAscending;   // Flag to determine the sorting order.
-	bool                m_bNoColSizing; // If true, column sizing is disabled.
-	CString             m_strSection;   // Registry section name.
-	CString             m_strEntry;     // Registry entry name.
-	CString             m_strDefault;   // Registry default value.
-	COLORREF            m_crListText;   // RGB value representing the row text color.
-	COLORREF            m_crListBack;   // RGB value representing the row text background color.
-	COLORREF            m_crSortText;   // RGB value for sort column text color.
-	COLORREF            m_crSortBack;   // RGB value for sort column background color.
-	CRowColorList       m_arRowColor;   // List of user defined text and background row colors.
-	CXTPHeaderCtrl   m_wndHeader;   // Subclassed flat header control.
-	CListCtrl_Friendly* m_pListCtrl;    // List control instance.
+	int m_nMinColWidth;			// Minimum width for columns.
+	int m_nMaxColWidth;			// Maximum width for columns.
+	int m_nSortedCol;			// Index of the currently selected column.
+	bool m_bAutoFont;			// If true, the font will automatically be set for the control
+	bool m_bAutoSave;			// true if saving the column widths.
+	bool m_bListColor;			// true if user defined colors are used for background and text.
+	bool m_bRowColor;			// true if rows are drawn with user defined colors.
+	bool m_bSortColor;			// true if the sorted column is drawn in color.
+	bool m_bAscending;			// Flag to determine the sorting order.
+	bool m_bNoColSizing;		// If true, column sizing is disabled.
+	CString m_strSection;		// Registry section name.
+	CString m_strEntry;			// Registry entry name.
+	CString m_strDefault;		// Registry default value.
+	COLORREF m_crListText;		// RGB value representing the row text color.
+	COLORREF m_crListBack;		// RGB value representing the row text background color.
+	COLORREF m_crSortText;		// RGB value for sort column text color.
+	COLORREF m_crSortBack;		// RGB value for sort column background color.
+	CRowColorList m_arRowColor; // List of user defined text and background row colors.
+	CXTPHeaderCtrl m_wndHeader; // Subclassed flat header control.
+	CListCtrl_Friendly* m_pListCtrl; // List control instance.
 };
 
 //===========================================================================
 
-AFX_INLINE DWORD CXTPListBase::GetExtendedStyle() {
-	ASSERT(::IsWindow(m_pListCtrl->GetSafeHwnd())); return (DWORD)m_pListCtrl->SendMessage(LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0);
+AFX_INLINE DWORD CXTPListBase::GetExtendedStyle()
+{
+	ASSERT(::IsWindow(m_pListCtrl->GetSafeHwnd()));
+	return (DWORD)m_pListCtrl->SendMessage(LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0);
 }
-AFX_INLINE void CXTPListBase::SetExtendedStyle(DWORD dwExStyle) {
-	ASSERT(::IsWindow(m_pListCtrl->GetSafeHwnd())); m_pListCtrl->SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, GetExtendedStyle() | dwExStyle);
+AFX_INLINE void CXTPListBase::SetExtendedStyle(DWORD dwExStyle)
+{
+	ASSERT(::IsWindow(m_pListCtrl->GetSafeHwnd()));
+	m_pListCtrl->SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, GetExtendedStyle() | dwExStyle);
 }
-AFX_INLINE void CXTPListBase::SetMinimumColSize(int nSize) {
-	m_nMinColWidth = nSize; XTPGetHeaderCtrl()->SetMinSize(nSize);
+AFX_INLINE void CXTPListBase::SetMinimumColSize(int nSize)
+{
+	m_nMinColWidth = nSize;
+	XTPGetHeaderCtrl()->SetMinSize(nSize);
 }
-AFX_INLINE int CXTPListBase::GetMinimumColSize() {
+AFX_INLINE int CXTPListBase::GetMinimumColSize()
+{
 	return m_nMinColWidth;
 }
-AFX_INLINE int CXTPListBase::GetMaximumColSize() {
+AFX_INLINE int CXTPListBase::GetMaximumColSize()
+{
 	return m_nMaxColWidth;
 }
-AFX_INLINE void CXTPListBase::DisableColumnSizing(bool bDisable) {
+AFX_INLINE void CXTPListBase::DisableColumnSizing(bool bDisable)
+{
 	m_bNoColSizing = bDisable;
 }
-AFX_INLINE void CXTPListBase::SetListBackColor(COLORREF crListBack) {
+AFX_INLINE void CXTPListBase::SetListBackColor(COLORREF crListBack)
+{
 	m_crListBack = crListBack;
 }
-AFX_INLINE void CXTPListBase::SetListTextColor(COLORREF crListText) {
+AFX_INLINE void CXTPListBase::SetListTextColor(COLORREF crListText)
+{
 	m_crListText = crListText;
 }
-AFX_INLINE void CXTPListBase::EnableUserListColor(bool bEnable) {
+AFX_INLINE void CXTPListBase::EnableUserListColor(bool bEnable)
+{
 	m_bListColor = bEnable;
 }
-AFX_INLINE void CXTPListBase::SetRowColors(COLORREF clrText, COLORREF clrTextBk) {
-	SetListTextColor(clrText); SetListBackColor(clrTextBk); EnableUserListColor(true); m_pListCtrl->RedrawWindow();
+AFX_INLINE void CXTPListBase::SetRowColors(COLORREF clrText, COLORREF clrTextBk)
+{
+	SetListTextColor(clrText);
+	SetListBackColor(clrTextBk);
+	EnableUserListColor(true);
+	m_pListCtrl->RedrawWindow();
 }
-AFX_INLINE COLORREF CXTPListBase::GetListBackColor() const {
-	return m_bListColor ? ((m_crListBack == (COLORREF)-1) ? ::GetSysColor(COLOR_WINDOW) : m_crListBack) : ::GetSysColor(COLOR_WINDOW);
+AFX_INLINE COLORREF CXTPListBase::GetListBackColor() const
+{
+	return m_bListColor
+			   ? ((m_crListBack == (COLORREF)-1) ? ::GetSysColor(COLOR_WINDOW) : m_crListBack)
+			   : ::GetSysColor(COLOR_WINDOW);
 }
-AFX_INLINE COLORREF CXTPListBase::GetListTextColor() const {
-	return m_bListColor ? ((m_crListText == (COLORREF)-1) ? ::GetSysColor(COLOR_WINDOWTEXT) : m_crListText) : ::GetSysColor(COLOR_WINDOWTEXT);
+AFX_INLINE COLORREF CXTPListBase::GetListTextColor() const
+{
+	return m_bListColor
+			   ? ((m_crListText == (COLORREF)-1) ? ::GetSysColor(COLOR_WINDOWTEXT) : m_crListText)
+			   : ::GetSysColor(COLOR_WINDOWTEXT);
 }
-AFX_INLINE COLORREF CXTPListBase::GetSortBackColor() const {
+AFX_INLINE COLORREF CXTPListBase::GetSortBackColor() const
+{
 	return (m_crSortBack == (COLORREF)-1) ? GetListBackColor() : m_crSortBack;
 }
-AFX_INLINE void CXTPListBase::SetSortBackColor(COLORREF crSortBack) {
+AFX_INLINE void CXTPListBase::SetSortBackColor(COLORREF crSortBack)
+{
 	m_crSortBack = crSortBack;
 }
-AFX_INLINE COLORREF CXTPListBase::GetSortTextColor() const {
-	return (m_crSortText == (COLORREF)-1) ? GetListTextColor():m_crSortText;
+AFX_INLINE COLORREF CXTPListBase::GetSortTextColor() const
+{
+	return (m_crSortText == (COLORREF)-1) ? GetListTextColor() : m_crSortText;
 }
-AFX_INLINE void CXTPListBase::SetSortTextColor(COLORREF crSortText) {
+AFX_INLINE void CXTPListBase::SetSortTextColor(COLORREF crSortText)
+{
 	m_crSortText = crSortText;
 }
-AFX_INLINE void CXTPListBase::EnableUserSortColor(bool bEnable) {
+AFX_INLINE void CXTPListBase::EnableUserSortColor(bool bEnable)
+{
 	m_bSortColor = bEnable;
 }
-AFX_INLINE bool CXTPListBase::IsUserSortColor() const {
+AFX_INLINE bool CXTPListBase::IsUserSortColor() const
+{
 	return m_bSortColor;
 }
-AFX_INLINE bool CXTPListBase::IsUserListColor() const {
+AFX_INLINE bool CXTPListBase::IsUserListColor() const
+{
 	return m_bListColor;
 }
-AFX_INLINE void CXTPListBase::EnableUserRowColor(bool bEnable) {
+AFX_INLINE void CXTPListBase::EnableUserRowColor(bool bEnable)
+{
 	m_bRowColor = bEnable;
 }
-AFX_INLINE bool CXTPListBase::IsUserRowColor() const {
+AFX_INLINE bool CXTPListBase::IsUserRowColor() const
+{
 	return m_bRowColor;
 }
-AFX_INLINE void CXTPListBase::SetAutoFont(bool bAutoFont) {
+AFX_INLINE void CXTPListBase::SetAutoFont(bool bAutoFont)
+{
 	m_bAutoFont = bAutoFont;
 }
 
 //{{AFX_CODEJOCK_PRIVATE
-#define DECLATE_LIST_BASE(ClassName, List, Base)\
-class _XTP_EXT_CLASS ClassName : public List, public Base\
-{\
-public:\
-	ClassName() {\
-		m_bPreSubclassInit = true;\
-	}   \
-	virtual DWORD GetExtendedStyle() {\
-		return Base::GetExtendedStyle();\
-	}   \
-	virtual void SetExtendedStyle(DWORD dwExStyle){\
-		Base::SetExtendedStyle(dwExStyle);\
-	}   \
-protected:\
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) {\
-		return Base::OnNotify(wParam, lParam, pResult);\
-	}   \
-	virtual bool Init() {\
-		return Base::Init();\
-	}   \
-	virtual void PreSubclassWindow()\
-	{\
-		List::PreSubclassWindow();\
-		if (m_bPreSubclassInit)\
-			Init();\
-	}   \
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs)\
-	{\
-		if (!List::PreCreateWindow(cs))\
-			return FALSE;\
-		m_bPreSubclassInit = false;\
-		return TRUE;\
-	}   \
-	bool m_bPreSubclassInit;\
-	afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) {\
-		Base::OnCustomDraw(pNMHDR, pResult);\
-	}   \
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {\
-		List::OnSettingChange(uFlags, lpszSection);\
-		Base::OnSettingChange(uFlags, lpszSection);\
-	}   \
-	afx_msg void OnDestroy(){\
-		Base::OnDestroy();\
-		List::OnDestroy();\
-	}   \
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC){\
-		return Base::OnEraseBkgnd(pDC);\
-	}   \
-	afx_msg void OnPaint() {\
-		Base::OnPaint();\
-	}   \
-	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam) {\
-		return Base::OnPrintClient(wParam, lParam);\
-	}   \
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)\
-	{\
-		if (List::OnCreate(lpCreateStruct) == -1)\
-			return -1;\
-		Init();\
-		return 0;\
-	}   \
-};
+#	define DECLARE_LIST_BASE(ClassName, List, Base)                                               \
+		class _XTP_EXT_CLASS ClassName                                                             \
+			: public List                                                                          \
+			, public Base                                                                          \
+		{                                                                                          \
+		public:                                                                                    \
+			ClassName()                                                                            \
+			{                                                                                      \
+				m_bPreSubclassInit = true;                                                         \
+			}                                                                                      \
+			virtual DWORD GetExtendedStyle()                                                       \
+			{                                                                                      \
+				return Base::GetExtendedStyle();                                                   \
+			}                                                                                      \
+			virtual void SetExtendedStyle(DWORD dwExStyle)                                         \
+			{                                                                                      \
+				Base::SetExtendedStyle(dwExStyle);                                                 \
+			}                                                                                      \
+                                                                                                   \
+		protected:                                                                                 \
+			virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)                  \
+			{                                                                                      \
+				return Base::OnNotify(wParam, lParam, pResult);                                    \
+			}                                                                                      \
+			virtual bool Init()                                                                    \
+			{                                                                                      \
+				return Base::Init();                                                               \
+			}                                                                                      \
+			virtual void PreSubclassWindow()                                                       \
+			{                                                                                      \
+				List::PreSubclassWindow();                                                         \
+				if (m_bPreSubclassInit)                                                            \
+					Init();                                                                        \
+			}                                                                                      \
+			virtual BOOL PreCreateWindow(CREATESTRUCT& cs)                                         \
+			{                                                                                      \
+				if (!List::PreCreateWindow(cs))                                                    \
+					return FALSE;                                                                  \
+				m_bPreSubclassInit = false;                                                        \
+				return TRUE;                                                                       \
+			}                                                                                      \
+			bool m_bPreSubclassInit;                                                               \
+			afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)                             \
+			{                                                                                      \
+				Base::OnCustomDraw(pNMHDR, pResult);                                               \
+			}                                                                                      \
+			afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection)                         \
+			{                                                                                      \
+				List::OnSettingChange(uFlags, lpszSection);                                        \
+				Base::OnSettingChange(uFlags, lpszSection);                                        \
+			}                                                                                      \
+			afx_msg void OnDestroy()                                                               \
+			{                                                                                      \
+				Base::OnDestroy();                                                                 \
+				List::OnDestroy();                                                                 \
+			}                                                                                      \
+			afx_msg BOOL OnEraseBkgnd(CDC* pDC)                                                    \
+			{                                                                                      \
+				return Base::OnEraseBkgnd(pDC);                                                    \
+			}                                                                                      \
+			afx_msg void OnPaint()                                                                 \
+			{                                                                                      \
+				Base::OnPaint();                                                                   \
+			}                                                                                      \
+			afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam)                            \
+			{                                                                                      \
+				return Base::OnPrintClient(wParam, lParam);                                        \
+			}                                                                                      \
+			afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)                                    \
+			{                                                                                      \
+				if (List::OnCreate(lpCreateStruct) == -1)                                          \
+					return -1;                                                                     \
+				Init();                                                                            \
+				return 0;                                                                          \
+			}                                                                                      \
+		};
 
-#define ON_LISTCTRL_REFLECT\
-	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)\
-	ON_WM_DESTROY()\
-	ON_WM_ERASEBKGND()\
-	ON_WM_PAINT()\
-	ON_MESSAGE(WM_PRINTCLIENT, OnPrintClient)\
-	ON_WM_CREATE()\
-	ON_WM_SETTINGCHANGE
+#	define ON_LISTCTRL_REFLECT                                                                    \
+		ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)                                             \
+		ON_WM_DESTROY()                                                                            \
+		ON_WM_ERASEBKGND()                                                                         \
+		ON_WM_PAINT()                                                                              \
+		ON_MESSAGE(WM_PRINTCLIENT, OnPrintClient)                                                  \
+		ON_WM_CREATE()                                                                             \
+		ON_WM_SETTINGCHANGE
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPLISTBASE_H__)

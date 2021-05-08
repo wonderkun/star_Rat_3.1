@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
 #ifdef _WIN32
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 #pragma code_page(1252)
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Näytä pikanäppäimet kohdeohjeissa",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Valikkoanimaatio:",IDC_STATIC,10,117,56,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Valikkoanimaatio:",IDC_STATIC,10,117,66,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,80,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Valikot"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Ohjelmavalikoista",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Asiayhteys ruokalista",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Näytä-valikko:",IDC_STATIC,10,20,47,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,64,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Palauta",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Oletuksena Valikko\nOletusarvoinen sovelluksen valikko",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Valitse pikavalikko:",IDC_STATIC,10,92,68,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,93,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Palauta",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Mukauta"
     XTP_IDS_NEWMENU         "Uusi valikko"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Mukauttaa tilarivillä"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Oletko varma, että haluat palauttaa avaintehtävien? Tämä toiminto poistaa kaikki mukautetut näppäinasetukset tekstin tasolla."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Tämä pikanäppäin on määritetty.\nHaluatko määrittää tämän pikakuvakkeen?"
+    XTP_IDS_CONFIRM_UPDATE  "Johtuen ohjelmistopäivityksen työkalurivin ""%s"" on muuttunut. Haluatko palauttaa mukautetun työkalurivin ja ladata uuden?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Kaikki kuvatiedostot|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bittikartat(*.Bmp;*.Dib)|*.bmp;*.dib|Meta-tiedostot(*.Wmf;*.Emf)|*.wmf;*.emf|Kuvakkeet(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Kaikki tiedostot(*.*)|*.*||"
+                            "Kaikki kuvatiedostot|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bittikartat (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metatiedostot (*.wmf;*.emf)|*.wmf;*.emf|Kuvakkeet (*.ico;*.cur)|*.ico;*.cur|Kaikki tiedostot (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nTyökalurivin asetukset"
     XTP_ID_TOOLBAR_HIDE     "\nSulje"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nPalauta ikkuna"
     XTP_ID_MENUBAR_MINIMIZE "\nPienennä ikkuna"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) on painettu. Odotus ajaksi toinen avain soinnun..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Peruuta"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nSiirry edellisen välilehden ryhmä"
+    XTP_ID_WORKSPACE_MOVENEXT "\nSiirry seuraavan välilehden ryhmä"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nUusi vaaka välilehtiryhmä"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nUusi pystysuora välilehtiryhmä"
+    XTP_ID_WORKSPACE_CANCEL "\nPeruuta"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktiiviset tiedostot"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Tulosta katsellut kohde\nTulosta"
+    XTP_ID_PREVIEW_PREV     "Siirry edelliselle sivulle\nEdellinen sivu"
+    XTP_ID_PREVIEW_NEXT     "Siirry seuraavalle sivulle\nSeuraava sivu"
+    XTP_ID_PREVIEW_ZOOMIN   "Lisää suurennusta esikatselusivu\nLähennä"
+    XTP_ID_PREVIEW_ZOOMOUT  "Pienentää suurennusta esikatselusivu\nLoitonna"
+    XTP_ID_PREVIEW_ONEPAGE  "Yksi sivu"
+    XTP_ID_PREVIEW_TWOPAGE  "Useita sivuja"
+    XTP_ID_PREVIEW_CLOSE    "Sulje ensin esikatselunäkymä\nSulje esikatselu"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Koko sivu"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Sivun leveys"
+    XTP_IDS_PREVIEW_PAGEI     "Sivu %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Sivu %i ja %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)

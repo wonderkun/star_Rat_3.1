@@ -1,7 +1,6 @@
 // XTPControlTheme.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO
 // BE RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLSTHEME_H__)
-#define __XTPCONTROLSTHEME_H__
+#	define __XTPCONTROLSTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPResourceImages;
 
@@ -38,17 +39,24 @@ class CXTPResourceImages;
 //--------------------------------------------------------------------
 enum XTPControlTheme
 {
-	xtpControlThemeDefault,          // Default theme either Windows classic or Windows Visual Style.
-	xtpControlThemeFlat,             // Flat appearance style.
-	xtpControlThemeUltraFlat,        // Ultra flat appearance style.
-	xtpControlThemeOffice2000,       // Office 2000 style theme.
-	xtpControlThemeOfficeXP,         // Office XP style theme.
-	xtpControlThemeOffice2003,       // Office 2003 style theme.
-	xtpControlThemeResource,         // Office 2007/Office 2010/Windows7 external resource DLL.
+	xtpControlThemeDefault,			 // Default Windows classic theme.
+	xtpControlThemeFlat,			 // Flat appearance style.
+	xtpControlThemeUltraFlat,		 // Ultra flat appearance style.
+	xtpControlThemeOffice2000,		 // Office 2000 style theme.
+	xtpControlThemeOfficeXP,		 // Office XP style theme.
+	xtpControlThemeOffice2003,		 // Office 2003 style theme.
+	xtpControlThemeNativeWinXP,		 // Windows XP and later native theme support.
+	xtpControlThemeResource,		 // Office 2007/Office 2010/Windows7 external resource DLL.
 	xtpControlThemeVisualStudio2005, // Visual Studio 2005 style theme.
 	xtpControlThemeVisualStudio2008, // Visual Studio 2008 style theme.
 	xtpControlThemeVisualStudio2010, // Visual Studio 2010 style theme.
-	xtpControlThemeCustom            // User defined custom theme.
+	xtpControlThemeCustom,			 // User defined custom theme.
+	xtpControlThemeOffice2013,		 // Office 2013 control theme.
+	xtpControlThemeOffice2016 = xtpControlThemeOffice2013, // Office 2016 control theme.
+	xtpControlThemeVisualStudio2012,					   // VS 2012 Light style theme.
+	xtpControlThemeVisualStudio2012Light,				   // VS 2012 Light style theme.
+	xtpControlThemeVisualStudio2012Dark,				   // VS 2012 Dark style theme.
+	xtpControlThemeVisualStudio2015						   // VS 2015 Light style theme.
 };
 
 //--------------------------------------------------------------------
@@ -61,23 +69,24 @@ enum XTPControlTheme
 //--------------------------------------------------------------------
 enum XTPControlDrawState
 {
-	xtpControlDrawStateNormal    = 0x0000, // The window should be drawn normal.
+	xtpControlDrawStateNormal	= 0x0000, // The window should be drawn normal.
 	xtpControlDrawStateDisabled  = 0x0001, // The window should be drawn disabled.
 	xtpControlDrawStateHotLight  = 0x0002, // The window has the mouse cursor hovering.
-	xtpControlDrawStateHotButton = 0x0004, // The window has the mouse cursor hovering over a drop button.
-	xtpControlDrawStateSelected  = 0x0008, // The window has an item selected.
-	xtpControlDrawStatePushed    = 0x0010, // The window has an item selected and the left mouse button is pressed.
-	xtpControlDrawStateFocus     = 0x0020, // The window has keyboard focus.
+	xtpControlDrawStateHotButton = 0x0004, // The window has the mouse cursor hovering over a drop
+										   // button.
+	xtpControlDrawStateSelected = 0x0008,  // The window has an item selected.
+	xtpControlDrawStatePushed = 0x0010, // The window has an item selected and the left mouse button
+										// is pressed.
+	xtpControlDrawStateFocus = 0x0020,  // The window has keyboard focus.
 };
 
 //===========================================================================
 // Summary:
 //     CXTPControlTheme can be used as a base class for user defined themes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlTheme : public CCmdTarget
+class _XTP_EXT_CLASS CXTPControlTheme : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a new CXTPControlTheme object and handles initialization.
@@ -104,7 +113,8 @@ public:
 	//     nTheme - New visual theme. Can be any of the values listed in the Remarks section.
 	// Remarks:
 	//     nTheme can be one of the following values:
-	//     * <b>xtpControlThemeDefault</b> Default theme either Windows classic or Windows Visual Style.
+	//     * <b>xtpControlThemeDefault</b> Default theme either Windows classic or Windows Visual
+	//     Style.
 	//     * <b>xtpControlThemeFlat</b> Flat appearance style.
 	//     * <b>xtpControlThemeUltraFlat</b> Ultra flat appearance style.
 	//     * <b>xtpControlThemeOffice2000</b> Office 2000 style theme.
@@ -113,13 +123,13 @@ public:
 	//     * <b>xtpControlThemeVisualStudio2005</b> Visual Studio 2005 style theme.
 	//     * <b>xtpControlThemeVisualStudio2008</b> Visual Studio 2008 style theme.
 	//     * <b>xtpControlThemeVisualStudio2010</b> Visual Studio 2010 style theme.
-	//     * <b>xtpControlThemeResource</b> Office 2007 / Offiec 2010/ Widows 7 external resource DLL.
+	//     * <b>xtpControlThemeResource</b> Office 2007 / Offiec 2010/ Widows 7 external resource
+	//     DLL.
 	//-----------------------------------------------------------------------
-	static void SetTheme(HWND hWnd, XTPControlTheme nTheme);
+	static void AFX_CDECL SetTheme(HWND hWnd, XTPControlTheme nTheme);
 
 protected:
-
-	XTPControlTheme  m_nTheme;  // Currently selected theme style index.
+	XTPControlTheme m_nTheme; // Currently selected theme style index.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -127,4 +137,5 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCONTROLSTHEME_H__)

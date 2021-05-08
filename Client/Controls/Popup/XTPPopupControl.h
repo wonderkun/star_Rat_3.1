@@ -1,7 +1,6 @@
 // XTPPopupControl.h: interface for the CXTPPopupControl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPPOPUPCONTROL_H__)
-#define _XTPPOPUPCONTROL_H__
+#	define _XTPPOPUPCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPopupItem;
 class CXTPPopupPaintManager;
@@ -40,20 +41,24 @@ class CXTPMarkupContext;
 //     <code>m_wndPopupControl.SetTheme(xtpPopupThemeOffice2000);</code>
 // See Also: CXTPPopupControl::SetTheme, CXTPPopupControl::GetTheme
 //
-// <KEYWORDS xtpPopupThemeOffice2000, xtpPopupThemeOfficeXP, xtpPopupThemeOffice2003, xtpPopupThemeMSN, xtpPopupThemeCustom>
+// <KEYWORDS xtpPopupThemeOffice2000, xtpPopupThemeOfficeXP, xtpPopupThemeOffice2003,
+// xtpPopupThemeMSN, xtpPopupThemeCustom, xtpPopupThemeOffice2013, xtpPopupThemeOffice2016>
 //-----------------------------------------------------------------------
 enum XTPPopupPaintTheme
 {
-	xtpPopupThemeOffice2000,    // The theme like to a Office2000
-	xtpPopupThemeOfficeXP,      // The theme like to a OfficeXP
-	xtpPopupThemeOffice2003,    // The theme like to a Office2003
-	xtpPopupThemeMSN,           // The theme like to a MSN Messenger
-	xtpPopupThemeResource,    // The theme like to a Office2007
-	xtpPopupThemeCustom         // The custom theme
+	xtpPopupThemeOffice2000,						  // Office2000 popup theme
+	xtpPopupThemeOfficeXP,							  // OfficeXP popup theme
+	xtpPopupThemeOffice2003,						  // Office2003 popup theme
+	xtpPopupThemeMSN,								  // MSN Messenger popup theme
+	xtpPopupThemeResource,							  // A resource based theme
+	xtpPopupThemeCustom,							  // Custom popup theme
+	xtpPopupThemeOffice2013,						  // Office2013 popup theme
+	xtpPopupThemeOffice2016 = xtpPopupThemeOffice2013 // Office2016 popup theme
 };
 
-#define xtpPopupThemeOffice2007 xtpPopupThemeResource
-
+//{{AFX_CODEJOCK_PRIVATE
+#	define xtpPopupThemeOffice2007 xtpPopupThemeResource
+//}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -61,9 +66,10 @@ enum XTPPopupPaintTheme
 //-----------------------------------------------------------------------
 enum XTPPopupLocation
 {
-	xtpPopupLocationNearTaskBar, // Displays in the bottom right of the screen right above the task bar.
+	xtpPopupLocationNearTaskBar, // Displays in the bottom right of the screen right above the task
+								 // bar.
 	xtpPopupLocationBottomRight, // Displays in the bottom right of the screen.
-	xtpPopupLocationCenter // Displays in the center of the screen.
+	xtpPopupLocationCenter		 // Displays in the center of the screen.
 };
 //-----------------------------------------------------------------------
 // Summary:
@@ -72,14 +78,15 @@ enum XTPPopupLocation
 //     <code>m_wndPopupControl.SetPopupAnimation(xtpPopupAnimationFade);</code>
 // See Also: CXTPPopupControl::SetPopupAnimation, CXTPPopupControl::GetPopupAnimation
 //
-// <KEYWORDS xtpPopupAnimationNone, xtpPopupAnimationFade, xtpPopupAnimationSlide, xtpPopupAnimationUnfold>
+// <KEYWORDS xtpPopupAnimationNone, xtpPopupAnimationFade, xtpPopupAnimationSlide,
+// xtpPopupAnimationUnfold>
 //-----------------------------------------------------------------------
 enum XTPPopupAnimation
 {
-	xtpPopupAnimationNone,      // Animation is not used
-	xtpPopupAnimationFade,      // Fade method animation
-	xtpPopupAnimationSlide,     // Slide method animation
-	xtpPopupAnimationUnfold     // Unfold method animation
+	xtpPopupAnimationNone,  // Animation is not used
+	xtpPopupAnimationFade,  // Fade method animation
+	xtpPopupAnimationSlide, // Slide method animation
+	xtpPopupAnimationUnfold // Unfold method animation
 };
 
 //-----------------------------------------------------------------------
@@ -94,14 +101,15 @@ enum XTPPopupAnimation
 // </code>
 // See Also: CXTPPopupControl::GetPopupState, CXTPPopupControl::SetPopupState
 //
-// <KEYWORDS xtpPopupStateClosed, xtpPopupStateExpanding, xtpPopupStateShow, xtpPopupStateCollapsing>
+// <KEYWORDS xtpPopupStateClosed, xtpPopupStateExpanding, xtpPopupStateShow,
+// xtpPopupStateCollapsing>
 //-----------------------------------------------------------------------
 enum XTPPopupState
 {
-	xtpPopupStateClosed,        // The popup window is closed
-	xtpPopupStateExpanding,     // The popup window is expanding
-	xtpPopupStateShow,          // The popup window is shown
-	xtpPopupStateCollapsing     // The popup window is collapsing
+	xtpPopupStateClosed,	// The popup window is closed
+	xtpPopupStateExpanding, // The popup window is expanding
+	xtpPopupStateShow,		// The popup window is shown
+	xtpPopupStateCollapsing // The popup window is collapsing
 };
 
 //-----------------------------------------------------------------------
@@ -140,7 +148,8 @@ enum XTPPopupState
 //
 //          if (pItem->GetID() == ID_GOTO_SITE)
 //          {
-//              ::ShellExecute(NULL, _T("open"), _T("http://www.codejock.com/"), NULL, NULL, SW_SHOW);
+//              ::ShellExecute(NULL, _T("open"), _T("http://www.codejock.com/"), NULL, NULL,
+//              SW_SHOW);
 //          }
 //      }
 //      else if (wParam == XTP_PCN_STATECHANGED)
@@ -214,13 +223,11 @@ protected:
 	//-----------------------------------------------------------------------
 	struct POPUPSTATE
 	{
-		CRect rcPopup;                              // Popup position
-		int nTransparency;                          // Popup transparency
+		CRect rcPopup;	 // Popup position
+		int nTransparency; // Popup transparency
 	};
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPopupControl object.
@@ -235,7 +242,6 @@ public:
 	virtual ~CXTPPopupControl();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to set the position of a popup
@@ -275,22 +281,24 @@ public:
 	//     Call this member for create and starting expanding state
 	//     of a popup window
 	// Parameters:
-	//     pParent - points to a CWnd object that represents the parent
-	//     window.
+	//     pParent - Points to a CWnd object that represents the parent
+	//               window.
+	//     nID     - ID for popup window.
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL Show(CWnd* pParent);
+	BOOL Show(CWnd* pParent, int nID = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to show modal popup control
 	// Parameters:
-	//     pParent - points to a CWnd object that represents the parent
-	//     window.
+	//     pParent - Points to a CWnd object that represents the parent
+	//               window.
+	//     nID     - ID for popup window.
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL ShowModal(CWnd* pParent);
+	BOOL ShowModal(CWnd* pParent, int nID = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -404,7 +412,9 @@ public:
 	//     pPaintManager - point of paint manager object.
 	//-----------------------------------------------------------------------
 	void SetTheme(XTPPopupPaintTheme theme);
-	void SetTheme(CXTPPopupPaintManager* pPaintManager); // <combine CXTPPopupControl::SetTheme@XTPPopupPaintTheme>
+	void SetTheme(
+		CXTPPopupPaintManager* pPaintManager); // <combine
+											   // CXTPPopupControl::SetTheme@XTPPopupPaintTheme>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -507,7 +517,8 @@ public:
 	// Summary:
 	//     Call this member to set bitmap index for background.
 	// Parameters:
-	//     nBackgroundBitmap - Index of bitmap in IamgeMnaager to set as background and region for control
+	//     nBackgroundBitmap - Index of bitmap in IamgeMnaager to set as background and region for
+	//     control
 	//-----------------------------------------------------------------------
 	void SetBackgroundBitmap(int nBackgroundBitmap);
 
@@ -539,6 +550,13 @@ public:
 	void SetSplashScreenMode(BOOL bSet);
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the ID assigned to the popup window when it was created.
+	// Returns:
+	//     An integer value representing the popup window ID.
+	//-----------------------------------------------------------------------
+	int GetID() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -555,7 +573,6 @@ public:
 	//     bRightToLeft - TRUE to set right-to-left reading-order properties.
 	//-----------------------------------------------------------------------
 	void SetLayoutRTL(BOOL bRightToLeft);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -600,7 +617,6 @@ public:
 	CXTPMarkupContext* GetMarkupContext() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates a popup window
@@ -688,9 +704,8 @@ protected:
 	//-------------------------------------------------------------------------
 	void TrackMove();
 
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	virtual void PostNcDestroy();
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -707,53 +722,60 @@ protected:
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	void UpdateBitmapRegion();
 	HRGN BitmapToRegion(CXTPImageManagerIcon* pIcon);
 	void SetRegionAlphaLayer(CXTPImageManagerIcon* pIcon);
 
 protected:
-	CXTPPopupPaintManager* m_pPaintManager;         // point to CXTPPopupPaintManager object
+	CXTPPopupPaintManager* m_pPaintManager;			   // point to CXTPPopupPaintManager object
 	CArray<CXTPPopupItem*, CXTPPopupItem*> m_arrItems; // array for controlled items
-	CXTPPopupItem* m_pSelected;                     // point to selected item
-	CXTPPopupItem* m_pPressed;                      // point to pressed item
-	XTPPopupAnimation m_popupAnimation;             // current animation method
-	XTPPopupState m_popupState;                     // current popup state
-	CSize m_szPopup;                                // current XY location of a popup window
-	CPoint m_ptPopup;                               // current XY size of a popup window
-	int m_nTransparency;                            // current value transparency of a popup window
-	int m_nCurrentTransparency;                     // current  transparency of a popup window
-	UINT m_uShowDelay;                              // value of show delay of a popup window
-	UINT m_uAnimationDelay;                         // value of animation delay of a popup window
-	UINT m_nAnimationInterval;                      // value of animation interval of a popup window
-	int  m_nStep;                                   // value of step animation of a popup window
-	XTPPopupPaintTheme m_paintTheme;                // Currently used theme.
-	BOOL m_bAllowMove;                              // If TRUE, the user can click and drag the popup window anywhere on the screen.  If FALSE, the popup window cannot be moved by the user.
+	CXTPPopupItem* m_pSelected;						   // point to selected item
+	CXTPPopupItem* m_pPressed;						   // point to pressed item
+	XTPPopupAnimation m_popupAnimation;				   // current animation method
+	XTPPopupState m_popupState;						   // current popup state
+	CSize m_szPopup;								   // current XY location of a popup window
+	CPoint m_ptPopup;								   // current XY size of a popup window
+	int m_nID;										   // control ID for the popup window.
+	int m_nTransparency;			 // current value transparency of a popup window
+	int m_nCurrentTransparency;		 // current  transparency of a popup window
+	UINT m_uShowDelay;				 // value of show delay of a popup window
+	UINT m_uAnimationDelay;			 // value of animation delay of a popup window
+	UINT m_nAnimationInterval;		 // value of animation interval of a popup window
+	int m_nStep;					 // value of step animation of a popup window
+	XTPPopupPaintTheme m_paintTheme; // Currently used theme.
+	BOOL m_bAllowMove; // If TRUE, the user can click and drag the popup window anywhere on the
+					   // screen.  If FALSE, the popup window cannot be moved by the user.
 
-	POPUPSTATE  m_stateTarget;                      // Target descriptor
-	POPUPSTATE  m_stateCurrent;                     // Current descriptor
-	CXTPImageManager* m_pImageManager;              // Images of popup items.
-	BOOL m_bRightToLeft;                            // Right-To-Left layout
+	POPUPSTATE m_stateTarget;		   // Target descriptor
+	POPUPSTATE m_stateCurrent;		   // Current descriptor
+	CXTPImageManager* m_pImageManager; // Images of popup items.
+	BOOL m_bRightToLeft;			   // Right-To-Left layout
 
-	CXTPMarkupContext* m_pMarkupContext;            // Assiciated Markup Context
+	CXTPMarkupContext* m_pMarkupContext; // Assiciated Markup Context
 
-	int m_nBackgroundBitmap;                        // Image index used as background of popup control
-	BOOL m_bAutoDelete;                             // TRUE to delete popup after it will be closed
-	XTPPopupLocation m_nPopupLocation;              // Default locations for the popup control to display.
-	HCURSOR m_hHandCursor;                          // The system hand cursor for hyperlink items.
+	int m_nBackgroundBitmap;		   // Image index used as background of popup control
+	BOOL m_bAutoDelete;				   // TRUE to delete popup after it will be closed
+	XTPPopupLocation m_nPopupLocation; // Default locations for the popup control to display.
+	HCURSOR m_hHandCursor;			   // The system hand cursor for hyperlink items.
 
-	BOOL m_bSplashScreenMode;                       // TRUE to ignore mouse movement
+	BOOL m_bSplashScreenMode; // TRUE to ignore mouse movement
 
 private:
-	typedef BOOL (WINAPI *PFNSETLAYEREDWINDOWATTRIBUTES) (HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags);
-	typedef BOOL(WINAPI* LPFNUPDATELAYEREDWINDOW) (HWND hwnd, HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, DWORD dwFlags);
+	typedef BOOL(WINAPI* PFNSETLAYEREDWINDOWATTRIBUTES)(HWND hwnd, COLORREF crKey, BYTE bAlpha,
+														DWORD dwFlags);
+	typedef BOOL(WINAPI* LPFNUPDATELAYEREDWINDOW)(HWND hwnd, HDC hdcDst, POINT* pptDst, SIZE* psize,
+												  HDC hdcSrc, POINT* pptSrc, COLORREF crKey,
+												  BLENDFUNCTION* pblend, DWORD dwFlags);
 
-	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes;    // point to Transparency proc in USER32.dll module
+	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes; // point to Transparency proc in
+																   // USER32.dll module
 	LPFNUPDATELAYEREDWINDOW m_pfnUpdateLayeredWindow;
-	BOOL        m_bCapture;                         // capture flag of mouse event
+	BOOL m_bCapture; // capture flag of mouse event
 	BOOL m_bLayered;
 
 	friend class CXTPPopupItem;
@@ -762,75 +784,105 @@ private:
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPPopupControl::GetSplashScreenMode() const {
+AFX_INLINE BOOL CXTPPopupControl::GetSplashScreenMode() const
+{
 	return m_bSplashScreenMode;
 }
-AFX_INLINE void CXTPPopupControl::SetSplashScreenMode(BOOL bSet) {
+AFX_INLINE void CXTPPopupControl::SetSplashScreenMode(BOOL bSet)
+{
 	m_bSplashScreenMode = bSet;
 }
-AFX_INLINE CXTPPopupPaintManager* CXTPPopupControl::GetPaintManager() const {
+AFX_INLINE CXTPPopupPaintManager* CXTPPopupControl::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE void CXTPPopupControl::SetPopupSize(CSize szPopup) {
+AFX_INLINE void CXTPPopupControl::SetPopupSize(CSize szPopup)
+{
 	m_szPopup = szPopup;
 }
-AFX_INLINE CSize CXTPPopupControl::GetPopupSize() const {
+AFX_INLINE CSize CXTPPopupControl::GetPopupSize() const
+{
 	return m_szPopup;
 }
-AFX_INLINE void CXTPPopupControl::SetPopupPos(CPoint ptPopup) {
+AFX_INLINE void CXTPPopupControl::SetPopupPos(CPoint ptPopup)
+{
 	m_ptPopup = ptPopup;
 }
-AFX_INLINE void CXTPPopupControl::SetShowDelay(DWORD dwShowDelay) {
+AFX_INLINE void CXTPPopupControl::SetShowDelay(DWORD dwShowDelay)
+{
 	m_uShowDelay = dwShowDelay;
 }
-AFX_INLINE DWORD CXTPPopupControl::GetShowDelay() const {
+AFX_INLINE DWORD CXTPPopupControl::GetShowDelay() const
+{
 	return m_uShowDelay;
 }
-AFX_INLINE void CXTPPopupControl::SetAnimateDelay(DWORD dwAnimateDelay) {
+AFX_INLINE void CXTPPopupControl::SetAnimateDelay(DWORD dwAnimateDelay)
+{
 	m_uAnimationDelay = dwAnimateDelay;
 }
-AFX_INLINE DWORD CXTPPopupControl::GetAnimateDelay() const {
+AFX_INLINE DWORD CXTPPopupControl::GetAnimateDelay() const
+{
 	return m_uAnimationDelay;
 }
-AFX_INLINE BYTE CXTPPopupControl::GetTransparency() const {
+AFX_INLINE BYTE CXTPPopupControl::GetTransparency() const
+{
 	return (BYTE)m_nTransparency;
 }
-AFX_INLINE void CXTPPopupControl::SetTransparency(BYTE nTransparency) {
+AFX_INLINE void CXTPPopupControl::SetTransparency(BYTE nTransparency)
+{
 	m_nTransparency = nTransparency;
 }
-AFX_INLINE void CXTPPopupControl::SetAutoDelete(BOOL bAutoDelete) {
+AFX_INLINE void CXTPPopupControl::SetAutoDelete(BOOL bAutoDelete)
+{
 	m_bAutoDelete = bAutoDelete;
 }
-AFX_INLINE XTPPopupAnimation CXTPPopupControl::GetPopupAnimation() const {
+AFX_INLINE XTPPopupAnimation CXTPPopupControl::GetPopupAnimation() const
+{
 	return m_popupAnimation;
 }
-AFX_INLINE void CXTPPopupControl::SetPopupAnimation(XTPPopupAnimation popupAnimation) {
+AFX_INLINE void CXTPPopupControl::SetPopupAnimation(XTPPopupAnimation popupAnimation)
+{
 	m_popupAnimation = popupAnimation;
 }
-AFX_INLINE XTPPopupPaintTheme CXTPPopupControl::GetTheme() const {
+AFX_INLINE XTPPopupPaintTheme CXTPPopupControl::GetTheme() const
+{
 	return m_paintTheme;
 }
-AFX_INLINE void CXTPPopupControl::AllowMove(BOOL bAllowMove) {
+AFX_INLINE void CXTPPopupControl::AllowMove(BOOL bAllowMove)
+{
 	m_bAllowMove = bAllowMove;
 }
-AFX_INLINE BOOL CXTPPopupControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPPopupControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPPopupControl::IsLayoutRTL() const {
+AFX_INLINE BOOL CXTPPopupControl::IsLayoutRTL() const
+{
 	return m_bRightToLeft;
 }
-AFX_INLINE void CXTPPopupControl::SetBackgroundBitmap(int nBackgroundBitmap) {
+AFX_INLINE void CXTPPopupControl::SetBackgroundBitmap(int nBackgroundBitmap)
+{
 	m_nBackgroundBitmap = nBackgroundBitmap;
 	UpdateBitmapRegion();
 }
-AFX_INLINE int CXTPPopupControl::GetBackgroundBitmap() const {
+AFX_INLINE int CXTPPopupControl::GetBackgroundBitmap() const
+{
 	return m_nBackgroundBitmap;
 }
-AFX_INLINE CXTPMarkupContext* CXTPPopupControl::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPPopupControl::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
-AFX_INLINE void CXTPPopupControl::SetDefaultLocation(XTPPopupLocation nPopupLocation) {
+AFX_INLINE void CXTPPopupControl::SetDefaultLocation(XTPPopupLocation nPopupLocation)
+{
 	m_nPopupLocation = nPopupLocation;
 }
+AFX_INLINE int CXTPPopupControl::GetID() const
+{
+	return m_nID;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPPOPUPCONTROL_H__)

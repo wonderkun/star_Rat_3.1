@@ -1,7 +1,6 @@
 // XTPListBox.h interface for the CXTPListBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,94 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPLISTBOX_H__)
-#define __XTPLISTBOX_H__
+#	define __XTPLISTBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+//===========================================================================
+// Summary: Constants used by the CXTPListBox control to determine the current
+//          theme style that has been set.
+//===========================================================================
 enum XTPListBoxStyle
 {
-	xtpListBoxStandard,
-	xtpListBoxOfficeXP,
-	xtpListBoxOffice2007,
+	xtpListBoxStandard,							 // Default theme.
+	xtpListBoxOfficeXP,							 // Office XP style theme.
+	xtpListBoxOffice2007,						 // Office 2007 style theme.
+	xtpListBoxOffice2013,						 // Office 2013 style theme.
+	xtpListBoxOffice2016 = xtpListBoxOffice2013, // Office 2016 style theme.
+	xtpListBoxVisualStudio2015					 // Visual Studio 2015 style theme.
+};
+
+class CXTPListBox;
+
+//===========================================================================
+// Summary:
+//     CXTPListBoxTheme is the base class used by CXTPListBox themes to draw
+//     the list-box control.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPListBoxTheme
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//	Handles theme destruction.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPListBoxTheme()
+	{
+	}
+
+	//-----------------------------------------------------------------------
+	// Summary: This method is called to draw the CXTPListBox object.
+	// Input:   pDC      - Pointer to a valid device context.
+	//          pListBox - Pointer to a valid CXTPListBox object.
+	//          lpDIS    - A long pointer to a DRAWITEMSTRUCT structure. The
+	//                     structure contains information about the item to be
+	//                     drawn and the type of drawing required.
+	//-----------------------------------------------------------------------
+	virtual void DrawItem(CDC* pDC, CXTPListBox* pListBox, LPDRAWITEMSTRUCT lpDIS) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary: This method is called to draw text for the CXTPListBox object.
+	// Input:   pDC      - Pointer to a valid device context.
+	//          rcText   - Size of the area to draw the text to.
+	//          pListBox - Pointer to a valid CXTPListBox object.
+	//          lpDIS    - A long pointer to a DRAWITEMSTRUCT structure. The
+	//                     structure contains information about the item to be
+	//                     drawn and the type of drawing required.
+	//-----------------------------------------------------------------------
+	virtual void DrawItemText(CDC* pDC, CRect rcText, CXTPListBox* pListBox,
+							  LPDRAWITEMSTRUCT lpDIS);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called to update colors and metrics used to draw the
+	//          CXTPListBox object.
+	//-----------------------------------------------------------------------
+	virtual void RefreshMetrics() = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary: Called to retreive the background color for the list-box.
+	// Returns: RGB value representing the background color.
+	//-----------------------------------------------------------------------
+	virtual COLORREF GetBackColor();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to draw the list-control borders.
+	// Input:   pDC - Points to a valid device context.
+	//          rc  - Size of the area ot draw.
+	// Returns: TRUE if non-client border drawing is handled, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL DrawNcBorders(CDC* pDC, CRect rc);
 };
 
 //===========================================================================
 // Summary:
 //     CXTPListBox is a CListBox derived class. CXTPListBox extends the standard
-//     list box control to enable flicker free drawing.
+//     list-box control to enable flicker free drawing.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPListBox : public CListBox
 {
@@ -45,45 +114,38 @@ class _XTP_EXT_CLASS CXTPListBox : public CListBox
 
 public:
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPListBox object
+	// Summary: Constructs a CXTPListBox object
 	//-----------------------------------------------------------------------
 	CXTPListBox();
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPListBox object, handles cleanup and deallocation
+	// Summary: Destroys a CXTPListBox object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPListBox();
 
 public:
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to initialize the list box.  This method
-	//     should be called directly after creating or sub-classing the control.
-	// Parameters:
-	//     bAutoFont - True to enable automatic font initialization.
+	// Summary: Call this member function to initialize the list-box.  This method
+	//          should be called directly after creating or sub-classing the control.
+	// Input:   bAutoFont - True to enable automatic font initialization.
 	//-----------------------------------------------------------------------
 	virtual void Initialize(bool bAutoFont = true);
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to get background color of listbox
+	// Summary: This method is called to get background color of listbox
 	//-----------------------------------------------------------------------
 	virtual COLORREF GetBackColor();
 
 	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set list style
-	// Input:
-	//     style - XTPListBoxStyle  style of the ListBox (xtpListBoxStandard, xtpListBoxOfficeXP, xtpListBoxOffice2007)
-	// See Also: XTPListBoxStyle, GetListStyle
+	// Summary:  Call this method to set list style
+	// Input:    style - A XTPListBoxStyle constant used to specify which theme
+	//                   to be used by the control.  This mehthod is here only
+	//                   for backward compatibilty with older versions and may
+	//                   be removed with a future release.  Plese use the
+	//                   SetTheme() method instead.
+	// See Also: XTPListBoxStyle, GetListStyle, SetTheme
 	//-----------------------------------------------------------------------
 	void SetListStyle(XTPListBoxStyle style);
-
-
-	void SetTheme(XTPControlTheme nTheme);
-
 
 	//-----------------------------------------------------------------------
 	// Summary: Call this method to get style of the ListBox
@@ -92,12 +154,41 @@ public:
 	//-----------------------------------------------------------------------
 	XTPListBoxStyle GetListStyle() const;
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary: This member function sets the drawing theme for the control.
+	// Input:   nTheme - A XTPControlTheme constant used to specify which theme
+	//                   to be used by the control.
+	/// See Also: XTPControlTheme
+	//-----------------------------------------------------------------------
+	void SetTheme(XTPControlTheme nTheme);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to determine if the list-box control
+	//          has input focus.
+	// Returns: TRUE if the list-box has focus, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL HasFocus() const;
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary: This method determines the list-box item nearest the point
+	//          specified in pt when there is at least one item in the list-box.
+	// Input:   pt - Specifies the point for which to find the nearest item,
+	//               specified relative to the upper-left corner of the client
+	//               area of the list box.
+	//          bOutside - Specifies the reference to a BOOL variable which will
+	//                     be set to TRUE if pt is outside the client area of
+	//                     the list box, FALSE if pt is inside the client area
+	//                     of the list box.
+	//         nIndex - Recieves the index of the item that was nearest the point
+	//                  specified in pt if successful, otherwise -1.
+	//-----------------------------------------------------------------------
+	BOOL TryItemFromPoint(CPoint pt, BOOL& bOutside, int& nIndex) const;
+
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
-	bool m_bPreSubclassInit;
+	BOOL m_bPreSubclassInit;
 
 	//{{AFX_VIRTUAL(CXTPListBox)
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
@@ -116,23 +207,72 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnNcPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-protected:
-	XTPListBoxStyle m_nStyle;    // Listbox style.
-	int m_nItemHeight;          // Height of the items.
-	int m_nTextPadding;         // Text padding.
-	int m_nHotItem;             // Hot item index.
+public:
+	CXTPListBoxTheme* m_pTheme; // Pointer to the currently active theme.
+	XTPControlTheme m_theme;	// List box theme
+	int m_nItemHeight;			// Height of the items.
+	int m_nTextPadding;			// Text padding.
+	int m_nHotItem;				// Hot item index.
 };
 
-AFX_INLINE void CXTPListBox::SetListStyle(XTPListBoxStyle style) {
-	m_nStyle = style;
-	if (m_hWnd) Invalidate(FALSE);
-}
-AFX_INLINE XTPListBoxStyle CXTPListBox::GetListStyle() const {
-	return m_nStyle;
+/////////////////////////////////////////////////////////////////////////////
+// CXTPScrollableListBoxT
+
+//=======================================================================
+// Summary:
+//	An adaptor for any CListBox derived control that overrides standard scroll bars with custom
+// scroll
+// bars.
+// Parameters:
+//	ListBoxBase - base CListBox derived class name.
+// See also:
+//	CXTPScrollable
+//=======================================================================
+template<class ListBoxBase>
+class CXTPScrollableListBoxT : public CXTPScrollable<ListBoxBase>
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//	Initializes scrollable control instance.
+	//-----------------------------------------------------------------------
+	CXTPScrollableListBoxT();
+
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual DWORD FilterStyle(DWORD dwStyle) const;
+	virtual BOOL RequiresMouseWheelOverriding() const;
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//	Type alias for CXTPListBox derived scrollable control.
+//-----------------------------------------------------------------------
+typedef CXTPScrollableListBoxT<CXTPListBox> CXTPScrollableListBox;
+
+template<class ListBoxBase>
+AFX_INLINE CXTPScrollableListBoxT<ListBoxBase>::CXTPScrollableListBoxT()
+{
+	ASSERT(GetRuntimeClass()->IsDerivedFrom(RUNTIME_CLASS(CListBox)));
 }
 
+template<class ListBoxBase>
+AFX_INLINE DWORD CXTPScrollableListBoxT<ListBoxBase>::FilterStyle(DWORD dwStyle) const
+{
+	return dwStyle & ~(WS_VSCROLL | WS_HSCROLL);
+}
 
+template<class ListBoxBase>
+AFX_INLINE BOOL CXTPScrollableListBoxT<ListBoxBase>::RequiresMouseWheelOverriding() const
+{
+	return TRUE;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPLISTBOX_H__)

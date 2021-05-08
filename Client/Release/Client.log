@@ -1,0 +1,900 @@
+﻿  Audio.cpp
+  XvidDec.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  AudioDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  BmpToAvi.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  Build.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ChangeGroup.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  Client.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ClientDoc.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ClientView.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DDOSDrDos.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DDOSFlood.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DDOSFlood1.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DDOSWeb.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DDOSWeb1.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  DllDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  FileManagerDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  FileTransferModeDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  Buffer.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  CpuUsage.cpp
+  IOCPServer.cpp
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  正在生成代码...
+  正在编译...
+  IniFile.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  InputDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  KeyBoardDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  LogView.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  MainFrm.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  PcView.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  RegDataDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  RegDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ScreenSpyDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  Setting.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  SEU_QQwry.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ShellDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  SysInfo.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  SystemDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  TrueColorToolBar.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  UpdateDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  WebCamDlg.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  --------------------------------------------------------------------------------
+  Including Xtreme Toolkit Pro
+  Including Markup         (Use _XTP_EXCLUDE_MARKUP         to exclude from build)
+  Including TabManager     (Use _XTP_EXCLUDE_TABMANAGER     to exclude from build)
+  Including Controls       (Use _XTP_EXCLUDE_CONTROLS       to exclude from build)
+  Including Calendar       (Use _XTP_EXCLUDE_CALENDAR       to exclude from build)
+     - Calendar MAPI support excluded from build (Use _XTP_INCLUDE_CALENDAR_MAPI to include it)
+  Including Chart          (Use _XTP_EXCLUDE_CHART          to exclude from build)
+  Including CommandBars    (Use _XTP_EXCLUDE_COMMANDBARS    to exclude from build)
+  Including DockingPane    (Use _XTP_EXCLUDE_DOCKINGPANE    to exclude from build)
+  Including FlowGraph      (Use _XTP_EXCLUDE_FLOWGRAPH      to exclude from build)
+  Including GraphicLibrary (Use _XTP_EXCLUDE_GRAPHICLIBRARY to exclude from build)
+  Including PropertyGrid   (Use _XTP_EXCLUDE_PROPERTYGRID   to exclude from build)
+  Including ReportControl  (Use _XTP_EXCLUDE_REPORTCONTROL  to exclude from build)
+  Including Ribbon         (Use _XTP_EXCLUDE_RIBBON         to exclude from build)
+  Including ShortcutBar    (Use _XTP_EXCLUDE_SHORTCUTBAR    to exclude from build)
+  Including SkinFramework  (Use _XTP_EXCLUDE_SKINFRAMEWORK  to exclude from build)
+  Including SyntaxEdit     (Use _XTP_EXCLUDE_SYNTAXEDIT     to exclude from build)
+  Including TaskPanel      (Use _XTP_EXCLUDE_TASKPANEL      to exclude from build)
+  --------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+   The evaluation version of the toolkit only supports DLL configurations.
+   To purchase the full version (with static link support) please visit http://www.codejock.com
+  ----------------------------------------------------------------------------------------------
+C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v19.3.0 (30 Day Trial)\Source\XTToolkitPro.h(346,1): fatal error C1189: #error:  This build configuration is not supported by the evaluation library, choose either 'Debug' or 'Unicode Debug'.
+  ZXPortMap.cpp
+  正在生成代码...

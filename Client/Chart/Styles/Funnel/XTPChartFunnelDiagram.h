@@ -1,7 +1,6 @@
 // XTPChartFunnelDiagram.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTFUNNELDIAGRAM_H__)
-#define __XTPCHARTFUNNELDIAGRAM_H__
+#	define __XTPCHARTFUNNELDIAGRAM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../../Types/XTPChartTypes.h"
-#include "../../Types/XTPChartDiagramPoint.h"
-#include "../../XTPChartDiagram.h"
-#include "../../XTPChartSeriesView.h"
-#include "../../XTPChartSeriesPoint.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -65,7 +60,8 @@ public:
 	//     A pointer to CXTPChartDiagramView object which points to a newly created
 	//     CXTPChartFunnelDiagramView object.
 	//-------------------------------------------------------------------------
-	virtual CXTPChartDiagramView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartElementView* pParent);
+	virtual CXTPChartDiagramView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartElementView* pParent);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -76,8 +72,7 @@ public:
 	//-------------------------------------------------------------------------
 	virtual void CalculateSeriesLayout(CXTPChartDeviceContext* pDC, CXTPChartDiagramView* pView);
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
@@ -85,8 +80,7 @@ public:
 	DECLARE_OLETYPELIB_EX(CXTPChartFunnelDiagram);
 	DECLARE_OLECREATE_EX(CXTPChartFunnelDiagram)
 	//}}AFX_CODEJOCK_PRIVATE
-#endif
-
+#	endif
 };
 
 //===========================================================================
@@ -115,5 +109,5 @@ public:
 protected:
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTFUNNELDIAGRAM_H__)

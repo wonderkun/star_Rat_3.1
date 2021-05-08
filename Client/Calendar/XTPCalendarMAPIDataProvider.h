@@ -1,7 +1,6 @@
 // XTPCalendarMAPIDataProvider.h: interface for the CXTPCalendarData class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,18 +17,20 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _XTP_INCLUDE_CALENDAR_MAPI
+#	error Use _XTP_INCLUDE_CALENDAR_MAPI to enable Calendar MAPI support.
+#else
+
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(_XTPCalendarMAPIDataProvider_H__)
-#define _XTPCalendarMAPIDataProvider_H__
+#	if !defined(_XTPCalendarMAPIDataProvider_H__)
+#		define _XTPCalendarMAPIDataProvider_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#		if _MSC_VER > 1000
+#			pragma once
+#		endif // _MSC_VER > 1000
 
-#include "XTPCalendarMAPIWrapper.h"
-#include "XTPCalendarMemoryDataProvider.h"
-#include "XTPCalendarData.h"
+#		include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarRecurrencePattern;
 class CXTPCalendarEventLabels;
@@ -39,47 +40,45 @@ class CXTPNotifyConnection;
 // Common customizable properties
 // DP props collection
 static const LPCTSTR cszMAPIpropName_AppointmentMessageClass = _T("AppointmentMessageClass");
-static const LPCTSTR cszMAPIpropVal_AppointmentMessageClass = _T("IPM.Appointment");
+static const LPCTSTR cszMAPIpropVal_AppointmentMessageClass  = _T("IPM.Appointment");
 
-static const LPCTSTR cszMAPIpropName_OutlookInternalVersion  = _T("OutlookInternalVersion");
-static const int cnMAPIpropVal_OutlookInternalVersionDef = 115608;
+static const LPCTSTR cszMAPIpropName_OutlookInternalVersion = _T("OutlookInternalVersion");
+static const int cnMAPIpropVal_OutlookInternalVersionDef	= 115608;
 
-static const LPCTSTR cszMAPIpropName_OutlookVersion          = _T("OutlookVersion");
+static const LPCTSTR cszMAPIpropName_OutlookVersion   = _T("OutlookVersion");
 static const LPCTSTR cszMAPIpropVal_OutlookVersionDef = _T("11");
 
 // event runtime custom properties
-static const LPCTSTR cszMAPIpropVal_EntryID = _T("MAPIEntryID");
+static const LPCTSTR cszMAPIpropVal_EntryID   = _T("MAPIEntryID");
 static const LPCTSTR cszMAPIpropVal_SearchKey = _T("MAPISearchKey");
 
 // event customizable properties
 // Event props collection
 
-//static const LPCTSTR cszMAPIpropName_AppointmentIconIndex  = _T("AppointmentIconIndex");
-static const int cnMAPIpropVal_AppointmentIcon       = 1024;
+// static const LPCTSTR cszMAPIpropName_AppointmentIconIndex  = _T("AppointmentIconIndex");
+static const int cnMAPIpropVal_AppointmentIcon		 = 1024;
 static const int cnMAPIpropVal_AppointmentIconRecurr = 1025;
-
 
 // Connection string MAPI parameter names
 static const LPCTSTR cszMAPIProfileName = _T("mapiProfileName");
-static const LPCTSTR cszMAPIPassword    = _T("mapiPassword");
-static const LPCTSTR cszMAPIFlags       = _T("mapiFlags");
+static const LPCTSTR cszMAPIPassword	= _T("mapiPassword");
+static const LPCTSTR cszMAPIFlags		= _T("mapiFlags");
 
 //-------------------------------------------------------------------------
 // Summary: Structure describes MAPI property ID, type, and guid.
 //-------------------------------------------------------------------------
 struct XTP_MAPI_PROP_NAME
 {
-	ULONG   m_ulID;         // ID
-	ULONG   m_ulType;       // Type
-	GUID    m_GuidPS;       // Guid
-
+	ULONG m_ulID;   // ID
+	ULONG m_ulType; // Type
+	GUID m_GuidPS;  // Guid
 
 	//-------------------------------------------------------------------------
 	// Summary: Default constructor
 	//-------------------------------------------------------------------------
 	XTP_MAPI_PROP_NAME(ULONG ulID, ULONG ulType, const GUID& guidPS)
 	{
-		m_ulID = ulID;
+		m_ulID   = ulID;
 		m_ulType = ulType;
 		m_GuidPS = guidPS;
 	}
@@ -92,32 +91,46 @@ struct XTP_MAPI_PROP_NAME
 //      http://support.microsoft.com/?kbid=171670
 //      http://www.cdolive.com/cdo10.htm
 //===========================================================================
-#define XTP_TAG_ID_MAPI_CALENDAR_FOLDER         0x36D00102 // Used to query for the EntryID of the calendar folder off of the root folder
+#		define XTP_TAG_ID_MAPI_CALENDAR_FOLDER                                                    \
+			0x36D00102 // Used to query for the EntryID of the calendar folder off of the root
+					   // folder
 
-//#define XTP_PS_MAPI_EVENT                     Guid( "0x0220060000000000C000000000000046") //CdoPropSetID1
-//#define XTP_PS_MAPI_EVENT_GUID                    "{00062002-0000-0000-C000-000000000046}"    // The GUID of the class of appointment item extended properties
+//#define XTP_PS_MAPI_EVENT                     Guid( "0x0220060000000000C000000000000046")
+////CdoPropSetID1 #define XTP_PS_MAPI_EVENT_GUID "{00062002-0000-0000-C000-000000000046}"    // The
+// GUID of the class of appointment item extended properties
 
-//#define XTP_PS_MAPI_COMMON                        Guid( "0x0820060000000000C000000000000046") //CdoPropSetID4
-//#define XTP_PS_MAPI_COMMON_GUID                   "{00062008-0000-0000-C000-000000000046}"    // The GUID of the class of common Outlook extended properties
+//#define XTP_PS_MAPI_COMMON                        Guid( "0x0820060000000000C000000000000046")
+////CdoPropSetID4 #define XTP_PS_MAPI_COMMON_GUID "{00062008-0000-0000-C000-000000000046}"    // The
+// GUID of the class of common Outlook extended properties
 
-//#define XTP_PS_MAPI_AGGREGATE_GUID                "{00020329-0000-0000-C000-000000000046}"    // First introduced to support 'keywords' on calendar items
+//#define XTP_PS_MAPI_AGGREGATE_GUID                "{00020329-0000-0000-C000-000000000046}"    //
+// First introduced to support 'keywords' on calendar items
 
 // The GUID of the class of appointment item extended properties
-static const GUID xtpGUID_PS_MAPI_Event     = {0x00062002,0x0000,0x0000,{0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46}};
+static const GUID xtpGUID_PS_MAPI_Event = { 0x00062002,
+											0x0000,
+											0x0000,
+											{ 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 } };
 // The GUID of the class of common Outlook extended properties
-static const GUID xtpGUID_PS_MAPI_Common    = {0x00062008,0x0000,0x0000,{0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46}};
+static const GUID xtpGUID_PS_MAPI_Common = { 0x00062008,
+											 0x0000,
+											 0x0000,
+											 { 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 } };
 
 //===========================================================================
-#define XTP_PR_MAPI_EVENT_ICON_INDEX            PROP_TAG(PT_LONG, 0x1080) // Event icon index
+#		define XTP_PR_MAPI_EVENT_ICON_INDEX PROP_TAG(PT_LONG, 0x1080) // Event icon index
 
-// PT_LONG - Busy status. See also XTPCalendarEventBusyStatus - note that enum values are the same as Outlook values
+// PT_LONG - Busy status. See also XTPCalendarEventBusyStatus - note that enum values are the same
+// as Outlook values
 static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_BusyStatus(0x8205, PT_LONG, xtpGUID_PS_MAPI_Event);
 
 // PT_STRING - Event location string
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_Location(0x8208, PT_STRING8, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_Location(0x8208, PT_STRING8,
+														  xtpGUID_PS_MAPI_Event);
 
 // PT_SYSTIME - Event start-time
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_StartTime(0x820D, PT_SYSTIME, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_StartTime(0x820D, PT_SYSTIME,
+														   xtpGUID_PS_MAPI_Event);
 
 // PT_SYSTIME - Event end-time
 static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_EndTime(0x820E, PT_SYSTIME, xtpGUID_PS_MAPI_Event);
@@ -132,67 +145,83 @@ static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_Color(0x8214, PT_LONG, xtpGUID_
 static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_AllDay(0x8215, PT_BOOLEAN, xtpGUID_PS_MAPI_Event);
 
 // PT_LONG - Meeting status enumeration
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_MeetingStatus(0x8217, PT_LONG, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_MeetingStatus(0x8217, PT_LONG,
+															   xtpGUID_PS_MAPI_Event);
 
 // PT_BINARY - Recurrence binary data
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceState(0x8216, PT_BINARY, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceState(0x8216, PT_BINARY,
+																 xtpGUID_PS_MAPI_Event);
 
 // PT_BOOLEAN - Whether event is recurring
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_IsRecuring(0x8223, PT_BOOLEAN, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_IsRecuring(0x8223, PT_BOOLEAN,
+															xtpGUID_PS_MAPI_Event);
 
 // PT_SYSTIME - Recurrence base time
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceBase(0x8228, PT_SYSTIME, xtpGUID_PS_MAPI_Event);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceBase(0x8228, PT_SYSTIME,
+// xtpGUID_PS_MAPI_Event);
 
-// PT_LONG - Recurrence type. See also XTPCalendarEventRecurrenceType - note that enum values are the same as Outlook values
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceType(0x8231, PT_LONG, xtpGUID_PS_MAPI_Event);
+// PT_LONG - Recurrence type. See also XTPCalendarEventRecurrenceType - note that enum values are
+// the same as Outlook values
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceType(0x8231, PT_LONG,
+// xtpGUID_PS_MAPI_Event);
 
 // PT_TSTRING
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrencePattern(0x8232, PT_STRING8, xtpGUID_PS_MAPI_Event);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrencePattern(0x8232, PT_STRING8,
+// xtpGUID_PS_MAPI_Event);
 
 // PT_BINARY Event time zone binaries -- for recurrence events only
 static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_TimeZone(0x8233, PT_BINARY, xtpGUID_PS_MAPI_Event);
 
 //#define XTP_PRID_MAPI_EVENT_TIMEZONE_DESCRIPTION 0x8234 // PT_TSTRING
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_TimeZoneDescription(0x8234, PT_STRING8, xtpGUID_PS_MAPI_Event);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_TimeZoneDescription(0x8234, PT_STRING8,
+// xtpGUID_PS_MAPI_Event);
 
 //#define XTP_PRID_MAPI_EVENT_RECURRENCE_START  0x8235 // PT_SYSTIME
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceStart(0x8235, PT_SYSTIME, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceStart(0x8235, PT_SYSTIME,
+																 xtpGUID_PS_MAPI_Event);
 
 //#define XTP_PRID_MAPI_EVENT_RECURRENCE_END        0x8236 // PT_SYSTIME
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceEnd(0x8236, PT_SYSTIME, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_RecurrenceEnd(0x8236, PT_SYSTIME,
+															   xtpGUID_PS_MAPI_Event);
 
 //#define XTP_PRID_MAPI_EVENT_RESPONSE_STATUS       0x8218 // PT_TSTRING
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(0x8218, PT_STRING8, xtpGUID_PS_MAPI_Event);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(0x8218, PT_STRING8, xtpGUID_PS_MAPI_Event);
 
 //#define XTP_PRID_MAPI_EVENT_REPLY_TIME            0x8222 // PT_TSTRING
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(, , xtpGUID_PS_MAPI_Event);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(, , xtpGUID_PS_MAPI_Event);
 //#define XTP_PRID_MAPI_EVENT_ORGANIZER         0x822E // PT_TSTRING
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(, , xtpGUID_PS_MAPI_Event);
-
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_(, , xtpGUID_PS_MAPI_Event);
 
 // PT_LONG - Outlook Internal Version
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_OutlookInternalVersion(0x8552, PT_LONG, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_OutlookInternalVersion(0x8552, PT_LONG,
+																		 xtpGUID_PS_MAPI_Common);
 
 // PT_STRING - Outlook Version
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_OutlookVersion(0x8554, PT_STRING8, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_OutlookVersion(0x8554, PT_STRING8,
+																 xtpGUID_PS_MAPI_Common);
 
 // PT_LONG - Reminder Minutes Before
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderMinutesBefore(0x8501, PT_LONG, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderMinutesBefore(0x8501, PT_LONG,
+																		xtpGUID_PS_MAPI_Common);
 
 // PT_SYSTIME - Reminder Date
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderDate(0x8502, PT_SYSTIME, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderDate(0x8502, PT_SYSTIME,
+															   xtpGUID_PS_MAPI_Common);
 
 // PT_BOOLEAN - Is reminder set
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderSet(0x8503, PT_BOOLEAN, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_ReminderSet(0x8503, PT_BOOLEAN,
+															  xtpGUID_PS_MAPI_Common);
 
 // PT_BOOLEAN - Event private flag
-static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_IsPrivate(0x8506, PT_BOOLEAN, xtpGUID_PS_MAPI_Common);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_IsPrivate(0x8506, PT_BOOLEAN,
+															xtpGUID_PS_MAPI_Common);
 
 //#define XTP_PRID_MAPI_COMMON_CONTEXT_MENU_FLAGS        0x8510 // PT_LONG
-//static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_(0x8510, PT_LONG, xtpGUID_PS_MAPI_Common);
+// static const XTP_MAPI_PROP_NAME xtpMAPIpropCommon_(0x8510, PT_LONG, xtpGUID_PS_MAPI_Common);
 
 // PT_STRING - Event custom properties XML string
-static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_CustomProperties(0x8581, PT_STRING8, xtpGUID_PS_MAPI_Event);
+static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_CustomProperties(0x8581, PT_STRING8,
+																  xtpGUID_PS_MAPI_Event);
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -201,41 +230,39 @@ static const XTP_MAPI_PROP_NAME xtpMAPIpropEvent_CustomProperties(0x8581, PT_STR
 //===========================================================================
 enum XTPCalendarMAPIRcType
 {
-	xtpMAPIRcType_Unknown   = 0,            // Recurrence Type unknown.
+	xtpMAPIRcType_Unknown = 0, // Recurrence Type unknown.
 
-	xtpMAPIRcType_Daily     = 0x200A,       // Daily Recurrence
-	xtpMAPIRcType_Weekly    = 0x200B,       // Weekly Recurrence
-	xtpMAPIRcType_Monthly   = 0x200C,       // Monthly Recurrence
-	xtpMAPIRcType_Yearly    = 0x200D,       // Yearly Recurrence
+	xtpMAPIRcType_Daily   = 0x200A, // Daily Recurrence
+	xtpMAPIRcType_Weekly  = 0x200B, // Weekly Recurrence
+	xtpMAPIRcType_Monthly = 0x200C, // Monthly Recurrence
+	xtpMAPIRcType_Yearly  = 0x200D, // Yearly Recurrence
 };
-
 
 //===========================================================================
 // Summary: MAPI recurrence type undocumented enum - second version.
 //===========================================================================
 enum XTPCalendarMAPIRcType2
 {
-//  xtpMAPIRcType_Unknown       = -1,
+	//  xtpMAPIRcType_Unknown       = -1,
 
-	xtpMAPIRcType2_First            = 0,    // First enum value
+	xtpMAPIRcType2_First = 0, // First enum value
 
-	xtpMAPIRcType2_Daily            = 0,    // Daily Recurrence
-	xtpMAPIRcType2_Weekly           = 1,    // Weekly Recurrence
-	xtpMAPIRcType2_MonYearly        = 2,    // Monthly/Yearly Recurrence
-	xtpMAPIRcType2_MonYearly_Nth    = 3,    // Monthly/Yearly every Nth item
+	xtpMAPIRcType2_Daily		 = 0, // Daily Recurrence
+	xtpMAPIRcType2_Weekly		 = 1, // Weekly Recurrence
+	xtpMAPIRcType2_MonYearly	 = 2, // Monthly/Yearly Recurrence
+	xtpMAPIRcType2_MonYearly_Nth = 3, // Monthly/Yearly every Nth item
 
-	xtpMAPIRcType2_Last             = 3,    // Last enum value
+	xtpMAPIRcType2_Last = 3, // Last enum value
 };
-
 
 //===========================================================================
 // Summary: Describes recurrence end type
 //===========================================================================
 enum XTPCalendarMAPIRcEnd
 {
-	xtpMAPIRcEnd_Date   = 0x2021,           // End by date
-	xtpMAPIRcEnd_Number = 0x2022,           // End after a number of occurrences
-	xtpMAPIRcEnd_Never  = 0x2023            // Never end
+	xtpMAPIRcEnd_Date   = 0x2021, // End by date
+	xtpMAPIRcEnd_Number = 0x2022, // End after a number of occurrences
+	xtpMAPIRcEnd_Never  = 0x2023  // Never end
 };
 
 //===========================================================================
@@ -245,15 +272,15 @@ enum XTPCalendarMAPIRcEnd
 //===========================================================================
 enum XTPCalendarMAPIRcExceptionData
 {
-	xtpMAPIRcED_Subject         = 0x001, // [w:buf-size][w:str-len][ascii-char: count=len]
-	xtpMAPIRcED_IsMeeting       = 0x002, // [dw] - bool(0|1)
-	xtpMAPIRcED_ReminderTime    = 0x004, // [dw] minutes before start
-	xtpMAPIRcED_IsReminder      = 0x008, // [dw] - bool(0|1)
-	xtpMAPIRcED_Location        = 0x010, // [w:buf-size][w:str-len][ascii-char: count=len]
-	xtpMAPIRcED_BusyStatus      = 0x020, // [dw] - busy status [0..3] = (free, busy, tent, oof)
-	xtpMAPIRcED_Reserved        = 0x040, // unknown flag from MAPI
-	xtpMAPIRcED_IsAllDay        = 0x080, // [dw] - bool(0|1)
-	xtpMAPIRcED_Label           = 0x100, // [dw] - label ID
+	xtpMAPIRcED_Subject		 = 0x001, // [w:buf-size][w:str-len][ascii-char: count=len]
+	xtpMAPIRcED_IsMeeting	= 0x002, // [dw] - bool(0|1)
+	xtpMAPIRcED_ReminderTime = 0x004, // [dw] minutes before start
+	xtpMAPIRcED_IsReminder   = 0x008, // [dw] - bool(0|1)
+	xtpMAPIRcED_Location	 = 0x010, // [w:buf-size][w:str-len][ascii-char: count=len]
+	xtpMAPIRcED_BusyStatus   = 0x020, // [dw] - busy status [0..3] = (free, busy, tent, oof)
+	xtpMAPIRcED_Reserved	 = 0x040, // unknown flag from MAPI
+	xtpMAPIRcED_IsAllDay	 = 0x080, // [dw] - bool(0|1)
+	xtpMAPIRcED_Label		 = 0x100, // [dw] - label ID
 };
 
 //===========================================================================
@@ -262,13 +289,19 @@ enum XTPCalendarMAPIRcExceptionData
 //===========================================================================
 struct XTP_MAPI_TIME_ZONE_INFORMATION
 {
-	LONG        Bias;           // Current bias for local time translation on this computer, in minutes.
-	LONG        StandardBias;   // Bias value to be used during local time translations that occur during standard time.
-	LONG        DaylightBias;   // Bias value to be used during local time translations that occur during daylight saving time.
-	WORD        Reserved1;      // Not used
-	SYSTEMTIME  StandardDate;   // A SYSTEMTIME structure that contains a date and local time when the transition from daylight saving time to standard time occurs on this operating system.
-	WORD        Reserved2;      // Not used
-	SYSTEMTIME  DaylightDate;   // A SYSTEMTIME structure that contains a date and local time when the transition from standard time to daylight saving time occurs on this operating system.
+	LONG Bias;		   // Current bias for local time translation on this computer, in minutes.
+	LONG StandardBias; // Bias value to be used during local time translations that occur during
+					   // standard time.
+	LONG DaylightBias; // Bias value to be used during local time translations that occur during
+					   // daylight saving time.
+	WORD Reserved1;	// Not used
+	SYSTEMTIME StandardDate; // A SYSTEMTIME structure that contains a date and local time when the
+							 // transition from daylight saving time to standard time occurs on this
+							 // operating system.
+	WORD Reserved2;			 // Not used
+	SYSTEMTIME DaylightDate; // A SYSTEMTIME structure that contains a date and local time when the
+							 // transition from standard time to daylight saving time occurs on this
+							 // operating system.
 };
 
 //===========================================================================
@@ -276,7 +309,7 @@ struct XTP_MAPI_TIME_ZONE_INFORMATION
 //     This is an internal class which represents MAPI Binary data structure
 //     and implements main operations under it.
 //===========================================================================
-class CXTPMAPIBinary
+class _XTP_EXT_CLASS CXTPMAPIBinary
 {
 public:
 	// Default constructor.
@@ -303,14 +336,14 @@ public:
 	void Set(LPSPropValue pPropEntryID);
 
 	// Binary comparison of those objects.
-	static BOOL IsBinaryEqual(const CXTPMAPIBinary& eid1, const CXTPMAPIBinary& eid2);
+	static BOOL AFX_CDECL IsBinaryEqual(const CXTPMAPIBinary& eid1, const CXTPMAPIBinary& eid2);
 
-#ifdef _DEBUG
+#		ifdef _DEBUG
 	void DebugPrint();
-#endif
+#		endif
 
-//private:
-	ULONG m_cb; // Bytes count in the MAPI structure.
+	// private:
+	ULONG m_cb;			  // Bytes count in the MAPI structure.
 	CByteArray m_arBytes; // Binary storage for Entry ID data.
 
 private:
@@ -326,21 +359,21 @@ typedef CMap<CXTPMAPIBinary, CXTPMAPIBinary&, DWORD, DWORD> CMap_EntryIDIndex_Ev
 typedef CMap<DWORD, DWORD, BOOL, BOOL> CMap_EventIDs;
 
 // Implements Hash method for MAPI Entry ID items.
-template<> AFX_INLINE
-UINT AFXAPI HashKey(CXTPMAPIBinary& key)
+template<>
+AFX_INLINE UINT AFXAPI HashKey(CXTPMAPIBinary& key)
 {
 	UINT nRes = 0;
 	for (UINT i = 0; (i < 4) && (key.m_cb > i); i++)
 	{
 		nRes *= 256;
-		nRes += key.m_arBytes.GetAt(i);
+		nRes += key.m_arBytes.GetAt(static_cast<INT_PTR>(i));
 	}
 	return nRes;
 }
 
 // Compare method helper for MAPI entry ID items
-template<> AFX_INLINE BOOL AFXAPI CompareElements(
-	const CXTPMAPIBinary* lpt1, const CXTPMAPIBinary* lpt2)
+template<>
+AFX_INLINE BOOL AFXAPI CompareElements(const CXTPMAPIBinary* lpt1, const CXTPMAPIBinary* lpt2)
 {
 	return CXTPMAPIBinary::IsBinaryEqual(*lpt1, *lpt2);
 }
@@ -351,7 +384,7 @@ template<> AFX_INLINE BOOL AFXAPI CompareElements(
 //     and events' XTP Event ID's with the possibility to quickly search for
 //     each other.
 //===========================================================================
-class CXTP_ID_Collection
+class _XTP_EXT_CLASS CXTP_ID_Collection
 {
 public:
 	// Default constructor.
@@ -403,13 +436,14 @@ protected:
 //
 // See Also: CXTPCalendarData, CXTPCalendarMemoryDataProvider
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarMAPIDataProvider : public CXTPCalendarData, public CXTPCalendarMAPIWrapper
+class _XTP_EXT_CLASS CXTPCalendarMAPIDataProvider
+	: public CXTPCalendarData
+	, public CXTPCalendarMAPIWrapper
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPCalendarMAPIDataProvider)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -480,7 +514,7 @@ public:
 	// See also:
 	//     Open
 	//-----------------------------------------------------------------------
-	virtual BOOL IsOpen();
+	virtual BOOL IsOpen() const;
 
 protected:
 	//-----------------------------------------------------------------------
@@ -634,7 +668,8 @@ protected:
 	// See Also:
 	//     CXTPCalendarRemindersManager overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom,
+													  COleDateTimeSpan spPeriod);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -654,7 +689,6 @@ protected:
 	virtual CXTPCalendarEventsPtr DoGetAllEvents_raw();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      This member function is used to retrieve parameters for MAPI session
@@ -668,8 +702,7 @@ protected:
 	//      ruFlags         - A reference to FLAGS variable to receive loging
 	//                        flags.
 	//-----------------------------------------------------------------------
-	virtual void GetMAPILogonParams(LPTSTR& rpszProfile, LPTSTR& rpszPassword,
-									FLAGS& ruFlags);
+	virtual void GetMAPILogonParams(LPTSTR& rpszProfile, LPTSTR& rpszPassword, FLAGS& ruFlags);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -684,7 +717,8 @@ protected:
 	//      TRUE if parameter with specified name find, FALSe otherwise.
 	//-----------------------------------------------------------------------
 	static BOOL AFX_CDECL GetParameterValueFromConStr(LPCTSTR lpszConnectionString,
-								LPCTSTR pcszParameterName, CString& rstrValue);
+													  LPCTSTR pcszParameterName,
+													  CString& rstrValue);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -703,23 +737,23 @@ protected:
 
 protected:
 	// Connection string items (for the next version)
-	//CString m_strProfileName; // Name of the MAPI profile
-	//CString m_strUsername;    // Login name to this profile
-	//CString m_strPassword;    // User's password for login to the profile.
-	//CString m_strMsgStoreGuid;// Message store
-	//CString m_strFolderGUID;  // Folder with appointment items
-	//BOOL m_bShowFolderChooser;// Whether to choose a folder using a buit-in dialog.
+	// CString m_strProfileName; // Name of the MAPI profile
+	// CString m_strUsername;    // Login name to this profile
+	// CString m_strPassword;    // User's password for login to the profile.
+	// CString m_strMsgStoreGuid;// Message store
+	// CString m_strFolderGUID;  // Folder with appointment items
+	// BOOL m_bShowFolderChooser;// Whether to choose a folder using a buit-in dialog.
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
-//private:
+	// private:
 	CXTP_ID_Collection m_mapID; // A map object with ID's referencing each other...
 
 	// Compares eid1 and eid2.
 	// Returns TRUE if IDs are equal and FALSE otherwise.
 	BOOL Equal(const CXTPMAPIBinary& eid1, const CXTPMAPIBinary& eid2);
 
-//private:
+	// private:
 	// Finds event SearchKey its MAPI EntryID.
 	CXTPMAPIBinary GetSearchKey(ULONG cbEntryID, LPENTRYID lpEntryID);
 
@@ -733,14 +767,19 @@ protected:
 	// Calculates next unique EventID, which does not exists in ID's collection.
 	DWORD GetNextUniqueEventID(DWORD dwEventID = XTP_CALENDAR_UNKNOWN_EVENT_ID);
 
-//private:
+	// private:
 	// Opens default MAPI Message Store.
-	static STDMETHODIMP OpenDefaultMessageStore(LPMAPISESSION lpMAPISession, LPMDB * lpMDB, CXTPCalendarMAPIDataProvider* pProvider);
-	// Opens default MAPI Inbox folder.
-	static STDMETHODIMP OpenInbox(LPMDB lpMDB, LPMAPIFOLDER *lpInboxFolder, LPMAPIFOLDER *lpCalendarFolder, CXTPCalendarMAPIDataProvider* pProvider);
+	static STDMETHODIMP OpenDefaultMessageStore(LPMAPISESSION lpMAPISession, LPMDB* lpMDB,
+												CXTPCalendarMAPIDataProvider* pProvider);
 
-	//static LPSRestriction BuildDayRestriction(const COleDateTime dtDay);
-	static LPSRestriction BuildBinaryRestriction(ULONG cbSize, LPBYTE lpData, ULONG ulPropTag);
+	// Opens default MAPI Inbox folder.
+	static STDMETHODIMP OpenInbox(LPMDB lpMDB, LPMAPIFOLDER* lpInboxFolder,
+								  LPMAPIFOLDER* lpCalendarFolder,
+								  CXTPCalendarMAPIDataProvider* pProvider);
+
+	// static LPSRestriction BuildDayRestriction(const COleDateTime dtDay);
+	static LPSRestriction AFX_CDECL BuildBinaryRestriction(ULONG cbSize, LPBYTE lpData,
+														   ULONG ulPropTag);
 
 	// Imports all events (by a restriction) to the events collection and returns it.
 	CXTPCalendarEventsPtr ImportAllEvents(LPSRestriction lpRestriction = NULL);
@@ -750,7 +789,7 @@ protected:
 	//   and deletes removed events from this collection.
 	// Returns: TRUE if ptrEvents collection was changed during the processing,
 	//          FALSE if ptrEvents wasn't changed, what means that collections are equal.
-	//BOOL ImportNewEvents(CXTPCalendarEventsPtr ptrEvents, LPSRestriction lpRestriction = NULL);
+	// BOOL ImportNewEvents(CXTPCalendarEventsPtr ptrEvents, LPSRestriction lpRestriction = NULL);
 	BOOL ImportNewEvents();
 
 	// Creates and returns an Event object, imports all its known fields from lpRow.
@@ -772,16 +811,17 @@ protected:
 	void _SetMAPIEventGlobalPropsIfNeed(LPMESSAGE pMessage, CXTPCalendarEvent* pEvent);
 
 	void _SetEventRuntimeProps(CXTPCalendarCustomProperties* pEventProps, LPMESSAGE pMessage);
-	void _MoveMAPIEventRuntimeProps(CXTPCalendarCustomProperties* pDest, CXTPCalendarCustomProperties* pSrc);
+	void _MoveMAPIEventRuntimeProps(CXTPCalendarCustomProperties* pDest,
+									CXTPCalendarCustomProperties* pSrc);
 
 	HRESULT _getPropVal(LPMESSAGE pMessage, ULONG ulPropTag, CByteArray& rData);
 
 	CString _getPropVal_str(LPMESSAGE pMessage, ULONG ulPropTag);
-	int     _getPropVal_int(LPMESSAGE pMessage, ULONG ulPropTag);
+	int _getPropVal_int(LPMESSAGE pMessage, ULONG ulPropTag);
 	SYSTEMTIME _getPropVal_UtcTime(LPMESSAGE pMessage, ULONG ulPropTag);
 
 	CString _getPropVal_str(LPMESSAGE pMessage, const XTP_MAPI_PROP_NAME& propNameEx);
-	int     _getPropVal_int(LPMESSAGE pMessage, const XTP_MAPI_PROP_NAME& propNameEx);
+	int _getPropVal_int(LPMESSAGE pMessage, const XTP_MAPI_PROP_NAME& propNameEx);
 	SYSTEMTIME _getPropVal_UtcTime(LPMESSAGE pMessage, const XTP_MAPI_PROP_NAME& propNameEx);
 
 	BOOL _setPropTagVal_int(LPMESSAGE pMessage, ULONG ulPropTag, int nValue);
@@ -795,12 +835,11 @@ protected:
 	int GetEventGlobalPropVal_int(LPCTSTR pcszPropName, int nDefault);
 	CString GetEventGlobalPropVal_str(LPCTSTR pcszPropName, LPCTSTR pcszDefault);
 
-	static int _getSimpleMAPITypeSize(int nType);
-	static UINT _getStreamSize(IStream* pStream);
+	static int AFX_CDECL _getSimpleMAPITypeSize(int nType);
+	static UINT AFX_CDECL _getStreamSize(IStream* pStream);
 
-	static LONG STDAPICALLTYPE MAPICallBack_OnNotify(LPVOID lpvContext,
-													 ULONG  cNotif,
-													 LPNOTIFICATION  lpNotif);
+	static LONG STDAPICALLTYPE MAPICallBack_OnNotify(LPVOID lpvContext, ULONG cNotif,
+													 LPNOTIFICATION lpNotif);
 
 	// This class implements a collection of property tags and their IDs
 	// with the possibility to quickly find each corresponding other.
@@ -825,7 +864,7 @@ protected:
 		CMapULONG m_mapPropID2Tag; // Map Property ID to Property Tag
 		CMapULONG m_mapPropTag2ID; // Map Property Tag to Property ID
 
-	//private:
+		// private:
 		CXTPCalendarMAPIDataProvider* m_pProvider; // MAPI Wrapper
 
 		friend class CXTPCalendarMAPIDataProvider;
@@ -833,34 +872,33 @@ protected:
 
 	CMAPIPropIDMap m_MapiHelper; // MAPI Properties ID/Tag helper
 
-//private:
+	// private:
 	BOOL m_bMAPIInitialized; // MAPI library is initialized or not.
 
-	LPMAPISESSION m_lpMAPISession;  // MAPI Session
-	LPMDB         m_lpMDB;          // MAPI message store
+	LPMAPISESSION m_lpMAPISession; // MAPI Session
+	LPMDB m_lpMDB;				   // MAPI message store
 
-	LPMAPIFOLDER    m_lpCalendarFolder;  // Calendar folder handler
+	LPMAPIFOLDER m_lpCalendarFolder;	// Calendar folder handler
 	CXTPMAPIBinary m_eidCalendarFolder; // Calendar folder Entry ID
 
-	ULONG         m_ulMAPIConID0;
-	ULONG         m_ulMAPIConID1;
+	ULONG m_ulMAPIConID0;
+	ULONG m_ulMAPIConID1;
 
 	LPMAPIADVISESINK m_lpAdviseSink;
 	LPMAPIADVISESINK m_lpAdviseSink_ThrSafe;
 
-	CXTPCalendarData*   m_pMemDP;
+	CXTPCalendarData* m_pMemDP;
 
 private:
 	CString m_strProfile_tmp;
 	CString m_strPassword_tmp;
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	friend class CXTPCalendarMemDPInternal;
 	friend class CMAPIPropIDMap;
 	using CXTPCalendarData::SendNotification;
-
 
 	//=======================================================================
 	// Summary: Internal extension of the CXTPCalendarMemoryDataProvider
@@ -868,10 +906,8 @@ protected:
 	//=======================================================================
 	class CXTPCalendarMemDPInternal : public CXTPCalendarMemoryDataProvider
 	{
-
 		CXTPCalendarData* m_pDPExternal; // External data provider.
 	public:
-
 		//-------------------------------------------------------------------
 		// Summary: Default constructor.
 		// Parameters:
@@ -890,10 +926,13 @@ protected:
 		//     lParam - Second custom parameter. Depends on the event type.
 		//              See specific event description for details.
 		//-------------------------------------------------------------------
-		virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam , LPARAM lParam);
+		virtual void SendNotification(XTP_NOTIFY_CODE EventCode, WPARAM wParam, LPARAM lParam);
 	};
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined(_XTPCalendarMAPIDataProvider_H__)
+#	endif // !defined(_XTPCalendarMAPIDataProvider_H__)
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#endif /*!_XTP_INCLUDE_CALENDAR_MAPI*/

@@ -1,7 +1,6 @@
 // XTPHeaderCtrlTheme.h: interface for the CXTPHeaderCtrlTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTHEADERCTRLTHEME_H__)
-#define __XTHEADERCTRLTHEME_H__
+#	define __XTHEADERCTRLTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPHeaderCtrl;
 class CXTPWinThemeWrapper;
@@ -47,7 +48,6 @@ class CXTPWinThemeWrapper;
 class _XTP_EXT_CLASS CXTPHeaderCtrlTheme : public CXTPControlTheme
 {
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPHeaderCtrlTheme object using the specified
@@ -63,7 +63,6 @@ public:
 	virtual ~CXTPHeaderCtrlTheme();
 
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to return a pointer to the Windows
@@ -184,7 +183,8 @@ public:
 	// Returns:
 	//     TRUE if successful; otherwise FALSE.
 	//--------------------------------------------------------------------
-	virtual BOOL SetBitmap(int iCol, UINT uBitmapID, BOOL bRemove, COLORREF crMask, CXTPHeaderCtrl* pHeaderCtrl);
+	virtual BOOL SetBitmap(int iCol, UINT uBitmapID, BOOL bRemove, COLORREF crMask,
+						   CXTPHeaderCtrl* pHeaderCtrl);
 
 	//--------------------------------------------------------------------
 	// Summary:
@@ -196,7 +196,6 @@ public:
 	BOOL HasSortArrow();
 
 protected:
-
 	// -------------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the theme to draw the header
@@ -280,7 +279,8 @@ protected:
 	//     rcText - Size of the area where the header item text is displayed.
 	//     pHeaderCtrl -  Points to a CXTPHeaderCtrl object.
 	//--------------------------------------------------------------------
-	virtual void OnDrawItemBitmap(LPDRAWITEMSTRUCT lpDIS, CRect& rcText, CXTPHeaderCtrl* pHeaderCtrl);
+	virtual void OnDrawItemBitmap(LPDRAWITEMSTRUCT lpDIS, CRect& rcText,
+								  CXTPHeaderCtrl* pHeaderCtrl);
 
 	//--------------------------------------------------------------------
 	// Summary:
@@ -294,26 +294,27 @@ protected:
 	virtual void DrawSortArrow(CDC* pDC, LPPOINT ptsArrow, BOOL bAscending);
 
 protected:
-	int                 m_iArrowPadding; // Spacing between text and sort arrow.
-	DWORD               m_dwDrawStyle;   // Style flags used by theme, see CXTPHeaderCtrlTheme::SetDrawStyle().
-	BOOL                m_bUseWinThemes; // TRUE to use Windows XP themes when available.
-	CSize               m_sizePadding;   // Leading and trailing padding for text display.
-	CSize               m_sizeArrow;     // Width and height of sort arrow.
-	COLORREF            m_crText;        // RGB value for text color.
-	COLORREF            m_cr3DFace;      // RGB value for header background color.
-	COLORREF            m_cr3DShadow;    // RGB value for border shadow color.
-	COLORREF            m_cr3DDkShadow;  // RGB value for border dark shadow color.
-	COLORREF            m_cr3DHighLight; // RGB value for border highlight color.
-	CXTPWinThemeWrapper m_themeWrapper;  // Wraps the Windows XP theme API that is used to display Windows XP themes.
+	int m_iArrowPadding;	  // Spacing between text and sort arrow.
+	DWORD m_dwDrawStyle;	  // Style flags used by theme, see CXTPHeaderCtrlTheme::SetDrawStyle().
+	BOOL m_bUseWinThemes;	 // TRUE to use Windows XP themes when available.
+	CSize m_sizePadding;	  // Leading and trailing padding for text display.
+	CSize m_sizeArrow;		  // Width and height of sort arrow.
+	COLORREF m_crText;		  // RGB value for text color.
+	COLORREF m_cr3DFace;	  // RGB value for header background color.
+	COLORREF m_cr3DShadow;	// RGB value for border shadow color.
+	COLORREF m_cr3DDkShadow;  // RGB value for border dark shadow color.
+	COLORREF m_cr3DHighLight; // RGB value for border highlight color.
+	CXTPWinThemeWrapper* m_themeHeader; // Wraps the Windows XP theme API that is used to display
+										// Windows XP themes.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTPHeaderTheme CXTPHeaderCtrlTheme // deprecated
+#	define CXTPHeaderTheme CXTPHeaderCtrlTheme // deprecated
 //}}AFX_CODEJOCK_PRIVATE
 
-
-AFX_INLINE CXTPWinThemeWrapper* CXTPHeaderCtrlTheme::GetThemeWrapper() {
-	return &m_themeWrapper;
+AFX_INLINE CXTPWinThemeWrapper* CXTPHeaderCtrlTheme::GetThemeWrapper()
+{
+	return m_themeHeader;
 }
 
 // -------------------------------------------------------------------------------
@@ -333,13 +334,10 @@ AFX_INLINE CXTPWinThemeWrapper* CXTPHeaderCtrlTheme::GetThemeWrapper() {
 class _XTP_EXT_CLASS CXTPHeaderCtrlThemeOfficeXP : public CXTPHeaderCtrlTheme
 {
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPHeaderCtrlThemeOfficeXP object using the specified
 	//     header control.
-	// Parameters:
-	//     pHeaderCtrl - Pointer to the header control to be themed.
 	//--------------------------------------------------------------------
 	CXTPHeaderCtrlThemeOfficeXP();
 
@@ -351,7 +349,6 @@ public:
 	virtual ~CXTPHeaderCtrlThemeOfficeXP();
 
 protected:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the theme to draw the header
@@ -376,7 +373,7 @@ protected:
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTPHeaderThemeOfficeXP CXTPHeaderCtrlThemeOfficeXP // deprecated
+#	define CXTPHeaderThemeOfficeXP CXTPHeaderCtrlThemeOfficeXP // deprecated
 //}}AFX_CODEJOCK_PRIVATE
 
 // -----------------------------------------------------------------------
@@ -396,13 +393,10 @@ protected:
 class _XTP_EXT_CLASS CXTPHeaderCtrlThemeOffice2003 : public CXTPHeaderCtrlTheme
 {
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPHeaderCtrlThemeOffice2003 object using the specified
 	//     header control.
-	// Parameters:
-	//     pHeaderCtrl - Pointer to the header control to be themed.
 	//--------------------------------------------------------------------
 	CXTPHeaderCtrlThemeOffice2003();
 
@@ -430,7 +424,6 @@ public:
 	virtual BOOL Layout(LPHDLAYOUT lpHDL, CXTPHeaderCtrl* pHeaderCtrl);
 
 protected:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the theme to draw the header
@@ -475,13 +468,10 @@ private:
 class _XTP_EXT_CLASS CXTPHeaderCtrlThemeExplorer : public CXTPHeaderCtrlThemeOffice2003
 {
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPHeaderCtrlThemeExplorer object using the specified
 	//     header control.
-	// Parameters:
-	//     pHeaderCtrl - Pointer to the header control to be themed.
 	//--------------------------------------------------------------------
 	CXTPHeaderCtrlThemeExplorer();
 
@@ -509,7 +499,6 @@ public:
 	virtual BOOL Layout(LPHDLAYOUT lpHDL, CXTPHeaderCtrl* pHeaderCtrl);
 
 protected:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the theme to draw the background
@@ -546,35 +535,135 @@ protected:
 	virtual void OnDrawBackground(LPDRAWITEMSTRUCT lpDIS);
 };
 
+// -------------------------------------------------------------------------------
+// Summary:
+//     CXTPHeaderCtrlThemeResource is a CXTPHeaderCtrlThemeOfficeXP derived theme
+//     class used to draw an resource dll style theme for the header
+//     control.<p/>
+// Remarks:
+//     The CXTPHeaderCtrlThemeResource class provides theme capability to the CXTPHeaderCtrl
+//     class. You can derive a class from CXTPHeaderCtrlThemeResource to
+//     custom user defined themes.<p/>
+//
+//     To use this class, first subclass your header control using the
+//     Windows API SubclassWindow and a CXTPHeaderCtrl base class. Once
+//     you have done this you can call SetTheme and pass in a pointer to
+//     the theme you wish to use for the header control.
+// -------------------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPHeaderCtrlThemeResource : public CXTPHeaderCtrlThemeOfficeXP
+{
+public:
+	//--------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPHeaderCtrlThemeResource object using the specified
+	//     header control.
+	//--------------------------------------------------------------------
+	CXTPHeaderCtrlThemeResource();
+
+	//--------------------------------------------------------------------
+	// Summary:
+	//     Call this member whenever the system colors need to be updated.
+	// Parameters:
+	//     pHeader - Points to the CXTPHeaderCtrl object.
+	//--------------------------------------------------------------------
+	virtual void RefreshMetrics(CXTPHeaderCtrl* pHeader);
+
+protected:
+	// -------------------------------------------------------------------------
+	// Summary:
+	//     This member function is called by the theme to draw the header
+	//     control's background.
+	// Parameters:
+	//     lpDIS :  A long pointer to a DRAWITEMSTRUCT structure. The structure
+	//              contains information about the item to be drawn and the type
+	//              of drawing required.
+	// -------------------------------------------------------------------------
+	virtual void OnDrawBackground(LPDRAWITEMSTRUCT lpDIS);
+
+	//--------------------------------------------------------------------
+	// Summary:
+	//     This member function is called by the theme to draw the background
+	//     for the header item specified by lpDIS->itemID.
+	// Parameters:
+	//     lpDIS - A long pointer to a DRAWITEMSTRUCT structure. The
+	//             structure contains information about the item to be
+	//             drawn and the type of drawing required.
+	//--------------------------------------------------------------------
+	virtual void OnDrawItemBackground(LPDRAWITEMSTRUCT lpDIS);
+
+	//--------------------------------------------------------------------
+	// Summary:
+	//     This member function is called by CXTPHeaderCtrlTheme::OnDrawItemSortArrow
+	//     to draw the sort arrow.
+	// Parameters:
+	//     pDC        - Pointer to a valid device context.
+	//     ptsArrow   - POINT array used to define the 3 points of the arrow drawn.
+	//     bAscending - TRUE if the arrow is to be draw ascending.
+	//--------------------------------------------------------------------
+	virtual void DrawSortArrow(CDC* pDC, LPPOINT ptsArrow, BOOL bAscending);
+
+	//--------------------------------------------------------------------
+	// Summary:
+	//     This member function is called by the theme to draw the sort
+	//     used to display sort order for header item specified by lpDIS->itemID.
+	// Parameters:
+	//     lpDIS      - A long pointer to a DRAWITEMSTRUCT structure. The
+	//                  structure contains information about the item to be
+	//                  drawn and the type of drawing required.
+	//     bAscending - TRUE if the arrow is to be draw ascending.
+	//--------------------------------------------------------------------
+	virtual void OnDrawItemSortArrow(LPDRAWITEMSTRUCT lpDIS, BOOL bAscending);
+
+	//--------------------------------------------------------------------
+	// Summary:
+	//     This member function is called to draw the text for the header
+	//     item specified by lpDIS->itemID.
+	// Parameters:
+	//     lpDIS - A long pointer to a DRAWITEMSTRUCT structure. The
+	//             structure contains information about the item to be
+	//             drawn and the type of drawing required.
+	//     pHeaderCtrl -  Points to a CXTPHeaderCtrl object.
+	//--------------------------------------------------------------------
+	virtual void OnDrawItemText(LPDRAWITEMSTRUCT lpDIS, CXTPHeaderCtrl* pHeaderCtrl);
+
+	CXTPPaintManagerColorGradient m_crgBack;		// Gradient item background color.
+	CXTPPaintManagerColorGradient m_crgBackPressed; // Gradient pressed item background color.
+};
+
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTPHeaderThemeExplorer CXTPHeaderCtrlThemeExplorer // deprecated
+#	define CXTPHeaderThemeExplorer CXTPHeaderCtrlThemeExplorer // deprecated
 //}}AFX_CODEJOCK_PRIVATE
 
 //========================================================================
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef ODS_HOTLIGHT
-#define ODS_HOTLIGHT        0x0040
-#endif//ODS_HOTLIGHT
+#	ifndef ODS_HOTLIGHT
+#		define ODS_HOTLIGHT 0x0040
+#	endif // ODS_HOTLIGHT
 //}}AFX_CODEJOCK_PRIVATE
 
-const DWORD HDR_XTP_WINDEF = 0x0001; //<ALIAS CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
-const DWORD HDR_XTP_HOTTRACKING = 0x0002; //<ALIAS CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
-const DWORD HDR_XTP_SORTARROW   = 0x0004; //<ALIAS CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
+const DWORD HDR_XTP_WINDEF = 0x0001; //<ALIAS
+									 // CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
+const DWORD HDR_XTP_HOTTRACKING = 0x0002; //<ALIAS
+										  // CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
+const DWORD HDR_XTP_SORTARROW = 0x0004; //<ALIAS
+										// CXTPHeaderCtrlTheme::SetDrawStyle@DWORD@CXTPHeaderCtrl*>
 
 //========================================================================
 
-AFX_INLINE BOOL CXTPHeaderCtrlTheme::HasSortArrow() {
+AFX_INLINE BOOL CXTPHeaderCtrlTheme::HasSortArrow()
+{
 	return ((m_dwDrawStyle & HDR_XTP_SORTARROW) == HDR_XTP_SORTARROW);
 }
-AFX_INLINE COLORREF CXTPHeaderCtrlThemeOffice2003::MixColor(COLORREF clrLight, COLORREF clrDark, double dFactor) {
-	return RGB(
-		GetRValue(clrLight) - dFactor * (GetRValue(clrLight) - GetRValue(clrDark)),
-		GetGValue(clrLight) - dFactor * (GetGValue(clrLight) - GetGValue(clrDark)),
-		GetBValue(clrLight) - dFactor * (GetBValue(clrLight) - GetBValue(clrDark)));
+AFX_INLINE COLORREF CXTPHeaderCtrlThemeOffice2003::MixColor(COLORREF clrLight, COLORREF clrDark,
+															double dFactor)
+{
+	return RGB(GetRValue(clrLight) - dFactor * (GetRValue(clrLight) - GetRValue(clrDark)),
+			   GetGValue(clrLight) - dFactor * (GetGValue(clrLight) - GetGValue(clrDark)),
+			   GetBValue(clrLight) - dFactor * (GetBValue(clrLight) - GetBValue(clrDark)));
 }
-
 
 //========================================================================
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTHEADERCTRLTHEME_H__)

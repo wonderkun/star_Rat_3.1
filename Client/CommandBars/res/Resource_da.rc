@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DAN)
 #ifdef _WIN32
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 #pragma code_page(1252)
@@ -48,7 +47,7 @@ BEGIN
                     SS_NOTIFY,7,17,86,80
     CTEXT           "",XTP_IDC_STATIC_PREVIEW,14,117,73,54,SS_CENTERIMAGE,
                     WS_EX_STATICEDGE
-    LTEXT           "Gennemsigtig",IDC_STATIC,135,156,43,8
+    LTEXT           "Gennemsigtig",IDC_STATIC,135,156,45,8
     LTEXT           "",XTP_IDC_CLR_ERASE,116,153,15,15,SS_NOTIFY
     CTEXT           "Funktioner",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
@@ -131,7 +130,7 @@ CAPTION "Kommandoer"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Hvis du vil tilføje en kommando på en værktøjslinje, skal du vælge en kategori og trække kommandoen fra dialogboksen til værktøjslinjen.",
-                    IDC_STATIC,4,5,220,19
+                    IDC_STATIC,4,5,230,19
     LTEXT           "Kategorier:",IDC_STATIC,4,25,80,8
     LISTBOX         XTP_IDC_LIST_CATEGORIES,4,35,81,111,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menuer"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Programmenuer",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "Kontekstmenuer",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Vis menuen:",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Nulstille",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Standard menu\nStandard programmenuen",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           "Vælg kontekstmenu:",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Nulstille",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -181,7 +180,7 @@ XTP_IDR_CUSTOMIZEMENU MENU DISCARDABLE
 BEGIN
     POPUP "Tilpas"
     BEGIN
-        MENUITEM "Nulstil",                      XTP_ID_CUSTOMIZE_RESET
+        MENUITEM "Nulstille",                      XTP_ID_CUSTOMIZE_RESET
         MENUITEM "Slet",                     XTP_ID_CUSTOMIZE_DELETE
         MENUITEM SEPARATOR
         MENUITEM "Betegnelse:",                      XTP_ID_CUSTOMIZE_NAME
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Tilpas"
     XTP_IDS_NEWMENU         "Ny menu"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Tilpasse statuslinjen"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Brugerdefineret %d"
     XTP_IDS_ERROR_BLANKNAME "Feltet til værktøjslinjens navn må ikke være tomt. Skriv et navn."
-    XTP_IDS_ERROR_LIMIT     "Du har desværre nået grænsen"
+    XTP_IDS_ERROR_LIMIT     "Ked af du har nået din grænse."
     XTP_IDS_ERROR_EXISTS    "Der findes allerede en værktøjslinje med navnet '%s'. Skriv et andet navn."
     XTP_IDS_RENAMETOOLBAR   "Omdøb værktøjslinje"
     XTP_IDS_CONFIRM_DELETE  "Er du sikker på, at du vil slette værktøjslinjen '%s' ?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Er du sikker på, at du vil nulstille alle tastaturgenveje?  Dette vil fjerne alle bruger-definerede tastaturgenveje på tekstniveau."
+                            "Er du sikker på du vil nulstille de tildelinger? Denne handling vil fjerne alle brugerdefinerede tasttildelinger på niveauet tekst."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Denne genvej aktuelt er tildelt.\nVil du igen tildele denne genvej?"
+    XTP_IDS_CONFIRM_UPDATE  "På grund af en softwareopdatering er værktøjslinjen '%s' ændret. Ønsker du at nulstille din tilpassede værktøjslinjen og indlæse et nyt?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Alle billedfiler|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiler(*.Wmf;*.Emf)|*.wmf;*.emf|Ikoner(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Alle filer(*.*)|*.*||"
+                            "Alle billedfiler|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmaps (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiler (*.wmf;*.emf)|*.wmf;*.emf|Ikoner (*.ico;*.cur)|*.ico;*.cur|Alle filer (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nIndstillinger for værktøjslinjer"
     XTP_ID_TOOLBAR_HIDE     "\nLuk"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nGendan vindue"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimer vindue"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) werd ingedrukt. Wachten op tweede sleutel van snaar..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Annuller"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nVerplaatsen naar vorige tabblad groep"
+    XTP_ID_WORKSPACE_MOVENEXT "\nNaar volgende tabblad groep verplaatsen"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNieuwe horizontale Tab Group"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNieuwe verticale Tab Group"
+    XTP_ID_WORKSPACE_CANCEL "\nAnnuller"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktive filer"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Udskrive de viste element\nUdskriv"
+    XTP_ID_PREVIEW_PREV     "Gå til forrige side\nForrige side"
+    XTP_ID_PREVIEW_NEXT     "Gå til næste side\nNæste side"
+    XTP_ID_PREVIEW_ZOOMIN   "Forøge forstørrelsen af eksempelsiden\nZoom ind"
+    XTP_ID_PREVIEW_ZOOMOUT  "Formindske forstørrelsen af eksempelsiden\nZoom"
+    XTP_ID_PREVIEW_ONEPAGE  "Enkelt side"
+    XTP_ID_PREVIEW_TWOPAGE  "Flere sider"
+    XTP_ID_PREVIEW_CLOSE    "Lukke preview\nLuk Vis udskrift"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Hele siden"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Sidebredden"
+    XTP_IDS_PREVIEW_PAGEI     "Side %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Side %i af %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DAN)

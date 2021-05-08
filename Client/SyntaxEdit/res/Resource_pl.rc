@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_POL)
 #ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -34,83 +33,83 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 
 XTP_IDD_EDIT_PAGEEDITOR DIALOGEX DISCARDABLE  0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Editor"
+CAPTION "Redaktor"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    GROUPBOX        "Window Settings ",IDC_STATIC,7,7,246,76
-    CONTROL         "&Vertical scrollbar",XTP_IDC_EDIT_CHK_VERT_SCROLLBAR,
+    GROUPBOX        "Ustawienia okienne",IDC_STATIC,7,7,246,76
+    CONTROL         "Pionowy pasek przewijania",XTP_IDC_EDIT_CHK_VERT_SCROLLBAR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,21,105,10
-    CONTROL         "&Horizontal scrollbar",XTP_IDC_EDIT_CHK_HORZ_SCROLLBAR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,32,105,10
-    CONTROL         "Line &Number",XTP_IDC_EDIT_CHK_LINE_NUMBERS,"Button",
+    CONTROL         "Pasek przewijania w poziomie",XTP_IDC_EDIT_CHK_HORZ_SCROLLBAR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,32,110,10
+    CONTROL         "Numer wiersza",XTP_IDC_EDIT_CHK_LINE_NUMBERS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,43,105,10
-    CONTROL         "Selection &margin",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
+    CONTROL         "Margines zaznaczenia",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,54,105,10
-    CONTROL         "C&ollapsible Nodes",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
+    CONTROL         "Sk³adane wêz³y",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,65,105,10
-    CONTROL         "&Auto indentation",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
+    CONTROL         "Wciêcia Auto",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,20,115,10
-    CONTROL         "Virtual &space",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
+    CONTROL         "Przestrzeñ wirtualna",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
-    CONTROL         "Synta&x Colorization",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
+    CONTROL         "Kolorowanie sk³adni",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
-    GROUPBOX        "Tabs",IDC_STATIC,7,88,162,43
-    LTEXT           "&Tab size:",IDC_STATIC,15,103,30,8
-    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,50,100,46,14,ES_AUTOHSCROLL
-    CONTROL         "Insert s&paces",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,102,102,58,10
-    CONTROL         "&Keep Tabs",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
-                    BS_AUTORADIOBUTTON,102,113,51,10
-    GROUPBOX        "Overwrite Caret",XTP_IDC_EDIT_GBOX_CARET,175,88,78,43,
+    GROUPBOX        "Tabulator",IDC_STATIC,7,88,162,43
+    LTEXT           "Rozmiar tabulatora:",IDC_STATIC,15,98,80,8
+    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,15,110,46,14,ES_AUTOHSCROLL
+    CONTROL         "Wstaw spacje",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,87,102,58,10
+    CONTROL         "Przechowywaæ Tabs",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
+                    BS_AUTORADIOBUTTON,87,113,81,10
+    GROUPBOX        "Zast¹p Caret",XTP_IDC_EDIT_GBOX_CARET,175,88,78,43,
                     WS_GROUP
-    CONTROL         "Th&in",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,181,102,31,10
-    CONTROL         "Thi&ck",XTP_IDC_EDIT_RAD_CARET_THICK,"Button",
+    CONTROL         "Cienkie",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,181,102,41,10
+    CONTROL         "Gruby",XTP_IDC_EDIT_RAD_CARET_THICK,"Button",
                     BS_AUTORADIOBUTTON,181,113,36,10
-    GROUPBOX        "Save Options ",IDC_STATIC,7,135,246,37
-    CONTROL         "Automatic &reload of externally modified files",
+    GROUPBOX        "Opcje zapisywania",IDC_STATIC,7,135,246,37
+    CONTROL         "Autoprze³adowanie zewnêtrznie zmodyfikowanych plików",
                     XTP_IDC_EDIT_CHK_AUTO_RELOAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,151,155,10
+                    WS_TABSTOP,15,151,232,10
 END
 XTP_IDD_EDIT_PAGEFONT DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Editor Font"
+CAPTION "Edytor czcionek"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "&Font:",XTP_IDC_EDIT_TXT_FONTNAMES,7,7,40,9
+    LTEXT           "Chrzcielnica",XTP_IDC_EDIT_TXT_FONTNAMES,7,7,40,9
     COMBOBOX        XTP_IDC_EDIT_COMB_NAMES,7,18,119,55,CBS_SIMPLE | 
                     CBS_AUTOHSCROLL | CBS_SORT | CBS_DISABLENOSCROLL | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Font St&yle:",XTP_IDC_EDIT_TXT_FONTSTYLES,134,7,45,9
+    LTEXT           "Styl czcionki:",XTP_IDC_EDIT_TXT_FONTSTYLES,134,7,45,9
     COMBOBOX        XTP_IDC_EDIT_COMB_STYLES,134,18,75,55,CBS_SIMPLE | 
                     CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Si&ze:",XTP_IDC_EDIT_TXT_FONTSIZES,217,7,30,9
+    LTEXT           "Rozmiar",XTP_IDC_EDIT_TXT_FONTSIZES,217,7,30,9
     COMBOBOX        XTP_IDC_EDIT_COMB_SIZES,217,18,36,55,CBS_SIMPLE | 
                     CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Normal &Text:",IDC_STATIC,7,68,100,8
+    LTEXT           "Normalny Tekst",IDC_STATIC,7,68,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_TEXT,7,78,103,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_TEXT,113,78,13,12
-    LTEXT           "&Normal Background:",IDC_STATIC,7,95,100,8
+    LTEXT           "Normalnego t³a:",IDC_STATIC,7,95,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_BACK,7,105,103,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_BACK,113,105,13,12
-    LTEXT           "Selected Te&xt:",IDC_STATIC,7,122,100,8
+    LTEXT           "Zaznaczony tekst:",IDC_STATIC,7,122,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_TEXTSEL,7,132,103,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_TEXTSEL,113,132,13,12
-    LTEXT           "&Selected Background:",IDC_STATIC,7,149,100,8
+    LTEXT           "Wybrane t³o:",IDC_STATIC,7,149,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_BACKSEL,7,159,103,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_BACKSEL,113,159,13,12
-    LTEXT           "Sc&ript:",XTP_IDC_EDIT_TXT_FONTSCRIPT,135,69,100,9
+    LTEXT           "Skrypt",XTP_IDC_EDIT_TXT_FONTSCRIPT,135,69,100,9
     COMBOBOX        XTP_IDC_EDIT_COMB_SCRIPT,134,78,119,115,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Sample Normal / Selected:",XTP_IDC_EDIT_GRP_SAMPLE,135,128,
+    GROUPBOX        "Przyk³adowy Normalny / Selected",XTP_IDC_EDIT_GRP_SAMPLE,135,128,
                     118,44,WS_GROUP
     CTEXT           "AaBbCc",XTP_IDC_EDIT_TXT_SAMPLE,143,140,49,26,
                     SS_CENTERIMAGE,WS_EX_CLIENTEDGE
@@ -120,42 +119,42 @@ END
 
 XTP_IDD_EDIT_PAGECOLOR DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Syntax Color"
+CAPTION "Sk³adnia Kolor"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "File T&ype:",XTP_IDC_EDIT_TXT_SCHEMANAMES,7,7,123,9
+    LTEXT           "Typ pliku",XTP_IDC_EDIT_TXT_SCHEMANAMES,7,7,123,9
     LISTBOX         XTP_IDC_EDIT_LBOX_SCHEMANAMES,7,17,123,64,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "&Attributes:",XTP_IDC_EDIT_TXT_SCHEMAPROP,7,85,123,9
+    LTEXT           "Atrybuty",XTP_IDC_EDIT_TXT_SCHEMAPROP,7,85,123,9
     LISTBOX         XTP_IDC_EDIT_LBOX_SCHEMAPROP,7,95,123,77,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Normal &Text:",IDC_STATIC,135,7,100,8
+    LTEXT           "Normalny Tekst",IDC_STATIC,135,7,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_TEXT,135,17,100,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_TEXT,238,17,13,12
-    LTEXT           "&Normal Background:",IDC_STATIC,135,33,100,8
+    LTEXT           "Normalnego t³a:",IDC_STATIC,135,33,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_BACK,135,43,100,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_BACK,238,43,13,12
-    LTEXT           "Selected Te&xt:",IDC_STATIC,135,59,100,8
+    LTEXT           "Zaznaczony tekst:",IDC_STATIC,135,59,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_TEXTSEL,135,69,100,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_TEXTSEL,238,69,13,12
-    LTEXT           "&Selected Background:",IDC_STATIC,135,85,100,8
+    LTEXT           "Wybrane t³o:",IDC_STATIC,135,85,100,8
     COMBOBOX        XTP_IDC_EDIT_COMB_BACKSEL,135,95,100,100,CBS_DROPDOWNLIST | 
                     CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "...",XTP_IDC_EDIT_BTN_CUSTOM_BACKSEL,238,95,13,12
-    CONTROL         "&Bold",XTP_IDC_EDIT_CHK_BOLD,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Pogrubienie",XTP_IDC_EDIT_CHK_BOLD,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,135,114,30,10
-    CONTROL         "&Italic",XTP_IDC_EDIT_CHK_ITALIC,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "italski",XTP_IDC_EDIT_CHK_ITALIC,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,170,114,31,10
-    CONTROL         "&Underline",XTP_IDC_EDIT_CHK_UNDERLINE,"Button",
+    CONTROL         "Podkreœlaæ",XTP_IDC_EDIT_CHK_UNDERLINE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,206,114,46,10
-    GROUPBOX        "Sample Normal / Selected:",XTP_IDC_EDIT_GRP_SAMPLE,135,128,
+    GROUPBOX        "Przyk³adowy Normalny / Selected",XTP_IDC_EDIT_GRP_SAMPLE,135,128,
                     118,44,WS_GROUP
     CTEXT           "AaBbCc",XTP_IDC_EDIT_TXT_SAMPLE,143,140,49,26,
                     SS_CENTERIMAGE,WS_EX_CLIENTEDGE
@@ -163,69 +162,69 @@ BEGIN
                     SS_CENTERIMAGE,WS_EX_CLIENTEDGE
 END
 
-XTP_IDD_EDIT_SEARCH_FIND DIALOGEX DISCARDABLE  0, 0, 271, 82
+XTP_IDD_EDIT_SEARCH_FIND DIALOGEX DISCARDABLE  0, 0, 291, 82
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Find"
+CAPTION "OdnaleŸæ"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Find What",IDC_STATIC,7,9,43,8,NOT WS_GROUP
+    LTEXT           "ZnajdŸ Co",IDC_STATIC,7,9,43,8,NOT WS_GROUP
     COMBOBOX        XTP_IDC_EDIT_COMBO_FIND,51,6,154,153,CBS_DROPDOWN | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Options",IDC_STATIC,7,30,113,45 
-    CONTROL         "Match whole word only",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
+    GROUPBOX        "Opcje",IDC_STATIC,7,30,113,45 
+    CONTROL         "Dopasuj tylko ca³e s³owa",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,43,100,10
-    CONTROL         "Match case",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
+    CONTROL         "Sprawa meczu",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,13,58,100,10
-    GROUPBOX        "Direction",IDC_STATIC,126,30,80,45
-    CONTROL         "Search Up",XTP_IDC_EDIT_RADIO_UP,"Button",
+    GROUPBOX        "Kierunek",IDC_STATIC,126,30,80,45
+    CONTROL         "Szukaj w górê",XTP_IDC_EDIT_RADIO_UP,"Button",
                     BS_AUTORADIOBUTTON,134,43,65,10
-    CONTROL         "Search Down",XTP_IDC_EDIT_RADIO_DOWN,"Button",
+    CONTROL         "Szukaj w dó³",XTP_IDC_EDIT_RADIO_DOWN,"Button",
                     BS_AUTORADIOBUTTON,134,58,65,10
-    PUSHBUTTON      "&Find Next",XTP_IDC_EDIT_BTN_FIND_NEXT,214,7,50,14,
+    PUSHBUTTON      "ZnajdŸ nastêpny",XTP_IDC_EDIT_BTN_FIND_NEXT,214,7,70,14,
                     WS_DISABLED | WS_TABSTOP
-    PUSHBUTTON      "Close",IDCANCEL,214,26,50,14, WS_TABSTOP
+    PUSHBUTTON      "Blisko",IDCANCEL,214,26,70,14, WS_TABSTOP
 END
 
-XTP_IDD_EDIT_SEARCH_REPLACE DIALOGEX DISCARDABLE  0, 0, 271, 86
+XTP_IDD_EDIT_SEARCH_REPLACE DIALOGEX DISCARDABLE  0, 0, 291, 86
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Find & Replace"
+CAPTION "ZnajdŸ Wymieñ"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Find Text",IDC_STATIC,7,9,50,8,NOT WS_GROUP
+    LTEXT           "ZnajdŸ tekst",IDC_STATIC,7,9,50,8,NOT WS_GROUP
     COMBOBOX        XTP_IDC_EDIT_COMBO_FIND,61,6,143,154,CBS_DROPDOWN | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Replace With",IDC_STATIC,7,25,50,8,NOT WS_GROUP
+    LTEXT           "Zamieniæ",IDC_STATIC,7,25,50,8,NOT WS_GROUP
     COMBOBOX        XTP_IDC_EDIT_COMBO_REPLACE,61,23,143,135,CBS_DROPDOWN | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Options",IDC_STATIC,7,38,113,41
-    CONTROL         "Match whole word only",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
+    GROUPBOX        "Opcje",IDC_STATIC,7,38,113,41
+    CONTROL         "Dopasuj tylko ca³e s³owa",XTP_IDC_EDIT_CHK_MATCH_WHOLE_WORD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,51,100,10
-    CONTROL         "Match case",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
+    CONTROL         "Sprawa meczu",XTP_IDC_EDIT_CHK_MATCH_CASE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,13,64,100,10
-    GROUPBOX        "Direction",IDC_STATIC,126,38,80,41
-    CONTROL         "Search Up",XTP_IDC_EDIT_RADIO_UP,"Button",
+    GROUPBOX        "Kierunek",IDC_STATIC,126,38,80,41
+    CONTROL         "Szukaj w górê",XTP_IDC_EDIT_RADIO_UP,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,134,51,65,10
-    CONTROL         "Search Down",XTP_IDC_EDIT_RADIO_DOWN,"Button",
+    CONTROL         "Szukaj w dó³",XTP_IDC_EDIT_RADIO_DOWN,"Button",
                     BS_AUTORADIOBUTTON,134,64,65,10
-    PUSHBUTTON      "&Find Next",XTP_IDC_EDIT_BTN_FIND_NEXT,214,7,50,14,
+    PUSHBUTTON      "ZnajdŸ nastêpny",XTP_IDC_EDIT_BTN_FIND_NEXT,214,7,70,14,
                     WS_DISABLED | WS_TABSTOP
-    PUSHBUTTON      "&Replace",XTP_IDC_EDIT_BTN_REPLACE,214,23,50,14,
+    PUSHBUTTON      "Zamieñ",XTP_IDC_EDIT_BTN_REPLACE,214,23,70,14,
                     WS_DISABLED | WS_TABSTOP
-    PUSHBUTTON      "Replace &All",XTP_IDC_EDIT_BTN_REPLACE_ALL,214,39,50,14,
+    PUSHBUTTON      "Zamieñ wszystko",XTP_IDC_EDIT_BTN_REPLACE_ALL,214,39,70,14,
                     WS_DISABLED | WS_TABSTOP
-    PUSHBUTTON      "Close",IDCANCEL,214,65,50,14, WS_TABSTOP
+    PUSHBUTTON      "Blisko",IDCANCEL,214,65,70,14, WS_TABSTOP
 END
 
 XTP_IDD_EDIT_GOTOLINE DIALOGEX DISCARDABLE  0, 0, 165, 55
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Go To Line"
+CAPTION "PrzejdŸ do linii"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "&Line number:",XTP_IDC_EDIT_TXT_LINENO,5,5,155,8
+    LTEXT           "Numer linii:",XTP_IDC_EDIT_TXT_LINENO,5,5,155,8
     EDITTEXT        XTP_IDC_EDIT_LINENO,5,17,155,14,ES_AUTOHSCROLL | 
                     ES_NUMBER
-    PUSHBUTTON      "&Go To",XTP_IDC_EDIT_BTN_GOTO,56,36,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,110,36,50,14
+    PUSHBUTTON      "Iœæ do",XTP_IDC_EDIT_BTN_GOTO,56,36,50,14
+    PUSHBUTTON      "Anuluj",IDCANCEL,110,36,50,14
 END
 
 
@@ -236,58 +235,58 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_EDIT_UNDEFINED     "Undefined command"
-    XTP_IDS_EDIT_MULTIPLE      "Multiple operations"
-    XTP_IDS_EDIT_DELETE        "Delete: "
-    XTP_IDS_EDIT_INSERT        "Insert: "
-    XTP_IDS_EDIT_TYPING        "Typing"
-    XTP_IDS_EDIT_PASTE         "Paste"
-    XTP_IDS_EDIT_MOVE          "Move"
-    XTP_IDS_EDIT_COPY          "Copy"
-    XTP_IDS_EDIT_INDENTATION   "Indentation"
-    XTP_IDS_EDIT_INDENT_DECREASE "Decrease Indent"
-    XTP_IDS_EDIT_FORMAT        "Format"
-    XTP_IDS_EDIT_TABIFY        "Tabify"
+    XTP_IDS_EDIT_UNDEFINED     "Komenda niezdefiniowane"
+    XTP_IDS_EDIT_MULTIPLE      "Wiele operacji"
+    XTP_IDS_EDIT_DELETE        "Kasowaæ"
+    XTP_IDS_EDIT_INSERT        "Wstawiæ"
+    XTP_IDS_EDIT_TYPING        "Pisz¹c na maszynie"
+    XTP_IDS_EDIT_PASTE         "Wklej"
+    XTP_IDS_EDIT_MOVE          "Przenieœæ siê"
+    XTP_IDS_EDIT_COPY          "Kopiuj"
+    XTP_IDS_EDIT_INDENTATION   "Wciêcie"
+    XTP_IDS_EDIT_INDENT_DECREASE "Zmniejsz wciêcie"
+    XTP_IDS_EDIT_FORMAT        "Formacie"
+    XTP_IDS_EDIT_TABIFY        "Aby karcie"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_EDIT_UNTABIFY      "Untabify"
-    XTP_IDS_EDIT_REPLACE_ALL   "Replace all"
-    XTP_IDS_EDIT_CASE          "Change selection case"
-    XTP_IDS_EDIT_DELETE_TEXT_BLOCK "Delete text block"
-    XTP_IDS_EDIT_MOVE_HERE     "&Move Here"
-    XTP_IDS_EDIT_COPY_HERE     "&Copy Here"
-    XTP_IDS_EDIT_CANCEL        "C&ancel"
+    XTP_IDS_EDIT_UNTABIFY      "wyjmij kartê"
+    XTP_IDS_EDIT_REPLACE_ALL   "Zamieñ wszystko"
+    XTP_IDS_EDIT_CASE          "Sprawa Zmiana wyboru"
+    XTP_IDS_EDIT_DELETE_TEXT_BLOCK "Usuñ blok tekstu"
+    XTP_IDS_EDIT_MOVE_HERE     "Przenieœ tutaj"
+    XTP_IDS_EDIT_COPY_HERE     "Kopiuj tutaj"
+    XTP_IDS_EDIT_CANCEL        "Anuluj"
     XTP_IDS_EDIT_MSG_WARN_RELOAD 
-                            "File '%s' is modified by outside source!\nDo you want to reload?"
+                            "Plik '%s' jest modyfikowana przez zewnêtrznego Ÿród³a! \nCzy chcesz odœwie¿yæ?"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_EDIT_CUSTOM        "Custom"
-    XTP_IDS_EDIT_REGULAR       "Regular"
-    XTP_IDS_EDIT_BOLD          "Bold"
-    XTP_IDS_EDIT_ITALIC        "Italic"
-    XTP_IDS_EDIT_BOLDITALIC    "Bold Italic"
+    XTP_IDS_EDIT_CUSTOM        "Zwyczaj"
+    XTP_IDS_EDIT_REGULAR       "Regularne"
+    XTP_IDS_EDIT_BOLD          "Pogrubienie"
+    XTP_IDS_EDIT_ITALIC        "Kursywa"
+    XTP_IDS_EDIT_BOLDITALIC    "Pogrubienie kursywa"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDD_EDIT_OPTIONS       "Edit Options"
+    XTP_IDD_EDIT_OPTIONS       "Edytuj opcje"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_EDIT_MSG_FREPLACED "%d match found and replaced!"
-    XTP_IDS_EDIT_MSG_FSEARCH   "Finished searching!"
+    XTP_IDS_EDIT_MSG_FREPLACED "%d mecz znaleŸæ i zast¹piæ!"
+    XTP_IDS_EDIT_MSG_FSEARCH   "Zakoñczeniu wyszukiwania!"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_EDIT_LINENO        "&Line number (1 - %d):"
-    XTP_IDS_EDIT_OPENSCHEMACMD "Open Schema File"
-    XTP_IDS_EDIT_OPENSCHEMAMSG "Do you wish to close the ""Options Dialog"" and open the schema file ""%s%s"" in the editor window?"
+    XTP_IDS_EDIT_LINENO        "Numer linii (1 - %d)"
+    XTP_IDS_EDIT_OPENSCHEMACMD "Otwórz schemat pliku"
+    XTP_IDS_EDIT_OPENSCHEMAMSG "Czy chcesz, aby zamkn¹æ okno dialogowe 'Opcje' i otwórz plik schematu '%s%s' w oknie edytora?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_POL)

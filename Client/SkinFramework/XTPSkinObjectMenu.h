@@ -1,7 +1,6 @@
 // XTPSkinObjectMenu.h: interface for the CXTPSkinObjectMenu class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,23 +19,23 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTMENU_H__)
-#define __XTPSKINOBJECTMENU_H__
+#	define __XTPSKINOBJECTMENU_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSkinPopupMenu;
 class CXTPSkinManagerSchema;
 class CXTPSkinPopupMenuState;
 
-class CXTPSkinPopupMenuItem
+class _XTP_EXT_CLASS CXTPSkinPopupMenuItem
 {
 public:
-	CXTPSkinPopupMenuItem(CXTPSkinPopupMenu* pMenu, int nItem);
+	CXTPSkinPopupMenuItem(CXTPSkinPopupMenu* pPopupParent, int nItem);
 
 public:
 	HMENU GetPopupMenu() const;
@@ -50,6 +49,8 @@ public:
 	UINT GetType() const;
 	BOOL IsDefault() const;
 
+	BOOL IsMenuBreak() const;
+
 	CString GetText() const;
 	DWORD_PTR GetItemData() const;
 
@@ -58,15 +59,17 @@ public:
 	HBITMAP GetItemBitmap() const;
 
 	BOOL IsMDISysButton() const;
+
 public:
 	CRect m_rcItem;
 	int m_nItem;
 	HMENU m_hMenu;
-	CXTPSkinPopupMenu* m_pPopupMenu;
 
+	CXTPSkinPopupMenu* m_pPopupParent;
+	CXTPSkinPopupMenu* m_pPopupChild;
 };
 
-class CXTPSkinPopupMenu : public CWnd
+class _XTP_EXT_CLASS CXTPSkinPopupMenu : public CWnd
 {
 public:
 	CXTPSkinPopupMenu();
@@ -87,16 +90,43 @@ public:
 	BOOL Create(HWND hwndParent);
 	BOOL IsMenuThemed();
 
-	BOOL IsSysMenuBar() const {
+	BOOL IsSysMenuBar() const
+	{
 		return m_bMenuBar && m_bSysMenu;
 	}
 	void OnFinalRelease();
 
+	void OnScrollUp();
+	void OnScrollDown();
+	void EnsureVisible(int nItem);
+
+protected:
+	void RecalcItemsSize(CDC* pDC);
+	int RecalcItemsHeight(int nScreenArea);
+
+	int GetColumnCount() const;
+
+	BOOL IsMultiColumn() const
+	{
+		return GetColumnCount() > 1;
+	}
+
+	void Scroll(int nOffsetY);
+	void ScrollUp();
+	void ScrollDown();
+
+	void ShowScrollUp(BOOL bShow);
+	void ShowScrollDown(BOOL bShow);
+
 protected:
 	DECLARE_MESSAGE_MAP();
+	//{{AFX_MSG(CXTPPopupBar)
 	afx_msg void OnPaint();
+	//}}AFX_MSG
 
 public:
+	CXTPSkinPopupMenu* LookUp(HMENU hMenu);
+
 	HMENU m_hMenu;
 
 	CArray<CXTPSkinPopupMenuItem*, CXTPSkinPopupMenuItem*> m_arrItems;
@@ -112,6 +142,10 @@ public:
 
 	HWND m_hWndNotify;
 
+	int m_nMaxWidthColumn;
+	int m_nGripperWidth;
+	int m_nHeight;
+
 	CXTPSkinPopupMenuState* m_pState;
 
 	UINT_PTR m_nHideTimer;
@@ -119,9 +153,12 @@ public:
 
 	CXTPSkinPopupMenu* m_pNextPopup;
 	CXTPSkinPopupMenu* m_pPrevPopup;
+
+	CRect m_rcBorder;
+	XTP_SCROLLINFO m_scrollInfo;
 };
 
-class CXTPSkinPopupMenuState
+class _XTP_EXT_CLASS CXTPSkinPopupMenuState
 {
 public:
 	enum MenuFocus
@@ -144,7 +181,7 @@ public:
 
 	void EndState();
 
-	BOOL TrackPopupMenu(HMENU hMenu, UINT dwFlags, int x, int y, HWND hWnd, CONST RECT *prcRect);
+	BOOL TrackPopupMenu(HMENU hMenu, UINT dwFlags, int x, int y, HWND hWnd, CONST RECT* prcRect);
 
 public:
 	void OnButtonDown(CXTPSkinPopupMenu* pMenu, int nItem, BOOL bClick);
@@ -182,35 +219,51 @@ public:
 	void FilterMenuKey(LPARAM lParam);
 
 	BOOL SwitchToAlternateMenu();
-	void AdjustMonitorRect(CXTPSkinPopupMenu* pPopupMenu, CPoint& pt, CSize sz, UINT dwFlags, LPCRECT prcExclude);
-	CPoint PositionHierarchy(CXTPSkinPopupMenu* pSubMenu, CXTPSkinPopupMenu* pPopupMenu, CRect rcItem, CSize size);
+	void AdjustMonitorRect(CXTPSkinPopupMenu* pPopupMenu, CPoint& pt, CSize sz, UINT dwFlags,
+						   LPCRECT prcExclude);
+	CPoint PositionHierarchy(CXTPSkinPopupMenu* pSubMenu, CXTPSkinPopupMenu* pPopupMenu,
+							 CRect rcItem, CSize size);
 
 	static void AFX_CDECL WindowToScreen(HWND hWnd, CRect& rcItem);
 	void PlayEventSound(UINT nID);
 	int GetMenuFlags(HMENU hMenu);
-public:
 
+public:
 public:
 	MenuFocus m_nFocus;
 	BOOL m_bButtonDown;
 	BOOL m_bInsideMenuLoop;
 	BOOL m_bDismiss;
 	HWND m_hWndCapture;
+	HWND m_hWndCaptureOld; // The handle of the window that had previously captured the mouse
 
 	CXTPSkinPopupMenu* m_pRootPopup;
 	CXTPSkinPopupMenu* m_pAlternatePopup;
 	BOOL m_bNofyByPos;
-	BOOL m_bNoNotify;
 	CPoint m_ptMouseLast;
 	BOOL m_bMenuStarted;
 
-	BOOL m_bRightButton;
 	int m_nLastCommand;
-	BOOL m_bSynchronous;
 	BOOL m_bFirstClick;
 
 	DWORD m_dwMenuShowDelay;
 	CXTPSkinManagerSchema* m_pSchema;
+
+	struct TrackPopupMenuFlags
+	{
+		TrackPopupMenuFlags()
+			: bRightButton(FALSE)
+			, bNoNotify(FALSE)
+			, bReturnCmd(FALSE)
+		{
+		}
+
+		BOOL bRightButton; // TPM_RIGHTBUTTON
+		BOOL bNoNotify;	// TPM_NONOTIFY
+		BOOL bReturnCmd;   // TPM_RETURNCMD
+	};
+
+	TrackPopupMenuFlags m_flags;
 };
 
 class _XTP_EXT_CLASS CXTPSkinObjectApplicationFrame : public CXTPSkinObjectFrame
@@ -218,11 +271,10 @@ class _XTP_EXT_CLASS CXTPSkinObjectApplicationFrame : public CXTPSkinObjectFrame
 	DECLARE_DYNCREATE(CXTPSkinObjectApplicationFrame)
 
 public:
-
-
-public:
 	CXTPSkinObjectApplicationFrame();
 	virtual ~CXTPSkinObjectApplicationFrame();
+
+	CXTPSkinPopupMenu* LookUp(HMENU hMenu);
 
 protected:
 	void DrawFrame(CDC* pDC);
@@ -238,10 +290,9 @@ protected:
 
 	CXTPSkinPopupMenuState* StartMenuState(UINT nID, LPARAM lParam);
 
-
 public:
-	static BOOL AFX_CDECL TrackPopupMenu(HMENU hMenu, UINT uFlags, int x, int y, HWND hWnd, CONST RECT *prcRect);
-
+	static BOOL AFX_CDECL TrackPopupMenu(HMENU hMenu, UINT uFlags, int x, int y, HWND hWnd,
+										 CONST RECT* prcRect);
 
 protected:
 	DECLARE_MESSAGE_MAP();
@@ -258,4 +309,5 @@ protected:
 	CXTPSkinPopupMenu* m_pPopupMenu;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTMENU_H__)

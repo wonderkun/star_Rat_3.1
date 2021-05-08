@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 #pragma code_page(1252)
@@ -54,14 +53,14 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
     CONTROL         "Syntax Einfärben",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
-    GROUPBOX        "Tabs",IDC_STATIC,7,88,162,43
-    LTEXT           "Leerzeichen einfügen:",IDC_STATIC,15,103,30,8
-    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,50,100,46,14,ES_AUTOHSCROLL
+    GROUPBOX        "Tabs",IDC_STATIC,7,86,162,45
+    LTEXT           "Leerzeichen einfügen:",IDC_STATIC,15,97,80,8
+    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,90,95,26,14,ES_AUTOHSCROLL
     CONTROL         "Im Auge behalten",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,102,102,58,10
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,108,68,10
     CONTROL         "&Keep Tabs",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
-                    BS_AUTORADIOBUTTON,102,113,51,10
-    GROUPBOX        "Overwrite Caret",XTP_IDC_EDIT_GBOX_CARET,175,88,78,43,
+                    BS_AUTORADIOBUTTON,15,119,51,10
+    GROUPBOX        "Overwrite Caret",XTP_IDC_EDIT_GBOX_CARET,175,86,78,45,
                     WS_GROUP
     CONTROL         "Dünn",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,181,102,31,10
@@ -290,4 +289,4 @@ BEGIN
     XTP_IDS_EDIT_OPENSCHEMAMSG "Wollen Sie das ""Dialogfeld Optionen"" schließen und die Schemadatei ""%s%s"" im Fenster-Editor öffnen?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)

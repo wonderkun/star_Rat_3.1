@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR))
 #ifdef _WIN32
 LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
@@ -46,10 +45,10 @@ END
 XTP_IDD_COLORCUSTOM DIALOGEX DISCARDABLE  0, 0, 147, 161
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | 
     WS_CAPTION
-CAPTION "Потребителски"
+CAPTION "Персонализиран"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Цевтове",XTP_IDC_TXT_COLORS,2,4,43,10
+    LTEXT           "Цветове:",XTP_IDC_TXT_COLORS,2,4,43,10
     CONTROL         "",XTP_IDC_CLR_WND,"Static",SS_BLACKFRAME | WS_TABSTOP,3,
                     15,119,86
     CONTROL         "",XTP_IDC_CLR_LUM,"Static",SS_BLACKFRAME | WS_TABSTOP,
@@ -93,7 +92,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CLIPSIBLINGS | WS_C
 CAPTION "Стандартни"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "&Цевтове:",XTP_IDC_TXT_COLORS,2,4,43,10
+    LTEXT           "&Цветове:",XTP_IDC_TXT_COLORS,2,4,43,10
     CONTROL         "",XTP_IDC_CLR_HEX,"Static",SS_BLACKFRAME | WS_TABSTOP,0,
                     15,147,145
 END
@@ -108,14 +107,14 @@ BEGIN
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Активирай",XTP_IDC_BTN_ACTIVATE,233,7,62,14
-    PUSHBUTTON      "Да",IDOK,233,24,62,14
-    PUSHBUTTON      "Запис",XTP_IDC_BTN_SAVE,233,41,62,14
-    PUSHBUTTON      "Затвори прозореца",XTP_IDC_BTN_CLOSEWINDOWS,233,58,62,14
-    PUSHBUTTON      "Каскадно",XTP_IDC_BTN_CASCADE,233,75,62,14
-    PUSHBUTTON      "Хоризонтално",XTP_IDC_BTN_TILEHORZ,233,92,62,14
-    PUSHBUTTON      "Вертикално",XTP_IDC_BTN_TILEVERT,233,109,62,14
-    PUSHBUTTON      "Минимизирай",XTP_IDC_BTN_MINIMIZE,233,126,62,14
+    PUSHBUTTON      "Активирай",XTP_IDC_BTN_ACTIVATE,228,7,69,14
+    PUSHBUTTON      "Да",IDOK,228,24,69,14
+    PUSHBUTTON      "Запис",XTP_IDC_BTN_SAVE,228,41,69,14
+    PUSHBUTTON      "Затвори прозореца",XTP_IDC_BTN_CLOSEWINDOWS,228,58,69,14
+    PUSHBUTTON      "Каскадно",XTP_IDC_BTN_CASCADE,228,75,69,14
+    PUSHBUTTON      "Хоризонтално",XTP_IDC_BTN_TILEHORZ,228,92,69,14
+    PUSHBUTTON      "Вертикално",XTP_IDC_BTN_TILEVERT,228,109,69,14
+    PUSHBUTTON      "Минимизирай",XTP_IDC_BTN_MINIMIZE,228,126,69,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Стандартни цветове"
+	XTP_IDS_RECENT_COLORS    "Последни цветове"
+	XTP_IDS_THEME_COLORS     "Цветове на тема"
+	XTP_IDS_TAGCLOUD_TIP     "Етикет %s, резултат %d"
     XTP_IDS_TIPTEXT          "Идея"
     XTP_IDS_DIDYOUKNOW       "Знаете ли че..."
     XTP_IDS_FILE_ABSENT      "Файлът не съществува."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Скрий подробности"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Фон 1"
+    XTP_IDS_BACKGROUND2        "Фон 2"
+    XTP_IDS_TEXT1              "Текст 1"
+    XTP_IDS_TEXT2              "Текст 2"
+    XTP_IDS_ACCENT1            "Акцент 1"
+    XTP_IDS_ACCENT2            "Акцент 2"
+    XTP_IDS_ACCENT3            "Акцент 3"
+    XTP_IDS_ACCENT4            "Акцент 4"
+    XTP_IDS_ACCENT5            "Акцент 5"
+    XTP_IDS_ACCENT6            "Акцент 6"
+    XTP_IDS_LIGHTER            "Лихтер"
+    XTP_IDS_DARKER             "По-тъмен"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR))

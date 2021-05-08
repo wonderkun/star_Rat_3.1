@@ -10,7 +10,7 @@
 ====    Creation date       :  13/1/2003                                 ====
 ====    Author(s)           :  Dany Cantin                               ====
 ====                                                                     ====
-====                  Copyright © DCUtility  2003                        ====
+====                  Copyright ?DCUtility  2003                        ====
 ====                                                                     ====
 =============================================================================
 ===========================================================================*/
@@ -32,6 +32,9 @@
 class CTrueColorToolBar : public CToolBar
 {
 // Construction
+
+//DECLARE_MESSAGE_MAP()
+
 public:
 	CTrueColorToolBar();
 
@@ -47,7 +50,7 @@ private:
 	};
 	
 	CArray <stDropDownInfo, stDropDownInfo&> m_lstDropDownButton;
-	
+
 // Operations
 public:
 	BOOL LoadTrueColorToolBar(int  nBtnWidth,
@@ -77,7 +80,7 @@ protected:
 	afx_msg void OnToolbarDropDown(NMTOOLBAR* pnmh, LRESULT* plRes);
 	//}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+
 };
 
 /////////////////////////////////////////////////////////////////////////////

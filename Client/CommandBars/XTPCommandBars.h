@@ -1,7 +1,6 @@
 // XTPCommandBars.h : interface for the CXTPCommandBars class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOMMANDBARS_H__)
-#define __XTPCOMMANDBARS_H__
+#	define __XTPCOMMANDBARS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBarsDefines.h"
-#include "XTPControl.h"
-#include "XTPControls.h"
-#include "XTPToolBar.h"
-#include "XTPMenuBar.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockBar;
 class CXTPToolBar;
@@ -52,90 +46,15 @@ class CXTPToolTipContext;
 class CXTPShortcutManager;
 class CXTPKeyboardManager;
 class CXTPStatusBar;
-
-//===========================================================================
-// Summary:
-//     CXTPCommandBarKeyboardTip is CWnd derived class, represents Keyboard tip single window
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBarKeyboardTip : public CWnd
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPCommandBarKeyboardTip object
-	// Parameters:
-	//     pCommandBars - CXTPCommandBars parent object
-	//     pOwner - Owner object
-	//     lpszCaption - Caption of control
-	//     pt - Client coordinates
-	//     dwAlign - Align of tip
-	//     bEnabled - TRUE if keyboard tip is enabled
-	//-----------------------------------------------------------------------
-	CXTPCommandBarKeyboardTip(CXTPCommandBars* pCommandBars, CCmdTarget* pOwner, LPCTSTR lpszCaption, CPoint pt, DWORD dwAlign, BOOL bEnabled);
-
-protected:
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-
-	afx_msg void OnPaint();
-	afx_msg LRESULT OnNcHitTest(CPoint point);
-//}}AFX_CODEJOCK_PRIVATE
-
-public:
-	CString m_strTip;           // Tooltip
-	CString m_strCaption;       // Caption
-	CString m_strPrefix;       // Caption
-	CCmdTarget* m_pOwner;       // Owner object
-	CPoint m_pt;                // Client coordinates
-	BOOL m_bEnabled;            // Enabled flag
-	BOOL m_bVisible;            // TRUE if visible
-	CXTPCommandBars* m_pCommandBars;    // Parent CXTPCommandBars object
-	DWORD m_dwAlign;            // Tip align
-	BOOL m_bExplicit;           // TRUE when user specify manually KeyTip; FALSE if calculated automatically
-};
-
-
-//===========================================================================
-// Summary:
-//     CXTPCommandBarsContextMenus is CXTPCommandBarList derived class,
-//     represents collection of context menus
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBarsContextMenus : public CXTPCommandBarList
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPCommandBarsContextMenus object
-	// Parameters:
-	//     pCommandBars - Parent CXTPCommandBars object
-	//-----------------------------------------------------------------------
-	CXTPCommandBarsContextMenus(CXTPCommandBars* pCommandBars);
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to add new context menu to collection
-	// Parameters:
-	//     nIDBar - Menu resource identifier
-	//     pCommandBar - CommandBar to be added
-	//     lpszTitle - Caption of context menu
-	//     pSubMenu - Context menu to convert
-	//     nSubMenu - Index of submenu to add
-	// Returns:
-	//     Pointer to added context menu.
-	//-----------------------------------------------------------------------
-	CXTPCommandBar* Add(UINT nIDBar);
-	CXTPCommandBar* Add(UINT nIDBar, UINT nIDMenuResource, int nSubMenu); // <combine CXTPCommandBarsContextMenus::Add@UINT>
-	CXTPCommandBar* Add(CXTPCommandBar* pCommandBar); // <combine CXTPCommandBarsContextMenus::Add@UINT>
-	CXTPCommandBar* Add(UINT nIDBar, LPCTSTR lpszTitle, CMenu* pSubMenu); // <combine CXTPCommandBarsContextMenus::Add@UINT>
-
-//{{AFX_CODEJOCK_PRIVATE
-//}}AFX_CODEJOCK_PRIVATE
-};
-
+class CXTPMouseManager;
+class CXTPControlActions;
+class CXTPControlAction;
+class CXTPPropExchange;
+class CXTPCommandBarsFrameHook;
+class CXTPRecentFileList;
+class CXTPCommandBarsOptions;
+class CXTPCommandBarsContextMenus;
+class CXTPCommandBarKeyboardTip;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -162,8 +81,7 @@ public:
 //-----------------------------------------------------------------------
 struct XTP_COMMANDBARS_PROPEXCHANGE_PARAM
 {
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Creates a XTP_COMMANDBARS_PROPEXCHANGE_PARAM object which is a
@@ -180,142 +98,53 @@ struct XTP_COMMANDBARS_PROPEXCHANGE_PARAM
 	//-------------------------------------------------------------------------
 	XTP_COMMANDBARS_PROPEXCHANGE_PARAM()
 	{
-		pCommandBars = NULL;
-		bSerializeControls = FALSE;
-		bSaveOnlyCustomized = TRUE;
-		bLoadSilent = FALSE;
-		bSaveOriginalControls = TRUE;
-		bSerializeLayout = TRUE;
-		bSerializeOptions = FALSE;
-		bSerializeImages = FALSE;
+		pCommandBars			   = NULL;
+		bSerializeControls		   = FALSE;
+		bSaveOnlyCustomized		   = TRUE;
+		bLoadSilent				   = FALSE;
+		bSaveOriginalControls	  = TRUE;
+		bSerializeLayout		   = TRUE;
+		bSerializeOptions		   = FALSE;
+		bSerializeImages		   = FALSE;
 		bSerializeDesignerControls = FALSE;
-		bSerializeActions = FALSE;
+		bSerializeActions		   = FALSE;
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-	BOOL bSerializeControls;            // If True, the controls in the CommandBars will be saved.  If False, no controls will be saved,
-	                                    // regardless of the other settings.  The default is True
-	BOOL bSaveOnlyCustomized ;          // If True, only CommandBars that have been customized will be saved.  The default is True
-	BOOL bLoadSilent;                   // If True, no message boxes will be displayed when the CommandBar layout is loaded.
-	                                    // i.e.  The message box that asks for conformation before the CommandBar layout is reset.
-	BOOL bSaveOriginalControls;         // If True, the original state of the CommandBars is saved along with the customized state
-	                                    // For example, if a button on a toolbar is moved, then both the original and modified states will be saved.
-	                                    // The Default is True
-	BOOL bSerializeImages;              // If True, the images stored in the ImageManager will be saved.  The default is False
-	BOOL bSerializeOptions;             // If True, the setting on the Keyboard and Options pages of the Customize dialog will
-	                                    // be saved.  This includes shortcut keys and CommandBar options like large icons and full menus.
-	                                    // The default is False
-	BOOL bSerializeLayout;              // If True, the layout of the CommandBars will be saved.  The Layout includes information such as bar position, location, and size.  The Default is True
-	BOOL bSerializeDesignerControls;    // In the CommandBar Designer you can export a XCB file to a XML file and Load it in your project.
-	                                    // If SerializeDesignerControls is True, then the DesignerControls property will be filled with
-	                                    // Control items from the CommandBar Designer's controls pane.  This allows you to load the XML file instead
-	                                    // of loading the XCB file using the LoadDesignerBars method.  NOTE: DesignerControls are the controls displayed in the customization dialog.
-	                                    // The CXTPPropExchangeXMLNode class is used to create the XML file.
-	                                    // The default is False
-	BOOL bSerializeActions;             // TRUE to save/restore actions for commandbars
-	CXTPCommandBars* pCommandBars;      // Pointer to the CommandBars object that the XTP_COMMANDBARS_PROPEXCHANGE_PARAM setting apply to.
-};
-
-//===========================================================================
-// Summary:
-//     Options of the command bars.
-// See Also:
-//     CXTPCommandBars::GetCommandBarsOptions
-// Example:
-//     <code>pCommandBars->GetCommandBarsOptions()->animationType = xtpAnimateFade;</code>
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCommandBarsOptions : public CXTPCmdTarget
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs an CXTPCommandBarsOptions object
-	//-----------------------------------------------------------------------
-	CXTPCommandBarsOptions();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Reads or writes options from or to an archive.
-	// Parameters:
-	//     ar - A CArchive object to serialize to or from.
-	//-----------------------------------------------------------------------
-	void Serialize(CArchive& ar);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Reads or writes options from or to an archive.
-	// Parameters:
-	//     pPX - A CXTPPropExchange object to serialize to or from.
-	//     bUserOptionsOnly - TRUE to serialize user's options only.
-	//-----------------------------------------------------------------------
-	void DoPropExchange(CXTPPropExchange* pPX, BOOL bUserOptionsOnly = FALSE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to enable/disble menu underlines.
-	// Parameters:
-	//     keyboardCues - determines if menu underlines is enabled.
-	// Remarks:
-	//     keyboardCues parameter can be one of the following:
-	//        * xtpKeyboardCuesShowAlways - Show keyboard cues always
-	//        * xtpKeyboardCuesShowNever - Show keyboard cues always
-	//        * xtpKeyboardCuesShowWindowsDefault - System defined
-	//-----------------------------------------------------------------------
-	void ShowKeyboardCues(XTPKeyboardCuesShow keyboardCues);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get menu underlines state
-	// Returns:
-	//     Returns one of the following:
-	//        * xtpKeyboardCuesShowAlways - Show keyboard cues always
-	//        * xtpKeyboardCuesShowNever - Show keyboard cues always
-	//        * xtpKeyboardCuesShowWindowsDefault - System defined
-	//-----------------------------------------------------------------------
-	XTPKeyboardCuesShow GetShowKeyboardCues() const;
-
-public:
-	BOOL bAlwaysShowFullMenus;                          // TRUE to show full menus always.
-	BOOL bShowFullAfterDelay;                           // TRUE to show full menus after short delay.
-	BOOL bToolBarScreenTips;                            // TRUE to show toolbar's tooltips
-	BOOL bToolBarAccelTips;                             // TRUE to add accelerators to tooltips.
-	BOOL bLargeIcons;                                   // TRUE to use large toolbars icons.
-	BOOL bSyncFloatingBars;                             // TRUE to hide floating bars when site frame deactivated.
-	BOOL bShowExpandButtonAlways;                       // TRUE to show expand buttons always.
-	BOOL bDblClickFloat;                                // TRUE to make toolbar floating be double-clicking.
-	BOOL bShowTextBelowIcons;                           // TRUE to show captions below icons.
-	BOOL bAltDragCustomization;                         // Allows users to change a toolbar button's position by dragging it while holding down ALT.
-	BOOL bAutoHideUnusedPopups;                         // TRUE to hide unused popup controls.  This is similar to how the Windows Start menu hides infrequently used popups.
-	BOOL bDirtyState;                                   // TRUE if the user has done any type of customization to menus or toolbars. (I.e. Moving a toolbar or adding a new button).  After a load or save of the BarStae this is set to FALSE.
-	BOOL bShowPopupBarToolTips;                         // TRUE to display ToolTips for controls in popup menus.
-
-	BOOL bShowContextMenuAccelerators;                  // TRUE to show accelerators in contect menus.
-
-	XTPAnimationType animationType;                     // Animation type.
-	BOOL bAutoUpdateShortcuts;                          // TRUE to update shortcuts from accelerator table
-	DWORD keyboardCuesUse;                              // Keyboard cues using
-	BOOL bFlyByStatus;                                  // Status bar displays information about the button
-
-	CSize szIcons;                                      // Size of the normal icons.
-	CSize szLargeIcons;                                 // Size of the large icons.
-	CSize szPopupIcons;                                 // Size of icons displayed in popup menus.
-
-	BOOL bUseAltNumPadKeys;                             // TRUE to allow activate menu with Alt + num pad key.
-	BOOL bUseSystemSaveBitsStyle;                       // TRUE to use CS_SAVEBITS class style for popups and shadows
-	BOOL bDisableCommandIfNoHandler;                    // TRUE to disable commands if no handler presented
-	BOOL bWrapLargePopups;                              // Wrap controls for large popups instead scroll them.
-
-	CMap<UINT, UINT, BOOL, BOOL> m_mapHiddenCommands;   // Hidden command array.
-	CMap<UINT, UINT, BOOL, BOOL> m_mapUsedCommands;     // Used commands array.
-	BOOL bShowKeyboardTips;                             // TRUE to use keyboard tips.
-
-private:
-	CXTPCommandBars* m_pCommandBars;
-	XTPKeyboardCuesShow keyboardCuesShow;
-
-
-	friend class CXTPCommandBars;
+	BOOL bSerializeControls;  // If True, the controls in the CommandBars will be saved.  If False,
+							  // no controls will be saved, regardless of the other settings.  The
+							  // default is True
+	BOOL bSaveOnlyCustomized; // If True, only CommandBars that have been customized will be saved.
+							  // The default is True
+	BOOL bLoadSilent; // If True, no message boxes will be displayed when the CommandBar layout is
+					  // loaded. i.e.  The message box that asks for conformation before the
+					  // CommandBar layout is reset.
+	BOOL bSaveOriginalControls; // If True, the original state of the CommandBars is saved along
+								// with the customized state For example, if a button on a toolbar
+								// is moved, then both the original and modified states will be
+								// saved. The Default is True
+	BOOL bSerializeImages;  // If True, the images stored in the ImageManager will be saved.  The
+							// default is False
+	BOOL bSerializeOptions; // If True, the setting on the Keyboard and Options pages of the
+							// Customize dialog will be saved.  This includes shortcut keys and
+							// CommandBar options like large icons and full menus. The default is
+							// False
+	BOOL bSerializeLayout;  // If True, the layout of the CommandBars will be saved.  The Layout
+							// includes information such as bar position, location, and size.  The
+							// Default is True
+	BOOL bSerializeDesignerControls; // In the CommandBar Designer you can export a XCB file to a
+									 // XML file and Load it in your project. If
+									 // SerializeDesignerControls is True, then the DesignerControls
+									 // property will be filled with Control items from the
+									 // CommandBar Designer's controls pane.  This allows you to
+									 // load the XML file instead of loading the XCB file using the
+									 // LoadDesignerBars method.  NOTE: DesignerControls are the
+									 // controls displayed in the customization dialog. The
+									 // CXTPPropExchangeXMLNode class is used to create the XML
+									 // file. The default is False
+	BOOL bSerializeActions;			 // TRUE to save/restore actions for commandbars
+	CXTPCommandBars* pCommandBars;   // Pointer to the CommandBars object that the
+									 // XTP_COMMANDBARS_PROPEXCHANGE_PARAM setting apply to.
 };
 
 //===========================================================================
@@ -326,7 +155,6 @@ private:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPCommandBars : public CXTPCmdTarget
 {
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -339,7 +167,6 @@ protected:
 	//     Destroys a CXTPCommandBars object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCommandBars();
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -359,7 +186,7 @@ public:
 	//     Call this member to add a new toolbar.
 	// Parameters:
 	//     lpszName - Title of toolbar.
-	//     barPosition - Position of toolbar to be created.
+	//     nBarPosition - Position of toolbar to be created.
 	//     pToolbarClass - Runtime class of toolbar to create
 	// Remarks:
 	//     CommandBars will create new toolbar with pToolbarClass runtime class if it specified,
@@ -369,7 +196,9 @@ public:
 	//     A CXTPToolBar object if successful; otherwise NULL.
 	// See Also: SetMenu, SetToolBarClass
 	//-----------------------------------------------------------------------
-	CXTPToolBar* Add(LPCTSTR lpszName, XTPBarPosition barPosition, CRuntimeClass* pToolbarClass = NULL);
+	CXTPToolBar* Add(LPCTSTR lpszName, XTPBarPosition nBarPosition,
+					 CRuntimeClass* pToolbarClass = NULL);
+	CXTPToolBar* Add(CXTPToolBar* pToolBar, LPCTSTR strName, XTPBarPosition nBarPosition);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -459,7 +288,8 @@ public:
 	//     pCommandBars :  Points to a CXTPCommandBars object.
 	//     pPopupBar :     Points to a CXTPPopupBar object.
 	//     nBarID :        Identifier CommandBar to track.
-	//     lptpm :         Pointer to a TPMPARAMS structure that specifies an area of the screen the menu should not overlap. This parameter can be NULL.
+	//     lptpm :         Pointer to a TPMPARAMS structure that specifies an area of the screen the
+	//     menu should not overlap. This parameter can be NULL.
 	// Returns:
 	//     TRUE if successful; otherwise returns FALSE
 	// Example:
@@ -490,10 +320,25 @@ public:
 	// }
 	//     </code>
 	// -----------------------------------------------------------------------------
-	static BOOL AFX_CDECL TrackPopupMenu(CMenu* pMenu, UINT nFlags, int xPos, int yPos, CWnd* pWnd, LPCRECT rcExclude = NULL, CWnd* pWndOwner = NULL, CXTPCommandBars* pCommandBars = NULL);
-	static BOOL AFX_CDECL TrackPopupMenu(CXTPPopupBar* pPopupBar, UINT nFlags, int xPos, int yPos, CWnd* pWnd, LPCRECT rcExclude = NULL, CWnd* pWndOwner = NULL); //<COMBINE CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
-	BOOL TrackPopupMenu(UINT nBarID, UINT nFlags, int xPos, int yPos, LPCRECT rcExclude = NULL); //<COMBINE CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
-	BOOL TrackPopupMenuEx(CMenu* pMenu, UINT nFlags, int xPos, int yPos, CWnd* pWndOwner = NULL, LPTPMPARAMS lptpm = NULL);//<COMBINE CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
+	static BOOL AFX_CDECL TrackPopupMenu(CMenu* pMenu, UINT nFlags, int xPos, int yPos, CWnd* pWnd,
+										 LPCRECT rcExclude = NULL, CWnd* pWndOwner = NULL,
+										 CXTPCommandBars* pCommandBars = NULL);
+	static BOOL AFX_CDECL TrackPopupMenu(
+		CXTPPopupBar* pPopupBar, UINT nFlags, int xPos, int yPos, CWnd* pWnd,
+		LPCRECT rcExclude = NULL,
+		CWnd* pWndOwner =
+			NULL); //<COMBINE
+				   // CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
+	BOOL TrackPopupMenu(
+		UINT nBarID, UINT nFlags, int xPos, int yPos,
+		LPCRECT rcExclude =
+			NULL); //<COMBINE
+				   // CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
+	BOOL TrackPopupMenuEx(
+		CMenu* pMenu, UINT nFlags, int xPos, int yPos, CWnd* pWndOwner = NULL,
+		LPTPMPARAMS lptpm =
+			NULL); //<COMBINE
+				   // CXTPCommandBars::TrackPopupMenu@CMenu*@UINT@int@int@CWnd*@LPCRECT@CWnd*@CXTPCommandBars*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -535,7 +380,8 @@ public:
 	//                       specifies the name of a section in the initialization
 	//                       file or a key in the Windows registry where
 	//                       state information is stored.
-	//     bSilent         - TRUE to disable user notifications when command bars are restore to their original state.
+	//     bSilent         - TRUE to disable user notifications when command bars are restore to
+	//     their original state.
 	// See Also: SaveBarState, DoPropExchange
 	//-----------------------------------------------------------------------
 	void LoadBarState(LPCTSTR lpszProfileName, BOOL bSilent = FALSE);
@@ -572,10 +418,12 @@ public:
 	//     ar                 - A CArchive object to serialize to or from.
 	//     bSerializeControls - TRUE to store controls information.
 	//     bOnlyCustomized    - TRUE to store each commandbar only if it was customized by user.
-	//     bSilent            - TRUE to disable user notifications when command bars are restore to their original state.
+	//     bSilent            - TRUE to disable user notifications when command bars are restore to
+	//     their original state.
 	// See Also: DoPropExchange
 	//-----------------------------------------------------------------------
-	void SerializeBarState(CArchive& ar, BOOL bSerializeControls = FALSE, BOOL bOnlyCustomized = TRUE, BOOL bSilent = FALSE);
+	void SerializeBarState(CArchive& ar, BOOL bSerializeControls = FALSE,
+						   BOOL bOnlyCustomized = TRUE, BOOL bSilent = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -624,7 +472,8 @@ public:
 	//     pPX - A CXTPPropExchange object to serialize to or from.
 	//-----------------------------------------------------------------------
 	void LoadDesignerBars(CArchive& ar);
-	void LoadDesignerBars(CXTPPropExchange* pPX); // <combine CXTPCommandBars::LoadDesignerBars@CArchive&>
+	void LoadDesignerBars(CXTPPropExchange* pPX); // <combine
+												  // CXTPCommandBars::LoadDesignerBars@CArchive&>
 
 	//# Intelligent menus routines
 
@@ -677,7 +526,8 @@ public:
 	//     pControl - Control pointer to check.
 	// Remarks:
 	//     If bAutoHideUnusedPopups is FALSE, then this member performs the same
-	//     action as IsCommandHidden. Override this member to provide custom intelligent menu scheme.
+	//     action as IsCommandHidden. Override this member to provide custom intelligent menu
+	//     scheme.
 	// Returns:
 	//     TRUE if the control item is hidden; otherwise returns FALSE.
 	//-----------------------------------------------------------------------
@@ -708,11 +558,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to set the application's command bars into and out of print-preview mode.
+	//     Call this member function to set the application's command bars into and out of
+	//     print-preview mode.
 	// Parameters:
-	//     bPreview - Specifies whether or not to place the application in print-preview mode. Set to TRUE to place in print preview, FALSE to cancel preview mode.
+	//     bPreview - Specifies whether or not to place the application in print-preview mode. Set
+	//     to TRUE to place in print preview, FALSE to cancel preview mode.
 	//-----------------------------------------------------------------------
-	void OnSetPreviewMode (BOOL bPreview);
+	void OnSetPreviewMode(BOOL bPreview);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -721,6 +573,10 @@ public:
 	void UpdateCommandBars() const;
 
 public:
+	BOOL IsAllCaps() const;
+
+	void SetAllCaps(BOOL bAllCaps);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Determines if right-to-left mode was set.
@@ -737,10 +593,7 @@ public:
 	//-----------------------------------------------------------------------
 	void SetLayoutRTL(BOOL bRightToLeft);
 
-
 public:
-
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to process frame messages.
@@ -871,7 +724,10 @@ public:
 	// Returns:
 	//     TRUE if command bars in customize mode; otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	BOOL IsCustomizeMode() const { return m_bCustomizeMode;}
+	BOOL IsCustomizeMode() const
+	{
+		return m_bCustomizeMode;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -889,7 +745,10 @@ public:
 	//     TRUE if command bars in customize mode; otherwise returns FALSE
 	// See Also: SetQuickCustomizeMode
 	//-----------------------------------------------------------------------
-	BOOL IsQuickCustomizeMode() const { return m_bQuickCustomizeMode;}
+	BOOL IsQuickCustomizeMode() const
+	{
+		return m_bQuickCustomizeMode;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -968,8 +827,11 @@ public:
 	//     could not be docked.
 	// -----------------------------------------------------------------
 	BOOL DockCommandBar(CXTPToolBar* pBar, LPRECT lpRect, CXTPDockBar* pDockBar);
-	BOOL DockCommandBar(CXTPToolBar* pBar, XTPBarPosition barPosition); // <combine CXTPCommandBars::DockCommandBar@CXTPToolBar*@LPRECT@CXTPDockBar*>
-
+	BOOL DockCommandBar(
+		CXTPToolBar* pBar,
+		XTPBarPosition
+			barPosition); // <combine
+						  // CXTPCommandBars::DockCommandBar@CXTPToolBar*@LPRECT@CXTPDockBar*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1036,12 +898,22 @@ public:
 	// {
 	//     CreateDirectory(strAppDataFolder + _T("\\") + AfxGetApp()->m_pszAppName, NULL);
 	//
-	//      // Set customization path as "\\Documents and Settings\\user\\Application Data\\CustomThemes\\CommandBars"
-	//      GetCommandBars()->SetCustomizationDataFileName(strAppDataFolder + _T("\\") + AfxGetApp()->m_pszAppName + _T("\\") + lpszProfileName);
+	//      // Set customization path as "\\Documents and Settings\\user\\Application
+	//      Data\\CustomThemes\\CommandBars"
+	//      GetCommandBars()->SetCustomizationDataFileName(strAppDataFolder + _T("\\") +
+	//      AfxGetApp()->m_pszAppName + _T("\\") + lpszProfileName);
 	// }
 	// </code>
 	//-----------------------------------------------------------------------
 	void SetCustomizationDataFileName(LPCTSTR lpszFile);
+
+	//-----------------------------------------------------------------------
+	// Enables or disables default choice for Reset Customized Toolbar message.
+	// Parameters:
+	//     bEnable - TRUE to enable default choice.
+	//     bDefaultYes - If TRUE, default choice will be Yes, otherwise No.
+	//-----------------------------------------------------------------------
+	void EnableDefaultResetCustomizedToolbarChoice(BOOL bEnable, BOOL bDefaultYes);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1136,7 +1008,6 @@ public:
 	CXTPStatusBar* GetStatusBar() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to float a CXTPToolBar.
@@ -1182,15 +1053,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnToolBarRemoved(CXTPToolBar* pToolBar);
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called when tracking mode of commandbar was changed
-	// Parameters:
-	//     pCommandBar - Pointer to commandbar who's mode has changed
-	//     bMode - new mode the commandbar changed to.
-	//-----------------------------------------------------------------------
-	virtual void OnTrackingModeChanged(CXTPCommandBar* pCommandBar, int bMode);
-
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to add custom toolbar.
@@ -1204,7 +1067,15 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual CXTPToolBar* AddCustomBar(LPCTSTR lpcstrCaption, UINT nID, BOOL bTearOffBar = FALSE);
 
-public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called when tracking mode of commandbar was changed
+	// Parameters:
+	//     pCommandBar - Pointer to commandbar who's mode has changed
+	//     bMode - new mode the commandbar changed to.
+	//-----------------------------------------------------------------------
+	virtual void OnTrackingModeChanged(CXTPCommandBar* pCommandBar, int bMode);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get CXTPMouseManager pointer of command bars
@@ -1284,13 +1155,22 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPControlAction* FindAction(int nId) const;
 
-protected:
+public:
+	void EnableFrameTheme(BOOL bEnable = TRUE);
+	BOOL IsEnableFrameTheme();
+	void EnableToolbarComposition(BOOL bEnable = TRUE);
+	CXTPCommandBarsFrameHook* GetFrameHook() const;
+	void SetFrameHook(CXTPCommandBarsFrameHook* pFrameHook);
 
-//{{AFX_CODEJOCK_PRIVATE
+	BOOL IsDwmEnabled() const;
+
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
 	// Implementation of Command Bars
 	virtual BOOL SaveCommandBarList(CXTPPropExchange* pPX, CXTPCommandBarList* pCommandBarList);
 	virtual BOOL LoadCommandBarList(CXTPPropExchange* pPX, CXTPCommandBarList* pCommandBarList);
-	virtual void GenerateCommandBarList(CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	virtual void GenerateCommandBarList(CXTPCommandBarList* pCommandBarList,
+										XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 	virtual void RestoreCommandBarList(CXTPCommandBarList* pCommandBarList, BOOL bSilent = FALSE);
 	void SerializeCommandBars(CArchive& ar);
 	void SaveDockBarsState(LPCTSTR lpszProfileName);
@@ -1308,13 +1188,12 @@ protected:
 	void SetLayoutRTL(CWnd* pWnd, BOOL bRTLLayout);
 	CString GetIsolatedFileName(const CString& strPrifileName);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CXTPControls* m_pDesignerControls;      // Designer controls if used.
-	BOOL m_bIgnoreShiftMenuKey;             // if set menus will ignore Shift+Alt key combinations
-	BOOL m_bDesignerMode;                   // TRUE if command bars in designer mode.
-
+	CXTPControls* m_pDesignerControls; // Designer controls if used.
+	BOOL m_bIgnoreShiftMenuKey;		   // if set menus will ignore Shift+Alt key combinations
+	BOOL m_bDesignerMode;			   // TRUE if command bars in designer mode.
 
 	//===========================================================================
 	// Summary:
@@ -1322,10 +1201,11 @@ public:
 	//===========================================================================
 	struct KEYBOARDTIPS
 	{
-		CArray<CXTPCommandBarKeyboardTip*, CXTPCommandBarKeyboardTip*> arr;     //Keyboard tips collection
-		CXTPCommandBar* pBar;           // Owner of keyboard tips
-		int nLevel;         // Keyboard tip level (for RibbonBar)
-		int nKey;           // Keys was pressed already.
+		CArray<CXTPCommandBarKeyboardTip*, CXTPCommandBarKeyboardTip*> arr; // Keyboard tips
+																			// collection
+		CXTPCommandBar* pBar; // Owner of keyboard tips
+		int nLevel;			  // Keyboard tip level (for RibbonBar)
+		int nKey;			  // Keys was pressed already.
 	} m_keyboardTips;
 
 	//-----------------------------------------------------------------------
@@ -1357,50 +1237,60 @@ public:
 protected:
 	CXTPCustomizeDropSource* m_pDropSource; // Customize helper class.
 
-	CXTPPaintManager* m_pPaintManager;      // Paint manager.
-	CXTPImageManager* m_pImageManager;      // Image manager
+	CXTPPaintManager* m_pPaintManager; // Paint manager.
+	CXTPImageManager* m_pImageManager; // Image manager
 
-	CCmdTarget* m_pDragSelected;           // Customize control.
-	BOOL m_bCustomizeMode;                  // Customize mode.
-	BOOL m_bCustomizeAvail;                 // TRUE if customize available.
-	int  m_nDefaultMenuID;                  // Default menu resource.
+	CCmdTarget* m_pDragSelected; // Customize control.
+	int m_nDefaultMenuID;		 // Default menu resource.
 
-	BOOL m_bEnableActions;                  // True if actions was enabled
+	BOOL m_bCustomizeMode;		// Customize mode.
+	BOOL m_bCustomizeAvail;		// TRUE if customize available.
+	BOOL m_bEnableActions;		// True if actions was enabled
+	BOOL m_bQuickCustomizeMode; // TRUE if command bars in quick customization mode
+	BOOL m_bDefaultResetCustomizedToolbarChoiceEnabled; // TRUE if default choice is enabled.
+	BOOL m_bDefaultResetCustomizedToolbarChoice;		// TRUE if default choice is Yes.
 
-	BOOL m_bQuickCustomizeMode;             // TRUE if command bars in quick customization mode
-	CString m_strControlsFileName;          // File name to be used to store user customization.
+	CString m_strControlsFileName; // File name to be used to store user customization.
 
-	CXTPCommandBarsOptions* m_pOptions;     // Command bars' options
+	CXTPCommandBarsOptions* m_pOptions; // Command bars' options
 
-	CXTPCommandBarsContextMenus* m_pContextMenus;    // Context menu collection
+	CXTPCommandBarsContextMenus* m_pContextMenus; // Context menu collection
 
-	CArray <CXTPToolBar*, CXTPToolBar*> m_arrBars;   // Toolbars list.
-	CXTPDockBar* m_pDocks[4];               // DockBars list
-	CWnd* m_pFrame;                         // Parent frame of command bars
-	CXTPToolTipContext* m_pToolTipContext;  // Tooltip Context.
+	CArray<CXTPToolBar*, CXTPToolBar*> m_arrBars; // Toolbars list.
+	CXTPDockBar* m_pDocks[4];					  // DockBars list
+	CWnd* m_pFrame;								  // Parent frame of command bars
+	CXTPToolTipContext* m_pToolTipContext;		  // Tooltip Context.
 
-	mutable CXTPMouseManager* m_pMouseManager;      // Mouse manager of command bars
+	mutable CXTPMouseManager* m_pMouseManager;		 // Mouse manager of command bars
 	mutable CXTPKeyboardManager* m_pKeyboardManager; // Keyboard manager of command bars
 
-	static CRuntimeClass* m_pToolBarClass;  // Default toolbar class
-	static CRuntimeClass* m_pMenuBarClass;  // Default menubar class
-	static CRuntimeClass* m_pPopupBarClass; // Default popupbar class
+	static CRuntimeClass* m_pToolBarClass;		// Default toolbar class
+	static CRuntimeClass* m_pMenuBarClass;		// Default menubar class
+	static CRuntimeClass* m_pPopupBarClass;		// Default popupbar class
 	static CRuntimeClass* m_pPopupToolBarClass; // Default popupbar class
-	static CRuntimeClass* m_pDockBarClass;  // Default dockbar class
-	BOOL m_bKeyboardCuesVisible;            // TRUE if menu underlines is currently visible
-	CXTPShortcutManager* m_pShortcutManager; // Shortcut Manager of command bars.
+	static CRuntimeClass* m_pDockBarClass;		// Default dockbar class
+	BOOL m_bKeyboardCuesVisible;				// TRUE if menu underlines is currently visible
+	CXTPShortcutManager* m_pShortcutManager;	// Shortcut Manager of command bars.
 
-	int m_nIDHelpTracking;                  // Selected control.
+	int m_nIDHelpTracking; // Selected control.
 
-	CXTPControlActions* m_pActions;         // Actions collection
+	CXTPControlActions* m_pActions; // Actions collection
 
+	CXTPCommandBarsFrameHook* m_pFrameHook; // Frame hook pointer for enabled frame theme.
+	BOOL m_bInternalFrameHook;				// TRUE if frame hook object is owned internally.
+
+#	ifdef _XTP_ACTIVEX
+public:
+	CXTPRecentFileList* m_pRecentFileList;
+#	endif
 
 private:
 	BOOL m_bRecalcLayout;
 	BOOL m_bUseKeyboardCues;
+	BOOL m_bAllCaps;
 	BOOL m_bRightToLeft;
 	BOOL m_bPreviewMode;
-
+	BOOL m_bBeingDestructed; // TRUE if class instance is being destructructed
 
 private:
 	DECLARE_DYNCREATE(CXTPCommandBars)
@@ -1409,6 +1299,7 @@ private:
 	friend class CXTPToolBar;
 	friend class CXTPDockContext;
 	friend class CXTPDockState;
+	friend class CXTPDockBar;
 	friend class CXTPControlToolbars;
 	friend class CXTPControl;
 	friend class CCommandBarsCtrl;
@@ -1420,62 +1311,124 @@ private:
 	friend class CCommandBarsSite;
 	friend class CXTPDialog;
 	friend class CXTPRibbonBar;
-
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CWnd* CXTPCommandBars::GetSite() const {
+AFX_INLINE BOOL CXTPCommandBars::IsAllCaps() const
+{
+	return m_bAllCaps;
+}
+
+AFX_INLINE void CXTPCommandBars::SetAllCaps(BOOL bAllCaps)
+{
+	m_bAllCaps = bAllCaps;
+}
+
+AFX_INLINE CWnd* CXTPCommandBars::GetSite() const
+{
 	return m_pFrame;
 }
-AFX_INLINE CXTPDockBar* CXTPCommandBars::GetDockBar(XTPBarPosition barPosition) const {
+
+AFX_INLINE CXTPDockBar* CXTPCommandBars::GetDockBar(XTPBarPosition barPosition) const
+{
 	ASSERT(barPosition >= 0 && barPosition < 4);
 	return barPosition >= 0 && barPosition < 4 ? m_pDocks[barPosition] : NULL;
 }
-AFX_INLINE int CXTPCommandBars::GetCount() const {
+
+AFX_INLINE int CXTPCommandBars::GetCount() const
+{
 	return (int)m_arrBars.GetSize();
 }
-AFX_INLINE CXTPCustomizeDropSource* CXTPCommandBars::GetDropSource() const {
+
+AFX_INLINE CXTPCustomizeDropSource* CXTPCommandBars::GetDropSource() const
+{
 	return m_pDropSource;
 }
-AFX_INLINE BOOL CXTPCommandBars::IsCustomizeAvail() const {
+
+AFX_INLINE BOOL CXTPCommandBars::IsCustomizeAvail() const
+{
 	return m_bCustomizeAvail;
 }
-AFX_INLINE void CXTPCommandBars::EnableCustomization(BOOL bCustomizeAvail) {
+
+AFX_INLINE void CXTPCommandBars::EnableCustomization(BOOL bCustomizeAvail)
+{
 	m_bCustomizeAvail = bCustomizeAvail;
 }
-AFX_INLINE CXTPCommandBarsOptions* CXTPCommandBars::GetCommandBarsOptions() const {
+
+AFX_INLINE CXTPCommandBarsOptions* CXTPCommandBars::GetCommandBarsOptions() const
+{
 	return m_pOptions;
 }
-AFX_INLINE void CXTPCommandBars::SetCustomizationDataFileName(LPCTSTR lpszFile) {
+
+AFX_INLINE void CXTPCommandBars::SetCustomizationDataFileName(LPCTSTR lpszFile)
+{
 	m_strControlsFileName = lpszFile;
 }
-AFX_INLINE void CXTPCommandBars::SetToolBarClass(CRuntimeClass* pToolBarClass) {
+
+AFX_INLINE void CXTPCommandBars::EnableDefaultResetCustomizedToolbarChoice(BOOL bEnable,
+																		   BOOL bDefaultYes)
+{
+	m_bDefaultResetCustomizedToolbarChoiceEnabled = bEnable;
+	m_bDefaultResetCustomizedToolbarChoice		  = bDefaultYes;
+}
+
+AFX_INLINE void CXTPCommandBars::SetToolBarClass(CRuntimeClass* pToolBarClass)
+{
 	m_pToolBarClass = pToolBarClass;
 }
-AFX_INLINE void CXTPCommandBars::SetMenuBarClass(CRuntimeClass* pMenuBarClass) {
+
+AFX_INLINE void CXTPCommandBars::SetMenuBarClass(CRuntimeClass* pMenuBarClass)
+{
 	m_pMenuBarClass = pMenuBarClass;
 }
-AFX_INLINE void CXTPCommandBars::SetDockBarClass(CRuntimeClass* pDockBarClass) {
+
+AFX_INLINE void CXTPCommandBars::SetDockBarClass(CRuntimeClass* pDockBarClass)
+{
 	m_pDockBarClass = pDockBarClass;
 }
-AFX_INLINE void CXTPCommandBars::SetPopupBarClass(CRuntimeClass* pPopupBarClass) {
+
+AFX_INLINE void CXTPCommandBars::SetPopupBarClass(CRuntimeClass* pPopupBarClass)
+{
 	m_pPopupBarClass = pPopupBarClass;
 }
-AFX_INLINE void CXTPCommandBars::SetPopupToolBarClass(CRuntimeClass* pPopupToolBarClass) {
+
+AFX_INLINE void CXTPCommandBars::SetPopupToolBarClass(CRuntimeClass* pPopupToolBarClass)
+{
 	m_pPopupToolBarClass = pPopupToolBarClass;
 }
-AFX_INLINE int CXTPCommandBars::GetHelpTrackingId() const {
+
+AFX_INLINE int CXTPCommandBars::GetHelpTrackingId() const
+{
 	return m_nIDHelpTracking;
 }
-AFX_INLINE CXTPControlActions* CXTPCommandBars::GetActions() const {
+
+AFX_INLINE CXTPControlActions* CXTPCommandBars::GetActions() const
+{
 	return m_pActions;
 }
-AFX_INLINE BOOL CXTPCommandBars::IsActionsEnabled() const {
+
+AFX_INLINE BOOL CXTPCommandBars::IsActionsEnabled() const
+{
 	return this == NULL ? FALSE : m_bEnableActions;
 }
-AFX_INLINE CXTPCommandBarsContextMenus* CXTPCommandBars::GetContextMenus() const {
+
+AFX_INLINE CXTPCommandBarsContextMenus* CXTPCommandBars::GetContextMenus() const
+{
 	return m_pContextMenus;
 }
 
+AFX_INLINE CXTPCommandBarsFrameHook* CXTPCommandBars::GetFrameHook() const
+{
+	return m_pFrameHook;
+}
+
+AFX_INLINE void CXTPCommandBars::SetFrameHook(CXTPCommandBarsFrameHook* pFrameHook)
+{
+	m_pFrameHook = pFrameHook;
+	if (NULL == m_pFrameHook)
+		m_bInternalFrameHook = FALSE;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCOMMANDBARS_H__)

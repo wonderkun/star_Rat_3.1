@@ -1,7 +1,6 @@
 // XTPTrayIcon.h: interface for the CXTPTrayIcon class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,47 +19,49 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRAYICON_H__)
-#define __XTPTRAYICON_H__
+#	define __XTPTRAYICON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef NIIF_NONE
-#define NIIF_NONE       0x00000000
-#define NIIF_INFO       0x00000001
-#define NIIF_WARNING    0x00000002
-#define NIIF_ERROR      0x00000003
-#define NIIF_ICON_MASK  0x0000000F
-#endif
+#	ifndef NIIF_NONE
+#		define NIIF_NONE 0x00000000
+#		define NIIF_INFO 0x00000001
+#		define NIIF_WARNING 0x00000002
+#		define NIIF_ERROR 0x00000003
+#		define NIIF_ICON_MASK 0x0000000F
+#	endif
 
-#ifndef NIS_HIDDEN
-#define NIS_HIDDEN      0x00000001
-#endif
+#	ifndef NIS_HIDDEN
+#		define NIS_HIDDEN 0x00000001
+#	endif
 
-#ifndef NIF_STATE
-#define NIF_STATE       0x00000008
-#define NIF_INFO        0x00000010
-#endif
+#	ifndef NIF_STATE
+#		define NIF_STATE 0x00000008
+#		define NIF_INFO 0x00000010
+#	endif
 
-#ifndef NIN_BALLOONSHOW
-#define NIN_BALLOONSHOW      (WM_USER + 2)
-#define NIN_BALLOONHIDE      (WM_USER + 3)
-#define NIN_BALLOONTIMEOUT   (WM_USER + 4)
-#define NIN_BALLOONUSERCLICK (WM_USER + 5)
-#endif
+#	ifndef NIN_BALLOONSHOW
+#		define NIN_BALLOONSHOW (WM_USER + 2)
+#		define NIN_BALLOONHIDE (WM_USER + 3)
+#		define NIN_BALLOONTIMEOUT (WM_USER + 4)
+#		define NIN_BALLOONUSERCLICK (WM_USER + 5)
+#	endif
 
-#ifndef NIN_SELECT
-#define NIN_SELECT          (WM_USER + 0)
-#define NINF_KEY            0x1
-#define NIN_KEYSELECT       (NIN_SELECT | NINF_KEY)
-#endif
+#	ifndef NIN_SELECT
+#		define NIN_SELECT (WM_USER + 0)
+#		define NINF_KEY 0x1
+#		define NIN_KEYSELECT (NIN_SELECT | NINF_KEY)
+#	endif
 
-#ifndef NIM_SETFOCUS
-#define NIM_SETFOCUS    0x00000003
-#endif
+#	ifndef NIM_SETFOCUS
+#		define NIM_SETFOCUS 0x00000003
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -78,8 +79,9 @@ private:
 	//-----------------------------------------------------------------------
 	struct TRAYICONDATA
 	{
-		HICON   hIcon;      // Handle to the icon displayed.
-		CString strToolTip; // A NULL terminated string that represents the tooltip displayed for the tray icon.
+		HICON hIcon;		// Handle to the icon displayed.
+		CString strToolTip; // A NULL terminated string that represents the tooltip displayed for
+							// the tray icon.
 	};
 
 	//-----------------------------------------------------------------------
@@ -88,22 +90,35 @@ private:
 	//-----------------------------------------------------------------------
 	struct NOTIFYICONDATAEX
 	{
-		DWORD cbSize;          // Size of this structure, in bytes.
-		HWND hWnd;             // Handle to the window that will receive notification messages associated with an icon in the taskbar status area. The shell uses hWnd and uID to identify which icon is to be operated on when Shell_NotifyIcon is invoked.
-		UINT uID;              // Application-defined identifier of the taskbar icon. The shell uses hWnd and uID to identify which icon is to be operated on when Shell_NotifyIcon is invoked. You can have multiple icons associated with a single hWnd by assigning each a different uID.
-		UINT uFlags;           // Array of flags that indicate which of the other members contain valid data
+		DWORD cbSize; // Size of this structure, in bytes.
+		HWND hWnd; // Handle to the window that will receive notification messages associated with
+				   // an icon in the taskbar status area. The shell uses hWnd and uID to identify
+				   // which icon is to be operated on when Shell_NotifyIcon is invoked.
+		UINT uID; // Application-defined identifier of the taskbar icon. The shell uses hWnd and uID
+				  // to identify which icon is to be operated on when Shell_NotifyIcon is invoked.
+				  // You can have multiple icons associated with a single hWnd by assigning each a
+				  // different uID.
+		UINT uFlags; // Array of flags that indicate which of the other members contain valid data
 		UINT uCallbackMessage; // Application-defined message identifier
-		HICON hIcon;           // Handle to the icon to be added, modified, or deleted.
-		TCHAR szTip[128];      // Pointer to a NULL-terminated string with the text for a standard tooltip.
-		DWORD dwState;         // State of the icon
-		DWORD dwStateMask;     // A value that specifies which bits of the state member will be retrieved or modified.
-		TCHAR szInfo[256];     // Pointer to a NULL-terminated string with the text for a balloon-style tooltip
+		HICON hIcon;		   // Handle to the icon to be added, modified, or deleted.
+		TCHAR szTip[128];	  // Pointer to a NULL-terminated string with the text for a standard
+							   // tooltip.
+		DWORD dwState;		   // State of the icon
+		DWORD dwStateMask;	 // A value that specifies which bits of the state member will be
+							   // retrieved or modified.
+		TCHAR szInfo[256]; // Pointer to a NULL-terminated string with the text for a balloon-style
+						   // tooltip
 		union {
-			UINT  uTimeout;    // The timeout value, in milliseconds, for a balloon-style tooltip.
-			UINT  uVersion;    // Used to specify whether the shell notify icon interface should use Windows 95 or Windows 2000 behavior.
+			UINT uTimeout; // The timeout value, in milliseconds, for a balloon-style tooltip.
+			UINT uVersion; // Used to specify whether the shell notify icon interface should use
+						   // Windows 95 or Windows 2000 behavior.
 		} DUMMYUNIONNAME;
-		TCHAR szInfoTitle[64]; // Pointer to a NULL-terminated string containing a title for a balloon tooltip.
-		DWORD dwInfoFlags;     // Flags that can be set to add an icon to a balloon tooltip
+		TCHAR szInfoTitle[64]; // Pointer to a NULL-terminated string containing a title for a
+							   // balloon tooltip.
+		DWORD dwInfoFlags;	 // Flags that can be set to add an icon to a balloon tooltip
+		GUID guidItem;
+		HICON hBalloonIcon; // Supported in Windows XP as well, but displayed as small icon. Windows
+							// Vista and later display a bigger icon in a balloon
 	};
 
 	//-----------------------------------------------------------------------
@@ -113,7 +128,6 @@ private:
 	typedef CList<TRAYICONDATA, TRAYICONDATA&> CTrayIconList;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTrayIcon object
@@ -127,7 +141,6 @@ public:
 	virtual ~CXTPTrayIcon();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Determines if shell32.dll has Major version 5 or above
 	// Returns: TRUE if extended functionality of shell32.dll are available.
@@ -135,7 +148,6 @@ public:
 	BOOL IsShellVersion5() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will create the system tray icon.
@@ -152,10 +164,12 @@ public:
 	// Returns:
 	//     true if successful, otherwise returns false.
 	//-----------------------------------------------------------------------
-	virtual bool Create(LPCTSTR lpszCaption, CWnd* pParentWnd, UINT nIconID, UINT uMenuID = 0, UINT uDefMenuItemID = 0, bool bDefMenuItemByPos = false);
-//{{AFX_CODEJOCK_PRIVATE
-	virtual bool Create(LPCTSTR lpszCaption, DWORD dwStyle, CWnd* pParentWnd, UINT nIconID);// DEPRECATED
-//}}AFX_CODEJOCK_PRIVATE
+	virtual bool Create(LPCTSTR lpszCaption, CWnd* pParentWnd, UINT nIconID, UINT uMenuID = 0,
+						UINT uDefMenuItemID = 0, bool bDefMenuItemByPos = false);
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual bool Create(LPCTSTR lpszCaption, DWORD dwStyle, CWnd* pParentWnd,
+						UINT nIconID); // DEPRECATED
+									   //}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,8 +183,9 @@ public:
 	//                     It can have a maximum of 63 characters.
 	//     dwInfoFlags   - Flags that can be set to add an icon to a balloon ToolTip.
 	//                     It is placed to the left of the title. If the 'lpszInfoTitle' member
-	//                     is zero-length, the icon is not shown, and can be any of the values listed in the Remarks section.
-	//     uTimeout      - The timeout value in milliseconds for a balloon ToolTip.
+	//                     is zero-length, the icon is not shown, and can be any of the values
+	//                     listed in the Remarks section.
+	//     uTimeout      - The timeout value in seconds for a balloon ToolTip.
 	//                     The system enforces minimum and maximum timeout values. 'uTimeout'
 	//                     values that are too large are set to the maximum value, and values
 	//                     that are too small default to the minimum value. The system minimum
@@ -186,8 +201,9 @@ public:
 	// Returns:
 	//     true if successful, otherwise returns false.
 	//-----------------------------------------------------------------------
-	bool ShowBalloonTip(LPCTSTR lpszInfo = NULL, LPCTSTR lpszInfoTitle = NULL, DWORD dwInfoFlags = NIIF_NONE, UINT uTimeout = 10);
-
+	bool ShowBalloonTip(LPCTSTR lpszInfo = NULL, LPCTSTR lpszInfoTitle = NULL,
+						DWORD dwInfoFlags = NIIF_NONE, UINT uTimeout = 10,
+						HICON hBaloonIcon = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -213,10 +229,12 @@ public:
 	//     nIDCount      - [in] Zero based size of the array passed. <i>lpIDArray</i> and
 	//                     <i>lpStrTipArray</i> must contain the same number
 	//                     of items and must match value specified by <i>nIDCount</i>.
-	//     lpStrTipArray - [in] An array of tooltips that match the icons passed in as 'lpStrTipArray'.
+	//     lpStrTipArray - [in] An array of tooltips that match the icons passed in as
+	//     'lpStrTipArray'.
 	//                     If NULL, the default tooltip will be used.
 	//-----------------------------------------------------------------------
-	virtual void SetAnimationIcons(const UINT* lpIDArray, const CString* lpStrTipArray, int nIDCount);
+	virtual void SetAnimationIcons(const UINT* lpIDArray, const CString* lpStrTipArray,
+								   int nIDCount);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -228,12 +246,14 @@ public:
 	//     nIDCount      - [in] Zero based size of the array passed. <i>lpIDArray</i> and
 	//                     <i>lpStrTipArray</i> must contain the same number
 	//                     of items and must match value specified by <i>nIDCount</i>.
-	//     lpStrTipArray - [in] An array of tooltips that match the icons passed in as 'lpStrTipArray'.
+	//     lpStrTipArray - [in] An array of tooltips that match the icons passed in as
+	//     'lpStrTipArray'.
 	//                     If NULL, the default tooltip will be used.
 	// Returns:
 	//     true if successful, otherwise returns false.
 	//-----------------------------------------------------------------------
-	virtual bool SetAnimationIcons(const UINT* lpIDArray, int nIDCount, const CString* lpStrTipArray = NULL);
+	virtual bool SetAnimationIcons(const UINT* lpIDArray, int nIDCount,
+								   const CString* lpStrTipArray = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -342,7 +362,7 @@ public:
 	//-----------------------------------------------------------------------
 	bool SetIcon(HICON hIcon);
 	bool SetIcon(LPCTSTR lpszIconName); // <combine CXTPTrayIcon::SetIcon@HICON>
-	bool SetIcon(UINT nIDResource); // <combine CXTPTrayIcon::SetIcon@HICON>
+	bool SetIcon(UINT nIDResource);		// <combine CXTPTrayIcon::SetIcon@HICON>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -576,7 +596,7 @@ public:
 	virtual void SetTimer(UINT nIDEvent, UINT uElapse);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTrayIcon)
@@ -589,59 +609,72 @@ protected:
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	afx_msg LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	bool CanAnimate() const;
 	static BOOL CALLBACK FindTrayWnd(HWND hWnd, LPARAM lParam);
 	bool GetTrayWindowRect(CRect& rect);
 	bool SetShellTooltip(LPCTSTR lpszTipText);
 
 protected:
-
-	UINT                m_uFlags;            // Style settings for icon restore.
-	UINT                m_nIconID;           // Resource ID for the default icon.
-	UINT                m_nIDEvent;          // Timer event ID.
-	UINT                m_nCounter;          // Holds the current position in the timer loop.
-	UINT                m_uDefMenuItemID;    // Default popup menu item ID.
-	bool                m_bDefMenuItemByPos; // Determines if the default menu item is a command or index.
-	bool                m_bHidden;           // State of the icon. true to indicate the icon is hidden.
-	bool                m_bRemoved;          // true if the icon has been removed from the system tray.
-	bool                m_bShowPending;      // true if the icon display is pending.
-	HWND                m_hWndNotify;        // Handle to the window that receives command notification.
-	CWnd                m_wndMinimize;       // Hidden window used during minimize and restore functions.
-	size_t              m_iMaxTipSize;       // Maximum size for tooltip string.
-	CString             m_strToolTip;        // Tooltip for the default icon.
-	CXTPIconHandle      m_hIcon;             // Default icon.
-	CTrayIconList       m_arTrayIcons;       // Array of icons and text that are displayed during animation.
-	NOTIFYICONDATAEX    m_niData;            // Tray icon structure see NOTIFYICONDATA.
+	UINT m_uFlags;				 // Style settings for icon restore.
+	UINT m_nIconID;				 // Resource ID for the default icon.
+	UINT m_nIDEvent;			 // Timer event ID.
+	UINT m_nCounter;			 // Holds the current position in the timer loop.
+	UINT m_uDefMenuItemID;		 // Default popup menu item ID.
+	bool m_bDefMenuItemByPos;	// Determines if the default menu item is a command or index.
+	bool m_bHidden;				 // State of the icon. true to indicate the icon is hidden.
+	bool m_bRemoved;			 // true if the icon has been removed from the system tray.
+	bool m_bShowPending;		 // true if the icon display is pending.
+	HWND m_hWndNotify;			 // Handle to the window that receives command notification.
+	CWnd m_wndMinimize;			 // Hidden window used during minimize and restore functions.
+	size_t m_iMaxTipSize;		 // Maximum size for tooltip string.
+	CString m_strToolTip;		 // Tooltip for the default icon.
+	CXTPIconHandle m_hIcon;		 // Default icon.
+	CTrayIconList m_arTrayIcons; // Array of icons and text that are displayed during animation.
+	NOTIFYICONDATAEX m_niData;   // Tray icon structure see NOTIFYICONDATA.
 };
 
-const TCHAR XTPTRAYICON_CLASSNAME[]    = _T("XTPTrayIcon");
+const TCHAR XTPTRAYICON_CLASSNAME[] = _T("XTPTrayIcon");
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE bool CXTPTrayIcon::Create(LPCTSTR lpszCaption, DWORD /*dwStyle*/, CWnd* pParentWnd, UINT nIconID) {
+AFX_INLINE bool CXTPTrayIcon::Create(LPCTSTR lpszCaption, DWORD /*dwStyle*/, CWnd* pParentWnd,
+									 UINT nIconID)
+{
 	return Create(lpszCaption, pParentWnd, nIconID);
 }
-AFX_INLINE void CXTPTrayIcon::SetTooltip(LPCTSTR strToolTip) {
+AFX_INLINE void CXTPTrayIcon::SetTooltip(LPCTSTR strToolTip)
+{
 	SetTooltipText(strToolTip);
 }
-AFX_INLINE void CXTPTrayIcon::SetTrayIcon(UINT nIcon, DWORD /*dwMessage*/) {
+AFX_INLINE void CXTPTrayIcon::SetTrayIcon(UINT nIcon, DWORD /*dwMessage*/)
+{
 	SetIcon(nIcon);
 }
-AFX_INLINE void CXTPTrayIcon::SetAnimationIcons(const UINT* lpIDArray, const CString* lpStrTipArray, int nIDCount) {
+AFX_INLINE void CXTPTrayIcon::SetAnimationIcons(const UINT* lpIDArray, const CString* lpStrTipArray,
+												int nIDCount)
+{
 	SetAnimationIcons(lpIDArray, nIDCount, lpStrTipArray);
 }
-AFX_INLINE void CXTPTrayIcon::KillTimer() {
+AFX_INLINE void CXTPTrayIcon::KillTimer()
+{
 	StopAnimation();
 }
-AFX_INLINE void CXTPTrayIcon::SetTimer(UINT nIDEvent, UINT uElapse) {
-	m_nIDEvent = nIDEvent; StartAnimation(uElapse);
+AFX_INLINE void CXTPTrayIcon::SetTimer(UINT nIDEvent, UINT uElapse)
+{
+	m_nIDEvent = nIDEvent;
+	StartAnimation(uElapse);
 }
-AFX_INLINE BOOL CXTPTrayIcon::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPTrayIcon::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									 const RECT& rect, CWnd* pParentWnd, UINT nID,
+									 CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTRAYICON_H__)

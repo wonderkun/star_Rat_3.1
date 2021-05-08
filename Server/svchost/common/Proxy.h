@@ -185,7 +185,7 @@ BOOL SendRequest(SOCKET* CSsocket, char *SenderBuf, char *ReceiveBuf, int DataLe
     char   HostName[MAX_HOSTNAME] = {0};   
     char   ReqInfo1[8],ReqInfo2[248];   
     UINT   RemotePort = 0;   
-    static t=0;   
+    static int t=0;   
     EnterCriticalSection(&cs);   
     int n=++t;   
     LeaveCriticalSection(&cs);   
@@ -470,7 +470,7 @@ BOOL CreateUDPSocket(Socks5AnsConn *SAC, SOCKET *socks)
 DWORD WINAPI ZXProxyThread(SOCKET* CSsocket)   
 {   
     DWORD  dwThreadID;   
-    static t=0;   
+    static int t=0;   
     EnterCriticalSection(&cs);   
     int n=++t;   
     LeaveCriticalSection(&cs);   

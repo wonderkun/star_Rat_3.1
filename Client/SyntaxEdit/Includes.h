@@ -1,7 +1,6 @@
-// XTPSyntaxEditIncludes.h
+// Includes.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -19,49 +18,52 @@
 //////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(__XTPSYNTAXEDITINCLUDES_H__)
-#define __XTPSYNTAXEDITINCLUDES_H__
-//}}AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPSYNTAXEDIT_INCLUDES_H__)
+#	define __XTPSYNTAXEDIT_INCLUDES_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Resource.h"
+#	include "SyntaxEdit/Resource.h"
 
-#include "XTPSyntaxEditDefines.h"
-#include "XTPSyntaxEditStruct.h"
+#	include "SyntaxEdit/XTPSyntaxEditDefines.h"
+#	include "SyntaxEdit/XTPSyntaxEditStruct.h"
 
-#include "XTPSyntaxEditTextIterator.h"
-#include "XTPSyntaxEditFindReplaceDlg.h"
-#include "XTPSyntaxEditCtrl.h"
-#include "XTPSyntaxEditDoc.h"
-#include "XTPSyntaxEditView.h"
-#include "XTPSyntaxEditPaintManager.h"
-#include "XTPSyntaxEditColorSampleText.h"
-#include "XTPSyntaxEditColorComboBox.h"
-#include "XTPSyntaxEditPropertiesPage.h"
-#include "XTPSyntaxEditPropertiesDlg.h"
-#include "XTPSyntaxEditGoToLineDlg.h"
-#include "XTPSyntaxEditToolTipCtrl.h"
-#include "XTPSyntaxEditAutoCompleteWnd.h"
+#	include "SyntaxEdit/XTPSyntaxEditTextIterator.h"
+#	include "SyntaxEdit/XTPSyntaxEditFindReplaceDlg.h"
+#	include "SyntaxEdit/XTPSyntaxEditCtrl.h"
+#	include "SyntaxEdit/XTPSyntaxEditDoc.h"
+#	include "SyntaxEdit/XTPSyntaxEditView.h"
+#	include "SyntaxEdit/XTPSyntaxEditPaintManager.h"
+#	include "SyntaxEdit/XTPSyntaxEditColorSampleText.h"
+#	include "SyntaxEdit/XTPSyntaxEditColorComboBox.h"
+#	include "SyntaxEdit/XTPSyntaxEditPropertiesPage.h"
+#	include "SyntaxEdit/XTPSyntaxEditPropertiesDlg.h"
+#	include "SyntaxEdit/XTPSyntaxEditGoToLineDlg.h"
+#	include "SyntaxEdit/XTPSyntaxEditToolTipCtrl.h"
+#	include "SyntaxEdit/XTPSyntaxEditAutoCompleteWnd.h"
+#	include "SyntaxEdit/XTPSyntaxEditSelection.h"
 
-#ifdef _XTP_INCLUDE_SYNTAXEDIT_LEXER
+#	ifdef _XTP_INCLUDE_SYNTAXEDIT_LEXER
 
-#include "XTPSyntaxEditUndoManager.h"
-#include "XTPSyntaxEditLineMarksManager.h"
-#include "XTPSyntaxEditLexPtrs.h"
-#include "XTPSyntaxEditLexParser.h"
-#include "XTPSyntaxEditBufferManager.h"
+#		include "SyntaxEdit/XTPSyntaxEditUndoManager.h"
+#		include "SyntaxEdit/XTPSyntaxEditLineMarksManager.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexPtrs.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexParser.h"
+#		include "SyntaxEdit/XTPSyntaxEditBufferManager.h"
 
 // Commented to save compiler heap
-#include "XTPSyntaxEditSectionManager.h"
-#include "XTPSyntaxEditLexClassSubObjT.h"
-#include "XTPSyntaxEditTextIterator.h"
-#include "XTPSyntaxEditLexCfgFileReader.h"
-#include "XTPSyntaxEditLexClassSubObjDef.h"
-#include "XTPSyntaxEditLexClass.h"
-#include "XTPSyntaxEditLexColorFileReader.h"
-#endif
+#		include "SyntaxEdit/XTPSyntaxEditSectionManager.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexClassSubObjT.h"
+#		include "SyntaxEdit/XTPSyntaxEditTextIterator.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexCfgFileReader.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexClassSubObjDef.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexClass.h"
+#		include "SyntaxEdit/XTPSyntaxEditLexColorFileReader.h"
 
-#endif // !defined(__XTPSYNTAXEDITINCLUDES_H__)
+using namespace XTPSyntaxEditLexAnalyser;
+#	endif
+
+#endif // !defined(__XTPSYNTAXEDIT_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

@@ -1,7 +1,6 @@
 // XTPReportRecord.h: interface for the CXTPReportRecord class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTRECORD_H__)
-#define __XTPREPORTRECORD_H__
+#	define __XTPREPORTRECORD_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRecordItem;
 class CXTPReportRecordItemPreview;
@@ -53,16 +52,17 @@ struct XTP_REPORTRECORDITEM_METRICS;
 // pList->Add(new CXTPReportRecord());
 // </code>
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportRecord : public CXTPHeapObjectT<CCmdTarget, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportRecord
+	: public CXTPHeapObjectT<CXTPCmdTarget, CXTPReportDataAllocator>
 {
 	friend class CXTPReportRecords;
 	friend class CXTPReportRow;
 	friend class CXTPReportControl;
 	friend class CXTPReportRecordItem;
+	friend class CXTPReportPaintManager;
 	DECLARE_SERIAL(CXTPReportRecord)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportRecord object
@@ -99,7 +99,8 @@ public:
 	// See Also: GetItemCount
 	//-----------------------------------------------------------------------
 	CXTPReportRecordItem* GetItem(int nIndex) const;
-	CXTPReportRecordItem* GetItem(CXTPReportColumn* pColumn) const; // <COMBINE CXTPReportRecord::GetItem@int@const>
+	CXTPReportRecordItem*
+		GetItem(CXTPReportColumn* pColumn) const; // <COMBINE CXTPReportRecord::GetItem@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -144,11 +145,9 @@ public:
 	// Parameters:
 	//     bVisible - TRUE if the record should be visible,
 	//                FALSE if the record should be hidden.
-	// Returns:
-	//     Old record visibility state.
 	// See Also: IsVisible
 	//-----------------------------------------------------------------------
-	BOOL SetVisible(BOOL bVisible);
+	void SetVisible(BOOL bVisible);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -167,11 +166,9 @@ public:
 	// Remarks:
 	//     You set the record locked when it shouldn't be sorted on hide.
 	//     To set record locked or unlocked, you use SetLocked(BOOL)
-	// Returns:
-	//     Old record locked state.
 	// See Also: IsLocked
 	//-----------------------------------------------------------------------
-	BOOL SetLocked(BOOL bLocked);
+	void SetLocked(BOOL bLocked);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -246,7 +243,8 @@ public:
 	//     pDrawArgs - Draw arguments for calculating item metrics.
 	//     pItemMetrics - Pointer to the metrics item to fill with values.
 	//-----------------------------------------------------------------------
-	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
+	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -284,6 +282,10 @@ public:
 	// See Also: IsExpanded
 	//-----------------------------------------------------------------------
 	virtual void SetExpanded(BOOL bExpanded);
+
+	BOOL IsSelected() const;
+
+	void SetSelected(BOOL bSelected);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,7 +354,7 @@ public:
 	// Returns:
 	//     Bookmark to data source record.
 	//-------------------------------------------------------------------------
-	VARIANT GetBookmark();
+	VARIANT GetBookmark() const;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -370,32 +372,79 @@ public:
 	//-------------------------------------------------------------------------
 	CXTPReportRecord* GetParentRecord() const;
 
-	BOOL m_bSelectedAsChildFlag;    //Tell whether the record is selected as child or not.
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get height of row in FreeHeight RC mode.
+	//-------------------------------------------------------------------------
+	int GetFreeHeight();
 
-//{{AFX_CODEJOCK_PRIVATE
-
-//<<TC>>
-	int m_nFreeHeight;              // Height of visual row in FreeHeight RC mode.
-//<<TC>>
-
-//}}AFX_CODEJOCK_PRIVATE
-
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this method to set height of row in FreeHeight RC mode.
+	//-------------------------------------------------------------------------
+	void SetFreeHeight(int nFreeHeight);
 
 protected:
-	CArray<CXTPReportRecordItem*, CXTPReportRecordItem*> m_arrItems;    // An internal storage for record items.
+	void SetReportControl(CXTPReportControl* pReportControl);
 
-	BOOL m_bVisible;    // Is this record visible or not
-	BOOL m_bLocked;     // Stores locked state for the record.
+protected:
+	CArray<CXTPReportRecordItem*, CXTPReportRecordItem*> m_arrItems; // An internal storage for
+																	 // record items.
 
 	CXTPReportRecordItemPreview* m_pPreviewItem; // store Preview  Item for record
 
-	CXTPReportRecords* m_pChildren; // A collection of children records.
-	BOOL m_bExpanded;               // Contains record expanded state.
-	BOOL m_bEditable;               // TRUE if the record is editable, FALSE otherwise.
-	int m_nIndex;                   // Index of the record within the collection records.
+	CXTPReportControl* m_pControl;  // Pointer to the parent report control.
 	CXTPReportRecords* m_pRecords;  // Parent records collection.
-	VARIANT m_vtBookmark;           // Bookmark to data source record for data binding.
+	CXTPReportRecords* m_pChildren; // A collection of children records.
 
+	BOOL m_bExpanded; // Contains record expanded state.
+	BOOL m_bEditable; // TRUE if the record is editable, FALSE otherwise.
+	BOOL m_bVisible;  // Is this record visible or not
+	BOOL m_bLocked;   // Stores locked state for the record.
+	BOOL m_bSelected; // Tell whether the record is selected as child or not.
+
+	int m_nFreeHeight;	// Height of visual row in FreeHeight RC mode.
+	int m_nIndex;		  // Index of the record within the collection records.
+	VARIANT m_vtBookmark; // Bookmark to data source record for data binding.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRecord);
+	DECLARE_OLECREATE_EX(CXTPReportRecord);
+
+	int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg LPDISPATCH OleAdd(const VARIANT& lpValue);
+	afx_msg LPDISPATCH OleGetChilds();
+	afx_msg LPDISPATCH OleGetParentRecord();
+	afx_msg LPDISPATCH OleGetRecords();
+	afx_msg void OleAddEx(LPDISPATCH lpDisp);
+
+	DECLARE_ENUM_VARIANT(CXTPReportRecord)
+
+	afx_msg BSTR OleGetPreviewText();
+	afx_msg void OleSetPreviewText(LPCTSTR lpszText);
+	afx_msg LPDISPATCH OleGetPreviewItem();
+	afx_msg int OleGetFreeHeight();
+	afx_msg void OleSetFreeHeight(int nFreeHeight);
+
+	enum
+	{
+		dispidCount		 = 1L,
+		dispidAdd		 = 2L,
+		dispidFindColumn = 4L,
+	};
+
+	COleVariant m_oleTag;
+
+public:
+	static CXTPReportRecord* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 };
 
 AFX_INLINE int CXTPReportRecord::GetItemCount() const
@@ -413,9 +462,9 @@ AFX_INLINE BOOL CXTPReportRecord::IsVisible() const
 	return m_bVisible;
 }
 
-AFX_INLINE BOOL CXTPReportRecord::SetVisible(BOOL bVisible)
+AFX_INLINE void CXTPReportRecord::SetVisible(BOOL bVisible)
 {
-	BOOL bOldVisible = m_bVisible; m_bVisible = bVisible; return bOldVisible;
+	m_bVisible = bVisible;
 }
 
 AFX_INLINE BOOL CXTPReportRecord::IsEditable() const
@@ -423,48 +472,64 @@ AFX_INLINE BOOL CXTPReportRecord::IsEditable() const
 	return m_bEditable;
 }
 
+AFX_INLINE BOOL CXTPReportRecord::IsExpanded() const
+{
+	return m_bExpanded;
+}
+
 AFX_INLINE BOOL CXTPReportRecord::IsLocked() const
 {
 	return m_bLocked;
 }
 
-AFX_INLINE BOOL CXTPReportRecord::SetLocked(BOOL bLocked)
+AFX_INLINE void CXTPReportRecord::SetLocked(BOOL bLocked)
 {
-	BOOL bOldLocked = m_bLocked; m_bLocked = bLocked; return bOldLocked;
+	m_bLocked = bLocked;
 }
 
-AFX_INLINE void CXTPReportRecord::GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* /*pDrawArgs*/, XTP_REPORTRECORDITEM_METRICS* /*pItemMetrics*/)
+AFX_INLINE BOOL CXTPReportRecord::IsSelected() const
 {
+	return m_bSelected;
+}
+
+AFX_INLINE void CXTPReportRecord::SetSelected(BOOL bSelected)
+{
+	m_bSelected = bSelected;
+}
+
+AFX_INLINE int CXTPReportRecord::GetFreeHeight()
+{
+	return m_nFreeHeight;
+}
+
+AFX_INLINE void CXTPReportRecord::SetFreeHeight(int nFreeHeight)
+{
+	m_nFreeHeight = nFreeHeight;
+}
+
+AFX_INLINE void CXTPReportRecord::GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+												 XTP_REPORTRECORDITEM_METRICS* pItemMetrics)
+{
+	UNREFERENCED_PARAMETER(pDrawArgs);
+	UNREFERENCED_PARAMETER(pItemMetrics);
 }
 
 AFX_INLINE BOOL CXTPReportRecord::UpdateRecordField(int /*row*/, int /*index*/, CString /*sText*/)
 {
 	return TRUE;
 }
-
-AFX_INLINE BOOL CXTPReportRecord::IsExpanded() const
-{
-	return m_bExpanded;
-}
-
-//AFX_INLINE void CXTPReportRecord::SetExpanded(BOOL bExpanded)
-//{
-//  m_bExpanded = bExpanded;
-//}
-
 AFX_INLINE CXTPReportRecords* CXTPReportRecord::GetRecords() const
 {
 	return m_pRecords;
 }
-
 AFX_INLINE void CXTPReportRecord::SetBookmark(VARIANT vtBookmark)
 {
 	m_vtBookmark = vtBookmark;
 }
-
-AFX_INLINE VARIANT CXTPReportRecord::GetBookmark()
+AFX_INLINE VARIANT CXTPReportRecord::GetBookmark() const
 {
 	return m_vtBookmark;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTRECORD_H__)

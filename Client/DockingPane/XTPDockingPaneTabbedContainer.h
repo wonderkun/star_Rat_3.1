@@ -1,7 +1,6 @@
 // XTPDockingPaneTabbedContainer.h : interface for the CXTPDockingPaneTabbedContainer class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANETABBEDCONTAINER_H__)
-#define __XTPDOCKINGPANETABBEDCONTAINER_H__
+#	define __XTPDOCKINGPANETABBEDCONTAINER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBaseContainer.h"
-#include "XTPDockingPanePaintManager.h"
-#include "Common/XTPSystemHelpers.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneAutoHidePanel;
 class CXTPDockingPaneCaptionButton;
@@ -41,7 +37,11 @@ class CXTPDockingPaneCaptionButton;
 //     CWnd and CXTPDockingPaneBase. It represents a tabbed container for Docking
 //     Panes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneTabbedContainer : public CWnd, public CXTPDockingPaneBaseContainer, public CXTPTabManager, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPDockingPaneTabbedContainer
+	: public CWnd
+	, public CXTPDockingPaneBaseContainer
+	, public CXTPTabManager
+	, public CXTPAccessible
 {
 	DECLARE_DYNAMIC(CXTPDockingPaneTabbedContainer)
 protected:
@@ -70,7 +70,8 @@ public:
 	//     bSetFocus - TRUE to set focus to child docking pane.
 	//     bDelayRedraw - TRUE to redraw caption delayed.
 	//-----------------------------------------------------------------------
-	virtual void SelectPane(CXTPDockingPane* pPane, BOOL bSetFocus = TRUE, BOOL bDelayRedraw = TRUE);
+	virtual void SelectPane(CXTPDockingPane* pPane, BOOL bSetFocus = TRUE,
+							BOOL bDelayRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -202,14 +203,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to get the text in the caption for the tabbed container (group of panes).
+	//     Call this member to get the text in the caption for the tabbed container (group of
+	//     panes).
 	// Returns:
 	//     The text in the caption for the tabbed container (group of panes).
 	//-----------------------------------------------------------------------
 	CString GetTitle() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to determine if a specific caption button
@@ -308,7 +309,8 @@ protected:
 	//     TRUE if the icon was successfully drawn, FALSE if the icon
 	//     was not drawn.
 	//-----------------------------------------------------------------------
-	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw, CSize& szIcon) const;
+	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw,
+						  CSize& szIcon) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -333,7 +335,7 @@ protected:
 	virtual void CreateContainer();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual void OnSizeParent(CWnd* pParent, CRect rect, LPVOID lParam);
 	virtual void OnFocusChanged();
 	virtual void SetDockingSite(CWnd* pFrame);
@@ -362,11 +364,10 @@ protected:
 	void Restore();
 	void Maximize();
 	void NormalizeDockingSize();
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPDockingPaneTabbedContainer)
@@ -381,27 +382,29 @@ protected:
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM /*lParam*/);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT /*nFlags*/, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnCaptureChanged(CWnd* pWnd);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
 	afx_msg void OnDestroy();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
@@ -409,28 +412,45 @@ protected:
 	virtual CCmdTarget* GetAccessible();
 
 	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneTabbedContainer);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneTabbedContainer);
+	afx_msg LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	int OleGetPosition();
 //}}AFX_CODEJOCK_PRIVATE
-
-
-
+#	endif
 
 protected:
-	BOOL m_bActive;             // TRUE if Tabbed container has active caption
-	BOOL m_bTitleVisible;       // TRUE if title is visible
-	int m_nLockReposition;      // InvalidatePane method currently executed.
-	BOOL m_bDelayRedraw;        // TRUE to redraw pane after small delay
-	CXTPDockingPane*      m_pSelectedPane; // Pointer to selected pane
-	CXTPDockingPane*      m_pTrackingPane; // Pointer to dragging pane
-	CArray<CRect, CRect&> m_lstRects;      // Array of previous tabs positions
-	COleDropTarget* m_pDropTarget;         // Pointer to Ole Drop Target
-	BOOL m_bMaximized;          // TRUE if Pane is currently maximized
-	BOOL m_bEnsureSelectedTab;  // TRUE to check if selected tab is visible after delay
-
+	BOOL m_bActive;					  // TRUE if Tabbed container has active caption
+	BOOL m_bTitleVisible;			  // TRUE if title is visible
+	int m_nLockReposition;			  // InvalidatePane method currently executed.
+	BOOL m_bDelayRedraw;			  // TRUE to redraw pane after small delay
+	CXTPDockingPane* m_pSelectedPane; // Pointer to selected pane
+	CXTPDockingPane* m_pTrackingPane; // Pointer to dragging pane
+	CArray<CRect, CRect&> m_lstRects; // Array of previous tabs positions
+	COleDropTarget* m_pDropTarget;	// Pointer to Ole Drop Target
+	BOOL m_bMaximized;				  // TRUE if Pane is currently maximized
+	BOOL m_bEnsureSelectedTab;		  // TRUE to check if selected tab is visible after delay
 
 private:
 	class CContainerDropTarget;
 
 private:
+	using CXTPTabManager::OnNavigateButtonClick;
+
 	friend class CXTPDockingPaneManager;
 	friend class CXTPDockingPane;
 	friend class CXTPDockingPaneContext;
@@ -443,14 +463,18 @@ private:
 	friend class CXTPDockingPaneSidePanel;
 };
 
-AFX_INLINE BOOL CXTPDockingPaneTabbedContainer::IsActive() const {
+AFX_INLINE BOOL CXTPDockingPaneTabbedContainer::IsActive() const
+{
 	return m_bActive;
 }
-AFX_INLINE CXTPDockingPane* CXTPDockingPaneTabbedContainer::GetSelected() const {
+AFX_INLINE CXTPDockingPane* CXTPDockingPaneTabbedContainer::GetSelected() const
+{
 	return m_pSelectedPane;
 }
-AFX_INLINE HWND CXTPDockingPaneTabbedContainer::GetPaneHwnd() const {
+AFX_INLINE HWND CXTPDockingPaneTabbedContainer::GetPaneHwnd() const
+{
 	return CWnd::GetSafeHwnd();
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANETABBEDCONTAINER_H__)

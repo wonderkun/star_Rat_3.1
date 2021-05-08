@@ -2,9 +2,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Buffer.h"
 #include "Math.h"
+#include <afx.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE

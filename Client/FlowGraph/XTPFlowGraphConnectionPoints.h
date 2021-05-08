@@ -1,7 +1,6 @@
 // XTPFlowGraphConnectionPoints.h: interface for the CXTPFlowGraphConnectionPoints class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHCONNECTIONPOINTS_H__)
-#define __XTPFLOWGRAPHCONNECTIONPOINTS_H__
+#	define __XTPFLOWGRAPHCONNECTIONPOINTS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphNode;
 class CXTPFlowGraphConnectionPoint;
@@ -65,7 +66,8 @@ public:
 	//
 	//
 	// -----------------------------------------------------------------
-	CXTPFlowGraphConnectionPoint* AddConnectionPoint(CXTPFlowGraphConnectionPoint* pConnectionPoint);
+	CXTPFlowGraphConnectionPoint* AddConnectionPoint(CXTPFlowGraphConnectionPoint* pConnectionPoint,
+													 int nIndex = -1);
 
 	// ------------------------------------------------
 	// Summary:
@@ -78,8 +80,10 @@ public:
 	//     Removes the specified connection point.
 	// Parameters:
 	//     pConnectionPoint :  Reference to the connection point to remove.
+	//     bRemovePairs:       Indicates whether to remove the other connection
+	//                         point with the same name (but different type (IN/OUT)
 	// --------------------------------------------------------------------
-	void Remove(CXTPFlowGraphConnectionPoint* pConnectionPoint);
+	void Remove(CXTPFlowGraphConnectionPoint* pConnectionPoint, BOOL bRemovePairs = TRUE);
 	// ---------------------------------------------------------------------
 	// Summary:
 	//     Removes the specified connection point from the node's collection
@@ -87,7 +91,7 @@ public:
 	// Parameters:
 	//     nIndex :  Index of the connection point to remove.
 	// ---------------------------------------------------------------------
-	void RemoveAt(int nIndex);
+	void RemoveAt(int nIndex, BOOL bRemovePairs = TRUE, BOOL bSkipUndoTask = FALSE);
 
 	// -----------------------------------------------------------------
 	// Summary:
@@ -110,15 +114,17 @@ public:
 	// ---------------------------------------------------------------------
 	// Summary:
 	//     Finds and returns the specified connection point by searching for
-	//     the connection point's caption.
+	//     the connection point's name. There can be 2 connection points with the same
+	//     name but different type (in & out), so sometimes you should provide a type
 	// Parameters:
-	//     lpszCaption :  Caption of the connection point to find.
+	//     lpszName :  name of the connection point to find.
 	//
 	// Returns:
 	//     \Returns a reference to the FlowGraphConnectionPoint if found,
 	//     \otherwise it will return Nothing\\Null.
 	// ---------------------------------------------------------------------
-	CXTPFlowGraphConnectionPoint* FindConnectionPoint(LPCTSTR lpszCaption) const;
+	CXTPFlowGraphConnectionPoint* FindConnectionPoint(
+		LPCTSTR lpszName, XTPFlowGraphConnectionPointType type = xtpFlowGraphPointNone) const;
 	// ------------------------------------------------------------------
 	// Summary:
 	//     Finds and returns the specified connection point.
@@ -129,6 +135,21 @@ public:
 	//     \otherwise it will return Nothing\\Null.
 	// ------------------------------------------------------------------
 	CXTPFlowGraphConnectionPoint* FindConnectionPoint(int nId) const;
+
+	// ---------------------------------------------------------------------
+	// Summary:
+	//     Finds and returns the specified connection point by searching for
+	//     the connection point's caption. There can be 2 connection points with the same
+	//     caption but different type (in & out), so sometimes you should provide a type
+	// Parameters:
+	//     lpszCaption :  caption of the connection point to find.
+	//
+	// Returns:
+	//     \Returns a reference to the FlowGraphConnectionPoint if found,
+	//     \otherwise it will return Nothing\\Null.
+	// ---------------------------------------------------------------------
+	CXTPFlowGraphConnectionPoint* FindConnectionPointByCaption(
+		LPCTSTR lpszCaption, XTPFlowGraphConnectionPointType type = xtpFlowGraphPointNone) const;
 
 public:
 	// ------------------------------------------------------------------------
@@ -143,23 +164,44 @@ public:
 	// ------------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
 
-
 protected:
-	CXTPFlowGraphNode* m_pNode;  // Reference to the node that uses the connection points from this collection.
+	CXTPFlowGraphNode* m_pNode; // Reference to the node that uses the connection points from this
+								// collection.
 
-	CArray<CXTPFlowGraphConnectionPoint*, CXTPFlowGraphConnectionPoint*> m_arrConnectionPoints; // Collection of connection points.
+	CArray<CXTPFlowGraphConnectionPoint*, CXTPFlowGraphConnectionPoint*>
+		m_arrConnectionPoints; // Collection of connection points.
 
 	friend class CXTPFlowGraphNode;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphConnectionPoints)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphConnectionPoints)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleFindConnectionPoint(int nId);
+	afx_msg LPDISPATCH OleFindConnectionPointByCaption(LPCTSTR lpszCaption, const VARIANT& vtType);
+
+	afx_msg LPDISPATCH OleFindConnectionPointByName(LPCTSTR lpszName, const VARIANT& vtType);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-
-AFX_INLINE int CXTPFlowGraphConnectionPoints::GetCount() const {
+AFX_INLINE int CXTPFlowGraphConnectionPoints::GetCount() const
+{
 	return (int)m_arrConnectionPoints.GetSize();
 }
-AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnectionPoints::GetAt(int nIndex) const {
-	return nIndex >= 0 && nIndex < m_arrConnectionPoints.GetSize() ? m_arrConnectionPoints[nIndex] : NULL;
+AFX_INLINE CXTPFlowGraphConnectionPoint* CXTPFlowGraphConnectionPoints::GetAt(int nIndex) const
+{
+	return nIndex >= 0 && nIndex < m_arrConnectionPoints.GetSize() ? m_arrConnectionPoints[nIndex]
+																   : NULL;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHCONNECTIONPOINTS_H__)

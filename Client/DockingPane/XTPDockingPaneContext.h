@@ -1,7 +1,6 @@
 // XTPDockingPaneContext.h : interface for the CXTPDockingPaneContext class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANECONTEXT_H__)
-#define __XTPDOCKINGPANECONTEXT_H__
+#	define __XTPDOCKINGPANECONTEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBase.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPane;
 class CXTPDockingPaneManager;
@@ -42,19 +41,27 @@ class CXTPDockingPaneContext;
 //     m_bUseAlphaContext must be TRUE to display docking stickers.
 // See Also:
 //     CXTPDockingPaneContext::CreateNewSticker,
-//     CXTPDockingPaneContextStickerWnd::m_typeSticker, CXTPDockingPaneContextStickerWnd::m_selectedSticker
+//     CXTPDockingPaneContextStickerWnd::m_typeSticker,
+//     CXTPDockingPaneContextStickerWnd::m_selectedSticker
 //
-// <KEYWORDS xtpPaneStickerNone, xtpPaneStickerLeft, xtpPaneStickerRight, xtpPaneStickerTop, xtpPaneStickerBottom, xtpPaneStickerCenter, xtpPaneStickerClient, xtpPaneStickerPane>
+// <KEYWORDS xtpPaneStickerNone, xtpPaneStickerLeft, xtpPaneStickerRight, xtpPaneStickerTop,
+// xtpPaneStickerBottom, xtpPaneStickerCenter, xtpPaneStickerClient, xtpPaneStickerPane>
 //-----------------------------------------------------------------------
 enum XTPDockingPaneStickerType
 {
-	xtpPaneStickerNone = 0,         // No docking stickers are displayed
-	xtpPaneStickerLeft = 1,         // Display the docking sticker indicating the pane can be docked to the left.
-	xtpPaneStickerRight = 2,        // Display the docking sticker indicating the pane can be docked to the right.
-	xtpPaneStickerTop = 4,          // Display the docking sticker indicating the pane can be docked on the top.
-	xtpPaneStickerBottom = 8,       // Display the docking sticker indicating the pane can be docked on the bottom.
-	xtpPaneStickerCenter = 16,      // Display the docking sticker indicating the pane can be docked in the center.
-	xtpPaneStickerClient = 32       // Display the left, top, bottom, and right docking stickers on the client frame.
+	xtpPaneStickerNone = 0,  // No docking stickers are displayed
+	xtpPaneStickerLeft = 1,  // Display the docking sticker indicating the pane can be docked to the
+							 // left.
+	xtpPaneStickerRight = 2, // Display the docking sticker indicating the pane can be docked to the
+							 // right.
+	xtpPaneStickerTop = 4,   // Display the docking sticker indicating the pane can be docked on the
+							 // top.
+	xtpPaneStickerBottom = 8,  // Display the docking sticker indicating the pane can be docked on
+							   // the bottom.
+	xtpPaneStickerCenter = 16, // Display the docking sticker indicating the pane can be docked in
+							   // the center.
+	xtpPaneStickerClient = 32  // Display the left, top, bottom, and right docking stickers on the
+							   // client frame.
 };
 
 //===========================================================================
@@ -77,13 +84,13 @@ public:
 	virtual ~CXTPDockingPaneContextAlphaWnd();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 	//{{AFX_MSG(CXTPDockingPaneContextAlphaWnd)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	friend class CXTPDockingPaneContext;
 };
@@ -118,15 +125,18 @@ public:
 	//-----------------------------------------------------------------------
 	void OnDraw(CDC* pDC);
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	XTPDockingPaneStickerType HitTest(CPoint pt);
 	struct SPRITEINFO;
 
+	UINT GetStickersID(XTPDockingContextStickerStyle nStyle);
+	UINT GetClientID(XTPDockingContextStickerStyle nStyle);
+	SPRITEINFO* GetSpriteInfo(XTPDockingContextStickerStyle nStyle);
+
 protected:
 	void DrawSprite(CDC* pDC, UINT nID, SPRITEINFO* pSpriteInfo, BOOL bClientBitmap = TRUE);
-	void DrawTransparent(CDC* pDC , const CPoint& ptDest, const CSize& sz, CBitmap* pBitmap);
+	void DrawTransparent(CDC* pDC, const CPoint& ptDest, const CSize& sz, CBitmap* pBitmap);
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -135,15 +145,14 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	XTPDockingPaneStickerType m_typeSticker;      // Type of the sticker.
-	XTPDockingPaneStickerType m_selectedSticker;  // Selected sticker part.
-	CXTPDockingPaneContext* m_pContext;           // Pointer to docking pane context.
+	XTPDockingPaneStickerType m_typeSticker;	 // Type of the sticker.
+	XTPDockingPaneStickerType m_selectedSticker; // Selected sticker part.
+	CXTPDockingPaneContext* m_pContext;			 // Pointer to docking pane context.
 
 	friend class CXTPDockingPaneContext;
-
 };
 
 //===========================================================================
@@ -188,7 +197,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      This method is called inside WM_SIZING handler of mini frames to update sticky position of frame
+	//      This method is called inside WM_SIZING handler of mini frames to update sticky position
+	//      of frame
 	// Parameters:
 	//      pWnd - Mini frame pointer
 	//      nSide - Side was dragged by user
@@ -232,7 +242,6 @@ protected:
 	virtual void DrawFocusRect(BOOL bRemoveRect = FALSE);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to adjust the rectangle.
@@ -279,9 +288,10 @@ protected:
 	// Returns:
 	//     New Sticker window
 	//-----------------------------------------------------------------------
-	CXTPDockingPaneContextStickerWnd* CreateNewSticker(CRect rc, XTPDockingPaneStickerType typeSticker);
+	CXTPDockingPaneContextStickerWnd* CreateNewSticker(CRect rc,
+													   XTPDockingPaneStickerType typeSticker);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	CSize GetStickerSize(XTPDockingPaneStickerType type) const;
 	XTPDockingContextStickerStyle GetStickerStyle() const;
@@ -302,55 +312,62 @@ protected:
 	void UpdateSizingStickyFrame(UINT nSide, CRect& rectDragFrame, CWnd* pWnd);
 
 	BOOL IsBehind(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pPaneRef);
-//}}AFX_CODEJOCK_PRIVATE
+
+	void AcquireDesktopDC();
+	void ReleaseDesktopDC();
+
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void IncludeRgnPart(CRgn* pRgn, int x1, int y, int x2);
+	void ProcessPendingPaintMessages();
 
 protected:
+	CXTPDockingPaneContextAlphaWnd m_wndContext;	 // Alpha context control.
+	CXTPDockingPaneContextAlphaWnd m_wndAttachedTab; // Attached tab control.
 
-	CXTPDockingPaneContextAlphaWnd m_wndContext;        // Alpha context control.
-	CXTPDockingPaneContextAlphaWnd m_wndAttachedTab;    // Attached tab control.
+	PVOID m_pfnSetLayeredWindowAttributes; // Pointer to SetLayeredWindowAttributes method.
 
-	PVOID m_pfnSetLayeredWindowAttributes;              // Pointer to SetLayeredWindowAttributes method.
+	BOOL m_bUseDockingStickers; // TRUE to use docking stickers.
+	BOOL m_bUseAlphaContext;	// TRUE to use alpha context.
 
-	BOOL m_bUseDockingStickers;                         // TRUE to use docking stickers.
-	BOOL m_bUseAlphaContext;                            // TRUE to use alpha context.
+	CRect m_rectStickerPane;				 // Area occupied by the sticker pane.
+	CXTPDockingPaneBase* m_pStickerPane;	 // Sticker Pane.
+	CXTPDockingPaneBase* m_pLastStickerPane; // Last Sticker Pane.
 
-	CRect m_rectStickerPane;                            // Area occupied by the sticker pane.
-	CXTPDockingPaneBase* m_pStickerPane;                // Sticker Pane.
-	CXTPDockingPaneBase* m_pLastStickerPane;            // Last Sticker Pane.
-
-	CList<CXTPDockingPaneContextStickerWnd*, CXTPDockingPaneContextStickerWnd*> m_lstStickers;  //List of the stickers
-	CPoint m_ptLast;                                    // Holds the last selection point.
-	CPoint m_ptSticky;                                  // Position of the sticky control.
-	CRect m_rectDragFrame;                              // Area occupied by the drag frame.
-	CRect m_rectDragFrameScreen;                        // Screen drag frame
-	CXTPDockingPaneManager* m_pManager;                 // Parent pane manager.
-	CXTPDockingPaneBase* m_pPane;                       // Pointer to the associated pane.
-	BOOL m_bDragKeyboard;                               // TRUE if keyboard used to drag pane
+	CList<CXTPDockingPaneContextStickerWnd*, CXTPDockingPaneContextStickerWnd*>
+		m_lstStickers;					// List of the stickers
+	CPoint m_ptLast;					// Holds the last selection point.
+	CPoint m_ptSticky;					// Position of the sticky control.
+	CRect m_rectDragFrame;				// Area occupied by the drag frame.
+	CRect m_rectDragFrameScreen;		// Screen drag frame
+	CXTPDockingPaneManager* m_pManager; // Parent pane manager.
+	CXTPDockingPaneBase* m_pPane;		// Pointer to the associated pane.
+	BOOL m_bDragKeyboard;				// TRUE if keyboard used to drag pane
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL m_bResetDC;
 	CXTPDockingPaneBase* m_pContainer;
 	CRect m_rectContainer;
-	BOOL  m_bAttachLast;
-	BOOL  m_bAttach;
-	BOOL  m_bSideDock;
-	BOOL  m_bFloatable;
-	BOOL  m_bDockable;
+	BOOL m_bAttachLast;
+	BOOL m_bAttach;
+	BOOL m_bSideDock;
+	BOOL m_bFloatable;
+	BOOL m_bDockable;
 	CRect m_rectLast;
 	CSize m_sizeLast;
-	BOOL  m_bDitherLast;
-	CMap<UINT, UINT,  CRgn*, CRgn*> m_rgnStickers;
+	BOOL m_bDitherLast;
+	CMap<UINT, UINT, CRgn*, CRgn*> m_rgnStickers;
 	XTPDockingPaneDirection m_containDirection;
 	CDC* m_pDC;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	friend class CXTPDockingPaneManager;
 	friend class CXTPDockingPaneContextAlphaWnd;
+	friend class CXTPDockingPaneContextStickerWnd;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANECONTEXT_H__)

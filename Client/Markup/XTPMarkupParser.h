@@ -1,7 +1,6 @@
 // XTPMarkupParser.h: interface for the CXTPMarkupParser class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,25 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMARKUPPARSER_H__)
-#define __XTPMARKUPPARSER_H__
+#	define __XTPMARKUPPARSER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 
-// Internal class used to parse XAML text to Markup tree
+class CXTPComInitializer;
 
-#define XTP_MAX_TOKEN_SIZE 1024
-#define XTP_MAX_NAME_SIZE 128
+#	define XTP_MAX_TOKEN_SIZE 1024
+#	define XTP_MAX_NAME_SIZE 128
 
-
+//===========================================================================
+// Summary: Internal class used to parse XAML text to Markup tree
+//===========================================================================
 class _XTP_EXT_CLASS CXTPMarkupParser
 {
 public:
@@ -42,106 +45,113 @@ public:
 	virtual ~CXTPMarkupParser();
 
 public:
-	enum TokenType
+	//-------------------------------------------------------------------------
+	// Summary: Sets ANSI XML data.
+	// Parameters:
+	//    lpszStart - Pointer to the first character of the sequence to parse.
+	//    lpszEnd - Pointer to the next after the last character of the sequence to parse.
+	// Returns: TRUE if succeeds.
+	//-------------------------------------------------------------------------
+	BOOL SetBuffer(LPCSTR lpszStart, LPCSTR lpszEnd);
+
+	//-------------------------------------------------------------------------
+	// Summary: Sets Unicode XML data.
+	// Parameters:
+	//    lpszStart - Pointer to the first character of the sequence to parse.
+	//    lpszEnd - Pointer to the next after the last character of the sequence to parse.
+	// Returns: TRUE if succeeds.
+	//-------------------------------------------------------------------------
+	BOOL SetBuffer(LPCWSTR lpszStart, LPCWSTR lpszEnd);
+
+	//-------------------------------------------------------------------------
+	// Summary: Reads XML data from a stream.
+	// Parameters: pStream - Stream pointer to read XML data from.
+	// Returns: TRUE if succeeds.
+	//-------------------------------------------------------------------------
+	BOOL SetDataStream(IStream* pStream);
+
+	//-------------------------------------------------------------------------
+	// Summary: Provides access to the XML document instance.
+	// Returns: A valid pointer to XML document instance or empty pointer
+	//          if no XML is loaded.
+	//-------------------------------------------------------------------------
+	XTPXML::IXMLDOMDocumentPtr GetXmlDocument();
+
+	//-------------------------------------------------------------------------
+	// Summary: Provides information about loading and parsing XML error.
+	//-------------------------------------------------------------------------
+	struct ErrorInfo
 	{
-		tokenError = -1,
-		tokenEof = 0,
-		tokenTagStart,
-		tokenTagEnd,
-		tokenAttribute,
-		tokenWord,
-		tokenSpace,
-		tokenData,
-		tokenCommentStart,
-		tokenCommentEnd,
-		tokenCDataStart,
-		tokenCDataEnd,
-		tokenPIStart,
-		tokenPIEnd
+		HRESULT nCode;	 // Error code.
+		BOOL bXml;		   // If TRUE, the following below fields contain valid values.
+		long nLine;		   // Line number where an error occured.
+		long nPosition;	// Position in a line where an error occured.
+		_bstr_t strReason; // Error description.
+		_bstr_t strSource; // Soource line where an error occured.
 	};
 
-	void SetBuffer(LPCSTR lpszStart, LPCSTR lpszEnd);
-	void SetBuffer(LPCWSTR lpszStart, LPCWSTR lpszEnd);
+	//-------------------------------------------------------------------------
+	// Summary: Provides access to error information.
+	// Returns: A reference to error information.
+	//-------------------------------------------------------------------------
+	const ErrorInfo& GetErrorInfo() const;
 
-public:
-	TokenType GetNextToken();
-	const WCHAR* GetValue();
-	const WCHAR* GetAttributeName();
-	const WCHAR* GetTagName();
+	//-------------------------------------------------------------------------
+	// Summary: Formats a user friendly error message.
+	// Returns: A user friendly error message.
+	//-------------------------------------------------------------------------
+	CString FormatErrorMessage() const;
 
-	// should be overrided to resolve entities, e.g. &nbsp;
-	virtual WCHAR ResolveEntity(const WCHAR* buf, int buf_size);
-
-	int GetLine() const;
-	int GetPosition() const;
-
-	BOOL FindFirstTag();
-	void SetEncoding(int nEncoding);
-
-private:
-
-	typedef TokenType (CXTPMarkupParser::*PFNSCANNEXTTOKEN)();
-	PFNSCANNEXTTOKEN m_scan;
-
-	// content 'readers'
-	TokenType ScanBody();
-	TokenType ScanHead();
-	TokenType ScanComment();
-	TokenType ScanCData();
-	TokenType ScanPI();
-	TokenType ScanTag();
-
-	WCHAR SkipWhitespace();
-	void PushBack(WCHAR c);
-
-	WCHAR GetChar();
-	WCHAR ScanEntity();
-	BOOL IsWhitespace(WCHAR c) const;
-
-	void AppendValue(WCHAR c);
-	void AppendAttributeName(WCHAR c);
-	void AppendTagName(WCHAR c);
-
-	WCHAR GetNextChar();
-
-	TokenType ReportError(LPCWSTR lpszError);
+	//-------------------------------------------------------------------------
+	// Summary: Formats a user friendly markup error message.
+	// Returns: A user friendly markup error message.
+	//-------------------------------------------------------------------------
+	CString FormatMarkupErrorMessage() const;
 
 private:
+	struct MEMORY_BLOB
+	{
+		SIZE_T cbSize;
+		LPCVOID pBlobData;
+	};
 
-	TokenType  m_token;
+	BOOL CreateDataStream(LPCSTR lpString, SIZE_T cch, IStream** ppStream) const;
+	BOOL CreateDataStream(LPCWSTR lpString, SIZE_T cch, IStream** ppStream) const;
+	BOOL CreateDataStream(const MEMORY_BLOB* pBlobs, UINT nBlobs, IStream** ppStream) const;
 
-	WCHAR* m_lpszValue;
-	int m_nValueAlloc;
-	int m_nValueLength;
+	void ObtainComErrorInfo(HRESULT hr) const;
+	void ObtainXmlErrorInfo(XTPXML::IXMLDOMDocument* pXmlDocument, HRESULT hr = S_OK);
+	void ResetErrorInfo();
 
-	WCHAR m_lpszTagName[XTP_MAX_NAME_SIZE];
-	int m_nTagNameLength;
+	void ReleaseXml();
 
-	WCHAR m_lpszAttributeName[XTP_MAX_NAME_SIZE];
-	int m_nAttributeNameLength;
+	HGLOBAL ReadStreamData(IStream* pStream) const;
+	LPWSTR ReadStreamDataAsUnicode(IStream* pStream, UINT* pchUnicodeText) const;
 
-	WCHAR m_cInputChar;
-	BOOL m_bGotTail;
-
-	int m_nLine;
-	int m_nPosition;
+	// Backward compatibility tools.
+	BOOL FixReferenceToUndeclaredNamespacePrefixX(IStream* pInputStream,
+												  IStream** ppOutputStream) const;
+	BOOL FixRequiredWhiteSpaceWasMissing(IStream* pInputStream, IStream** ppOutputStream) const;
 
 private:
-	BOOL m_bUnicode;
-	int m_nEncoding;
-	LPCSTR m_lpszEnd;
-	LPCSTR m_lpszPos;
+	CXTPComInitializer* m_pComInitializer;
+	XTPXML::IXMLDOMDocumentPtr m_pXmlDocument;
+	mutable ErrorInfo m_errorInfo;
+	BOOL m_bInFixReferenceToUndeclaredNamespacePrefixX;
+	static const BYTE UnicodeBOM[2];
 };
 
-AFX_INLINE int CXTPMarkupParser::GetLine() const {
-	return m_nLine;
+AFX_INLINE const CXTPMarkupParser::ErrorInfo& CXTPMarkupParser::GetErrorInfo() const
+{
+	return m_errorInfo;
 }
-AFX_INLINE int CXTPMarkupParser::GetPosition() const {
-	return m_nPosition;
+
+AFX_INLINE XTPXML::IXMLDOMDocumentPtr CXTPMarkupParser::GetXmlDocument()
+{
+	return m_pXmlDocument;
 }
-AFX_INLINE void CXTPMarkupParser::SetEncoding(int nEncoding) {
-	m_nEncoding = nEncoding;
-}
+
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMARKUPPARSER_H__)

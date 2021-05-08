@@ -1,7 +1,6 @@
 // XTPResize.h: interface for the CXTPResize class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZE_H__)
-#define __XTPRESIZE_H__
+#	define __XTPRESIZE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // -------------------------------------------------------------------
 // Summary:
@@ -36,15 +37,16 @@
 // See Also:
 //     CXTPResize
 //
-// <KEYWORDS xtpResizeNoSizeIcon, xtpResizeNoHorizontal, xtpResizeNoVertical, xtpResizeNoMinsize, xtpResizeNoClipChildren, xtpResizeNoTransparentGroup>
+// <KEYWORDS xtpResizeNoSizeIcon, xtpResizeNoHorizontal, xtpResizeNoVertical, xtpResizeNoMinsize,
+// xtpResizeNoClipChildren, xtpResizeNoTransparentGroup>
 // -------------------------------------------------------------------
 enum XTPResize
 {
-	xtpResizeNoSizeIcon         = 0x01, // Do not add size icon.
-	xtpResizeNoHorizontal       = 0x02, // No horizontal resizing.
-	xtpResizeNoVertical         = 0x04, // No vertical resizing.
-	xtpResizeNoMinsize          = 0x08, // Do not require a minimum size.
-	xtpResizeNoClipChildren     = 0x10, // Do not set clip children style.
+	xtpResizeNoSizeIcon			= 0x01, // Do not add size icon.
+	xtpResizeNoHorizontal		= 0x02, // No horizontal resizing.
+	xtpResizeNoVertical			= 0x04, // No vertical resizing.
+	xtpResizeNoMinsize			= 0x08, // Do not require a minimum size.
+	xtpResizeNoClipChildren		= 0x10, // Do not set clip children style.
 	xtpResizeNoTransparentGroup = 0x20  // Do not set transparent style for group boxes.
 };
 
@@ -58,17 +60,16 @@ class CXTPResize;
 class _XTP_EXT_CLASS CXTPResizeItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResizeItem object
 	// Parameters:
-	//     hWnd        - Window handle to be sized or moved.
+	//     pWnd        - Pointer to the window to be sized or moved.
 	//     rrcSizing   - Reference to a CXTPResizeRect object.
 	//     rcWindow    - Reference to a CRect object.
 	//     bAutoDelete - TRUE if the window is to be deleted.
 	//-----------------------------------------------------------------------
-	CXTPResizeItem(HWND hWnd, const CXTPResizeRect& rrcSizing, CRect& rcWindow);
+	CXTPResizeItem(CWnd* pWnd, const CXTPResizeRect& rrcSizing, CRect& rcWindow, BOOL bAutoDelete);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -90,12 +91,13 @@ public:
 	virtual bool MakeTransparent(CXTPResize* pXTPResize);
 
 public:
-	BOOL m_bIsGroupBox;             // TRUE if the window is a group box.
-	BOOL m_bInitialSize;            // Initial size/move has been completed.
-	HWND m_hWnd;                     // Window handle to be sized or moved.
-	CXTPResizeRect m_rrcSizing;      // Sizing option.
-	CXTPResizeRect m_rrcWindow;      // Last control size.
-	CXTPResizeRect m_rrcInitWindow;  // Initial control size.
+	BOOL m_bIsGroupBox;				// TRUE if the window is a group box.
+	BOOL m_bAutoDelete;				// TRUE if the window is to be deleted.
+	BOOL m_bInitialSize;			// Initial size/move has been completed.
+	CWnd* m_pWnd;					// A pointer to the window to be sized or moved.
+	CXTPResizeRect m_rrcSizing;		// Sizing option.
+	CXTPResizeRect m_rrcWindow;		// Last control size.
+	CXTPResizeRect m_rrcInitWindow; // Initial control size.
 };
 
 //===========================================================================
@@ -120,18 +122,17 @@ public:
 	virtual ~CXTPSizeIcon();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPSizeIcon)
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	HCURSOR m_hCursor; // Handle to the cursor displayed for the size icon
-
 };
 
 //===========================================================================
@@ -143,7 +144,6 @@ protected:
 class _XTP_EXT_CLASS CXTPResize
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResize object
@@ -171,7 +171,6 @@ public:
 	virtual ~CXTPResize();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The SetResize function specifies how much each side of a control will
@@ -188,7 +187,7 @@ public:
 	//     right         - How much the right side will move when the dialog is resized.
 	//     bottom        - How much the bottom side will move when the dialog is resized.
 	//-----------------------------------------------------------------------
-	void SetResize(const UINT nID, XTP_RESIZE left, XTP_RESIZE top, XTP_RESIZE right, XTP_RESIZE bottom);
+	void SetResize(UINT nID, XTP_RESIZE left, XTP_RESIZE top, XTP_RESIZE right, XTP_RESIZE bottom);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -204,7 +203,7 @@ public:
 	//     rrcSizing     - How much the left, top, right, and bottom sides will move when
 	//                     the dialog is resized.
 	//-----------------------------------------------------------------------
-	void SetResize(const UINT nID, const XTP_RESIZERECT& rrcSizing);
+	void SetResize(UINT nID, const XTP_RESIZERECT& rrcSizing);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -216,12 +215,12 @@ public:
 	//     then the left and top sides shouldn't move, and the right and bottom
 	//     sides should move by the same amount of pixels as the dialog.
 	// Parameters:
-	//     nID           - Specifies the control's ID.
+	//     nID           - Specifies the control's ID or 0 to use control's handle value only.
 	//     hWnd          - HWND of the dialog item to be sized.
 	//     rrcSizing     - How much the left, top, right, and bottom sides will move when
 	//                     the dialog is resized.
 	//-----------------------------------------------------------------------
-	void SetResize(const UINT nID, const HWND hWnd, const XTP_RESIZERECT& rrcSizing);
+	void SetResize(UINT nID, HWND hWnd, const XTP_RESIZERECT& rrcSizing);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -233,12 +232,13 @@ public:
 	//     then the left and top sides shouldn't move, and the right and bottom
 	//     sides should move by the same amount of pixels as the dialog.
 	// Parameters:
-	//     nID           - Specifies the control's ID.
+	//     nID           - Specifies the control's ID or 0 to use control's handle value only.
 	//     hWnd          - HWND of the dialog item to be sized.
 	//     rpTopLeft     - How much the top and left sides will move when the dialog is resized.
 	//     rpBottomRight - How much the bottom and right sides will move when the dialog is resized.
 	//-----------------------------------------------------------------------
-	void SetResize(const UINT nID, const HWND hWnd, const XTP_RESIZEPOINT& rpTopLeft, const XTP_RESIZEPOINT& rpBottomRight);
+	void SetResize(UINT nID, HWND hWnd, const XTP_RESIZEPOINT& rpTopLeft,
+				   const XTP_RESIZEPOINT& rpBottomRight);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -254,7 +254,8 @@ public:
 	//     rpTopLeft     - How much the top and left sides will move when the dialog is resized.
 	//     rpBottomRight - How much the bottom and right sides will move when the dialog is resized.
 	//-----------------------------------------------------------------------
-	void SetResize(const UINT nID, const XTP_RESIZEPOINT& rpTopLeft, const XTP_RESIZEPOINT& rpBottomRight);
+	void SetResize(UINT nID, const XTP_RESIZEPOINT& rpTopLeft,
+				   const XTP_RESIZEPOINT& rpBottomRight);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -311,7 +312,6 @@ public:
 	BOOL AutoLoadPlacement(LPCTSTR pszSection);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The SetResize function specifies how much each side of a control will
@@ -322,18 +322,11 @@ protected:
 	//     then the left and top sides shouldn't move, and the right and bottom
 	//     sides should move by the same amount of pixels as the dialog.
 	// Parameters:
-	//     nID           - Specifies the control's ID.
 	//     pWnd          - Points to the dialog item to be resized.
 	//     hWnd          - HWND of the dialog item to be sized.
 	//     rrcSizing     - How much the left, top, right, and bottom sides will move when
 	//                     the dialog is resized.
 	//     rcWindow      - Initial size of the dialog item.
-	//     left          - How much the left side will move when the dialog is resized.
-	//     top           - How much the top side will move when the dialog is resized.
-	//     right         - How much the right side will move when the dialog is resized.
-	//     bottom        - How much the bottom side will move when the dialog is resized.
-	//     rpTopLeft     - How much the top and left sides will move when the dialog is resized.
-	//     rpBottomRight - How much the bottom and right sides will move when the dialog is resized.
 	//-----------------------------------------------------------------------
 	void SetResize(CWnd* pWnd, const CXTPResizeRect& rrcSizing, CRect rcWindow);
 
@@ -346,7 +339,7 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL RemoveResize(const UINT nID);
+	BOOL RemoveResize(UINT nID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -421,7 +414,6 @@ protected:
 	virtual void AdjustResizeRect(CSize& rcWindow);
 
 protected: // flags
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called to determine if the specified flag
@@ -461,59 +453,78 @@ protected: // flags
 	void SetFlag(XTPResize eFlag);
 
 protected: // helper methods
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Called by CXTPResize to resize a child window.
 	// Parameters:
-	//     hdwp     - [in] Handle to a multiple-window - position structure that contains size and position information for one or more windows. This structure is returned by BeginDeferWindowPos or by the most recent call to DeferWindowPos.
-	//     pItem    - [in] Pointer to a CXTPResizeItem object that contains additional information about the window being sized.
-	//     dx       - [in] Specifies the window's new width, in pixels.
-	//     dy       - [in] Specifies the window's new height, in pixels.
+	//     hdwp     - [in] Handle to a multiple-window - position structure that contains size and
+	//     position information for one or more windows. This structure is returned by
+	//     BeginDeferWindowPos or by the most recent call to DeferWindowPos. pItem    - [in] Pointer
+	//     to a CXTPResizeItem object that contains additional information about the window being
+	//     sized. dx       - [in] Specifies the window's new width, in pixels. dy       - [in]
+	//     Specifies the window's new height, in pixels.
 	// Returns:
 	//     TRUE if successful, otherwise FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL Defer(HDWP& hdwp, CXTPResizeItem* pItem, int dx, int dy);
 
 protected:
+	typedef CArray<CXTPResizeItem*, CXTPResizeItem*&>
+		CResizeItemArray; // Used by CXTPResize to maintain a list of children that are sizable.
 
-	typedef CArray<CXTPResizeItem*, CXTPResizeItem*&> CResizeItemArray;   // Used by CXTPResize to maintain a list of children that are sizable.
-
-	UINT            m_nFlagsXX;     // flags passed from constructor
-	CWnd*           m_pWnd;         // the associative relation to the window to be resized
-	CSize           m_szWindow;     // last dialog size
-	CSize           m_szInitWindow; // Initial dialog size
-	CSize           m_szMin;        // smallest size allowed
-	CSize           m_szMax;        // largest size allowed
-	CString         m_strSection;   // section in registry where window placement information is saved.
-	CXTPSizeIcon     m_scSizeIcon;   // size icon window
-	CResizeItemArray    m_arrItems;     // array of controls
+	UINT m_nFlagsXX;			 // flags passed from constructor
+	CWnd* m_pWnd;				 // the associative relation to the window to be resized
+	CSize m_szWindow;			 // last dialog size
+	CSize m_szInitWindow;		 // Initial dialog size
+	CSize m_szMin;				 // smallest size allowed
+	CSize m_szMax;				 // largest size allowed
+	CString m_strSection;		 // section in registry where window placement information is saved.
+	CXTPSizeIcon m_scSizeIcon;   // size icon window
+	CResizeItemArray m_arrItems; // array of controls
 
 	friend class CXTPResizeItem;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPResize::SetMinSize(CSize& sz) {
+AFX_INLINE void CXTPResize::SetMinSize(CSize& sz)
+{
 	m_szMin = sz;
 }
-AFX_INLINE void CXTPResize::SetMaxSize(CSize& sz) {
+AFX_INLINE void CXTPResize::SetMaxSize(CSize& sz)
+{
 	m_szMax = sz;
 }
-AFX_INLINE BOOL CXTPResize::HasFlag(XTPResize eFlag) {
+AFX_INLINE BOOL CXTPResize::HasFlag(XTPResize eFlag)
+{
 	return (m_nFlagsXX & eFlag) != 0;
 }
-AFX_INLINE void CXTPResize::SetResize(const UINT nID, const HWND hWnd, const XTP_RESIZEPOINT& rpTopLeft, const XTP_RESIZEPOINT& rpBottomRight) {
-	SetResize(nID, hWnd, CXTPResizeRect(rpTopLeft.x, rpTopLeft.y, rpBottomRight.x, rpBottomRight.y));
+AFX_INLINE void CXTPResize::SetResize(UINT nID, HWND hWnd, const XTP_RESIZEPOINT& rpTopLeft,
+									  const XTP_RESIZEPOINT& rpBottomRight)
+{
+	SetResize(nID, hWnd,
+			  CXTPResizeRect(rpTopLeft.x, rpTopLeft.y, rpBottomRight.x, rpBottomRight.y));
 }
-AFX_INLINE void CXTPResize::SetResize(const UINT nID, const XTP_RESIZERECT& rrcSizing) {
+
+AFX_INLINE void CXTPResize::SetResize(UINT nID, const XTP_RESIZERECT& rrcSizing)
+{
+	ASSERT(0 != nID);
 	SetResize(nID, NULL, rrcSizing);
 }
-AFX_INLINE void CXTPResize::SetResize(const UINT nID, const XTP_RESIZEPOINT& rpTopLeft, const XTP_RESIZEPOINT& rpBottomRight) {
+
+AFX_INLINE void CXTPResize::SetResize(UINT nID, const XTP_RESIZEPOINT& rpTopLeft,
+									  const XTP_RESIZEPOINT& rpBottomRight)
+{
+	ASSERT(0 != nID);
 	SetResize(nID, CXTPResizeRect(rpTopLeft.x, rpTopLeft.y, rpBottomRight.x, rpBottomRight.y));
 }
-AFX_INLINE void CXTPResize::SetResize(const UINT nID, XTP_RESIZE left, XTP_RESIZE top, XTP_RESIZE right, XTP_RESIZE bottom) {
+
+AFX_INLINE void CXTPResize::SetResize(UINT nID, XTP_RESIZE left, XTP_RESIZE top, XTP_RESIZE right,
+									  XTP_RESIZE bottom)
+{
+	ASSERT(0 != nID);
 	SetResize(nID, CXTPResizeRect(left, top, right, bottom));
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZE_H__)

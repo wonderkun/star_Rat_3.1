@@ -1,7 +1,6 @@
 // XTPSpinButtonCtrl.h interface for the CXTPSpinButtonCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,27 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSPINBUTTONCTRL_H__)
-#define __XTPSPINBUTTONCTRL_H__
+#	define __XTPSPINBUTTONCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPEdit;
+class CXTPWinThemeWrapper;
 
+//===========================================================================
+// Summary: The CXTPSpinButtonCtrl class provides the functionality of a
+//          themed Windows spin button control.
+//===========================================================================
 class _XTP_EXT_CLASS CXTPSpinButtonCtrl : public CSpinButtonCtrl
 {
 	DECLARE_DYNAMIC(CXTPSpinButtonCtrl)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSpinButtonCtrl object
@@ -46,8 +51,6 @@ public:
 	//     Destroys a CXTPSpinButtonCtrl object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	~CXTPSpinButtonCtrl();
-
-public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -106,28 +109,93 @@ public:
 	//-----------------------------------------------------------------------
 	void SetUseVisualStyle(BOOL bUseVisualStyle = TRUE);
 
-
 protected:
+	//-----------------------------------------------------------------------
+	// Summary: Determines which spin button, if any, is at a specified position.
+	// Input:   pt - Point to be tested.
+	// Returns: The id of the spin button at the position specified by pt, can
+	//          be either UD_HITNOWHERE, UD_HITDOWN or UD_HITUP.
+	//-----------------------------------------------------------------------
 	UINT HitTest(CPoint pt);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render the spin button control.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void OnDraw(CDC* pDC);
 
-	// -----------------------------------------------------------------
-	// Summary:
-	//     This member is called to update color, text and other visual elements
-	//     of the control.
-	// -----------------------------------------------------------------
+	//-----------------------------------------------------------------------
+	// Summary: his member is called to update color, text and other
+	//          visual elements of the control.
+	//-----------------------------------------------------------------------
 	void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary: Called to determine if the border is chared with a buddy.
+	// Returns: TRUE if the borders are shared.
+	//-----------------------------------------------------------------------
 	BOOL HasSharedBorder() const;
 
+	//-----------------------------------------------------------------------
+	// Summary: Called to retrieve a pointer to the CXTPEdit buddy window.
+	// Returns: A pointer to a CXTPEdit object if a buddy is available,
+	//          otherwise NULL.
+	//-----------------------------------------------------------------------
 	CXTPEdit* GetEditBuddy() const;
 
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render Windows themes for the spin
+	//          button control.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void DrawVisualStyle(CDC* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render resource driven themes.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void DrawOffice2007(CDC* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render flat style spin button themes.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void DrawFlat(CDC* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render the button portion of the
+	//          spin button control for flat style themes.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void DrawFlatButton(CDC* pDC, UINT nButton);
-	void DrawArrowGlyph2(CDC* pDC, CRect rcArrow, BOOL bHorz, BOOL bUpArrow, BOOL bEnabled);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to render the up and down arrows for
+	//          the spin button control.
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
+	void DrawArrowGlyph(CDC* pDC, CRect rcArrow, BOOL bHorz, BOOL bUpArrow, COLORREF clrArrow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	// Input:   pDC - Points to a valid device context.
+	//-----------------------------------------------------------------------
 	void DrawStandard(CDC* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to determine if the spin button control
+	//          is vertically orientated.
+	// Returns: TRUE if the spin button control orientation is vertical.
+	//-----------------------------------------------------------------------
 	BOOL IsVertical() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the spin button control to determin the size of the
+	//          spin button specified by nButton.
+	// Input:   nButton - Id of the button to retrieve the size information for,
+	//                    can be either UD_HITUP or UD_HITDOWN.
+	// Returns:  A CRect value representing the size for the specified button.
+	//-----------------------------------------------------------------------
 	CRect GetButtonRect(int nButton);
 
 	//-----------------------------------------------------------------------
@@ -137,13 +205,10 @@ protected:
 	//-----------------------------------------------------------------------
 	void Init();
 
-protected:
-
 	//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-	BOOL PreCreateWindow(CREATESTRUCT& cs);
-	void PreSubclassWindow();
-
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void PreSubclassWindow();
+	virtual int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
 	//{{AFX_MSG(CXTPSpinButtonCtrl)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -153,29 +218,40 @@ protected:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
+	DECLARE_MESSAGE_MAP()
+
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-
-protected:
-	CXTPWinThemeWrapper m_themeSpin;
-	BOOL m_bUseVisualStyle;
-	XTPControlTheme m_nTheme;
-	BOOL m_bPreSubclassInit;
-
-	COLORREF m_crBackPushed;
-	COLORREF m_crBackHilite;
-	COLORREF m_crBorderHilite;
-	COLORREF m_crBorder;
-	COLORREF m_crBack;
-	UINT m_nHotButton;
-	UINT m_nPressedButton;
+	UINT m_nHotButton;		// Id for the currently highlighted button, can be either UD_HITNOWHERE,
+							// UD_HITDOWN or UD_HITUP.
+	UINT m_nPressedButton;  // Id for the currently pressed button, can be either UD_HITNOWHERE,
+							// UD_HITDOWN or UD_HITUP.
+	BOOL m_bUseVisualStyle; // TRUE to use Windows themes.
+	BOOL m_bPreSubclassInit;		  // TRUE if the control has been subclassed.
+	COLORREF m_crBack;				  // Spin button background color.
+	COLORREF m_crBackHilite;		  // Spin button background highlight color.
+	COLORREF m_crBackPushed;		  // Spin button background pushed color.
+	COLORREF m_crBackDisabled;		  // Spin button disabled color.
+	COLORREF m_crBorder;			  // Border color.
+	COLORREF m_crBorderHilite;		  // Border highlight color.
+	COLORREF m_crBorderPushed;		  // Border pushed color.
+	COLORREF m_crBorderDisabled;	  // Border disabled color.
+	COLORREF m_crArrowEnabled;		  // Spin button arrow color.
+	COLORREF m_crArrowHilite;		  // Spin button arrow highlight color.
+	COLORREF m_crArrowPushed;		  // Spin button arrow pushed color.
+	COLORREF m_crArrowDisabled;		  // Spin button arrow disabled color.
+	XTPControlTheme m_nTheme;		  // Currently active theme ID.
+	CXTPWinThemeWrapper* m_themeSpin; // Windows theme API wrapper pointer.
 };
 
+/////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPSpinButtonCtrl::GetUseVisualStyle() const {
+AFX_INLINE BOOL CXTPSpinButtonCtrl::GetUseVisualStyle() const
+{
 	return m_bUseVisualStyle;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPSPINBUTTONCTRL_H__)

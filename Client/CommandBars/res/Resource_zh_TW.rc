@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
 #ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 #pragma code_page(950)
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "菜單(&M)"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "應用程序菜單",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
+    LTEXT           "上下文菜單",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "顯示菜單:",IDC_STATIC,10,20,44,11
     COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "重置",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "默認菜單\n默認應用程序菜單",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
+    LTEXT           "選擇上下文菜單:",IDC_STATIC,10,92,68,10
     COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "重置",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -181,7 +180,7 @@ XTP_IDR_CUSTOMIZEMENU MENU DISCARDABLE
 BEGIN
     POPUP "自訂"
     BEGIN
-        MENUITEM "重設",                      XTP_ID_CUSTOMIZE_RESET
+        MENUITEM "重置",                      XTP_ID_CUSTOMIZE_RESET
         MENUITEM "刪除",                     XTP_ID_CUSTOMIZE_DELETE
         MENUITEM SEPARATOR
         MENUITEM "姓名:",                      XTP_ID_CUSTOMIZE_NAME
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "自訂"
     XTP_IDS_NEWMENU         "[新增] 功能表"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "自定義狀態欄"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -230,7 +229,7 @@ BEGIN
                             "這將會刪除您在此應用程式中已使用的指令的記錄，並將可見的指令的預設集合還原成為功能表與工具列，它將不會復原任何自訂的功能表，您確定要繼續嗎 ?"
     XTP_IDS_INVALID_NUMBER  "這不是一個正確的號碼。"
     XTP_IDS_INVALID_FONTSIZE "數字必須介於 1 和 1638 之間。"
-    XTP_IDS_CONFIRM_RESET   "請確認您是否要重設對 '%s' This glossary is intellectual property of Microsoft Corporation. Please"
+    XTP_IDS_CONFIRM_RESET   "請確認您是否要重設對 '%s'"
     XTP_IDS_BUILTINMENUS    "內建功能表"
 END
 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "自定義 %d"
     XTP_IDS_ERROR_BLANKNAME "工具列名稱不可空白，請輸入名稱。"
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
+    XTP_IDS_ERROR_LIMIT     "對不起，你已經達到了極限"
     XTP_IDS_ERROR_EXISTS    "已經有一個叫做 '%s' 的工具列，請改用別的名稱。"
     XTP_IDS_RENAMETOOLBAR   "重新命名工具列"
     XTP_IDS_CONFIRM_DELETE  "請確認您是否要刪除 '%s' 工具列?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "您確定要重設鍵分配嗎？ 此操作將刪除文本級別的所有自定義鍵分配"
     XTP_IDS_CONFIRM_REASSIGN 
-                            "此快捷方式目前已指派。\n要重新指派此快捷方式嗎？"
-    XTP_IDS_CONFIRM_UPDATE  "由於軟體更新，工具列「%s」已變更。您要重設自訂的工具列並載入新的工具列嗎？"
+                            "此快捷方式當前已分配。\n你想重新分配這個快捷方式嗎？"
+    XTP_IDS_CONFIRM_UPDATE  "由於軟件更新工具欄 '%s'。 你想重置自定義的工具欄並加載新的？"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "All Picture Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|All Files(*.*)|*.*||"
+                            "所有圖片文件|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|位圖 (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|圖元文件 (*.wmf;*.emf)|*.wmf;*.emf|圖標 (*.ico;*.cur)|*.ico;*.cur|全部文件 (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\n工具列選項"
     XTP_ID_TOOLBAR_HIDE     "\n關閉"
     XTP_ID_POPUPBAR_EXPAND  "\n展開"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\n還原視窗"
     XTP_ID_MENUBAR_MINIMIZE "\n視窗最小化"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) 被按了。 等待和弦的第二把鑰匙..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,22 +302,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\n移至下一個索引標籤群組"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\n新增水平索引標籤群組"
     XTP_ID_WORKSPACE_NEWVERTICAL "\n新增垂直索引標籤群組"
-    XTP_ID_WORKSPACE_CANCEL "取消 "
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "使用中檔案"
+    XTP_ID_WORKSPACE_CANCEL "\n取消 "
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "活動文件"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "打印預覽的項目\n打印"
+    XTP_ID_PREVIEW_PREV     "轉到上一頁\n上一頁"
+    XTP_ID_PREVIEW_NEXT     "轉到下一頁\n下一頁"
+    XTP_ID_PREVIEW_ZOOMIN   "增加預覽頁面的放大率\n放大"
+    XTP_ID_PREVIEW_ZOOMOUT  "降低預覽頁面的放大率\n縮小"
+    XTP_ID_PREVIEW_ONEPAGE  "單頁"
+    XTP_ID_PREVIEW_TWOPAGE  "多個頁面"
+    XTP_ID_PREVIEW_CLOSE    "關閉預覽\n關閉預覽"
+    XTP_IDS_PREVIEW_WHOLEPAGE "整個頁面"
+    XTP_IDS_PREVIEW_PAGEWIDTH "頁面寬度"
+    XTP_IDS_PREVIEW_PAGEI     "頁 %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "第%i頁，共%i頁"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)

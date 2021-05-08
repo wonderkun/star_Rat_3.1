@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HUN))
 #ifdef _WIN32
 LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -104,18 +103,18 @@ CAPTION "Ablakok elrendezése"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Ablak kiválasztása:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,203,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,198,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Aktivizálandó:",XTP_IDC_BTN_ACTIVATE,216,7,80,14
-    PUSHBUTTON      "OK",IDOK,216,24,80,14
-    PUSHBUTTON      "Mentés",XTP_IDC_BTN_SAVE,216,41,80,14
-    PUSHBUTTON      "Ablak bezárása",XTP_IDC_BTN_CLOSEWINDOWS,216,58,80,14
-    PUSHBUTTON      "Lépcsõzetes elrendezés",XTP_IDC_BTN_CASCADE,216,75,80,14
-    PUSHBUTTON      "Egymás alatt",XTP_IDC_BTN_TILEHORZ,216,92,80,14
-    PUSHBUTTON      "Egymás mellett",XTP_IDC_BTN_TILEVERT,216,109,80,14
-    PUSHBUTTON      "Ikonállapot",XTP_IDC_BTN_MINIMIZE,216,126,80,14
+    PUSHBUTTON      "Aktivizálandó:",XTP_IDC_BTN_ACTIVATE,211,7,85,14
+    PUSHBUTTON      "OK",IDOK,211,24,85,14
+    PUSHBUTTON      "Mentés",XTP_IDC_BTN_SAVE,211,41,85,14
+    PUSHBUTTON      "Ablak bezárása",XTP_IDC_BTN_CLOSEWINDOWS,211,58,85,14
+    PUSHBUTTON      "Lépcsõzetes elrendezés",XTP_IDC_BTN_CASCADE,211,75,85,14
+    PUSHBUTTON      "Egymás alatt",XTP_IDC_BTN_TILEHORZ,211,92,85,14
+    PUSHBUTTON      "Egymás mellett",XTP_IDC_BTN_TILEVERT,211,109,85,14
+    PUSHBUTTON      "Ikonállapot",XTP_IDC_BTN_MINIMIZE,211,126,85,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Alapszínek"
+	XTP_IDS_RECENT_COLORS    "Legutóbbi színek"
+	XTP_IDS_THEME_COLORS     "téma színek"
+	XTP_IDS_TAGCLOUD_TIP     "Tag %s, pontszám: %d"
     XTP_IDS_TIPTEXT          "Tipp"
     XTP_IDS_DIDYOUKNOW       "Tudta-e"
     XTP_IDS_FILE_ABSENT      "A megadott fájl nem létezik."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Részletek elrejtése"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "1 háttér"
+    XTP_IDS_BACKGROUND2        "2 háttér"
+    XTP_IDS_TEXT1              "Szöveg 1"
+    XTP_IDS_TEXT2              "Szöveg 2"
+    XTP_IDS_ACCENT1            "Hangsúly 1"
+    XTP_IDS_ACCENT2            "Hangsúly 2"
+    XTP_IDS_ACCENT3            "Hangsúly 3"
+    XTP_IDS_ACCENT4            "Hangsúly 4"
+    XTP_IDS_ACCENT5            "Hangsúly 5"
+    XTP_IDS_ACCENT6            "Hangsúly 6"
+    XTP_IDS_LIGHTER            "Öngyújtó"
+    XTP_IDS_DARKER             "Sötétebb"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HUN))

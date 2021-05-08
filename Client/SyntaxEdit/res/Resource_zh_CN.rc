@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
@@ -46,11 +45,11 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,43,105,10
     CONTROL         "选择页面边距(&M)",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,54,105,10
-    CONTROL         "C&ollapsible Nodes",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
+    CONTROL         "可折叠节点",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,65,105,10
     CONTROL         "自动缩进(&A)",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,20,115,10
-    CONTROL         "Virtual &space",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
+    CONTROL         "虚拟空间",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
     CONTROL         "语法高亮(&X)",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
@@ -70,7 +69,7 @@ BEGIN
     GROUPBOX        "保存选项",IDC_STATIC,7,135,246,37
     CONTROL         "自动重新载入外部编辑过的文件",
                     XTP_IDC_EDIT_CHK_AUTO_RELOAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,151,155,10
+                    WS_TABSTOP,15,151,232,10
 END
 XTP_IDD_EDIT_PAGEFONT DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
@@ -290,4 +289,4 @@ BEGIN
     XTP_IDS_EDIT_OPENSCHEMAMSG "您确定要关闭 ""选项对话框"" 然后在编辑器中打开方案文件 ""%s%s"" 吗?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)

@@ -1,7 +1,6 @@
 // DockingPane resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "DockingPane/Resource.h"
 #include "DockingPane/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA)
 #ifdef _WIN32
 LANGUAGE LANG_THAI, SUBLANG_DEFAULT
 #pragma code_page(874)
@@ -39,8 +38,8 @@ BEGIN
     XTP_IDS_DOCKINGPANE_MAXIMIZE                    "ขยายใหญ่สุด"
     XTP_IDS_DOCKINGPANE_RESTORE                     "คืนค่า"
     XTP_IDS_DOCKINGPANE_MENU                        "เมนู"
-    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVETOOLS    "Active Tool Windows"
-    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVEFILES    "Active Files"
+    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVETOOLS    "เครื่องมือที่ใช้งานของ Windows"
+    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVEFILES    "ไฟล์ที่ใช้งาน"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_THA)

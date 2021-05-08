@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
 #ifdef _WIN32
 LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
 #pragma code_page(1252)
@@ -111,7 +110,7 @@ BEGIN
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "Reimposta informazioni sull'utilizzo di menu e barre degli strumenti",
-                    XTP_IDC_BUTTON_RESETDATA,7,42,216,14
+                    XTP_IDC_BUTTON_RESETDATA,4,42,220,14
     LTEXT           "Altri", XTP_IDC_GROUP_OTHER,4,70,222,8
     CONTROL         "Icone grandi",XTP_IDC_CHECK_LARGEICONS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,82,216,10
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Mostra tasti di scelta rapida nella descrizione comandi",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Animazioni menu:",IDC_STATIC,10,117,56,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Animazioni menu:",IDC_STATIC,10,117,66,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,80,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,7 +141,7 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menu"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Menu delle Applicazioni",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
@@ -303,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nPassa al gruppo di schede successivo"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNuovo gruppo di schede orizzontali"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNuovo gruppo di schede verticali"
-    XTP_ID_WORKSPACE_CANCEL "Annulla"
+    XTP_ID_WORKSPACE_CANCEL "\nAnnulla"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Archivi attivi"
 END
 
@@ -314,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "Vai alla pagina successiva\nPagina Successiva"
     XTP_ID_PREVIEW_ZOOMIN   "Aumenta l'ingrandimento della pagina di anteprima\nIngrandisci"
     XTP_ID_PREVIEW_ZOOMOUT  "Diminuisce l'ingrandimento della pagina di anteprima\nRiduci"
+    XTP_ID_PREVIEW_ONEPAGE  "Pagina singola"
+    XTP_ID_PREVIEW_TWOPAGE  "Più pagine"
     XTP_ID_PREVIEW_CLOSE    "Chiude l'anteprima\nChiude Anteprima"
     XTP_IDS_PREVIEW_WHOLEPAGE "Tutta la pagina"
     XTP_IDS_PREVIEW_PAGEWIDTH "Larghezza pagina"
@@ -321,4 +322,4 @@ BEGIN
     XTP_IDS_PREVIEW_PAGEIOFI  "Pagina %i di %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)

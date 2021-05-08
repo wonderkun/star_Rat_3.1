@@ -1,7 +1,6 @@
 // XTPChartBubbleSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTBUBBLESERIESSTYLE_H__)
-#define __XTPCHARTBUBBLESERIESSTYLE_H__
+#	define __XTPCHARTBUBBLESERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "XTPChartPointSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -103,14 +102,16 @@ protected:
 	//     CXTPChartSeriesView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
 protected:
-	void CorrectAxisSideMargins(CXTPChartAxis* pAxis, double /*nMinValue*/, double /*nMaxValue*/, double& nCorrection);
+	void CorrectAxisSideMargins(CXTPChartAxis* pAxis, double /*nMinValue*/, double /*nMaxValue*/,
+								double& nCorrection);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartBubbleSeriesStyle);
@@ -123,9 +124,9 @@ public:
 	void OleSetMaxSize(double dMinSize);
 
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
-	int m_nTransparency;        //The transparency value.
+	int m_nTransparency; // The transparency value.
 
 	double m_dMinSize;
 	double m_dMaxSize;
@@ -155,7 +156,6 @@ public:
 	CXTPChartBubbleSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to create view of the bubble series point.
@@ -167,22 +167,24 @@ protected:
 	//     CXTPChartSeriesPointView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a bubble series.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of the bubble series.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 protected:
 	void CreatePointsView(CXTPChartDeviceContext* pDC);
@@ -218,7 +220,7 @@ public:
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a bubble series point.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
@@ -229,10 +231,9 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to get the actual color.
@@ -252,30 +253,38 @@ public:
 	CXTPChartColor GetActualColor2() const;
 };
 
-AFX_INLINE int CXTPChartBubbleSeriesStyle::GetTransparency() const {
+AFX_INLINE int CXTPChartBubbleSeriesStyle::GetTransparency() const
+{
 	return m_nTransparency;
 }
-AFX_INLINE void CXTPChartBubbleSeriesStyle::SetTransparency(int nTransparency) {
+AFX_INLINE void CXTPChartBubbleSeriesStyle::SetTransparency(int nTransparency)
+{
 	m_nTransparency = nTransparency;
 	OnChartChanged();
 }
 
-AFX_INLINE double CXTPChartBubbleSeriesStyle::GetMinSize() const {
+AFX_INLINE double CXTPChartBubbleSeriesStyle::GetMinSize() const
+{
 	return m_dMinSize;
 }
-AFX_INLINE void CXTPChartBubbleSeriesStyle::SetMinSize(double dMinSize) {
+AFX_INLINE void CXTPChartBubbleSeriesStyle::SetMinSize(double dMinSize)
+{
 	m_dMinSize = dMinSize;
 	OnChartChanged();
 }
-AFX_INLINE double CXTPChartBubbleSeriesStyle::GetMaxSize() const {
+AFX_INLINE double CXTPChartBubbleSeriesStyle::GetMaxSize() const
+{
 	return m_dMaxSize;
 }
-AFX_INLINE void CXTPChartBubbleSeriesStyle::SetMaxSize(double dMaxSize) {
+AFX_INLINE void CXTPChartBubbleSeriesStyle::SetMaxSize(double dMaxSize)
+{
 	m_dMaxSize = dMaxSize;
 	OnChartChanged();
 }
-AFX_INLINE int CXTPChartBubbleSeriesStyle::GetSeriesPointValueIndex() const {
+AFX_INLINE int CXTPChartBubbleSeriesStyle::GetSeriesPointValueIndex() const
+{
 	return 1;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTBUBBLESERIESSTYLE_H__)

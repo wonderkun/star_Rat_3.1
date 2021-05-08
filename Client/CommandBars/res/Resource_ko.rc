@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 #ifdef _WIN32
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 #pragma code_page(949)
@@ -303,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\n다음 탭 그룹으로 이동"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\n새 가로 탭 그룹"
     XTP_ID_WORKSPACE_NEWVERTICAL "\n새 세로 탭 그룹"
-    XTP_ID_WORKSPACE_CANCEL "취소"
+    XTP_ID_WORKSPACE_CANCEL "\n취소"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "활성 파일"
 END
 
@@ -314,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "다음 페이지로 이동합니다\n다음 페이지"
     XTP_ID_PREVIEW_ZOOMIN   "현재 미리 보기 페이지를 확대합니다\n확대"
     XTP_ID_PREVIEW_ZOOMOUT  "현재 미리 보기 페이지를 축소합니다\n축소"
+    XTP_ID_PREVIEW_ONEPAGE  "단일 페이지"
+    XTP_ID_PREVIEW_TWOPAGE  "여러 페이지"
     XTP_ID_PREVIEW_CLOSE    "인쇄 미리 보기 닫기\n인쇄 미리 보기 닫기"
     XTP_IDS_PREVIEW_WHOLEPAGE "전체 페이지"
     XTP_IDS_PREVIEW_PAGEWIDTH "페이지 너비"
@@ -321,4 +322,4 @@ BEGIN
     XTP_IDS_PREVIEW_PAGEIOFI  "페이지 %i / %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)

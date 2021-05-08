@@ -1,0 +1,4 @@
+﻿  NewServer.cpp
+NewServer.obj : warning LNK4254: 节“.rdata”(40000040)合并到具有不同特性的“.data”(C0000040)
+NewServer.obj : warning LNK4254: 节“.text”(60000020)合并到具有不同特性的“.data”(C0000040)
+  NewServer.vcxproj -> C:\Users\Administrator\Desktop\star_Rat_3.1-master\Template\NewServer.exe

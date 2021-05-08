@@ -1,7 +1,6 @@
 // XTPSyntaxEditDoc.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITSYNTAXEDITDOC_H__)
-#define __XTPSYNTAXEDITSYNTAXEDITDOC_H__
+#	define __XTPSYNTAXEDITSYNTAXEDITDOC_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditBufferManager;
 
@@ -40,7 +41,6 @@ class CXTPSyntaxEditBufferManager;
 class _XTP_EXT_CLASS CXTPSyntaxEditDoc : public CDocument
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Protected object constructor. Used by dynamic creation
@@ -58,27 +58,26 @@ protected:
 	DECLARE_DYNCREATE(CXTPSyntaxEditDoc)
 	//}}AFX_CODEJOCK_PRIVATE
 
-// Attributes
+	// Attributes
 public:
-
-// Operations
+	// Operations
 public:
-
-// Overrides
+	// Overrides
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPSyntaxEditDoc)
-	public:
-	virtual void Serialize(CArchive& ar);   // overridden for document i/o
+public:
+	virtual void Serialize(CArchive& ar); // overridden for document i/o
 	virtual void OnChangedViewList();
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
 	virtual void OnCloseDocument();
-	protected:
+
+protected:
 	virtual BOOL OnNewDocument();
 	//}}AFX_VIRTUAL
 	//}}AFX_CODEJOCK_PRIVATE
 
-// Implementation
+	// Implementation
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -96,7 +95,7 @@ public:
 	// See also:
 	//      class CXTPSyntaxEditBufferManager
 	//-----------------------------------------------------------------------
-	void SetDataManager(CXTPSyntaxEditBufferManager *pBuffer);
+	void SetDataManager(CXTPSyntaxEditBufferManager* pBuffer);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -106,7 +105,7 @@ public:
 	// See also:
 	//      class CXTPSyntaxEditBufferManager
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditBufferManager * GetDataManager();
+	CXTPSyntaxEditBufferManager* GetDataManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -174,12 +173,12 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPSyntaxEditView* GetFirstView();
 
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 	//}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 	// Generated message map functions
 protected:
@@ -187,47 +186,39 @@ protected:
 
 	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG(CXTPSyntaxEditDoc)
-		// NOTE - the ClassWizard will add and remove member functions here.
+	// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	//}}AFX_CODEJOCK_PRIVATE
 
-private:
-	CXTPSyntaxEditBufferManager* m_ptrDataMan;    // The data manager pointer
+protected:
+	CXTPSyntaxEditBufferManager* m_ptrDataMan; // The data manager pointer
 
-	BOOL m_bAutoReload;         // TRUE if auto-reload of externally modified files is to be enabled.
-	BOOL m_bOpened;             // TRUE if opened, FALSE otherwise
-	BOOL m_bNewFile;            // TRUE if a new file is created or a file is opened
-	BOOL m_bDocCreated;         // TRUE if document is created
-	BOOL m_bReloading;          // TRUE if we are in progress of reloading document
+	BOOL m_bAutoReload; // TRUE if auto-reload of externally modified files is to be enabled.
+	BOOL m_bOpened;		// TRUE if opened, FALSE otherwise
+	BOOL m_bNewFile;	// TRUE if a new file is created or a file is opened
+	BOOL m_bDocCreated; // TRUE if document is created
+	BOOL m_bReloading;  // TRUE if we are in progress of reloading document
 
-	int m_iTopRow;              // Identifier of top row.
-	int m_iHScrollPos;          // Scrolling position.
+	int m_iTopRow;	 // Identifier of top row.
+	int m_iHScrollPos; // Scrolling position.
 
 	WIN32_FIND_DATA m_curFileData;
 };
 
-//---------------------------------------------------------------------------
-// Summary:
-//      View update action. Defines in which way the view should be updated.
-//---------------------------------------------------------------------------
-enum XTPSyntaxEditUpdateViewHint
+AFX_INLINE CXTPSyntaxEditBufferManager* CXTPSyntaxEditDoc::GetDataManager() const
 {
-	xtpEditHintUnknown,         // Updating action is unknown.
-	xtpEditHintRefreshView,     // The view should be refreshed.
-	xtpEditHintInitView,        // The view should be initialized.
-	xtpEditHintSetFont,         // The view should update the display font.
-	xtpEditHintSetLineNum,      // The view should update line number display.
-	xtpEditHintSetSelMargin,    // The view should update the selection margin display.
-	xtpEditHintSetAutoIndent,   // The view should update the auto-indent setting.
-	xtpEditHintSetSyntaxColor,  // The view should update the syntax color setting.
-	xtpEditHintUpdateScrollPos, // The view should update scrollbars positions.
-	xtpEditHintLast,            // The last update code.
-};
+	return m_ptrDataMan;
+}
+AFX_INLINE BOOL CXTPSyntaxEditDoc::GetAutoReload() const
+{
+	return m_bAutoReload;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITSYNTAXEDITDOC_H__)

@@ -1,7 +1,7 @@
 // Audio.cpp: implementation of the CAudio class.
 //
 //////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
+#include "pcl.h"
 #include "Audio.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ bool CAudio::InitializeWaveOut()
 	if (mmResult != MMSYSERR_NOERROR)
 		return false;
 
-	for (i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		m_lpOutAudioHdr[i]->lpData = (LPSTR)m_lpOutAudioData[i];
 		m_lpOutAudioHdr[i]->dwBufferLength = m_nBufferLength;

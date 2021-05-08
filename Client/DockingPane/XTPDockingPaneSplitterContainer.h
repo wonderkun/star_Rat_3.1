@@ -1,7 +1,6 @@
 // XTPDockingPaneSplitterContainer.h : interface for the CXTPDockingPaneSplitterContainer class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANESPLITTERCONTAINER_H__)
-#define __XTPDOCKINGPANESPLITTERCONTAINER_H__
+#	define __XTPDOCKINGPANESPLITTERCONTAINER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
-#include "XTPDockingPaneBaseContainer.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneSplitterContainer;
 class CXTPDockingPaneLayout;
@@ -38,7 +36,7 @@ class CXTPDockingPaneLayout;
 //     CXTPDockingPaneSplitterWnd is a CWnd derived class. It is
 //     used internally for splitting Panes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneSplitterWnd: public CWnd
+class _XTP_EXT_CLASS CXTPDockingPaneSplitterWnd : public CWnd
 {
 protected:
 	//-----------------------------------------------------------------------
@@ -70,7 +68,8 @@ public:
 	//     pFirst     - Points to a first splitting CXTPDockingPaneBase object
 	//     pSecond    - Points to a second splitting CXTPDockingPaneBase object
 	//-----------------------------------------------------------------------
-	void Create(CXTPDockingPaneSplitterContainer* pContainer, CXTPDockingPaneBase* pFirst, CXTPDockingPaneBase* pSecond);
+	void Create(CXTPDockingPaneSplitterContainer* pContainer, CXTPDockingPaneBase* pFirst,
+				CXTPDockingPaneBase* pSecond);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,8 +88,39 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPDockingPaneSplitterContainer* GetContainer() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Retrieves a pointer to the docking pane manager.
+	// Returns:
+	//      A CXTPDockingPaneManager object.
+	//-----------------------------------------------------------------------
+	CXTPDockingPaneManager* GetDockingPaneManager() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this member function to return a pointer to the docking splitter
+	//      base pane.
+	// Parameters:
+	//      bFirst - TRUE to return a pointer to the first base pane in the group,
+	//               otherwise returns a pointer to the second pane.
+	// Returns:
+	//      A CXTPDockingPaneBase object.
+	//-----------------------------------------------------------------------
+	CXTPDockingPaneBase* GetPaneBase(BOOL bFirst = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine the XTPDockingPaneDirection of the splitter.
+	// Returns:
+	//     The current XTPDockingPaneDirection of splitter.
+	//-----------------------------------------------------------------------
+	XTPDockingPaneDirection GetPaneDirection() const
+	{
+		return m_iDirection;
+	}
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPDockingPaneSplitterWnd)
@@ -100,12 +130,12 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	CXTPDockingPaneManager* GetDockingPaneManager() const;
 	void Reposition(CRect rc, CRect rcAvail);
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL GetAvailableRect(CRect& rcAvail, CRect& rcUnion);
 
 private:
@@ -115,14 +145,15 @@ private:
 	CXTPDockingPaneManager* m_pManager;
 	HCURSOR m_hCursor;
 	BOOL m_bHoriz;
+	XTPDockingPaneDirection m_iDirection;
 
 private:
 	friend class CXTPDockingPaneSplitterContainer;
 	friend class CXTPDockingPaneLayout;
 };
 
-
-AFX_INLINE CXTPDockingPaneSplitterContainer* CXTPDockingPaneSplitterWnd::GetContainer() const {
+AFX_INLINE CXTPDockingPaneSplitterContainer* CXTPDockingPaneSplitterWnd::GetContainer() const
+{
 	return m_pContainer;
 }
 
@@ -132,9 +163,10 @@ AFX_INLINE CXTPDockingPaneSplitterContainer* CXTPDockingPaneSplitterWnd::GetCont
 //     It is used internally as a splitter container for CXTPDockingPaneBase
 //     derived classes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneSplitterContainer : public CXTPCmdTarget, public CXTPDockingPaneBaseContainer
+class _XTP_EXT_CLASS CXTPDockingPaneSplitterContainer
+	: public CXTPCmdTarget
+	, public CXTPDockingPaneBaseContainer
 {
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -152,7 +184,6 @@ protected:
 	virtual ~CXTPDockingPaneSplitterContainer();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to set the position of the pane.
@@ -182,7 +213,10 @@ public:
 	//     TRUE if the splitter orientation is horizontal, FALSE
 	//     otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsHoriz() const { return m_bHoriz; }
+	BOOL IsHoriz() const
+	{
+		return m_bHoriz;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -197,7 +231,6 @@ public:
 	void GetMinMaxInfo(LPMINMAXINFO pMinMaxInfo) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPDockingPaneSplitterContainer object
@@ -232,7 +265,6 @@ protected:
 	virtual CXTPDockingPaneSplitterWnd* OnCreateSplitter();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to remove a pane from the collection.
@@ -282,24 +314,52 @@ protected:
 	//-----------------------------------------------------------------------
 	void DeletePane();
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneSplitterContainer);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneSplitterContainer);
+	DECLARE_INTERFACE_MAP()
 
+	LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	afx_msg int OleGetPosition();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 private:
 	void _Replace(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pReplace);
-	void _InsertPane(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pNeighbour = NULL, BOOL bAfter = TRUE);
+	void _InsertPane(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pNeighbour = NULL,
+					 BOOL bAfter = TRUE);
 	void _UpdateSplitters();
 	BOOL _Before(const CXTPDockingPaneBase* pPane, POSITION pos) const;
-	CRect _CalculateResultDockingRectSelf(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction, CXTPDockingPaneBase* pNeighbour);
-	static CRect AFX_CDECL _CalculateResultDockingRectChild(CXTPDockingPaneBase* pSplitter, CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction);
-	static CRect AFX_CDECL _CalculateResultDockingRect(BOOL bHoriz, CXTPDockingPaneBaseList& lst, CRect rect, CXTPDockingPaneBase* pPaneI);
-	static void AFX_CDECL _AdjustPanesLength(CXTPDockingPaneManager* pManager, CXTPDockingPaneBaseList& lst, CRect rect, BOOL bHoriz, BOOL bApply, int& nTotalLength, int& nLengthAvail);
+	CRect _CalculateResultDockingRectSelf(CXTPDockingPaneBase* pPane,
+										  XTPDockingPaneDirection direction,
+										  CXTPDockingPaneBase* pNeighbour);
+	static CRect AFX_CDECL _CalculateResultDockingRectChild(CXTPDockingPaneBase* pSplitter,
+															CXTPDockingPaneBase* pPane,
+															XTPDockingPaneDirection direction);
+	static CRect AFX_CDECL _CalculateResultDockingRect(BOOL bHoriz, CXTPDockingPaneBaseList& lst,
+													   CRect rect, CXTPDockingPaneBase* pPaneI);
+	static void AFX_CDECL _AdjustPanesLength(CXTPDockingPaneManager* pManager,
+											 CXTPDockingPaneBaseList& lst, CRect rect, BOOL bHoriz,
+											 BOOL bApply, int& nTotalLength, int& nLengthAvail);
 	static LONG& AFX_CDECL GetMinSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz);
 	static LONG& AFX_CDECL GetMaxSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz);
 
 protected:
-	CList<CXTPDockingPaneSplitterWnd*, CXTPDockingPaneSplitterWnd*> m_lstSpliters;  // List of splitter windows
-	BOOL m_bHoriz;                        // TRUE if the splitter orientation is horizontal
-	BOOL m_bRecalcLayout;                 // TRUE if RecalcLayout method currently executed.
+	CList<CXTPDockingPaneSplitterWnd*, CXTPDockingPaneSplitterWnd*> m_lstSpliters; // List of
+																				   // splitter
+																				   // windows
+	BOOL m_bHoriz;		  // TRUE if the splitter orientation is horizontal
+	BOOL m_bRecalcLayout; // TRUE if RecalcLayout method currently executed.
 
 private:
 	friend class CXTPDockingPaneManager;
@@ -308,15 +368,21 @@ private:
 	friend class CXTPDockingPaneLayout;
 };
 
-AFX_INLINE BOOL CXTPDockingPaneSplitterWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPDockingPaneSplitterWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+												   DWORD dwStyle, const RECT& rect,
+												   CWnd* pParentWnd, UINT nID,
+												   CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE LONG& CXTPDockingPaneSplitterContainer::GetMinSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz) {
+AFX_INLINE LONG& CXTPDockingPaneSplitterContainer::GetMinSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz)
+{
 	return bHoriz ? pMinMaxInfo->ptMinTrackSize.x : pMinMaxInfo->ptMinTrackSize.y;
 }
-AFX_INLINE LONG& CXTPDockingPaneSplitterContainer::GetMaxSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz) {
+AFX_INLINE LONG& CXTPDockingPaneSplitterContainer::GetMaxSize(LPMINMAXINFO pMinMaxInfo, BOOL bHoriz)
+{
 	return bHoriz ? pMinMaxInfo->ptMaxTrackSize.x : pMinMaxInfo->ptMaxTrackSize.y;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANESPLITTERCONTAINER_H__)

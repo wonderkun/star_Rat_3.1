@@ -1,7 +1,6 @@
 // XTPReportView.h: interface for the CXTPReportView class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTVIEW_H__)
-#define __XTPREPORTVIEW_H__
+#	define __XTPREPORTVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "common/XTPDrawHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "XTPReportControl.h"
-#include "resource.h"
+class CXTPReportViewPrintOptions;
+class CXTPReportControl;
+class CXTPReportPaintManager;
 
 //===========================================================================
 // Summary:
@@ -59,147 +59,6 @@
 //===========================================================================
 const UINT XTP_ID_REPORT_CONTROL = 100;
 
-//-------------------------------------------------------------------------
-// Summary:
-//      This class used to store printing options.
-// See Also: CXTPPrintOptions, CXTPPrintPageHeaderFooter
-//-------------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPReportViewPrintOptions : public CXTPPrintOptions
-{
-	//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_DYNAMIC(CXTPReportViewPrintOptions)
-	//}}AFX_CODEJOCK_PRIVATE
-
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary: Default Object constructor.
-	//-------------------------------------------------------------------------
-	CXTPReportViewPrintOptions();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Override this member function in derived class to specify active
-	//      locale ID.
-	// Returns:
-	//      Locale ID. Base implementation returns LOCALE_USER_DEFAULT;
-	//-----------------------------------------------------------------------
-	virtual LCID GetActiveLCID();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Call this member function to copy members from specified source object.
-	// Parameters:
-	//      pSrc - A pointer to source object to copy data.
-	//-----------------------------------------------------------------------
-	virtual void Set(const CXTPReportViewPrintOptions* pSrc);
-
-	BOOL    m_bRepeatHeaderRows;    // If TRUE - the header rows will be printed on every page. FALSE by default.
-	BOOL    m_bRepeatFooterRows;    // If TRUE - the footer rows will be printed on every page. FALSE by default.
-
-protected:
-
-//{{AFX_CODEJOCK_PRIVATE
-//}}AFX_CODEJOCK_PRIVATE
-};
-
-//===========================================================================
-// Summary:
-//     Customized Report control page setup dialog.
-// Remarks:
-//     Use this class when you want to allow user to customize printing
-//     options for the Report control.
-//
-//     This class enhances standard MFC page setup dialog, which encapsulates
-//     the services provided by the Windows common OLE Page Setup dialog box
-//     with additional support for setting and modifying print margins.
-//     This class is designed to take the place of the Print Setup dialog box.
-//
-// See Also:
-//     CXTPReportViewPrintOptions overview,
-//     CPageSetupDialog overview
-//===========================================================================
-class _XTP_EXT_CLASS CXTPReportPageSetupDialog : public CPageSetupDialog
-{
-public:
-	//{{AFX_CODEJOCK_PRIVATE
-	enum {IDD = XTP_IDD_REPORT_PRINT_PAGE_SETUP};
-	//}}AFX_CODEJOCK_PRIVATE
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Class constructor.
-	// Parameters:
-	//     pOptions - A pointer to an associated CXTPReportViewPrintOptions
-	//                object for storing user's interaction results.
-	//     dwFlags  - One or more flags you can use to customize the settings
-	//                of the dialog box. The values can be combined using the
-	//                bitwise-OR operator. For more details see CPageSetupDialog::CPageSetupDialog
-	//     pParentWnd - Pointer to the dialog box's parent or owner.
-	// Remarks:
-	//     Use the DoModal function to display the dialog box.
-	// See also:
-	//      CPageSetupDialog::CPageSetupDialog()
-	//-----------------------------------------------------------------------
-	CXTPReportPageSetupDialog(CXTPReportViewPrintOptions* pOptions,
-		DWORD dwFlags = PSD_MARGINS | PSD_INWININIINTLMEASURE,
-		CWnd* pParentWnd = NULL);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default class constructor, handles members cleanup.
-	//-----------------------------------------------------------------------
-	virtual ~CXTPReportPageSetupDialog();
-
-protected:
-	CXTPReportViewPrintOptions* m_pOptions; // Pointer to associated print options object.
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Converts font name to a human readable string.
-	// Parameters:
-	//     lfFont - A reference to a font.
-	// Returns:
-	//     A string describing a provided font.
-	//-----------------------------------------------------------------------
-	//CString FormatFontName(const LOGFONT& lfFont);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Dialog-box initialization.
-	// Returns:
-	//     FALSE because it has explicitly set the input focus to one of the
-	//     controls in the dialog box.
-	// See also:
-	//     CPageSetupDialog::OnInitDialog().
-	//-----------------------------------------------------------------------
-	virtual BOOL OnInitDialog();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Called when the user clicks the OK button (the button with an ID of IDOK).
-	// Remarks:
-	//     Saves all values into m_pOptions structure.
-	// See also:
-	//     CPageSetupDialog::OnOK().
-	//-----------------------------------------------------------------------
-	virtual void OnOK();
-
-	//{{AFX_CODEJOCK_PRIVATE
-	CEdit       m_ctrlHeaderFormat;
-	CEdit       m_ctrlFooterFormat;
-
-	CButton     m_ctrlHeaderFormatBtn;
-	CButton     m_ctrlFooterFormatBtn;
-
-	afx_msg void OnBnClickedHeaderFormat();
-	afx_msg void OnBnClickedFooterFormat();
-
-	DECLARE_MESSAGE_MAP()
-	//}}AFX_CODEJOCK_PRIVATE
-};
-
-
 //===========================================================================
 // Summary:
 //     The CXTPReportView class provides an implementation of
@@ -211,16 +70,24 @@ class _XTP_EXT_CLASS CXTPReportView : public CView
 {
 	DECLARE_DYNCREATE(CXTPReportView)
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Protected constructor used by dynamic creation
 	//-------------------------------------------------------------------------
 	CXTPReportView();
 
-	BOOL m_bSwitchMode;     //Tells whether to switch between modes(icon and report)
-	BOOL m_bShowRowNumber;  //TRUE to show the row number, FLASE else.
+	BOOL m_bSwitchMode;	// Tells whether to switch between modes(icon and report)
+	BOOL m_bShowRowNumber; // TRUE to show the row number, FLASE else.
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to set the report control theme.
+	// Parameters:
+	//     paintTheme     - theme of report control. Can be one of the values
+	//                      listed in the Remarks section.
+	//     bEnableMetrics - Set to TRUE to allow the theme to override control metrics.
+	//-----------------------------------------------------------------------
+	void SetTheme(XTPReportPaintTheme paintTheme, BOOL bEnableMetrics = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -246,16 +113,15 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPReportPaintManager* GetPaintManager() const;
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to access print options for this view.
 	// Returns:
 	//     Pointer to an object describing print options of this view.
 	//-----------------------------------------------------------------------
-	CXTPReportViewPrintOptions* GetPrintOptions();
-protected:
+	CXTPReportViewPrintOptions* GetPrintOptions() const;
 
+protected:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPReportView object, handles cleanup and deallocation.
@@ -263,7 +129,6 @@ protected:
 	virtual ~CXTPReportView();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to print single page of report control.
@@ -272,13 +137,16 @@ protected:
 	//     pInfo       - Points to a CPrintInfo structure that describes the
 	//                   current print job.
 	//     rcPage      - Page bounding rectangle
-	//     nIndexStart - First row to print
+	//     nRowFrom    - First row to print
+	//     nColumnFrom - First column to print
+	//     nColumnTo   - Next column after last column to print
 	// Remarks:
 	//     This method prints page header, page footer and call PrintReport method.
 	// Returns:
 	//     Index of last printed row
 	//-----------------------------------------------------------------------
-	virtual long PrintPage(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, long nIndexStart);
+	virtual int PrintPage(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, int nRowFrom, int nColumnFrom,
+						  int nColumnTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -288,13 +156,16 @@ protected:
 	//     pDC         - Pointer to a device context for page output.
 	//     pInfo       - Points to a CPrintInfo structure that describes the current print job.
 	//     rcPage      - Report bounding rectangle on the page
-	//     nIndexStart - First row to print
+	//     nRowFrom    - First row to print
+	//     nColumnFrom - First column to print
+	//     nColumnTo   - Next column after last column to print
 	// Remarks:
 	//     This method call PrintHeader, PrintRows methods.
 	// Returns:
 	//     Index of last printed row
 	//-----------------------------------------------------------------------
-	virtual long PrintReport (CDC* pDC, CPrintInfo* pInfo, CRect rcPage, long nIndexStart);
+	virtual int PrintReport(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, int nRowFrom,
+							int nColumnFrom, int nColumnTo);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -316,30 +187,6 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw all rows inside bounding rectangle.
-	// Parameters:
-	//     pDC         - Pointer to a device context for page output.
-	//     rcRows      - Bounding rectangle of rows
-	//     nIndexStart - First row to print
-	//     pPrintedRowsHeight - Height of the printed rows.
-	// Returns:
-	//     Index of last printed row
-	//-----------------------------------------------------------------------
-	virtual int PrintRows(CDC* pDC, CRect rcRows, long nIndexStart, int* pPrintedRowsHeight = NULL);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called by PrintRows to print single row.
-	// Parameters:
-	//     pDC   - Pointer to a device context for page output.
-	//     pRow  - Row to print.
-	//     rcRow - Bounding rectangle of row
-	//     nPreviewHeight - Height of preview
-	//-----------------------------------------------------------------------
-	virtual void PrintRow(CDC* pDC, CXTPReportRow* pRow, CRect rcRow, int nPreviewHeight);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     This method is called to print the page header of the report control
 	// Parameters:
 	//     pDC              - Print device context
@@ -354,7 +201,9 @@ protected:
 	// Returns:
 	//     The header height in device units.
 	//-----------------------------------------------------------------------
-	virtual int PrintPageHeader(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, BOOL bOnlyCalculate, int nPageNumber, int nNumberOfPages, int nHorizontalPageNumber, int nNumberOfHorizontalPages);
+	virtual int PrintPageHeader(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, BOOL bOnlyCalculate,
+								int nPageNumber, int nNumberOfPages, int nHorizontalPageNumber,
+								int nNumberOfHorizontalPages);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -372,18 +221,9 @@ protected:
 	// Returns:
 	//     The footer height in device units.
 	//-----------------------------------------------------------------------
-	virtual int PrintPageFooter(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, BOOL bOnlyCalculate, int nPageNumber, int nNumberOfPages, int nHorizontalPageNumber, int nNumberOfHorizontalPages);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method calculates width of column need to print.
-	// Parameters:
-	//     pColumn     - Column need to print
-	//     nTotalWidth - Total width of all columns.
-	// Returns:
-	//     Width of column.
-	//-----------------------------------------------------------------------
-	int GetColumnWidth(CXTPReportColumn* pColumn, int nTotalWidth);
+	virtual int PrintPageFooter(CDC* pDC, CPrintInfo* pInfo, CRect rcPage, BOOL bOnlyCalculate,
+								int nPageNumber, int nNumberOfPages, int nHorizontalPageNumber,
+								int nNumberOfHorizontalPages);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -401,18 +241,6 @@ protected:
 	// Parameters:
 	//  pSlider - Pointer to a CSliderCtrl object.
 	void SetSliderCtrl(CSliderCtrl* pSlider);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method prints either header or footer rows.
-	// Parameters:
-	//     pDC      - Pointer to a device context for page output.
-	//     rcClient - Bounding rectangle of fixed rows
-	//     bHeaderRows - If TRUE, prints the header rows.
-	// Returns:
-	//     Height of printed rows.
-	//-----------------------------------------------------------------------
-	int  PrintFixedRows(CDC* pDC, CRect rcClient, BOOL bHeaderRows);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -447,19 +275,27 @@ protected:
 	//-----------------------------------------------------------------------
 	CScrollBar* GetScrollBarCtrl(int nBar) const;
 
-protected:
-//{{AFX_CODEJOCK_PRIVATE
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Updates scroll bars visibility and positions.
+	//-----------------------------------------------------------------------
+	void UpdateScrollBars();
 
-#ifdef _DEBUG
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+#	endif
 
 protected:
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPReportView)
 	virtual BOOL PaginateTo(CDC* pDC, CPrintInfo* pInfo);
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnDraw(CDC* pDC);
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -476,6 +312,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnEditCut();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
@@ -484,44 +321,52 @@ protected:
 	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
 	afx_msg void OnFilePageSetup();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CBitmap m_bmpGrayDC;            // A temporary bitmap to convert colored report control image to 'gray' colors when printing in black&while mode.
-	CXTPReportControl m_wndReport;  // Child report control window.
-	CXTPReportControl* m_pReport;   // Child report control pointer.
-	BOOL m_bPrintSelection;         // TRUE if only printing the currently selected rows in the report, FALSE if printing the entire report,
+	CBitmap m_bmpGrayDC; // A temporary bitmap to convert colored report control image to 'gray'
+						 // colors when printing in black&while mode.
+	CXTPReportControl m_wndReport; // Child report control window.
+	CXTPReportControl* m_pReport;  // Child report control pointer.
+	BOOL m_bPrintSelection; // TRUE if only printing the currently selected rows in the report,
+							// FALSE if printing the entire report,
 
 	CXTPReportViewPrintOptions* m_pPrintOptions; // Printing options.
-	CScrollBar* m_pScrollBar;       // Store pointer to external scrollbar control.
-	CScrollBar* m_pScrollBarHor;    // Store pointer to external horizontal scrollbar control.
 
-//{{AFX_CODEJOCK_PRIVATE
+	CXTPScrollBarCtrl m_wndVScrollBar;
+	CXTPScrollBarCtrl m_wndHScrollBar;
+
+	CScrollBar* m_pScrollBarVer; // Store pointer to external vertical scrollbar control.
+	CScrollBar* m_pScrollBarHor; // Store pointer to external horizontal scrollbar control.
+
+	//{{AFX_CODEJOCK_PRIVATE
 	CSliderCtrl* m_pSlider;
 
 	friend class CReportControlCtrl;
 
-	UINT m_nStartColumn;
-	UINT m_nEndColumn;
-	UINT m_nStartIndex;
+	int m_nColumnStart; // Keeps starting index of current printed range of columns.
+	int m_nColumnEnd;   // Keeps ending (or next starting) index of current range of columns.
+	UINT m_nStartIndex; // Keeps index of current printed virtual page (in
+						// CXTPReportPaintManager::m_arStartCol).
 
-	CUIntArray m_aPageStart;
+	CUIntArray m_aPageStart; // Keeps indexes of top rows  for every printed page.
 	BOOL m_bPaginated;
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	BOOL    m_bAllowCut;                // If TRUE the cut operation is allowed.
-	BOOL    m_bAllowPaste;              // If TRUE the paste operation is allowed.
-	BOOL    m_bPrintDirect;             // if TRUE - the Print Dialog is bypassed. FALSE by default.
-	BOOL    m_bResizeControlWithView;   // if FALSE - attached Report control will not be resized with view. TRUE by default.
+	BOOL m_bAllowCut;			   // If TRUE the cut operation is allowed.
+	BOOL m_bAllowPaste;			   // If TRUE the paste operation is allowed.
+	BOOL m_bPrintDirect;		   // if TRUE - the Print Dialog is bypassed. FALSE by default.
+	BOOL m_bResizeControlWithView; // if FALSE - attached Report control will not be resized with
+								   // view. TRUE by default.
 };
 
 /////////////////////////////////////////////////////////////////////////////
-AFX_INLINE CXTPReportViewPrintOptions* CXTPReportView::GetPrintOptions()
+AFX_INLINE CXTPReportViewPrintOptions* CXTPReportView::GetPrintOptions() const
 {
 	return m_pPrintOptions;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPREPORTVIEW_H__)

@@ -1,7 +1,6 @@
 // XTPReportRecordItem.h: interface for the CXTPReportRecordItem class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTRECORDITEM_H__)
-#define __XTPREPORTRECORDITEM_H__
+#	define __XTPREPORTRECORDITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
-#include "XTPReportHyperlink.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+class CXTPMarkupUIElement;
+class CXTPMarkupContext;
 class CXTPReportControl;
 class CXTPReportRow;
 class CXTPReportRecordItem;
@@ -41,11 +41,12 @@ class CXTPReportRecord;
 class CXTPReportInplaceButton;
 class CXTPPropExchange;
 class CXTPReportRecordItemConstraint;
+class CXTPReportRecordItemConstraints;
 class CXTPReportRecordItemControlHookWnd;
 class CXTPReportRecordItemControl;
 class CXTPReportRecordItemControls;
-class CXTPMarkupUIElement;
-class CXTPMarkupContext;
+class CXTPReportBorder;
+class CXTPReportGroupRow;
 
 //===========================================================================
 // Summary:
@@ -62,7 +63,7 @@ class CXTPMarkupContext;
 //===========================================================================
 struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_ARGS
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a XTP_REPORTRECORDITEM_ARGS object
@@ -72,7 +73,8 @@ struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_ARGS
 	//     pColumn  - Item's column pointer
 	//-----------------------------------------------------------------------
 	XTP_REPORTRECORDITEM_ARGS();
-	XTP_REPORTRECORDITEM_ARGS(CXTPReportControl* pControl, CXTPReportRow* pRow, CXTPReportColumn* pColumn);
+	XTP_REPORTRECORDITEM_ARGS(CXTPReportControl* pControl, CXTPReportRow* pRow,
+							  CXTPReportColumn* pColumn);
 	// <COMBINE XTP_REPORTRECORDITEM_ARGS::XTP_REPORTRECORDITEM_ARGS>
 
 	//-----------------------------------------------------------------------
@@ -85,13 +87,13 @@ struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_ARGS
 	void Release();
 
 	const XTP_REPORTRECORDITEM_ARGS& operator=(const XTP_REPORTRECORDITEM_ARGS& src);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-	CXTPReportControl* pControl;    // Pointer to the main Report control.
-	CXTPReportRow* pRow;            // Pointer to the associated row.
-	CXTPReportColumn* pColumn;      // Report column at click position, if any, NULL otherwise.
-	CXTPReportRecordItem* pItem;    // Pointer to the associated item.
-	CRect rcItem;                   // Item position in control client coordinates.
+	CXTPReportControl* pControl; // Pointer to the main Report control.
+	CXTPReportRow* pRow;		 // Pointer to the associated row.
+	CXTPReportColumn* pColumn;   // Report column at click position, if any, NULL otherwise.
+	CXTPReportRecordItem* pItem; // Pointer to the associated item.
+	CRect rcItem;				 // Item position in control client coordinates.
 };
 
 //===========================================================================
@@ -115,16 +117,16 @@ struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_ARGS
 //===========================================================================
 struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_DRAWARGS : public XTP_REPORTRECORDITEM_ARGS
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	XTP_REPORTRECORDITEM_DRAWARGS()
 	{
 		nTextAlign = DT_LEFT;
-		pDC = NULL;
+		pDC		   = NULL;
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-	CDC* pDC;                       // Pointer to control drawing context.
-	int nTextAlign;                 // Text alignment mode DT_LEFT || DT_RIGHT || DT_CENTER
+	CDC* pDC;		// Pointer to control drawing context.
+	int nTextAlign; // Text alignment mode DT_LEFT || DT_RIGHT || DT_CENTER
 };
 
 //===========================================================================
@@ -138,7 +140,7 @@ struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_DRAWARGS : public XTP_REPORTRECORDITE
 //===========================================================================
 struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_CLICKARGS : public XTP_REPORTRECORDITEM_ARGS
 {
-	CPoint ptClient;                // Coordinates of the mouse click point.
+	CPoint ptClient; // Coordinates of the mouse click point.
 };
 
 //===========================================================================
@@ -166,12 +168,12 @@ struct _XTP_EXT_CLASS XTP_REPORTRECORDITEM_CLICKARGS : public XTP_REPORTRECORDIT
 //===========================================================================
 struct XTP_NM_REPORTRECORDITEM
 {
-	NMHDR hdr;                          // Standard structure, containing information about a notification message.
-	CXTPReportRow* pRow;                // Pointer to the row associated with the notification.
-	CXTPReportRecordItem* pItem;        // Pointer to the record item associated with the notification.
-	CXTPReportColumn* pColumn;          // Pointer to the column associated with the notification.
-	int   nHyperlink;                   // Index of clicked Hyperlink, if any, or -1 otherwise.
-	POINT pt;                           // Point where the message has happened.
+	NMHDR hdr;			 // Standard structure, containing information about a notification message.
+	CXTPReportRow* pRow; // Pointer to the row associated with the notification.
+	CXTPReportRecordItem* pItem; // Pointer to the record item associated with the notification.
+	CXTPReportColumn* pColumn;   // Pointer to the column associated with the notification.
+	int nHyperlink;				 // Index of clicked Hyperlink, if any, or -1 otherwise.
+	POINT pt;					 // Point where the message has happened.
 };
 
 //===========================================================================
@@ -183,9 +185,18 @@ struct XTP_NM_REPORTRECORDITEM
 //===========================================================================
 struct XTP_NM_REPORTREQUESTEDIT : public XTP_NM_REPORTRECORDITEM
 {
-	BOOL bCancel;   //TRUE to cancel operation.
+	BOOL bCancel; // TRUE to cancel operation.
 };
 
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+struct XTP_NM_REPORTVALUECHANGING : public XTP_NM_REPORTRECORDITEM
+{
+	BOOL bCancel;
+	LPVARIANT lpNewValue;
+};
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -193,12 +204,13 @@ struct XTP_NM_REPORTREQUESTEDIT : public XTP_NM_REPORTRECORDITEM
 //     and provides all parameters that are needed in processing control specific
 //     notifications by the main window
 // Remarks:
-//     Use this structure to get in-place button which produce XTP_NM_REPORT_INPLACEBUTTONDOWN message.
+//     Use this structure to get in-place button which produce XTP_NM_REPORT_INPLACEBUTTONDOWN
+//     message.
 // See Also: XTP_NM_REPORT_INPLACEBUTTONDOWN
 //-----------------------------------------------------------------------
 struct XTP_NM_REPORTINPLACEBUTTON : public XTP_NM_REPORTRECORDITEM
 {
-	CXTPReportInplaceButton* pButton;           // Pointer to in-place button
+	CXTPReportInplaceButton* pButton; // Pointer to in-place button
 };
 
 //-----------------------------------------------------------------------
@@ -216,12 +228,11 @@ struct XTP_NM_REPORTINPLACEBUTTON : public XTP_NM_REPORTRECORDITEM
 //-----------------------------------------------------------------------
 struct XTP_NM_REPORT_BEFORE_COPYPASTE
 {
-	NMHDR hdr;                          // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
-	CXTPReportRecord**  ppRecord;       // [in/out] A pointer to record pointer;
-	CStringArray*       parStrings;     // [in/out] A pointer to strings array with record items values.
+	CXTPReportRecord** ppRecord; // [in/out] A pointer to record pointer;
+	CStringArray* parStrings;	// [in/out] A pointer to strings array with record items values.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -234,7 +245,8 @@ struct XTP_NM_REPORT_BEFORE_COPYPASTE
 //-----------------------------------------------------------------------
 struct XTP_NM_REPORTCONSTRAINTSELECTING : public XTP_NM_REPORTRECORDITEM
 {
-	CXTPReportRecordItemConstraint* pConstraint; // Pointer to the constraint associated with the notification.
+	CXTPReportRecordItemConstraint* pConstraint; // Pointer to the constraint associated with the
+												 // notification.
 };
 
 //-----------------------------------------------------------------------
@@ -249,7 +261,6 @@ struct XTP_NM_REPORTCONSTRAINTSELECTING : public XTP_NM_REPORTRECORDITEM
 struct XTP_NM_REPORTTOOLTIPINFO : public XTP_NM_REPORTRECORDITEM
 {
 	CString* pstrText; // Pointer to a CString object with Tooltip text.
-	// int nImageIndex;
 };
 
 //-----------------------------------------------------------------------
@@ -258,23 +269,26 @@ struct XTP_NM_REPORTTOOLTIPINFO : public XTP_NM_REPORTRECORDITEM
 //-----------------------------------------------------------------------
 enum XTPReportColumnIconAlignment
 {
-	xtpColumnTextLeft         = DT_LEFT,   // Aligns text to the left.
-	xtpColumnTextCenter       = DT_CENTER, // Centers text horizontally in the column.
-	xtpColumnTextRight        = DT_RIGHT,  // Aligns text to the right.
-	xtpColumnTextVCenter      = DT_VCENTER,// Centers text vertically.
-	xtpColumnTextWordBreak    = DT_WORDBREAK, // Breaks words. Lines are automatically broken between words if a word would extend past the edge of the rectangle. A carriage return-line feed sequence also breaks the line.
+	xtpColumnTextLeft	  = DT_LEFT,	  // Aligns text to the left.
+	xtpColumnTextCenter	= DT_CENTER,	// Centers text horizontally in the column.
+	xtpColumnTextRight	 = DT_RIGHT,	 // Aligns text to the right.
+	xtpColumnTextVCenter   = DT_VCENTER,   // Centers text vertically.
+	xtpColumnTextWordBreak = DT_WORDBREAK, // Breaks words. Lines are automatically broken between
+										   // words if a word would extend past the edge of the
+										   // rectangle. A carriage return-line feed sequence also
+										   // breaks the line.
 
-	xtpColumnTextMask         = 0xFF,      // A mask for text alignment styles.
+	xtpColumnTextMask = 0xFF, // A mask for text alignment styles.
 
-	xtpColumnIconLeft         = 0x00100000, // Aligns icon to the left.
-	xtpColumnIconCenter       = 0x00200000, // Centers icon horizontally in the column.
-	xtpColumnIconRight        = 0x00400000, // Aligns icon to the right.
+	xtpColumnIconLeft   = 0x00100000, // Aligns icon to the left.
+	xtpColumnIconCenter = 0x00200000, // Centers icon horizontally in the column.
+	xtpColumnIconRight  = 0x00400000, // Aligns icon to the right.
 
-	xtpColumnIconTop          = 0x01000000, // Aligns icon to the top.
-	xtpColumnIconVCenter      = 0x02000000, // Aligns icon to the center.
-	xtpColumnIconBottom       = 0x04000000, // Aligns icon to the bottom.
+	xtpColumnIconTop	 = 0x01000000, // Aligns icon to the top.
+	xtpColumnIconVCenter = 0x02000000, // Aligns icon to the center.
+	xtpColumnIconBottom  = 0x04000000, // Aligns icon to the bottom.
 
-	xtpColumnIconMask         = 0x0FF00000  // A mask for icon alignment styles.
+	xtpColumnIconMask = 0x0FF00000 // A mask for icon alignment styles.
 };
 
 //-----------------------------------------------------------------------
@@ -285,21 +299,22 @@ enum XTPReportColumnIconAlignment
 //-----------------------------------------------------------------------
 enum XTPReportGroupRowIconAlignment
 {
-	xtpGroupRowIconUnknown      = 0,    // Unknown (empty) value.
+	xtpGroupRowIconUnknown = 0, // Unknown (empty) value.
 
-	xtpGroupRowIconLeft         = 0x001, // Draw icon at the left side of group row rect.
-	xtpGroupRowIconBeforeText   = 0x002, // Draw icon before caption text (between Expand/Collapse icon and text).
-	xtpGroupRowIconAfterText    = 0x004, // Draw icon after caption text.
-	xtpGroupRowIconRight        = 0x008, // Draw icon at the right side of group row rect.
+	xtpGroupRowIconLeft		  = 0x001, // Draw icon at the left side of group row rect.
+	xtpGroupRowIconBeforeText = 0x002, // Draw icon before caption text (between Expand/Collapse
+									   // icon and text).
+	xtpGroupRowIconAfterText = 0x004,  // Draw icon after caption text.
+	xtpGroupRowIconRight	 = 0x008,  // Draw icon at the right side of group row rect.
 
-	xtpGroupRowIconHmask        = 0x00F, // A mask for horizontal alignment flags.
+	xtpGroupRowIconHmask = 0x00F, // A mask for horizontal alignment flags.
 
-	xtpGroupRowIconVTop         = 0x100, // Vertical alignment: top of group row rect.
-	xtpGroupRowIconVCenter      = 0x200, // Vertical alignment: center of group row rect.
-	xtpGroupRowIconVCenterToText= 0x400, // Vertical alignment: center of caption text rect.
-	xtpGroupRowIconVBottom      = 0x800, // Vertical alignment: bottom of group row rect.
+	xtpGroupRowIconVTop			 = 0x100, // Vertical alignment: top of group row rect.
+	xtpGroupRowIconVCenter		 = 0x200, // Vertical alignment: center of group row rect.
+	xtpGroupRowIconVCenterToText = 0x400, // Vertical alignment: center of caption text rect.
+	xtpGroupRowIconVBottom		 = 0x800, // Vertical alignment: bottom of group row rect.
 
-	xtpGroupRowIconVmask        = 0xF00, // A mask for vertical alignment flags.
+	xtpGroupRowIconVmask = 0xF00, // A mask for vertical alignment flags.
 };
 
 //-----------------------------------------------------------------------
@@ -310,9 +325,9 @@ enum XTPReportGroupRowIconAlignment
 //-----------------------------------------------------------------------
 enum XTPReportVirtualRowFlags
 {
-	xtpVirtRowUnknown           = 0,     // Unknown (empty) value.
-	xtpVirtRowHasChildren       = 0x001, // A row has children.
-	xtpVirtRowLastChild         = 0x002  // A row is the last child of its parent.
+	xtpVirtRowUnknown	 = 0,	 // Unknown (empty) value.
+	xtpVirtRowHasChildren = 0x001, // A row has children.
+	xtpVirtRowLastChild   = 0x002  // A row is the last child of its parent.
 };
 
 //-----------------------------------------------------------------------
@@ -323,19 +338,27 @@ enum XTPReportVirtualRowFlags
 //-----------------------------------------------------------------------
 struct XTP_REPORTRECORDITEM_METRICS : public CXTPCmdTarget
 {
-	CFont* pFont;               // Drawing font.
-	COLORREF clrForeground;     // Item foreground color.
-	COLORREF clrBackground;     // Item background color.
-	CString strText;            // Item text.
+	CFont* pFont;			// Drawing font.
+	COLORREF clrForeground; // Item foreground color.
+	COLORREF clrBackground; // Item background color.
+	CString strText;		// Item text.
 
-	int nGroupRowIcon;          // Group row icon ID. See CXTPReportControl::GetImageManager()
+	int nGroupRowIcon;			// Group row icon ID. See CXTPReportControl::GetImageManager()
 	int nGroupRowIconAlignment; // Group row icon alignment. See XTPEnumGroupRowIconAlignment
-	int nColumnAlignment;       // Column alignment. See XTPReportColumnIconAlignment
-	int nItemIcon;              // Item icon ID. See CXTPReportControl::GetImageManager()
-	int nVirtRowLevel;          // Virtual row level.
-	int nVirtRowFlags;          // Virtual row flags.
+	int nColumnAlignment;		// Column alignment. See XTPReportColumnIconAlignment
+	int nItemIcon;				// Item icon ID. See CXTPReportControl::GetImageManager()
+	int nVirtRowLevel;			// Virtual row level.
+	int nVirtRowFlags;			// Virtual row flags.
 
-//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPFont m_xtpFontMetrics;
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntMetrics, m_xtpFontMetrics,
+										  GetMetricsFontHandle);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
+
+	//{{AFX_CODEJOCK_PRIVATE
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a XTP_REPORTRECORDITEM_METRICS struct
@@ -344,128 +367,49 @@ struct XTP_REPORTRECORDITEM_METRICS : public CXTPCmdTarget
 	{
 		Reset();
 
+#	ifdef _XTP_ACTIVEX
+		EnableAutomation();
+#	endif
 	}
 
 	void Reset()
 	{
-		pFont = NULL;
+		pFont		  = NULL;
 		clrForeground = XTP_REPORT_COLOR_DEFAULT;
-		clrBackground= XTP_REPORT_COLOR_DEFAULT;
+		clrBackground = XTP_REPORT_COLOR_DEFAULT;
 
-		nGroupRowIcon = XTP_REPORT_NOICON;
+		nGroupRowIcon		   = XTP_REPORT_NOICON;
 		nGroupRowIconAlignment = xtpGroupRowIconRight | xtpGroupRowIconVCenter;
-		nColumnAlignment = xtpColumnTextLeft;
-		nItemIcon = XTP_REPORT_NOICON;
-		nVirtRowLevel = 0;
-		nVirtRowFlags = 0;
+		nColumnAlignment	   = xtpColumnTextLeft;
+		nItemIcon			   = XTP_REPORT_NOICON;
+		nVirtRowLevel		   = 0;
+		nVirtRowFlags		   = 0;
 	}
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	~XTP_REPORTRECORDITEM_METRICS()
+	{
+	}
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	LPFONTDISP OleGetFont();
+	void OleSetFont(LPFONTDISP pFontDisp);
+
 //}}AFX_CODEJOCK_PRIVATE
-
+#	endif
 };
-
-
-//===========================================================================
-// Summary:
-//     CXTPReportRecordItemConstraint is a CCmdTarget derived class. It
-//     represents a single item constraints.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPReportRecordItemConstraint : public CXTPCmdTarget
-{
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPPropertyGridItemConstraint object.
-	//-------------------------------------------------------------------------
-	CXTPReportRecordItemConstraint();
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to retrieve the index of this constraint
-	//     within the collection of constraints.
-	// Returns:
-	//     Index of this constraint.
-	//-----------------------------------------------------------------------
-	int GetIndex() const;
-
-public:
-	CString m_strConstraint;    // Caption text of constraint.  This is the
-	                            // text displayed for this constraint.
-	DWORD_PTR   m_dwData;       // The 32-bit value associated with the item.
-
-protected:
-	int m_nIndex;               // Index of constraint.
-
-private:
-	friend class CXTPReportRecordItemConstraints;
-	friend class CXTPReportRecordItemEditOptions;
-};
-
-//===========================================================================
-// Summary:
-//     CXTPReportRecordItemConstraints is a CCmdTarget derived class. It represents the item
-//     constraints collection.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPReportRecordItemConstraints : public CXTPCmdTarget
-{
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPReportRecordItemConstraints object.
-	//-------------------------------------------------------------------------
-	CXTPReportRecordItemConstraints();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPPropertyGridItemConstraints object, handles cleanup and deallocation
-	//-------------------------------------------------------------------------
-	~CXTPReportRecordItemConstraints();
-
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine the total number of constraints in the list.
-	// Returns:
-	//     Returns the total number of constraints added to the ReportRecordItem and\or ReportColumn.
-	//-----------------------------------------------------------------------
-	int GetCount() const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this member to remove all constraints from the list of constraints.
-	//-------------------------------------------------------------------------
-	void RemoveAll();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to retrieve a constraint at nIndex.
-	// Parameters:
-	//     nIndex - Position in constraint collection.
-	// Returns:
-	//     Pointer to the constraint at nIndex in the collection of constraints.
-	//-----------------------------------------------------------------------
-	CXTPReportRecordItemConstraint* GetAt(int nIndex) const;
-
-protected:
-	CArray<CXTPReportRecordItemConstraint*, CXTPReportRecordItemConstraint*> m_arrConstraints;  // Collection of constraints
-
-private:
-
-	friend class CXTPReportRecordItemEditOptions;
-
-};
-
 
 //===========================================================================
 // Summary:
 //     This class represents collection of the in-place buttons
 //     of the single item of the report control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportInplaceButtons : public CArray<CXTPReportInplaceButton*, CXTPReportInplaceButton*>
+class _XTP_EXT_CLASS CXTPReportInplaceButtons
+	: public CArray<CXTPReportInplaceButton*, CXTPReportInplaceButton*>
 {
 public:
 	//-----------------------------------------------------------------------
@@ -475,7 +419,6 @@ public:
 	CXTPReportInplaceButtons();
 };
 
-
 //===========================================================================
 // Summary:
 //     This class represents edit options of the single item or column
@@ -483,7 +426,6 @@ public:
 class _XTP_EXT_CLASS CXTPReportRecordItemEditOptions : public CXTPCmdTarget
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportRecordItemEditOptions object.
@@ -498,7 +440,6 @@ public:
 	~CXTPReportRecordItemEditOptions();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Adds new constraint to constraint list.
@@ -547,7 +488,7 @@ public:
 	// Summary:
 	//     Call this member to add a combo button to the CXTPReportRecordItem.
 	// Parameters:
-	//  bInside - BOOL falg to keep inside parent control rectangle
+	//  bInside - BOOL flag to keep inside parent control rectangle
 	// Returns:
 	//  pointer to CXTPReportInplaceButton
 	// Remarks:
@@ -561,7 +502,7 @@ public:
 	// Summary:
 	//     Call this member to add a expand button to the CXTPReportRecordItem.
 	// Parameters:
-	//  bInside - BOOL falg to keep inside parent control rectangle
+	//  bInside - BOOL flag to keep inside parent control rectangle
 	// Returns:
 	//  pointer to CXTPReportInplaceButton
 	// Remarks:
@@ -574,7 +515,7 @@ public:
 	// Summary:
 	//     Call this member to add a spin button to the CXTPReportRecordItem.
 	// Parameters:
-	//  bInside - BOOL falg to keep inside parent control rectangle
+	//  bInside - BOOL flag to keep inside parent control rectangle
 	// Returns:
 	//  pointer to CXTPReportInplaceButton
 	// Remarks:
@@ -600,14 +541,36 @@ public:
 	void RemoveButtons();
 
 public:
-	BOOL m_bAllowEdit;// TRUE to add an edit box to this item.
-	BOOL m_bConstraintEdit; // If TRUE, then you can only choose from the list of constraints added, If FALSE, then you can type a custom response not listed in the list of constraints.
-	CXTPReportRecordItemConstraints* m_pConstraints;         // Constraint list.
-	CXTPReportInplaceButtons arrInplaceButtons;     // Array of in-place buttons.
-	BOOL m_bSelectTextOnEdit; // Select all text on edit
-	DWORD m_dwEditStyle; // Edit Style (ES_MULTILINE, ES_NUMBER....)
-	int m_nMaxLength; // Maximum number of characters that can be entered into an editable item (Edit limit).
+	BOOL m_bAllowEdit; // TRUE to enable changing the value of the field, FALSE to enable read-mode.
+					   // If FALSE, m_bConstraintEdit is ignored.
+	BOOL m_bConstraintEdit; // TRUE to prevent possibility to type in a custom value in the edit box
+							// if applicable.
+	CXTPReportRecordItemConstraints* m_pConstraints; // Constraint list.
+	CXTPReportInplaceButtons arrInplaceButtons;		 // Array of in-place buttons.
+	BOOL m_bSelectTextOnEdit;						 // Select all text on edit
+	BOOL m_bScrollTextOnEdit;						 // Scroll text on edit
+	BOOL m_bExpandOnSelect;							 // Expand an expandable contents on edit
+	DWORD m_dwEditStyle;							 // Edit Style (ES_MULTILINE, ES_NUMBER....)
+	int m_nMaxLength; // Maximum number of characters that can be entered into an editable item
+					  // (Edit limit).
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRecordItemEditOptions);
+
+	afx_msg LPDISPATCH OleGetConstraints();
+	afx_msg LPDISPATCH OleGetInplaceButton(long nIndex);
+	afx_msg long OleInplaceButtonsCount();
+
+	afx_msg LPDISPATCH OleAddComboButton(const VARIANT& bInside);
+	afx_msg LPDISPATCH OleAddExpandButton(const VARIANT& bInside);
+	afx_msg LPDISPATCH OleAddSpinButton(const VARIANT& bInside);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -624,7 +587,8 @@ public:
 //     CXTPReportRecordItemPreview, CXTPReportRecordItemText,
 //     CXTPReportRecordItemVariant
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportRecordItem : public CXTPHeapObjectT<CCmdTarget, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportRecordItem
+	: public CXTPHeapObjectT<CXTPCmdTarget, CXTPReportDataAllocator>
 {
 	DECLARE_SERIAL(CXTPReportRecordItem)
 public:
@@ -674,7 +638,8 @@ public:
 	//     pDrawArgs - structure which contain drawing arguments.
 	//     pMetrics - structure which contain metrics of the item.
 	//-----------------------------------------------------------------------
-	virtual void OnDrawCaption(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pMetrics);
+	virtual void OnDrawCaption(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+							   XTP_REPORTRECORDITEM_METRICS* pMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -698,6 +663,16 @@ public:
 	//     or NULL otherwise.
 	//-----------------------------------------------------------------------
 	CXTPReportRecordItemControl* HitTest(CPoint ptPoint);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determine if the click occurred on the hyperlink
+	// Parameters:
+	//     ptClick - point of the mouse click
+	// Returns:
+	//     Zero-based index of clicked link, -1 otherwise
+	//-----------------------------------------------------------------------
+	virtual int HitTestHyperlink(CPoint ptClick);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -762,6 +737,24 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns item text caption.
+	// Remarks:
+	//     Can be overridden by descendants.
+	// Returns:
+	//     Item text caption (empty string for base record item class).
+	//-----------------------------------------------------------------------
+	virtual CString GetCaption();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns column caption prefix.
+	// Returns:
+	//     Column caption prefix.
+	//-----------------------------------------------------------------------
+	CString GetColumnCaptionPrefix(CXTPReportColumn* pColumn) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns item text caption.
 	// Parameters:
 	//     pColumn - Corresponded column of the item.
 	// Remarks:
@@ -769,10 +762,7 @@ public:
 	// Returns:
 	//     Item text caption (empty string for base record item class).
 	//-----------------------------------------------------------------------
-	virtual CString GetCaption(CXTPReportColumn* pColumn)
-	{
-		UNREFERENCED_PARAMETER(pColumn); return m_strCaption;
-	};
+	virtual CString GetCaption(CXTPReportColumn* pColumn);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -795,6 +785,16 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns group caption native value.
+	// Parameters:
+	//     pColumn - point to the column
+	// Returns:
+	//     Native group caption value.
+	//-----------------------------------------------------------------------
+	virtual COleVariant GetGroupCaptionValue(CXTPReportColumn* pColumn);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Returns resource id of string containing text
 	// Parameters:
 	//     pColumn - Point to the column
@@ -807,14 +807,20 @@ public:
 	// Summary:
 	//     Compares group captions.
 	// Parameters:
-	//     pColumn - Point to the column
-	//     pItem   - Point to the item
+	//     pColumn   - Pointer to the column for which the captions has to be compared
+	//     pItem     - Pointer to the item compare caption to
+	//     pGroupRow - Pointer to the group row compare caption to
 	// Returns:
 	//     Zero if the items' values are identical,
 	//     < 0 if this item value is less than provided,
 	//     or > 0 if this item value is greater than provided.
 	//-----------------------------------------------------------------------
 	virtual int CompareGroupCaption(CXTPReportColumn* pColumn, CXTPReportRecordItem* pItem);
+	virtual int CompareGroupCaption(
+		CXTPReportColumn* pColumn,
+		CXTPReportGroupRow* pGroupRow); // <combine
+										// CXTPReportRecordItem::CompareGroupCaption@CXTPReportColumn*
+										// pColumn@CXTPReportRecordItem*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -918,7 +924,7 @@ public:
 	// Returns:
 	//     String object, containing current Formula
 	//-----------------------------------------------------------------------
-	virtual CString GetFormula();
+	virtual CString GetFormula() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -933,7 +939,7 @@ public:
 	// Returns:
 	//     String object, containing current format string
 	//-----------------------------------------------------------------------
-	virtual CString GetFormatString();
+	virtual CString GetFormatString() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1041,7 +1047,8 @@ public:
 	//     Could be overridden by descendants.
 	// See Also: XTP_REPORTRECORDITEM_DRAWARGS, XTP_REPORTRECORDITEM_METRICS
 	//-----------------------------------------------------------------------
-	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
+	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1208,11 +1215,33 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns whether items with a check box will go into edit mode on click.
+	// Returns:
+	//     TRUE if items with a check box will go into edit mode on click.
+	//-----------------------------------------------------------------------
+	BOOL GetCanEditCheckboxItem() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Specifies whether items with a check box will go into edit mode on click.
+	// Parameters:
+	//     bSet - TRUE for items with a check box will go into edit mode on click.
+	//-----------------------------------------------------------------------
+	void SetCanEditCheckboxItem(BOOL bSet);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Set parent record object.
+	//-----------------------------------------------------------------------
+	void SetRecord(CXTPReportRecord* pReportRecord);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Retrieved parent record object.
 	// Returns:
 	//     Pointer to parent record object.
 	//-----------------------------------------------------------------------
-	CXTPReportRecord* GetRecord () const;
+	CXTPReportRecord* GetRecord() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1272,6 +1301,14 @@ public:
 	CXTPMarkupUIElement* GetMarkupUIElement() const;
 
 	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this method to reset Markup element
+	// See Also:
+	//      GetMarkupUIElement, CXTPReportControl::EnableMarkup
+	//-----------------------------------------------------------------------
+	virtual void ResetMarkupUIElement();
+
+	//-----------------------------------------------------------------------
 	// Summary: The framework calls this member function to determine
 	//          whether a point is in the bounding rectangle of the
 	//          specified tool.
@@ -1283,11 +1320,28 @@ public:
 	//          the tooltip control was not found, -1.
 	//-----------------------------------------------------------------------
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI);
-//GRID
-	int m_nMergePreviousCells;
-	int m_nMergePreviousVerticalCells;
-//GRID
+	// GRID
+	void Merge(CXTPReportRecordItem* pMergeItem);
+
+	BOOL IsMerged() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this method to determine if this item is in merge group and
+	//          it is not left-top (main) item of this grop. This is means that
+	//			item must get some properties from main item of merge group
+	// Returns:
+	//      	TRUE if merged and not left-top item, FALSE else.
+	//-----------------------------------------------------------------------
+	BOOL IsChildOfMerge() const;
+
+	CXTPReportRecordItem* GetMergeItem() const;
+
+	// points on top-left item in merged group or points on self if is top-left itself.
+	// NULL if item don't belong to merged cells.
+	CXTPReportRecordItem* m_pMergeItem;
+	// GRID
 protected:
+	virtual void ParseBBCode(CString& strText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1300,39 +1354,28 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Determine if the click occurred on the hyperlink
-	// Parameters:
-	//     ptClick - point of the mouse click
-	// Returns:
-	//     Zero-based index of clicked link, -1 otherwise
-	//-----------------------------------------------------------------------
-	virtual int HitTestHyperlink(CPoint ptClick);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Use this function to access hyperlinks collection.
 	// Returns:
 	//     A pointer to CXTPReportHyperlinks object.
 	//-----------------------------------------------------------------------
 	CXTPReportHyperlinks* GetHyperlinks();
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns whether items with a check box will go into edit mode on click.
-	// Returns:
-	//     TRUE if items with a check box will go into edit mode on click.
-	//-----------------------------------------------------------------------
-	BOOL GetCanEditCheckboxItem() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Specifies whether items with a check box will go into edit mode on click.
-	// Parameters:
-	//     bSet - TRUE for items with a check box will go into edit mode on click.
-	//-----------------------------------------------------------------------
-	void SetCanEditCheckboxItem(BOOL bSet);
-
 protected:
+	virtual BOOL IsAllowEdit(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called when an editable item enters edit mode.
+	// Parameters:
+	//     pItemArgs - Pointer to a XTP_REPORTRECORDITEM_ARGS struct.
+	// Remarks:
+	//     An item can enter edit mode when the user clicks on it and starts typing,
+	//     or when a check box item is checked\unchecked.
+	// Returns:
+	//     Returns TRUE if the edit request was successful, FALSE if the edit
+	//     request was canceled.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnRequestEdit(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1354,7 +1397,6 @@ protected:
 	virtual BOOL OnChar(XTP_REPORTRECORDITEM_ARGS* pItemArgs, UINT nChar);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when user cancel edit item.
@@ -1379,7 +1421,7 @@ public:
 	//     pItemArgs - Pointer to structure with items arguments.
 	//     szText    - New in-place edit text.
 	//-----------------------------------------------------------------------
-	//virtual void OnEditChanged(XTP_REPORTRECORDITEM_ARGS* pItemArgs, LPCTSTR szText)
+	// virtual void OnEditChanged(XTP_REPORTRECORDITEM_ARGS* pItemArgs, LPCTSTR szText)
 	//{
 	//  UNREFERENCED_PARAMETER(pItemArgs);
 	//  UNREFERENCED_PARAMETER(szText);
@@ -1395,7 +1437,7 @@ public:
 	// Returns:
 	//     FALSE to cancel edit operation.
 	//-----------------------------------------------------------------------
-	//virtual BOOL OnEditChanging(XTP_REPORTRECORDITEM_ARGS* pItemArgs, CString& rstrNewText)
+	// virtual BOOL OnEditChanging(XTP_REPORTRECORDITEM_ARGS* pItemArgs, CString& rstrNewText)
 	//{
 	//  UNREFERENCED_PARAMETER(pItemArgs);
 	//  UNREFERENCED_PARAMETER(rstrNewText);
@@ -1410,10 +1452,7 @@ public:
 	// Parameters:
 	//     pItemArgs - Pointer to structure with items arguments.
 	//-----------------------------------------------------------------------
-	virtual void OnEditCanceled(XTP_REPORTRECORDITEM_ARGS* pItemArgs)
-	{
-		UNREFERENCED_PARAMETER(pItemArgs);
-	}
+	virtual void OnEditCanceled(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1422,7 +1461,8 @@ public:
 	//     pItemArgs   - Pointer to structure with items arguments
 	//     pConstraint - Selected constraint
 	//-----------------------------------------------------------------------
-	virtual void OnConstraintChanged(XTP_REPORTRECORDITEM_ARGS* pItemArgs, CXTPReportRecordItemConstraint* pConstraint);
+	virtual void OnConstraintChanged(XTP_REPORTRECORDITEM_ARGS* pItemArgs,
+									 CXTPReportRecordItemConstraint* pConstraint);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1460,23 +1500,27 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPReportRecordItemControls* GetItemControls();
 
-
 	double StringToDouble(CString strText);
-protected:
+
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called when an editable item enters edit mode.
-	// Parameters:
-	//     pItemArgs - Pointer to a XTP_REPORTRECORDITEM_ARGS struct.
-	// Remarks:
-	//     An item can enter edit mode when the user clicks on it and starts typing,
-	//     or when a check box item is cheked\unchecked.
-	// Returns:
-	//     Returns True if the edit request was successful, False if the edit
-	//     request was canceled.
+	//     Creates a border for this item.
 	//-----------------------------------------------------------------------
-	virtual BOOL OnRequestEdit(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
+	BOOL CreateBorder();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Destroys the border of this item.
+	//-----------------------------------------------------------------------
+	BOOL DestroyBorder();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the border of this item.
+	//-----------------------------------------------------------------------
+	CXTPReportBorder* GetBorder() const;
+
+protected:
 	//{{AFX_CODEJOCK_PRIVATE
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1484,184 +1528,290 @@ protected:
 	//     Otherwise, returns NULL
 	//-----------------------------------------------------------------------
 	virtual CXTPReportColumn* GetColumn();
-
-	CXTPReportControl* m_pControl; // Parent Report control (note that this member does not guarantee
-	                               // a correct parent, because it just stores a last accessed one)
-
-	virtual BOOL IsAllowEdit(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
 	virtual void DoMouseButtonClick();
 	//}}AFX_CODEJOCK_PRIVATE
 
-	CRect m_rcGlyph; // Coordinates of drawn glyph.
-
-
-
 protected:
+	CXTPReportControl* m_pControl; // Parent Report control
+	CXTPReportRecord* m_pRecord;   // Pointer to the associated record
+	CXTPReportBorder* m_pBorder;   // Item border
 
-	CFont* m_pFontCaption;      // Storage for item caption font.
+	CFont* m_pFontCaption; // Storage for item caption font.
 
-	COLORREF m_clrText;         // Storage for item text color.
-	COLORREF m_clrBackground;   // Storage for item background color.
-	BOOL m_bBoldText;           // Is bold text.
+	COLORREF m_clrText;		  // Storage for item text color.
+	COLORREF m_clrBackground; // Storage for item background color.
+	BOOL m_bBoldText;		  // Is bold text.
 
-	CString m_strFormatString;  // Stores string for extra formatting of item caption.
-	CString m_strFormula;       // Stores Formula with simple algorithm to calculate.
+	CString m_strFormatString; // Stores string for extra formatting of item caption.
+	CString m_strFormula;	  // Stores Formula with simple algorithm to calculate.
 
-	BOOL m_bEditable;           // Stores editable flag.
+	BOOL m_bEditable;					 // Stores editable flag.
 	CXTPReportHyperlinks* m_pHyperlinks; // Array of the Item's hyperlinks
 
-	CXTPReportRecord* m_pRecord;    // Pointer to the associated record item, if any, or NULL otherwise.
+	int m_nIconIndex; // ID of the bitmap from the application resources.
 
-	int m_nIconIndex;               // ID of the bitmap from the application resources.
+	int m_nSortPriority;  // Sort priority
+	int m_nGroupPriority; // Group priority
 
-	int m_nSortPriority;            // Sort priority
-	int m_nGroupPriority;           // Group priority
+	CString m_strGroupCaption; // Caption of the group
+	CString m_strCaption;	  // Caption of the item
+	BOOL m_bFocusable;		   // TRUE if item accept focus.
 
-	CString m_strGroupCaption;      // Caption of the group
-	CString m_strCaption;           // Caption of the item
-	BOOL m_bFocusable;              // TRUE if item accept focus.
-
-	int  m_bChecked;                // TRUE if item checked.
-	BOOL m_bHasCheckbox;            // TRUE if item has check box.
-	BOOL m_bCanEditCheckboxItem;    // TRUE if an item with a check box will get an edit control (only useful if column is wide)
-	BOOL m_bTristateCheckbox;       // TRUE if the check nox is tri state.
-	DWORD_PTR m_dwData;             // The 32-bit value associated with the item.
-	CString m_strTooltip;           // Tooltip of the item.
+	int m_checkState;			 // TRUE if item checked.
+	BOOL m_bHasCheckbox;		 // TRUE if item has check box.
+	BOOL m_bCanEditCheckboxItem; // TRUE if an item with a check box will get an edit control (only
+								 // useful if column is wide)
+	BOOL m_bTristateCheckbox;	// TRUE if the check nox is tri state.
+	DWORD_PTR m_dwData;			 // The 32-bit value associated with the item.
+	CString m_strTooltip;		 // Tooltip of the item.
 
 	CXTPReportRecordItemEditOptions* m_pEditOptions; // Edit options of the item.
 
-	XTPReportColumnIconAlignment m_Alignment;           // Alignment style for item.
+	XTPReportColumnIconAlignment m_Alignment; // Alignment style for item.
 
-	CXTPReportRecordItemControls* m_pItemControls;      // Record item control list.
+	CXTPReportRecordItemControls* m_pItemControls;		// Record item control list.
 	CXTPReportRecordItemControl* m_pFocusedItemControl; // Focused record item control.
-	BOOL m_bItemControlUnderMouse;                      // TRUE if an item control is under the mouse pointer.
-	CXTPReportRecordItemControlHookWnd* m_pItemControlHookWnd;         // Item control hook window.
+	BOOL m_bItemControlUnderMouse; // TRUE if an item control is under the mouse pointer.
+	CXTPReportRecordItemControlHookWnd* m_pItemControlHookWnd; // Item control hook window.
+	CRect m_rcGlyph;										   // Coordinates of drawn glyph.
 
-	CXTPMarkupUIElement* m_pMarkupUIElement;            // Markup element.
+	CXTPMarkupUIElement* m_pMarkupUIElement; // Markup element.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRecordItem);
+
+	afx_msg LPDISPATCH OleGetRecord();
+	afx_msg LPDISPATCH OleGetEditOptions();
+	afx_msg void OleCreateEditOptions();
+	afx_msg LPDISPATCH OleGetHyperlinks();
+
+	afx_msg BSTR OleGetFormat();
+	afx_msg void OleSetFormat(LPCTSTR pcszFormat);
+
+	afx_msg BSTR OleGetFormula();
+	afx_msg void OleSetFormula(LPCTSTR pcszFormula);
+
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleSetCaption(LPCTSTR pcszCaption);
+
+	afx_msg BSTR OleGetGroupCaption();
+	afx_msg void OleSetGroupCaption(LPCTSTR pcszGroupCaption);
+
+	afx_msg BSTR OleGetTooltip();
+	afx_msg void OleSetTooltip(LPCTSTR pcszTooltip);
+
+	afx_msg LPDISPATCH OleGetItemControls();
+	afx_msg LPDISPATCH OleGetMarkupUIElement();
+
+	COleVariant m_oleTag;
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPReportRecord;
 	friend class CXTPReportControl;
 	friend class CXTPReportNavigator;
+	friend class CXTPReportIconNavigator;
 	friend class CXTPReportRecordItemControls;
 };
 
-AFX_INLINE CString CXTPReportRecordItem::GetFormula() {
+AFX_INLINE CString CXTPReportRecordItem::GetFormula() const
+{
 	return m_strFormula;
 }
-AFX_INLINE void CXTPReportRecordItem::SetFormula(LPCTSTR sFormula) {
+
+AFX_INLINE void CXTPReportRecordItem::SetFormula(LPCTSTR sFormula)
+{
 	m_strFormula = sFormula;
 }
-AFX_INLINE CString CXTPReportRecordItem::GetFormatString() {
+
+AFX_INLINE CString CXTPReportRecordItem::GetFormatString() const
+{
 	return m_strFormatString;
 }
-AFX_INLINE void CXTPReportRecordItem::SetFormatString(LPCTSTR strFormat) {
+
+AFX_INLINE void CXTPReportRecordItem::SetFormatString(LPCTSTR strFormat)
+{
 	m_strFormatString = strFormat;
 }
-AFX_INLINE BOOL CXTPReportRecordItem::SetEditable(BOOL bEditable) {
+
+AFX_INLINE BOOL CXTPReportRecordItem::SetEditable(BOOL bEditable)
+{
 	BOOL bOldEditable = m_bEditable;
-	m_bEditable = bEditable;
+	m_bEditable		  = bEditable;
 	return bOldEditable;
 }
-AFX_INLINE int CXTPReportRecordItem::AddHyperlink(CXTPReportHyperlink* pHyperlink) {
-	return GetHyperlinks() ? (int)GetHyperlinks()->Add(pHyperlink) : -1;
-}
-AFX_INLINE int CXTPReportRecordItem::GetHyperlinksCount() const {
-	return m_pHyperlinks ? (int)m_pHyperlinks->GetSize() : 0;
-}
-AFX_INLINE CXTPReportHyperlink* CXTPReportRecordItem::GetHyperlinkAt(int nHyperlink) const {
-	return m_pHyperlinks ? m_pHyperlinks->GetAt(nHyperlink) : NULL;
-}
-AFX_INLINE void CXTPReportRecordItem::RemoveHyperlinkAt(int nHyperlink) {
-	if (m_pHyperlinks)
-		m_pHyperlinks->RemoveAt(nHyperlink);
-}
 
-AFX_INLINE BOOL CXTPReportRecordItem::IsPreviewItem() const {
+AFX_INLINE BOOL CXTPReportRecordItem::IsPreviewItem() const
+{
 	return FALSE;
 }
-AFX_INLINE int CXTPReportRecordItem::GetIconIndex() const {
+
+AFX_INLINE int CXTPReportRecordItem::GetIconIndex() const
+{
 	return m_nIconIndex;
 }
-AFX_INLINE int CXTPReportRecordItem::SetIconIndex(int nIconIndex) {
-	int nOldID = GetIconIndex();
+
+AFX_INLINE int CXTPReportRecordItem::SetIconIndex(int nIconIndex)
+{
+	int nOldID   = GetIconIndex();
 	m_nIconIndex = nIconIndex;
 	return nOldID;
 }
-AFX_INLINE int CXTPReportRecordItem::GetAlignment() const {
+
+AFX_INLINE int CXTPReportRecordItem::GetAlignment() const
+{
 	return m_Alignment;
 }
-AFX_INLINE int CXTPReportRecordItem::SetAlignment(int nAlignment) {
-	int nOld = m_Alignment;
+
+AFX_INLINE int CXTPReportRecordItem::SetAlignment(int nAlignment)
+{
+	int nOld	= m_Alignment;
 	m_Alignment = (XTPReportColumnIconAlignment)nAlignment;
 	return nOld;
 }
-AFX_INLINE int CXTPReportRecordItem::GetSortPriority() const {
+
+AFX_INLINE int CXTPReportRecordItem::GetSortPriority() const
+{
 	return m_nSortPriority;
 }
-AFX_INLINE void CXTPReportRecordItem::SetSortPriority(int nSortPriority) {
+
+AFX_INLINE void CXTPReportRecordItem::SetSortPriority(int nSortPriority)
+{
 	m_nSortPriority = nSortPriority;
 }
-AFX_INLINE int CXTPReportRecordItem::GetGroupPriority() const {
+
+AFX_INLINE int CXTPReportRecordItem::GetGroupPriority() const
+{
 	return m_nGroupPriority;
 }
-AFX_INLINE void CXTPReportRecordItem::SetGroupPriority(int nGroupPriority) {
+
+AFX_INLINE void CXTPReportRecordItem::SetGroupPriority(int nGroupPriority)
+{
 	m_nGroupPriority = nGroupPriority;
 }
-AFX_INLINE void CXTPReportRecordItem::SetGroupCaption(LPCTSTR strCaption) {
+
+AFX_INLINE void CXTPReportRecordItem::SetGroupCaption(LPCTSTR strCaption)
+{
 	m_strGroupCaption = strCaption;
 }
-AFX_INLINE void CXTPReportRecordItem::SetChecked(BOOL bChecked) {
-	m_bChecked = bChecked;
-}
-AFX_INLINE BOOL CXTPReportRecordItem::IsChecked() const {
-	return m_bChecked;
-}
-AFX_INLINE void CXTPReportRecordItem::SetCheckedState(int iState) {
-	if (m_bTristateCheckbox)
-		m_bChecked = iState;
+
+AFX_INLINE void CXTPReportRecordItem::SetChecked(BOOL bChecked)
+{
+	if (bChecked)
+	{
+		m_checkState = xtpReportCheckStateChecked;
+	}
 	else
-		m_bChecked = iState ? 1 : 0;
+	{
+		m_checkState = xtpReportCheckStateUnchecked;
+	}
 }
-AFX_INLINE int CXTPReportRecordItem::GetCheckedState() const {
+
+AFX_INLINE BOOL CXTPReportRecordItem::IsChecked() const
+{
+	return xtpReportCheckStateChecked == m_checkState;
+}
+
+AFX_INLINE void CXTPReportRecordItem::SetCheckedState(int iState)
+{
 	if (m_bTristateCheckbox)
-		return m_bChecked;
+	{
+		m_checkState = XTPReportCheckState(iState);
+	}
 	else
-		return m_bChecked ? 1 : 0;
+	{
+		m_checkState = iState ? xtpReportCheckStateChecked : xtpReportCheckStateUnchecked;
+	}
 }
-AFX_INLINE void CXTPReportRecordItem::HasCheckbox(BOOL bHasCheckbox, BOOL bTristate) {
-	m_bHasCheckbox = bHasCheckbox;
+
+AFX_INLINE int CXTPReportRecordItem::GetCheckedState() const
+{
+	if (m_bTristateCheckbox)
+	{
+		return m_checkState;
+	}
+	else
+	{
+		return m_checkState ? xtpReportCheckStateChecked : xtpReportCheckStateUnchecked;
+	}
+}
+
+AFX_INLINE void CXTPReportRecordItem::HasCheckbox(BOOL bHasCheckbox, BOOL bTristate)
+{
+	m_bHasCheckbox		= bHasCheckbox;
 	m_bTristateCheckbox = bTristate;
 }
-AFX_INLINE BOOL CXTPReportRecordItem::GetHasCheckbox() const {
+
+AFX_INLINE BOOL CXTPReportRecordItem::GetHasCheckbox() const
+{
 	return m_bHasCheckbox;
 }
-AFX_INLINE CXTPReportRecord* CXTPReportRecordItem::GetRecord () const {
+
+AFX_INLINE void CXTPReportRecordItem::SetRecord(CXTPReportRecord* pReportRecord)
+{
+	m_pRecord = pReportRecord;
+	ResetMarkupUIElement();
+}
+
+AFX_INLINE CXTPReportRecord* CXTPReportRecordItem::GetRecord() const
+{
 	return m_pRecord;
 }
-AFX_INLINE void CXTPReportRecordItem::SetFocusable(BOOL bFocusable) {
+
+AFX_INLINE void CXTPReportRecordItem::SetFocusable(BOOL bFocusable)
+{
 	m_bFocusable = bFocusable;
 }
-AFX_INLINE DWORD_PTR CXTPReportRecordItem::GetItemData() const {
+
+AFX_INLINE DWORD_PTR CXTPReportRecordItem::GetItemData() const
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTPReportRecordItem::SetItemData(DWORD_PTR dwData) {
+
+AFX_INLINE void CXTPReportRecordItem::SetItemData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE DWORD CXTPReportRecordItem::GetSelectedConstraintData(XTP_REPORTRECORDITEM_ARGS* /*pItemArgs*/) {
+
+AFX_INLINE DWORD
+	CXTPReportRecordItem::GetSelectedConstraintData(XTP_REPORTRECORDITEM_ARGS* /*pItemArgs*/)
+{
 	return DWORD(-1);
 }
-AFX_INLINE CString CXTPReportRecordItem::GetTooltip() const {
+
+AFX_INLINE CString CXTPReportRecordItem::GetTooltip() const
+{
+	if (IsChildOfMerge())
+	{
+		return GetMergeItem()->m_strTooltip;
+	}
 	return m_strTooltip;
 }
-AFX_INLINE void CXTPReportRecordItem::SetTooltip(LPCTSTR lpszTooltip) {
+
+AFX_INLINE void CXTPReportRecordItem::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltip = lpszTooltip;
 }
-AFX_INLINE BOOL CXTPReportRecordItem::IsBold() const {
+
+AFX_INLINE BOOL CXTPReportRecordItem::IsBold() const
+{
 	return m_bBoldText;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPReportRecordItem::GetMarkupUIElement() const {
+
+AFX_INLINE CXTPMarkupUIElement* CXTPReportRecordItem::GetMarkupUIElement() const
+{
 	return m_pMarkupUIElement;
 }
 
+AFX_INLINE void CXTPReportRecordItem::OnEditCanceled(XTP_REPORTRECORDITEM_ARGS* pItemArgs)
+{
+	UNREFERENCED_PARAMETER(pItemArgs);
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTRECORDITEM_H__)

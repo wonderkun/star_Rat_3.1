@@ -1,7 +1,6 @@
 // XTPToolBar.h : interface for the CXTPToolBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTOOLBAR_H__)
-#define __XTPTOOLBAR_H__
+#	define __XTPTOOLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBar.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockBar;
 class CXTPCommandBars;
@@ -40,9 +39,9 @@ class CXTPDockContext;
 class _XTP_EXT_CLASS CXTPToolBar : public CXTPCommandBar
 {
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	class CToolBarInfo;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	class CXTPPushRoutingFrame
 	{
@@ -53,8 +52,8 @@ public:
 	public:
 		CXTPPushRoutingFrame(CFrameWnd* pNewRoutingFrame)
 		{
-			pThreadState = AfxGetThreadState();
-			pOldRoutingFrame = pThreadState->m_pRoutingFrame;
+			pThreadState				  = AfxGetThreadState();
+			pOldRoutingFrame			  = pThreadState->m_pRoutingFrame;
 			pThreadState->m_pRoutingFrame = pNewRoutingFrame;
 		}
 		~CXTPPushRoutingFrame()
@@ -66,7 +65,6 @@ public:
 private:
 	class CControlButtonExpand;
 	class CControlButtonHide;
-	class CControlButtonCustomize;
 
 public:
 	//-----------------------------------------------------------------------
@@ -97,7 +95,10 @@ public:
 	// Returns:
 	//     TRUE if the toolbar is visible.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible() const { return m_bVisible; }
+	virtual BOOL IsVisible() const
+	{
+		return m_bVisible;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -165,8 +166,8 @@ public:
 	// Summary:
 	//     This method calculates the dimensions of a toolbar.
 	// Parameters:
-	//     nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//     dwMode - Mode to dock.
+	//     nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//     depending on dwMode. dwMode - Mode to dock.
 	// Returns:
 	//     Size of the docked toolbar.
 	//-----------------------------------------------------------------------
@@ -338,8 +339,19 @@ public:
 	// See Also: IsVisible
 	//-----------------------------------------------------------------------
 	BOOL IsWindowVisible() const;
-protected:
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Tries to update a Customize menu control.
+	// Parameters:
+	//     pControl - A pointer to the customize menu control.
+	//     pTarget - A pointer to tha target command handler.
+	// Returns:
+	//     TRUE if the control has been updated.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL DoUpdateCustomizeMenuControl(CXTPControl* pControl, CCmdTarget* pTarget);
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates a toolbar.
@@ -402,33 +414,60 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void MergeToolBar(CXTPCommandBar* pCommandBar, BOOL bSilent);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to restore toolbar from previous state
+	// Parameters:
+	//     pCommandBar - previously saved toolbar
+	//     bSilent - TRUE to restore without warnings
+	//     nDefaultRestoreAction - If either IDYES or IDNO, the default confirmation
+	//                             message choice will be applied. Ignored if 0.
+	// See Also: ShouldSerializeBar
+	//-----------------------------------------------------------------------
+	virtual void MergeToolBar(CXTPCommandBar* pCommandBar, BOOL bSilent,
+							  int nDefaultConfirmationChoice);
+
 private:
 	CSize _CalcDynamicLayout(int nLength, DWORD dwMode);
 
 	void BuildCustomizePopup(CXTPCommandBar* pExpandBar);
-	int _FindNearest(CXTPControls* pControls, CXTPControl* pFind, int nPos, BOOL bVisible = FALSE) const;
+	int _FindNearest(CXTPControls* pControls, CXTPControl* pFind, int nPos,
+					 BOOL bVisible = FALSE) const;
 	void _RestoreDeletedControls();
 	void _GetHiddenControls(CXTPCommandBar* pExpandBar);
 
 	BOOL IsFloatingFrameFocused() const;
+
 protected:
 	virtual void BeforeCustomizeControlAdd(CXTPControl* pControl);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	afx_msg void OleReset();
+	afx_msg void OleDelete();
+
+public:
+	virtual void OleEnableCustomization();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CXTPDockBar* m_pDockBar;            // Parent dock bar.
-	CXTPDockContext* m_pDockContext;    // Docking context.
-	BOOL m_bBuiltIn;                    // TRUE if toolbar is built-in.
-	BOOL m_bTearOff;                    // TRUE if toolbar is tear-offed.
-	BOOL m_bPreviewVisible;             // TRUE if Toolbar was visible in preview mode.
-	BOOL m_bPreviewMode;                // TRUE if Toolbar was visible in preview mode.
-	BOOL m_bTemporary;                  // TRUE if Toolbar is temporary (If it will be saved when the CommandBar layout is saved.)
-	BOOL m_bShowExpandButton;           // TRUE to show expand button of toolbar.
-	BOOL m_bContextMenuPresent;         // TRUE if the command bar is present in context menu.
-	BOOL m_bInRecalcLayout;             // TRUE if RecalcLayout method is called
+	CXTPDockBar* m_pDockBar;		 // Parent dock bar.
+	CXTPDockContext* m_pDockContext; // Docking context.
+	BOOL m_bBuiltIn;				 // TRUE if toolbar is built-in.
+	BOOL m_bTearOff;				 // TRUE if toolbar is tear-offed.
+	BOOL m_bPreviewVisible;			 // TRUE if Toolbar was visible in preview mode.
+	BOOL m_bPreviewMode;			 // TRUE if Toolbar was visible in preview mode.
+	BOOL m_bTemporary; // TRUE if Toolbar is temporary (If it will be saved when the CommandBar
+					   // layout is saved.)
+	BOOL m_bShowExpandButton;   // TRUE to show expand button of toolbar.
+	BOOL m_bContextMenuPresent; // TRUE if the command bar is present in context menu.
+	BOOL m_bInRecalcLayout;		// TRUE if RecalcLayout method is called
+	BOOL m_bVisible;			// TRUE if the command bar is visible.
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPToolBar)
@@ -446,10 +485,11 @@ protected:
 	afx_msg LRESULT OnSizeParent(WPARAM, LPARAM lParam);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint pt);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	DECLARE_XTP_COMMANDBAR(CXTPToolBar)
 
 private:
@@ -463,50 +503,65 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
-
-AFX_INLINE BOOL CXTPToolBar::IsBuiltIn() const{
+AFX_INLINE BOOL CXTPToolBar::IsBuiltIn() const
+{
 	return m_bBuiltIn;
 }
-AFX_INLINE CXTPDockBar* CXTPToolBar::GetDockBar() const {
+AFX_INLINE CXTPDockBar* CXTPToolBar::GetDockBar() const
+{
 	return m_pDockBar;
 }
-AFX_INLINE void CXTPToolBar::SetContextMenuPresent(BOOL bPresent) {
+AFX_INLINE void CXTPToolBar::SetContextMenuPresent(BOOL bPresent)
+{
 	m_bContextMenuPresent = bPresent;
 }
-AFX_INLINE BOOL CXTPToolBar::IsContextMenuPresent() const{
+AFX_INLINE BOOL CXTPToolBar::IsContextMenuPresent() const
+{
 	return m_bContextMenuPresent;
 }
-AFX_INLINE void CXTPToolBar::SetCustomizeDialogPresent(BOOL bPresent) {
+AFX_INLINE void CXTPToolBar::SetCustomizeDialogPresent(BOOL bPresent)
+{
 	m_bCustomizeDialogPresent = bPresent;
 }
-AFX_INLINE BOOL CXTPToolBar::IsCustomizeDialogPresent() const {
+AFX_INLINE BOOL CXTPToolBar::IsCustomizeDialogPresent() const
+{
 	return m_bCustomizeDialogPresent;
 }
-AFX_INLINE void CXTPToolBar::ModifyBarStyle(DWORD dwRemove, DWORD dwAdd) {
+AFX_INLINE void CXTPToolBar::ModifyBarStyle(DWORD dwRemove, DWORD dwAdd)
+{
 	m_dwStyle |= dwAdd;
 	m_dwStyle &= ~dwRemove;
 }
-AFX_INLINE void CXTPToolBar::SetCloseable(BOOL bCloseable) {
+AFX_INLINE void CXTPToolBar::SetCloseable(BOOL bCloseable)
+{
 	m_bCloseable = bCloseable;
 }
-AFX_INLINE BOOL CXTPToolBar::IsCloseable() const {
+AFX_INLINE BOOL CXTPToolBar::IsCloseable() const
+{
 	return m_bCloseable;
 }
-AFX_INLINE BOOL CXTPToolBar::IsTemporary() const {
+AFX_INLINE BOOL CXTPToolBar::IsTemporary() const
+{
 	return m_bTemporary;
-
 }
-AFX_INLINE void CXTPToolBar::SetTemporary(BOOL bTemporary) {
+AFX_INLINE void CXTPToolBar::SetTemporary(BOOL bTemporary)
+{
 	m_bTemporary = bTemporary;
 }
-AFX_INLINE BOOL CXTPToolBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPToolBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									const RECT& rect, CWnd* pParentWnd, UINT nID,
+									CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPToolBar::ShowExpandButton(BOOL bShowExpandButton) {
+AFX_INLINE void CXTPToolBar::ShowExpandButton(BOOL bShowExpandButton)
+{
 	m_bShowExpandButton = bShowExpandButton;
 	DelayLayout();
 }
-AFX_INLINE void CXTPToolBar::OnPaintManagerChanged() {
+AFX_INLINE void CXTPToolBar::OnPaintManagerChanged()
+{
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTOOLBAR_H__)

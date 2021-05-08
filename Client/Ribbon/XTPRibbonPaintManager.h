@@ -1,7 +1,6 @@
 // XTPRibbonPaintManager.h: interface for the CXTPRibbonPaintManager class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONPAINTMANAGER_H__)
-#define __XTPRIBBONPAINTMANAGER_H__
+#	define __XTPRIBBONPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonGroup;
 class CXTPRibbonBar;
@@ -38,34 +39,62 @@ class CXTPPopupToolBar;
 class CXTPPaintManager;
 class CXTPRibbonControlSystemButton;
 
-#include "CommandBars/XTPPaintManager.h"
+_XTP_EXT_CLASS BOOL AFX_CDECL IsCompositeRect(CXTPCommandBar* pRibbonBar, const CRect& rc);
 
 //===========================================================================
 // Summary: Standalone class used by the CXTPRibbonBar as a paint manager.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPRibbonPaintManager : public CXTPCmdTarget
 {
-private:
-	class CRibbonAppearanceSet;
-	class CRibbonColorSet;
+	DECLARE_DYNAMIC(CXTPRibbonPaintManager)
 
 public:
-
 	// --------------------------------------------------------
 	// Summary:
-	//     Constructs a CXTPRibbonTheme object
+	//     Constructs a CXTPRibbonPaintManager object
 	// Parameters:
-	//     pPaintManager :  \Returns a CXTPPaintManager object.
+	//     pPaintManager :  CXTPPaintManager object.
 	// --------------------------------------------------------
 	CXTPRibbonPaintManager(CXTPPaintManager* pPaintManager);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Destroys a CXTPRibbonTheme object, handles cleanup and deallocation
+	//     Destroys a CXTPRibbonPaintManager object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPRibbonPaintManager();
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//      This method is called to refresh the visual metrics of manager.
+	// Remarks:
+	//      Refreshes all of the colors in the Ribbon Bar.  Many of the colors
+	//      used are set with the GROUP_COLOR structure.
+	// See Also:
+	//     GROUP_COLOR
+	//-------------------------------------------------------------------------
+	virtual void RefreshMetrics();
+
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws the specified CXTPRibbonGroup.
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pGroup - Pointer to the CXTPRibbonGroup to be drawn
+	// Remarks:
+	//     Draws the entire groups including background, caption and text.
+	//     This will not draw the option button or group pop-up.
+	// See Also: GROUP_COLOR, FillRibbonBar, FillGroupRect, RefreshMetrics
+	//-----------------------------------------------------------------------
+	virtual void DrawGroup(CDC* pDC, CXTPRibbonGroup* pGroup) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws the specified control which is a part of the quick access panel.
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//-----------------------------------------------------------------------
+	virtual void DrawQuickAccessControl(CDC* pDC, CXTPRibbonBar* pRibbon, CXTPControl* pControl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -80,7 +109,27 @@ public:
 	//      group caption rectangle.
 	// See Also: CXTPRibbonGroup::GetRect, GROUP_COLOR
 	//-----------------------------------------------------------------------
-	virtual void FillGroupRect(CDC* pDC, CXTPRibbonTab* pActiveTab, CRect rcGroups);
+	virtual void FillGroupRect(CDC* pDC, CXTPRibbonTab* pActiveTab, CRect rcGroups) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws the group pop-up button.
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pControlGroupPopup - Pointer to a CXTPControlPopup object.
+	//     bDraw - TRUE to draw group pop-up button; FALSE to retrieve the size of the control.
+	// Remarks:
+	//     A single group button will be displayed if there is not enough
+	//     room to display the items in the group.  A group pop-up is displayed
+	//     when the button is clicked.  The pop-up contains all the items in
+	//     the group.  When a group button is clicked, a CXTPControlPopup
+	//     is displayed that contains the items of the group.
+	// Returns:
+	//     If bDraw is TRUE, then the size of the group pop-up button is returned.
+	// See Also: CXTPRibbonGroup::GetControlGroupPopup
+	//-----------------------------------------------------------------------
+	virtual CSize DrawControlGroupPopup(CDC* pDC, CXTPControlPopup* pControlGroupPopup,
+										BOOL bDraw) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,59 +138,7 @@ public:
 	//     pDC - Pointer to a valid device context
 	//     pRibbonBar - Points to a CXTPRibbonBar object
 	//-----------------------------------------------------------------------
-	virtual void FillRibbonBar(CDC* pDC, CXTPRibbonBar* pRibbonBar);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//      This method is called to refresh the visual metrics of manager.
-	// Remarks:
-	//      Refreshes all of the colors in the Ribbon Bar.  Many of the colors
-	//      used are set with the GROUP_COLOR structure.
-	// See Also:
-	//     GROUP_COLOR
-	//-------------------------------------------------------------------------
-	virtual void RefreshMetrics();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws the specified CXTPRibbonGroup.
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pGroup - Pointer to the CXTPRibbonGroup to be drawn
-	// Remarks:
-	//     Draws the entire groups including background, caption and text.
-	//     This will not draw the option button or group popup.
-	// See Also: GROUP_COLOR, FillRibbonBar, FillGroupRect, RefreshMetrics
-	//-----------------------------------------------------------------------
-	virtual void DrawGroup(CDC* pDC, CXTPRibbonGroup* pGroup);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Gets the height of the group caption bar.
-	// Returns:
-	//     Integer containing the height of the group caption bar.
-	// See Also: CXTPRibbonGroup::RepositionControls, CXTPRibbonGroup::SetRect
-	//-----------------------------------------------------------------------
-	int GetGroupCaptionHeight() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws the group popup button.
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pControlGroupPopup - Pointer to a CXTPControlPopup object.
-	//     bDraw - TRUE to draw group popup button; FALSE to retrieve the size of the control.
-	// Remarks:
-	//     A single group button will be displayed if there is not enough
-	//     room to display the items in the group.  A group popup is displayed
-	//     when the button is clicked.  The popup contains all the items in
-	//     the group.  When a group button is clicked, a CXTPControlPopup
-	//     is displayed that contains the items of the group.
-	// Returns:
-	//     If bDraw is TRUE, then the size of the group popup button is returned.
-	// See Also: CXTPRibbonGroup::GetControlGroupPopup
-	//-----------------------------------------------------------------------
-	virtual CSize DrawControlGroupPopup(CDC* pDC, CXTPControlPopup* pControlGroupPopup, BOOL bDraw);
+	virtual void FillRibbonBar(CDC* pDC, CXTPRibbonBar* pRibbonBar) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -157,7 +154,19 @@ public:
 	//     If bDraw is TRUE, then the size of the option button control is returned.
 	// See Also: CXTPRibbonGroup::ShowOptionButton, CXTPRibbonGroup::GetControlGroupOption
 	//-----------------------------------------------------------------------
-	virtual CSize DrawControlGroupOption(CDC* pDC, CXTPControl* pControlGroupOption, BOOL bDraw);
+	virtual CSize DrawControlGroupOption(CDC* pDC, CXTPControl* pControlGroupOption,
+										 BOOL bDraw) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw ribbon context headers
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pContextHeaders - Collection of context header
+	//     pRibbonBar - Parent RibbonBar pointer
+	//-----------------------------------------------------------------------
+	virtual void DrawRibbonFrameContextHeaders(CDC* pDC, CXTPRibbonBar* pRibbonBar,
+											   CXTPRibbonTabContextHeaders* pContextHeaders) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -166,7 +175,7 @@ public:
 	//     pDC - Pointer to a valid device context
 	//     pItem - Ribbon tab to draw
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonTab(CDC* pDC, CXTPRibbonTab* pItem);
+	virtual void DrawRibbonTab(CDC* pDC, CXTPRibbonTab* pItem) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -177,26 +186,27 @@ public:
 	//     pDC         - Pointer to a valid device context.
 	//     rcControl   - Bounding rectangle of the tab control.
 	//-----------------------------------------------------------------------
-	virtual void FillRibbonTabControl(CDC* pDC, CXTPRibbonBar* pRibbonBar, CRect rcControl);
+	virtual void FillRibbonTabControl(CDC* pDC, CXTPRibbonBar* pRibbonBar, CRect rcControl) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw popup toolbar of reduced group
+	//     This method is called to draw pop-up toolbar of reduced group
 	// Parameters:
 	//     pDC - Pointer to a valid device context
-	//     pGroup - Parent group of popuped toolbar
-	//     pCommandBar - popup toolbar to draw
+	//     pGroup - Parent group of pop-up'ed toolbar
+	//     pCommandBar - pop-up toolbar to draw
 	//-----------------------------------------------------------------------
-	virtual void FillGroupPopupToolBar(CDC* pDC, CXTPRibbonGroup* pGroup, CXTPCommandBar* pCommandBar);
+	virtual void FillGroupPopupToolBar(CDC* pDC, CXTPRibbonGroup* pGroup,
+									   CXTPCommandBar* pCommandBar) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw background of minimzed popup bar
+	//     This method is called to draw ribbon caption if EnableFrameTheme was not called.
 	// Parameters:
-	//     pDC - Pointer to device context
-	//     pPopupToolBar - Pointer to popup toolbar.
+	//     pDC -  Pointer to a valid device context
+	//     pRibbonBar - Ribbon Bar to draw
 	//-----------------------------------------------------------------------
-	void FillTabPopupToolBar(CDC* pDC, CXTPPopupToolBar* pPopupToolBar);
+	virtual void DrawRibbonFrameCaptionBar(CDC* pDC, CXTPRibbonBar* pRibbonBar, BOOL bActive) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -206,16 +216,57 @@ public:
 	//     pRibbonBar - Ribbon Bar to draw
 	//     bActive - TRUE if ribbon frame is active
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonFrameCaption(CDC* pDC, CXTPRibbonBar* pRibbonBar, BOOL bActive);
+	virtual void DrawRibbonFrameCaption(CDC* pDC, CXTPRibbonBar* pRibbonBar, BOOL bActive) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw ribbon caption if EnableFrameTheme was not called.
+	//     This method is called to draw quick access customize button
 	// Parameters:
-	//     pDC -  Pointer to a valid device context
-	//     pRibbonBar - Ribbon Bar to draw
+	//     pDC - Pointer to a valid device context
+	//     pControl - Pointer to Quick Access customize button
+	// See Also: DrawRibbonQuickAccessMoreButton
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonFrameCaptionBar(CDC* pDC, CXTPRibbonBar* pRibbonBar);
+	virtual void DrawRibbonQuickAccessButton(CDC* pDC, CXTPControlPopup* pControl) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw quick access more button
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pControl - Pointer to Quick Access more button
+	// See Also: DrawRibbonQuickAccessButton
+	//-----------------------------------------------------------------------
+	virtual void DrawRibbonQuickAccessMoreButton(CDC* pDC, CXTPControlPopup* pControl) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Draws top-left system button
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pControl - System button control
+	//     rc - Bounding rectangle of control
+	//-----------------------------------------------------------------------
+	virtual void DrawRibbonFrameSystemButton(CDC* pDC, CXTPRibbonControlSystemButton* pControl,
+											 CRect rc) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw scroll groups buttons
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     pControl - Scroll button to draw
+	//     bScrollLeft - TRUE to draw left button; FALSE - right
+	//-----------------------------------------------------------------------
+	virtual void DrawRibbonScrollButton(CDC* pDC, CXTPControl* pControl, BOOL bScrollLeft) = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw background of minimized pop-up bar
+	// Parameters:
+	//     pDC - Pointer to device context
+	//     pPopupToolBar - Pointer to pop-up toolbar.
+	//-----------------------------------------------------------------------
+	virtual void FillTabPopupToolBar(CDC* pDC, CXTPPopupToolBar* pPopupToolBar);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -228,54 +279,53 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Draws top-left system button
+	//     This method is called to draw pop-up bar of more button
 	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pControl - System button control
-	//     rc - Bounding rectangle of control
+	//      pDC - Pointer to a valid device context
+	//      pBar - ToolBar to fill
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonFrameSystemButton(CDC* pDC, CXTPRibbonControlSystemButton* pControl, CRect rc);
+	virtual void FillMorePopupToolBarEntry(CDC* pDC, CXTPCommandBar* pBar) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw ribbon context headers
+	//     This method is called to draw pop-up bar of the system button
 	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pContextHeaders - Collection of context header
-	//     pRibbonBar - Parent RibbonBar pointer
+	//      pDC - Pointer to a valid device context
+	//      pBar - ToolBar to fill
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonFrameContextHeaders(CDC* pDC, CXTPRibbonBar* pRibbonBar, CXTPRibbonTabContextHeaders* pContextHeaders);
+	virtual void FillSystemPopupBarEntry(CDC* pDC, CXTPPopupBar* pBar) = 0;
+
+	// ---------------------------------------------------
+	// Summary:
+	//     This method is called to draw pop-up bar buttons
+	// Parameters:
+	//     pDC :      Pointer to a valid device context
+	//     pButton :  Popup bar button to draw
+	//
+	// ---------------------------------------------------
+	virtual void DrawSystemPopupBarButton(CDC* pDC, CXTPControl* pButton) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw quick access customize button
+	//     This method is called to draw the ribbon group when the group is minimized
+	//     and only a button is displayed.  When the button is pressed the group is
+	//     displayed as a pop-up.
 	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pControl - Pointer to Quick Access customize button
-	// See Also: DrawRibbonQuickAccessMoreButton
+	//      pDC - Pointer to a valid device context
+	//      pButton - Button to draw
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonQuickAccessButton(CDC* pDC, CXTPControlPopup* pControl);
+	virtual BOOL DrawRibbonGroupControlEntry(CDC* pDC, CXTPControl* pButton) = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw quick access more button
+	//     This method is called to draw the ribbon group popup toolbar.
 	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pControl - Pointer to Quick Access more button
-	// See Also: DrawRibbonQuickAccessButton
+	//      pDC - Pointer to a valid device context
+	//      pRibbonGroup - Group to draw
 	//-----------------------------------------------------------------------
-	virtual void DrawRibbonQuickAccessMoreButton(CDC* pDC, CXTPControlPopup* pControl);
+	virtual void DrawRibbonGroupPopupToolBar(CDC* pDC, CXTPRibbonGroup* pRibbonGroup);
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw scroll groups buttons
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     pControl - Scroll button to draw
-	//     bScrollLeft - TRUE to draw left button; FALSE - right
-	//-----------------------------------------------------------------------
-	virtual void DrawRibbonScrollButton(CDC* pDC, CXTPControl* pControl, BOOL bScrollLeft);
-
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves edit control height
@@ -302,18 +352,24 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw popup bar of more button
-	// Parameters:
-	//      pDC - Pointer to a valid device context
-	//      pBar - ToolBar to fill
+	//     Calculates ribbon caption height
 	//-----------------------------------------------------------------------
-	virtual void FillMorePopupToolBarEntry(CDC* pDC, CXTPCommandBar* pBar);
+	virtual int GetRibbonCaptionHeight(const CXTPRibbonBar* pRibbonBar) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Retrieves ribbon caption height
+	//     Calculates ribbon group option size
 	//-----------------------------------------------------------------------
-	int GetRibbonCaptionHeight() const;
+	virtual CSize GetControlGroupOptionSize() const = 0;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Gets the height of the group caption bar.
+	// Returns:
+	//     Integer containing the height of the group caption bar.
+	// See Also: CXTPRibbonGroup::RepositionControls, CXTPRibbonGroup::SetRect
+	//-----------------------------------------------------------------------
+	int GetGroupCaptionHeight() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -324,7 +380,7 @@ public:
 	// Remarks:
 	//     The images are the bitmaps that represent all the visual components
 	//     of the Ribbon Bar.  For example tab buttons, group buttons, menu buttons,
-	//     toolbar buttons, option button, toolbar dropdown, etc.
+	//     toolbar buttons, option button, toolbar drop-down, etc.
 	//     The images are loaded using LoadImage and are stored in the m_pImages
 	//     image collection.
 	//     Images for the Office 2007 theme can be found in the \Source\Ribbon\Res
@@ -342,48 +398,6 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPResourceImages* GetImages() const;
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw caption text for Aero transparent caption
-	// Parameters:
-	//     pDC - Pointer to a valid device context
-	//     rcCaptionText - Caption text rectangle
-	//     strText - Caption text
-	//     pSite - Frame to draw
-	//     bActive - TRUE if frame is active
-	//-----------------------------------------------------------------------
-	void DrawDwmCaptionText(CDC* pDC, CRect rcCaptionText, CString strText, CWnd* pSite, BOOL bActive);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw popup bar of the system button
-	// Parameters:
-	//      pDC - Pointer to a valid device context
-	//      pBar - ToolBar to fill
-	//-----------------------------------------------------------------------
-	virtual void FillSystemPopupBarEntry(CDC* pDC, CXTPPopupBar* pBar);
-
-	// ---------------------------------------------------
-	// Summary:
-	//     This method is called to draw popup bar buttons
-	// Parameters:
-	//     pDC :      Pointer to a valid device context
-	//     pButton :  Popup bar button to draw
-	//
-	// ---------------------------------------------------
-	virtual void DrawSystemPopupBarButton(CDC* pDC, CXTPControl* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the ribbon group when the group is minimized
-	//     and only a button is displayed.  When the button is pressed the group is
-	//     displayed as a popup.
-	// Parameters:
-	//      pDC - Pointer to a valid device context
-	//      pButton - Button to draw
-	//-----------------------------------------------------------------------
-	virtual BOOL DrawRibbonGroupControlEntry(CDC* pDC, CXTPControl* pButton);
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -398,8 +412,13 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPTabPaintManager* GetTabPaintManager() const;
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get a pointer to the frame paint manager.
+	//-----------------------------------------------------------------------
+	CXTPFramePaintManager* GetFramePaintManager() const;
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns a CXTPTabPaintManager object used to
@@ -410,7 +429,7 @@ protected:
 
 	// ---------------------------------------------------
 	// Summary:
-	//     This method is called to draw popup bar buttons.
+	//     This method is called to draw pop-up bar buttons.
 	// Parameters:
 	//     pDC :      Pointer to a valid device context.
 	//     pRibbonBar - Pointer to ribbon to draw the
@@ -420,64 +439,96 @@ protected:
 	// ---------------------------------------------------
 	void DrawRibbonApplicationIcon(CDC* pDC, CXTPRibbonBar* pRibbonBar, CRect rc, HICON hIcon);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw caption text for Aero transparent caption
+	// Parameters:
+	//     pDC - Pointer to a valid device context
+	//     rcCaptionText - Caption text rectangle
+	//     strText - Caption text
+	//     pSite - Frame to draw
+	//     bActive - TRUE if frame is active
+	//-----------------------------------------------------------------------
+	void DrawDwmCaptionText(CDC* pDC, CRect rcCaptionText, CString strText, CWnd* pSite,
+							BOOL bActive);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	LPFONTDISP OleGetCaptionFont();
+	void OleSetCaptionFont(LPFONTDISP pFontDisp);
+	LPFONTDISP OleGetTitleFont();
+	void OleSetTitleFont(LPFONTDISP pFontDisp);
 
-public:
-	BOOL m_bHotTrackingGroups;              // TRUE to highlight group under cursor
-	int m_nTabsHeight;                      // Tabs heights
-	CXTPPaintManagerFont m_fontGroupCaption;// Font used to draw text in the group caption
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPRibbonTheme);
+	DECLARE_INTERFACE_MAP()
 
-	COLORREF m_clrRecentFileListEdgeShadow;     // Color of the File List edge shadow
-	COLORREF m_clrRecentFileListEdgeHighLight;  // Color of the File List edge highlight
-
-	int m_nGroupSpacing;                        // Group spacing
-
-protected:
-	int m_nGroupCaptionHeight;              // Group caption bar height
-
-	CXTPTabPaintManager* m_pTabPaintManager;// Tab paint manager
-
-protected:
-	COLORREF m_clrRibbonFace;               // Ribbon face color
-	COLORREF m_clrRibbonGroupCaptionText;   // Ribbon group captions color
-
-	COLORREF m_clrFileButtonText;       // Text caption to display when the system button is displayed as a tab button (Windows 7 style).  Button style must be button caption.
-
-	COLORREF m_clrMinimizedFrameEdgeHighLight;      // Minimzed bottom edge
-	COLORREF m_clrMinimizedFrameEdgeShadow;         // Minimzed bottom edge shadow
-	CXTPPaintManagerColorGradient m_clrMenuGripper; // Color gradient of the menu gripper
-
-	CXTPPaintManager* m_pPaintManger;  // Paint manager used for the ribbon
-
-	int m_nRibbonCaptionHeight;       // Height of the caption
-	COLORREF m_clrRibbonInactiveFace; // Color of the ribbon when it is inactive
-
-	CRect m_rcFileButtonMargin; // Margins of the system button when it is displayed as a tab button (Windows 7 style).
-
-	int m_nFileButtonImageCount;
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 public:
-	BOOL m_bFlatFrame;  // TRUE to draw a flat frame.
+	BOOL m_bHotTrackingGroups; // TRUE to highlight group under cursor
+	BOOL m_bFlatFrame;		   // TRUE to draw a flat frame.
 
+	CXTPPaintManagerFont m_fontGroupCaption; // Font used to draw text in the group caption
+
+	COLORREF m_clrRecentFileListEdgeShadow;	// Color of the File List edge shadow
+	COLORREF m_clrRecentFileListEdgeHighLight; // Color of the File List edge highlight
+
+	int m_nTabsHeight;		   // Tabs heights
+	int m_nGroupSpacing;	   // Group spacing
+	int m_nGroupCaptionHeight; // Group caption bar height
+
+protected:
+	COLORREF m_clrRibbonFace;			  // Ribbon face color
+	COLORREF m_clrRibbonBorder;			  // Ribbon border color
+	COLORREF m_clrRibbonGroupCaptionText; // Ribbon group captions color
+	COLORREF m_clrRibbonInactiveFace;	 // Color of the ribbon when it is inactive
+
+	COLORREF m_clrFileButtonText; // Text caption to display when the system button is displayed as
+								  // a tab button (Windows 7 style).  Button style must be button
+								  // caption.
+
+	COLORREF m_clrMinimizedFrameEdgeHighLight; // Minimized bottom edge
+	COLORREF m_clrMinimizedFrameEdgeShadow;	// Minimized bottom edge shadow
+
+	CXTPPaintManager* m_pPaintManager;		 // Paint manager used for the ribbon
+	CXTPTabPaintManager* m_pTabPaintManager; // Tab paint manager
+
+	CRect m_rcFileButtonMargin; // Margins of the system button when it is displayed as a tab button
+								// (Windows 7 style).
+
+public:
 private:
 	HICON m_hApplicationIcon;
 	BOOL m_bAlphaApplicationIcon;
 
 protected:
-
 	friend class CXTPRibbonBar;
 };
 
-
-AFX_INLINE int CXTPRibbonPaintManager::GetGroupCaptionHeight() const {
+AFX_INLINE int CXTPRibbonPaintManager::GetGroupCaptionHeight() const
+{
 	return m_nGroupCaptionHeight;
 }
-AFX_INLINE CXTPTabPaintManager* CXTPRibbonPaintManager::GetTabPaintManager() const {
+
+AFX_INLINE CXTPTabPaintManager* CXTPRibbonPaintManager::GetTabPaintManager() const
+{
 	return m_pTabPaintManager;
 }
-AFX_INLINE int CXTPRibbonPaintManager::GetRibbonCaptionHeight() const {
-	return m_nRibbonCaptionHeight;
+
+AFX_INLINE CXTPFramePaintManager* CXTPRibbonPaintManager::GetFramePaintManager() const
+{
+	CXTPFramePaintManager* pFramePaintManager = NULL;
+
+	if (NULL != m_pPaintManager)
+	{
+		pFramePaintManager = m_pPaintManager->GetFramePaintManager();
+	}
+
+	return pFramePaintManager;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONPAINTMANAGER_H__)

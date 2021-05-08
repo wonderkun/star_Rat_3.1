@@ -13,9 +13,9 @@
 #include <WS2TCPIP.H>
 #import "shdocvw.dll"
 #include "atlbase.h"
-#pragma comment(lib, "atl.lib")
+#pragma comment(lib, "atls.lib")
 #include <shlobj.h>
-#include "macros.h"
+#include "../../../common/macros.h"
 /*--------------------------------------IP与封报校验------------------------------------------*/
 typedef struct  _iphdr
 {

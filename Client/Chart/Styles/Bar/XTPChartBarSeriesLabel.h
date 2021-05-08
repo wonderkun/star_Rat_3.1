@@ -1,7 +1,6 @@
 // XTPChartBarSeriesLabel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTBARSERIESLABEL_H__)
-#define __XTPCHARTBARSERIESLABEL_H__
+#	define __XTPCHARTBARSERIESLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "../Point/XTPChartDiagram2DSeriesLabel.h"
 
 enum XTPChartBarLabelPosition
 {
@@ -47,8 +46,8 @@ enum XTPChartBarLabelPosition
 class _XTP_EXT_CLASS CXTPChartBarSeriesLabel : public CXTPChartDiagram2DSeriesLabel
 {
 	DECLARE_SERIAL(CXTPChartBarSeriesLabel);
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartBarSeriesLabel object.
@@ -74,26 +73,27 @@ public:
 	//     pDC -        The device context.
 	//     pPointView - A pointer to the series point view object.
 	// Returns:
-	//     A pointer to CXTPChartElementView object, which a polymorphic to CXTPChartBarSeriesLabelView.
+	//     A pointer to CXTPChartElementView object, which a polymorphic to
+	//     CXTPChartBarSeriesLabelView.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
-
+	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartSeriesPointView* pPointView,
+											 CXTPChartElementView* pParentView);
 
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
 	XTPChartBarLabelPosition m_nPosition;
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartBarSeriesLabel);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
 //===========================================================================
@@ -114,7 +114,8 @@ public:
 	//     pPointView - Pointer to chart series point view.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartBarSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	CXTPChartBarSeriesLabelView(CXTPChartSeriesLabel* pLabel, CXTPChartSeriesPointView* pPointView,
+								CXTPChartElementView* pParentView);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -126,16 +127,21 @@ public:
 	virtual CXTPChartPointF GetAnchorPoint() const;
 	virtual double GetAnchorAngle() const;
 
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	using CXTPChartDiagram2DSeriesLabelView::CreateDeviceCommand;
+
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 	void CalculateLayout(CXTPChartDeviceContext* pDC);
 };
 
-AFX_INLINE void CXTPChartBarSeriesLabel::SetPosition(XTPChartBarLabelPosition nPosition) {
+AFX_INLINE void CXTPChartBarSeriesLabel::SetPosition(XTPChartBarLabelPosition nPosition)
+{
 	m_nPosition = nPosition;
 	OnChartChanged();
 }
-AFX_INLINE XTPChartBarLabelPosition CXTPChartBarSeriesLabel::GetPosition() const {
+AFX_INLINE XTPChartBarLabelPosition CXTPChartBarSeriesLabel::GetPosition() const
+{
 	return m_nPosition;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTBARSERIESLABEL_H__)

@@ -1,7 +1,6 @@
 // XTPChartBorder.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTBORDER_H__)
-#define __XTPCHARTBORDER_H__
+#	define __XTPCHARTBORDER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../XTPChartElement.h"
-#include "../Types/XTPChartTypes.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartColor;
 class CXTPChartDeviceCommand;
@@ -94,20 +92,22 @@ public:
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of the border of the chart.
 	// Parameters:
 	//     rcBounds  - The bounding rectange.
 	//     color     - Reference to a chart color object.
 	// Returns:
 	//     Returns a pointer to CXTPChartDeviceCommand object, this polymorphic object
-	//     handles the rendering of an element in the chart.Here it handles the drawing
+	//     handles the rendering of an element in the chart. Here it handles the drawing
 	//     of the border of the chart.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartRectF& rcBounds, const CXTPChartColor& color);
-	CXTPChartDeviceCommand* CreateInnerBorderDeviceCommand(const CXTPChartRectF& rcBounds, const CXTPChartColor& color);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartRectF& rcBounds,
+														const CXTPChartColor& color);
+	virtual CXTPChartDeviceCommand* CreateInnerBorderDeviceCommand(const CXTPChartRectF& rcBounds,
+																   const CXTPChartColor& color);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -121,48 +121,51 @@ public:
 	//-----------------------------------------------------------------------
 	void DoPropExchange(CXTPPropExchange* pPX);
 
-
 protected:
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartBorder);
 	void OleSetColor(OLE_COLOR clr);
 	OLE_COLOR OleGetColor();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	CXTPChartColor m_clrColor;       //The boundary color.
-	int m_nThickness;               //The thickness of the boundary.
-	BOOL m_bVisible;                //TRUE if the boundary is visible, FALSE if invisible.
+	CXTPChartColor m_clrColor; // The boundary color.
+	int m_nThickness;		   // The thickness of the boundary.
+	BOOL m_bVisible;		   // TRUE if the boundary is visible, FALSE if invisible.
 };
 
-
-AFX_INLINE BOOL CXTPChartBorder::IsVisible() const {
+AFX_INLINE BOOL CXTPChartBorder::IsVisible() const
+{
 	return m_bVisible;
 }
-AFX_INLINE void CXTPChartBorder::SetVisible(BOOL bVisible) {
+AFX_INLINE void CXTPChartBorder::SetVisible(BOOL bVisible)
+{
 	m_bVisible = bVisible;
 	OnChartChanged();
 }
-AFX_INLINE CXTPChartColor CXTPChartBorder::GetColor() const {
+AFX_INLINE CXTPChartColor CXTPChartBorder::GetColor() const
+{
 	return m_clrColor;
 }
-AFX_INLINE void CXTPChartBorder::SetColor(const CXTPChartColor& clr) {
+AFX_INLINE void CXTPChartBorder::SetColor(const CXTPChartColor& clr)
+{
 	m_clrColor = clr;
 	OnChartChanged();
 }
-AFX_INLINE int CXTPChartBorder::GetThickness() const {
+AFX_INLINE int CXTPChartBorder::GetThickness() const
+{
 	return m_nThickness;
 }
-AFX_INLINE void CXTPChartBorder::SetThickness(int nThickness) {
+AFX_INLINE void CXTPChartBorder::SetThickness(int nThickness)
+{
 	m_nThickness = nThickness;
 	OnChartChanged();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTBORDER_H__)

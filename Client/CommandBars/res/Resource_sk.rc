@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SKY)
 #ifdef _WIN32
 LANGUAGE LANG_SLOVAK, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -76,9 +75,9 @@ BEGIN
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "StlaËte nov˙ kl·vesov˙ skratku:",XTP_IDC_TXT_NEWKEY,100,93,110,8
     EDITTEXT        XTP_IDC_EDIT_SHORTCUTKEY,100,103,75,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Priradiù",XTP_IDC_BTN_ASSIGN,179,39,55,14
-    PUSHBUTTON      "Odstr·niù",XTP_IDC_BTN_REMOVE,179,56,55,14
-    PUSHBUTTON      "Vöetko pÙvodnÈ",XTP_IDC_BTN_ACCEL_RESET,179,73,55,14
+    PUSHBUTTON      "Priradiù",XTP_IDC_BTN_ASSIGN,177,39,56,14
+    PUSHBUTTON      "Odstr·niù",XTP_IDC_BTN_REMOVE,177,56,56,14
+    PUSHBUTTON      "Vöetko pÙvodnÈ",XTP_IDC_BTN_ACCEL_RESET,177,73,56,14
     LTEXT           "Popis:",XTP_IDC_TXT_DESC_TITLE,4,117,89,8
     LTEXT           "",XTP_IDC_TXT_DESC_OVERVIEW,4,127,224,19,0,
                     WS_EX_STATICEDGE
@@ -111,7 +110,7 @@ BEGIN
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "Obnoviù ˙daje t˝kaj˙ce sa pouûÌvania",
-                    XTP_IDC_BUTTON_RESETDATA,10,42,125,14
+                    XTP_IDC_BUTTON_RESETDATA,10,42,145,14
     LTEXT           "InÈ", XTP_IDC_GROUP_OTHER,4,70,229,8
     CONTROL         "VeækÈ ikony",XTP_IDC_CHECK_LARGEICONS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,82,216,10
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "S n·zvami tlaËidiel zobrazovaù i kl·vesovÈ skratky",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Anim·cie ponuky:",IDC_STATIC,10,117,56,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,70,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Anim·cie ponuky:",IDC_STATIC,10,117,76,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,90,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Menu"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Aplik·cia Ponuka",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "KontextovÈ ponuky",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Zobraziù ponuku:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Obnoviù",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Predvolen· ponuka\nMenu PredvolenÈ aplik·cie",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Vyberte KontextovÈ menu:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Obnoviù",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "PrispÙsobiù"
     XTP_IDS_NEWMENU         "Nov· ponuka"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "PrispÙsobenie stavovÈho riadka"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Vlastn· %d"
     XTP_IDS_ERROR_BLANKNAME "N·zov panela s n·strojmi nemÙûe byù pr·zdny. NapÌöte n·zov."
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
+    XTP_IDS_ERROR_LIMIT     "Prep·Ë, ûe ste dosiahli svoj limit."
     XTP_IDS_ERROR_EXISTS    "Panel s n·strojmi Ñ%sì uû existuje. NapÌöte in˝ n·zov."
     XTP_IDS_RENAMETOOLBAR   "Premenovaù panel s n·strojmi"
     XTP_IDS_CONFIRM_DELETE  "Naozaj chcete odstr·niù panel s n·strojmi Ñ%sì?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Naozaj chcete vynulovaù priradenia kl·vesov? T·to akcia odstr·ni vöetky vlastnÈ kæ˙ËovÈ ˙lohy na ˙rovni textu."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Tento odkaz je v s˙Ëasnosti priraden·.\nChcete prideliù t˙to skratku?"
+    XTP_IDS_CONFIRM_UPDATE  "Z dÙvodu aktualiz·cie softvÈru zmenil panel s n·strojmi '%s'. Chcete vaöe prispÙsobenÈ panely s n·strojmi obnoviù a naËÌtaù nov˝?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Vöetky s˙bory s obr·zkami|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|RastrovÈ obr·zky(*.Bmp;*.Dib)|*.bmp;*.dib|Metas˙bory(*.Wmf;*.Emf)|*.wmf;*.emf|Ikony(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Vöetky s˙bory(*.*)|*.*||"
+                            "Vöetky s˙bory obr·zkov|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitov˝ch m·p (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metas˙bory (*.wmf;*.emf)|*.wmf;*.emf|Ikony (*.ico;*.cur)|*.ico;*.cur|Vöetky s˙bory (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nMoûnosti panela s n·strojmi"
     XTP_ID_TOOLBAR_HIDE     "\nZavrieù"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nObnoviù okno"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimalizovaù okno"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) bolo stlaËenÈ. »akanie na druh˝ kæ˙Ë akord..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,22 +302,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Zruöiù"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_CANCEL "\nZruöiù"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "AktÌvne s˙bory"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "TlaËiù uk·ûku poloûky\nTlaË"
+    XTP_ID_PREVIEW_PREV     "Prejsù na predch·dzaj˙cu stranu\nPredch·dzaj˙ca strana"
+    XTP_ID_PREVIEW_NEXT     "Prejsù na Ôalöiu str·nku\nNasleduj˙ca strana"
+    XTP_ID_PREVIEW_ZOOMIN   "Zv‰Ëöenie n·hæadu str·nky\nPriblÌûenie"
+    XTP_ID_PREVIEW_ZOOMOUT  "Zmenöiù zv‰Ëöenie n·hæadu str·nky\nVzdialiù"
+    XTP_ID_PREVIEW_ONEPAGE  "Jedna str·nka"
+    XTP_ID_PREVIEW_TWOPAGE  "Viacero str·nok"
+    XTP_ID_PREVIEW_CLOSE    "Zavrieù n·hæad\nZavrieù n·hæad"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Cel˙ str·nku"
+    XTP_IDS_PREVIEW_PAGEWIDTH "äÌrka strany"
+    XTP_IDS_PREVIEW_PAGEI     "Str·nka %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Str·nka %i od %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SKY)

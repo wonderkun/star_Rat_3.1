@@ -36,3 +36,4 @@ GdipFree(void* ptr);
 #endif
 
 #endif // !_GDIPLUSMEM_H
+

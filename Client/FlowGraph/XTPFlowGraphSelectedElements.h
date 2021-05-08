@@ -1,7 +1,6 @@
 // XTPFlowGraphSelectedElements.h: interface for the CXTPFlowGraphSelectedElements class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHSELECTEDELEMENTS_H__)
-#define __XTPFLOWGRAPHSELECTEDELEMENTS_H__
+#	define __XTPFLOWGRAPHSELECTEDELEMENTS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphPage;
-
-#include "XTPFlowGraphElement.h"
 
 // ----------------------------------------------------------------------
 //
@@ -142,17 +141,38 @@ public:
 	CXTPFlowGraphElement* GetAt(int nIndex) const;
 
 protected:
-
-	CArray<CXTPFlowGraphElement*, CXTPFlowGraphElement*> m_arrSelectedElements;  // Collection of selected elements.
+	CArray<CXTPFlowGraphElement*, CXTPFlowGraphElement*> m_arrSelectedElements; // Collection of
+																				// selected
+																				// elements.
 
 	CXTPFlowGraphPage* m_pPage; // Pointer to the page the selected elements are dispalyed on.
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphSelectedElements)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphSelectedElements)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg void OleAddSelection(LPDISPATCH lpDisp);
+	afx_msg void OleRemove(LPDISPATCH lpDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphSelectedElements::GetCount() const {
+AFX_INLINE int CXTPFlowGraphSelectedElements::GetCount() const
+{
 	return (int)m_arrSelectedElements.GetSize();
 }
-AFX_INLINE CXTPFlowGraphElement* CXTPFlowGraphSelectedElements::GetAt(int nIndex) const {
-	return nIndex >= 0 && nIndex < m_arrSelectedElements.GetSize() ? m_arrSelectedElements[nIndex] : NULL;
+AFX_INLINE CXTPFlowGraphElement* CXTPFlowGraphSelectedElements::GetAt(int nIndex) const
+{
+	return nIndex >= 0 && nIndex < m_arrSelectedElements.GetSize() ? m_arrSelectedElements[nIndex]
+																   : NULL;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHSELECTEDELEMENTS_H__)

@@ -1,7 +1,6 @@
 // XTPDockBar.h : interface for the CXTPDockBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKBAR_H__)
-#define __XTPDOCKBAR_H__
+#	define __XTPDOCKBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPCommandBarsDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPToolBar;
 class CXTPCommandBars;
@@ -83,8 +82,10 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL IsVerticalPosition() const;
 
+	CXTPCommandBars* GetCommandBars() const;
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// Implementation
 
 	BOOL RemoveCommandBar(CXTPToolBar* pBar, int nPosExclude = -1);
@@ -102,17 +103,18 @@ protected:
 	void GetVisibleToolbars(int nPos, CToolBarArray& arrBars);
 	void AdjustStretchBars();
 
-	int AdjustRow(CToolBarArray&, CPoint pt, int nLength, BOOL bHorz, AFX_SIZEPARENTPARAMS* lpLayout);
-	int _AdjustRow(CToolBarArray&, CPoint pt, int nLength, BOOL bHorz, AFX_SIZEPARENTPARAMS* lpLayout, int& nRemove);
+	int AdjustRow(CToolBarArray&, CPoint pt, int nLength, BOOL bHorz,
+				  AFX_SIZEPARENTPARAMS* lpLayout);
+	int _AdjustRow(CToolBarArray&, CPoint pt, int nLength, BOOL bHorz,
+				   AFX_SIZEPARENTPARAMS* lpLayout, int& nRemove);
 	int _GetMode(BOOL bHorz, CXTPToolBar* pBar);
 
 	CSize CalcFixedLayout(BOOL bStretch, BOOL bHorz, AFX_SIZEPARENTPARAMS* lpLayout);
 	CSize CalcDynamicLayout(int, DWORD nMode, AFX_SIZEPARENTPARAMS* lpLayout);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG(CXTPDockBar)
 	DECLARE_MESSAGE_MAP()
 
@@ -122,25 +124,34 @@ protected:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg LRESULT OnSizeParent(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnNcHitTest(CPoint /*point*/);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	DWORD m_dwStyle;                        // Style of the control.
-	CToolBarArray m_arrBars;                // Toolbar list
-	CXTPCommandBars* m_pCommandBars;        // Parent CommandBars object
+	DWORD m_dwStyle;				 // Style of the control.
+	CToolBarArray m_arrBars;		 // Toolbar list
+	CXTPCommandBars* m_pCommandBars; // Parent CommandBars object
 
 	friend class CXTPToolBar;
 	friend class CXTPCommandBars;
 	friend class CXTPReBar;
-
 };
 
-AFX_INLINE BOOL CXTPDockBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPDockBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									const RECT& rect, CWnd* pParentWnd, UINT nID,
+									CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
+AFX_INLINE CXTPCommandBars* CXTPDockBar::GetCommandBars() const
+{
+	return m_pCommandBars;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKBAR_H__)

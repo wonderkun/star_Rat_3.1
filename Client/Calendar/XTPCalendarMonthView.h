@@ -1,7 +1,6 @@
 // XTPCalendarMonthView.h: interface for the CXTPCalendarMonthView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARMONTHVIEW_H__)
-#define _XTPCALENDARMONTHVIEW_H__
+#	define _XTPCALENDARMONTHVIEW_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-#include "XTPCalendarView.h"
-#include "XTPCalendarMonthViewDay.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarMonthView;
 
@@ -40,7 +38,7 @@ class CXTPCalendarMonthView;
 //           CXTPCalendarMonthView::CMonthViewGrid::SetWeeksCount,
 //           XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MAX
 //===========================================================================
-#define XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MIN   1
+#	define XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MIN 1
 
 //===========================================================================
 // Summary:
@@ -50,8 +48,7 @@ class CXTPCalendarMonthView;
 //           CXTPCalendarMonthView::CMonthViewGrid::SetWeeksCount,
 //           XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MIN
 //===========================================================================
-#define XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MAX   64
-
+#	define XTP_CALENDAR_MONTHVIEW_SHOW_WEEKS_MAX 64
 
 //===========================================================================
 // Summary:
@@ -67,9 +64,7 @@ class CXTPCalendarMonthView;
 // See Also: CXTPCalendarView, CXTPCalendarDayView, CXTPCalendarWeekView,
 //          CXTPCalendarMonthViewDay, CXTPCalendarMonthViewEvent
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarMonthView : public CXTPCalendarViewT<
-										CXTPCalendarMonthViewDay,
-										XTP_CALENDAR_HITTESTINFO_MONTH_VIEW>
+class _XTP_EXT_CLASS CXTPCalendarMonthView : public CXTPCalendarViewT<CXTPCalendarMonthViewDay>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPCalendarMonthViewDay;
@@ -78,13 +73,11 @@ class _XTP_EXT_CLASS CXTPCalendarMonthView : public CXTPCalendarViewT<
 	DECLARE_DYNAMIC(CXTPCalendarMonthView)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Remarks:
 	//     Base class type definition
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewT< CXTPCalendarMonthViewDay,
-								XTP_CALENDAR_HITTESTINFO_MONTH_VIEW> TBase;
+	typedef CXTPCalendarViewT<CXTPCalendarMonthViewDay> TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -127,7 +120,8 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView, BOOL bCallPostAdjustLayout = TRUE);//<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcView,
+							   BOOL bCallPostAdjustLayout = TRUE); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -151,7 +145,7 @@ public:
 	//     pSI - A SCROLLINFO pointer. Pointer to a scrollbar information
 	//           structure.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI);
+	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -179,7 +173,7 @@ public:
 	// See Also: AdjustLayout().
 	//-----------------------------------------------------------------------
 	virtual void Draw(CDC* pDC);
-	virtual void Draw2(CDC* pDC); //<COMBINE Draw>
+	virtual void Draw2(CDC* pDC); //<COMBINE CXTPCalendarMonthView::Draw@CDC*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -261,7 +255,7 @@ public:
 	//     Pointer to a CXTPCalendarMonthViewDay object.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarMonthViewDay* GetViewDay(int nIndex);
+	virtual CXTPCalendarViewDay* GetViewDay_(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -275,7 +269,7 @@ public:
 	//     A COleDateTime object that contains the day view date and time.
 	// See Also: GetViewDayCount()
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetViewDayDate(int nIndex);
+	virtual COleDateTime GetViewDayDate(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -291,8 +285,8 @@ public:
 	//     XTPCalendarGetItemText,XTPCalendarGetItemTextEx,
 	//     XTP_NC_CALENDAR_GETITEMTEXT,
 	//     CXTPCalendarControl::GetAskItemTextFlags,
-	//     CXTPCalendarControlPaintManager::GetAskItemTextFlags,
-	//     CXTPCalendarControlPaintManager::SetAskItemTextFlags,
+	//     CXTPCalendarPaintManager::GetAskItemTextFlags,
+	//     CXTPCalendarPaintManager::SetAskItemTextFlags,
 	//     CXTPCalendarTheme::GetAskItemTextFlags,
 	//     CXTPCalendarTheme::SetAskItemTextFlags
 	//-----------------------------------------------------------------------
@@ -356,13 +350,19 @@ protected:
 	//-----------------------------------------------------------------------
 	void _CalculateEventCaptionFormat(CDC* pDC);
 
-	CString m_strLongDateFormat;    // String of the long date format.
-	CString m_strSmallDateFormat;   // String of the short date format.
-	int     m_nEventCaptionFormat;  // Event caption format flags are stored in packed form by bitwise operations.
-	int     m_nEventTimeWidth;      // width of the area to display the event times.
+	CString m_strLongDateFormat;  // String of the long date format.
+	CString m_strSmallDateFormat; // String of the short date format.
+	int m_nEventCaptionFormat;	// Event caption format flags are stored in packed form by bitwise
+								  // operations.
+	int m_nEventTimeWidth;		  // width of the area to display the event times.
 
 	XTP_CALENDAR_MONTHVIEW_DAYPOS m_DayPOS_LastSelected; // Last selected day positions.
+
+	COleDateTime m_dtLightColorDateBase; // Month from this date will be painted with light color in
+										 // month view.
 public:
+	void SetMDayViewLightColorBaseDate(const COleDateTime& dtBase);
+	const COleDateTime& GetMDayViewLightColorBaseDate() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -382,7 +382,7 @@ public:
 	//-----------------------------------------------------------------------
 	void SetSmallDayHeaderFormat(LPCTSTR pcszCustomFormat);
 
-	BOOL m_bDraftMode; //print mode flag for B/W prinitng without Headers and Footers
+	BOOL m_bDraftMode; // print mode flag for B/W prinitng without Headers and Footers
 
 	//=======================================================================
 	// Remarks:
@@ -429,7 +429,7 @@ public:
 		//     (cell [0, 0]) date in the grid.
 		// See Also: GetBeginDate, ShiftDateToCell_00
 		//-----------------------------------------------------------------------
-		void         SetBeginDate(COleDateTime dtBeginDate);
+		void SetBeginDate(COleDateTime dtBeginDate);
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -442,7 +442,7 @@ public:
 		//     to the first cell in the grid.
 		// See Also: GetBeginDate, SetBeginDate
 		//-----------------------------------------------------------------------
-		COleDateTime ShiftDateToCell_00(COleDateTime dtDate);
+		COleDateTime ShiftDateToCell_00(COleDateTime dtDate) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -617,7 +617,7 @@ public:
 		// See Also: ScrollV, CXTPCalendarMonthView::ScrollV,
 		//           CXTPCalendarMonthView::GetScrollBarInfoV.
 		//-----------------------------------------------------------------------
-		int GetScrollPos();
+		int GetScrollPos() const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -693,7 +693,7 @@ public:
 		//     view day that is associated with the given indexes.
 		// See Also: CXTPCalendarMonthView::GetViewDay
 		//-----------------------------------------------------------------------
-		CXTPCalendarMonthViewDay* GetViewDay(int nWeekIndex, int nWeekDayIndex);
+		CXTPCalendarMonthViewDay* GetViewDay(int nWeekIndex, int nWeekDayIndex) const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -703,10 +703,10 @@ public:
 		//     A XTP_CALENDAR_MONTHVIEW_DAYPOS object that contains the
 		//     maximum number of available day positions.
 		// See Also: XTP_CALENDAR_MONTHVIEW_DAYPOS,
-		//           XTP_CALENDAR_HITTESTINFO_MONTH_VIEW,
+		//           XTP_CALENDAR_HITTESTINFO,
 		//           CXTPCalendarMonthView::m_DayPOS_LastSelected
 		//-----------------------------------------------------------------------
-		XTP_CALENDAR_MONTHVIEW_DAYPOS GetMaxDayPOS();
+		XTP_CALENDAR_MONTHVIEW_DAYPOS GetMaxDayPOS() const;
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -718,17 +718,17 @@ public:
 		int GetFirstDayOfWeek() const;
 
 	protected:
-		COleDateTime m_dtBeginDate;     // First Cell (cell [0, 0]) date in the grid.
+		COleDateTime m_dtBeginDate; // First Cell (cell [0, 0]) date in the grid.
 
-		int m_nWeeksCount;              // The number of weeks that are displayed.
-		int m_nColHeaderHeight;         // Column header height in pixels.
+		int m_nWeeksCount;		// The number of weeks that are displayed.
+		int m_nColHeaderHeight; // Column header height in pixels.
 
 		CStringArray m_arColHeaderText; // Array of columns (week days) headers names.
 
-		CUIntArray m_arColsLeftX;       // Array of columns left borders positions.
-		CUIntArray m_arRowsTopY;        // Array of rows top borders positions.
+		CUIntArray m_arColsLeftX; // Array of columns left borders positions.
+		CUIntArray m_arRowsTopY;  // Array of rows top borders positions.
 
-		int m_nFirstDayOfWeekIndex;     // First Day Of Week index: 1-Sunday, 2-Monday ...
+		int m_nFirstDayOfWeekIndex; // First Day Of Week index: 1-Sunday, 2-Monday ...
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -749,7 +749,7 @@ public:
 		// See Also: ScrollV, GetScrollPos, CXTPCalendarMonthView::ScrollV,
 		//           CXTPCalendarMonthView::GetScrollBarInfoV.
 		//-----------------------------------------------------------------------
-		COleDateTime GetMiddleScrollBeginDate();
+		COleDateTime GetMiddleScrollBeginDate() const;
 
 	protected:
 		CXTPCalendarMonthView* m_pView; // Pointer to the parent view class.
@@ -765,60 +765,68 @@ public:
 	//     View days grid object.
 	// See Also: CMonthViewGrid
 	//-----------------------------------------------------------------------
-	CMonthViewGrid* GetGrid();
+	CMonthViewGrid* GetGrid() const;
 
 protected:
 	CMonthViewGrid* m_pGrid; // Pointer to the grid object.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarMonthView);
+
+	long OleGetWeeksCount();
+	void OleSetWeeksCount(long);
+
+	BOOL OleGetDraftMode();
+	void OleSetDraftMode(BOOL bSet);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
-//XTP_CALENDAR_MONTHVIEW_DAYPOS
+// XTP_CALENDAR_MONTHVIEW_DAYPOS
 //-----------------------------
-AFX_INLINE int XTP_CALENDAR_MONTHVIEW_DAYPOS::GetPOS()
+AFX_INLINE int XTP_CALENDAR_MONTHVIEW_DAYPOS::GetPOS() const
 {
 	int nPOS = nWeekIndex * 7 + nWeekDayIndex;
 	return nPOS;
 }
-
 AFX_INLINE void XTP_CALENDAR_MONTHVIEW_DAYPOS::SetPOS(int nWidx, int nWDidx)
 {
-	nWeekIndex = nWidx;
+	nWeekIndex	= nWidx;
 	nWeekDayIndex = nWDidx;
 }
-
 AFX_INLINE void XTP_CALENDAR_MONTHVIEW_DAYPOS::SetPOS(int nPOS)
 {
-	nWeekIndex = nPOS / 7;
+	nWeekIndex	= nPOS / 7;
 	nWeekDayIndex = nPOS % 7;
 }
-
-AFX_INLINE BOOL XTP_CALENDAR_MONTHVIEW_DAYPOS::IsValid()
+AFX_INLINE BOOL XTP_CALENDAR_MONTHVIEW_DAYPOS::IsValid() const
 {
 	BOOL bValid = (nWeekIndex >= 0 || nWeekDayIndex >= 0);
 	return bValid;
 }
-
-AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS::operator int()
+AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS::operator int() const
 {
 	ASSERT(IsValid());
 	return GetPOS();
 }
-
-AFX_INLINE const XTP_CALENDAR_MONTHVIEW_DAYPOS& XTP_CALENDAR_MONTHVIEW_DAYPOS::operator =(int nPOS)
+AFX_INLINE const XTP_CALENDAR_MONTHVIEW_DAYPOS& XTP_CALENDAR_MONTHVIEW_DAYPOS::operator=(int nPOS)
 {
 	SetPOS(nPOS);
 	return *this;
 }
-
-AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS& XTP_CALENDAR_MONTHVIEW_DAYPOS::operator ++()
+AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS& XTP_CALENDAR_MONTHVIEW_DAYPOS::operator++()
 {
 	ASSERT(IsValid());
 	SetPOS(GetPOS() + 1);
 	return *this;
 }
-
-AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS XTP_CALENDAR_MONTHVIEW_DAYPOS::operator ++(int)
+AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS XTP_CALENDAR_MONTHVIEW_DAYPOS::operator++(int)
 {
 	ASSERT(IsValid());
 	XTP_CALENDAR_MONTHVIEW_DAYPOS retPOS = *this;
@@ -827,51 +835,55 @@ AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS XTP_CALENDAR_MONTHVIEW_DAYPOS::operator
 }
 
 //===========================================================================
-AFX_INLINE int  CXTPCalendarMonthView::CMonthViewGrid::GetWeeksCount() const
+AFX_INLINE void CXTPCalendarMonthView::SetMDayViewLightColorBaseDate(const COleDateTime& dtBase)
+{
+	m_dtLightColorDateBase = dtBase;
+}
+
+AFX_INLINE const COleDateTime& CXTPCalendarMonthView::GetMDayViewLightColorBaseDate() const
+{
+	return m_dtLightColorDateBase;
+}
+
+//===========================================================================
+AFX_INLINE int CXTPCalendarMonthView::CMonthViewGrid::GetWeeksCount() const
 {
 	return m_nWeeksCount;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarMonthView::CMonthViewGrid::GetBeginDate() const
 {
 	return m_dtBeginDate;
 }
-
-AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS CXTPCalendarMonthView::CMonthViewGrid::GetMaxDayPOS()
+AFX_INLINE XTP_CALENDAR_MONTHVIEW_DAYPOS CXTPCalendarMonthView::CMonthViewGrid::GetMaxDayPOS() const
 {
-	XTP_CALENDAR_MONTHVIEW_DAYPOS maxPOS = (int)(GetWeeksCount() * 7 - 1);
+	XTP_CALENDAR_MONTHVIEW_DAYPOS maxPOS;
+	maxPOS.SetPOS((int)(GetWeeksCount() * 7 - 1));
 	return maxPOS;
 }
-
-AFX_INLINE CXTPCalendarMonthView::CMonthViewGrid* CXTPCalendarMonthView::GetGrid()
+AFX_INLINE CXTPCalendarMonthView::CMonthViewGrid* CXTPCalendarMonthView::GetGrid() const
 {
 	return m_pGrid;
 }
-
 AFX_INLINE int CXTPCalendarMonthView::CMonthViewGrid::GetFirstDayOfWeek() const
 {
 	return m_nFirstDayOfWeekIndex;
 }
-////////////////////////////////////////////////////////////////////////////
 AFX_INLINE int CXTPCalendarMonthView::GetEventCaptionFormat() const
 {
 	return m_nEventCaptionFormat;
 }
-
 AFX_INLINE int CXTPCalendarMonthView::GetEventTimeWidth() const
 {
 	return m_nEventTimeWidth;
 }
-
 AFX_INLINE void CXTPCalendarMonthView::SetLongDayHeaderFormat(LPCTSTR pcszCustomFormat)
 {
 	m_strLongDateFormat = pcszCustomFormat;
 }
-
 AFX_INLINE void CXTPCalendarMonthView::SetSmallDayHeaderFormat(LPCTSTR pcszCustomFormat)
 {
 	m_strSmallDateFormat = pcszCustomFormat;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARMONTHVIEW_H__)

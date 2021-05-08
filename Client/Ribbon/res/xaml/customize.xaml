@@ -1,0 +1,17 @@
+﻿<StackPanel Orientation='Horizontal'>
+  <Viewbox Stretch='Uniform' Width='32' Height='32'>
+    <Canvas Width='32' Height='32' Canvas.Left='0' Canvas.Top='0'>
+      <Canvas>
+        <Rectangle Canvas.Left='1.5' Canvas.Top='11.5' Width='29' Height='13' Fill='#FFFFFF' Stroke='#383838' StrokeThickness='1' StrokeMiterLimit='5'/>
+        <Path Data='M24.5,11.5H7.5V1.5h17V11.5zM24.5,20.5H7.5v10h17V20.5z' Fill='#FFFFFF' Stroke='#383838' StrokeThickness='1' StrokeMiterLimit='5'/>
+        <Path Data='M10,23.5h12M10,25.5h12M10,27.5h12' Stroke='#787979' StrokeThickness='1' StrokeMiterLimit='5'/>
+        <Rectangle Canvas.Left='4.5' Canvas.Top='14.5' Width='2' Height='2' Fill='#238BCB' Stroke='#228BCB' StrokeThickness='1' StrokeStartLineCap='Round' StrokeEndLineCap='Round' StrokeMiterLimit='5'/></Canvas><Canvas>
+        <Polygon Points='29.5,18.5 29.5,23.5 20.6,23.5 20.6,18.5 18.5,18.5 18.5,29.281 20.764,31.5 21.5,31.5 21.5,26.6 28.5,26.6 28.5,31.5 31.5,31.5 31.5,18.5' Fill='#DFBCD9' StrokeLineJoin='Miter'/><Path Data='M32,32H20.56L18,29.491V18h14V32zM20.968,31H31V19H19v10.071L20.968,31z' Fill='#A0519F'/>
+        <Rectangle Canvas.Left='21.5' Canvas.Top='26.5' Width='7' Height='5' Fill='#FFFFFF' Stroke='#A0519F' StrokeThickness='1' StrokeMiterLimit='1'/>
+        <Line X1='24.5' Y1='30' X2='24.5' Y2='28' Fill='#FFFFFF' Stroke='#A0519F' StrokeThickness='1' StrokeMiterLimit='1'/>
+        <Rectangle Canvas.Left='20.5' Canvas.Top='18.5' Width='9' Height='5' Fill='#FFFFFF' Stroke='#A0519F' StrokeThickness='1' StrokeMiterLimit='1'/>
+      </Canvas>
+    </Canvas>
+  </Viewbox>
+  <TextBlock Padding='3, 0, 0, 0' FontSize='12' FontQuality='ClearType' VerticalAlignment='Center'>%s</TextBlock>
+</StackPanel>

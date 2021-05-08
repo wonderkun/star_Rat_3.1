@@ -1,7 +1,6 @@
 // XTPControlGallery.h
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,470 +19,59 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLGALLERY_H__)
-#define __XTPCONTROLGALLERY_H__
+#	define __XTPCONTROLGALLERY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-
-#include "XTPCommandBarsDefines.h"
-#include "XTPControlPopup.h"
-#include "XTPControlComboBox.h"
-#include "XTPScrollBase.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControlGalleryItems;
 class CXTPControlGallery;
 class CXTPControlGalleryPaintManager;
+class CXTPImageManagerIcon;
+class CXTPMarkupUIElement;
+class CXTPMarkupContext;
 
-const UINT XTP_GN_PREVIEWSTART      = 0x1010;  // Gallery Notification - Occurs when the gallery preview is started.
-const UINT XTP_GN_PREVIEWCANCEL     = 0x1011;  // Gallery Notification - Occurs when the gallery preview is canceled.
-const UINT XTP_GN_PREVIEWAPPLY      = 0x1012;  // Gallery Notification - Occurs when the gallery preview is applied.
-const UINT XTP_GN_PREVIEWCHANGE     = 0x1013;  // Gallery Notification - Occurs when the gallery preview is changed.
-const UINT XTP_GN_STARTDRAG         = 0x1014;  // Gallery Notification - Occurs when an item is dragged in the gallery.
-const UINT XTP_GN_SELCHANGE         = 0x1015;  // Gallery Notification - Occurs when the gallery selection has changed.
+const UINT XTP_GN_PREVIEWSTART = 0x1010;  // Gallery Notification - Occurs when the gallery preview
+										  // is started.
+const UINT XTP_GN_PREVIEWCANCEL = 0x1011; // Gallery Notification - Occurs when the gallery preview
+										  // is canceled.
+const UINT XTP_GN_PREVIEWAPPLY = 0x1012;  // Gallery Notification - Occurs when the gallery preview
+										  // is applied.
+const UINT XTP_GN_PREVIEWCHANGE = 0x1013; // Gallery Notification - Occurs when the gallery preview
+										  // is changed.
+const UINT XTP_GN_STARTDRAG = 0x1014; // Gallery Notification - Occurs when an item is dragged in
+									  // the gallery.
+const UINT XTP_GN_SELCHANGE = 0x1015; // Gallery Notification - Occurs when the gallery selection
+									  // has changed.
 
-//===========================================================================
-// Summary:
-//     CXTPControlGalleryItem is a CCmdTarget derived class. It represents single item of
-//     gallery object.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPControlGalleryItem : public CXTPCmdTarget
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPControlGalleryItem object
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to get size of the item.
-	// Returns:
-	//     Size of the item
-	// See Also: SetSize, CXTPControlGalleryItems::SetItemSize
-	//-----------------------------------------------------------------------
-	virtual CSize GetSize();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set size of the individual item. You can call
-	//     CXTPControlGalleryItems::SetItemSize to set default size for items
-	// Parameters:
-	//     szItem - Size of the item to be set
-	//-----------------------------------------------------------------------
-	void SetSize(CSize szItem);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the item
-	// Parameters:
-	//     pDC      - Pointer to valid device context
-	//     pGallery - Parent gallery of the item
-	//     rcItem   - Bounding rectangle of the item
-	//     bEnabled - TRUE to draw item enabled; FALSE - disabled
-	//     bSelected - TRUE to draw item selected
-	//     bPressed - TRUE to draw item pressed
-	//     bChecked - TRUE to draw item checked
-	//-----------------------------------------------------------------------
-	virtual void Draw(CDC* pDC, CXTPControlGallery* pGallery, CRect rcItem, BOOL bEnabled, BOOL bSelected, BOOL bPressed, BOOL bChecked);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to get image for item
-	//-----------------------------------------------------------------------
-	CXTPImageManagerIcon* GetImage();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to determine if the item is label
-	//-----------------------------------------------------------------------
-	BOOL IsLabel() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set caption of the item
-	// Parameters:
-	//     lpszCaption - Caption of the item to be set
-	// See Also: GetCaption, SetToolTip, GetToolTip
-	//-----------------------------------------------------------------------
-	void SetCaption(LPCTSTR lpszCaption);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set tooltip  of the item
-	// Parameters:
-	//     lpszToolTip - Tooltip of the item to be set
-	// See Also: GetToolTip, SetCaption, GetCaption
-	//-----------------------------------------------------------------------
-	void SetToolTip(LPCTSTR lpszToolTip);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves tooltip of the item
-	// See Also: SetToolTip, SetCaption, GetCaption
-	//-----------------------------------------------------------------------
-	CString GetToolTip() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves caption of the item
-	// See Also: SetCaption, SetToolTip, GetToolTip
-	//-----------------------------------------------------------------------
-	CString GetCaption() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to enable or disable the item.
-	// Parameters:
-	//     bEnabled - TRUE if the item is enabled.
-	// See Also: GetEnabled
-	//-----------------------------------------------------------------------
-	void SetEnabled(BOOL bEnabled);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the state of the item.
-	// Returns:
-	//     TRUE if the item is enabled; otherwise FALSE.
-	//-----------------------------------------------------------------------
-	BOOL GetEnabled() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves index of the item
-	//-----------------------------------------------------------------------
-	int GetIndex() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the identifier of the item.
-	// Parameters:
-	//     nId - Identifier to be set.
-	//-----------------------------------------------------------------------
-	void SetID(int nId);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the item's identifier.
-	// Returns:
-	//     The identifier of the item.
-	//-----------------------------------------------------------------------
-	int GetID() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method sets the 32-bit value associated with the item.
-	// Parameters:
-	//     dwData - Contains the new value to associate with the item.
-	//-----------------------------------------------------------------------
-	void SetData(DWORD_PTR dwData);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method retrieves the application-supplied 32-bit value
-	//     associated with the item.
-	// Returns:
-	//     The 32-bit value associated with the item.
-	//-----------------------------------------------------------------------
-	DWORD_PTR GetData() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the description of the item.
-	// Parameters:
-	//     lpszDescription - Description to be set.
-	// See Also: SetCaption, SetTooltip
-	//-----------------------------------------------------------------------
-	void SetDescription(LPCTSTR lpszDescription);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the item's description.
-	// Returns:
-	//     The description of the control.
-	//-----------------------------------------------------------------------
-	CString GetDescription() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Set the preferred image width.
-	// Parameters:
-	//     nImageWidth - preferred image width.
-	//-----------------------------------------------------------------------
-	void SetImageWidth(int nImageWidth);
-
-
-protected:
-	int m_nId;              // Identifier
-	int m_nIndex;           // Index of the item
-	int m_nImage;           // Image index
-	CString m_strCaption;   // Caption of the item
-	CString m_strToolTip;   // Tooltip of the item
-	CString m_strDescriptionText; // Description of the item
-	CXTPControlGalleryItems* m_pItems;  // Parent items collection
-	DWORD_PTR m_dwData;     // 32-bit data
-	CSize m_szItem;         // Size of the item; CSize(0, 0) - to use default value
-	BOOL m_bLabel;          // TRUE if item is label
-	BOOL m_bEnabled;        // TRUE to enable, FALSE to disable.
-	int m_nImageWidth;      // preferred image width (0) - to use default value
-
-
-	friend class CXTPControlGalleryItems;
-	friend class CXTPControlGallery;
-};
+class CXTPControlGalleryItem;
 
 //===========================================================================
 // Summary:
-//     CXTPControlGalleryItems is a CCmdTarget derived class. It represents a collection
-//     of the items for gallery control.
+//     CXTPControlGallery is a CXTPControlPopup derived class. It represents gallery control of
+//     toolbar.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlGalleryItems : public CXTPCmdTarget
-{
-	DECLARE_DYNAMIC(CXTPControlGalleryItems)
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPControlGalleryItems object.
-	// Parameters:
-	//     pAction - Action for gallery control to link with.
-	// Remarks:
-	//     Protected constructor, use CreateItems to create items for gallery
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItems(CXTPControlAction* pAction);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPControlGalleryItems object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	~CXTPControlGalleryItems();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Creates new items collection for gallery control
-	// Parameters:
-	//     pCommandBars - Parent Commandbars.
-	//     nId - Identifier of the items
-	//-----------------------------------------------------------------------
-	static CXTPControlGalleryItems* AFX_CDECL CreateItems(CXTPCommandBars* pCommandBars, int nId);
-
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to remove all items in collection
-	//-----------------------------------------------------------------------
-	void RemoveAll();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to remove item.
-	// Parameters:
-	//     nIndex - Index of the item to be removed.
-	//-----------------------------------------------------------------------
-	void Remove(int nIndex);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to add a new item.
-	// Parameters:
-	//     nId   - Identifier of the item
-	//     nImage - Image of the item
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* AddItem(int nId, int nImage);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to add a new item.
-	// Parameters:
-	//     nId   - Identifier of the item
-	//     nImage - Image of the item
-	//     lpszCaption - Caption of the item to be added
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* AddItem(LPCTSTR lpszCaption, int nId, int nImage);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to add a new item.
-	// Parameters:
-	//     pItem - Item to be added
-	//     nId   - Identifier of the item
-	//     nImage - Image of the item
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* AddItem(CXTPControlGalleryItem* pItem, int nId = -1, int nImage = -1);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to add a new item.
-	// Parameters:
-	//     nImage - Image of the item
-	//     lpszCaption - Caption of the item to be added
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* AddItem(LPCTSTR lpszCaption, int nImage = -1);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to insert a new item.
-	// Parameters:
-	//     nIndex - Index to insert new item
-	//     pItem - Item to be added
-	//     nId   - Identifier of the item
-	//     nImage - Image of the item
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* InsertItem(int nIndex, CXTPControlGalleryItem* pItem, int nId = -1, int nImage = -1);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to add a new label item.
-	// Parameters:
-	//     nId   - Identifier of the item
-	//     lpszCaption - Caption of the item to be added
-	// Returns:
-	//     A pointer to the added item.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* AddLabel(int nId);
-	CXTPControlGalleryItem* AddLabel(LPCTSTR lpszCaption); //<combine CXTPControlGalleryItems::AddLabel@int>
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set image manager for items
-	// Parameters:
-	//     pImageManager - new image manager to be set
-	//-----------------------------------------------------------------------
-	void SetImageManager(CXTPImageManager* pImageManager);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves image manager of the items
-	//-----------------------------------------------------------------------
-	CXTPImageManager* GetImageManager() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines default size of the items
-	// See Also: SetItemSize
-	//-----------------------------------------------------------------------
-	CSize GetItemSize() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set size of the item
-	// Parameters:
-	//     szItem - New size to be set
-	// See Also: GetItemSize
-	//-----------------------------------------------------------------------
-	void SetItemSize(CSize szItem);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the count of the items
-	// Returns:
-	//     The count of the items in collection.
-	//-----------------------------------------------------------------------
-	int GetItemCount() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to return the item at the specified index.
-	// Parameters:
-	//     nIndex - An integer index.
-	// Returns:
-	//     The CXTPControlGalleryItem pointer currently at this index.
-	//-----------------------------------------------------------------------
-	CXTPControlGalleryItem* GetItem(int nIndex) const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to enable/disable clipping items if selection was changed
-	// Parameters:
-	//     bClipItems - TRUE to enable clipping; FALSE to disable
-	// Remarks:
-	//     By default clipping is enabled
-	//-----------------------------------------------------------------------
-	void ClipItems(BOOL bClipItems);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called if items was added or removed in collection
-	//-----------------------------------------------------------------------
-	virtual void OnItemsChanged();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw the item
-	// Parameters:
-	//     pDC      - Pointer to valid device context
-	//     pGallery - Parent gallery of the item
-	//     pItem    - Item to be drawn
-	//     rcItem   - Bounding rectangle of the item
-	//     bEnabled - TRUE to draw item enabled; FALSE - disabled
-	//     bSelected - TRUE to draw item selected
-	//     bPressed - TRUE to draw item pressed
-	//     bChecked - TRUE to draw item checked
-	//-----------------------------------------------------------------------
-	virtual BOOL PreDrawItem(CDC* pDC, CXTPControlGallery* pGallery, CXTPControlGalleryItem* pItem, CRect rcItem,
-		BOOL bEnabled, BOOL bSelected, BOOL bPressed, BOOL bChecked);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to get actions list for command bars
-	//-----------------------------------------------------------------------
-	CXTPControlAction* GetAction() const;
-
-private:
-	void UpdateIndexes(int nStart /*= 0*/);
-
-protected:
-	CSize m_szItem;                         // Size of the items
-	CXTPImageManager* m_pImageManager;      // Image manager of items
-	BOOL m_bClipItems;                      // TRUE to clip items
-	CXTPControlAction* m_pAction;           // Action of the items
-	CArray<CXTPControlGalleryItem*, CXTPControlGalleryItem*> m_arrItems;    // Array of items
-
-private:
-	friend class CXTPControlGalleryItem;
-	friend class CXTPControlGallery;
-	friend class CXTPControlGalleryAction;
-
-
-};
-
-//===========================================================================
-// Summary:
-//     CXTPControlGallery is a CXTPControlPopup derived class. It represents gallery control of toolbar.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPControlGallery : public CXTPControlPopup, public CXTPScrollBase
+class _XTP_EXT_CLASS CXTPControlGallery
+	: public CXTPControlPopup
+	, public CXTPScrollBase
 {
 	DECLARE_XTP_CONTROL(CXTPControlGallery)
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Structure contains item position description
 	//-------------------------------------------------------------------------
 	struct GALLERYITEM_POSITION
 	{
-		RECT rcItem;                    // Bounding rectangle of the item
-		CXTPControlGalleryItem* pItem;  // Item pointer
-		BOOL bBeginRow;                 // TRUE it item starts new row
+		RECT rcItem;				   // Bounding rectangle of the item
+		CXTPControlGalleryItem* pItem; // Item pointer
+		BOOL bBeginRow;				   // TRUE it item starts new row
 	};
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -526,6 +114,17 @@ public:
 	//-----------------------------------------------------------------------
 	void SetControlSize(CSize szControl);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to set size of the control. Depending on number of rows, columns,
+	//     current item size and current DPI
+	// Parameters:
+	//     nRownColumns     - number of columns
+	//     nRows            - number of rows
+	//     szItem           - default item size
+	//-----------------------------------------------------------------------
+	void SetControlSize(int nColumns, int nRows, CSize szItem);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -552,7 +151,7 @@ public:
 	//     Call this method to get items associated with the gallery
 	// See Also: SetItems
 	//-----------------------------------------------------------------------
-	CXTPControlGalleryItems* GetItems() const;
+	virtual CXTPControlGalleryItems* GetItems() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -609,6 +208,10 @@ public:
 	BOOL IsItemSelected() const;
 
 public:
+	static BOOL m_bAutoScaleDpi; // TRUE by default. Enables scalling of ribbon gallery items (both
+								 // inline and displayed in popup)
+
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to draw borders around gallery
@@ -640,6 +243,21 @@ public:
 	//     bShowScrollBar - TRUE to show scrollbar
 	//-----------------------------------------------------------------------
 	void ShowScrollBar(BOOL bShowScrollBar);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to check if scrollbar is visible
+	//-----------------------------------------------------------------------
+	BOOL IsScrollBarVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to automatically show/hide scrollbar of the gallery
+	// Parameters:
+	//     bShowScrollBar - TRUE to show scrollbar auto
+	//-----------------------------------------------------------------------
+	void SetScrollBarAuto(BOOL bScrollBarAuto);
+	BOOL IsScrollBarAuto() const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -757,7 +375,6 @@ public:
 	virtual void OnSelectedItemChanged();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Determines if Gallery needs separator after last item
 	// Returns: TRUE to draw separator
@@ -836,8 +453,10 @@ public:
 	//-------------------------------------------------------------------------
 	void HideSelection();
 
-protected:
+	void SetTransparent(BOOL bTransparent = TRUE);
+	BOOL IsTransparent() const;
 
+protected:
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to set position of all items
@@ -853,7 +472,6 @@ protected:
 	void DrawItems(CDC* pDC);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to copy the control.
@@ -881,8 +499,13 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnCalcDynamicSize(DWORD dwMode);
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	virtual void SetRect(CRect rcControl);
+	virtual void OnItemsChanged();
+	BOOL OnHookMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
 	virtual CSize GetSize(CDC* pDC);
 	virtual void Draw(CDC* pDC);
 
@@ -891,7 +514,6 @@ protected:
 	virtual void OnClick(BOOL bKeyboard = FALSE, CPoint pt = CPoint(0, 0));
 	virtual void OnLButtonUp(CPoint point);
 	virtual BOOL OnSetSelected(int bSelected);
-	virtual void SetRect(CRect rcControl);
 	void DoScroll(int cmd, int pos);
 	void GetScrollInfo(SCROLLINFO* pSI);
 	void PerformMouseMove(CPoint point);
@@ -906,9 +528,8 @@ protected:
 protected:
 	void DrawScrollBar(CDC* pDC);
 	CRect GetScrollBarRect();
-	void CalcScrollBarInfo(LPRECT lprc, SCROLLBARPOSINFO* pSBInfo, SCROLLINFO* pSI);
+	void CalcScrollBarInfo(LPRECT lprc, XTP_SCROLLBAR_POSINFO* pSBInfo, SCROLLINFO* pSI);
 
-	BOOL OnHookMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	BOOL IsFocused() const;
 	BOOL OnHookKeyDown(UINT nChar, LPARAM lParam);
 	virtual void OnScrollChanged();
@@ -923,59 +544,83 @@ protected:
 	virtual void RedrawScrollBar();
 	void DoAnimate();
 	void StartAnimation(int nScrollPos);
+	void RepositionCore();
 
-
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual HRESULT GetAccessibleDefaultAction(VARIANT varChild, BSTR* pszDefaultAction);
 	virtual HRESULT AccessibleDoDefaultAction(VARIANT varChild);
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlGallery);
+
+	void OleSetItems(LPDISPATCH lpDispatch);
+	LPDISPATCH OleGetItems();
+
+	DECLARE_PROPERTY(SelectedItem, LPDISPATCH);
+	DECLARE_PROPERTY(CheckedItem, int);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
+	int m_nChecked;			 // Checked id
+	int m_nSelected;		 // Index of Selected item
+	BOOL m_bHideSelection;   // TRUE to hide selection
+	BOOL m_bPressed;		 // TRUE if item is pressed
+	CPoint m_ptPressed;		 // Position of pressed item
+	int m_nScrollPos;		 // Scroll position
+	int m_nScrollPosTarget;  // Scroll position
+	double m_dAnimationStep; // Number of steps to complete animation
 
-	int m_nChecked;             // Checked id
-	int m_nSelected;            // Index of Selected item
-	BOOL m_bHideSelection;      // TRUE to hide selection
-	BOOL m_bPressed;            // TRUE if item is pressed
-	CPoint m_ptPressed;         // Position of pressed item
-	int m_nScrollPos;           // Scroll position
-	int m_nScrollPosTarget;     // Scroll position
-	double m_dAnimationStep;    // Number of steps to complete animation
+	BOOL m_bKeyboardSelected; // TRUE if item was selected using keyboard
 
-	BOOL m_bKeyboardSelected;   // TRUE if item was selected using keyboard
+	int m_nTotalHeight; // Total height of items
 
-	int m_nTotalHeight;         // Total height of items
+	BOOL m_bShowLabels; // TRUE to show labels
 
-	BOOL m_bShowLabels;         // TRUE to show labels
+	BOOL m_bShowScrollBar; // TRUE to show scrollbars
+	BOOL m_bShowBorders;   // TRUE to show borders
+	CRect m_rcMargin;	  // Margins of gallery items
+	BOOL m_bPreview;	   // TRUE if control in preview mode
+	int m_nResizable;	  // TRUE if the popup galley is resizable, see XTPGalleryResizable
 
-	BOOL m_bShowScrollBar;      // TRUE to show scrollbars
-	BOOL m_bShowBorders;        // TRUE to show borders
-	CRect m_rcMargin;           // Margins of gallery items
-	BOOL m_bPreview;            // TRUE if control in preview mode
-	int m_nResizable;           // TRUE if the popup galley is resizable, see XTPGalleryResizable
+	BOOL m_bScrollBarAuto;
+	BOOL m_bTransparent;
 
 	CArray<GALLERYITEM_POSITION, GALLERYITEM_POSITION&> m_arrRects; // bounding rectangles
 
 	friend class CXTPControlGalleryItems;
 };
 
+#	define GETPARTSTATE3(ht, bEnabled)                                                            \
+		(!bEnabled ? 4 : nPressedHt == ht ? 3 : nHotHt == ht ? 2 : 0)
+#	define IS_PART_SELECTED(nState) (nState == 2)
+#	define IS_PART_PRESSED(nState) (nState == 3)
+#	define IS_PART_ENABLED(nState) (nState != 4)
 
 //===========================================================================
 // Summary:
 //     CXTPControlGalleryPaintManager is standalone class used to draw CXTPControlGallery object
 //===========================================================================
-class _XTP_EXT_CLASS CXTPControlGalleryPaintManager : public CXTPScrollBarPaintManager
+class _XTP_EXT_CLASS CXTPControlGalleryPaintManager
 {
 public:
 	//-----------------------------------------------------------------------
@@ -987,7 +632,6 @@ public:
 	CXTPControlGalleryPaintManager(CXTPPaintManager* pPaintManager);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw label control
@@ -1003,19 +647,20 @@ public:
 	//     This method is called to draw background of the gallery
 	// Parameters:
 	//      pDC - Pointer to device context
-	//      pGallery - CXTPControlGallery object to draw
 	//      rc - Bounding rectangle of gallery object
+	//      pGallery - CXTPControlGallery object to draw
 	//-----------------------------------------------------------------------
 	virtual void FillControl(CDC* pDC, CXTPControlGallery* pGallery, CRect rc);
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to draw scrollbar of the gallery
-	// Parameters:
-	//     pDC - Pointer to device context
-	//     pScrollBar - ScrollBar to draw
-	//-----------------------------------------------------------------------
-	virtual void DrawScrollBar(CDC* pDC, CXTPScrollBase* pScrollBar);
+	virtual void DrawItem(CDC* pDC, CRect rcItem, BOOL bEnabled, BOOL bSelected, BOOL bPressed,
+						  BOOL bChecked, CXTPControlGalleryItem* pGalleryItem,
+						  CXTPControlGallery* pGallery);
+
+	virtual void DrawItemBack(CDC* pDC, CRect rcItem, BOOL bEnabled, BOOL bSelected, BOOL bPressed,
+							  BOOL bChecked, XTPBarType barType);
+
+	virtual COLORREF GetItemTextColor(BOOL bEnabled, BOOL bSelected, BOOL bPressed, BOOL bChecked,
+									  XTPBarType barType);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1034,152 +679,63 @@ public:
 	virtual void RefreshMetrics();
 
 public:
-	int m_cyPopupUp;            // Height of Up arrow of in place scrollbar
-	int m_cyPopupDown;          // Height of Down arrow of in place scrollbar
-	int m_cxPopup;              // Width of arrows of in place scrollbar
+	int m_cyPopupUp;   // Height of Up arrow of in place scrollbar
+	int m_cyPopupDown; // Height of Down arrow of in place scrollbar
+	int m_cxPopup;	 // Width of arrows of in place scrollbar
+
+	COLORREF m_clrBorder;
+
+	CXTPPaintManager* m_pPaintManager;
 };
 
-
-//===========================================================================
-// Summary: CXTPControlComboBoxPopupBar object
-//===========================================================================
-class _XTP_EXT_CLASS CXTPControlComboBoxGalleryPopupBar : public CXTPControlComboBoxPopupBar
+AFX_INLINE BOOL CXTPControlGallery::IsShowBorders() const
 {
-	DECLARE_XTP_COMMANDBAR(CXTPControlComboBoxGalleryPopupBar)
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPControlComboBoxGalleryPopupBar object
-	//-----------------------------------------------------------------------
-	CXTPControlComboBoxGalleryPopupBar();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Creates a popup bar object.
-	// Parameters:
-	//     pCommandBars - Points to a CXTPCommandBars object
-	// Returns:
-	//     A pointer to a CXTPControlComboBoxGalleryPopupBar object
-	//-----------------------------------------------------------------------
-	static CXTPControlComboBoxGalleryPopupBar* AFX_CDECL CreateComboBoxGalleryPopupBar(CXTPCommandBars* pCommandBars);
-
-protected:
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
-
-	BOOL SetTrackingMode(int bMode, BOOL bSelectFirst, BOOL bKeyboard);
-	BOOL OnHookKeyDown(UINT nChar, LPARAM lParam);
-
-	CXTPControlGallery* GetGalleryItem() const;
-
-	//{{AFX_VIRUAL(CXTPControlComboBoxList)
-	virtual int GetCurSel() const {
-		return GetGalleryItem()->GetSelectedItem();
-	}
-	virtual int FindString(int nStartAfter, LPCTSTR lpszItem) const {
-		return GetGalleryItem()->FindItem(nStartAfter, lpszItem, FALSE);
-	}
-	virtual int FindStringExact(int nIndexStart, LPCTSTR lpsz) const {
-		return GetGalleryItem()->FindItem(nIndexStart, lpsz, TRUE);
-	}
-	virtual int SetTopIndex(int nIndex) {
-		return GetGalleryItem()->SetTopIndex(nIndex);
-	}
-	virtual void SetCurSel(int nIndex) {
-		GetGalleryItem()->SetSelectedItem(nIndex);
-	}
-	virtual void GetText(int nIndex, CString& rString) const {
-		rString = GetGalleryItem()->GetItemCaption(nIndex);
-	}
-	//}}AFX_VIRUAL
-
-	//{{AFX_MSG(CXTPControlComboBoxList)
-	void OnLButtonUp(UINT nFlags, CPoint point);
-	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-};
-
-
-
-AFX_INLINE BOOL CXTPControlGalleryItem::IsLabel() const {
-	return m_bLabel;
-}
-AFX_INLINE void CXTPControlGalleryItem::SetCaption(LPCTSTR lpszCaption) {
-	m_strCaption = lpszCaption;
-}
-AFX_INLINE void CXTPControlGalleryItem::SetToolTip(LPCTSTR lpszToolTip) {
-	m_strToolTip = lpszToolTip;
-}
-AFX_INLINE CString CXTPControlGalleryItem::GetToolTip() const {
-	return m_strToolTip;
-}
-AFX_INLINE CString CXTPControlGalleryItem::GetCaption() const {
-	return m_strCaption;
-}
-AFX_INLINE void CXTPControlGalleryItem::SetDescription(LPCTSTR lpszDescription) {
-	m_strDescriptionText = lpszDescription;
-}
-AFX_INLINE CString CXTPControlGalleryItem::GetDescription() const {
-	return m_strDescriptionText;
-}
-AFX_INLINE void CXTPControlGalleryItem::SetID(int nId) {
-	m_nId = nId;
-}
-AFX_INLINE int CXTPControlGalleryItem::GetID() const {
-	return m_nId;
-}
-AFX_INLINE CXTPImageManager* CXTPControlGalleryItems::GetImageManager() const {
-	return m_pImageManager;
-}
-AFX_INLINE CSize CXTPControlGalleryItems::GetItemSize() const {
-	return m_szItem;
-}
-AFX_INLINE void CXTPControlGalleryItems::SetItemSize(CSize szItem) {
-	m_szItem = szItem;
-}
-AFX_INLINE void CXTPControlGalleryItems::ClipItems(BOOL bClipItems) {
-	m_bClipItems = bClipItems;
-}
-
-AFX_INLINE void CXTPControlGalleryItem::SetData(DWORD_PTR dwData) {
-	m_dwData = dwData;
-}
-AFX_INLINE DWORD_PTR CXTPControlGalleryItem::GetData() const {
-	return m_dwData;
-}
-
-AFX_INLINE void CXTPControlGallery::SetControlSize(CSize szControl) {
-	m_nWidth = szControl.cx;
-	m_nHeight = szControl.cy;
-}
-AFX_INLINE BOOL CXTPControlGallery::IsShowBorders() const {
 	return m_bShowBorders;
 }
-AFX_INLINE void CXTPControlGallery::ShowLabels(BOOL bShowLabels) {
+AFX_INLINE void CXTPControlGallery::ShowLabels(BOOL bShowLabels)
+{
 	m_bShowLabels = bShowLabels;
 }
-AFX_INLINE void CXTPControlGallery::ShowScrollBar(BOOL bShowScrollBar) {
+AFX_INLINE void CXTPControlGallery::ShowScrollBar(BOOL bShowScrollBar)
+{
 	m_bShowScrollBar = bShowScrollBar;
 }
-AFX_INLINE void CXTPControlGallery::ShowBorders(BOOL bShowBorders) {
+AFX_INLINE void CXTPControlGallery::ShowBorders(BOOL bShowBorders)
+{
 	m_bShowBorders = bShowBorders;
 }
-AFX_INLINE BOOL CXTPControlGallery::IsItemSelected() const {
+AFX_INLINE BOOL CXTPControlGallery::IsItemSelected() const
+{
 	return !m_bHideSelection && GetSelectedItem() != -1;
 }
-AFX_INLINE BOOL CXTPControlGallery::IsResizable() const {
+AFX_INLINE BOOL CXTPControlGallery::IsResizable() const
+{
 	return !IsShowAsButton() && GetItems() ? m_nResizable : FALSE;
 }
-AFX_INLINE BOOL CXTPControlGallery::IsCustomizeResizeAllow() const {
+AFX_INLINE BOOL CXTPControlGallery::IsCustomizeResizeAllow() const
+{
 	return IsResizable();
 }
-AFX_INLINE CXTPControlAction* CXTPControlGalleryItems::GetAction() const {
-	return m_pAction;
+AFX_INLINE void CXTPControlGallery::SetScrollBarAuto(BOOL bScrollBarAuto)
+{
+	m_bScrollBarAuto = bScrollBarAuto;
 }
-AFX_INLINE void CXTPControlGalleryItem::SetImageWidth(int nImageWidth) {
-	m_nImageWidth = nImageWidth;
+AFX_INLINE BOOL CXTPControlGallery::IsScrollBarVisible() const
+{
+	return m_bShowScrollBar;
+}
+AFX_INLINE BOOL CXTPControlGallery::IsScrollBarAuto() const
+{
+	return m_bScrollBarAuto;
+}
+AFX_INLINE void CXTPControlGallery::SetTransparent(BOOL bTransparent)
+{
+	m_bTransparent = bTransparent;
+}
+AFX_INLINE BOOL CXTPControlGallery::IsTransparent() const
+{
+	return m_bTransparent;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCONTROLGALLERY_H__)

@@ -1,7 +1,6 @@
 // XTPColorPopup.h : interface for the CXTPColorPopup class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOLORPOPUP_H__)
-#define __XTPCOLORPOPUP_H__
+#	define __XTPCOLORPOPUP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPShadowManager;
 
@@ -38,7 +39,6 @@ class CXTPShadowManager;
 class _XTP_EXT_CLASS CXTPColorPopup : public CXTPColorSelectorCtrl
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorPopup object.
@@ -56,27 +56,18 @@ public:
 	virtual ~CXTPColorPopup();
 
 public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function will add a color to the user defined color
-	//     list.
-	// Parameters:
-	//     clrColor - An RGB value that represents the user defined color
-	//                to be displayed in
-	//     the recent color list.
-	//-----------------------------------------------------------------------
-	static void AddUserColor(COLORREF clrColor);
-
-	// ---------------------------------------------------------------------------
-	// Summary:
-	//     Resets the recently used color list.
-	// Remarks:
-	//     Call this member function to reset the user defined color list. Calling
-	//     this function will remove all user defined colors from the MRU
-	//     list.
-	// ---------------------------------------------------------------------------
-	static void ResetUserColors();
+	//{{AFX_CODEJOCK_PRIVATE
+	_XTP_DEPRECATE("The function is no longer supported. Use AddRecentColor instead.")
+	static void AFX_CDECL AddUserColor(COLORREF clrColor)
+	{
+		AddRecentColor(clrColor);
+	}
+	_XTP_DEPRECATE("The function is no longer supported. Use ResetRecentColors instead.")
+	static void AFX_CDECL ResetUserColors()
+	{
+		ResetRecentColors();
+	}
+	//}}AFX_CODEJOCK_PRIVATE
 
 	// -----------------------------------------------------------------------------
 	// Summary:
@@ -106,12 +97,15 @@ public:
 	//           box with a 3D raised border in CXTPColorDialog.
 	//     * <b>CPS_XTP_SHOWHEXVALUE</b> Displays the hex equivalent of
 	//           the selected color.
+	//     * <b>CPS_XTP_SHOWEYEDROPPER</b> Displays the eye dropper box to allow
+	//          selecting any color on the screen.
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	// See Also:
 	//     CXTPColorPicker::ModifyCPStyle, CXTPColorSelectorCtrl::Create
 	// -----------------------------------------------------------------------------
-	virtual BOOL Create(CRect& rect, CWnd* pParentWnd, DWORD dwPopup, COLORREF clrColor, COLORREF clrDefault = CLR_DEFAULT);
+	virtual BOOL Create(CRect& rect, CWnd* pParentWnd, DWORD dwPopup, COLORREF clrColor,
+						COLORREF clrDefault = CLR_DEFAULT);
 
 	// ---------------------------------------------------------------------
 	// Summary:
@@ -148,8 +142,7 @@ protected:
 	virtual void EndSelection(int nCurSel);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorPopup)
@@ -164,36 +157,35 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnNcPaint();
-	afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS FAR* lpncsp);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	BOOL  m_bAutoDelete;        // TRUE if the popup window is to be self deleting.
-	BOOL  m_bDisplayShadow;     // TRUE if the popup window will render its shadow.
-	CRect m_rcExclude;          // Area to exclude from shadow display.
+	BOOL m_bAutoDelete;	// TRUE if the popup window is to be self deleting.
+	BOOL m_bDisplayShadow; // TRUE if the popup window will render its shadow.
+	CRect m_rcExclude;	 // Area to exclude from shadow display.
 	BOOL m_bEndSelection;
-	const LPARAM m_callerParam; // Caller parameter that will be reported back as an LPARAM of all notification messages.
-	CXTPShadowManager* m_pShadowManager;    // Shadow manager to draw popup shadow
-
+	const LPARAM m_callerParam; // Caller parameter that will be reported back as an LPARAM of all
+								// notification messages.
+	CXTPShadowManager* m_pShadowManager; // Shadow manager to draw popup shadow
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE  void CXTPColorPopup::AddUserColor(COLORREF clrColor) {
-	m_arUserDefColors.Add(clrColor);
-}
-AFX_INLINE BOOL CXTPColorPopup::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPColorPopup::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									   const RECT& rect, CWnd* pParentWnd, UINT nID,
+									   CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPColorPopup::ResetUserColors() {
-	m_arUserDefColors.RemoveAll();
-}
-AFX_INLINE void CXTPColorPopup::DisplayShadow(BOOL bDisplayShadow/* = TRUE*/) {
+AFX_INLINE void CXTPColorPopup::DisplayShadow(BOOL bDisplayShadow /* = TRUE*/)
+{
 	m_bDisplayShadow = bDisplayShadow;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCOLORPOPUP_H__)

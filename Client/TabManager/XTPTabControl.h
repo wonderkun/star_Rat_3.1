@@ -1,7 +1,6 @@
 // XTPTabControl.h: interface for the CXTPTabControl class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTABCONTROL_H__)
-#define __XTPTABCONTROL_H__
+#	define __XTPTABCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPTabManager.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabPaintManager;
 class CXTPImageManager;
@@ -41,13 +39,14 @@ class CXTPToolTipContext;
 // See Also:
 //     Create, CXTPTabManager::SetColor, CXTPTabManager::SetAppearance
 //===========================================================================
-class _XTP_EXT_CLASS CXTPTabControl : public CWnd, public CXTPTabManager
+class _XTP_EXT_CLASS CXTPTabControl
+	: public CWnd
+	, public CXTPTabManager
 {
 private:
 	class CTabControlDropTarget;
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTabControl object.
@@ -61,7 +60,6 @@ public:
 	virtual ~CXTPTabControl();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Inserts a new tab at the position specified by nItem.
@@ -74,7 +72,8 @@ public:
 	// Returns:
 	//     A pointer to the newly added CXTPTabManagerItem.
 	//-----------------------------------------------------------------------
-	CXTPTabManagerItem* InsertItem(int nItem, LPCTSTR lpszItem, HWND hwndChild = NULL, int nImage = -1, CXTPTabManagerItem* pAddItem = NULL);
+	CXTPTabManagerItem* InsertItem(int nItem, LPCTSTR lpszItem, HWND hwndChild = NULL,
+								   int nImage = -1, CXTPTabManagerItem* pAddItem = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -92,9 +91,7 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get a pointer to the tab paint manager.
@@ -177,7 +174,8 @@ public:
 	//     TRUE if the icon was successfully drawn, FALSE if the icon
 	//     was not drawn.
 	//-----------------------------------------------------------------------
-	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw, CSize& szIcon) const;
+	virtual BOOL DrawIcon(CDC* pDC, CPoint pt, CXTPTabManagerItem* pItem, BOOL bDraw,
+						  CSize& szIcon) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -219,23 +217,24 @@ public:
 	// Parameters:
 	//     behaviour - Tooltips behaviour will be set. See remarks section for available flags.
 	// Remarks:
-	//     <i>behaviour<i> parameter can be one of the following:
+	//     <i>behaviour</i> parameter can be one of the following:
 	//     * <b>xtpTabToolTipNever</b> Show tooltips for tabs always
 	//     * <b>xtpTabToolTipAlways</b> Doesn't show toltips for tabs
-	//     * <b> xtpTabToolTipShrinkedOnly</b> Show tooltips only if tab was shrinked (see xtpTabLayoutSizeToFit layout)
+	//     * <b> xtpTabToolTipShrinkedOnly</b> Show tooltips only if tab was shrinked (see
+	//     xtpTabLayoutSizeToFit layout)
 	//-----------------------------------------------------------------------
 	void EnableToolTips(XTPTabToolTipBehaviour behaviour = xtpTabToolTipAlways);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to calculate a tab control's display area given
-	//     a window rectangle, or calculate the window rectangle that would correspond to a given display area.
+	//     a window rectangle, or calculate the window rectangle that would correspond to a given
+	//     display area.
 	// Parameters:
 	//     bLarger - Indicates which operation to perform. If this parameter is TRUE,
-	//               lpRect specifies a display rectangle and receives the corresponding window rectangle.
-	//               If this parameter is FALSE, lpRect specifies a window rectangle and receives
-	//               the corresponding display rectangle.
+	//               lpRect specifies a display rectangle and receives the corresponding window
+	//               rectangle. If this parameter is FALSE, lpRect specifies a window rectangle and
+	//               receives the corresponding display rectangle.
 	//     lpRect  - Pointer to aRECT structure that specifies the given rectangle
 	//               and receives the calculated rectangle.
 	//-----------------------------------------------------------------------
@@ -265,12 +264,12 @@ public:
 	virtual void SetFocusedItem(CXTPTabManagerItem* pItem);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called when a tab navigation button is clicked.
 	// Parameters:
-	//     pButton - Button that was clicked. The button Identifier, can be one of the values listed in the
+	//     pButton - Button that was clicked. The button Identifier, can be one of the values listed
+	//     in the
 	//           Remarks section.
 	// Remarks:
 	//     Standard ids of buttons are listed below:
@@ -288,6 +287,8 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnNavigateButtonClick(CXTPTabManagerNavigateButton* pButton);
 
+	using CXTPTabManager::OnNavigateButtonClick;
+
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This virtual member is called to determine if control has focus and need
@@ -297,10 +298,8 @@ protected:
 	//-------------------------------------------------------------------------
 	virtual BOOL HeaderHasFocus() const;
 
-
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTabControl)
@@ -323,11 +322,13 @@ protected:
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 private:
 	HWND m_hwndClient;
@@ -343,17 +344,27 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPTabPaintManager* CXTPTabControl::GetPaintManager() const {
+AFX_INLINE CXTPTabPaintManager* CXTPTabControl::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE CXTPImageManager* CXTPTabControl::GetImageManager() const {
+
+AFX_INLINE CXTPImageManager* CXTPTabControl::GetImageManager() const
+{
 	return m_pImageManager;
 }
-AFX_INLINE BOOL CXTPTabControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+
+AFX_INLINE BOOL CXTPTabControl::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									   const RECT& rect, CWnd* pParentWnd, UINT nID,
+									   CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE CXTPToolTipContext* CXTPTabControl::GetToolTipContext() const {
+
+AFX_INLINE CXTPToolTipContext* CXTPTabControl::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTABCONTROL_H__)

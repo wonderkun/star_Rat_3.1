@@ -1,7 +1,6 @@
 // XTPPropertyGridItem.h interface for the CXTPPropertyGridItem class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEM_H__)
-#define __XTPPROPERTYGRIDITEM_H__
+#	define __XTPPROPERTYGRIDITEM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
-#include "Common/XTPSystemHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // class forwards.
 
@@ -41,6 +39,9 @@ class CXTPPropertyGridInplaceSlider;
 class CXTPPropertyGridInplaceSpinButton;
 class CXTPPropertyGridInplaceControls;
 class CXTPMarkupUIElement;
+class CXTPPropertyGridInplaceEdit;
+class CXTPPropertyGridInplaceList;
+class CXTPPropertyGridInplaceButton;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -58,14 +59,15 @@ class CXTPMarkupUIElement;
 //     // code snip ...
 //
 //     CRect rcText(rc);
-//     rcText.left = max(1, pItem->GetIndent()) * XTP_PGI_EXPAND_BORDER + 3;
+//     rcText.left = max(1, pItem->GetIndent()) * XTP_DPI_X(XTP_PGI_EXPAND_BORDER) + 3;
 //     rcText.right = rcCaption.right - 1;
 //     rcText.bottom -= 1;
 //     dc.DrawText(pItem->GetCaption(), rcText, DT_SINGLELINE | DT_VCENTER);
 // }
 // </code>
 //-----------------------------------------------------------------------
-const int XTP_PGI_EXPAND_BORDER = 14;
+extern _XTP_EXT_CLASS const int XTP_PGI_EXPAND_BORDER;
+const TCHAR XTP_PG_ITEMVALUE_TO_REPLACE_IN_MARKUP[] = _T("%value%");
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -78,7 +80,7 @@ const int XTP_PGI_EXPAND_BORDER = 14;
 //-----------------------------------------------------------------------
 enum XTPPropertyGridItemFlags
 {
-	xtpGridItemHasEdit         = 1, // Item has an edit control.
+	xtpGridItemHasEdit		   = 1, // Item has an edit control.
 	xtpGridItemHasExpandButton = 2, // Item has an expand button.
 	xtpGridItemHasComboButton  = 4  // Item has a combo button.
 };
@@ -90,9 +92,7 @@ enum XTPPropertyGridItemFlags
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridItems : public CXTPCmdTarget
 {
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to find an item.
@@ -103,7 +103,8 @@ public:
 	//     A pointer to a CXTPPropertyGridItem object or NULL if item was not found.
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItem* FindItem(UINT nID) const;
-	CXTPPropertyGridItem* FindItem(LPCTSTR strCaption) const; // <COMBINE CXTPPropertyGridItems::FindItem@UINT@const>
+	CXTPPropertyGridItem*
+		FindItem(LPCTSTR strCaption) const; // <COMBINE CXTPPropertyGridItems::FindItem@UINT@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -157,7 +158,7 @@ public:
 	// Parameters:
 	//     nIndex - Item's index.
 	//-----------------------------------------------------------------------
-	void RemoveAt (int nIndex);
+	void RemoveAt(int nIndex);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -169,9 +170,7 @@ public:
 	//-------------------------------------------------------------------------
 	void Sort();
 
-
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItems object.
@@ -193,7 +192,9 @@ protected:
 	//     before the operation.
 	//-----------------------------------------------------------------------
 	void AddTail(CXTPPropertyGridItem* pItem);
-	void AddTail(CXTPPropertyGridItems* pItems); //<combine CXTPPropertyGridItems::AddTail@CXTPPropertyGridItem*>
+	void AddTail(
+		CXTPPropertyGridItems* pItems); //<combine
+										// CXTPPropertyGridItems::AddTail@CXTPPropertyGridItem*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -207,12 +208,38 @@ protected:
 	void InsertAt(int nIndex, CXTPPropertyGridItem* pItem);
 
 private:
-	static int _cdecl CompareFunc(const CXTPPropertyGridItem** ppItem1, const CXTPPropertyGridItem** ppItem2);
+	static int AFX_CDECL CompareFunc(const CXTPPropertyGridItem** ppItem1,
+									 const CXTPPropertyGridItem** ppItem2);
 
 private:
 	CArray<CXTPPropertyGridItem*, CXTPPropertyGridItem*> m_arrItems;
-	//CXTPPropertyGridView* m_pGrid;
+	// CXTPPropertyGridView* m_pGrid;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItems)
+	DECLARE_ENUM_VARIANT(CXTPPropertyGridItems)
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleItem(long nIndex);
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+
+	afx_msg void OleClear();
+	afx_msg void OleRemove(long nIndex);
+
+	enum
+	{
+		dispidCount  = 1L,
+		dispidRemove = 2L,
+		dispidClear  = 3L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	friend class CXTPPropertyGridItem;
 	friend class CXTPPropertyGridView;
 	friend class CXTPPropertyGrid;
@@ -220,13 +247,12 @@ private:
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridItemConstraint is a CCmdTarget derived class. It
+//     CXTPPropertyGridItemConstraint is a CXTPCmdTarget derived class. It
 //     represents a single item constraints.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridItemConstraint : public CXTPCmdTarget
 {
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemConstraint object.
@@ -243,28 +269,36 @@ public:
 	virtual int GetIndex() const;
 
 	//-----------------------------------------------------------------------
-	// Summary: Retrieves the image of the constraint so it can be used outside of Codejock components.
-	// Returns: CXTPImageManagerIcon object containing the image of the constraint.
+	// Summary: Retrieves the image of the constraint so it can be used outside of Codejock
+	// components. Returns: CXTPImageManagerIcon object containing the image of the constraint.
 	//-----------------------------------------------------------------------
 	virtual CXTPImageManagerIcon* GetImage() const;
 
 public:
-	CString m_strConstraint;    // Caption text of constraint.  This is the
-	                            // text displayed for this constraint.
-	DWORD_PTR   m_dwData;       // The 32-bit value associated with the item.
-	int     m_nImage;           // Image index
-	BOOL m_bEnabled;            // TRUE if constraint is Enabled
+	CString m_strConstraint; // Caption text of constraint.  This is the
+							 // text displayed for this constraint.
+	DWORD_PTR m_dwData;		 // The 32-bit value associated with the item.
+	int m_nImage;			 // Image index
+	BOOL m_bEnabled;		 // TRUE if constraint is Enabled
 protected:
-	int m_nIndex;               // Index of constraint.
-	CXTPPropertyGridItem*  m_pItem; // Parent item
+	int m_nIndex;				   // Index of constraint.
+	CXTPPropertyGridItem* m_pItem; // Parent item
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemConstraint);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 	friend class CXTPPropertyGridItemConstraints;
-
 };
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridItemConstraints is a CCmdTarget derived class. It represents the item
+//     CXTPPropertyGridItemConstraints is a CXTPCmdTarget derived class. It represents the item
 //     constraints collection.
 // Remarks:
 //     Each PropertyGridItem has it's own collection of constraints.
@@ -274,12 +308,12 @@ protected:
 //     the constraints in the item's constraint collection will be displayed
 //     in the drop-down list.  The AddConstraint method is used to add
 //     constraints to the collection.
-// See Also: CXTPPropertyGridItem::GetConstraints, CXTPPropertyGridItem::SetConstraintEdit, AddConstraint
+// See Also: CXTPPropertyGridItem::GetConstraints, CXTPPropertyGridItem::SetConstraintEdit,
+// AddConstraint
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridItemConstraints : public CXTPCmdTarget
 {
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemConstraints object.
@@ -297,7 +331,6 @@ protected:
 	~CXTPPropertyGridItemConstraints();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to add a new item constraint.
@@ -309,7 +342,8 @@ public:
 	//     A pointer to the newly added constraint.
 	// See Also: CXTPPropertyGridItem::OnConstraintsChanged
 	//-----------------------------------------------------------------------
-	virtual CXTPPropertyGridItemConstraint* AddConstraint(LPCTSTR str, DWORD_PTR dwData = 0, int nImage = -1);
+	virtual CXTPPropertyGridItemConstraint* AddConstraint(LPCTSTR str, DWORD_PTR dwData = 0,
+														  int nImage = -1);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -343,7 +377,7 @@ public:
 	//     nIndex - Index of a constraint.
 	// See Also: RemoveAll
 	//-----------------------------------------------------------------------
-	void RemoveAt (int nIndex);
+	void RemoveAt(int nIndex);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -372,7 +406,8 @@ public:
 	//     is not found.
 	//-----------------------------------------------------------------------
 	int FindConstraint(LPCTSTR str) const;
-	int FindConstraint(DWORD_PTR dwData) const; // <COMBINE CXTPPropertyGridItemConstraints::FindConstraint@LPCTSTR@const>
+	int FindConstraint(DWORD_PTR dwData)
+		const; // <COMBINE CXTPPropertyGridItemConstraints::FindConstraint@LPCTSTR@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -409,16 +444,44 @@ public:
 	virtual void Sort();
 
 private:
-	static int _cdecl CompareFunc(const CXTPPropertyGridItemConstraint** ppConstraint1, const CXTPPropertyGridItemConstraint** ppConstraint2);
+	static int AFX_CDECL CompareFunc(const CXTPPropertyGridItemConstraint** ppConstraint1,
+									 const CXTPPropertyGridItemConstraint** ppConstraint2);
 
 private:
-	CArray<CXTPPropertyGridItemConstraint*, CXTPPropertyGridItemConstraint*>  m_arrConstraints;
+	CArray<CXTPPropertyGridItemConstraint*, CXTPPropertyGridItemConstraint*> m_arrConstraints;
 	int m_nCurrent;
 	CXTPPropertyGridItem* m_pItem;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+public:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemConstraints)
+
+	afx_msg long OleGetItemCount();
+	afx_msg LPDISPATCH OleItem(long nIndex);
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	afx_msg void OleClear();
+	afx_msg void OleRemove(long nIndex);
+	afx_msg void OleAdd(LPCTSTR strItem, const VARIANT* Data);
+
+	DECLARE_ENUM_VARIANT(CXTPPropertyGridItemConstraints)
+
+	enum
+	{
+		dispidCount  = 1L,
+		dispidRemove = 2L,
+		dispidAdd	= 3L,
+		dispidClear  = 4L,
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPPropertyGridItem;
-
 };
 
 //===========================================================================
@@ -426,10 +489,11 @@ private:
 //     CXTPPropertyGridItem is the base class representing an item of the
 //     Property Grid Control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridItem : public CXTPCmdTarget, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPPropertyGridItem
+	: public CXTPCmdTarget
+	, public CXTPAccessible
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItem object
@@ -466,7 +530,10 @@ public:
 	// See Also: BindToString
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItem(LPCTSTR lpszCaption, LPCTSTR strValue = NULL, CString* pBindString = NULL);
-	CXTPPropertyGridItem(UINT nID, LPCTSTR strValue = NULL, CString* pBindString = NULL);  // <COMBINE CXTPPropertyGridItem::CXTPPropertyGridItem@LPCTSTR@LPCTSTR@CString*>
+	CXTPPropertyGridItem(
+		UINT nID, LPCTSTR strValue = NULL,
+		CString* pBindString =
+			NULL); // <COMBINE CXTPPropertyGridItem::CXTPPropertyGridItem@LPCTSTR@LPCTSTR@CString*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -476,7 +543,6 @@ public:
 	virtual ~CXTPPropertyGridItem();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to set the caption of the item.
@@ -511,6 +577,15 @@ public:
 	// See Also: SetPrompt
 	//-----------------------------------------------------------------------
 	void SetDescription(LPCTSTR lpszDescription);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Associates markup text with the item.
+	// Parameters:
+	//     lpstrMarkupTemplate - The markup template to display when markup is on. Use
+	//     XTP_PG_ITEMVALUE_TO_REPLACE_IN_MARKUP string for item's plain text value substitution
+	//-----------------------------------------------------------------------
+	void SetMarkupTemplate(LPCTSTR lpstrMarkupTemplate);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -578,6 +653,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this method to get the markup text of the item.
+	// Returns:
+	//     A CString object containing the markup text of the item.
+	//-----------------------------------------------------------------------
+	virtual CString GetMarkupTemplate() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this method to get the read-only state of the item.
 	// Returns:
 	//     TRUE if the item is read only, otherwise returns FALSE.
@@ -616,6 +699,14 @@ public:
 	//     A CString object containing the value of the item.
 	//-----------------------------------------------------------------------
 	CString GetValue() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get the default value of the item.
+	// Returns:
+	//     A CString object containing the default value of the item.
+	//-----------------------------------------------------------------------
+	CString GetDefaultValue() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -825,6 +916,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     This method is called when an item's markup text is changed. Override this
+	//     function if needed.
+	//-----------------------------------------------------------------------
+	virtual void OnMarkupChanged();
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to return the parent window
 	// Returns:
 	//     The parent window.
@@ -879,8 +977,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called when an constraint in inplace list is drawn. Override this function if
-	//     needed.
+	//     This method is called when an constraint in inplace list is drawn. Override this function
+	//     if needed.
 	// Parameters:
 	//     pDC - Reference to the device context to be used for rendering an image
 	//     of the item.
@@ -888,12 +986,13 @@ public:
 	//     rc - Bounding rectangle of the constraint.
 	//     bSelected - TRUE if item is selected.
 	//-----------------------------------------------------------------------
-	virtual void OnDrawItemConstraint(CDC* pDC, CXTPPropertyGridItemConstraint* pConstraint, CRect rc, BOOL bSelected);
+	virtual void OnDrawItemConstraint(CDC* pDC, CXTPPropertyGridItemConstraint* pConstraint,
+									  CRect rc, BOOL bSelected);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to get size of constraint in inplace list. Override this function if
-	//     needed.
+	//     This method is called to get size of constraint in inplace list. Override this function
+	//     if needed.
 	// Parameters:
 	//     pDC - Reference to the device context to be used for rendering an image
 	//     of the item.
@@ -1166,7 +1265,6 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridInplaceSpinButton* AddSpinButton();
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get metrics of value part
@@ -1324,7 +1422,16 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to get edit styles of the item, override it if you need custom style
+	//     Call this method to retrieve Markup UIElement of item's value text
+	// Returns:
+	//     Pointer to CXTPMarkupUIElement that renders item's value in the grid
+	//-----------------------------------------------------------------------
+	CXTPMarkupUIElement* GetMarkupValue() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to get edit styles of the item, override it if you need custom
+	//     style
 	// Remarks:
 	//     By default it returns WS_CHILD | ES_AUTOHSCROLL
 	// Returns:
@@ -1332,9 +1439,13 @@ public:
 	//-----------------------------------------------------------------------
 	virtual DWORD GetEditStyle() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Redraws the item.
+	//-------------------------------------------------------------------------
+	void RedrawItem();
+
 protected:
-
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when visibility state of the item was changed.
@@ -1421,7 +1532,7 @@ protected:
 	// Parameters:
 	//     nChar - Specifies the virtual-key code of the given key.
 	//-----------------------------------------------------------------------
-	virtual BOOL OnKeyDown (UINT nChar);
+	virtual BOOL OnKeyDown(UINT nChar);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1446,7 +1557,6 @@ protected:
 	//     A reference to an in-place list control.
 	//-----------------------------------------------------------------------
 	virtual CXTPPropertyGridInplaceList& GetInplaceList();
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1497,11 +1607,15 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnInpaceControlFocus(BOOL bForward);
 
-	//-------------------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// Summary:
-	//     Redraws the item.
-	//-------------------------------------------------------------------------
-	void RedrawItem();
+	//     This method is called by PropertyGrid to set the text of in-place editor
+	//     Sometimes it's useful to override its default behavior
+	//-----------------------------------------------------------------------
+	virtual CString GetInPlacedEditValue()
+	{
+		return m_strValue;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1526,20 +1640,24 @@ protected:
 	BOOL PtInValueRect(CPoint point);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility Support
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleDescription(VARIANT varChild, BSTR* pszDescription);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
 	virtual HRESULT AccessibleSelect(long flagsSelect, VARIANT varChild);
 	virtual HRESULT GetAccessibleValue(VARIANT varChild, BSTR* pszValue);
 	DECLARE_INTERFACE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	static int AFX_CDECL NextNumber(LPCTSTR& str);
 
 private:
 	void Init();
@@ -1550,54 +1668,60 @@ private:
 	void RefreshHeight();
 
 protected:
-	BOOL                    m_bConstraintEdit;  // TRUE to constraint edit.
+	BOOL m_bConstraintEdit; // TRUE to constraint edit.
 
-	int                     m_nIndex;           // Index of the item.
-	int                     m_nIndent;          // Indent of the item.
-	UINT                    m_nID;              // Identifier of the item.
-	UINT                    m_nFlags;           // Item's flags.
-	BOOL                    m_bReadOnly;        // TRUE to disable item's edition.
-	BOOL                    m_bVisible;         // Visibility of the item.
-	BOOL                    m_bCategory;        // TRUE if the item is category.
-	BOOL                    m_bExpandable;      // TRUE if item can be expanded.
-	BOOL                    m_bExpanded;        // TRUE if item is expanded.
-	CString                 m_strValue;         // Value of the item.
-	CString                 m_strDefaultValue;  // Default value of the item.
-	CString                 m_strCaption;       // Caption of the item.
-	CString                 m_strDescription;   // Description of the item.
-	CString                 m_strTooltip;       // Tooltip text
-	CXTPPropertyGridItem*   m_pParent;          // Parent item.
-	CXTPPropertyGridView*   m_pGrid;            // Parent grid class.
-	CXTPPropertyGridItems*  m_pChilds;          // Child items.
-	CXTPPropertyGridItemConstraints*    m_pConstraints;     // Item's constraints.
-	BOOL                    m_bAutoComplete;    // TRUE to enable auto complete for item
-
+	int m_nIndex;									 // Index of the item.
+	int m_nIndent;									 // Indent of the item.
+	UINT m_nID;										 // Identifier of the item.
+	UINT m_nFlags;									 // Item's flags.
+	BOOL m_bReadOnly;								 // TRUE to disable item's edition.
+	BOOL m_bVisible;								 // Visibility of the item.
+	BOOL m_bCategory;								 // TRUE if the item is category.
+	BOOL m_bExpandable;								 // TRUE if item can be expanded.
+	BOOL m_bExpanded;								 // TRUE if item is expanded.
+	CString m_strValue;								 // Value of the item.
+	CString m_strDefaultValue;						 // Default value of the item.
+	CString m_strCaption;							 // Caption of the item.
+	CString m_strDescription;						 // Description of the item.
+	CString m_strTooltip;							 // Tooltip text
+	CXTPPropertyGridItem* m_pParent;				 // Parent item.
+	CXTPPropertyGridView* m_pGrid;					 // Parent grid class.
+	CXTPPropertyGridItems* m_pChilds;				 // Child items.
+	CXTPPropertyGridItemConstraints* m_pConstraints; // Item's constraints.
+	BOOL m_bAutoComplete;							 // TRUE to enable auto complete for item
 
 	mutable CXTPPropertyGridItemMetrics* m_pValueMetrics;   // Value part metrics
 	mutable CXTPPropertyGridItemMetrics* m_pCaptionMetrics; // Caption part metrics
 
-	CXTPPropertyGridInplaceButtons* m_pInplaceButtons;          // Inplace buttons array
-	CXTPPropertyGridInplaceControls* m_pInplaceControls;        // Inplace controls array
+	CXTPPropertyGridInplaceButtons* m_pInplaceButtons;   // Inplace buttons array
+	CXTPPropertyGridInplaceControls* m_pInplaceControls; // Inplace controls array
 
-	int m_nDropDownItemCount;   // Maximum drop down items
+	int m_nDropDownItemCount; // Maximum drop down items
 
-	CString*                m_pBindString;      // Binded string.
-	CString m_strFormat;                        // Format of the double value.
+	CString* m_pBindString; // Binded string.
+	CString m_strFormat;	// Format of the double value.
 
-	CString m_strMask;                          // String to use as edit mask.
-	CString m_strLiteral;                       // String to use as literal.  This is the same as the edit mask, but all mask characters are replaced with m_chPrompt.
-	TCHAR m_chPrompt;                           // Character used as a space holder for a character.  This is used in m_strLiteral.
-	BOOL m_bUseMask;                            // TRUE to use and edit mask to display item data.
+	CString m_strMask;	// String to use as edit mask.
+	CString m_strLiteral; // String to use as literal.  This is the same as the edit mask, but all
+						  // mask characters are replaced with m_chPrompt.
+	CString m_strMarkupTemplate; // String that represents items display when markup is on. Use
+								 // XTP_PG_ITEMVALUE_TO_REPLACE_IN_MARKUP for item text value
+								 // substitution
+	TCHAR m_chPrompt; // Character used as a space holder for a character.  This is used in
+					  // m_strLiteral.
+	BOOL m_bUseMask;  // TRUE to use and edit mask to display item data.
 
-	BOOL m_bPassword;                           // TRUE to use a password mask.  If TRUE, then each character will be replaced with an asterisk (*).
-	DWORD_PTR m_dwData;                         // The 32-bit value associated with the item
-	BOOL m_bHidden;                             // TRUE if item is hidden
+	BOOL m_bPassword; // TRUE to use a password mask.  If TRUE, then each character will be replaced
+					  // with an asterisk (*).
+	DWORD_PTR m_dwData; // The 32-bit value associated with the item
+	BOOL m_bHidden;		// TRUE if item is hidden
 
-	int m_nHeight;                              // Item's height. -1 to use default
-	int m_nLinesCount;                          // Count of lines of Multi line item.
-	DWORD m_dwEditStyle;                        // Edit style.
-	CXTPMarkupUIElement* m_pMarkupCaption;      // Markup UIElement for Item caption
-	CXTPMarkupUIElement* m_pMarkupDescription;  // Markup UIElement for Description
+	int m_nHeight;							   // Item's height. -1 to use default
+	int m_nLinesCount;						   // Count of lines of Multi line item.
+	DWORD m_dwEditStyle;					   // Edit style.
+	CXTPMarkupUIElement* m_pMarkupCaption;	 // Markup UIElement for Item caption
+	CXTPMarkupUIElement* m_pMarkupDescription; // Markup UIElement for Description
+	CXTPMarkupUIElement* m_pMarkupValue;	   // Markup UIElement for Item's value
 
 	friend class CXTPPropertyGridItems;
 	friend class CXTPPropertyGridView;
@@ -1606,6 +1730,80 @@ protected:
 
 	DECLARE_DYNAMIC(CXTPPropertyGridItem)
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+protected:
+	DISPID m_dispidBinded;
+	COleDispatchDriver m_dispDriverBinded;
+	COleVariant m_oleTag;
+
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItem)
+
+	afx_msg LPDISPATCH OleInsertChildItem(int nIndex, long nType, LPCTSTR strTitle,
+										  const VARIANT* varValue);
+	afx_msg LPDISPATCH OleAddChildItem(long nType, LPCTSTR strTitle, const VARIANT* varValue);
+	afx_msg LPDISPATCH OleAddChildItemBinded(long nType, LPDISPATCH lpHandler,
+											 LPCTSTR lpzsProperty);
+	afx_msg LPDISPATCH OleInsertChildItemBinded(long nIndex, long nType, LPDISPATCH lpHandler,
+												LPCTSTR lpzsProperty);
+	afx_msg BOOL OleGetExpanded();
+	afx_msg void OleSetExpanded(BOOL bExpanded);
+	afx_msg BOOL OleGetSelected();
+	afx_msg BSTR OleGetDescription();
+	afx_msg void OleSetSelected(BOOL bSelected);
+	afx_msg LPDISPATCH OleGetParent();
+	afx_msg LPDISPATCH OleGetChilds();
+	afx_msg LPDISPATCH OleGetConstraints();
+	afx_msg long OleGetType();
+	afx_msg BSTR OleGetMaskedText();
+
+	afx_msg virtual const VARIANT OleGetValue();
+	afx_msg virtual void OleSetValue(const VARIANT* varValue);
+	afx_msg void OleSetMask(LPCTSTR strMask, LPCTSTR strLiteral, const VARIANT* pPrompt);
+	afx_msg LPDISPATCH OleAddInplaceButton(UINT Id);
+	afx_msg LPDISPATCH OleAddSliderControl();
+	afx_msg LPDISPATCH OleAddSpinButton();
+	afx_msg LPDISPATCH OleGetButtons();
+	afx_msg int OleGetHeight();
+	afx_msg int OleGetMultiLinesCount();
+	afx_msg void OleGetRect(long* pLeft, long* pTop, long* pRight, long* pBottom);
+	afx_msg void OleStartEdit();
+	virtual void BindDispatch();
+	afx_msg LPDISPATCH OleGetValueMetrics();
+	afx_msg LPDISPATCH OleGetCaptionMetrics();
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleSetCaption(LPCTSTR lpszCaption);
+
+	afx_msg BSTR OleGetMarkupTemplate();
+	afx_msg void OleSetMarkupTemplate(LPCTSTR lpszMarkupTemplate);
+
+	long m_nType;
+	enum
+	{
+		dispidValue				 = 0L,
+		dispidExpanded			 = 1L,
+		dispidReadOnly			 = 2L,
+		dispidSelected			 = 3L,
+		dispidCaption			 = 4L,
+		dispidDescription		 = 5L,
+		dispidTag				 = 6L,
+		dispidFlags				 = 7L,
+		dispidConstraintEdit	 = 8L,
+		dispidFormat			 = 9L,
+		dispidConstraints		 = 97L,
+		dispidChilds			 = 98L,
+		dispidParent			 = 99L,
+		dispidAddChildItem		 = 100L,
+		dispidType				 = 101L,
+		dispidAddChildItemBinded = 102,
+		dispidMarkupTemplate	 = 121
+	};
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPPropertyGridItemConstraints;
 	friend class CXTPPropertyGrid;
@@ -1613,8 +1811,8 @@ protected:
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridItemCategory is the CXTPPropertyGridItem derived class. Use it to add subcategory to
-//     property grid control.
+//     CXTPPropertyGridItemCategory is the CXTPPropertyGridItem derived class. Use it to add
+//     subcategory to property grid control.
 // Note:    Parent item for category must be also the category.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPPropertyGridItemCategory : public CXTPPropertyGridItem
@@ -1633,26 +1831,33 @@ public:
 	//          with the same id in such form "Caption\\nDescription".
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemCategory(LPCTSTR strCaption);
-	CXTPPropertyGridItemCategory(UINT nID); // <COMBINE CXTPPropertyGridItemCategory::CXTPPropertyGridItemCategory@LPCTSTR>
+	CXTPPropertyGridItemCategory(
+		UINT nID); // <COMBINE CXTPPropertyGridItemCategory::CXTPPropertyGridItemCategory@LPCTSTR>
 };
 
 //////////////////////////////////////////////////////////////////////
-AFX_INLINE long CXTPPropertyGridItems::GetCount() const {
+AFX_INLINE long CXTPPropertyGridItems::GetCount() const
+{
 	return (long)m_arrItems.GetSize();
 }
-AFX_INLINE BOOL CXTPPropertyGridItems::IsEmpty() const {
+AFX_INLINE BOOL CXTPPropertyGridItems::IsEmpty() const
+{
 	return GetCount() == 0;
 }
-AFX_INLINE void CXTPPropertyGridItems::AddTail(CXTPPropertyGridItem* pItem) {
+AFX_INLINE void CXTPPropertyGridItems::AddTail(CXTPPropertyGridItem* pItem)
+{
 	m_arrItems.Add(pItem);
 }
-AFX_INLINE void CXTPPropertyGridItems::InsertAt(int nIndex, CXTPPropertyGridItem* pItem) {
+AFX_INLINE void CXTPPropertyGridItems::InsertAt(int nIndex, CXTPPropertyGridItem* pItem)
+{
 	m_arrItems.InsertAt(nIndex, pItem);
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::HasChilds() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::HasChilds() const
+{
 	return !m_pChilds->IsEmpty();
 }
-AFX_INLINE void CXTPPropertyGridItem::SetCaption(LPCTSTR lpszCaption) {
+AFX_INLINE void CXTPPropertyGridItem::SetCaption(LPCTSTR lpszCaption)
+{
 	CString strCaption(lpszCaption);
 	if (m_strCaption != strCaption)
 	{
@@ -1660,137 +1865,189 @@ AFX_INLINE void CXTPPropertyGridItem::SetCaption(LPCTSTR lpszCaption) {
 		OnCaptionChanged();
 	}
 }
-AFX_INLINE CString CXTPPropertyGridItem::GetCaption() const {
+AFX_INLINE CString CXTPPropertyGridItem::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE CString CXTPPropertyGridItem::GetDescription() const {
+AFX_INLINE CString CXTPPropertyGridItem::GetDescription() const
+{
 	return m_strDescription;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::GetReadOnly() const{
+AFX_INLINE CString CXTPPropertyGridItem::GetMarkupTemplate() const
+{
+	return m_strMarkupTemplate;
+}
+AFX_INLINE BOOL CXTPPropertyGridItem::GetReadOnly() const
+{
 	return m_bReadOnly;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetID(UINT nID) {
+AFX_INLINE void CXTPPropertyGridItem::SetID(UINT nID)
+{
 	m_nID = nID;
 }
-AFX_INLINE UINT CXTPPropertyGridItem::GetID() const {
+AFX_INLINE UINT CXTPPropertyGridItem::GetID() const
+{
 	return m_nID;
 }
-AFX_INLINE CString CXTPPropertyGridItem::GetValue() const {
+AFX_INLINE CString CXTPPropertyGridItem::GetValue() const
+{
 	return m_strValue;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::IsCategory() const {
+AFX_INLINE CString CXTPPropertyGridItem::GetDefaultValue() const
+{
+	return m_strDefaultValue;
+}
+AFX_INLINE BOOL CXTPPropertyGridItem::IsCategory() const
+{
 	return m_bCategory;
 }
-AFX_INLINE CXTPPropertyGridView* CXTPPropertyGridItem::GetGrid() const {
+AFX_INLINE CXTPPropertyGridView* CXTPPropertyGridItem::GetGrid() const
+{
 	return m_pGrid;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::OnDrawItemValue(CDC&, CRect) {
+AFX_INLINE BOOL CXTPPropertyGridItem::OnDrawItemValue(CDC&, CRect)
+{
 	return FALSE;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::IsVisible() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::IsVisible() const
+{
 	return m_bVisible;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::IsExpanded() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::IsExpanded() const
+{
 	return m_bExpanded;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetExpandable(BOOL bExpandable) {
+AFX_INLINE void CXTPPropertyGridItem::SetExpandable(BOOL bExpandable)
+{
 	m_bExpandable = bExpandable;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::IsExpandable() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::IsExpandable() const
+{
 	return m_bExpandable;
 }
-AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridItem::GetParentItem() const {
+AFX_INLINE CXTPPropertyGridItem* CXTPPropertyGridItem::GetParentItem() const
+{
 	return m_pParent;
 }
-AFX_INLINE CXTPPropertyGridItems* CXTPPropertyGridItem::GetChilds() const {
+AFX_INLINE CXTPPropertyGridItems* CXTPPropertyGridItem::GetChilds() const
+{
 	return m_pChilds;
 }
-AFX_INLINE int CXTPPropertyGridItem::GetIndent() const {
+AFX_INLINE int CXTPPropertyGridItem::GetIndent() const
+{
 	return m_nIndent;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetConstraintEdit(BOOL bConstraintEdit) {
+AFX_INLINE void CXTPPropertyGridItem::SetConstraintEdit(BOOL bConstraintEdit)
+{
 	m_bConstraintEdit = bConstraintEdit;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::GetConstraintEdit() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::GetConstraintEdit() const
+{
 	return m_bConstraintEdit;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetPasswordMask(TCHAR chMask) {
+AFX_INLINE void CXTPPropertyGridItem::SetPasswordMask(TCHAR chMask)
+{
 	m_bPassword = TRUE;
-	m_chPrompt = chMask;
+	m_chPrompt  = chMask;
 }
-AFX_INLINE void CXTPPropertyGridItem::OnRButtonDown(UINT, CPoint) {
-
+AFX_INLINE void CXTPPropertyGridItem::OnRButtonDown(UINT, CPoint)
+{
 }
-AFX_INLINE void CXTPPropertyGridItem::OnConstraintsChanged() {
-
+AFX_INLINE void CXTPPropertyGridItem::OnConstraintsChanged()
+{
 }
-AFX_INLINE void CXTPPropertyGridItem::SetItemData(DWORD_PTR dwData) {
+AFX_INLINE void CXTPPropertyGridItem::SetItemData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE DWORD_PTR CXTPPropertyGridItem::GetItemData() const {
+AFX_INLINE DWORD_PTR CXTPPropertyGridItem::GetItemData() const
+{
 	return m_dwData;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetVisible(BOOL bVisible) {
+AFX_INLINE void CXTPPropertyGridItem::SetVisible(BOOL bVisible)
+{
 	m_bVisible = bVisible;
 }
-AFX_INLINE void CXTPPropertyGridItem::OnIndexChanged() {
-
+AFX_INLINE void CXTPPropertyGridItem::OnIndexChanged()
+{
 }
-AFX_INLINE CXTPPropertyGridItemConstraints* CXTPPropertyGridItem::GetConstraints() const {
+AFX_INLINE CXTPPropertyGridItemConstraints* CXTPPropertyGridItem::GetConstraints() const
+{
 	return m_pConstraints;
 }
-AFX_INLINE int CXTPPropertyGridItemConstraints::GetCount() const {
+AFX_INLINE int CXTPPropertyGridItemConstraints::GetCount() const
+{
 	return (int)m_arrConstraints.GetSize();
 }
-AFX_INLINE BOOL CXTPPropertyGridItemConstraints::IsEmpty() const {
+AFX_INLINE BOOL CXTPPropertyGridItemConstraints::IsEmpty() const
+{
 	return GetCount() == 0;
 }
-AFX_INLINE void CXTPPropertyGridItemConstraints::SetCurrent(int nIndex){
+AFX_INLINE void CXTPPropertyGridItemConstraints::SetCurrent(int nIndex)
+{
 	m_nCurrent = nIndex;
 }
-AFX_INLINE int CXTPPropertyGridItemConstraints::GetCurrent() const {
+AFX_INLINE int CXTPPropertyGridItemConstraints::GetCurrent() const
+{
 	return m_nCurrent;
 }
-AFX_INLINE int CXTPPropertyGridItemConstraint::GetIndex() const {
+AFX_INLINE int CXTPPropertyGridItemConstraint::GetIndex() const
+{
 	return m_nIndex;
 }
 
-AFX_INLINE int CXTPPropertyGridItem::GetHeight() const {
+AFX_INLINE int CXTPPropertyGridItem::GetHeight() const
+{
 	return m_nHeight;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::IsMultiLine() const {
+AFX_INLINE BOOL CXTPPropertyGridItem::IsMultiLine() const
+{
 	return m_nLinesCount > 1;
 }
-AFX_INLINE int CXTPPropertyGridItem::GetMultiLinesCount() const {
+AFX_INLINE int CXTPPropertyGridItem::GetMultiLinesCount() const
+{
 	return m_nLinesCount;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetEditStyle(DWORD dwEditStyle) {
+AFX_INLINE void CXTPPropertyGridItem::SetEditStyle(DWORD dwEditStyle)
+{
 	m_dwEditStyle = dwEditStyle;
 }
-AFX_INLINE BOOL CXTPPropertyGridItem::OnKeyDown (UINT /*nChar*/) {
+AFX_INLINE BOOL CXTPPropertyGridItem::OnKeyDown(UINT /*nChar*/)
+{
 	return FALSE;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetDropDownItemCount(int nDropDownItemCount) {
+AFX_INLINE void CXTPPropertyGridItem::SetDropDownItemCount(int nDropDownItemCount)
+{
 	m_nDropDownItemCount = nDropDownItemCount;
 }
-AFX_INLINE int CXTPPropertyGridItem::GetDropDownItemCount() const {
+AFX_INLINE int CXTPPropertyGridItem::GetDropDownItemCount() const
+{
 	return m_nDropDownItemCount;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetAutoComplete(BOOL bAutoComplete) {
+AFX_INLINE void CXTPPropertyGridItem::SetAutoComplete(BOOL bAutoComplete)
+{
 	m_bAutoComplete = bAutoComplete;
 }
-AFX_INLINE void CXTPPropertyGridItem::SetTooltip(LPCTSTR lpstrTooltip) {
+AFX_INLINE void CXTPPropertyGridItem::SetTooltip(LPCTSTR lpstrTooltip)
+{
 	m_strTooltip = lpstrTooltip;
 }
-AFX_INLINE CString CXTPPropertyGridItem::GetTooltip() const {
+AFX_INLINE CString CXTPPropertyGridItem::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPPropertyGridItem::GetMarkupCaption() const {
+AFX_INLINE CXTPMarkupUIElement* CXTPPropertyGridItem::GetMarkupCaption() const
+{
 	return m_pMarkupCaption;
 }
-AFX_INLINE CXTPMarkupUIElement* CXTPPropertyGridItem::GetMarkupDescription() const {
+AFX_INLINE CXTPMarkupUIElement* CXTPPropertyGridItem::GetMarkupDescription() const
+{
 	return m_pMarkupDescription;
 }
+AFX_INLINE CXTPMarkupUIElement* CXTPPropertyGridItem::GetMarkupValue() const
+{
+	return m_pMarkupValue;
+}
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDITEM_H__)

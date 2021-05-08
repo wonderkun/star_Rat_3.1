@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU))
 #ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standard Colors"
+	XTP_IDS_RECENT_COLORS    "Recent Colors"
+	XTP_IDS_THEME_COLORS     "Theme Colors"
+	XTP_IDS_TAGCLOUD_TIP     "Tag: %s, Score: %d"
     XTP_IDS_TIPTEXT          "Tip text"
     XTP_IDS_DIDYOUKNOW       "Did you know..."
     XTP_IDS_FILE_ABSENT      "The specified file does not exist."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Hide &Details"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Background 1"
+    XTP_IDS_BACKGROUND2        "Background 2"
+    XTP_IDS_TEXT1              "Text 1"
+    XTP_IDS_TEXT2              "Text 2"
+    XTP_IDS_ACCENT1            "Accent 1"
+    XTP_IDS_ACCENT2            "Accent 2"
+    XTP_IDS_ACCENT3            "Accent 3"
+    XTP_IDS_ACCENT4            "Accent 4"
+    XTP_IDS_ACCENT5            "Accent 5"
+    XTP_IDS_ACCENT6            "Accent 6"
+    XTP_IDS_LIGHTER            "Lighter"
+    XTP_IDS_DARKER             "Darker"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU))

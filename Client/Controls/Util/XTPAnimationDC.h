@@ -1,7 +1,6 @@
 // XTPAnimationDC.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPANIMATIONDC_H__)
-#define __XTPANIMATIONDC_H__
+#	define __XTPANIMATIONDC_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ---------------------------------------------------------------
 // Summary:
@@ -41,12 +42,12 @@
 // -------------------------------------------------------------------------------
 enum XTPAnimationDCType
 {
-	xtpAniDefault,  // Uses Windows default animation settings.
-	xtpAniRandom,   // Animates a window with a random animation type.
-	xtpAniUnfold,   // Animates a window to unfold top to bottom.
-	xtpAniSlide,    // Animates a window to slide in from left.
-	xtpAniFade,     // Animates a window with a fade-in effect.
-	xtpAniNone      // No animation.
+	xtpAniDefault, // Uses Windows default animation settings.
+	xtpAniRandom,  // Animates a window with a random animation type.
+	xtpAniUnfold,  // Animates a window to unfold top to bottom.
+	xtpAniSlide,   // Animates a window to slide in from left.
+	xtpAniFade,	// Animates a window with a fade-in effect.
+	xtpAniNone	 // No animation.
 };
 
 // -------------------------------------------------------------------------------------
@@ -65,7 +66,7 @@ enum XTPAnimationDCType
 // See Also:
 //     LPFNANIMATION, XTPAnimationDCType, Animate, SetCustomAnimation
 // -------------------------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPAnimationDC : public CXTPBufferDC
+class _XTP_EXT_CLASS CXTPAnimationDC : public CDC
 {
 public:
 	// -------------------------------------------------------------------
@@ -85,10 +86,10 @@ public:
 	// See Also:
 	//     CXTPAnimationDC::SetCustomAnimation, XTPAnimationDCType
 	// -------------------------------------------------------------------
-	typedef void (AFX_CDECL* LPFNANIMATION)(CRect rc, CDC* pDestDC, CDC* pSrcDC, int nType, int nSteps, int nAnimationTime);
+	typedef void(AFX_CDECL* LPFNANIMATION)(CRect rc, CDC* pDestDC, CDC* pSrcDC, int nType,
+										   int nSteps, int nAnimationTime);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBufferDC object used to create a memory
@@ -97,11 +98,13 @@ public:
 	//     hDestDC - Handle to the destination device context the memory
 	//               device is BitBlt to.
 	//     rcPaint - Size of the area to paint.
-	//     clrBack - Represents background color for fill, can be COLORREF or gradient values using CXTPPaintManagerColorGradient.
-	//     bHorz   - Used when drawing gradient background, TRUE to draw gradient from left to right, otherwise drawn top to bottom.
+	//     clrBack - Represents background color for fill, can be COLORREF or gradient values using
+	//     CXTPPaintManagerColorGradient. bHorz   - Used when drawing gradient background, TRUE to
+	//     draw gradient from left to right, otherwise drawn top to bottom.
 	//-----------------------------------------------------------------------
 	CXTPAnimationDC(HDC hDestDC, const CRect& rcPaint);
-	CXTPAnimationDC(HDC hDestDC, const CRect& rcPaint, const CXTPPaintManagerColorGradient& clrBack, const BOOL bHorz = FALSE);
+	CXTPAnimationDC(HDC hDestDC, const CRect& rcPaint, const CXTPPaintManagerColorGradient& clrBack,
+					const BOOL bHorz = FALSE);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -173,7 +176,8 @@ public:
 	// See Also:
 	//     LPFNANIMATION, XTPAnimationDCType, Animate, SetCustomAnimation
 	// ------------------------------------------------------------------------------
-	static void AFX_CDECL DefaultAnimation(CRect rc, CDC* pDestDC, CDC* pSrcDC, int nType, int nSteps, int nAnimationTime);
+	static void AFX_CDECL DefaultAnimation(CRect rc, CDC* pDestDC, CDC* pSrcDC, int nType,
+										   int nSteps, int nAnimationTime);
 
 	// -----------------------------------------------------------------------
 	// Summary:
@@ -211,10 +215,9 @@ public:
 	// See Also:
 	//     LPFNANIMATION, XTPAnimationDCType, Animate, DefaultAnimation
 	// -----------------------------------------------------------------------
-	static void SetCustomAnimation(LPFNANIMATION pCustom);
+	static void AFX_CDECL SetCustomAnimation(LPFNANIMATION pCustom);
 
 private:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Private LPFNANIMATION pointer that points to the address of a
@@ -226,7 +229,14 @@ private:
 	// Summary:
 	//     Private method is used internally for alpha-blending.
 	// ---------------------------------------------------------
-	static void AlphaBlendU(PBYTE, PBYTE, int, int, PBYTE, BYTE);
+	static void AFX_CDECL AlphaBlendU(PBYTE, PBYTE, int, int, PBYTE, BYTE);
+
+protected:
+	HDC m_hDestDC;		  // Handle to the destination device context.
+	CBitmap m_bitmap;	 // Bitmap in memory device context
+	CRect m_rect;		  // Size of the area to paint.
+	HGDIOBJ m_hOldBitmap; // Handle to the previously selected bitmap.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPANIMATIONDC_H__)

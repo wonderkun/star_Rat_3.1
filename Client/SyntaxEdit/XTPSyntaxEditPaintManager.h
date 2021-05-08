@@ -1,7 +1,6 @@
 // XTPSyntaxEditPaintManager.h interface for the CXTPSyntaxEditPaintManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITPAINTMANAGER_H__)
-#define __XTPSYNTAXEDITPAINTMANAGER_H__
+#	define __XTPSYNTAXEDITPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditCtrl;
 
 //{{AFX_CODEJOCK_PRIVATE
-#define XTP_DECLARE_COLOR_PROP(propName) \
-	OLE_COLOR OleGet##propName();\
-	void OleSet##propName(OLE_COLOR oleColor);
+#	define XTP_DECLARE_COLOR_PROP(propName)                                                       \
+		OLE_COLOR OleGet##propName();                                                              \
+		void OleSet##propName(OLE_COLOR oleColor);
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -45,7 +46,6 @@ class _XTP_EXT_CLASS CXTPSyntaxEditPaintManager : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPSyntaxEditPaintManager)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -95,7 +95,7 @@ public:
 	//      nTextRow    : [in] The text row number for which to draw.
 	//      pEditCtrl   : [in] A pointer to edit control.
 	//-----------------------------------------------------------------------
-	virtual void DrawLineNumber(CDC *pDC, const CRect& rcRect, int nTextRow,
+	virtual void DrawLineNumber(CDC* pDC, const CRect& rcRect, int nTextRow,
 								CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
@@ -109,8 +109,8 @@ public:
 	//      nTextRow    : [in] The text row number for which to draw.
 	//      pEditCtrl   : [in] A pointer to edit control.
 	//-----------------------------------------------------------------------
-	virtual void DrawLineNode(CDC *pDC, const CRect& rcNode, const CRect& rcNodeFull,
-							  DWORD dwType, int nTextRow, CXTPSyntaxEditCtrl* pEditCtrl);
+	virtual void DrawLineNode(CDC* pDC, const CRect& rcNode, const CRect& rcNodeFull, DWORD dwType,
+							  int nTextRow, CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -122,7 +122,7 @@ public:
 	//      nTextRow    : [in] The text row number for which to draw.
 	//      pEditCtrl   : [in] A pointer to edit control.
 	//-----------------------------------------------------------------------
-	virtual void DrawLineNodeBackground(CDC *pDC, const CRect& rcNodeFull, DWORD dwType,
+	virtual void DrawLineNodeBackground(CDC* pDC, const CRect& rcNodeFull, DWORD dwType,
 										int nTextRow, CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
@@ -132,7 +132,7 @@ public:
 	//      pEditCtrl   : [in] A pointer to edit control.
 	//      pDC         : [in] Pointer to device context.
 	//-----------------------------------------------------------------------
-	virtual void DrawCollapsedTextMarks(CXTPSyntaxEditCtrl* pEditCtrl, CDC *pDC);
+	virtual void DrawCollapsedTextMarks(CXTPSyntaxEditCtrl* pEditCtrl, CDC* pDC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -142,9 +142,9 @@ public:
 	//      rcRect      : [in] A rectangle to draw.
 	//      nTextRow    : [in] The text row number for which to draw.
 	//      pEditCtrl   : [in] A pointer to edit control.
-		//-----------------------------------------------------------------------
-	virtual void DrawLineMarks(CDC *pDC, const CRect& rcRect, int nTextRow,
-								CXTPSyntaxEditCtrl* pEditCtrl);
+	//-----------------------------------------------------------------------
+	virtual void DrawLineMarks(CDC* pDC, const CRect& rcRect, int nTextRow,
+							   CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -158,7 +158,7 @@ public:
 	// Returns:
 	//      The height to draw row text.
 	//-----------------------------------------------------------------------
-	virtual int DrawLineTextEx(CDC *pDC, const CRect& rcTextLine, int nTextRow, int nLine,
+	virtual int DrawLineTextEx(CDC* pDC, const CRect& rcTextLine, int nTextRow, int nLine,
 							   CXTPSyntaxEditCtrl* pEditCtrl);
 
 	//-----------------------------------------------------------------------
@@ -175,8 +175,8 @@ public:
 	// Returns:
 	//      The height to print row text.
 	//-----------------------------------------------------------------------
-	virtual int PrintLineTextEx(CDC *pDC, const CRect& rcTextLine, int nTextRow,
-								int nLine, CXTPSyntaxEditCtrl* pEditCtrl, int nFlags = 0);
+	virtual int PrintLineTextEx(CDC* pDC, const CRect& rcTextLine, int nTextRow, int nLine,
+								CXTPSyntaxEditCtrl* pEditCtrl, int nFlags = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -190,10 +190,8 @@ public:
 	// See also:
 	//  struct XTP_EDIT_TEXTBLOCK
 	//-----------------------------------------------------------------------
-	virtual void DrawLineCalcSel(const XTP_EDIT_TEXTBLOCK& txtBlk,
-		int nSelStartX, int nSelEndX,
-		XTP_EDIT_TEXTBLOCK (&arTxtBlk)[4], BOOL (&bUseBlk)[4]);
-
+	virtual void DrawLineCalcSel(const XTP_EDIT_TEXTBLOCK& txtBlk, int nSelStartX, int nSelEndX,
+								 XTP_EDIT_TEXTBLOCK (&arTxtBlk)[4], BOOL (&bUseBlk)[4]);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -215,7 +213,7 @@ protected:
 	//          rcLineNum   : [in] Line number rect
 	//          clrBorder   : [in] Border color
 	//-----------------------------------------------------------------------
-	virtual void DrawLineNumbersBorder(CDC *pDC, const CRect& rcLineNum, const COLORREF clrBorder);
+	virtual void DrawLineNumbersBorder(CDC* pDC, const CRect& rcLineNum, const COLORREF clrBorder);
 
 public:
 	//-----------------------------------------------------------------------
@@ -326,7 +324,7 @@ public:
 	// Returns: TRUE if successful, FALSE otherwise.
 	// See Also: GetTextColor
 	//-----------------------------------------------------------------------
-	BOOL SetTextColor(COLORREF crText, BOOL bUpdateReg=FALSE);
+	BOOL SetTextColor(COLORREF crText, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary: Set background color.
@@ -400,7 +398,7 @@ public:
 	// Returns: TRUE if successful, FALSE otherwise.
 	// See Also: GetLineNumberTextColor
 	//-----------------------------------------------------------------------
-	BOOL SetLineNumberTextColor(COLORREF color, BOOL bUpdateReg=FALSE);
+	BOOL SetLineNumberTextColor(COLORREF color, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -411,7 +409,7 @@ public:
 	// Returns: TRUE if successful, FALSE otherwise.
 	// See Also: GetLineNumberBackColor
 	//-----------------------------------------------------------------------
-	BOOL SetLineNumberBackColor(COLORREF color, BOOL bUpdateReg=FALSE);
+	BOOL SetLineNumberBackColor(COLORREF color, BOOL bUpdateReg = FALSE);
 
 public:
 	//-----------------------------------------------------------------------
@@ -440,7 +438,7 @@ public:
 	// Returns: A pointer to CFont object.
 	// See Also: SetFontToolTip
 	//-----------------------------------------------------------------------
-	CFont* GetFontToolTip();    // ToolTip font.
+	CFont* GetFontToolTip(); // ToolTip font.
 
 	//-----------------------------------------------------------------------
 	// Summary: Set common font.
@@ -534,29 +532,36 @@ public:
 	HCURSOR GetCurArrow();
 
 	CString m_sLineNumberFormat;
-	//String to customize Line Number format (e.g. keep it fixed legnth like %04d)
+	// String to customize Line Number format (e.g. keep it fixed legnth like %04d)
 	// If empty - Control used default - variable legnth Line Numbers)
 
 protected:
 	// fonts
-	CFont m_font;       // Default font for normal text.
-	CFont m_fontText;   // Current text font
-	CFont m_fontLineNumber; // The font for line numbering
-	CFont m_fontToolTip;    // The font for tool tip text
+	CXTPFont m_xtpFont;			  // Default font for normal text.
+	CXTPFont m_xtpFontText;		  // Current text font
+	CXTPFont m_xtpFontLineNumber; // The font for line numbering
+	CXTPFont m_xtpFontToolTip;	// The font for tool tip text
+
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_font, m_xtpFont, GetFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontText, m_xtpFontText, GetTextFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontLineNumber, m_xtpFontLineNumber,
+										  GetLineNumberFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontToolTip, m_xtpFontToolTip,
+										  GetToolTipFontHandle);
 
 	// cursors
-	HCURSOR m_hCurLine; // Cursor to show on line selection area
-	HCURSOR m_hCurMove; // Cursor for moving text
-	HCURSOR m_hCurCopy; // Cursor for copying text
-	HCURSOR m_hCurNO;   // Standard NO cursor
-	HCURSOR m_hCurIBeam;    // Standard IBEAM cursor
-	HCURSOR m_hCurArrow;    // Standard ARROW cursor
+	HCURSOR m_hCurLine;  // Cursor to show on line selection area
+	HCURSOR m_hCurMove;  // Cursor for moving text
+	HCURSOR m_hCurCopy;  // Cursor for copying text
+	HCURSOR m_hCurNO;	// Standard NO cursor
+	HCURSOR m_hCurIBeam; // Standard IBEAM cursor
+	HCURSOR m_hCurArrow; // Standard ARROW cursor
 
-	CImageList m_ilBookmark;    // Image list with all bookmark images
+	CImageList m_ilBookmark; // Image list with all bookmark images
 
-	CPen m_penGray;             // Standard common gray pen
+	CPen m_penGray; // Standard common gray pen
 
-	XTP_EDIT_COLORVALUES   m_clrValues;    // Default color
+	XTP_EDIT_COLORVALUES m_clrValues; // Default color
 
 	//-----------------------------------------------------------------------
 	// Summary: Get Bookmarks image list.
@@ -565,6 +570,24 @@ protected:
 	virtual CImageList* GetBookmarks();
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPSyntaxEditPaintManager)
+
+	XTP_DECLARE_COLOR_PROP(TextColor)
+	XTP_DECLARE_COLOR_PROP(BackColor)
+	XTP_DECLARE_COLOR_PROP(ReadOnlyBackColor)
+	XTP_DECLARE_COLOR_PROP(LineNumberTextColor)
+	XTP_DECLARE_COLOR_PROP(LineNumberBackColor)
+	XTP_DECLARE_COLOR_PROP(SelectedTextColor)
+	XTP_DECLARE_COLOR_PROP(SelectedBackColor)
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -572,42 +595,34 @@ AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetTextColor() const
 {
 	return m_clrValues.crText;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetBackColor() const
 {
 	return m_clrValues.crBack;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetBackColorEx(CXTPSyntaxEditCtrl* pEditCtrl)
 {
 	return m_clrValues.GetBackColorEx(pEditCtrl);
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetHiliteTextColor() const
 {
 	return m_clrValues.crHiliteText;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetHiliteBackColor() const
 {
 	return m_clrValues.crHiliteBack;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetInactiveHiliteTextColor() const
 {
 	return m_clrValues.crInactiveHiliteText;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetInactiveHiliteBackColor() const
 {
 	return m_clrValues.crInactiveHiliteBack;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetLineNumberTextColor() const
 {
 	return m_clrValues.crLineNumberText;
 }
-
 AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetLineNumberBackColor() const
 {
 	return m_clrValues.crLineNumberBack;
@@ -618,4 +633,5 @@ AFX_INLINE COLORREF CXTPSyntaxEditPaintManager::GetLineNumberBackColor() const
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITPAINTMANAGER_H__)

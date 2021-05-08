@@ -1,7 +1,6 @@
 // XTPReportHyperlink.h: interface for the CXTPReportHyperlink class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,85 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTRECORDHYPERLINK_H__)
-#define __XTPREPORTRECORDHYPERLINK_H__
+#	define __XTPREPORTRECORDHYPERLINK_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPSmartPtrInternalT.h"
-#include "XTPReportDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropExchange;
 
-#pragma warning(disable: 4097)
+//===========================================================================
+// Summary:
+//      This class stores the anchor styles
+//===========================================================================
+class _XTP_EXT_CLASS CXTPReportHyperlinkStyle : public CXTPCmdTarget
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs the object and initializes the color and text decoration.
+	// Parameters:
+	//     color          - New color.
+	//     textDecoration - New text decoration.
+	CXTPReportHyperlinkStyle(COLORREF color, XTPReportTextDecoration textDecoration);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the current color.
+	// Returns:
+	//     The current color.
+	//-----------------------------------------------------------------------
+	COLORREF GetColor() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the color of the anchor text.
+	// Parameters:
+	//     color - New color.
+	//-----------------------------------------------------------------------
+	void SetColor(COLORREF color);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the current text decoration.
+	// Returns:
+	//     The current text decoration.
+	//-----------------------------------------------------------------------
+	XTPReportTextDecoration GetTextDecoration() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the text decoration of the anchor text.
+	// Parameters:
+	//     textDecoration - New text decoration.
+	//-----------------------------------------------------------------------
+	void SetTextDecoration(XTPReportTextDecoration textDecoration);
+
+protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPReportHyperlinkStyle);
+
+#		define DECLARE_PROPERTY_UN(theProperty, theType)                                          \
+			afx_msg theType OleGet##theProperty();                                                 \
+			afx_msg void OleSet##theProperty(theType);
+
+	DECLARE_PROPERTY_UN(Color, COLORREF);
+	DECLARE_PROPERTY_UN(TextDecoration, int);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+
+private:
+	COLORREF m_color;						  // Color
+	XTPReportTextDecoration m_textDecoration; // Text decoration
+};
 
 //===========================================================================
 // Summary:
@@ -42,7 +107,8 @@ class CXTPPropExchange;
 //     simply call constructor with first position and length of the
 //     hyperlink's text
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportHyperlink : public CXTPHeapObjectT<CCmdTarget, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportHyperlink
+	: public CXTPHeapObjectT<CXTPCmdTarget, CXTPReportDataAllocator>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPReportHyperlink)
@@ -73,13 +139,20 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-	CRect       m_rcHyperSpot;      // Hyperlink draw place.
-	int         m_nHyperTextBegin;  // Start position of the hyperlink in the item text.
-	int         m_nHyperTextLen;    // The length of hyperlink text.
+	CRect m_rcHyperSpot;   // Hyperlink draw place.
+	int m_nHyperTextBegin; // Start position of the hyperlink in the item text.
+	int m_nHyperTextLen;   // The length of hyperlink text.
 
 protected:
-};
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportHyperlink);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
 
 //===========================================================================
 // Summary:
@@ -93,7 +166,8 @@ typedef CXTPArrayT<CXTPReportHyperlink*, CXTPReportHyperlink*, LPDISPATCH> CXTPR
 //      InternalRelease is called for each item in the array destructor.
 //      Also serialization for array items is provided (see DoPropExchange method).
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportHyperlinks : public CXTPHeapObjectT<CXTPReportHyperlinks_base, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportHyperlinks
+	: public CXTPHeapObjectT<CXTPReportHyperlinks_base, CXTPReportDataAllocator>
 
 {
 	//{{AFX_CODEJOCK_PRIVATE
@@ -101,7 +175,6 @@ class _XTP_EXT_CLASS CXTPReportHyperlinks : public CXTPHeapObjectT<CXTPReportHyp
 	typedef CXTPArrayT<CXTPReportHyperlink*, CXTPReportHyperlink*, LPDISPATCH> TBase;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default CXTPReportHyperlink constructor.
@@ -150,9 +223,21 @@ public:
 	virtual void CopyFrom(CXTPReportHyperlinks* pSrc);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportHyperlinks);
+	DECLARE_ENUM_VARIANT(CXTPReportHyperlinks)
+
+	virtual LPDISPATCH OleGetItem(long nIndex);
+	afx_msg LPDISPATCH OleAddHyperlink(long nHyperTextBegin, long nHyperTextLen);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPREPORTRECORDHYPERLINK_H__)

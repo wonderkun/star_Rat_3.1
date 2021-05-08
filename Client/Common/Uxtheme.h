@@ -5,24 +5,36 @@
 // Version: 1.0
 //---------------------------------------------------------------------------
 #ifndef _UXTHEME_H_
-#define _UXTHEME_H_
+#	define _UXTHEME_H_
 //---------------------------------------------------------------------------
-#include <commctrl.h>
+
+#	ifdef XTP_INTERNAL_UXTHEME_INCLUSION
+#		include "Common/Base/Diagnostic/XTPDisableAdvancedWarnings.h"
+#	endif
+#	include <commctrl.h>
+#	ifdef XTP_INTERNAL_UXTHEME_INCLUSION
+#		include "Common/Base/Diagnostic/XTPEnableAdvancedWarnings.h"
+#	endif
+
+#	ifdef XTP_INTERNAL_UXTHEME_INCLUSION
+#		include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+#	endif
+
 //---------------------------------------------------------------------------
 //#if (_WIN32_WINNT >= 0x0500)     // only available on XP
 //---------------------------------------------------------------------------
 // Define API decoration for direct importing of DLL references.
-#ifndef THEMEAPI
-#if !defined(_UXTHEME_)
-#define THEMEAPI          EXTERN_C DECLSPEC_IMPORT HRESULT STDAPICALLTYPE
-#define THEMEAPI_(type)   EXTERN_C DECLSPEC_IMPORT type STDAPICALLTYPE
-#else
-#define THEMEAPI          STDAPI
-#define THEMEAPI_(type)   STDAPI_(type)
-#endif
-#endif // THEMEAPI
+#	ifndef THEMEAPI
+#		if !defined(_UXTHEME_)
+#			define THEMEAPI EXTERN_C DECLSPEC_IMPORT HRESULT STDAPICALLTYPE
+#			define THEMEAPI_(type) EXTERN_C DECLSPEC_IMPORT type STDAPICALLTYPE
+#		else
+#			define THEMEAPI STDAPI
+#			define THEMEAPI_(type) STDAPI_(type)
+#		endif
+#	endif // THEMEAPI
 //---------------------------------------------------------------------------
-typedef HANDLE HTHEME;          // handle to a section of theme data for class
+typedef HANDLE HTHEME; // handle to a section of theme data for class
 
 //---------------------------------------------------------------------------
 // NOTE: PartId's and StateId's used in the theme API are defined in the
@@ -107,13 +119,13 @@ THEMEAPI CloseThemeData(HTHEME hTheme);
 //  pRect               - defines the size/location of the part
 //  pClipRect           - optional clipping rect (don't draw outside it)
 //------------------------------------------------------------------------
-THEMEAPI DrawThemeBackground(HTHEME hTheme, HDC hdc,
-	int iPartId, int iStateId, const RECT *pRect, OPTIONAL const RECT *pClipRect);
+THEMEAPI DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT* pRect,
+							 OPTIONAL const RECT* pClipRect);
 
 //---------------------------------------------------------------------------
 //----- DrawThemeText() flags ----
 
-#define DTT_GRAYED      0x1         // draw a grayed-out string
+#	define DTT_GRAYED 0x1 // draw a grayed-out string
 
 //-------------------------------------------------------------------------
 //  DrawThemeText()     - draws the text using the theme-specified
@@ -130,9 +142,8 @@ THEMEAPI DrawThemeBackground(HTHEME hTheme, HDC hdc,
 //  dwTextFlags2        - additional drawing options
 //  pRect               - defines the size/location of the part
 //-------------------------------------------------------------------------
-THEMEAPI DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId,
-	int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags,
-	DWORD dwTextFlags2, const RECT *pRect);
+THEMEAPI DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText,
+					   int iCharCount, DWORD dwTextFlags, DWORD dwTextFlags2, const RECT* pRect);
 
 //-------------------------------------------------------------------------
 //  GetThemeBackgroundContentRect()
@@ -147,9 +158,8 @@ THEMEAPI DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId,
 //      pBoundingRect   - the outer RECT of the part being drawn
 //      pContentRect    - RECT to receive the content area
 //-------------------------------------------------------------------------
-THEMEAPI GetThemeBackgroundContentRect(HTHEME hTheme, OPTIONAL HDC hdc,
-	int iPartId, int iStateId,  const RECT *pBoundingRect,
-	OUT RECT *pContentRect);
+THEMEAPI GetThemeBackgroundContentRect(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+									   const RECT* pBoundingRect, OUT RECT* pContentRect);
 
 //-------------------------------------------------------------------------
 //  GetThemeBackgroundExtent() - calculates the size/location of the theme-
@@ -163,16 +173,15 @@ THEMEAPI GetThemeBackgroundContentRect(HTHEME hTheme, OPTIONAL HDC hdc,
 //      pContentRect    - RECT that defines the content area
 //      pBoundingRect   - RECT to receive the overall size/location of part
 //-------------------------------------------------------------------------
-THEMEAPI GetThemeBackgroundExtent(HTHEME hTheme, OPTIONAL HDC hdc,
-	int iPartId, int iStateId, const RECT *pContentRect,
-	OUT RECT *pExtentRect);
+THEMEAPI GetThemeBackgroundExtent(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+								  const RECT* pContentRect, OUT RECT* pExtentRect);
 
 //-------------------------------------------------------------------------
-typedef enum THEMESIZE
+enum THEMESIZE
 {
-	TS_MIN,             // minimum size
-	TS_TRUE,            // size without stretching
-	TS_DRAW,            // size that theme mgr will use to draw part
+	TS_MIN,  // minimum size
+	TS_TRUE, // size without stretching
+	TS_DRAW, // size that theme mgr will use to draw part
 };
 //-------------------------------------------------------------------------
 //  GetThemePartSize() - returns the specified size of the theme part
@@ -185,8 +194,8 @@ typedef enum THEMESIZE
 //  eSize               - the type of size to be retreived
 //  psz                 - receives the specified size of the part
 //-------------------------------------------------------------------------
-THEMEAPI GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
-	OPTIONAL RECT *prc, enum THEMESIZE eSize, OUT SIZE *psz);
+THEMEAPI GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, OPTIONAL RECT* prc,
+						  enum THEMESIZE eSize, OUT SIZE* psz);
 
 //-------------------------------------------------------------------------
 //  GetThemeTextExtent() - calculates the size/location of the specified
@@ -202,10 +211,9 @@ THEMEAPI GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
 //  pszBoundingRect     - optional: to control layout of text
 //  pszExtentRect       - receives the RECT for text size/location
 //-------------------------------------------------------------------------
-THEMEAPI GetThemeTextExtent(HTHEME hTheme, HDC hdc,
-	int iPartId, int iStateId, LPCWSTR pszText, int iCharCount,
-	DWORD dwTextFlags, OPTIONAL const RECT *pBoundingRect,
-	OUT RECT *pExtentRect);
+THEMEAPI GetThemeTextExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText,
+							int iCharCount, DWORD dwTextFlags, OPTIONAL const RECT* pBoundingRect,
+							OUT RECT* pExtentRect);
 
 //-------------------------------------------------------------------------
 //  GetThemeTextMetrics()
@@ -218,8 +226,8 @@ THEMEAPI GetThemeTextExtent(HTHEME hTheme, HDC hdc,
 //  iStateId            - state number (of the part)
 //  ptm                 - receives the font info
 //-------------------------------------------------------------------------
-THEMEAPI GetThemeTextMetrics(HTHEME hTheme, OPTIONAL HDC hdc,
-	int iPartId, int iStateId, OUT TEXTMETRIC* ptm);
+THEMEAPI GetThemeTextMetrics(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+							 OUT TEXTMETRIC* ptm);
 
 //-------------------------------------------------------------------------
 //  GetThemeBackgroundRegion()
@@ -236,46 +244,50 @@ THEMEAPI GetThemeTextMetrics(HTHEME hTheme, OPTIONAL HDC hdc,
 //  pRect               - the RECT used to draw the part
 //  pRegion             - receives handle to calculated region
 //-------------------------------------------------------------------------
-THEMEAPI GetThemeBackgroundRegion(HTHEME hTheme, OPTIONAL HDC hdc,
-	int iPartId, int iStateId, const RECT *pRect, OUT HRGN *pRegion);
+THEMEAPI GetThemeBackgroundRegion(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+								  const RECT* pRect, OUT HRGN* pRegion);
 
 //-------------------------------------------------------------------------
 //----- HitTestThemeBackground, HitTestThemeBackgroundRegion flags ----
 
 //  Theme background segment hit test flag (default). possible return values are:
 //  HTCLIENT: hit test succeeded in the middle background segment
-//  HTTOP, HTLEFT, HTTOPLEFT, etc:  // hit test succeeded in the the respective theme background segment.
-#define HTTB_BACKGROUNDSEG          0x0000
+//  HTTOP, HTLEFT, HTTOPLEFT, etc:  // hit test succeeded in the the respective theme background
+//  segment.
+#	define HTTB_BACKGROUNDSEG 0x0000
 
 //  Fixed border hit test option.  possible return values are:
 //  HTCLIENT: hit test succeeded in the middle background segment
 //  HTBORDER: hit test succeeded in any other background segment
-#define HTTB_FIXEDBORDER            0x0002  // Return code may be either HTCLIENT or HTBORDER.
+#	define HTTB_FIXEDBORDER 0x0002 // Return code may be either HTCLIENT or HTBORDER.
 
 //  Caption hit test option.  Possible return values are:
 //  HTCAPTION: hit test succeeded in the top, top left, or top right background segments
 //  HTNOWHERE or another return code, depending on absence or presence of accompanying flags, resp.
-#define HTTB_CAPTION                0x0004
+#	define HTTB_CAPTION 0x0004
 
 //  Resizing border hit test flags.  Possible return values are:
 //  HTCLIENT: hit test succeeded in middle background segment
-//  HTTOP, HTTOPLEFT, HTLEFT, HTRIGHT, etc:    hit test succeeded in the respective system resizing zone
-//  HTBORDER: hit test failed in middle segment and resizing zones, but succeeded in a background border segment
-#define HTTB_RESIZINGBORDER_LEFT    0x0010  // Hit test left resizing border,
-#define HTTB_RESIZINGBORDER_TOP     0x0020  // Hit test top resizing border
-#define HTTB_RESIZINGBORDER_RIGHT   0x0040  // Hit test right resizing border
-#define HTTB_RESIZINGBORDER_BOTTOM  0x0080  // Hit test bottom resizing border
+//  HTTOP, HTTOPLEFT, HTLEFT, HTRIGHT, etc:    hit test succeeded in the respective system resizing
+//  zone HTBORDER: hit test failed in middle segment and resizing zones, but succeeded in a
+//  background border segment
+#	define HTTB_RESIZINGBORDER_LEFT 0x0010   // Hit test left resizing border,
+#	define HTTB_RESIZINGBORDER_TOP 0x0020	// Hit test top resizing border
+#	define HTTB_RESIZINGBORDER_RIGHT 0x0040  // Hit test right resizing border
+#	define HTTB_RESIZINGBORDER_BOTTOM 0x0080 // Hit test bottom resizing border
 
-#define HTTB_RESIZINGBORDER         (HTTB_RESIZINGBORDER_LEFT | HTTB_RESIZINGBORDER_TOP | \
-				HTTB_RESIZINGBORDER_RIGHT | HTTB_RESIZINGBORDER_BOTTOM)
+#	define HTTB_RESIZINGBORDER                                                                    \
+		(HTTB_RESIZINGBORDER_LEFT | HTTB_RESIZINGBORDER_TOP | HTTB_RESIZINGBORDER_RIGHT            \
+		 | HTTB_RESIZINGBORDER_BOTTOM)
 
 // Resizing border is specified as a template, not just window edges.
-// This option is mutually exclusive with HTTB_SYSTEMSIZINGWIDTH; HTTB_SIZINGTEMPLATE takes precedence
-#define HTTB_SIZINGTEMPLATE      0x0100
+// This option is mutually exclusive with HTTB_SYSTEMSIZINGWIDTH; HTTB_SIZINGTEMPLATE takes
+// precedence
+#	define HTTB_SIZINGTEMPLATE 0x0100
 
 // Use system resizing border width rather than theme content margins.
 // This option is mutually exclusive with HTTB_SIZINGTEMPLATE, which takes precedence.
-#define HTTB_SYSTEMSIZINGMARGINS 0x0200
+#	define HTTB_SYSTEMSIZINGMARGINS 0x0200
 
 //-------------------------------------------------------------------------
 //  HitTestThemeBackground()
@@ -301,9 +313,9 @@ THEMEAPI GetThemeBackgroundRegion(HTHEME hTheme, OPTIONAL HDC hdc,
 //                        HTRIGHT, HTTOPRIGHT, HTBOTTOMRIGHT,
 //                        HTTOP, HTBOTTOM, HTCLIENT
 //-------------------------------------------------------------------------
-THEMEAPI HitTestThemeBackground(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
-	int iStateId, DWORD dwOptions, const RECT *pRect, OPTIONAL HRGN hrgn,
-	POINT ptTest, OUT WORD *pwHitTestCode);
+THEMEAPI HitTestThemeBackground(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+								DWORD dwOptions, const RECT* pRect, OPTIONAL HRGN hrgn,
+								POINT ptTest, OUT WORD* pwHitTestCode);
 
 //------------------------------------------------------------------------
 //  DrawThemeEdge()     - Similar to the DrawEdge() API, but uses part colors
@@ -317,8 +329,8 @@ THEMEAPI HitTestThemeBackground(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
 //  uFlags              - Same as DrawEdge() API
 //  pContentRect        - Receives the interior rect if (uFlags & BF_ADJUST)
 //------------------------------------------------------------------------
-THEMEAPI DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
-					   const RECT *pDestRect, UINT uEdge, UINT uFlags, OPTIONAL OUT RECT *pContentRect);
+THEMEAPI DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT* pDestRect,
+					   UINT uEdge, UINT uFlags, OPTIONAL OUT RECT* pContentRect);
 
 //------------------------------------------------------------------------
 //  DrawThemeIcon()     - draws an image within an imagelist based on
@@ -332,8 +344,8 @@ THEMEAPI DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
 //  himl                - handle to IMAGELIST
 //  iImageIndex         - index into IMAGELIST (which icon to draw)
 //------------------------------------------------------------------------
-THEMEAPI DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId,
-	int iStateId, const RECT *pRect, HIMAGELIST himl, int iImageIndex);
+THEMEAPI DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT* pRect,
+					   HIMAGELIST himl, int iImageIndex);
 
 //---------------------------------------------------------------------------
 //  IsThemePartDefined() - returns TRUE if the theme has defined parameters
@@ -343,8 +355,7 @@ THEMEAPI DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId,
 //  iPartId             - part number to find definition for
 //  iStateId            - state number of part
 //---------------------------------------------------------------------------
-THEMEAPI_(BOOL) IsThemePartDefined(HTHEME hTheme, int iPartId,
-	int iStateId);
+THEMEAPI_(BOOL) IsThemePartDefined(HTHEME hTheme, int iPartId, int iStateId);
 
 //---------------------------------------------------------------------------
 //  IsThemeBackgroundPartiallyTransparent()
@@ -356,8 +367,7 @@ THEMEAPI_(BOOL) IsThemePartDefined(HTHEME hTheme, int iPartId,
 //  iPartId             - part number
 //  iStateId            - state number of part
 //---------------------------------------------------------------------------
-THEMEAPI_(BOOL) IsThemeBackgroundPartiallyTransparent(HTHEME hTheme,
-	int iPartId, int iStateId);
+THEMEAPI_(BOOL) IsThemeBackgroundPartiallyTransparent(HTHEME hTheme, int iPartId, int iStateId);
 
 //---------------------------------------------------------------------------
 //    lower-level theme information services
@@ -376,7 +386,6 @@ THEMEAPI_(BOOL) IsThemeBackgroundPartiallyTransparent(HTHEME hTheme,
 // the same primitive type can be defined in the theme schema.
 //-----------------------------------------------------------------------
 
-
 //-----------------------------------------------------------------------
 //  GetThemeColor()     - Get the value for the specified COLOR property
 //
@@ -386,8 +395,7 @@ THEMEAPI_(BOOL) IsThemeBackgroundPartiallyTransparent(HTHEME hTheme,
 //  iPropId             - the property number to get the value for
 //  pColor              - receives the value of the property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeColor(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT COLORREF *pColor);
+THEMEAPI GetThemeColor(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT COLORREF* pColor);
 
 //-----------------------------------------------------------------------
 //  GetThemeMetric()    - Get the value for the specified metric/size
@@ -400,8 +408,8 @@ THEMEAPI GetThemeColor(HTHEME hTheme, int iPartId,
 //  iPropId             - the property number to get the value for
 //  piVal               - receives the value of the property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeMetric(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
-	int iStateId, int iPropId, OUT int *piVal);
+THEMEAPI GetThemeMetric(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId, int iPropId,
+						OUT int* piVal);
 
 //-----------------------------------------------------------------------
 //  GetThemeString()    - Get the value for the specified string property
@@ -413,8 +421,8 @@ THEMEAPI GetThemeMetric(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
 //  pszBuff             - receives the string property value
 //  cchMaxBuffChars     - max. number of chars allowed in pszBuff
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeString(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT LPWSTR pszBuff, int cchMaxBuffChars);
+THEMEAPI GetThemeString(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT LPWSTR pszBuff,
+						int cchMaxBuffChars);
 
 //-----------------------------------------------------------------------
 //  GetThemeBool()      - Get the value for the specified BOOL property
@@ -425,8 +433,7 @@ THEMEAPI GetThemeString(HTHEME hTheme, int iPartId,
 //  iPropId             - the property number to get the value for
 //  pfVal               - receives the value of the property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeBool(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT BOOL *pfVal);
+THEMEAPI GetThemeBool(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT BOOL* pfVal);
 
 //-----------------------------------------------------------------------
 //  GetThemeInt()       - Get the value for the specified int property
@@ -437,8 +444,7 @@ THEMEAPI GetThemeBool(HTHEME hTheme, int iPartId,
 //  iPropId             - the property number to get the value for
 //  piVal               - receives the value of the property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeInt(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT int *piVal);
+THEMEAPI GetThemeInt(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int* piVal);
 
 //-----------------------------------------------------------------------
 //  GetThemeEnumValue() - Get the value for the specified ENUM property
@@ -449,8 +455,7 @@ THEMEAPI GetThemeInt(HTHEME hTheme, int iPartId,
 //  iPropId             - the property number to get the value for
 //  piVal               - receives the value of the enum (cast to int*)
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeEnumValue(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT int *piVal);
+THEMEAPI GetThemeEnumValue(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int* piVal);
 
 //-----------------------------------------------------------------------
 //  GetThemePosition()  - Get the value for the specified position
@@ -462,8 +467,7 @@ THEMEAPI GetThemeEnumValue(HTHEME hTheme, int iPartId,
 //  iPropId             - the property number to get the value for
 //  pPoint              - receives the value of the position property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemePosition(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT POINT *pPoint);
+THEMEAPI GetThemePosition(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT POINT* pPoint);
 
 //-----------------------------------------------------------------------
 //  GetThemeFont()      - Get the value for the specified font property
@@ -476,8 +480,8 @@ THEMEAPI GetThemePosition(HTHEME hTheme, int iPartId,
 //  pFont               - receives the value of the LOGFONT property
 //                        (scaled for the current logical screen dpi)
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeFont(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
-	int iStateId, int iPropId, OUT LOGFONT *pFont);
+THEMEAPI GetThemeFont(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId, int iPropId,
+					  OUT LOGFONT* pFont);
 
 //-----------------------------------------------------------------------
 //  GetThemeRect()      - Get the value for the specified RECT property
@@ -488,16 +492,15 @@ THEMEAPI GetThemeFont(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
 //  iPropId             - the property number to get the value for
 //  pRect               - receives the value of the RECT property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeRect(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT RECT *pRect);
+THEMEAPI GetThemeRect(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT RECT* pRect);
 
 //-----------------------------------------------------------------------
 typedef struct _MARGINS
 {
-	int cxLeftWidth;      // width of left border that retains its size
-	int cxRightWidth;     // width of right border that retains its size
-	int cyTopHeight;      // height of top border that retains its size
-	int cyBottomHeight;   // height of bottom border that retains its size
+	int cxLeftWidth;	// width of left border that retains its size
+	int cxRightWidth;   // width of right border that retains its size
+	int cyTopHeight;	// height of top border that retains its size
+	int cyBottomHeight; // height of bottom border that retains its size
 } MARGINS, *PMARGINS;
 
 //-----------------------------------------------------------------------
@@ -511,15 +514,15 @@ typedef struct _MARGINS
 //      prc             - RECT for area to be drawn into
 //      pMargins        - receives the value of the MARGINS property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeMargins(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
-	int iStateId, int iPropId, OPTIONAL RECT *prc, OUT MARGINS *pMargins);
+THEMEAPI GetThemeMargins(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId, int iPropId,
+						 OPTIONAL RECT* prc, OUT MARGINS* pMargins);
 
 //-----------------------------------------------------------------------
-#define MAX_INTLIST_COUNT 10
+#	define MAX_INTLIST_COUNT 10
 
 typedef struct _INTLIST
 {
-	int iValueCount;      // number of values in iValues
+	int iValueCount; // number of values in iValues
 	int iValues[MAX_INTLIST_COUNT];
 } INTLIST, *PINTLIST;
 
@@ -532,17 +535,17 @@ typedef struct _INTLIST
 //      iPropId         - the property number to get the value for
 //      pIntList        - receives the value of the INTLIST property
 //-----------------------------------------------------------------------
-THEMEAPI GetThemeIntList(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT INTLIST *pIntList);
+THEMEAPI GetThemeIntList(HTHEME hTheme, int iPartId, int iStateId, int iPropId,
+						 OUT INTLIST* pIntList);
 
 //-----------------------------------------------------------------------
-typedef enum PROPERTYORIGIN
+enum PROPERTYORIGIN
 {
-	PO_STATE,           // property was found in the state section
-	PO_PART,            // property was found in the part section
-	PO_CLASS,           // property was found in the class section
-	PO_GLOBAL,          // property was found in [globals] section
-	PO_NOTFOUND         // property was not found
+	PO_STATE,   // property was found in the state section
+	PO_PART,	// property was found in the part section
+	PO_CLASS,   // property was found in the class section
+	PO_GLOBAL,  // property was found in [globals] section
+	PO_NOTFOUND // property was not found
 };
 
 //-----------------------------------------------------------------------
@@ -557,8 +560,8 @@ typedef enum PROPERTYORIGIN
 //  iPropId             - the property number to search for
 //  pOrigin             - receives the value of the property origin
 //-----------------------------------------------------------------------
-THEMEAPI GetThemePropertyOrigin(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT enum PROPERTYORIGIN *pOrigin);
+THEMEAPI GetThemePropertyOrigin(HTHEME hTheme, int iPartId, int iStateId, int iPropId,
+								OUT enum PROPERTYORIGIN* pOrigin);
 
 //---------------------------------------------------------------------------
 //  SetWindowTheme()
@@ -588,8 +591,7 @@ THEMEAPI GetThemePropertyOrigin(HTHEME hTheme, int iPartId,
 // the specified window, you can pass an empty string (L"") so it
 // won't match any section entries.
 //---------------------------------------------------------------------------
-THEMEAPI SetWindowTheme(HWND hwnd, LPCWSTR pszSubAppName,
-	LPCWSTR pszSubIdList);
+THEMEAPI SetWindowTheme(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
 
 //---------------------------------------------------------------------------
 //  GetThemeFilename()  - Get the value for the specified FILENAME property.
@@ -601,8 +603,8 @@ THEMEAPI SetWindowTheme(HWND hwnd, LPCWSTR pszSubAppName,
 //  pszThemeFileName    - output buffer to receive the filename
 //  cchMaxBuffChars     - the size of the return buffer, in chars
 //---------------------------------------------------------------------------
-THEMEAPI GetThemeFilename(HTHEME hTheme, int iPartId,
-	int iStateId, int iPropId, OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
+THEMEAPI GetThemeFilename(HTHEME hTheme, int iPartId, int iStateId, int iPropId,
+						  OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
 
 //---------------------------------------------------------------------------
 //  GetThemeSysColor()  - Get the value of the specified System color.
@@ -695,8 +697,8 @@ THEMEAPI GetThemeSysFont(HTHEME hTheme, int iFontId, OUT LOGFONT* plf);
 //
 //  cchMaxStringChars   - max. number of chars that pszStringBuff can hold
 //---------------------------------------------------------------------------
-THEMEAPI GetThemeSysString(HTHEME hTheme, int iStringId,
-	OUT LPWSTR pszStringBuff, int cchMaxStringChars);
+THEMEAPI GetThemeSysString(HTHEME hTheme, int iStringId, OUT LPWSTR pszStringBuff,
+						   int cchMaxStringChars);
 
 //---------------------------------------------------------------------------
 //  GetThemeSysInt() - Get the value of specified System int.
@@ -728,7 +730,6 @@ THEMEAPI_(BOOL) IsThemeActive();
 //---------------------------------------------------------------------------
 THEMEAPI_(BOOL) IsAppThemed();
 
-
 //---------------------------------------------------------------------------
 //  GetWindowTheme()    - if window is themed, returns its most recent
 //                        HTHEME from OpenThemeData() - otherwise, returns
@@ -737,7 +738,6 @@ THEMEAPI_(BOOL) IsAppThemed();
 //      hwnd            - the window to get the HTHEME of
 //---------------------------------------------------------------------------
 THEMEAPI_(HTHEME) GetWindowTheme(HWND hwnd);
-
 
 //---------------------------------------------------------------------------
 //  EnableThemeDialogTexture()
@@ -755,13 +755,12 @@ THEMEAPI_(HTHEME) GetWindowTheme(HWND hwnd);
 //                          texturing using the Tab texture
 //---------------------------------------------------------------------------
 
-#define ETDT_DISABLE        0x00000001
-#define ETDT_ENABLE         0x00000002
-#define ETDT_USETABTEXTURE  0x00000004
-#define ETDT_ENABLETAB      (ETDT_ENABLE  | ETDT_USETABTEXTURE)
+#	define ETDT_DISABLE 0x00000001
+#	define ETDT_ENABLE 0x00000002
+#	define ETDT_USETABTEXTURE 0x00000004
+#	define ETDT_ENABLETAB (ETDT_ENABLE | ETDT_USETABTEXTURE)
 
 THEMEAPI EnableThemeDialogTexture(HWND hwnd, DWORD dwFlags);
-
 
 //---------------------------------------------------------------------------
 //  IsThemeDialogTextureEnabled()
@@ -772,13 +771,12 @@ THEMEAPI EnableThemeDialogTexture(HWND hwnd, DWORD dwFlags);
 //---------------------------------------------------------------------------
 THEMEAPI_(BOOL) IsThemeDialogTextureEnabled(HWND hwnd);
 
-
 //---------------------------------------------------------------------------
 //---- flags to control theming within an app ----
 
-#define STAP_ALLOW_NONCLIENT    (1 << 0)
-#define STAP_ALLOW_CONTROLS     (1 << 1)
-#define STAP_ALLOW_WEBCONTENT   (1 << 2)
+#	define STAP_ALLOW_NONCLIENT (1 << 0)
+#	define STAP_ALLOW_CONTROLS (1 << 1)
+#	define STAP_ALLOW_WEBCONTENT (1 << 2)
 
 //---------------------------------------------------------------------------
 //  GetThemeAppProperties()
@@ -811,10 +809,9 @@ THEMEAPI_(void) SetThemeAppProperties(DWORD dwFlags);
 //                        (not the display name)
 //  cchMaxSizeChars     - max chars allowed in pszSizeBuff
 //---------------------------------------------------------------------------
-THEMEAPI GetCurrentThemeName(
-	OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
-	OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars,
-	OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars);
+THEMEAPI GetCurrentThemeName(OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
+							 OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars,
+							 OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars);
 
 //---------------------------------------------------------------------------
 //  GetThemeDocumentationProperty()
@@ -829,13 +826,13 @@ THEMEAPI GetCurrentThemeName(
 //  pszValueBuff        - receives the property string value
 //  cchMaxValChars      - max chars allowed in pszValueBuff
 //---------------------------------------------------------------------------
-#define SZ_THDOCPROP_DISPLAYNAME                L"DisplayName"
-#define SZ_THDOCPROP_CANONICALNAME              L"ThemeName"
-#define SZ_THDOCPROP_TOOLTIP                    L"ToolTip"
-#define SZ_THDOCPROP_AUTHOR                     L"author"
+#	define SZ_THDOCPROP_DISPLAYNAME L"DisplayName"
+#	define SZ_THDOCPROP_CANONICALNAME L"ThemeName"
+#	define SZ_THDOCPROP_TOOLTIP L"ToolTip"
+#	define SZ_THDOCPROP_AUTHOR L"author"
 
-THEMEAPI GetThemeDocumentationProperty(LPCWSTR pszThemeName,
-	LPCWSTR pszPropertyName, OUT LPWSTR pszValueBuff, int cchMaxValChars);
+THEMEAPI GetThemeDocumentationProperty(LPCWSTR pszThemeName, LPCWSTR pszPropertyName,
+									   OUT LPWSTR pszValueBuff, int cchMaxValChars);
 
 //---------------------------------------------------------------------------
 //  Theme API Error Handling
@@ -879,24 +876,24 @@ THEMEAPI EnableTheming(BOOL fEnable);
 
 //------------------------------------------------------------------------
 //---- bits used in dwFlags of DTBGOPTS ----
-#define DTBG_CLIPRECT        0x00000001   // rcClip has been specified
-#define DTBG_DRAWSOLID       0x00000002   // draw transparent/alpha images as solid
-#define DTBG_OMITBORDER      0x00000004   // don't draw border of part
-#define DTBG_OMITCONTENT     0x00000008   // don't draw content area of part
+#	define DTBG_CLIPRECT 0x00000001	// rcClip has been specified
+#	define DTBG_DRAWSOLID 0x00000002   // draw transparent/alpha images as solid
+#	define DTBG_OMITBORDER 0x00000004  // don't draw border of part
+#	define DTBG_OMITCONTENT 0x00000008 // don't draw content area of part
 
-#define DTBG_COMPUTINGREGION 0x00000010   // TRUE if calling to compute region
+#	define DTBG_COMPUTINGREGION 0x00000010 // TRUE if calling to compute region
 
-#define DTBG_MIRRORDC        0x00000020   // assume the hdc is mirrorred and
-                                          // flip images as appropriate (currently
-                                          // only supported for bgtype=imagefile)
+#	define DTBG_MIRRORDC                                                                          \
+		0x00000020 // assume the hdc is mirrorred and
+				   // flip images as appropriate (currently
+				   // only supported for bgtype=imagefile)
 //------------------------------------------------------------------------
 typedef struct _DTBGOPTS
 {
-	DWORD dwSize;           // size of the struct
-	DWORD dwFlags;          // which options have been specified
-	RECT rcClip;            // clipping rectangle
-}
-DTBGOPTS, *PDTBGOPTS;
+	DWORD dwSize;  // size of the struct
+	DWORD dwFlags; // which options have been specified
+	RECT rcClip;   // clipping rectangle
+} DTBGOPTS, *PDTBGOPTS;
 
 //------------------------------------------------------------------------
 //  DrawThemeBackgroundEx()
@@ -914,12 +911,15 @@ DTBGOPTS, *PDTBGOPTS;
 //  pRect               - defines the size/location of the part
 //  pOptions            - ptr to optional params
 //------------------------------------------------------------------------
-THEMEAPI DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc,
-	int iPartId, int iStateId, const RECT *pRect, OPTIONAL const DTBGOPTS *pOptions);
-
+THEMEAPI DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT* pRect,
+							   OPTIONAL const DTBGOPTS* pOptions);
 
 //---------------------------------------------------------------------------
 //#endif  /* (_WIN32_WINNT >= 0x0500) *//
 //---------------------------------------------------------------------------
+#	ifdef XTP_INTERNAL_UXTHEME_INCLUSION
+#		include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#		undef XTP_INTERNAL_UXTHEME_INCLUSION
+#	endif
 #endif // _UXTHEME_H_
 //---------------------------------------------------------------------------

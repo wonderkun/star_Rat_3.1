@@ -1,7 +1,6 @@
 // XTPDockingPaneBaseContainer.h : interface for the CXTPDockingPaneBaseContainer class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEBASECONTAINER_H__)
-#define __XTPDOCKINGPANEBASECONTAINER_H__
+#	define __XTPDOCKINGPANEBASECONTAINER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
-#include "XTPDockingPaneBase.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -47,11 +45,13 @@ protected:
 	// Remarks:
 	//     Docking Pane type can be one of the following:
 	//     * <b>xtpPaneTypeDockingPane</b> Indicates the pane's style is a docking pane.
-	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for pane.
+	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for
+	//     pane.
 	//     * <b>xtpPaneTypeSplitterContainer</b> Indicates the pane's style is a splitter container.
 	//     * <b>xtpPaneTypeMiniWnd</b> Indicates the pane's style is a floating window container.
 	//     * <b>xtpPaneTypeClient</b> Indicates the pane's style is a container for client area.
-	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel container.
+	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel
+	//     container.
 	//-----------------------------------------------------------------------
 	CXTPDockingPaneBaseContainer(XTPDockingPaneType type, CXTPDockingPaneLayout* pLayout);
 
@@ -112,10 +112,12 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Gets the pane element identified by rPosition, then sets rPosition to the POSITION value of the next
-	//     entry in the container. You can use GetNext in a forward iteration loop if you establish the initial position with a call to GetHeadPosition
+	//     Gets the pane element identified by rPosition, then sets rPosition to the POSITION value
+	//     of the next entry in the container. You can use GetNext in a forward iteration loop if
+	//     you establish the initial position with a call to GetHeadPosition
 	// Parameters:
-	//     pos - Specifies a reference to a POSITION value returned by a previous GetNext, GetHeadPosition, or other method call
+	//     pos - Specifies a reference to a POSITION value returned by a previous GetNext,
+	//     GetHeadPosition, or other method call
 	// Returns:
 	//     Pane identified by rPosition
 	// See Also: GetHeadPosition
@@ -157,7 +159,6 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL OnAction(XTPDockingPaneAction action);
 
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -167,15 +168,14 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL IsEmpty() const;
 
-
 protected:
-	CXTPDockingPaneBaseList m_lstPanes;         // Child panes collection
-
+	CXTPDockingPaneBaseList m_lstPanes; // Child panes collection
 };
 
-AFX_INLINE CXTPDockingPaneBaseList& CXTPDockingPaneBaseContainer::GetPanes() {
+AFX_INLINE CXTPDockingPaneBaseList& CXTPDockingPaneBaseContainer::GetPanes()
+{
 	return m_lstPanes;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANEBASECONTAINER_H__)

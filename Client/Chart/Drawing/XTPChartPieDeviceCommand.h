@@ -1,7 +1,6 @@
 // XTPChartPieDeviceCommand.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,136 +19,127 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPIEDEVICECOMMAND_H__)
-#define __XTPCHARTPIEDEVICECOMMAND_H__
+#	define __XTPCHARTPIEDEVICECOMMAND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../Types/XTPChartDiagramPoint.h"
-#include "XTPChartDeviceCommand.h"
-#include "XTPChartOpenGLHelpers.h"
-
-namespace Gdiplus
-{
-	class GpPath;
-	class GpBrush;
-};
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
-//     This class represents a chart pie device command,which is a kind of
-//     CXTPChartDeviceCommand.It specifically handles the rendering of a pie
-//     in a chart.
+//     This class a common implementation for a pie chart device command.
 // Remarks:
 //===========================================================================
-class _XTP_EXT_CLASS CXTPChartPieDeviceCommand : public CXTPChartDeviceCommand
+class _XTP_EXT_CLASS CXTPChartPieDeviceCommandImpl
 {
+	friend class CXTPChartPieDeviceCommand;
+	friend class CXTPChart3dPieDeviceCommand;
+
+private:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChartPieDeviceCommandImpl object.
+	// Parameters:
+	//     ptCenter       - The center point of the pie.
+	//     dMajorSemiAxis - The major semi axis of the ellipse.
+	//     dMinorSemiAxis - The minor semi axis of the ellipse.
+	//     dStartAngle    - The start angle of the pie.
+	//     dSweepAngle    - The sweep angle of the pie.
+	//     dDepth         - The depth of the pie or torus.
+	//     nHolePercent   - Determines the size of the hole when drawing a doughnut.
+	//-----------------------------------------------------------------------
+	CXTPChartPieDeviceCommandImpl(const CXTPPoint3d& ptCenter, double dMajorSemiAxis,
+								  double dMinorSemiAxis, double dStartAngle, double dSweepAngle,
+								  double dDepth, double nHolePercent);
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Handles object destruction.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPChartPieDeviceCommandImpl();
+
 public:
+	CXTPPoint3d m_ptCenter;  // The center point of the pie.
+	double m_dMajorSemiAxis; // The major semi axis of the ellipse.
+	double m_dMinorSemiAxis; // The minor semi axis of the ellipse.
+	double m_dStartAngle;	// The start angle of the pie.
+	double m_dSweepAngle;	// The sweep angle of the pie.
+	double m_dDepth;		 // The depth of the pie or torus.
+	double m_dHolePercent;   // Determines the size of the hole when drawing a doughnut.
+
+	double m_dInnerMajorSemiAxis; // The inner size of the major semi axis of the ellipse.
+	double m_dInnerMinorSemiAxis; // The inner size of the minor semi axis of the ellipse.
+
+	double m_dFacetSize;	  // Facet size.
+	double m_dRadius;		  // Pie radius.
+	double m_dCorrectedDepth; // Pie corrected depth.
+	double m_dInnerRadius;	// Pie inner radius.
+
+	BOOL m_bDoughnut; // TRUE indicates doughnut style.
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//      Base class implementation for 2D pie chart device command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartPieDeviceCommand
+	: public CXTPChartDeviceCommand
+	, protected CXTPChartPieDeviceCommandImpl
+{
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartPieDeviceCommand object.
 	// Parameters:
-	//     ptCenter        - The center point of the pie.
-	//     dMajorSemiAxis - The the major semi axis, of the ellipse, which comes
-	//                     into picture when a 3D pie diagram is drawn.
-	//     dMinorSemiAxis - The the minor semi axis, of the ellipse, which comes
-	//                     into picture when a 3D pie diagram is drawn.
+	//     ptCenter       - The center point of the pie.
+	//     dMajorSemiAxis - The major semi axis of the ellipse.
+	//     dMinorSemiAxis - The minor semi axis of the ellipse.
 	//     dStartAngle    - The start angle of the pie.
-	//     nMode     - The linear gradient mode, it can be horizontal, vertical,
-	//                 forward diagonal or backward diagonal.
-	// Remarks:
+	//     dSweepAngle    - The sweep angle of the pie.
+	//     dDepth         - The depth of the pie or torus.
+	//     nHolePercent   - Determines the size of the hole when drawing a doughnut.
 	//-----------------------------------------------------------------------
-	CXTPChartPieDeviceCommand(const CXTPChartDiagramPoint& ptCenter, double dMajorSemiAxis, double dMinorSemiAxis, double dStartAngle, double dSweepAngle,
-		double dDepth, int nHolePercent);
-
-protected:
-	Gdiplus::GpPath* CreatePieGraphicsPath(const CXTPChartDiagramPoint& center, double majorSemiaxis, double minorSemiaxis, double holePercent, double startAngle, double sweepAngle) const;
-	void CalculateStartFinishPoints(const CXTPChartDiagramPoint& center, double majorSemiaxis, double minorSemiaxis, double startAngle, double sweepAngle, CXTPChartPointF& startPoint, CXTPChartPointF& finishPoint) const;
-
-	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
-
-protected:
-	CXTPChartDiagramPoint m_ptCenter;
-	double m_dMajorSemiAxis;
-	double m_dMinorSemiAxis;
-	double m_dStartAngle;
-	double m_dSweepAngle;
-	double m_dDepth;
-	double m_dHolePercent;
-
-	double m_dInnerMajorSemiAxis;
-	double m_dInnerMinorSemiAxis;
-
-	double m_dFacetSize;
-	double m_dRadius;
-	double m_dCorrectedDepth;
-	double m_dInnerRadius;
-
-	BOOL m_bDoughnut;
-
+	CXTPChartPieDeviceCommand(const CXTPPoint3d& ptCenter, double dMajorSemiAxis,
+							  double dMinorSemiAxis, double dStartAngle, double dSweepAngle,
+							  double dDepth, double nHolePercent);
 };
 
-class _XTP_EXT_CLASS CXTPChartGradientPieDeviceCommand : public CXTPChartPieDeviceCommand
+// CXTPChart2dPieDeviceCommand alias is necessary fo consistency.
+typedef CXTPChartPieDeviceCommand CXTPChart2dPieDeviceCommand;
+
+//-----------------------------------------------------------------------
+// Summary:
+//      Base class implementation for 3D pie chart device command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChart3dPieDeviceCommand
+	: public CXTPChart3dDeviceCommand
+	, protected CXTPChartPieDeviceCommandImpl
 {
-public:
-	CXTPChartGradientPieDeviceCommand(const CXTPChartDiagramPoint& center, double majorSemiAxis, double minorSemiAxis, double startAngle, double sweepAngle,
-		double depth, int holePercent, const CXTPChartRectF& gradientBounds, const CXTPChartColor& color, const CXTPChartColor& color2);
-
 protected:
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
-	Gdiplus::GpBrush* CreateBrush();
-
-protected:
-	void PerformPieDrawing(CXTPChartOpenGLDeviceContext* pDC);
-	void PerformDoughnutDrawing(CXTPChartOpenGLDeviceContext* pDC);
-
-	void ExecutePie(CXTPChartOpenGLDeviceContext* pDC);
-	void ExecuteDoughnut(CXTPChartOpenGLDeviceContext* pDC);
-	void ExecuteSections(CXTPChartOpenGLDeviceContext* pDC, float sInnerRadius, float dOuterRadius);
-	void ExecuteCylinder(CXTPChartOpenGLDeviceContext* pDC, float dRadius);
-
-protected:
-	void PartialDisk(float dRadius, float dStartAngle, float dSweepAngle);
-	void PartialDisk(float dInnerRadius, float dOuterRadius, float dStartAngle, float dSweepAngle);
-	void PieSections(float dHeight, float dInnerRadius, float dOuterRadius, float dFacetSize, float dStartAngle, float dEndAngle);
-	void SetColor(double x, double y, double z);
-	void PartialCylinder(float dHeight, float dRadius, float dStartAngle, float dSweepAngle);
-
-	void glColorVertex(double x, double y, double z);
-protected:
-	CXTPChartRectF m_rcGradientBounds;
-	CXTPChartColor m_color;
-	CXTPChartColor m_color2;
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChartPieDeviceCommand object.
+	// Parameters:
+	//     nAntialiasingPolicy - Anti-aliasing policy identifier that defines
+	//                           how command behavesdepending on device context
+	//                           rendering states in regards of anti-aliasing.
+	//     ptCenter       - The center point of the pie.
+	//     dMajorSemiAxis - The major semi axis of the ellipse.
+	//     dMinorSemiAxis - The minor semi axis of the ellipse.
+	//     dStartAngle    - The start angle of the pie.
+	//     dSweepAngle    - The sweep angle of the pie.
+	//     dDepth         - The depth of the pie or torus.
+	//     nHolePercent   - Determines the size of the hole when drawing a doughnut.
+	//-----------------------------------------------------------------------
+	CXTPChart3dPieDeviceCommand(XTPChart3dAntialiasingPolicy nAntialiasingPolicy,
+								const CXTPPoint3d& ptCenter, double dMajorSemiAxis,
+								double dMinorSemiAxis, double dStartAngle, double dSweepAngle,
+								double dDepth, double nHolePercent);
 };
 
-class _XTP_EXT_CLASS CXTPChartGradientTorusDeviceCommand : public CXTPChartGradientPieDeviceCommand
-{
-public:
-	CXTPChartGradientTorusDeviceCommand(const CXTPChartDiagramPoint& center, double majorSemiAxis, double minorSemiAxis, double startAngle, double sweepAngle,
-		double depth, int holePercent, const CXTPChartRectF& gradientBounds, const CXTPChartColor& color, const CXTPChartColor& color2);
-
-protected:
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-	void PerformTorusDrawing(CXTPChartOpenGLDeviceContext* pDC);
-};
-
-class _XTP_EXT_CLASS CXTPChartBoundedPieDeviceCommand : public CXTPChartPieDeviceCommand
-{
-public:
-	CXTPChartBoundedPieDeviceCommand(const CXTPChartDiagramPoint& center, double majorSemiAxis, double minorSemiAxis, double startAngle, double sweepAngle,
-		double depth, int holePercent, const CXTPChartColor& color, int nThickness);
-
-protected:
-	void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-protected:
-	CXTPChartColor m_color;
-	int m_nThickness;
-};
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPIEDEVICECOMMAND_H__)

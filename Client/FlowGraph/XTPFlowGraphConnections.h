@@ -1,7 +1,6 @@
 // XTPFlowGraphConnections.h: interface for the CXTPFlowGraphConnections class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHCONNECTIONS_H__)
-#define __XTPFLOWGRAPHCONNECTIONS_H__
+#	define __XTPFLOWGRAPHCONNECTIONS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPage;
 class CXTPFlowGraphConnection;
@@ -117,17 +118,36 @@ public:
 
 protected:
 	CXTPFlowGraphPage* m_pPage; // Pointer to the page that displays these connections.
-	CArray<CXTPFlowGraphConnection*, CXTPFlowGraphConnection*> m_arrConnections; // Collection of connections.
+	CArray<CXTPFlowGraphConnection*, CXTPFlowGraphConnection*> m_arrConnections; // Collection of
+																				 // connections.
 
 	friend class CXTPFlowGraphPage;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphConnections)
+	DECLARE_ENUM_VARIANT(CXTPFlowGraphConnections)
+
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg LPDISPATCH OleAddConnection();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-AFX_INLINE int CXTPFlowGraphConnections::GetCount() const {
+AFX_INLINE int CXTPFlowGraphConnections::GetCount() const
+{
 	return (int)m_arrConnections.GetSize();
 }
-AFX_INLINE CXTPFlowGraphConnection* CXTPFlowGraphConnections::GetAt(int nIndex) const {
+AFX_INLINE CXTPFlowGraphConnection* CXTPFlowGraphConnections::GetAt(int nIndex) const
+{
 	return nIndex >= 0 && nIndex < m_arrConnections.GetSize() ? m_arrConnections[nIndex] : NULL;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHCONNECTIONS_H__)

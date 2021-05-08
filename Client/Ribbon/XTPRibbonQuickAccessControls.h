@@ -1,7 +1,6 @@
 // XTPRibbonQuickAccessControls.h: interface for the CXTPRibbonQuickAccessControls class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONQUICKACCESSCONTROLS_H__)
-#define __XTPRIBBONQUICKACCESSCONTROLS_H__
+#	define __XTPRIBBONQUICKACCESSCONTROLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#include "CommandBars/XTPControl.h"
-#include "CommandBars/XTPControls.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -101,7 +98,6 @@ public:
 	virtual ~CXTPRibbonQuickAccessControls();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to remove a control.
@@ -157,10 +153,10 @@ protected:
 	virtual void OnControlRemoved(CXTPControl* pControl);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual void RefreshIndexes();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONQUICKACCESSCONTROLS_H__)

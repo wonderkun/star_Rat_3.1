@@ -232,6 +232,16 @@ public:
                                                            interpolationMode));
     }
 
+#if (GDIPVER >= 0x0110)
+    Status SetAbort(GdiplusAbort *pIAbort)
+    {
+        return SetStatus(DllExports::GdipGraphicsSetAbort(
+            nativeGraphics,
+            pIAbort
+        ));
+    }
+#endif //(GDIPVER >= 0x0110)
+
     SmoothingMode GetSmoothingMode() const
     {
         SmoothingMode smoothingMode = SmoothingModeInvalid;
@@ -1566,14 +1576,6 @@ public:
     }
 
     
-    // Affine Draw Image
-    // destPoints.length = 3: rect => parallelogram
-    //     destPoints[0] <=> top-left corner of the source rectangle
-    //     destPoints[1] <=> top-right corner
-    //     destPoints[2] <=> bottom-left corner
-    // destPoints.length = 4: rect => quad
-    //     destPoints[3] <=> bottom-right corner
-    
     Status DrawImage(IN Image* image,
                      IN const PointF* destPoints,
                      IN INT count)
@@ -1752,6 +1754,54 @@ public:
                                                               callback,
                                                               callbackData));
     }
+    
+#if (GDIPVER >= 0x0110)
+    Status DrawImage(
+        IN Image *image,
+        IN const RectF &destRect,
+        IN const RectF &sourceRect,
+        IN Unit srcUnit,
+        IN const ImageAttributes *imageAttributes = NULL
+    )
+    {
+        return SetStatus(DllExports::GdipDrawImageRectRect(
+            nativeGraphics,
+            image->nativeImage,
+            destRect.X,
+            destRect.Y,
+            destRect.Width,
+            destRect.Height,
+            sourceRect.X,
+            sourceRect.Y,
+            sourceRect.Width,
+            sourceRect.Height,
+            srcUnit,
+            imageAttributes ? imageAttributes->nativeImageAttr : NULL,
+            NULL,
+            NULL
+        ));
+    }
+
+    Status DrawImage(
+        IN Image *image,
+        IN RectF *sourceRect,
+        IN Matrix *xForm,
+        IN Effect *effect,
+        IN ImageAttributes *imageAttributes,
+        IN Unit srcUnit
+    )
+    {
+        return SetStatus(DllExports::GdipDrawImageFX(
+            nativeGraphics,
+            image->nativeImage,
+            sourceRect,
+            xForm ? xForm->nativeMatrix : NULL,
+            effect ? effect->nativeEffect : NULL,
+            imageAttributes ? imageAttributes->nativeImageAttr : NULL,
+            srcUnit
+        ));
+    }
+#endif //(GDIPVER >= 0x0110)
 
     // The following methods are for playing an EMF+ to a graphics
     // via the enumeration interface.  Each record of the EMF+ is
@@ -2494,3 +2544,4 @@ GraphicsPath::IsOutlineVisible(
 }
 
 #endif
+

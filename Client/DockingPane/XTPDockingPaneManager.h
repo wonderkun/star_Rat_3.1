@@ -1,7 +1,6 @@
 // XTPDockingPaneManager.h : interface for the CXTPDockingPaneManager class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEMANAGER_H__)
-#define __XTPDOCKINGPANEMANAGER_H__
+#	define __XTPDOCKINGPANEMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
-#include "Common/XTPImageManager.h"
-#include "Common/XTPSystemHelpers.h"
-#include "TabManager/XTPTabManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPane;
 class CXTPDockingPaneBase;
@@ -46,16 +42,19 @@ class CXTPImageManagerIcon;
 class CXTPImageManager;
 class CXTPToolTipContext;
 class CXTPDockingPaneSidePanel;
+class CXTPImageManagerIconHandle;
+class CXTPPropExchange;
 
 //===========================================================================
 // Summary:
 //     CXTPDockingPaneManager is a CWnd derived class. It is used to manipulate
 //     docking panes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneManager : public CWnd, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPDockingPaneManager
+	: public CWnd
+	, public CXTPAccessible
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPDockingPaneManager object
@@ -86,7 +85,7 @@ public:
 	//     manager. This must be called first before any other member functions
 	//     are called.
 	//-----------------------------------------------------------------------
-	bool InstallDockingPanes(CWnd* pParent, bool bClipChildren=true);
+	virtual bool InstallDockingPanes(CWnd* pParent, bool bClipChildren = true);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -105,7 +104,8 @@ public:
 	// Returns:
 	//     The pointer to the created pane.
 	//-----------------------------------------------------------------------
-	CXTPDockingPane* CreatePane(UINT nID, CRect rc, XTPDockingPaneDirection direction, CXTPDockingPaneBase* pNeighbour = NULL);
+	virtual CXTPDockingPane* CreatePane(UINT nID, CRect rc, XTPDockingPaneDirection direction,
+										CXTPDockingPaneBase* pNeighbour = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -121,7 +121,8 @@ public:
 	//     * <b>xtpPaneDockRight</b> Docks the pane to the right of the neighbor.
 	//     * <b>xtpPaneDockBottom</b> Docks the pane to the bottom of the neighbor.
 	//-----------------------------------------------------------------------
-	void DockPane(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction, CXTPDockingPaneBase* pNeighbour = NULL);
+	virtual void DockPane(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction,
+						  CXTPDockingPaneBase* pNeighbour = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -129,7 +130,8 @@ public:
 	// Parameters:
 	//     pPane      - Pane to be docked.
 	//     direction  - Docking direction. Can be any of the values listed in the Remarks section.
-	//     rc - Number of pixels to offset the pane from the inside top edge of the client area.  This only has an effect when using the DockLeftOf and DockRightOf direction.
+	//     rc - Number of pixels to offset the pane from the inside top edge of the client area.
+	//     This only has an effect when using the DockLeftOf and DockRightOf direction.
 	// Remarks:
 	//     DockSidePane will dock a pane to the inside edge of the client using code.
 	//     SideDocking must be enabled for DockSidePane to have any effect.
@@ -147,7 +149,8 @@ public:
 	// Returns:
 	//    Reference to the side panel the pane is docked to.
 	//-----------------------------------------------------------------------
-	CXTPDockingPaneSidePanel* DockSidePane(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction, CRect rc);
+	virtual CXTPDockingPaneSidePanel* DockSidePane(CXTPDockingPaneBase* pPane,
+												   XTPDockingPaneDirection direction, CRect rc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -156,7 +159,7 @@ public:
 	//     pPane - Pane to be floated.
 	//     rc    - Floating rectangle.
 	//-----------------------------------------------------------------------
-	CXTPDockingPaneMiniWnd* FloatPane(CXTPDockingPaneBase* pPane, CRect rc);
+	virtual CXTPDockingPaneMiniWnd* FloatPane(CXTPDockingPaneBase* pPane, CRect rc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -165,7 +168,7 @@ public:
 	//     pPane      - Pane to be attached.
 	//     pNeighbour - Pane's Neighbor.
 	//-----------------------------------------------------------------------
-	void AttachPane(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pNeighbour);
+	virtual void AttachPane(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pNeighbour);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -173,7 +176,7 @@ public:
 	// Parameters:
 	//     pPane - Docking Pane.
 	//-----------------------------------------------------------------------
-	void ToggleDocking(CXTPDockingPaneBase* pPane);
+	virtual void ToggleDocking(CXTPDockingPaneBase* pPane);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -181,7 +184,7 @@ public:
 	// Parameters:
 	//     pPane - Docking Pane.
 	//-----------------------------------------------------------------------
-	void ToggleAutoHide(CXTPDockingPaneBase* pPane);
+	virtual void ToggleAutoHide(CXTPDockingPaneBase* pPane);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -191,8 +194,10 @@ public:
 	//     pPane     - Pane need to show
 	//     bSetFocus - TRUE to set focus to selected pane
 	//-----------------------------------------------------------------------
-	void ShowPane(int nID, BOOL bSetFocus = TRUE);
-	void ShowPane(CXTPDockingPane* pPane, BOOL bSetFocus = TRUE); // <COMBINE CXTPDockingPaneManager::ShowPane@int@BOOL>
+	virtual void ShowPane(int nID, BOOL bSetFocus = TRUE);
+	virtual void ShowPane(CXTPDockingPane* pPane,
+						  BOOL bSetFocus = TRUE); // <COMBINE
+												  // CXTPDockingPaneManager::ShowPane@int@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -201,8 +206,9 @@ public:
 	//     nID - Pane's identifier.
 	//     pPane - Pane need to close
 	//-----------------------------------------------------------------------
-	void ClosePane(int nID);
-	void ClosePane(CXTPDockingPane* pPane); // <COMBINE CXTPDockingPaneManager::ClosePane@int>
+	virtual void ClosePane(int nID);
+	virtual void ClosePane(CXTPDockingPane* pPane); // <COMBINE
+													// CXTPDockingPaneManager::ClosePane@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -212,8 +218,9 @@ public:
 	//     pPane - Pane need to destroy
 	// See Also: ClosePane
 	//-----------------------------------------------------------------------
-	void DestroyPane(int nID);
-	void DestroyPane(CXTPDockingPane* pPane); // <COMBINE CXTPDockingPaneManager::DestroyPane@int>
+	virtual void DestroyPane(int nID);
+	virtual void DestroyPane(CXTPDockingPane* pPane); // <COMBINE
+													  // CXTPDockingPaneManager::DestroyPane@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -222,8 +229,9 @@ public:
 	//     nID - Pane's identifier.
 	//     pPane - Pane need to hide
 	//-----------------------------------------------------------------------
-	void HidePane(int nID);
-	void HidePane(CXTPDockingPaneBase* pPane);// <COMBINE CXTPDockingPaneManager::HidePane@int>
+	virtual void HidePane(int nID);
+	virtual void HidePane(CXTPDockingPaneBase* pPane); // <COMBINE
+													   // CXTPDockingPaneManager::HidePane@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -245,7 +253,8 @@ public:
 	//     TRUE if the pane is closed.
 	//-----------------------------------------------------------------------
 	BOOL IsPaneClosed(int nID) const;
-	BOOL IsPaneClosed(CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneClosed@int@const>
+	BOOL IsPaneClosed(
+		CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneClosed@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -257,7 +266,8 @@ public:
 	//     TRUE if the pane is hidden.
 	//-----------------------------------------------------------------------
 	BOOL IsPaneHidden(int nID) const;
-	BOOL IsPaneHidden(CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneHidden@int@const>
+	BOOL IsPaneHidden(
+		CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneHidden@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -269,7 +279,8 @@ public:
 	//     TRUE if the pane is selected.
 	//-----------------------------------------------------------------------
 	BOOL IsPaneSelected(int nID) const;
-	BOOL IsPaneSelected(CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneSelected@int@const>
+	BOOL IsPaneSelected(
+		CXTPDockingPane* pPane) const; // <COMBINE CXTPDockingPaneManager::IsPaneSelected@int@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -291,7 +302,7 @@ public:
 	//     nID   - Docking pane's identifier.
 	//     hIcon - Icon handle.
 	//-----------------------------------------------------------------------
-	void SetIcon(UINT nID, CXTPImageManagerIconHandle hIcon);
+	void SetIcon(UINT nID, const CXTPImageManagerIconHandle& hIcon);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -322,7 +333,8 @@ public:
 	//     To disable animation set nAnimationDuration = 0.
 	// See Also: GetAnimationDelay
 	//-----------------------------------------------------------------------
-	void SetAnimationDelay(double dAnimationDelay = -1, int nAnimationDuration = 128, int nAnimationInterval = 16);
+	void SetAnimationDelay(double dAnimationDelay = -1, int nAnimationDuration = 128,
+						   int nAnimationInterval = 16);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -350,7 +362,8 @@ public:
 	//     * <b>xtpPaneKeyboardUseCtrlTab</b> To use Ctrl+Tab to show window select dialog
 	//     * <b>xtpPaneKeyboardUseAll</b> To use all keys
 	//
-	//     You can call SetKeyboardWindowSelectClass to set custom window for Ctrl-Tab and Alt_F7 operations
+	//     You can call SetKeyboardWindowSelectClass to set custom window for Ctrl-Tab and Alt_F7
+	//     operations
 	// See Also: XTPDockingPaneKeyboardNavigate
 	//-----------------------------------------------------------------------
 	void EnableKeyboardNavigate(DWORD options = xtpPaneKeyboardUseAll);
@@ -359,15 +372,16 @@ public:
 	// Summary:
 	//     Determines if Keyboard Navigate options enabled.
 	// Returns:
-	//     Returns combination of XTPDockingPaneKeyboardNavigate flags indicates which keys can be used
-	//     to navigate panes
+	//     Returns combination of XTPDockingPaneKeyboardNavigate flags indicates which keys can be
+	//     used to navigate panes
 	// See Also: EnableKeyboardNavigate, XTPDockingPaneKeyboardNavigate
 	//-----------------------------------------------------------------------
 	BOOL IsKeyboardNavigateEnabled() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set custom CXTPDockingPaneWindowSelect window, that will use to show active panes and files.
+	//     Call this method to set custom CXTPDockingPaneWindowSelect window, that will use to show
+	//     active panes and files.
 	// Parameters:
 	//     pWindowSelectClass - CRuntimeClass pointer of custom CXTPDockingPaneWindowSelect window.
 	// See Also: EnableKeyboardNavigate, XTPDockingPaneKeyboardNavigate
@@ -376,8 +390,10 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Determines Runtime class for CXTPDockingPaneWindowSelect window, that shows active panes and files.
-	// See Also: SetKeyboardWindowSelectClass, EnableKeyboardNavigate, XTPDockingPaneKeyboardNavigate
+	//     Determines Runtime class for CXTPDockingPaneWindowSelect window, that shows active panes
+	//     and files.
+	// See Also: SetKeyboardWindowSelectClass, EnableKeyboardNavigate,
+	// XTPDockingPaneKeyboardNavigate
 	//-----------------------------------------------------------------------
 	CRuntimeClass* GetKeyboardWindowSelectClass() const;
 
@@ -389,8 +405,8 @@ public:
 	//     bForward - TRUE to select next pane; FALSE to select previous pane
 	//-----------------------------------------------------------------------
 	BOOL ActivateNextPane(CXTPDockingPane* pPane, BOOL bForward);
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to get the list of the created panes.
@@ -431,7 +447,7 @@ public:
 	//     * <b>xtpPaneThemeOffice2002Visio</b> Enables Visio style theme.
 	//     * <b>xtpPaneThemeOffice2003</b> Enables Office 2003 style theme.
 	//     * <b>xtpPaneThemeWinNative</b> Enables XP Theme.
-	//     * <b>xtpPaneThemeVisualStudio2005Beta1</b> Enables Whidbey theme.
+	//     * <b>xtpPaneThemeVisualStudio2005Beta1</b> Enables Visual Studio 2005 Beta 1 theme.
 	//-----------------------------------------------------------------------
 	void SetTheme(XTPDockingPanePaintTheme theme);
 
@@ -555,8 +571,31 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves width of margin around panes
+	// Returns:
+	//     The size in pixels for the client margin.
 	//-----------------------------------------------------------------------
 	int GetClientMargin() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to add margins around panes, allows you to set
+	//     each margin (left, top, right, bottom) individually using a CRect
+	//     object.
+	// Parameters:
+	//     rcClientMargins - Width of margin for panes frame, use left, top,
+	//                       right and bottom members to specify the size for
+	//                       each margin.
+	//-----------------------------------------------------------------------
+	void SetClientMargins(CRect rcClientMargins);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Retrieves size of the margins specified around docking panes.
+	// Returns:
+	//     A CRect object representing the size in pixels for each side of the
+	//     client area margin.
+	//-----------------------------------------------------------------------
+	CRect GetClientMargins() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -702,7 +741,8 @@ public:
 	// Summary:
 	//     Call this method to set opacity for inactive floating frames
 	// Parameters:
-	//     nOpacity - Alpha value. When nOpacity is 0, the window is completely transparent. When nOpacity is 255, the window is opaque.
+	//     nOpacity - Alpha value. When nOpacity is 0, the window is completely transparent. When
+	//     nOpacity is 255, the window is opaque.
 	//-----------------------------------------------------------------------
 	void SetFloatingFramesOpacity(int nOpacity);
 
@@ -714,7 +754,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to keep the activation of floating frames windows in sync with the activation of the top level frame window.
+	//     Call this member to keep the activation of floating frames windows in sync with the
+	//     activation of the top level frame window.
 	// Parameters:
 	//     bSyncActiveFloatingFrames - TRUE to synchronizes the activation of the mini-frame window
 	//                                to the activation of its parent window.
@@ -830,7 +871,8 @@ public:
 	// Remarks:
 	//     AlphaDockingContext must be TRUE if Docking Context Stickers will
 	//     be used.
-	// See Also: SetAlphaDockingContext, IsAlphaDockingContext, IsShowDockingContextStickers, SetDockingContextStickerStyle
+	// See Also: SetAlphaDockingContext, IsAlphaDockingContext, IsShowDockingContextStickers,
+	// SetDockingContextStickerStyle
 	//-----------------------------------------------------------------------
 	void SetShowDockingContextStickers(BOOL bShowDockingContextStickers);
 
@@ -842,7 +884,7 @@ public:
 	// Remarks:
 	//     Call SetShowDockingContextStickers to enable Stickers.
 	//     Style parameter can be one of the following:
-	//     * <b>xtpPaneStickerStyleVisualStudio2005Beta</b> Whidbey stickers.
+	//     * <b>xtpPaneStickerStyleVisualStudio2005Beta</b> VisualStudio 2005 Beta stickers.
 	//     * <b>xtpPaneStickerStyleVisualStudio2005</b> Visual Studio 2005 stickers.
 	// See Also: SetShowDockingContextStickers, GetDockingContextStickerStyle
 	//-----------------------------------------------------------------------
@@ -877,19 +919,39 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to show Maximize/Restore buttons for docking panes
+	//     Call this method to show Maximize/Restore buttons for non-floating docking panes
 	// Parameters:
 	//     bShowMaximizeButton - TRUE to show maximize buttons for panes
-	// See Also: IsCaptionMaximizeButtonsVisible
+	// See Also: ShowFloatingCaptionMaximizeButton, IsCaptionMaximizeButtonsVisible,
+	//           IsFloatingCaptionMaximizeButtonsVisible
 	//-----------------------------------------------------------------------
 	void ShowCaptionMaximizeButton(BOOL bShowMaximizeButton);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Determines if Maximize/Restore buttons for docking panes are visible
-	// See Also: ShowCaptionMaximizeButton
+	//     Call this method to show Maximize/Restore buttons for floating docking panes
+	// Parameters:
+	//     bShowMaximizeButton - TRUE to show maximize buttons for panes
+	// See Also: ShowCaptionMaximizeButton, IsFloatingCaptionMaximizeButtonsVisible,
+	//           IsCaptionMaximizeButtonsVisible
+	//-----------------------------------------------------------------------
+	void ShowFloatingCaptionMaximizeButton(BOOL bShowMaximizeButton);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if Maximize/Restore buttons for non-floating docking panes are visible
+	// See Also: ShowCaptionMaximizeButton, ShowFloatingCaptionMaximizeButton,
+	//           IsFloatingCaptionMaximizeButtonsVisible
 	//-----------------------------------------------------------------------
 	BOOL IsCaptionMaximizeButtonsVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if Maximize/Restore buttons for floating docking panes are visible
+	// See Also: ShowCaptionMaximizeButton, ShowFloatingCaptionMaximizeButton,
+	//           IsCaptionMaximizeButtonsVisible
+	//-----------------------------------------------------------------------
+	BOOL IsFloatingCaptionMaximizeButtonsVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -915,7 +977,8 @@ public:
 	// Summary:
 	//     Call this method to set default options for each pane
 	// Parameters:
-	//     dwOptions - Option applied for each pane. Can be any of the values listed in the Remarks section.
+	//     dwOptions - Option applied for each pane. Can be any of the values listed in the Remarks
+	//     section.
 	// Remarks:
 	//     dwOptions parameter can be one or more of the following:
 	//     * <b>xtpPaneNoCloseable</b> Indicates the pane cannot be closed.
@@ -937,11 +1000,13 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to set the application's panes into and out of print-preview mode.
+	//     Call this member function to set the application's panes into and out of print-preview
+	//     mode.
 	// Parameters:
-	//     bPreview - Specifies whether or not to place the application in print-preview mode. Set to TRUE to place in print preview, FALSE to cancel preview mode.
+	//     bPreview - Specifies whether or not to place the application in print-preview mode. Set
+	//     to TRUE to place in print preview, FALSE to cancel preview mode.
 	//-----------------------------------------------------------------------
-	void OnSetPreviewMode (BOOL bPreview);
+	void OnSetPreviewMode(BOOL bPreview);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1018,7 +1083,6 @@ public:
 	BOOL IsSideDockingEnabled() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when a pane is created.
@@ -1028,7 +1092,8 @@ public:
 	// Returns:
 	//     Created pane.
 	//-----------------------------------------------------------------------
-	virtual CXTPDockingPaneBase* OnCreatePane(XTPDockingPaneType type, CXTPDockingPaneLayout* pLayout);
+	virtual CXTPDockingPaneBase* OnCreatePane(XTPDockingPaneType type,
+											  CXTPDockingPaneLayout* pLayout);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1045,14 +1110,17 @@ public:
 	// Parameters:
 	//     action - The action the docking pane is performing.
 	//     pPane - The pane performing the action.
-	//     pDockContainer - Object used to provide additional information about where a Pane will be\has been docked.
-	//     dockDirection - Specifies the direction where a pane is docking.
+	//     pDockContainer - Object used to provide additional information about where a Pane will
+	//     be\has been docked. dockDirection - Specifies the direction where a pane is docking.
 	// Returns:
 	//     TRUE if the action was successful, FALSE if the action was cancelled or failed.
 	//-----------------------------------------------------------------------
-	BOOL NotifyAction(XTPDockingPaneAction action, CXTPDockingPane* pPane, CXTPDockingPaneBase* pDockContainer = NULL, XTPDockingPaneDirection dockDirection = xtpPaneDockLeft);
+	BOOL NotifyAction(XTPDockingPaneAction action, CXTPDockingPane* pPane,
+					  CXTPDockingPaneBase* pDockContainer   = NULL,
+					  XTPDockingPaneDirection dockDirection = xtpPaneDockLeft);
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPDockingPaneManager)
@@ -1064,30 +1132,33 @@ protected:
 	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
 
 	DECLARE_INTERFACE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
-
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	CXTPDockingPaneLayout* GetCurrentLayout() const;
 
-	CRect _CalculateResultDockingRect(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction, CXTPDockingPaneBase* pNeighbour);
-	void _InsertPane(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction, CXTPDockingPaneBase* pNeighbour);
+	CRect _CalculateResultDockingRect(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction,
+									  CXTPDockingPaneBase* pNeighbour);
+	void _InsertPane(CXTPDockingPaneBase* pPane, XTPDockingPaneDirection direction,
+					 CXTPDockingPaneBase* pNeighbour);
 	void _RemovePane(CXTPDockingPaneBase* pPane);
 	void _AttachPane(CXTPDockingPaneBase* pPane, CXTPDockingPaneBase* pNeighbour);
 	CXTPDockingPaneBase* _GetHolder(CXTPDockingPaneBase* pPane, BOOL bFloating);
@@ -1099,58 +1170,80 @@ private:
 	BOOL _ToggleDocking(CXTPDockingPane* pPane, CXTPDockingPaneBase* pHolder);
 
 public:
-	int m_nSplitterGap;                             // Minimum available width of panes.
-	BOOL m_bCloseGroupOnButtonClick;                // If TRUE, when the close button on a group of panes is clicked, then the entire group of panes is closed.  If FALSE, the only the currently visible pane in the group will be closed.
-	BOOL m_bHideGroupOnButtonClick;                 // If TRUE, when the hide button on a group of panes is clicked, then the entire group of panes is hidden.  If FALSE, the only the currently visible pane in the group will be hidden.
-	BOOL m_bShowSizeCursorWhileDragging;            // TRUE to show size cursor while panes are dragged
-	CPoint m_ptMinClientSize;                       // Minimum client size
-	int m_nStickyGap;                               // Sticky gap
-	BOOL m_bShowPanelScrollButtons;                 // TRUE to show scroll buttons for AutoHide Panels.
-	BOOL m_bAutoInitialUpdate;                      // TRUE to send WM_INITIIALUPDATE to Pane Children
+	int m_nSplitterGap;				 // Minimum available width of panes.
+	BOOL m_bCloseGroupOnButtonClick; // If TRUE, when the close button on a group of panes is
+									 // clicked, then the entire group of panes is closed.  If
+									 // FALSE, the only the currently visible pane in the group will
+									 // be closed.
+	BOOL m_bHideGroupOnButtonClick; // If TRUE, when the hide button on a group of panes is clicked,
+									// then the entire group of panes is hidden.  If FALSE, the only
+									// the currently visible pane in the group will be hidden.
+	BOOL m_bShowSizeCursorWhileDragging; // TRUE to show size cursor while panes are dragged
+	CPoint m_ptMinClientSize;			 // Minimum client size
+	int m_nStickyGap;					 // Sticky gap
+	BOOL m_bShowPanelScrollButtons;		 // TRUE to show scroll buttons for AutoHide Panels.
+	BOOL m_bAutoInitialUpdate;			 // TRUE to send WM_INITIIALUPDATE to Pane Children
 	XTPTabNavigateButtonFlags m_bShowCloseTabButton; // Close Tab Button Flag
 
 protected:
-	CWnd* m_pSite;                                  // Parent window of docking manager.
-	CXTPDockingPaneLayout* m_pLayout;               // Selected layout.
-	CXTPDockingPanePaintManager* m_pPaintManager;   // Current paint manager.
-	CXTPDockingPane* m_pActivePane;                 // Current Active pane;
+	CWnd* m_pSite;								  // Parent window of docking manager.
+	CXTPDockingPaneLayout* m_pLayout;			  // Selected layout.
+	CXTPDockingPanePaintManager* m_pPaintManager; // Current paint manager.
+	CXTPDockingPane* m_pActivePane;				  // Current Active pane;
 
-	int m_nClientMargin;                            // Client margins
-	CRect m_rcSideDockingMargin;                    // Side docking margin, this is the margin between the client area's edge and a docking pane docked to the edge of the client area when side docking is enabled.
-	BOOL m_bStickyFloatingFrames;                   // TRUE to enable sticky option for floating panes
+	CRect m_rcClientMargins;	  // Specifies each client margin individually.
+	CRect m_rcSideDockingMargin;  // Side docking margin, this is the margin between the client
+								  // area's edge and a docking pane docked to the edge of the client
+								  // area when side docking is enabled.
+	BOOL m_bStickyFloatingFrames; // TRUE to enable sticky option for floating panes
 
-	CXTPImageManager* m_pImageManager;              // Image manager of docking panes.
+	CXTPImageManager* m_pImageManager; // Image manager of docking panes.
 
-	BOOL m_bSideDocking;                            // TRUE if side docking is enabled, FALSE if disabled.
+	BOOL m_bSideDocking; // TRUE if side docking is enabled, FALSE if disabled.
 
-	BOOL m_bHideClient;                             // If TRUE, the client area is hidden so that only the docking panes are visible and occupy the entire area.
-	BOOL m_bUseSplitterTracker;                     // If TRUE, splitter trackers are used.  When resizing a docking pane, an outline of the pane is drawn as the splitter is dragged.  If FALSE, the docking pane will be resized in "real-time."
-	BOOL m_bShowMaximizeButton;                     // Allow panes to be maximized.
+	BOOL m_bHideClient; // If TRUE, the client area is hidden so that only the docking panes are
+						// visible and occupy the entire area.
+	BOOL m_bUseSplitterTracker; // If TRUE, splitter trackers are used.  When resizing a docking
+								// pane, an outline of the pane is drawn as the splitter is dragged.
+								// If FALSE, the docking pane will be resized in "real-time."
+	BOOL m_bShowMaximizeButton; // Allow non-floating panes to be maximized.
+	BOOL m_bShowFloatingMaximizeButton; // Allow floating panes to be maximized.
 
-	BOOL m_bLockSplitters;                          // If TRUE, you can not resize the panes when they are docked. However, panes can be resized via code and when they are floated.
-	BOOL m_bAlphaDockingContext;                    // If TRUE, alpha docking context is used when dragging a pane, the shaded area indicates the panes new location of dropped.
-	BOOL m_bShowDockingContextStickers;             // If TRUE, docking context stickers are drawn when the pane is being dragged and dropped. m_bAlphaDockingContext must be TRUE.
-	BOOL m_bShowContentsWhileDragging;              // If TRUE, window contents is visible while dragging.
+	BOOL m_bLockSplitters; // If TRUE, you can not resize the panes when they are docked. However,
+						   // panes can be resized via code and when they are floated.
+	BOOL m_bAlphaDockingContext; // If TRUE, alpha docking context is used when dragging a pane, the
+								 // shaded area indicates the panes new location of dropped.
+	BOOL m_bShowDockingContextStickers; // If TRUE, docking context stickers are drawn when the pane
+										// is being dragged and dropped. m_bAlphaDockingContext must
+										// be TRUE.
+	BOOL m_bShowContentsWhileDragging;  // If TRUE, window contents is visible while dragging.
 
-	BOOL m_bThemedFloatingFrames;                   // If TRUE, floating docking panes will use the currently set theme.
-	BOOL m_bSyncActiveFloatingFrames;               // Synchronizes the activation of the mini-frame window to the activation of its parent window.
-	BOOL m_nFloatingFramesOpacity;                  // Opacity of floating frames
-	DWORD m_bKeyboardEnabled;                       // XTPDockingPaneKeyboardNavigate options
+	BOOL m_bThemedFloatingFrames;	 // If TRUE, floating docking panes will use the currently set
+									  // theme.
+	BOOL m_bSyncActiveFloatingFrames; // Synchronizes the activation of the mini-frame window to the
+									  // activation of its parent window.
+	BOOL m_nFloatingFramesOpacity;	// Opacity of floating frames
+	DWORD m_bKeyboardEnabled;		  // XTPDockingPaneKeyboardNavigate options
 
-	DWORD m_dwDefaultPaneOptions;                   // Default Panes options.
+	DWORD m_dwDefaultPaneOptions;					   // Default Panes options.
 	XTPDockingPaneCaptionDirection m_captionDirection; // Caption Direction
 
-	CString m_strFloatingFrameCaption;              // The caption that is displayed in the title bar of a floating frame that has panes docked. This is the floating frame that contains other docking panes.
+	CString m_strFloatingFrameCaption; // The caption that is displayed in the title bar of a
+									   // floating frame that has panes docked. This is the floating
+									   // frame that contains other docking panes.
 
-	XTPDockingContextStickerStyle m_nDockingContextStickerStyle;  // Sticker style.
+	XTPDockingContextStickerStyle m_nDockingContextStickerStyle; // Sticker style.
 
-	CXTPDockingPaneContext* m_pDockingContext;      // Docking context helper.
-	CXTPDockingPaneLayout* m_pPreviewLayout;        // Preview mode layout.
-	CXTPToolTipContext* m_pToolTipContext;          // Tooltip Context.
+	CXTPDockingPaneContext* m_pDockingContext; // Docking context helper.
+	CXTPDockingPaneLayout* m_pPreviewLayout;   // Preview mode layout.
+	CXTPToolTipContext* m_pToolTipContext;	 // Tooltip Context.
 
-	typedef BOOL (WINAPI *PFNSETLAYEREDWINDOWATTRIBUTES) (HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags);
-	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes;          // POinter to SetLayeredWindowAttributes API function
-	CRuntimeClass* m_pWindowSelectClass;            // Runtime class of WindowSelect
+	typedef BOOL(WINAPI* PFNSETLAYEREDWINDOWATTRIBUTES)(HWND hwnd, COLORREF crKey, BYTE bAlpha,
+														DWORD dwFlags);
+	PFNSETLAYEREDWINDOWATTRIBUTES m_pfnSetLayeredWindowAttributes; // POinter to
+																   // SetLayeredWindowAttributes API
+																   // function
+	CRuntimeClass* m_pWindowSelectClass;						   // Runtime class of WindowSelect
 
 private:
 	HWND m_hwndLastFocus;
@@ -1173,158 +1266,280 @@ private:
 	friend class CDockingPaneCtrl;
 	friend class CDockingPaneOptions;
 
+#	ifdef _XTP_ACTIVEX
+	CXTPDockingPaneManager* GetDockingPaneManager()
+	{
+		return this;
+	}
+#	endif
 };
 
-AFX_INLINE CWnd* CXTPDockingPaneManager::GetSite() const {
+AFX_INLINE CWnd* CXTPDockingPaneManager::GetSite() const
+{
 	return m_pSite;
 }
-AFX_INLINE CXTPDockingPaneLayout* CXTPDockingPaneManager::GetCurrentLayout() const {
+
+AFX_INLINE CXTPDockingPaneLayout* CXTPDockingPaneManager::GetCurrentLayout() const
+{
 	return m_pLayout;
 }
 
-AFX_INLINE void CXTPDockingPaneManager::RedrawPanes() {
+AFX_INLINE void CXTPDockingPaneManager::RedrawPanes()
+{
 	_Redraw();
 }
-AFX_INLINE CXTPDockingPanePaintManager* CXTPDockingPaneManager::GetPaintManager() const {
+
+AFX_INLINE CXTPDockingPanePaintManager* CXTPDockingPaneManager::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsClientHidden() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsClientHidden() const
+{
 	return m_bHideClient;
 }
-AFX_INLINE void CXTPDockingPaneManager::UseSplitterTracker(BOOL bSplitterTracker) {
+
+AFX_INLINE void CXTPDockingPaneManager::UseSplitterTracker(BOOL bSplitterTracker)
+{
 	m_bUseSplitterTracker = bSplitterTracker;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsSplitterTrackerUsed() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsSplitterTrackerUsed() const
+{
 	return m_bUseSplitterTracker;
 }
-AFX_INLINE CXTPImageManager* CXTPDockingPaneManager::GetImageManager() const {
+
+AFX_INLINE CXTPImageManager* CXTPDockingPaneManager::GetImageManager() const
+{
 	return m_pImageManager;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsSplittersLocked() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsSplittersLocked() const
+{
 	return m_bLockSplitters;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetFloatingFrameCaption(LPCTSTR lpszCaption) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetFloatingFrameCaption(LPCTSTR lpszCaption)
+{
 	m_strFloatingFrameCaption = lpszCaption;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsThemedFloatingFrames() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsThemedFloatingFrames() const
+{
 	return m_bThemedFloatingFrames;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetStickyFloatingFrames(BOOL bSticky) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetStickyFloatingFrames(BOOL bSticky)
+{
 	m_bStickyFloatingFrames = bSticky;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsStickyFloatingFrames() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsStickyFloatingFrames() const
+{
 	return m_bStickyFloatingFrames;
 }
-AFX_INLINE CXTPDockingPaneContext* CXTPDockingPaneManager::GetDockingContext() const {
+
+AFX_INLINE CXTPDockingPaneContext* CXTPDockingPaneManager::GetDockingContext() const
+{
 	return m_pDockingContext;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsAlphaDockingContext() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsAlphaDockingContext() const
+{
 	return m_bAlphaDockingContext;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetAlphaDockingContext(BOOL bAlphaDockingContext) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetAlphaDockingContext(BOOL bAlphaDockingContext)
+{
 	m_bAlphaDockingContext = bAlphaDockingContext;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsShowDockingContextStickers() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsShowDockingContextStickers() const
+{
 	return m_bShowDockingContextStickers;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetShowDockingContextStickers(BOOL bShowDockingContextStickers) {
+
+AFX_INLINE void
+	CXTPDockingPaneManager::SetShowDockingContextStickers(BOOL bShowDockingContextStickers)
+{
 	m_bShowDockingContextStickers = bShowDockingContextStickers;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetDefaultPaneOptions(DWORD dwOptions) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetDefaultPaneOptions(DWORD dwOptions)
+{
 	m_dwDefaultPaneOptions = dwOptions;
 }
-AFX_INLINE DWORD CXTPDockingPaneManager::GetDefaultPaneOptions() const {
+
+AFX_INLINE DWORD CXTPDockingPaneManager::GetDefaultPaneOptions() const
+{
 	return m_dwDefaultPaneOptions;
 }
-AFX_INLINE void CXTPDockingPaneManager::HidePane(int nID) {
-	HidePane((CXTPDockingPaneBase*)FindPane(nID));
-}
-AFX_INLINE void CXTPDockingPaneManager::ClosePane(int nID) {
+
+AFX_INLINE void CXTPDockingPaneManager::ClosePane(int nID)
+{
 	ClosePane(FindPane(nID));
 }
-AFX_INLINE void CXTPDockingPaneManager::ShowPane(int nID, BOOL bSetFocus) {
+
+AFX_INLINE void CXTPDockingPaneManager::ShowPane(int nID, BOOL bSetFocus)
+{
 	ShowPane(FindPane(nID), bSetFocus);
 }
-AFX_INLINE void CXTPDockingPaneManager::DestroyPane(int nID) {
+
+AFX_INLINE void CXTPDockingPaneManager::DestroyPane(int nID)
+{
 	DestroyPane(FindPane(nID));
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneClosed(int nID) const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneClosed(int nID) const
+{
 	return IsPaneClosed(FindPane(nID));
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneHidden(int nID) const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneHidden(int nID) const
+{
 	return IsPaneHidden(FindPane(nID));
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneSelected(int nID) const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsPaneSelected(int nID) const
+{
 	return IsPaneSelected(FindPane(nID));
 }
-AFX_INLINE CXTPDockingPane* CXTPDockingPaneManager::GetActivePane() const {
+
+AFX_INLINE CXTPDockingPane* CXTPDockingPaneManager::GetActivePane() const
+{
 	return m_pActivePane;
 }
-AFX_INLINE CXTPToolTipContext* CXTPDockingPaneManager::GetToolTipContext() const {
+
+AFX_INLINE CXTPToolTipContext* CXTPDockingPaneManager::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
-AFX_INLINE void CXTPDockingPaneManager::ShowCaptionMaximizeButton(BOOL bShowMaximizeButton) {
+
+AFX_INLINE void CXTPDockingPaneManager::ShowCaptionMaximizeButton(BOOL bShowMaximizeButton)
+{
 	m_bShowMaximizeButton = bShowMaximizeButton;
 	RedrawPanes();
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsCaptionMaximizeButtonsVisible() const {
+
+AFX_INLINE void CXTPDockingPaneManager::ShowFloatingCaptionMaximizeButton(BOOL bShowMaximizeButton)
+{
+	m_bShowFloatingMaximizeButton = bShowMaximizeButton;
+	RedrawPanes();
+}
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsCaptionMaximizeButtonsVisible() const
+{
 	return m_bShowMaximizeButton;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetDockingContextStickerStyle(XTPDockingContextStickerStyle style) {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsFloatingCaptionMaximizeButtonsVisible() const
+{
+	return m_bShowFloatingMaximizeButton;
+}
+
+AFX_INLINE void
+	CXTPDockingPaneManager::SetDockingContextStickerStyle(XTPDockingContextStickerStyle style)
+{
 	m_nDockingContextStickerStyle = style;
 }
-AFX_INLINE XTPDockingContextStickerStyle CXTPDockingPaneManager::GetDockingContextStickerStyle() const {
+
+AFX_INLINE XTPDockingContextStickerStyle
+	CXTPDockingPaneManager::GetDockingContextStickerStyle() const
+{
 	return m_nDockingContextStickerStyle;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetCaptionDirection(XTPDockingPaneCaptionDirection captionDirection) {
+
+AFX_INLINE void
+	CXTPDockingPaneManager::SetCaptionDirection(XTPDockingPaneCaptionDirection captionDirection)
+{
 	m_captionDirection = captionDirection;
 	RedrawPanes();
 }
-AFX_INLINE XTPDockingPaneCaptionDirection CXTPDockingPaneManager::GetCaptionDirection() const {
+
+AFX_INLINE XTPDockingPaneCaptionDirection CXTPDockingPaneManager::GetCaptionDirection() const
+{
 	return m_captionDirection;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetShowContentsWhileDragging(BOOL bShow) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetShowContentsWhileDragging(BOOL bShow)
+{
 	m_bShowContentsWhileDragging = bShow;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::GetShowContentsWhileDragging() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::GetShowContentsWhileDragging() const
+{
 	return m_bShowContentsWhileDragging;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetClientMargin(int nMargin) {
-	if (m_nClientMargin != nMargin) {
-		m_nClientMargin = nMargin;
+
+AFX_INLINE void CXTPDockingPaneManager::SetClientMargin(int nMargin)
+{
+	CRect rcClientMargins(nMargin, nMargin, nMargin, nMargin);
+	SetClientMargins(rcClientMargins);
+}
+
+AFX_INLINE int CXTPDockingPaneManager::GetClientMargin() const
+{
+	return m_rcClientMargins.left;
+}
+
+AFX_INLINE void CXTPDockingPaneManager::SetClientMargins(CRect rcClientMargins)
+{
+	if (m_rcClientMargins != rcClientMargins)
+	{
+		m_rcClientMargins = rcClientMargins;
 		RecalcFrameLayout(NULL, TRUE);
 	}
 }
-AFX_INLINE int CXTPDockingPaneManager::GetClientMargin() const {
-	return m_nClientMargin;
+
+AFX_INLINE CRect CXTPDockingPaneManager::GetClientMargins() const
+{
+	return m_rcClientMargins;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetSideDockingMargin(CRect rcMargin) {
-	if (m_rcSideDockingMargin != rcMargin) {
+
+AFX_INLINE void CXTPDockingPaneManager::SetSideDockingMargin(CRect rcMargin)
+{
+	if (m_rcSideDockingMargin != rcMargin)
+	{
 		m_rcSideDockingMargin = rcMargin;
 		RecalcFrameLayout(NULL, TRUE);
 	}
 }
-AFX_INLINE CRect CXTPDockingPaneManager::GetSideDockingMargin() const {
+
+AFX_INLINE CRect CXTPDockingPaneManager::GetSideDockingMargin() const
+{
 	return m_rcSideDockingMargin;
 }
-AFX_INLINE int CXTPDockingPaneManager::GetFloatingFramesOpacity() const {
+
+AFX_INLINE int CXTPDockingPaneManager::GetFloatingFramesOpacity() const
+{
 	return m_nFloatingFramesOpacity;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsKeyboardNavigateEnabled() const {
-	return m_bKeyboardEnabled;
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsKeyboardNavigateEnabled() const
+{
+	return (BOOL)m_bKeyboardEnabled;
 }
-AFX_INLINE void CXTPDockingPaneManager::SetKeyboardWindowSelectClass(CRuntimeClass* pWindowSelectClass) {
+
+AFX_INLINE void
+	CXTPDockingPaneManager::SetKeyboardWindowSelectClass(CRuntimeClass* pWindowSelectClass)
+{
 	m_pWindowSelectClass = pWindowSelectClass;
 }
-AFX_INLINE CRuntimeClass* CXTPDockingPaneManager::GetKeyboardWindowSelectClass() const {
+
+AFX_INLINE CRuntimeClass* CXTPDockingPaneManager::GetKeyboardWindowSelectClass() const
+{
 	return m_pWindowSelectClass;
 }
-AFX_INLINE void CXTPDockingPaneManager::EnableSideDocking(BOOL bEnable) {
+
+AFX_INLINE void CXTPDockingPaneManager::EnableSideDocking(BOOL bEnable)
+{
 	m_bSideDocking = bEnable;
 }
-AFX_INLINE BOOL CXTPDockingPaneManager::IsSideDockingEnabled() const {
+
+AFX_INLINE BOOL CXTPDockingPaneManager::IsSideDockingEnabled() const
+{
 	return m_bSideDocking;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPDOCKINGPANEMANAGER_H__)

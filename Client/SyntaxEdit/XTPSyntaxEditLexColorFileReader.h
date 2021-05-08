@@ -1,7 +1,6 @@
 // XTPSyntaxEditLexColorFileReader.h: interface for the CXTLexColorFileReader class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITLEXCOLORFILEREADER_H__)
-#define __XTPSYNTAXEDITLEXCOLORFILEREADER_H__
+#	define __XTPSYNTAXEDITLEXCOLORFILEREADER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditColorTheme;
+class CXTPNotifyConnection;
+class CXTPNotifyConnectionMT;
+struct XTP_EDIT_SCHEMAFILEINFO;
+class CXTPSyntaxEditSchemaFileInfoList;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -35,8 +40,8 @@ class CXTPSyntaxEditColorTheme;
 //-----------------------------------------------------------------------
 enum XTPSyntaxEditCfgFlags
 {
-	xtpEditCfgFileAdd       = 0x0001, // file should be added
-	xtpEditCfgFileRemove    = 0x0002, // file should be removed
+	xtpEditCfgFileAdd	= 0x0001, // file should be added
+	xtpEditCfgFileRemove = 0x0002, // file should be removed
 };
 
 //===========================================================================
@@ -47,7 +52,6 @@ enum XTPSyntaxEditCfgFlags
 class _XTP_EXT_CLASS CXTPSyntaxEditColorInfo
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Object constructor.
@@ -72,7 +76,7 @@ public:
 	//      Destroys a CXTPSyntaxEditColorTheme() object, handles cleanup and
 	//      de-allocation
 	//-----------------------------------------------------------------------
-	virtual ~CXTPSyntaxEditColorInfo ();
+	virtual ~CXTPSyntaxEditColorInfo();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -136,8 +140,8 @@ public:
 	const CString GetClassName() const;
 
 private:
-	CString m_strClassName;     // lex class name
-	CMapStringToString m_mapParams; // name/value parameters map
+	CString m_strClassName;				// lex class name
+	CMapStringToString m_mapParams;		// name/value parameters map
 	CXTPSyntaxEditColorTheme* m_pTheme; // pointer to the theme this color information belongs to
 };
 
@@ -145,10 +149,11 @@ private:
 // Summary:
 //      This collection class hold the color info objects.
 //==========================================================================
-class CXTPSyntaxEditColorInfoArray : public
-			CArray<CXTPSyntaxEditColorInfo*, CXTPSyntaxEditColorInfo*>
+class _XTP_EXT_CLASS CXTPSyntaxEditColorInfoArray
+	: public CArray<CXTPSyntaxEditColorInfo*, CXTPSyntaxEditColorInfo*>
 {
 	typedef CArray<CXTPSyntaxEditColorInfo*, CXTPSyntaxEditColorInfo*> TBase;
+
 public:
 	//===========================================================================
 	// Summary:
@@ -171,9 +176,9 @@ public:
 	//==========================================================================
 	void RemoveAll()
 	{
-		for(int i = 0; i < GetSize(); i++)
+		for (int i = 0; i < GetSize(); i++)
 		{
-			if(GetAt(i))
+			if (GetAt(i))
 			{
 				delete GetAt(i);
 			}
@@ -183,6 +188,7 @@ public:
 };
 
 class CXTPSyntaxEditColorThemesManager;
+class CXTPSyntaxEditFileChangesMonitor;
 class CXTPSyntaxEditPropertiesTheme;
 
 //===========================================================================
@@ -206,7 +212,8 @@ class _XTP_EXT_CLASS CXTPSyntaxEditColorTheme
 	// See also:
 	//      CXTPSyntaxEditColorInfo.
 	//===========================================================================
-	typedef CMap<CString, LPCTSTR, CXTPSyntaxEditColorInfo *, CXTPSyntaxEditColorInfo *> CXTPSyntaxEditMapLexColorInfo;
+	typedef CMap<CString, LPCTSTR, CXTPSyntaxEditColorInfo*, CXTPSyntaxEditColorInfo*>
+		CXTPSyntaxEditMapLexColorInfo;
 
 public:
 	//-----------------------------------------------------------------------
@@ -273,8 +280,7 @@ public:
 	//      strThemeFilename is required to avoid calling recursion.
 	//-----------------------------------------------------------------------
 	CXTPSyntaxEditColorInfo* GetColorInfo(const CString& strLexClass,
-											const CString& strThemeFilename,
-											BOOL bDynamic = TRUE);
+										  const CString& strThemeFilename, BOOL bDynamic = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -325,12 +331,13 @@ protected:
 	// Returns:
 	//      Pointer to CXTPSyntaxEditColorInfo with resulting colors set.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditColorInfo* ParseSectionFromString(const CString& csSection, CStringArray& arPassedString);
+	CXTPSyntaxEditColorInfo* ParseSectionFromString(const CString& csSection,
+													CStringArray& arPassedString);
 
 private:
-	CStringList m_arSections;   // All section names from the theme config file
-	CString m_csFileName;       // filename of the corresponding theme config file
-	CXTPSyntaxEditMapLexColorInfo m_mapLexColorInfo;    // internal map - lex class name to color info
+	CStringList m_arSections; // All section names from the theme config file
+	CString m_csFileName;	 // filename of the corresponding theme config file
+	CXTPSyntaxEditMapLexColorInfo m_mapLexColorInfo; // internal map - lex class name to color info
 	CXTPSyntaxEditColorThemesManager* m_pThemesManager; // pointer to the parent themes manager
 };
 
@@ -346,7 +353,8 @@ AFX_INLINE CString CXTPSyntaxEditColorTheme::GetFileName()
 //===========================================================================
 class _XTP_EXT_CLASS CXTPSyntaxEditColorThemesManager
 {
-	typedef CMap<CString, LPCTSTR, CXTPSyntaxEditColorTheme*, CXTPSyntaxEditColorTheme*> CXTPSyntaxEditMapThemes;
+	typedef CMap<CString, LPCTSTR, CXTPSyntaxEditColorTheme*, CXTPSyntaxEditColorTheme*>
+		CXTPSyntaxEditMapThemes;
 
 public:
 	//-----------------------------------------------------------------------
@@ -430,13 +438,14 @@ public:
 	void RemoveAll();
 
 private:
-	CXTPSyntaxEditMapThemes     m_mapThemes;        // Themes map
-	CStringArray        m_arThemeNames;     // Themes names array
-	CMapStringToString  m_mapFileToTheme;   // Theme name to configuration file name map
+	CXTPSyntaxEditMapThemes m_mapThemes; // Themes map
+	CStringArray m_arThemeNames;		 // Themes names array
+	CMapStringToString m_mapFileToTheme; // Theme name to configuration file name map
 };
 
-typedef CXTPSyntaxEditLexTextSchema CXTPSyntaxEditTextSchema;
-typedef CXTPSmartPtrInternalT<CXTPSyntaxEditLexTextSchema> CXTPSyntaxEditLexTextSchemaPtr;
+typedef XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexTextSchema CXTPSyntaxEditTextSchema;
+typedef CXTPSmartPtrInternalT<XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexTextSchema>
+	CXTPSyntaxEditLexTextSchemaPtr;
 typedef CXTPSyntaxEditLexTextSchemaPtr CXTPSyntaxEditTextSchemaPtr;
 
 //===========================================================================
@@ -447,9 +456,8 @@ typedef CXTPSyntaxEditLexTextSchemaPtr CXTPSyntaxEditTextSchemaPtr;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPSyntaxEditTextSchemesManager
 {
-	typedef CMap<CString, LPCTSTR,
-				CXTPSyntaxEditTextSchemaPtr,
-				CXTPSyntaxEditTextSchemaPtr&> CXTPSyntaxEditMapSchemes;
+	typedef CMap<CString, LPCTSTR, CXTPSyntaxEditTextSchemaPtr, CXTPSyntaxEditTextSchemaPtr&>
+		CXTPSyntaxEditMapSchemes;
 
 public:
 	//-----------------------------------------------------------------------
@@ -512,7 +520,7 @@ public:
 	// Returns:
 	//      CString object.
 	//-----------------------------------------------------------------------
-	const CString GetSchemaName(const CString& csFileName);
+	CString GetSchemaName(const CString& csFileName) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -522,7 +530,7 @@ public:
 	// Returns:
 	//      CString object.
 	//-----------------------------------------------------------------------
-	const CString GetSchemaFileName(const CString& strSchemeName);
+	CString GetSchemaFileName(const CString& strSchemeName) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -538,7 +546,7 @@ public:
 	// Returns:
 	//      A reference to CXTPSyntaxEditSchemaFileInfoList object.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditSchemaFileInfoList& GetSchemaList();
+	CXTPSyntaxEditSchemaFileInfoList* GetSchemaList() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -550,7 +558,7 @@ public:
 	// See also:
 	//      CXTPSyntaxEditTextSchemaPtr.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditTextSchemaPtr FindSchema(const CString& strFileExt);
+	CXTPSyntaxEditTextSchemaPtr FindSchema(const CString& strFileExt) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -580,10 +588,10 @@ public:
 	void RemoveAll();
 
 private:
-	CXTPSyntaxEditMapSchemes        m_mapSchemes;
-	CXTPSyntaxEditSchemaFileInfoList    m_listSchemes;
-	CStringArray                    m_arSchemeNames;
-	CCriticalSection                m_csReadFile;
+	CXTPSyntaxEditMapSchemes m_mapSchemes;
+	CXTPSyntaxEditSchemaFileInfoList* m_plistSchemes;
+	CStringArray m_arSchemeNames;
+	CCriticalSection m_csReadFile;
 };
 
 AFX_INLINE CStringArray& CXTPSyntaxEditTextSchemesManager::GetSchemes()
@@ -591,9 +599,9 @@ AFX_INLINE CStringArray& CXTPSyntaxEditTextSchemesManager::GetSchemes()
 	return m_arSchemeNames;
 }
 
-AFX_INLINE CXTPSyntaxEditSchemaFileInfoList& CXTPSyntaxEditTextSchemesManager::GetSchemaList()
+AFX_INLINE CXTPSyntaxEditSchemaFileInfoList* CXTPSyntaxEditTextSchemesManager::GetSchemaList() const
 {
-	return m_listSchemes;
+	return m_plistSchemes;
 }
 
 //===========================================================================
@@ -610,7 +618,7 @@ public:
 	// Configuration manager sub-objects
 	enum XTPSyntaxEditCfgObjects
 	{
-		xtpEditCfgObjSchMan     = 0x0001, // Schemes manager
+		xtpEditCfgObjSchMan		= 0x0001, // Schemes manager
 		xtpEditCfgObjThemeMan   = 0x0002, // Themes manager
 		xtpEditCfgObjMainConfig = 0x0004, // Main configuration file
 	};
@@ -710,7 +718,7 @@ public:
 	// Summary:
 	//      Returns current theme name.
 	//-----------------------------------------------------------------------
-	const CString& GetCurrentTheme();
+	CString GetCurrentTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -718,7 +726,7 @@ public:
 	// Returns:
 	//      CXTPNotifyConnectionPtr pointer.
 	//-----------------------------------------------------------------------
-	CXTPNotifyConnection* GetConnection();
+	CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -730,33 +738,33 @@ public:
 	void SetSyntaxAndColorScheme(CString* pSyntaxScheme, CString* pColorScheme)
 	{
 		p_sSyntaxScheme = pSyntaxScheme;
-		p_sColorScheme = pColorScheme;
+		p_sColorScheme  = pColorScheme;
 	}
-	BOOL m_bUseMonitor;         //TRUE if control use special thread to synchronize syntax rules with files with Syntax and Color schemes
-	                            //FALSE if control works "off-line"
-	BOOL m_bConfigFileMode;     // TRUE if control read Config file with links to detailed setting (Syntax and Color schemes)
-	                            // FALSE if Syntax and Color schemes passed as strings using special functions
-	CString m_sIniSet;          //The ini file settings.
-	CString* p_sSyntaxScheme;   //Pointer to the syntax scheme.
-	CString* p_sColorScheme;    //Pointer to the color scheme.
+	BOOL m_bUseMonitor; // TRUE if control use special thread to synchronize syntax rules with files
+						// with Syntax and Color schemes FALSE if control works "off-line"
+	BOOL m_bConfigFileMode;   // TRUE if control read Config file with links to detailed setting
+							  // (Syntax and Color schemes) FALSE if Syntax and Color schemes passed
+							  // as strings using special functions
+	CString m_sIniSet;		  // The ini file settings.
+	CString* p_sSyntaxScheme; // Pointer to the syntax scheme.
+	CString* p_sColorScheme;  // Pointer to the color scheme.
 
 private:
-
 	static UINT AFX_CDECL ReloadConfigAsync_Proc(LPVOID pThis);
 
-	CString m_strMainIniFilename;   // Stores main configuration file name.
+	CString m_strMainIniFilename; // Stores main configuration file name.
 
-	CXTPSyntaxEditFileChangesMonitor m_FolderMonitor;   // Stores folder monitor object.
-	CXTPSyntaxEditColorThemesManager m_ColorThemeManager;   // Stores color theme manager.
-	CXTPSyntaxEditTextSchemesManager m_TextSchemesManager;  // Stores text theme manager.
+	CXTPSyntaxEditFileChangesMonitor* m_pFolderMonitor;	// Stores folder monitor object.
+	CXTPSyntaxEditColorThemesManager m_ColorThemeManager;  // Stores color theme manager.
+	CXTPSyntaxEditTextSchemesManager m_TextSchemesManager; // Stores text theme manager.
 
-	CString m_strCurrentThemeName;  // Current theme name
+	CString m_strCurrentThemeName; // Current theme name
 
-	CXTPNotifyConnectionMT*         m_pConnectMT; // Notification connection.
-	CCriticalSection                m_DataLockerCS; // Critical section
+	CXTPNotifyConnectionMT* m_pConnectMT; // Notification connection.
+	CCriticalSection m_DataLockerCS;	  // Critical section
 
-	HANDLE  m_hReloadThread;        // Stores handle of monitoring thread.
-	CEvent* m_pBreakReloadEvent;    // Stores pointer to event.
+	HANDLE m_hReloadThread;		 // Stores handle of monitoring thread.
+	CEvent* m_pBreakReloadEvent; // Stores pointer to event.
 };
 
 AFX_INLINE const CString CXTPSyntaxEditColorInfo::GetClassName() const
@@ -769,19 +777,16 @@ AFX_INLINE CXTPSyntaxEditColorThemesManager& CXTPSyntaxEditConfigurationManager:
 	return m_ColorThemeManager;
 }
 
-AFX_INLINE CXTPSyntaxEditTextSchemesManager& CXTPSyntaxEditConfigurationManager::GetTextSchemesManager()
+AFX_INLINE CXTPSyntaxEditTextSchemesManager&
+	CXTPSyntaxEditConfigurationManager::GetTextSchemesManager()
 {
 	return m_TextSchemesManager;
 }
 
-AFX_INLINE CXTPNotifyConnection* CXTPSyntaxEditConfigurationManager::GetConnection()
-{
-	return m_pConnectMT;
-}
-
-AFX_INLINE const CString& CXTPSyntaxEditConfigurationManager::GetCurrentTheme()
+AFX_INLINE CString CXTPSyntaxEditConfigurationManager::GetCurrentTheme() const
 {
 	return m_strCurrentThemeName;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITLEXCOLORFILEREADER_H__)

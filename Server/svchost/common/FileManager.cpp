@@ -199,7 +199,7 @@ bool CFileManager::OpenFile(LPCTSTR lpFile, INT nShowCmd)
 	char	*lpstrCat = NULL;
 	memset(strTemp, 0, sizeof(strTemp));
 	
-	char	*lpExt = strrchr(lpFile, '.');
+	char	*lpExt = (char *)(strrchr(lpFile, '.'));
 	if (!lpExt)
 		return false;
 	
@@ -253,8 +253,9 @@ UINT CFileManager::SendDriveList()
 	unsigned __int64	HDFreeSpace = 0;
 	unsigned long		AmntMB = 0; // 总大小
 	unsigned long		FreeMB = 0; // 剩余空间
+	DWORD dwOffset = 0;
 
-	for (DWORD dwOffset = 1; *pDrive != '\0'; pDrive += lstrlen(pDrive) + 1)
+	for (dwOffset = 1; *pDrive != '\0'; pDrive += lstrlen(pDrive) + 1)
 	{
 		memset(FileSystem, 0, sizeof(FileSystem));
 		// 得到文件系统信息及大小

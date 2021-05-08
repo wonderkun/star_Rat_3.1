@@ -1,7 +1,6 @@
 // XTPChartSeriesView.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSERIESVIEW_H__)
-#define __XTPCHARTSERIESVIEW_H__
+#	define __XTPCHARTSERIESVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartSeriesPoint;
@@ -35,67 +36,12 @@ class CXTPChartDiagramView;
 class CXTPChartDiagram;
 class CXTPChartLegendView;
 
-#include "Types/XTPChartTypes.h"
-#include "XTPChartElement.h"
-#include "XTPChartLegend.h"
-#include "XTPChartElementView.h"
-
-class _XTP_EXT_CLASS CXTPChartSeriesPointView : public CXTPChartElementView, public CXTPChartLegendItem
+class _XTP_EXT_CLASS CXTPChartSeriesView
+	: public CXTPChartElementView
+	, public CXTPChartLegendItemView
 {
-public:
-	CXTPChartSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	DECLARE_DYNAMIC(CXTPChartSeriesView);
 
-public:
-
-	CXTPChartSeriesPoint* GetPoint() const;
-
-	CXTPChartSeriesView* GetSeriesView() const;
-
-	CXTPChartColor GetColor() const;
-
-	CXTPChartColor GetColor2() const;
-
-	double GetInternalValue() const;
-
-
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function returns the legend name, it is a pure virtual
-	//     function so it should be implemented in the derived classes.
-	// Returns:
-	//     Returns the legend name represented by the CXTPChartString class.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	virtual CXTPChartString GetLegendName() const;
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of a legend item in the chart.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
-	//     the drawing of the legend item.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
-
-	virtual void UpdateMinMaxRange(double& nMinValue, double& nMaxValue) const;
-public:
-	double m_dInternalValue;
-
-protected:
-	CXTPChartSeriesPoint* m_pPoint;
-
-	friend class CXTPChartSeriesView;
-};
-
-class _XTP_EXT_CLASS CXTPChartSeriesView : public CXTPChartElementView, public CXTPChartLegendItem
-{
 public:
 	CXTPChartSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
 
@@ -105,57 +51,50 @@ public:
 	CXTPChartSeries* GetSeries() const;
 	CXTPChartSeriesStyle* GetStyle() const;
 	CXTPChartDiagram* GetDiagram() const;
-
 	CXTPChartDiagramView* GetDiagramView() const;
-
-	CXTPChartColor GetColor() const;
-	CXTPChartColor GetColor2() const;
-
 	CXTPChartElementView* GetPointsView() const;
+	CXTPChartElementView* GetErrorBarsView() const;
 
 public:
 	virtual void CalculateLayout(CXTPChartDeviceContext* pDC);
 	virtual void UpdateRange(CXTPChartDeviceContext* pDC);
-
 	virtual void AddToLegend(CXTPChartLegendView* pView);
+	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC,
+															  CRect rcBounds);
 
-	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
 protected:
-	virtual CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
-
+	virtual CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+															CXTPChartSeriesPoint* pPoint,
+															CXTPChartElementView* pParentView);
 	virtual CXTPChartString GetLegendName() const;
 
-
-
-protected:
+public:
 	CXTPChartSeries* m_pSeries;
 	CXTPChartDiagramView* m_pDiagramView;
 	CXTPChartElementView* m_pPointsView;
 	CXTPChartElementView* m_pLabelsView;
-
+	CXTPChartElementView* m_pErrorBarsView;
 };
 
-AFX_INLINE CXTPChartDiagramView* CXTPChartSeriesView::GetDiagramView() const {
+AFX_INLINE CXTPChartDiagramView* CXTPChartSeriesView::GetDiagramView() const
+{
 	return m_pDiagramView;
 }
-AFX_INLINE CXTPChartSeries* CXTPChartSeriesView::GetSeries() const {
+
+AFX_INLINE CXTPChartSeries* CXTPChartSeriesView::GetSeries() const
+{
 	return m_pSeries;
 }
 
-AFX_INLINE CXTPChartSeriesPoint* CXTPChartSeriesPointView::GetPoint() const {
-	return m_pPoint;
-}
-AFX_INLINE CXTPChartSeriesView* CXTPChartSeriesPointView::GetSeriesView() const {
-	return (CXTPChartSeriesView*)(GetParentView()->GetParentView());
-}
-AFX_INLINE CXTPChartElementView* CXTPChartSeriesView::GetPointsView() const {
+AFX_INLINE CXTPChartElementView* CXTPChartSeriesView::GetPointsView() const
+{
 	return m_pPointsView;
 }
-AFX_INLINE double CXTPChartSeriesPointView::GetInternalValue() const {
-	return m_dInternalValue;
-}
-AFX_INLINE void CXTPChartSeriesPointView::UpdateMinMaxRange(double& /*nMinValue*/, double& /*nMaxValue*/) const {
 
+AFX_INLINE CXTPChartElementView* CXTPChartSeriesView::GetErrorBarsView() const
+{
+	return m_pErrorBarsView;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSERIESVIEW_H__)

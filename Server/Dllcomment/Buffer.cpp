@@ -1,7 +1,7 @@
 // Buffer.cpp: implementation of the CBuffer class.
 //
 //////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
+#include "pcl.h"
 #include "Buffer.h"
 #include "math.h"
 

@@ -1,7 +1,6 @@
-// XTPCalendarControlPaintManager.h: interface for the CXTPCalendarControlPaintManager class.
+// XTPCalendarPaintManager.h: interface for the CXTPCalendarPaintManager class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,36 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARPAINTMANAGER_H__)
-#define _XTPCALENDARPAINTMANAGER_H__
+#	define _XTPCALENDARPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPColorManager.h"
-#include "Common/XTPResourceImage.h"
-
-#include "XTPCalendarViewPart.h"
-#include "XTPCalendarTimeLineViewParts.h"
-#include "XTPCalendarPtrCollectionT.h"
-#include "XTPCalendarNotifications.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarTimeLineViewTimeScale;
 class CXTPCalendarTimeLineViewGroup;
 class CXTPCalendarTimeLineViewEvent;
+class CXTPCalendarTimeLineView;
+class CXTPResourceImage;
+class CXTPCalendarControl;
+class CXTPCalendarDayView;
+class CXTPCalendarDayViewDay;
+class CXTPCalendarDayViewGroup;
+class CXTPCalendarMonthView;
+class CXTPCalendarWeekView;
+class CXTPCalendarDayViewEvent;
+class CXTPCalendarMonthViewEvent;
+class CXTPCalendarWeekViewEvent;
+class CXTPCalendarViewEvent;
+class CXTPCalendarDayViewTimeScale;
+class CXTPCalendarFlagsSet_imp;
+class CXTPCalendarViewPartBrushValue;
+class CXTPCalendarViewEventSubjectEditor;
+
+struct XTP_CALENDAR_DAYVIEWCELL_PARAMS;
 
 //===========================================================================
 // Summary:
@@ -62,19 +73,19 @@ class CXTPCalendarTimeLineViewEvent;
 // </code>
 // See Also: END_VIEW_PART, CXTPCalendarPaintManager
 //===========================================================================
-#define BEGIN_VIEW_PART(theClass, parentClass)
+#	define BEGIN_VIEW_PART(theClass, parentClass)
 //{{AFX_CODEJOCK_PRIVATE
-#undef BEGIN_VIEW_PART
-#define BEGIN_VIEW_PART(theClass, parentClass)\
-	class C##theClass  : public C##parentClass\
-	{\
-	public:\
-		typedef C##parentClass TBase; \
-		C##theClass(CXTPCalendarViewPart* pParentPart = NULL)\
-			: C##parentClass(pParentPart)\
-		{\
-			_Init(); \
-		}
+#	undef BEGIN_VIEW_PART
+#	define BEGIN_VIEW_PART(theClass, parentClass)                                                 \
+		class C##theClass : public C##parentClass                                                  \
+		{                                                                                          \
+		public:                                                                                    \
+			typedef C##parentClass TBase;                                                          \
+			C##theClass(CXTPCalendarViewPart* pParentPart = NULL)                                  \
+				: C##parentClass(pParentPart)                                                      \
+			{                                                                                      \
+				_Init();                                                                           \
+			}
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -84,53 +95,34 @@ class CXTPCalendarTimeLineViewEvent;
 //
 // See Also: BEGIN_VIEW_PART, CXTPCalendarPaintManager
 //===========================================================================
-#define END_VIEW_PART(theClass)
+#	define END_VIEW_PART(theClass)
 //{{AFX_CODEJOCK_PRIVATE
-#undef END_VIEW_PART
-#define END_VIEW_PART(theClass)\
-	};\
-	friend class C##theClass;\
-	protected:\
-		C##theClass* m_p##theClass;\
-	public:\
-		C##theClass* Get##theClass() {\
-			return m_p##theClass;\
-		}\
-		void Set##theClass(C##theClass* p##theClass)\
-		{\
-			POSITION pos = m_lstViewParts.Find(m_p##theClass);\
-			ASSERT(pos);\
-			m_lstViewParts.RemoveAt(pos);\
-			delete m_p##theClass;\
-			m_p##theClass = p##theClass;\
-			m_lstViewParts.AddTail(p##theClass);\
-			p##theClass->m_pPaintManager = this;\
+#	undef END_VIEW_PART
+#	define END_VIEW_PART(theClass)                                                                \
+		}                                                                                          \
+		;                                                                                          \
+		friend class C##theClass;                                                                  \
+                                                                                                   \
+	protected:                                                                                     \
+		C##theClass* m_p##theClass;                                                                \
+                                                                                                   \
+	public:                                                                                        \
+		C##theClass* Get##theClass() const                                                         \
+		{                                                                                          \
+			return m_p##theClass;                                                                  \
+		}                                                                                          \
+		void Set##theClass(C##theClass* p##theClass)                                               \
+		{                                                                                          \
+			POSITION pos = m_lstViewParts.Find(m_p##theClass);                                     \
+			ASSERT(pos);                                                                           \
+			m_lstViewParts.RemoveAt(pos);                                                          \
+			delete m_p##theClass;                                                                  \
+			m_p##theClass = p##theClass;                                                           \
+			m_lstViewParts.AddTail(p##theClass);                                                   \
+			p##theClass->m_pPaintManager = this;                                                   \
 		}
 //}}AFX_CODEJOCK_PRIVATE
 
-//===========================================================================
-// Remarks:
-//     Determines allowable values for the alignment of clock images used
-//     by the DrawClock function.
-//===========================================================================
-enum XTPCalendarClockAlignFlags
-{
-	xtpCalendarClockAlignLeft     = 0x01, // Align to the left side of the rectangle area.
-	xtpCalendarClockAlignCenter   = 0x02, // Align on the middle of the rectangle area.
-	xtpCalendarClockAlignRight    = 0x04  // Align to the right side of the rectangle area.
-};
-
-class CXTPCalendarControl;
-class CXTPCalendarDayView;
-class CXTPCalendarDayViewDay;
-class CXTPCalendarDayViewGroup;
-class CXTPCalendarMonthView;
-class CXTPCalendarWeekView;
-class CXTPCalendarDayViewEvent;
-class CXTPCalendarMonthViewEvent;
-class CXTPCalendarWeekViewEvent;
-class CXTPCalendarViewEvent;
-class CXTPCalendarDayViewTimeScale;
 /////////////////////////////////////////////////////////////////////////////
 // CXTPCalendarPaintManager command target
 
@@ -144,16 +136,17 @@ class CXTPCalendarDayViewTimeScale;
 //     directly work with device context.
 //     Can be overridden to provide another look and feel for the control.
 //     Thus, you have an easy way to change the "skin" of your control. Just provide
-//     your own implementation of CXTPCalendarControlPaintManager and don't
+//     your own implementation of CXTPCalendarPaintManager and don't
 //     touch the functionality of any of the other control classes.
 //
-//          Create a CXTPCalendarControlPaintManager by calling its constructor.
+//          Create a CXTPCalendarPaintManager by calling its constructor.
 //          Furthermore, you can call get and set functions to change
 //          settings as needed.
 //===========================================================================
 class _XTP_EXT_CLASS CXTPCalendarPaintManager : public CXTPCmdTarget
 {
 	friend class CXTPCalendarViewPart;
+
 public:
 	//{{AFX_CODEJOCK_PRIVATE
 	//-----------------------------------------------------------------------
@@ -162,21 +155,12 @@ public:
 	//     other parts of the control.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(ControlPart, XTPCalendarViewPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     Performs refreshing of graphical related parameters from
-		//     system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrTextColor.SetStandardValue(m_pPaintManager->m_clrButtonFaceText);
-			m_clrBackground.SetStandardValue(m_pPaintManager->m_clrButtonFace);
-
-			LOGFONT lfIcon;
-			VERIFY(CXTPDrawHelpers::GetIconLogFont(&lfIcon));
-
-			m_fntText.SetStandardValue(&lfIcon);
-		}
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//     system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 	END_VIEW_PART(ControlPart)
 
 	//-----------------------------------------------------------------------
@@ -190,41 +174,50 @@ public:
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewTimeScaleHeaderPart, XTPCalendarViewPart)
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the time scale header.
-		// Parameters:
-		//     pDC     - Pointer to a valid device context.
-		//     pView   - A CXTPCalendarDayView pointer that contains the Day
-		//               View object.
-		//     rc      - The time scale header's bounding rectangle.
-		//     strText - A CString object that contains the header text.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayView* pView, CRect rc, CString strText);
+	COLORREF m_clrBorder;
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the 'Now' line.
-		// Parameters:
-		//     pDC       - Pointer to a valid device context.
-		//     pView     - A CXTPCalendarDayView pointer to the Day View object.
-		//     rc        - A CRect that contains the Time scale bounding rectangle.
-		//     y         - An int that contains the 'Now' line position.
-		//     bDrawBk   - If FALSE, then draw only the line. If TRUE,
-		//                 then draw the line and the gradient fill.
-		//-------------------------------------------------------------------
-		virtual void DrawNowLine(CDC* pDC, CXTPCalendarDayView* pView, CRect rc,
-								 int y, BOOL bDrawBk = FALSE);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//     system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw expand signs.
-		// Parameters:
-		//     pDC       - Pointer to a valid device context.
-		//     pView     - A CXTPCalendarDayView pointer to the Day View object.
-		//     rcTSHours - A CRect that contains the Time scale hours rectangle.
-		//-------------------------------------------------------------------
-		virtual void DrawExpandSigns(CDC* pDC, CXTPCalendarDayView* pView, const CRect& rcTSHours);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the time scale header.
+	// Parameters:
+	//     pDC     - Pointer to a valid device context.
+	//     pView   - A CXTPCalendarDayView pointer that contains the Day
+	//               View object.
+	//     rc      - The time scale header's bounding rectangle.
+	//     strText - A CString object that contains the header text.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayView* pView, CRect rc, CString strText);
+
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the 'Now' line.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     pView     - A CXTPCalendarDayView pointer to the Day View object.
+	//     rc        - A CRect that contains the Time scale bounding rectangle.
+	//     y         - An int that contains the 'Now' line position.
+	//     bDrawBk   - If FALSE, then draw only the line. If TRUE,
+	//                 then draw the line and the gradient fill.
+	//-------------------------------------------------------------------
+	virtual void DrawNowLine(CDC* pDC, CXTPCalendarDayView* pView, CRect rc, int y,
+							 BOOL bDrawBk = FALSE);
+
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw expand signs.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     pView     - A CXTPCalendarDayView pointer to the Day View object.
+	//     rcTSHours - A CRect that contains the Time scale hours rectangle.
+	//-------------------------------------------------------------------
+	virtual void DrawExpandSigns(CDC* pDC, CXTPCalendarDayView* pView, const CRect& rcTSHours);
 	END_VIEW_PART(DayViewTimeScaleHeaderPart)
 
 	//-----------------------------------------------------------------------
@@ -233,69 +226,82 @@ public:
 	//     for the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewTimeScaleCellPart, DayViewTimeScaleHeaderPart)
-		CXTPCalendarViewPartFontValue m_fntTimeText; // Time text font.
-		int m_nHourWidth; // Width of hour part of the text in pixels.
-		int m_nMinWidth; // Width of minutes (am/pm) part of the text in pixels.
+	CXTPCalendarViewPartFontValue m_fntTimeText; // Time text font.
+	int m_nHourWidth;							 // Width of hour part of the text in pixels.
+	int m_nMinWidth; // Width of minutes (am/pm) part of the text in pixels.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to refresh the graphical
-		// related parameters using system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics();
+	COLORREF m_clrBorder;
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to adjust the time text font size.
-		// Parameters:
-		//     pDC    - Pointer to a valid device context.
-		//     rcCell - A CRect object that contains the time scale hour cell
-		//              bounding rectangle.
-		//-------------------------------------------------------------------
-		void AdjustTimeFont(CDC* pDC, CRect rcCell);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to refresh the graphical
+	// related parameters using system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to adjust the time text font size.
-		// Parameters:
-		//     pDC     - Pointer to a valid device context.
-		//     strHour - A CString object that contains the Hour text.
-		//     strMin  - A CString object that contains the Minutes text.
-		//     nHourHeight - A hour big text height.
-		//     nWidth  - An int that returns the width of time scale with
-		//               provided hour and minutes texts.
-		//-------------------------------------------------------------------
-		void CalcWidth(CDC* pDC, const CString& strHour, const CString& strMin,
-						int nHourHeight, int& nWidth);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to adjust the time text font size.
+	// Parameters:
+	//     pDC    - Pointer to a valid device context.
+	//     rcCell - A CRect object that contains the time scale hour cell
+	//              bounding rectangle.
+	//-------------------------------------------------------------------
+	void AdjustTimeFont(CDC* pDC, CRect rcCell);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the hour cell.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     rc              - A CRect object that contains the time scale
-		//                       hour cell bounding rectangle.
-		//     strText         - A CString object that contains the time text.
-		//     bFillBackground - A BOOL. If TRUE, then fill the background before drawing.
-		//                       If FALSE, then do not fill the background before drawing.
-		//-------------------------------------------------------------------
-		virtual void DrawHourCell(CDC* pDC, CRect rc, CString strText, BOOL bFillBackground = TRUE);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to adjust the time text font size.
+	// Parameters:
+	//     pDC     - Pointer to a valid device context.
+	//     strHour - A CString object that contains the Hour text.
+	//     strMin  - A CString object that contains the Minutes text.
+	//     nHourHeight - A hour big text height.
+	//     nWidth  - An int that returns the width of time scale with
+	//               provided hour and minutes texts.
+	//-------------------------------------------------------------------
+	void CalcWidth(CDC* pDC, const CString& strHour, const CString& strMin, int nHourHeight,
+				   int& nWidth);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the big hour cell.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     rc              - A CRect object that contains the time scale
-		//                       hour cell bounding rectangle.
-		//     strHour         - A CString object that contains the Hour text.
-		//     strMin          - A CString object that contains the Minutes text.
-		//     nRowPerHour     - An int that contains the Rows per hour.
-		//     bFillBackground - A BOOL. If TRUE, then fill the background before drawing.
-		//                       If FALSE, then do not fill the background before drawing.
-		//-------------------------------------------------------------------
-		virtual void DrawBigHourCell(CDC* pDC, CRect rc, CString strHour, CString strMin,
-									 int nRowPerHour, BOOL bFillBackground = TRUE);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw background of the time scale header
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     rc              - A CRect object that contains bounding rectangle.
+	//-------------------------------------------------------------------
+	// virtual void DrawBackground(CDC* pDC, CRect rc);
+
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the hour cell.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     rc              - A CRect object that contains the time scale
+	//                       hour cell bounding rectangle.
+	//     strText         - A CString object that contains the time text.
+	//     bFillBackground - A BOOL. If TRUE, then fill the background before drawing.
+	//                       If FALSE, then do not fill the background before drawing.
+	//-------------------------------------------------------------------
+	virtual void DrawHourCell(CDC* pDC, CRect rc, CString strText, BOOL bFillBackground = TRUE,
+							  BOOL bCurrentTime = FALSE);
+
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the big hour cell.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     rc              - A CRect object that contains the time scale
+	//                       hour cell bounding rectangle.
+	//     strHour         - A CString object that contains the Hour text.
+	//     strMin          - A CString object that contains the Minutes text.
+	//     nRowPerHour     - An int that contains the Rows per hour.
+	//     bFillBackground - A BOOL. If TRUE, then fill the background before drawing.
+	//                       If FALSE, then do not fill the background before drawing.
+	//-------------------------------------------------------------------
+	virtual void DrawBigHourCell(CDC* pDC, CRect rc, CString strHour, CString strMin,
+								 int nRowPerHour, BOOL bFillBackground = TRUE,
+								 BOOL bCurrentTime = FALSE);
 	END_VIEW_PART(DayViewTimeScaleCellPart)
 
 	//-----------------------------------------------------------------------
@@ -305,34 +311,42 @@ public:
 	//     for the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewCellPart, XTPCalendarViewPart)
-		CXTPPaintManagerColor m_clrBackgroundSlave; //Background secondary color.
-		CXTPPaintManagerColor m_clrShadow; // Cell background color.
-		CXTPPaintManagerColor m_clrHour;   // Cell border color.
+	CXTPPaintManagerColor m_clrBackgroundSlave; // Background secondary color.
+	CXTPPaintManagerColor m_clrShadow;			// Cell background color.
+	CXTPPaintManagerColor m_clrHour;			// Cell border color.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to fill out cell parameters with
-		//     default values.
-		// Parameters:
-		//     pViewGroup  - [in] A CXTPCalendarDayViewGroup pointer to the Day View Group object.
-		//     rCellParams - [in, out] A XTP_CALENDAR_DAYVIEWCELL_PARAMS object that contains
-		//                   the cell's parameters.
-		//-------------------------------------------------------------------
-		virtual void GetParams(CXTPCalendarDayViewGroup* pViewGroup, XTP_CALENDAR_DAYVIEWCELL_PARAMS& rCellParams);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to refresh the graphical
+	// related parameters using system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the day view with no
-		//     all-day-cells.
-		// Parameters:
-		//     pDC         - Pointer to a valid device context.
-		//     pViewGroup  - A CXTPCalendarDayViewGroup pointer to the Day View Group object.
-		//     rc          - A CRect object that contains the cell's bounding rectangle.
-		//     cellParams  - A XTP_CALENDAR_DAYVIEWCELL_PARAMS object that contains
-		//                   the cell's parameters.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup,
-							CRect rc, const XTP_CALENDAR_DAYVIEWCELL_PARAMS& cellParams);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to fill out cell parameters with
+	//     default values.
+	// Parameters:
+	//     pViewGroup  - [in] A CXTPCalendarDayViewGroup pointer to the Day View Group object.
+	//     rCellParams - [in, out] A XTP_CALENDAR_DAYVIEWCELL_PARAMS object that contains
+	//                   the cell's parameters.
+	//-------------------------------------------------------------------
+	virtual void GetParams(CXTPCalendarDayViewGroup* pViewGroup,
+						   XTP_CALENDAR_DAYVIEWCELL_PARAMS* rCellParams);
+
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the day view with no
+	//     all-day-cells.
+	// Parameters:
+	//     pDC         - Pointer to a valid device context.
+	//     pViewGroup  - A CXTPCalendarDayViewGroup pointer to the Day View Group object.
+	//     rc          - A CRect object that contains the cell's bounding rectangle.
+	//     cellParams  - A XTP_CALENDAR_DAYVIEWCELL_PARAMS object that contains
+	//                   the cell's parameters.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup, CRect rc,
+						const XTP_CALENDAR_DAYVIEWCELL_PARAMS& cellParams);
 	END_VIEW_PART(DayViewCellPart)
 
 	//-----------------------------------------------------------------------
@@ -341,12 +355,12 @@ public:
 	//     no all day work time cells.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewWorkCellPart, DayViewCellPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to perform the refreshing of
-		//     graphical related parameters from system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics();
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to perform the refreshing of
+	//     graphical related parameters from system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 	END_VIEW_PART(DayViewWorkCellPart)
 
 	//-----------------------------------------------------------------------
@@ -355,12 +369,12 @@ public:
 	//     time cells for the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewNonworkCellPart, DayViewCellPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to perform refreshing of
-		//     graphical related parameters from system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics();
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to perform refreshing of
+	//     graphical related parameters from system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 	END_VIEW_PART(DayViewNonworkCellPart)
 
 	//-----------------------------------------------------------------------
@@ -369,17 +383,17 @@ public:
 	//     the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayMonthViewHeaderPart, XTPCalendarViewPart)
-		CXTPPaintManagerColor m_clrTopLeftBorder;   // Top and Left borders color.
+	CXTPPaintManagerColor m_clrTopLeftBorder; // Top and Left borders color.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to perform refreshing of
-		//     graphical related parameters from system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrTopLeftBorder.SetStandardValue(RGB(255, 255, 255));
-		}
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to perform refreshing of
+	//     graphical related parameters from system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics()
+	{
+		m_clrTopLeftBorder.SetStandardValue(RGB(255, 255, 255));
+	}
 	END_VIEW_PART(DayMonthViewHeaderPart)
 
 	//-----------------------------------------------------------------------
@@ -388,19 +402,20 @@ public:
 	//     the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewHeaderPart, DayMonthViewHeaderPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the day header.
-		// Parameters:
-		//     pDC      - Pointer to a valid device context.
-		//     pViewDay - A CXTPCalendarDayViewDay pointer to the Day View
-		//                object.
-		//     rc       - A CRect object that contains the coordinates of
-		//                the Header's bounding rectangle.
-		//     strText  - A CString object that contains the Header text.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewDay* pViewDay, CRect rc,
-							CString strText);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the day header.
+	// Parameters:
+	//     pDC      - Pointer to a valid device context.
+	//     pViewDay - A CXTPCalendarDayViewDay pointer to the Day View
+	//                object.
+	//     rc       - A CRect object that contains the coordinates of
+	//                the Header's bounding rectangle.
+	//     strText  - A CString object that contains the Header text.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewDay* pViewDay, CRect rc, CString strText);
+
+	virtual void RefreshMetrics();
 	END_VIEW_PART(DayViewHeaderPart)
 
 	//-----------------------------------------------------------------------
@@ -409,19 +424,18 @@ public:
 	//     the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewGroupHeaderPart, DayMonthViewHeaderPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the day header.
-		// Parameters:
-		//     pDC      - Pointer to a valid device context.
-		//     pViewGroup - A CXTPCalendarDayViewGroup pointer to the Group
-		//                  object.
-		//     rc       - A CRect object that contains the coordinates of
-		//                the Header's bounding rectangle.
-		//     strText  - A CString object that contains the Header text.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup,
-							CRect rc, CString strText);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the day header.
+	// Parameters:
+	//     pDC      - Pointer to a valid device context.
+	//     pViewGroup - A CXTPCalendarDayViewGroup pointer to the Group
+	//                  object.
+	//     rc       - A CRect object that contains the coordinates of
+	//                the Header's bounding rectangle.
+	//     strText  - A CString object that contains the Header text.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup, CRect rc, CString strText);
 	END_VIEW_PART(DayViewGroupHeaderPart)
 
 	//-----------------------------------------------------------------------
@@ -430,29 +444,49 @@ public:
 	//     the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewAllDayEventsPart, XTPCalendarViewPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member functions is used to perform refreshing of graphical
-		//      related parameters from system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrBackground.SetStandardValue(m_pPaintManager->m_clr3DShadow);
-		}
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member functions is used to perform refreshing of graphical
+	//      related parameters from system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the all-day events area.
-		// Parameters:
-		//     pDC       - Pointer to a valid device context.
-		//     pViewGroup - A CXTPCalendarDayViewGroup pointer to the Group object.
-		//     rc        - A CRect object that contains the all-day events
-		//                 area bounding rectangle coordinates.
-		//     bSelected - A BOOL. TRUE if the draw area is selected. FALSE otherwise.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup,
-							CRect rc, BOOL bSelected);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the all-day events area.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     pViewGroup - A CXTPCalendarDayViewGroup pointer to the Group object.
+	//     rc        - A CRect object that contains the all-day events
+	//                 area bounding rectangle coordinates.
+	//     bSelected - A BOOL. TRUE if the draw area is selected. FALSE otherwise.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup, CRect rc, BOOL bSelected);
 	END_VIEW_PART(DayViewAllDayEventsPart)
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This paint manager part is used to draw all day events scroll buttons if there are too
+	//     many all day events.
+	//-----------------------------------------------------------------------
+	BEGIN_VIEW_PART(DayViewAllDayEventScrollIconsPart, XTPCalendarViewPart)
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw scroll icons in all day events area.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     pViewGroup - A CXTPCalendarDayViewGroup pointer to the Group object.
+	//     bDrawUp - selects show\hide up scroll icon
+	//     bDrawDown - selects show\hide down scroll icon
+	//     rcIconUp - scroll up icon area
+	//     rcIconDown - scroll down icon area
+	//     bHighlightUp - selects if draw the icon in highlighted color
+	//     bHighlightDown - selects if draw the icon in highlighted color
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewGroup* pViewGroup, BOOL bDrawUp,
+						BOOL bDrawDown, const CRect& rcIconUp, const CRect& rcIconDown,
+						BOOL bHighlightUp, BOOL bHighlightDown);
+	END_VIEW_PART(DayViewAllDayEventScrollIconsPart)
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -460,25 +494,21 @@ public:
 	//     the Day View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(DayViewEventPart, XTPCalendarViewPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     Performs refreshing of graphical related parameters from
-		//      system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrBackground.SetStandardValue(RGB(255, 255, 255));
-		}
-
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw an event.
-		// Parameters:
-		//     pDC         - Pointer to a valid device context.
-		//     pViewEvent  - A CXTPCalendarDayViewEvent pointer to the Day
-		//                   Event View object.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewEvent* pViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//      system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw an event.
+	// Parameters:
+	//     pDC         - Pointer to a valid device context.
+	//     pViewEvent  - A CXTPCalendarDayViewEvent pointer to the Day
+	//                   Event View object.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarDayViewEvent* pViewEvent);
 	END_VIEW_PART(DayViewEventPart)
 
 	//-----------------------------------------------------------------------
@@ -491,24 +521,25 @@ public:
 	//     days cells background for the Month View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(MonthViewGridPart, XTPCalendarViewPart)
-		CXTPPaintManagerColor m_clrBackground2; // Second background color which is used to fill days background.
+	CXTPPaintManagerColor m_clrBackground2; // Second background color which is used to fill days
+											// background.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     Performs refreshing of graphical related parameters from
-		//      system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics();
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//      system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the days grid and to fill
-		//     the days cells background.
-		// Parameters:
-		//     pDC         - Pointer to a valid device context.
-		//     pMonthView  - A CXTPCalendarMonthView pointer to the Month View object.
-		//-------------------------------------------------------------------
-		virtual void OnDrawGrid(CDC* pDC, CXTPCalendarMonthView* pMonthView);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the days grid and to fill
+	//     the days cells background.
+	// Parameters:
+	//     pDC         - Pointer to a valid device context.
+	//     pMonthView  - A CXTPCalendarMonthView pointer to the Month View object.
+	//-------------------------------------------------------------------
+	virtual void OnDrawGrid(CDC* pDC, CXTPCalendarMonthView* pMonthView);
 	END_VIEW_PART(MonthViewGridPart)
 
 	//-----------------------------------------------------------------------
@@ -517,20 +548,23 @@ public:
 	//     the Month View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(MonthViewHeaderPart, DayMonthViewHeaderPart)
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the week day header.
-		// Parameters:
-		//     pDC         - Pointer to a valid device context.
-		//     pMonthView  - A CXTPCalendarMonthView pointer to the Month
-		//                   View object.
-		//     rc          - A CRect object that contains the Week Day header's
-		//                   bounding rectangle coordinates.
-		//     nCollIndex  - An int that contains the Week Day column index in the grid.
-		//     strText     - A CString object that contains the formatted Week Day name.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarMonthView* pMonthView,
-							CRect rc, int nCollIndex, CString strText);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the week day header.
+	// Parameters:
+	//     pDC         - Pointer to a valid device context.
+	//     pMonthView  - A CXTPCalendarMonthView pointer to the Month
+	//                   View object.
+	//     rc          - A CRect object that contains the Week Day header's
+	//                   bounding rectangle coordinates.
+	//     nCollIndex  - An int that contains the Week Day column index in the grid.
+	//     strText     - A CString object that contains the formatted Week Day name.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarMonthView* pMonthView, CRect rc, int nCollIndex,
+						CString strText);
+
+	virtual void RefreshMetrics();
+
 	END_VIEW_PART(MonthViewHeaderPart)
 
 	//-----------------------------------------------------------------------
@@ -539,48 +573,41 @@ public:
 	//     for the Month View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(MonthViewEventPart, XTPCalendarViewPart)
-		COLORREF m_clrTextHighLightColor;       // Text color for the selected event.
-		COLORREF m_clrMultiDayEventFrameColor;  // Multi-day event frame color.
-		COLORREF m_clrClassicUnderline;         // Underline color for today day.
+	COLORREF m_clrTextHighLightColor;	  // Text color for the selected event.
+	COLORREF m_clrMultiDayEventFrameColor; // Multi-day event frame color.
+	COLORREF m_clrClassicUnderline;		   // Underline color for today day.
 
-		CXTPPaintManagerColorGradient m_grclrClassicSelDay;// Gradient color for today day.
+	CXTPPaintManagerColorGradient m_grclrClassicSelDay; // Gradient color for today day.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     Performs refreshing of graphical related parameters from
-		//     system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrTextHighLightColor = RGB(255, 255, 255);
-			m_clrMultiDayEventFrameColor = RGB(0, 0, 0);
-			m_clrBackground.SetStandardValue(RGB(255, 255, 213));
-			m_grclrClassicSelDay.SetStandardValue(m_clrBackground, RGB(217, 214, 202));
-			m_clrClassicUnderline = RGB(10, 36, 106);
-		}
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//     system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw an event.
-		// Parameters:
-		//     pDC        - Pointer to a valid device context.
-		//     pViewEvent - A CXTPCalendarMonthViewEvent pointer to the Month Event View object.
-		//-------------------------------------------------------------------
-		virtual void OnDrawEvent(CDC* pDC, CXTPCalendarMonthViewEvent* pViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw an event.
+	// Parameters:
+	//     pDC        - Pointer to a valid device context.
+	//     pViewEvent - A CXTPCalendarMonthViewEvent pointer to the Month Event View object.
+	//-------------------------------------------------------------------
+	virtual void OnDrawEvent(CDC* pDC, CXTPCalendarMonthViewEvent* pViewEvent);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the week day header.
-		// Parameters:
-		//     pDC       - Pointer to a valid device context.
-		//     rc        - A CRect object that contains the Day header's bounding
-		//                 rectangle coordinates.
-		//     bToday    - TRUE for today day, otherwise FALSE.
-		//     bSelected - Is day selected.
-		//     strText   - Formatted day date string.
-		//-------------------------------------------------------------------
-		virtual void OnDrawDayDate(CDC* pDC, CRect rc, BOOL bToday,
-									BOOL bSelected, CString strText);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the week day header.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     rc        - A CRect object that contains the Day header's bounding
+	//                 rectangle coordinates.
+	//     bToday    - TRUE for today day, otherwise FALSE.
+	//     bSelected - Is day selected.
+	//     strText   - Formatted day date string.
+	//-------------------------------------------------------------------
+	virtual void OnDrawDayDate(CDC* pDC, CRect rc, BOOL bToday, BOOL bSelected, BOOL bFirstMonthDay,
+							   CString strText);
 	END_VIEW_PART(MonthViewEventPart)
 
 	//-----------------------------------------------------------------------
@@ -593,40 +620,40 @@ public:
 	//     headers for the Week View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(WeekViewPart, XTPCalendarViewPart)
-		COLORREF m_clrTextHighLightColor;   // Text color for the selected day header.
-		COLORREF m_clrTextNormalColor;      // Text color for the day header and some other elements.
-		COLORREF m_clrHeaderBottomLine;     // Text color for the day header bottom line.
+	COLORREF m_clrTextHighLightColor; // Text color for the selected day header.
+	COLORREF m_clrTextNormalColor;	// Text color for the day header and some other elements.
+	COLORREF m_clrHeaderBottomLine;   // Text color for the day header bottom line.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     Performs refreshing of graphical related parameters from
-		//     system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics();
+	//-------------------------------------------------------------------
+	// Summary:
+	//     Performs refreshing of graphical related parameters from
+	//     system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw an event.
-		// Parameters:
-		//     pDC       - Pointer to a valid device context.
-		//     pWeekView - A CXTPCalendarWeekView pointer to the Week Event View object.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarWeekView* pWeekView);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw an event.
+	// Parameters:
+	//     pDC       - Pointer to a valid device context.
+	//     pWeekView - A CXTPCalendarWeekView pointer to the Week Event View object.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarWeekView* pWeekView);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the day header.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     rcDay           - A CRect object that contains the day's bounding
-		//                       rectangle coordinates.
-		//     nHeaderHeight   - An int that contains the header height value.
-		//     strHeader       - A CString object that contains the header text.
-		//     bIsCurrent      - A BOOL. TRUE if this is the current day for today. FALSE otherwise.
-		//     bIsSelected     - A BOOL. TRUE if the day is selected.  FALSE otherwise.
-		//-------------------------------------------------------------------
-		virtual void DrawDayHeader(CDC* pDC, CRect rcDay, int nHeaderHeight, CString strHeader,
-							BOOL bIsCurrent = FALSE, BOOL bIsSelected = FALSE);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the day header.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     rcDay           - A CRect object that contains the day's bounding
+	//                       rectangle coordinates.
+	//     nHeaderHeight   - An int that contains the header height value.
+	//     strHeader       - A CString object that contains the header text.
+	//     bIsCurrent      - A BOOL. TRUE if this is the current day for today. FALSE otherwise.
+	//     bIsSelected     - A BOOL. TRUE if the day is selected.  FALSE otherwise.
+	//-------------------------------------------------------------------
+	virtual void DrawDayHeader(CDC* pDC, CRect rcDay, int nHeaderHeight, CString strHeader,
+							   BOOL bIsCurrent = FALSE, BOOL bIsSelected = FALSE);
 	END_VIEW_PART(WeekViewPart)
 
 	//-----------------------------------------------------------------------
@@ -635,62 +662,63 @@ public:
 	//     Week View.
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(WeekViewEventPart, XTPCalendarViewPart)
-		COLORREF m_clrTextHighLightColor;   // Text color for the selected event.
-		COLORREF m_clrTextNormalColor;      // Text color for the event.
+	COLORREF m_clrTextHighLightColor; // Text color for the selected event.
+	COLORREF m_clrTextNormalColor;	// Text color for the event.
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to perform refreshing of
-		//     graphical related parameters from system settings.
-		//-------------------------------------------------------------------
-		virtual void RefreshMetrics()
-		{
-			m_clrBackground.SetStandardValue(m_pPaintManager->GetWeekViewPart()->GetBackgroundColor()); // RGB(255, 255, 213));
-			m_clrTextColor.SetStandardValue(m_pPaintManager->m_clrButtonFaceText);
-			m_clrTextHighLightColor = RGB(255, 255, 255);
-			m_clrTextNormalColor = m_pPaintManager->m_clrButtonFaceText;
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to perform refreshing of
+	//     graphical related parameters from system settings.
+	//-------------------------------------------------------------------
+	virtual void RefreshMetrics()
+	{
+		m_clrBackground.SetStandardValue(
+			m_pPaintManager->GetWeekViewPart()->GetBackgroundColor()); // RGB(255, 255, 213));
+		m_clrTextColor.SetStandardValue(m_pPaintManager->m_clrButtonFaceText);
+		m_clrTextHighLightColor = RGB(255, 255, 255);
+		m_clrTextNormalColor	= m_pPaintManager->m_clrButtonFaceText;
 
-			LOGFONT lfIcon;
-			VERIFY(CXTPDrawHelpers::GetIconLogFont(&lfIcon));
-			m_fntText.SetStandardValue(&lfIcon);
-		}
+		LOGFONT lfIcon;
+		VERIFY(m_pPaintManager->GetIconLogFont(&lfIcon));
+		m_fntText.SetStandardValue(&lfIcon);
+	}
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the specified event.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
-		//-------------------------------------------------------------------
-		virtual void OnDraw(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the specified event.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
+	//-------------------------------------------------------------------
+	virtual void OnDraw(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member functions is used to draw the event border.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     rcView          - A CRect that contains the day view's bounding rectangle coordinates.
-		//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
-		//-------------------------------------------------------------------
-		virtual void DrawBorder(CDC* pDC, CRect rcView, CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member functions is used to draw the event border.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     rcView          - A CRect that contains the day view's bounding rectangle coordinates.
+	//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
+	//-------------------------------------------------------------------
+	virtual void DrawBorder(CDC* pDC, CRect rcView, CXTPCalendarWeekViewEvent* pWeekViewEvent);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the event's times texts or icons.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
-		//-------------------------------------------------------------------
-		virtual int DrawTimes(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the event's times texts or icons.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
+	//-------------------------------------------------------------------
+	virtual int DrawTimes(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
 
-		//-------------------------------------------------------------------
-		// Summary:
-		//     This member function is used to draw the event subject.
-		// Parameters:
-		//     pDC             - Pointer to a valid device context.
-		//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
-		//-------------------------------------------------------------------
-		virtual void DrawSubj(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	//-------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to draw the event subject.
+	// Parameters:
+	//     pDC             - Pointer to a valid device context.
+	//     pWeekViewEvent  - A CXTPCalendarWeekViewEvent pointer to the Week Event View object.
+	//-------------------------------------------------------------------
+	virtual void DrawSubj(CDC* pDC, CXTPCalendarWeekViewEvent* pWeekViewEvent);
 	END_VIEW_PART(WeekViewEventPart)
 
 	//-----------------------------------------------------------------------
@@ -698,92 +726,195 @@ public:
 	//          Time Line view
 	//-----------------------------------------------------------------------
 	BEGIN_VIEW_PART(TimeLineViewTimeScalePart_Day, XTPCalendarTimeLineViewTimeScalePart)
-		virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
 	END_VIEW_PART(TimeLineViewTimeScalePart_Day)
 
 	BEGIN_VIEW_PART(TimeLineViewTimeScalePart_Week, XTPCalendarTimeLineViewTimeScalePart)
-		virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
 	END_VIEW_PART(TimeLineViewTimeScalePart_Week)
 
 	BEGIN_VIEW_PART(TimeLineViewTimeScalePart_Month, XTPCalendarTimeLineViewTimeScalePart)
-		virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
 	END_VIEW_PART(TimeLineViewTimeScalePart_Month)
 
 	BEGIN_VIEW_PART(TimeLineViewTimeScalePart_WorkWeek, XTPCalendarTimeLineViewTimeScalePart)
-		virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
 	END_VIEW_PART(TimeLineViewTimeScalePart_WorkWeek)
 
 	BEGIN_VIEW_PART(TimeLineViewPart, XTPCalendarTimeLineViewPart)
 
-		CXTPPaintManagerColor m_clrEventBar;            //Event bar color.
-		CXTPPaintManagerColor m_clrEventBarLine;        //Event bar line color.
+	CXTPPaintManagerColor m_clrEventBar;	 // Event bar color.
+	CXTPPaintManagerColor m_clrEventBarLine; // Event bar line color.
 
-		CXTPPaintManagerColor m_clrTimeScaleBackground; //Time scale background color.
-		CXTPPaintManagerColor m_clrTimeScaleHightlite;  //Time scale highlight color.
-		CXTPPaintManagerColor m_clrTimeScaleText;       //The time scale text color.
+	CXTPPaintManagerColor m_clrTimeScaleBackground; // Time scale background color.
+	CXTPPaintManagerColor m_clrTimeScaleHightlite;  // Time scale highlight color.
+	CXTPPaintManagerColor m_clrTimeScaleText;		// The time scale text color.
 
-		CXTPPaintManagerColor m_clrSelectedBackground;  //The selected background color.
-		CXTPPaintManagerColor m_clrSelectedText;        //The selected text color.
+	CXTPPaintManagerColor m_clrSelectedBackground; // The selected background color.
+	CXTPPaintManagerColor m_clrSelectedText;	   // The selected text color.
 
-		CXTPPaintManagerColor m_clrBackground;          //The background color.
-		CXTPPaintManagerColor m_clrText;                //The text color.
+	CXTPPaintManagerColor m_clrBackground; // The background color.
+	CXTPPaintManagerColor m_clrText;	   // The text color.
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Call this function to draw the time line view group.
-		// Parameters:
-		//      pDC     - The device context.
-		//      rcRect  - Rectangular drawing area.
-		//      pGroup  - The calendar time line view group.
-		//-----------------------------------------------------------------------
-		virtual void DrawGroup(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineViewGroup* pGroup);
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this function to draw the time line view group.
+	// Parameters:
+	//      pDC     - The device context.
+	//      rcRect  - Rectangular drawing area.
+	//      pGroup  - The calendar time line view group.
+	//-----------------------------------------------------------------------
+	virtual void DrawGroup(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineViewGroup* pGroup);
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Call this function to calculate the time line view event size.
-		// Parameters:
-		//      pDC         - The device context.
-		//      pEventView  - The event view.
-		// Returns:
-		//      A CSize object denoting the size of the time line view event.
-		//-----------------------------------------------------------------------
-		virtual CSize CalcEventSize(CDC* c, CXTPCalendarTimeLineViewEvent* pEventView);
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this function to calculate the time line view event size.
+	// Parameters:
+	//      pDC         - The device context.
+	//      pViewEvent  - The event view.
+	// Returns:
+	//      A CSize object denoting the size of the time line view event.
+	//-----------------------------------------------------------------------
+	virtual CSize CalcEventSize(CDC* c, CXTPCalendarTimeLineViewEvent* pViewEvent);
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Call this function to draw the event.
-		// Parameters:
-		//      pDC         - The device context.
-		//      rcEvents    - The rectangular bounds.
-		//      pEventView  - The event view.
-		//-----------------------------------------------------------------------
-		virtual void DrawEvent(CDC* pDC, const CRect& rcEvents, CXTPCalendarTimeLineViewEvent* pEventView);
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this function to draw the event.
+	// Parameters:
+	//      pDC         - The device context.
+	//      rcEvents    - The rectangular bounds.
+	//      pViewEvent  - The event view.
+	//-----------------------------------------------------------------------
+	virtual void DrawEvent(CDC* pDC, const CRect& rcEvents,
+						   CXTPCalendarTimeLineViewEvent* pViewEvent);
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Call this function to refresh the metrics
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-		//CBitmap  m_bmpEvent;
-		CXTPResourceImage* m_pimgEvent;   //The event image.
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this function to refresh the metrics
+	//-----------------------------------------------------------------------
+	virtual void RefreshMetrics();
+	// CBitmap  m_bmpEvent;
+	CXTPResourceImage* m_pimgEvent; // The event image.
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Call this function to do the initializations
-		//-----------------------------------------------------------------------
-		virtual void _Init();
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this function to do the initializations
+	//-----------------------------------------------------------------------
+	virtual void _Init();
 
-		//-----------------------------------------------------------------------
-		// Summary:
-		//      Destroys the CTimeLineViewPart object, does the cleanup.
-		//-----------------------------------------------------------------------
-		virtual ~CTimeLineViewPart();
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Destroys the CTimeLineViewPart object, does the cleanup.
+	//-----------------------------------------------------------------------
+	virtual ~CTimeLineViewPart();
 
 	END_VIEW_PART(TimeLineViewPart)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
+
+	virtual void DrawBorders(CDC* pDC, const CRect& rcRect, const CRect& rcBorders);
+	virtual void DrawExpandSign(CDC* pDC, BOOL bExpandUp, const CRect& rcTSHours);
+	virtual CXTPCalendarViewEventSubjectEditor* StartEditSubject(CXTPCalendarViewEvent* pViewEvent,
+																 CRect& rcEditor);
+	virtual void SetEditFont(CXTPCalendarViewEvent* pViewEvent,
+							 CXTPCalendarViewEventSubjectEditor* pEditor);
+	virtual void GetDateFormat(CString& strShort, CString& strLong);
+
+protected:
+	virtual void CreateGlyphsFont();
+	virtual void RefreshPartMetrics();
+
+	//-- CALENDAR PART REFRESH METHODS
+	virtual void PartRefresh(CControlPart* pViewPart);
+	virtual void PartRefresh(CDayViewEventPart* pViewPart);
+	virtual void PartRefresh(CDayViewTimeScaleCellPart* pViewPart);
+	virtual void PartRefresh(CDayViewTimeScaleHeaderPart* pViewPart);
+	virtual void PartRefresh(CDayViewCellPart* pViewPart);
+	virtual void PartRefresh(CDayViewAllDayEventsPart* pViewPart);
+	virtual void PartRefresh(CDayViewHeaderPart* pViewPart);
+	virtual void PartRefresh(CWeekViewPart* pViewPart);
+	virtual void PartRefresh(CMonthViewHeaderPart* pViewPart);
+	virtual void PartRefresh(CMonthViewEventPart* pViewPart);
+	virtual void PartRefresh(CDayViewWorkCellPart* pViewPart);
+	virtual void PartRefresh(CDayViewNonworkCellPart* pViewPart);
+	virtual void PartRefresh(CMonthViewGridPart* pViewPart);
+	virtual void PartRefresh(CTimeLineViewPart* pViewPart);
+
+	//-- CALENDAR PART DRAWING METHODS
+	virtual void PartDraw(CDayViewEventPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayViewEvent* pViewEvent);
+	virtual void PartDrawHourCell(CDayViewTimeScaleCellPart* pViewPart, CDC* pDC, CRect rc,
+								  CString strText, BOOL bFillBackground, BOOL bCurrentTime);
+	virtual void PartDrawBigHourCell(CDayViewTimeScaleCellPart* pViewPart, CDC* pDC, CRect rc,
+									 CString strHour, CString strMin, int nRowPerHour,
+									 BOOL bFillBackground, BOOL bCurrentTime);
+	virtual void PartDraw(CDayViewTimeScaleHeaderPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayView* pView, CRect rc, CString strText);
+	virtual void PartDrawNowLine(CDayViewTimeScaleHeaderPart* pViewPart, CDC* pDC,
+								 CXTPCalendarDayView* pView, CRect rc, int y, BOOL bDrawBk);
+	virtual void PartDraw(CDayViewCellPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayViewGroup* pViewGroup, CRect rc,
+						  const XTP_CALENDAR_DAYVIEWCELL_PARAMS& cellParams);
+	virtual void PartDraw(CDayViewAllDayEventsPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayViewGroup* pViewGroup, CRect rc, BOOL bSelected);
+	virtual void PartDraw(CDayViewHeaderPart* pViewPart, CDC* pDC, CXTPCalendarDayViewDay* pViewDay,
+						  CRect rc, CString strText);
+	virtual void PartDraw(CDayViewAllDayEventScrollIconsPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayViewGroup* pViewGroup, BOOL bDrawUp, BOOL bDrawDown,
+						  const CRect& rcIconUp, const CRect& rcIconDown, BOOL bHighlightUp,
+						  BOOL bHighlightDown);
+	virtual void PartDraw(CDayViewGroupHeaderPart* pViewPart, CDC* pDC,
+						  CXTPCalendarDayViewGroup* pViewGroup, CRect rc, CString strText);
+	virtual void PartDrawDayHeader(CWeekViewPart* pViewPart, CDC* pDC, CRect rcDay,
+								   int nHeaderHeight, CString strHeader, BOOL bIsCurrent,
+								   BOOL bIsSelected);
+	virtual void PartDraw(CWeekViewPart* pViewPart, CDC* pDC, CXTPCalendarWeekView* pWeekView);
+	virtual void PartDrawBorder(CWeekViewEventPart* pViewPart, CDC* pDC, CRect rcView,
+								CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	virtual int PartDrawTimes(CWeekViewEventPart* pViewPart, CDC* pDC,
+							  CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	virtual void PartDrawSubj(CWeekViewEventPart* pViewPart, CDC* pDC,
+							  CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	virtual void PartDraw(CWeekViewEventPart* pViewPart, CDC* pDC,
+						  CXTPCalendarWeekViewEvent* pWeekViewEvent);
+	virtual void PartDrawGrid(CMonthViewGridPart* pViewPart, CDC* pDC,
+							  CXTPCalendarMonthView* pMonthView);
+	virtual void PartDraw(CMonthViewHeaderPart* pViewPart, CDC* pDC,
+						  CXTPCalendarMonthView* pMonthView, CRect rc, int nCollIndex,
+						  CString strText);
+	virtual void PartDrawDayDate(CMonthViewEventPart* pViewPart, CDC* pDC, CRect rc, BOOL bToday,
+								 BOOL bSelected, BOOL bFirstMonthDay, CString strText);
+	virtual void PartDrawEvent(CMonthViewEventPart* pViewPart, CDC* pDC,
+							   CXTPCalendarMonthViewEvent* pViewEvent);
+	virtual void PartDraw(CTimeLineViewTimeScalePart_Day* pViewPart, CDC* pDC, const CRect& rcRect,
+						  CXTPCalendarTimeLineView* pView);
+	virtual void PartDraw(CTimeLineViewTimeScalePart_Week* pViewPart, CDC* pDC, const CRect& rcRect,
+						  CXTPCalendarTimeLineView* pView);
+	virtual void PartDraw(CTimeLineViewTimeScalePart_Month* pViewPart, CDC* pDC,
+						  const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void PartDraw(CTimeLineViewTimeScalePart_WorkWeek* pViewPart, CDC* pDC,
+						  const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+	virtual void PartDrawGroup(CTimeLineViewPart* pViewPart, CDC* pDC, const CRect& rcRect,
+							   CXTPCalendarTimeLineViewGroup* pGroup);
+	virtual void PartDrawEvent(CTimeLineViewPart* pViewPart, CDC* pDC, const CRect& rcEvents,
+							   CXTPCalendarTimeLineViewEvent* pViewEvent);
+
+	//-- CALENDAR PART GET METHODS
+	virtual COLORREF PartGetBackColor(CXTPCalendarViewPart* pViewPart);
+	virtual COLORREF PartGetTextColor(CXTPCalendarViewPart* pViewPart);
+	virtual CFont& PartGetTextFont(CXTPCalendarViewPart* pViewPart,
+								   CXTPCalendarViewPartFontValue& fntText);
+	virtual void PartGetParams(CDayViewCellPart* pViewPart, CXTPCalendarDayViewGroup* pViewGroup,
+							   XTP_CALENDAR_DAYVIEWCELL_PARAMS* rCellParams);
+
+	//-- MISC PART METHODS
+	virtual void PartCalcWidth(CDayViewTimeScaleCellPart* pViewPart, CDC* pDC,
+							   const CString& strHour, const CString& strMin, int nHourHeight,
+							   int& nWidth);
+	virtual void PartAdjustTimeFont(CDayViewTimeScaleCellPart* pViewPart, CDC* pDC, CRect rcCell);
+	virtual CSize PartCalcEventSize(CTimeLineViewPart* pViewPart, CDC* pDC,
+									CXTPCalendarTimeLineViewEvent* pViewEvent);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default paint manager constructor.
@@ -802,6 +933,17 @@ public:
 	virtual ~CXTPCalendarPaintManager();
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is called to update event label default colors
+	//-----------------------------------------------------------------------
+	virtual void UpdateEventLabelsDefaultColors();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is called to update event category default colors
+	//-----------------------------------------------------------------------
+	virtual void UpdateEventCategoriesDefaultColors();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -827,6 +969,26 @@ public:
 	//     most of defaults are system defaults.
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Initializes Calendar images.
+	// Remarks:
+	//     Called by the paint manager to initialize images used by the
+	//     Calendar control.
+	//-----------------------------------------------------------------------
+	virtual void UpdateGlyphs();
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to get the background color for
+	//             the specified event.
+	// Parameters: pEvent    : Points to the Calendar event.
+	//             crDefault : RGB value representing the default color to be
+	//                         returned if one could not be found.
+	// Returns:    An RGB value representing the event background color if
+	//             successful, otherwise returns the value specified by crDefault.
+	//-----------------------------------------------------------------------
+	virtual COLORREF GetEventBackColor(CXTPCalendarEvent* pEvent, COLORREF crDefault);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -878,7 +1040,8 @@ public:
 	//     rcView        - A CRect object that contains the bounding rectangle
 	//                     coordinates of where the clock is drawn.
 	//     clrBackground - A COLORREF object that contains the background color of the clock.
-	//     cafAlign      - A XTPCalendarClockAlignFlags alignment flag, appropriate values are determined by
+	//     cafAlign      - A XTPCalendarClockAlignFlags alignment flag, appropriate values are
+	//     determined by
 	//                     enum XTPCalendarClockAlignFlags.
 	// Remarks:
 	//     This member function is used anywhere a time clock is needed.
@@ -887,7 +1050,8 @@ public:
 	//      Zero when clock icon wasn't successfully drawn.
 	// See Also: enum XTPCalendarClockAlignFlags determines alignment flags.
 	//-----------------------------------------------------------------------
-	virtual int DrawClock(CDC* pDC, COleDateTime dtClockTime, CRect rcView, COLORREF clrBackground, XTPCalendarClockAlignFlags cafAlign);
+	virtual int DrawClock(CDC* pDC, COleDateTime dtClockTime, CRect rcView, COLORREF clrBackground,
+						  XTPCalendarClockAlignFlags cafAlign);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -905,8 +1069,8 @@ public:
 	// Returns:
 	//     An int that contains the width of the drawn bitmap.
 	//-----------------------------------------------------------------------
-	virtual int DrawBitmap(CImageList* pImageList, CDC* pDC, CRect rcView,
-							int iIcon, UINT uFlags = 0);
+	virtual int DrawBitmap(CImageList* pImageList, CDC* pDC, CRect rcView, int iIcon,
+						   UINT uFlags = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -922,7 +1086,7 @@ public:
 	// Returns:
 	//     An int that contains the width of the drawn bitmap.
 	//-----------------------------------------------------------------------
-	virtual int DrawBitmap(UINT nIDResource, CDC* pDC,  CRect rcBitmap);
+	virtual int DrawBitmap(UINT nIDResource, CDC* pDC, CRect rcBitmap);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1011,13 +1175,16 @@ public:
 	//      bIsSelected - A BOOL. TRUE if the header is selected. FALSE otherwise.
 	//      bIsCurrent  - A BOOL. TRUE if the header represents the current time.
 	//                    FALSE otherwise.
-	//     grclr           - A CXTPPaintManagerColorGradient object that specifies the Gradient color.
-	//     clrUnderLineHdr - A COLORREF object that specifies the color of header's underline.
+	//     grclr           - A CXTPPaintManagerColorGradient object that specifies the Gradient
+	//     color. clrUnderLineHdr - A COLORREF object that specifies the color of header's
+	//     underline.
 	//-----------------------------------------------------------------------
-	virtual void DrawHeader(CDC* pDC, CRect& rcHeader, BOOL bIsSelected,
-							BOOL bIsCurrent);
-	virtual void DrawHeader(CDC* pDC, CRect& rcHeader, BOOL bIsSelected,
-		BOOL bIsCurrent, const CXTPPaintManagerColorGradient& grclr, COLORREF clrUnderLineHdr); // <combine CXTPCalendarPaintManager::DrawHeader@CDC*@CRect&@BOOL@BOOL>
+	virtual void DrawHeader(CDC* pDC, CRect& rcHeader, BOOL bIsSelected, BOOL bIsCurrent);
+	virtual void DrawHeader(
+		CDC* pDC, CRect& rcHeader, BOOL bIsSelected, BOOL bIsCurrent,
+		const CXTPPaintManagerColorGradient& grclr,
+		COLORREF clrUnderLineHdr); // <combine
+								   // CXTPCalendarPaintManager::DrawHeader@CDC*@CRect&@BOOL@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1036,7 +1203,9 @@ public:
 	//           CRgn.
 	//-----------------------------------------------------------------------
 	virtual void DrawBusyStatus(CDC* pDC, CRect& rcRect, int eBusyStatus);
-	virtual void DrawBusyStatus(CDC* pDC, CRgn& rgnBusy, int eBusyStatus); // <combine CXTPCalendarPaintManager::DrawBusyStatus@CDC*@CRect&@int>
+	virtual void DrawBusyStatus(
+		CDC* pDC, CRgn& rgnBusy,
+		int eBusyStatus); // <combine CXTPCalendarPaintManager::DrawBusyStatus@CDC*@CRect&@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1070,190 +1239,8 @@ public:
 	XTPCurrentSystemTheme GetCurrentSystemTheme();
 
 public:
-	//===========================================================================
-	// Summary:
-	//     This is a helper class which handles shadows drawing (for events, etc)
-	//===========================================================================
-	class CXTPShadowDrawer
-	{
-	public:
-		//===========================================================================
-		// Summary:
-		//     Constructs the object and initializes.
-		// Parameters:
-		//     pDC          - A pointer to the device context.
-		//     dMaxAlpha    - The maximum value for the alpha channel.
-		//===========================================================================
-		CXTPShadowDrawer(CDC* pDC, double dMaxAlpha);
-
-		//===========================================================================
-		// Summary:
-		//     Destroy the CXTPShadowDrawer and does the cleanups.
-		//===========================================================================
-		virtual ~CXTPShadowDrawer();
-
-		//===========================================================================
-		// Summary:
-		//     Call this function to get the alpha pixel.
-		// Parameter:
-		//     crPixel - The color of the pixel.
-		//     i       - The alpha value.
-		// Returns:
-		//      The alpha pixel value.
-		//===========================================================================
-		static COLORREF AlphaPixel(const COLORREF crPixel, const UINT i);
-
-		//===========================================================================
-		// Summary:
-		//     Call this function to check whether the input is within the limit of
-		//     0 and 255.
-		// Parameter:
-		//      iValue - The input.
-		// Returns:
-		//      The returns 0 if the input is less than 0 and 255 if it is greater than
-		//      255, else returns the value.
-		//===========================================================================
-		static int CheckValue(int iValue);
-
-		enum XTPShadowPart
-		{
-			// Regular theme - Office 2003
-			xtpShadowLR = 0,
-			xtpShadowTB = 1,
-			xtpShadowTR = 2,
-			xtpShadowBR = 3,
-			xtpShadowBL = 4,
-			// Office 2007 Theme
-			xtpShadow2007Right      = 5,
-			xtpShadow2007Bottom     = 6,
-			xtpShadow2007TopRight   = 7,
-			xtpShadow2007BottomRight= 8,
-			xtpShadow2007BottomLeft = 9
-
-		};
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  Generic drawing of the shadow rectangle part
-		// Parameters:
-		//  rcShadow - rectangle to draw
-		//  part - XTPShadowPart
-		//-----------------------------------------------------------------------
-		void DrawShadowRectPart(const CRect& rcShadow, const XTPShadowPart part);
-
-		// Methods for Office 2003 theme
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadowLR(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadowTB(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadowTR(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadowBR(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadowBL(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		// methods for Office 2007 theme
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadow2007Right(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadow2007Bottom(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadow2007TR(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadow2007BL(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//  applied shadow to bitmap
-		// Parameters:
-		//  pBitmap - UINT*
-		//  ulBitmapWidth - ULONG
-		//  ulBitmapHeight - ULONG
-		//-----------------------------------------------------------------------
-		void ApplyShadow2007BR(UINT* pBitmap, const ULONG ulBitmapWidth, const ULONG ulBitmapHeight);
-
-	protected:
-		CDC* m_pDC; // drawing device context
-		double m_dMaxAlpha; // maximal shadow alpha grade
-
-	private:
-
-	};
-
 private:
-	CSize m_szExpandSign;   // Cached size of the expand sign
+	CSize m_szExpandSign; // Cached size of the expand sign
 
 protected:
 	//-----------------------------------------------------------------------
@@ -1268,14 +1255,26 @@ protected:
 	CXTPCalendarViewPart* AddViewPart(CXTPCalendarViewPart* pPart);
 
 public:
-	CXTPPaintManagerColor m_clrButtonFace;     // Stores standard Button Face color.
+	CFont* m_pSelFont;
+	CXTPPaintManagerColor m_clrButtonFace;	 // Stores standard Button Face color.
 	CXTPPaintManagerColor m_clrButtonFaceText; // Stores standard color to display text.
-	CXTPPaintManagerColor m_clrWindow;         // Stores standard windows color.
-	CXTPPaintManagerColor m_clrWindowText;     // Stores standard color to display window text.
-	CXTPPaintManagerColor m_clr3DShadow;       // Stores standard color to display shadow items.
-	CXTPPaintManagerColor m_clrHighlight;      // Stores standard color to display highlighted items.
-
-	CXTPPaintManagerColorGradient  m_grclrToday;         // Gradient color of today's header.
+	CXTPPaintManagerColor m_clrWindow;		   // Stores standard windows color.
+	CXTPPaintManagerColor m_clrWindowText;	 // Stores standard color to display window text.
+	CXTPPaintManagerColor m_clr3DShadow;	   // Stores standard color to display shadow items.
+	CXTPPaintManagerColor m_clrHighlight;  // Stores standard color to display highlighted items.
+	CXTPPaintManagerColor m_clrBorders[4]; // Stores border line color, left = 0, top = 1, right =
+										   // 2, bottom = 3.
+	CXTPPaintManagerColor m_clrTLVEventBar;
+	CXTPPaintManagerColor m_clrTLVEventBarLine;
+	CXTPPaintManagerColor m_clrTLVTimeScaleBackground;
+	CXTPPaintManagerColor m_clrTLVTimeScaleBorder;
+	CXTPPaintManagerColor m_clrTLVTimeScaleHighlight;
+	CXTPPaintManagerColor m_clrTLVTimeScaleText;
+	CXTPPaintManagerColor m_clrTLVText;
+	CXTPPaintManagerColor m_clrTLVBack;
+	CXTPPaintManagerColor m_clrTLVSelectedText;
+	CXTPPaintManagerColor m_clrTLVSelectedBack;
+	CXTPPaintManagerColorGradient m_grclrToday; // Gradient color of today's header.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1341,34 +1340,48 @@ public:
 	//-----------------------------------------------------------------------
 	void SetAskItemTextFlags(DWORD dwFlags);
 
-	CUIntArray m_arStartCol;    //hold start column in each virtual page
-	CUIntArray m_arStartRow;    //hold start row in each virtual page
-	int m_PrintPageWidth;       //Print page width.
+	BOOL GetIconLogFont(LOGFONT* plf);
+
+	CUIntArray m_arStartCol; // hold start column in each virtual page
+	CUIntArray m_arStartRow; // hold start row in each virtual page
+	int m_PrintPageWidth;	// Print page width.
 
 protected:
-
-	CList<CXTPCalendarViewPart*, CXTPCalendarViewPart*> m_lstViewParts; // Collection to store ViewParts objects.
-
+	CList<CXTPCalendarViewPart*, CXTPCalendarViewPart*> m_lstViewParts; // Collection to store
+																		// ViewParts objects.
 
 	//-----------------------------------------------------------------------
 	// Summary: Enumerates types of expand signs drawn on a day view.
 	//-----------------------------------------------------------------------
 	enum XTPEnumExpandSigns
 	{
-		idxExpandSignUp = 0,    // Expand sign: arrow up
-		idxExpandSignDown = 1   // Expand sign: arrow down
+		idxExpandSignUp   = 0, // Expand sign: arrow up
+		idxExpandSignDown = 1  // Expand sign: arrow down
 	};
 
-	CImageList  m_ilExpandSigns; // Stores standard Expand Signs icons.
+	CImageList m_ilExpandSigns; // Stores standard Expand Signs icons.
 
-	CImageList  m_ilGlyphs;     // Stores standard glyphs for displaying events. Used when glyphs font is not installed.
-	CFont*      m_pGlyphsFont;  // Stores standard glyphs font for displaying events.
+	CImageList m_ilGlyphs; // Stores standard glyphs for displaying events. Used when glyphs font is
+						   // not installed.
+	CFont* m_pGlyphsFont;  // Stores standard glyphs font for displaying events.
 
-	CBitmap     m_bmpTentativePattern;  // Stores standard bitmap pattern to draw Tentative event busy status.
-	CBrush      m_brushTentative;       // Stores standard brush to draw Tentative event busy status.
+	CBitmap m_bmpElsewherePattern; // Stores standard bitmap pattern to draw Elsewhere event busy
+								   // status.
+
+	CXTPBrush m_xtpBrushElsewhere; // Stores standard brush to draw Elsewhere event busy status.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushElsewhere, m_xtpBrushElsewhere,
+										  GetBrushElsewhereHandle);
+
+	CBitmap m_bmpTentativePattern; // Stores standard bitmap pattern to draw Tentative event busy
+								   // status.
+
+	CXTPBrush m_xtpBrushTentative; // Stores standard brush to draw Tentative event busy status.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushTentative, m_xtpBrushTentative,
+										  GetBrushTentativeHandle);
 
 	CXTPCalendarTypedPtrAutoDeleteArray<CPtrArray, CXTPCalendarViewPartBrushValue*>
-				m_arBusyStatusBrushes; // Stores customizable brush values to draw Event Busy Status in the Day View.
+		m_arBusyStatusBrushes; // Stores customizable brush values to draw Event Busy Status in the
+							   // Day View.
 
 	//-----------------------------------------------------------------------
 	// Summary: Returns drawing brush value for a specific busy status.
@@ -1388,21 +1401,33 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void InitBusyStatusDefaultColors();
 
-	CSize m_szClockRect;                     // Stores dimensions for a rectangle used to display the time as a clock glyph.
+	virtual void FormatLabel(CString& strLabel);
 
-	CXTPCalendarControl* m_pControl;         // Stores a pointer to a CXTPCalendarControl object.
+	CSize m_szClockRect; // Stores dimensions for a rectangle used to display the time as a clock
+						 // glyph.
 
-	BOOL m_bEnableTheme;                     // True to enable Luna theme.
-	COLORREF m_clrUnderLineHdr;              // Color of header's underline.
+	CXTPCalendarControl* m_pControl; // Stores a pointer to a CXTPCalendarControl object.
+
+	BOOL m_bEnableTheme;					 // True to enable Luna theme.
+	COLORREF m_clrUnderLineHdr;				 // Color of header's underline.
 	XTPCurrentSystemTheme m_CurrSystemTheme; // Current theme flag.
 
-	XTPCalendarTheme m_nPaintTheme;          // Store the Paint Theme;
+	XTPCalendarTheme m_nPaintTheme; // Store the Paint Theme;
 
-	DWORD m_dwAskItemTextFlags;              // Store flag set to send XTP_NC_CALENDAR_GETITEMTEXT notification.
+	DWORD m_dwAskItemTextFlags; // Store flag set to send XTP_NC_CALENDAR_GETITEMTEXT notification.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	friend class CCalendarControlCtrl;
+	CXTPCalendarFlagsSet_imp* AxGetAskItemTextFlags();
+	friend class CXTPCalendarMonthViewDay;
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
+
 /////////////////////////////////////////////////////////////////////////////
+
 AFX_INLINE XTPCalendarTheme CXTPCalendarPaintManager::GetPaintTheme() const
 {
 	return m_nPaintTheme;
@@ -1410,22 +1435,26 @@ AFX_INLINE XTPCalendarTheme CXTPCalendarPaintManager::GetPaintTheme() const
 
 AFX_INLINE void CXTPCalendarPaintManager::SetPaintTheme(XTPCalendarTheme ePaintTheme)
 {
-	m_nPaintTheme = min(xtpCalendarThemeOffice2003, ePaintTheme);
+	m_nPaintTheme = min(xtpCalendarThemeOffice2013, ePaintTheme);
 	RefreshMetrics();
 }
 
-AFX_INLINE XTPCurrentSystemTheme CXTPCalendarPaintManager::GetCurrentSystemTheme(){
+AFX_INLINE XTPCurrentSystemTheme CXTPCalendarPaintManager::GetCurrentSystemTheme()
+{
 	return m_CurrSystemTheme;
 }
 
-AFX_INLINE CSize CXTPCalendarPaintManager::GetClockSize(){
+AFX_INLINE CSize CXTPCalendarPaintManager::GetClockSize()
+{
 	return m_szClockRect;
 }
-AFX_INLINE BOOL CXTPCalendarPaintManager::IsThemeEnabled(){
+AFX_INLINE BOOL CXTPCalendarPaintManager::IsThemeEnabled()
+{
 	return m_bEnableTheme;
 }
 
-AFX_INLINE void CXTPCalendarPaintManager::EnableTheme(BOOL bEnableTheme){
+AFX_INLINE void CXTPCalendarPaintManager::EnableTheme(BOOL bEnableTheme)
+{
 	m_bEnableTheme = bEnableTheme;
 	RefreshMetrics();
 }
@@ -1440,6 +1469,7 @@ AFX_INLINE void CXTPCalendarPaintManager::SetAskItemTextFlags(DWORD dwFlags)
 	m_dwAskItemTextFlags = dwFlags;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARPAINTMANAGER_H__)

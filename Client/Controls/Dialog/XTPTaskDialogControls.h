@@ -1,7 +1,6 @@
 // XTPTaskDialogControls.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKLINKCTRL_H__)
-#define __XTPTASKLINKCTRL_H__
+#	define __XTPTASKLINKCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -44,10 +45,10 @@ public:
 	//===========================================================================
 	struct LINKITEM
 	{
-		DWORD       nStart;     // Starting character position,
-		int         nIndex;     // Character index of the character nearest the specified point.
-		CString     strLabel;   // Specifies the execute string for the link.
-		CString     strUrl;     // Specifies the display string for the link.
+		DWORD nStart;	 // Starting character position,
+		int nIndex;		  // Character index of the character nearest the specified point.
+		CString strLabel; // Specifies the execute string for the link.
+		CString strUrl;   // Specifies the display string for the link.
 
 		CArray<RECT, RECT&> arrParts;
 	};
@@ -199,14 +200,12 @@ public:
 
 private:
 	void DrawText(CDC* pDC, CRect rClient);
-	void DrawTextPart(CDC* pDC, int&x, int&y, int nWidth, CString strBuffer, LINKITEM* pItem);
+	void DrawTextPart(CDC* pDC, int& x, int& y, int nWidth, CString strBuffer, LINKITEM* pItem);
 	int DrawTextPartText(CDC* pDC, CString strBuffer, int x, int y, LINKITEM* pItem);
 	void RemoveAllLinks();
 
-
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTaskDialogLinkCtrl)
@@ -228,20 +227,22 @@ protected:
 	afx_msg LRESULT OnUpdateUIState(WPARAM wParam, LPARAM lParam);
 	LRESULT OnSetText(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int                         m_nFocused;         // Index of the currently focus link.
-	CFont                       m_fontUL;           // Font used to render link text.
-	CString                     m_strBuffer;        // Text buffer to be displayed in the control.
-	HCURSOR                     m_hcurHand;         // Handle to text link cursor.
-	COLORREF                    m_crBack;           // RGB background color value.
-	COLORREF                    m_crText;           // RGB text color value.
-	COLORREF                    m_crTextLink;       // RGB link text color value.
-	CTaskLinkItemArray          m_arrLinks;         // Array of links for the display text.
+	int m_nFocused; // Index of the currently focus link.
+
+	CXTPFont m_xtpFontUL; // Font used to render link text.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontUL, m_xtpFontUL, GetULFontHandle);
+
+	CString m_strBuffer;		   // Text buffer to be displayed in the control.
+	HCURSOR m_hcurHand;			   // Handle to text link cursor.
+	COLORREF m_crBack;			   // RGB background color value.
+	COLORREF m_crText;			   // RGB text color value.
+	COLORREF m_crTextLink;		   // RGB link text color value.
+	CTaskLinkItemArray m_arrLinks; // Array of links for the display text.
 	BOOL m_bPreSubclassWindow;
 };
-
 
 //===========================================================================
 // CXTPTaskButtonTheme
@@ -298,7 +299,6 @@ class _XTP_EXT_CLASS CXTPTaskDialogProgressCtrl : public CProgressCtrl
 public:
 	CXTPTaskDialogProgressCtrl();
 
-
 protected:
 	DECLARE_MESSAGE_MAP()
 
@@ -312,7 +312,6 @@ protected:
 	afx_msg LRESULT OnSetState(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
 
-
 protected:
 	int m_nState;
 	int m_nMarqueePos;
@@ -320,31 +319,35 @@ protected:
 	BOOL m_bMarquee;
 };
 
-
-AFX_INLINE void CXTPTaskDialogLinkCtrl::SetBackColor(COLORREF crBack) {
+AFX_INLINE void CXTPTaskDialogLinkCtrl::SetBackColor(COLORREF crBack)
+{
 	m_crBack = crBack;
 }
-AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetBackColor() const {
+AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetBackColor() const
+{
 	return m_crBack;
 }
-AFX_INLINE void CXTPTaskDialogLinkCtrl::SetTextColor(COLORREF crText) {
+AFX_INLINE void CXTPTaskDialogLinkCtrl::SetTextColor(COLORREF crText)
+{
 	m_crText = crText;
 }
-AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetTextColor() const {
+AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetTextColor() const
+{
 	return m_crText;
 }
-AFX_INLINE void CXTPTaskDialogLinkCtrl::SetTextLinkColor(COLORREF crTextLink) {
+AFX_INLINE void CXTPTaskDialogLinkCtrl::SetTextLinkColor(COLORREF crTextLink)
+{
 	m_crTextLink = crTextLink;
 }
-AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetTextLinkColor() const {
+AFX_INLINE COLORREF CXTPTaskDialogLinkCtrl::GetTextLinkColor() const
+{
 	return m_crTextLink;
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKLINKCTRL_H__)

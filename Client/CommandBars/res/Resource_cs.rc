@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)
 #ifdef _WIN32
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -148,14 +147,14 @@ BEGIN
     LTEXT           "Nabídky aplikace",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
     LTEXT           "Místní nabídky",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Zobrazit nabídku:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Zobrazit Menu:",IDC_STATIC,10,20,54,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,66,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Výchozí",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Výchozí nabídka\nVýchozí nabídka aplikace",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Obnovit",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Výchozí menu\nVýchozí aplikace menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Vybrat &místní nabídku:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Výber kontextového menu:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,100,90,125,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Výchozí",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
@@ -181,7 +180,7 @@ XTP_IDR_CUSTOMIZEMENU MENU DISCARDABLE
 BEGIN
     POPUP "Vlastní nastavení"
     BEGIN
-        MENUITEM "Pùvodní",                      XTP_ID_CUSTOMIZE_RESET
+        MENUITEM "Obnovit",                      XTP_ID_CUSTOMIZE_RESET
         MENUITEM "Odstranit",                     XTP_ID_CUSTOMIZE_DELETE
         MENUITEM SEPARATOR
         MENUITEM "Název:",                      XTP_ID_CUSTOMIZE_NAME
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Vlastní nastavení"
     XTP_IDS_NEWMENU         "Nová nabídka"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Vlastní nastavení stavového rádku"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Vlastní %d"
     XTP_IDS_ERROR_BLANKNAME "Název panelu nemùže být prázdný. Zapište název."
-    XTP_IDS_ERROR_LIMIT     "Dosáhli jste možného limitu."
+    XTP_IDS_ERROR_LIMIT     "Omlouvám se, že jste dosáhli jste limitu."
     XTP_IDS_ERROR_EXISTS    "Panel nástrojù s názvem '%s' již existuje. Zadejte jiný název."
     XTP_IDS_RENAMETOOLBAR   "Pøejmenovat panel nástrojù"
     XTP_IDS_CONFIRM_DELETE  "Opravdu chcete odstranit panel nástrojù '%s'?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Opravdu chcete resetovat pøiøazení kláves ?  Tato akce odstraní všechna vaše vlastní klávesová pøiøazení."
+                            "Jste si jisti, že chcete obnovit prirazení kláves? Tato akce odstraní všechna vlastní prirazení na úrovni textu."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "Tato klávesová zkratka je již pøiøazena.\nChcete ji pøiøadit znovu ?"
-    XTP_IDS_CONFIRM_UPDATE  "Z dùvodù aktualizace software se nástrojová lišta '%s' zmìnila. Chcete resetovat vaši uživatelskou nástrojovou lištu nebo vytvoøit novou ?"
+                            "Tento zástupce je aktuálne prirazena.\nChcete znovu priradit tento zástupce?"
+    XTP_IDS_CONFIRM_UPDATE  "Díky aktualizaci softwaru se zmenil nástroju '%s'. Chcete obnovit upravený panel nástroju a nacíst nový?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Všechny obrázkové soubory|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Rastrové obrázky(*.Bmp;*.Dib)|*.bmp;*.dib|Metasoubory(*.Wmf;*.Emf)|*.wmf;*.emf|Ikony(*.Ico;*.Cur)|*.ico;*.cur|Soubory GIF(*.Gif)|*.gif|Soubory JPEG(*.Jpg)|*.jpg|Všechny soubory(*.*)|*.*||"
+                            "Všechny soubory obrázku|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Rastrové obrázky (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metasoubory (*.wmf;*.emf)|*.wmf;*.emf|Ikony (*.ico;*.cur)|*.ico;*.cur|Všechny soubory (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nMožnosti panelu nástrojù"
     XTP_ID_TOOLBAR_HIDE     "\nZavøít"
     XTP_ID_POPUPBAR_EXPAND  "\nRozbalit"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nObnovit okno"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimalizovat okno"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "stisknutí (%s). Èekání na druhý klíè akord..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -303,22 +302,24 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nPøesunout do &následující skupiny záložek"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nPøesunout do nové &horizontální skupiny záložek"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nPøesunout do nové &vertikální skupiny záložek"
-    XTP_ID_WORKSPACE_CANCEL "Storno"
+    XTP_ID_WORKSPACE_CANCEL "\nStorno"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktivní soubory"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Tisk náhledu položky\nTisk"
+    XTP_ID_PREVIEW_PREV     "Jít na predchozí stránku\nPredchozí stránka"
+    XTP_ID_PREVIEW_NEXT     "Prejít na další stránku\nDalší stránka"
+    XTP_ID_PREVIEW_ZOOMIN   "Zvýšit zvetšení náhledu stránky\nPriblížit"
+    XTP_ID_PREVIEW_ZOOMOUT  "Snížit zvetšení náhledu stránky\nOddálit"
+    XTP_ID_PREVIEW_ONEPAGE  "Jedna stránka"
+    XTP_ID_PREVIEW_TWOPAGE  "Více stránek"
+    XTP_ID_PREVIEW_CLOSE    "Zavrít náhled\nZavrít náhled"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Celá stránka"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Šírka stránky"
+    XTP_IDS_PREVIEW_PAGEI     "Stránka %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Stránka %i z %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)

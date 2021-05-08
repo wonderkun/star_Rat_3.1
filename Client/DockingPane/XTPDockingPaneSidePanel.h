@@ -1,7 +1,6 @@
 // XTPDockingPaneSidePanel.h : interface for the CXTPDockingPaneSidePanel class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANESIDEPANEL_H__)
-#define __XTPDOCKINGPANESIDEPANEL_H__
+#	define __XTPDOCKINGPANESIDEPANEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBaseContainer.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneLayout;
 class CXTPDockingPaneSidePanel;
@@ -38,8 +37,12 @@ class CXTPDockingPaneSidePanel;
 //     CWnd and CXTPDockingPaneBase. It is used internally as an auto-hide container
 //     for CXTPDockingPaneBase derived classes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneSidePanel : public CMiniFrameWnd, public CXTPDockingPaneBaseContainer
+class _XTP_EXT_CLASS CXTPDockingPaneSidePanel
+	: public CMiniFrameWnd
+	, public CXTPDockingPaneBaseContainer
 {
+	DECLARE_DYNAMIC(CXTPDockingPaneSidePanel)
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -60,9 +63,11 @@ protected:
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns a CXTPDockingPaneTabbedContainer object that points to the parent container for this container.
+	//     Returns a CXTPDockingPaneTabbedContainer object that points to the parent container for
+	//     this container.
 	// Returns:
-	//     CXTPDockingPaneTabbedContainer object that points to the parent container for this container.
+	//     CXTPDockingPaneTabbedContainer object that points to the parent container for this
+	//     container.
 	//-----------------------------------------------------------------------
 	CXTPDockingPaneTabbedContainer* GetTopContainer() const;
 
@@ -131,6 +136,14 @@ public:
 	//-----------------------------------------------------------------------
 	void MovePanel(XTPDockingPaneDirection direction, CRect rect);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns TRUE if caption drawn vertically
+	// Returns:
+	//     TRUE if the caption drawn vertically
+	//-----------------------------------------------------------------------
+	virtual BOOL IsCaptionVertical() const;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -153,8 +166,12 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL Create(CRect rc);
 
+	using CMiniFrameWnd::Create;
+
 	//{{AFX_CODEJOCK_PRIVATE
-	static void AFX_CDECL OnSizeParentEx(CXTPDockingPaneManager* pManager, CWnd* pParent, CRect rect);
+	static void AFX_CDECL OnSizeParentEx(CXTPDockingPaneManager* pManager, CWnd* pParent,
+										 CRect rect);
+
 protected:
 	void DeletePane();
 	void OnFinalRelease();
@@ -265,15 +282,14 @@ protected:
 	//-----------------------------------------------------------------------
 	void OnPinButtonClick();
 
-
 private:
 	typedef CArray<CXTPDockingPaneSidePanel*, CXTPDockingPaneSidePanel*> CSidePanelArray;
 
 	static void AFX_CDECL OnSizeParentEx(CSidePanelArray& arrSide, CWnd* pParent, CRect rect);
-	static int _cdecl CompareLength(const void *arg1, const void *arg2);
+	static int AFX_CDECL CompareLength(const void* arg1, const void* arg2);
 
 	struct LENGTH;
-	static void SortLength(LENGTH* pLength, int nFirstIndex, int nLastIndex);
+	static void AFX_CDECL SortLength(LENGTH* pLength, int nFirstIndex, int nLastIndex);
 
 private:
 	CXTPDockingPaneCaptionButton* HitTestCaptionButton(CPoint point) const;
@@ -287,7 +303,7 @@ private:
 	int GetMinHeight();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPDockingPaneSidePanel)
@@ -308,35 +324,57 @@ protected:
 	//}}AFX_MSG
 	BOOL IsResizable(int nHit);
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneSidePanel);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneSidePanel);
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+
+	LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	afx_msg int OleGetPosition();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	XTPDockingPaneDirection m_direction;                          // Location of side panel
+	XTPDockingPaneDirection m_direction; // Location of side panel
 	int m_nLengthIndex;
 
-	int m_nStepsCount;          // Total steps of animation process
-	int m_nSlideStep;           // Current step of animation process
-	int m_nDeactivationCount;   // Deactivation counter.
+	int m_nStepsCount;		  // Total steps of animation process
+	int m_nSlideStep;		  // Current step of animation process
+	int m_nDeactivationCount; // Deactivation counter.
 
-	BOOL m_bCollapsed;          // Pane is collapsed
-	BOOL m_bExpanded;           // Pane is collapsed but expanded now
-	BOOL m_bSlideOut;           // Pane is currently expanding.
-
+	BOOL m_bCollapsed; // Pane is collapsed
+	BOOL m_bExpanded;  // Pane is collapsed but expanded now
+	BOOL m_bSlideOut;  // Pane is currently expanding.
 
 	friend class CXTPDockingPaneManager;
 	friend class CXTPDockingPaneLayout;
-
 };
 
-AFX_INLINE HWND CXTPDockingPaneSidePanel::GetPaneHwnd() const {
+AFX_INLINE HWND CXTPDockingPaneSidePanel::GetPaneHwnd() const
+{
 	return CWnd::GetSafeHwnd();
 }
-AFX_INLINE XTPDockingPaneDirection CXTPDockingPaneSidePanel::GetDirection() const {
+AFX_INLINE XTPDockingPaneDirection CXTPDockingPaneSidePanel::GetDirection() const
+{
 	return m_direction;
 }
-AFX_INLINE BOOL CXTPDockingPaneSidePanel::IsActive() const {
+AFX_INLINE BOOL CXTPDockingPaneSidePanel::IsActive() const
+{
 	return m_bActive;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANESIDEPANEL_H__)

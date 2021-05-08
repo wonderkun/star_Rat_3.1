@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -154,8 +153,8 @@ BEGIN
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
     LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Select &context menu:",IDC_STATIC,10,92,73,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,88,90,125,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
@@ -314,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
     XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
     XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
+    XTP_ID_PREVIEW_ONEPAGE  "Single page"
+    XTP_ID_PREVIEW_TWOPAGE  "Multiple pages"
     XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
     XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
     XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"

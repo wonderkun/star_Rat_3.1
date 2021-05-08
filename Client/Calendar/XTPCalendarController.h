@@ -1,7 +1,6 @@
 // XTPCalendarController.h: interface for the CXTPCalendarController class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,19 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARCONTROLLER_H__)
-#define _XTPCALENDARCONTROLLER_H__
+#	define _XTPCALENDARCONTROLLER_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDatePickerControl;
 class CXTPCalendarControl;
 class CXTPCalendarResourcesNf;
+class CXTPNotifySink;
 
 struct XTP_DAYITEM_METRICS;
 
@@ -86,7 +86,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarController();
 
-// Attributes
+	// Attributes
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -138,9 +138,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual CXTPDatePickerControl* GetDatePicker() const;
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function used to determine whether Bold font is used
@@ -241,12 +239,11 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetBoldDaysIdleStepTime_ms(long nStepTime_ms);
 
-// Implementation
+	// Implementation
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK(CXTPCalendarController, m_Sink)
-//}}AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPNotifySink* m_pSink;
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -278,7 +275,7 @@ protected:
 	//           CXTPCalendarControl::MonthView_IsCompressWeekendDays(),
 	//           CXTPCalendarControl::GetFirstDayOfWeek()
 	//-----------------------------------------------------------------------
-	//virtual BOOL IsFirstDayOfWeekShifted_FromSun2Mon();
+	// virtual BOOL IsFirstDayOfWeekShifted_FromSun2Mon();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -308,7 +305,8 @@ protected:
 	//     control options where changed..
 	// See Also: AdviseToNotifications
 	//-----------------------------------------------------------------------
-	virtual void OnEvent_CalendarOptionsChanged(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
+	virtual void OnEvent_CalendarOptionsChanged(XTP_NOTIFY_CODE Event, WPARAM wParam,
+												LPARAM lParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -320,7 +318,8 @@ protected:
 	//     lParam - Second user's parameter.
 	// See Also: AdviseToNotifications
 	//-----------------------------------------------------------------------
-	virtual void OnEvent_CalendarResourcesChanged(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
+	virtual void OnEvent_CalendarResourcesChanged(XTP_NOTIFY_CODE Event, WPARAM wParam,
+												  LPARAM lParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -347,18 +346,24 @@ protected:
 	// See Also: AdviseToNotifications
 	//-----------------------------------------------------------------------
 	virtual void OnEvent_DatePicker(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
-	virtual void OnEvent_DtPickGetItemMetrics(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam); //<COMBINE OnEvent_DatePicker>
+	virtual void OnEvent_DtPickGetItemMetrics(XTP_NOTIFY_CODE Event, WPARAM wParam,
+											  LPARAM lParam); //<COMBINE OnEvent_DatePicker>
 
 protected:
-	CXTPCalendarControl* m_pCalendarCtrl;       // Pointer to the associated Calendar control.
-	CXTPDatePickerControl* m_pDatePickerCtrl;   // Pointer to the associated DatePicker control.
+	CXTPCalendarControl* m_pCalendarCtrl;	 // Pointer to the associated Calendar control.
+	CXTPDatePickerControl* m_pDatePickerCtrl; // Pointer to the associated DatePicker control.
 
-	BOOL m_bBoldDaysWithEvents;           // TRUE to use Bold for days with events in the associated DatePicker.
-	BOOL m_bUseActiveViewResoucesForBold; // If true - active view resources are used, if FALSE - calendar control Resources are used.
+	BOOL m_bBoldDaysWithEvents;			  // TRUE to use Bold for days with events in the associated
+										  // DatePicker.
+	BOOL m_bUseActiveViewResoucesForBold; // If true - active view resources are used, if FALSE -
+										  // calendar control Resources are used.
 
-	BOOL m_bBoldDaysOnIdle;          // TRUE to retrieve days state (bold or regular) on idle (by timer) for the associated DatePicker.
-	long m_nBoldDaysPerIdleStep;     // Amount of days for the associated DatePicker to update state in one idle step.
-	long m_nBoldDaysIdleStepTime_ms; // Time between idle steps to update days state (bold or regular) for the associated DatePicker.
+	BOOL m_bBoldDaysOnIdle; // TRUE to retrieve days state (bold or regular) on idle (by timer) for
+							// the associated DatePicker.
+	long m_nBoldDaysPerIdleStep; // Amount of days for the associated DatePicker to update state in
+								 // one idle step.
+	long m_nBoldDaysIdleStepTime_ms; // Time between idle steps to update days state (bold or
+									 // regular) for the associated DatePicker.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -393,16 +398,17 @@ private:
 			BOOL bHasEvents;
 			DATE dtLastAccessTime;
 		};
-		CMap<long, long, XTPDayInfo, XTPDayInfo&>   m_mapDaysInfo;
-		CMap<long, long, UINT, UINT>                m_mapDaysToRefresh;
+		CMap<long, long, XTPDayInfo, XTPDayInfo&> m_mapDaysInfo;
+		CMap<long, long, UINT, UINT> m_mapDaysToRefresh;
 
 		CXTPCalendarController* m_pOwner;
-		UINT_PTR                m_uTimerID;
-		DWORD                   m_dwLastRedrawTime;
-		DWORD                   m_dwLastSelfClearTime;
-		DWORD                   m_dwWaitingDataTime;
+		UINT_PTR m_uTimerID;
+		DWORD m_dwLastRedrawTime;
+		DWORD m_dwLastSelfClearTime;
+		DWORD m_dwWaitingDataTime;
 
-		UINT                    m_uActivePriority;
+		UINT m_uActivePriority;
+
 	public:
 		CXTPDayInfoCache();
 		virtual ~CXTPDayInfoCache();
@@ -416,11 +422,13 @@ private:
 		void RequestToRefreshDays(COleDateTime dtDayFrom, COleDateTime dtDayTo);
 
 		UINT UpActivePriority();
+
 	protected:
 		void UpdateDayInfo(DATE dtDay, BOOL bHasEvents);
 		void KillTimer();
 
-		void _RequestToRefreshDays(COleDateTime dtDayFrom, COleDateTime dtDayTo, UINT uPriority = 0);
+		void _RequestToRefreshDays(COleDateTime dtDayFrom, COleDateTime dtDayTo,
+								   UINT uPriority = 0);
 
 		void OnRefreshDays(int nDaysCountToRefresh = 1);
 		void OnSelfClearOld();
@@ -429,13 +437,10 @@ private:
 
 		typedef CMap<UINT_PTR, UINT_PTR, CXTPDayInfoCache*, CXTPDayInfoCache*> CXTPMapTimers;
 		static CXTPMapTimers m_mapTimers;
-
 	};
 	friend class CXTPDayInfoCache;
 
 	CXTPDayInfoCache m_DayInfoCache;
-
-
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -443,36 +448,31 @@ AFX_INLINE BOOL CXTPCalendarController::IsBoldDaysWithEvents() const
 {
 	return m_bBoldDaysWithEvents;
 }
-
 AFX_INLINE BOOL CXTPCalendarController::IsBoldDaysOnIdle() const
 {
 	return m_bBoldDaysOnIdle;
 }
-
 AFX_INLINE void CXTPCalendarController::SetBoldDaysOnIdle(BOOL bBoldDaysOnIdle)
 {
 	m_bBoldDaysOnIdle = bBoldDaysOnIdle;
 	m_DayInfoCache.Clear();
 }
-
 AFX_INLINE long CXTPCalendarController::GetBoldDaysPerIdleStep() const
 {
 	return m_nBoldDaysPerIdleStep;
 }
-
 AFX_INLINE void CXTPCalendarController::SetBoldDaysPerIdleStep(long nDaysPerStep)
 {
 	m_nBoldDaysPerIdleStep = nDaysPerStep;
 }
-
 AFX_INLINE long CXTPCalendarController::GetBoldDaysIdleStepTime_ms() const
 {
 	return m_nBoldDaysIdleStepTime_ms;
 }
-
 AFX_INLINE void CXTPCalendarController::SetBoldDaysIdleStepTime_ms(long nStepTime_ms)
 {
 	m_nBoldDaysIdleStepTime_ms = nStepTime_ms;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARCONTROLLER_H__)

@@ -4,12 +4,12 @@ Copyright (c) 1985-96, Microsoft Corporation
 
 Module Name:
 
-    gl.h
+	gl.h
 
 Abstract:
 
-    Procedure declarations, constant definitions and macros for the OpenGL
-    component.
+	Procedure declarations, constant definitions and macros for the OpenGL
+	component.
 
 --*/
 
@@ -1137,8 +1137,8 @@ typedef void GLvoid;
 #define GL_MAX_ELEMENTS_INDICES_WIN       0x80E9
 
 /* WIN_phong_shading */
-#define GL_PHONG_WIN                      0x80EA 
-#define GL_PHONG_HINT_WIN                 0x80EB 
+#define GL_PHONG_WIN                      0x80EA
+#define GL_PHONG_HINT_WIN                 0x80EB
 
 /* WIN_specular_fog */
 #define GL_FOG_SPECULAR_TEXTURE_WIN       0x80EC
@@ -1506,17 +1506,17 @@ typedef void (APIENTRY * PFNGLADDSWAPHINTRECTWINPROC)  (GLint x, GLint y, GLsize
 
 /* EXT_paletted_texture */
 typedef void (APIENTRY * PFNGLCOLORTABLEEXTPROC)
-    (GLenum target, GLenum internalFormat, GLsizei width, GLenum format,
-     GLenum type, const GLvoid *data);
+	(GLenum target, GLenum internalFormat, GLsizei width, GLenum format,
+	 GLenum type, const GLvoid *data);
 typedef void (APIENTRY * PFNGLCOLORSUBTABLEEXTPROC)
-    (GLenum target, GLsizei start, GLsizei count, GLenum format,
-     GLenum type, const GLvoid *data);
+	(GLenum target, GLsizei start, GLsizei count, GLenum format,
+	 GLenum type, const GLvoid *data);
 typedef void (APIENTRY * PFNGLGETCOLORTABLEEXTPROC)
-    (GLenum target, GLenum format, GLenum type, GLvoid *data);
+	(GLenum target, GLenum format, GLenum type, GLvoid *data);
 typedef void (APIENTRY * PFNGLGETCOLORTABLEPARAMETERIVEXTPROC)
-    (GLenum target, GLenum pname, GLint *params);
+	(GLenum target, GLenum pname, GLint *params);
 typedef void (APIENTRY * PFNGLGETCOLORTABLEPARAMETERFVEXTPROC)
-    (GLenum target, GLenum pname, GLfloat *params);
+	(GLenum target, GLenum pname, GLfloat *params);
 
 #ifdef __cplusplus
 }

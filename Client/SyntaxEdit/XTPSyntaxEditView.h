@@ -1,7 +1,6 @@
 // XTPSyntaxEditView.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITSYNTAXEDITVIEW_H__)
-#define __XTPSYNTAXEDITSYNTAXEDITVIEW_H__
+#	define __XTPSYNTAXEDITSYNTAXEDITVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPDrawHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditFindReplaceDlg;
 
 namespace XTPSyntaxEditLexAnalyser
 {
-	class CXTPSyntaxEditLexParser;
+class CXTPSyntaxEditLexParser;
 }
 
 //===========================================================================
@@ -62,7 +61,14 @@ public:
 	CXTPSyntaxEditViewPrintOptions();
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPSyntaxEditViewPrintOptions);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -81,7 +87,6 @@ class _XTP_EXT_CLASS CXTPSyntaxEditView : public CView
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Protected object constructor. Used by dynamic creation.
@@ -96,7 +101,6 @@ protected:
 	virtual ~CXTPSyntaxEditView();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Set the font of the edit control pointer.
@@ -104,7 +108,7 @@ public:
 	//      pLogFont   - [in] The LOGFONT pointer to be set.
 	//      bUpdateReg - [in] Set TRUE to save font in registry.
 	//-----------------------------------------------------------------------
-	void SetFontIndirect(LOGFONT *pLogFont, BOOL bUpdateReg=FALSE);
+	void SetFontIndirect(LOGFONT* pLogFont, BOOL bUpdateReg = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -120,7 +124,7 @@ public:
 	// Returns:
 	//      TRUE if horizontal scrollbar is enabled, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetHorzScrollBar();
+	BOOL GetHorzScrollBar() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -128,7 +132,7 @@ public:
 	// Returns:
 	//      TRUE if vertical scrollbar is enabled, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetVertScrollBar();
+	BOOL GetVertScrollBar() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -141,7 +145,7 @@ public:
 	// Returns:
 	//      TRUE if scrollbars were updated, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL SetScrollBars(BOOL bHorz, BOOL bVert, BOOL bUpdateReg=FALSE, BOOL bRecalcLayout=TRUE);
+	BOOL SetScrollBars(BOOL bHorz, BOOL bVert, BOOL bUpdateReg = FALSE, BOOL bRecalcLayout = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -185,7 +189,9 @@ public:
 	// Returns:
 	//      Edit control pointer.
 	//-----------------------------------------------------------------------
-	virtual CXTPSyntaxEditCtrl& GetEditCtrl();
+	CXTPSyntaxEditCtrl& GetEditCtrl();
+
+	const CXTPSyntaxEditCtrl& GetEditCtrl() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -208,7 +214,7 @@ public:
 	// Returns:
 	//      Pointer to the CXTPSyntaxEditBufferManager object.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditBufferManager* GetEditBuffer();
+	CXTPSyntaxEditBufferManager* GetEditBuffer() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -216,7 +222,7 @@ public:
 	// Returns:
 	//      Pointer to the associated configuration manager.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditConfigurationManager* GetLexConfigurationManager();
+	CXTPSyntaxEditConfigurationManager* GetLexConfigurationManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -240,7 +246,7 @@ public:
 	// Returns:
 	//      The top row integer identifier.
 	//-----------------------------------------------------------------------
-	int GetTopRow();
+	int GetTopRow() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -257,7 +263,7 @@ public:
 	// Returns:
 	//      Pointer to CXTPSyntaxEditDoc.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditDoc* GetDocument();
+	CXTPSyntaxEditDoc* GetDocument() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -267,7 +273,7 @@ public:
 	// See also:
 	//      class CXTPSyntaxEditBufferManager
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditBufferManager * GetDataManager();
+	CXTPSyntaxEditBufferManager* GetDataManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -275,7 +281,7 @@ public:
 	// Returns:
 	//      Pointer to a XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser object.
 	//-----------------------------------------------------------------------
-	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* GetLexParser();
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* GetLexParser() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -299,7 +305,7 @@ public:
 	// Returns:
 	//     Pointer to an object describing print options of this view.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditViewPrintOptions* GetPrintOptions();
+	CXTPSyntaxEditViewPrintOptions* GetPrintOptions() const;
 
 	//{{AFX_CODEJOCK_PRIVATE
 public:
@@ -312,7 +318,7 @@ public:
 
 protected:
 	afx_msg void OnPaint();
-	virtual void OnDraw(CDC* pDC);      // overridden to draw this view
+	virtual void OnDraw(CDC* pDC); // overridden to draw this view
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -322,7 +328,7 @@ protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView);
 	virtual void OnDropFiles(HDROP hDropInfo);
-	virtual void OnUpdate(CView* pSender, LPARAM lHint=0L, CObject* pHint=NULL);
+	virtual void OnUpdate(CView* pSender, LPARAM lHint = 0L, CObject* pHint = NULL);
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
@@ -408,7 +414,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL OnUpdateScrollPos(NMHDR* pNMHDR, LRESULT* pResult);
 
-		//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// Summary:
 	//      This function is a default handler for XTP_EDIT_NM_ENABLESCROLLBAR
 	//      message which sent scroll bar state changed.
@@ -489,11 +495,10 @@ protected:
 	virtual BOOL OnParseEvent(NMHDR* pNMHDR, LRESULT* pResult);
 
 protected:
-
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+#	endif
 
 	//-----------------------------------------------------------------------
 	// Summary: Overwrite this method to customize the read-only file handling
@@ -585,66 +590,63 @@ protected:
 	void StartOleDrag();
 
 	LOGFONT m_lfPrevFont; // Temporarily stores editor font
-	int m_nPrevTopRow;  // Temporarily stores previous top row
+	int m_nPrevTopRow;	// Temporarily stores previous top row
 
 protected:
-	int m_nParserThreadPriority_WhenActive;     // Parser priority (active state).
-	int m_nParserThreadPriority_WhenInactive;   // Parser priority (inactive state).
+	int m_nParserThreadPriority_WhenActive;   // Parser priority (active state).
+	int m_nParserThreadPriority_WhenInactive; // Parser priority (inactive state).
 
-	BOOL m_bDraggingOver;           // TRUE if dragover is going on, FALSE otherwise
-	BOOL m_bDraggingStartedHere;    // TRUE if dragging is started in this view, FALSE otherwise
+	BOOL m_bDraggingOver;		 // TRUE if dragover is going on, FALSE otherwise
+	BOOL m_bDraggingStartedHere; // TRUE if dragging is started in this view, FALSE otherwise
 
 	BOOL m_bScrollBars; // Whether to create control with own scrollbars, or
-	                    // let to manage scrolling for parent window
+						// let to manage scrolling for parent window
 
 	//-----------------------------------------------------------------------
 
-	static CXTPSyntaxEditView *ms_pTargetView;  // Target view pointer to be filled in by drag-drop routine
-	static BOOL ms_bDroppedHere;        // TRUE if text is dropped in this view, FALSE otherwise
-	static POINT ms_ptDropPos;          // Stores drop mouse position.
-	static DWORD_PTR ms_dwSignature;    // A signature used during drag-drop operation
+	static CXTPSyntaxEditView* ms_pTargetView; // Target view pointer to be filled in by drag-drop
+											   // routine
+	static BOOL ms_bDroppedHere;	 // TRUE if text is dropped in this view, FALSE otherwise
+	static POINT ms_ptDropPos;		 // Stores drop mouse position.
+	static DWORD_PTR ms_dwSignature; // A signature used during drag-drop operation
 
-	BOOL m_bOleDragging;                // TRUE if OLE dragging is enabled, FALSE otherwise
-	BOOL m_bFilesDragging;              // TRUE when dragging files, FALSE otherwise.
-	COleDropTarget m_dropTarget;        // OLE drop target
+	BOOL m_bOleDragging;		 // TRUE if OLE dragging is enabled, FALSE otherwise
+	BOOL m_bFilesDragging;		 // TRUE when dragging files, FALSE otherwise.
+	COleDropTarget m_dropTarget; // OLE drop target
 
-	CSize m_szPage;                     // Page size for printing or preview
-	int m_iTopRow;                      // Top row for display
+	CSize m_szPage; // Page size for printing or preview
+	int m_iTopRow;  // Top row for display
 
 	CWnd* m_pParentWnd;
-	CXTPSyntaxEditCtrl  m_wndEditCtrl;  // Default Edit control instance
-	CXTPSyntaxEditCtrl* m_pEditCtrl;    // Edit control instance
+	CXTPSyntaxEditCtrl* m_pEditCtrl; // Edit control instance
 
 	static CXTPSyntaxEditFindReplaceDlg* m_pFindReplaceDlg; // Pointer to find or replace dialog.
 
-	BOOL m_bOnSizeRunning;          // Indicate that OnSize message handler is in progress.
+	BOOL m_bOnSizeRunning; // Indicate that OnSize message handler is in progress.
 
 	CXTPSyntaxEditViewPrintOptions* m_pPrintOptions; // Printing options.
-	CUIntArray m_aPageStart;            // Stores Printed page start row indexes.
+	CUIntArray m_aPageStart;						 // Stores Printed page start row indexes.
 
 public:
-	BOOL    m_bPrintDirect;             // if TRUE - the Print Dialog is bypassed. FALSE by default.
-	BOOL    m_bResizeControlWithView;   // if FALSE - attached Calendar control will not be resized with view. TRUE by default.
+	BOOL m_bPrintDirect;		   // if TRUE - the Print Dialog is bypassed. FALSE by default.
+	BOOL m_bResizeControlWithView; // if FALSE - attached Calendar control will not be resized with
+								   // view. TRUE by default.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPSyntaxEditBufferManager* CXTPSyntaxEditView::GetEditBuffer()
+AFX_INLINE CXTPSyntaxEditBufferManager* CXTPSyntaxEditView::GetEditBuffer() const
 {
 	return GetEditCtrl().GetEditBuffer();
 }
-
-AFX_INLINE CXTPSyntaxEditConfigurationManager* CXTPSyntaxEditView::GetLexConfigurationManager()
+AFX_INLINE CXTPSyntaxEditConfigurationManager* CXTPSyntaxEditView::GetLexConfigurationManager() const
 {
 	return GetEditCtrl().GetLexConfigurationManager();
 }
-
-AFX_INLINE CXTPSyntaxEditViewPrintOptions* CXTPSyntaxEditView::GetPrintOptions()
+AFX_INLINE CXTPSyntaxEditViewPrintOptions* CXTPSyntaxEditView::GetPrintOptions() const
 {
 	return m_pPrintOptions;
 }
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITSYNTAXEDITVIEW_H__)

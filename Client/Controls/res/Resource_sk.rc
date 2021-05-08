@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SKY))
 #ifdef _WIN32
 LANGUAGE LANG_SLOVAK, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "ätandardnÈ farby"
+	XTP_IDS_RECENT_COLORS    "Aktu·lne farby"
+	XTP_IDS_THEME_COLORS     "Farby motÌvu"
+	XTP_IDS_TAGCLOUD_TIP     "ZnaËka %s, skÛre: %d"
     XTP_IDS_TIPTEXT          "Tip text"
     XTP_IDS_DIDYOUKNOW       "Viete, ûe..."
     XTP_IDS_FILE_ABSENT      "Zadan˝ s˙bor neexistuje."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Skryù podrobnosti"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Pozadia 1"
+    XTP_IDS_BACKGROUND2        "Pozadia 2"
+    XTP_IDS_TEXT1              "Text 1"
+    XTP_IDS_TEXT2              "Text 2"
+    XTP_IDS_ACCENT1            "Zv˝raznenie 1"
+    XTP_IDS_ACCENT2            "Zv˝raznenie 2"
+    XTP_IDS_ACCENT3            "Zv˝raznenie 3"
+    XTP_IDS_ACCENT4            "Zv˝raznenie 4"
+    XTP_IDS_ACCENT5            "Zv˝raznenie 5"
+    XTP_IDS_ACCENT6            "Zv˝raznenie 6"
+    XTP_IDS_LIGHTER            "ZapaæovaË"
+    XTP_IDS_DARKER             "Tmavöie"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SKY))

@@ -1,7 +1,6 @@
-// XTPShellTreeCtrl.h : header file
+// XTPShellTreeCtrlView.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLTREECTRL_H__)
-#define __XTPSHELLTREECTRL_H__
+#	define __XTPSHELLTREECTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-DECLATE_SHELLTREE_BASE(CXTPShellTreeViewBase, CTreeView, CXTPShellTreeBase)
-DECLATE_SHELLTREE_BASE(CXTPShellTreeCtrlBase, CTreeCtrl, CXTPShellTreeBase)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+DECLARE_SHELLTREE_BASE(CXTPShellTreeViewBase, CTreeView, CXTPShellTreeBase)
+DECLARE_SHELLTREE_BASE(CXTPShellTreeCtrlBase, CTreeCtrl, CXTPShellTreeBase)
 
 //===========================================================================
 // Summary:
@@ -40,7 +41,6 @@ class _XTP_EXT_CLASS CXTPShellTreeView : public CXTPShellTreeViewBase
 	DECLARE_DYNCREATE(CXTPShellTreeView)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellTreeView object
@@ -54,7 +54,6 @@ public:
 	virtual ~CXTPShellTreeView();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Called after a user makes a new tree selection.
@@ -70,16 +69,17 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void SelectionChanged(HTREEITEM hItem, CString strFolderPath);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShellTreeView)
-	public:
+public:
 	virtual void OnInitialUpdate();
-	protected:
+
+protected:
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
 	//}}AFX_VIRTUAL
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 };
@@ -95,7 +95,6 @@ class _XTP_EXT_CLASS CXTPShellTreeCtrl : public CXTPShellTreeCtrlBase
 {
 	DECLARE_DYNAMIC(CXTPShellTreeCtrl)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPShellTreeCtrl object
@@ -145,7 +144,6 @@ public:
 	virtual void AssociateCombo(CWnd* pWnd);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Called after a user makes a new tree selection.
@@ -162,7 +160,7 @@ protected:
 	virtual void SelectionChanged(HTREEITEM hItem, CString strFolderPath);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShellTreeCtrl)
@@ -171,21 +169,23 @@ protected:
 	//{{AFX_MSG(CXTPShellTreeCtrl)
 	afx_msg LRESULT OnUpdateShell(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL  m_bAutoInit; // TRUE if the tree control is to initialize when created.
+	BOOL m_bAutoInit;  // TRUE if the tree control is to initialize when created.
 	CWnd* m_pListCtrl; // Window that receives the update notification, usually a CXTPShellListCtrl.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-#define CXTPShellTree    CXTPShellTreeCtrl
+#	define CXTPShellTree CXTPShellTreeCtrl
 //}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPShellTreeCtrl::EnableAutoInit(BOOL bEnable) {
+AFX_INLINE void CXTPShellTreeCtrl::EnableAutoInit(BOOL bEnable)
+{
 	m_bAutoInit = bEnable;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSHELLTREECTRL_H__)

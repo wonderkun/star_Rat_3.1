@@ -1,7 +1,6 @@
 // XTPCalendarEvents.h: CXTPCalendarEvents template.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDAREVENTS_H__)
-#define _XTPCALENDAREVENTS_H__
+#	define _XTPCALENDAREVENTS_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-
-//{{AFX_CODEJOCK_PRIVATE
 class CXTPCalendarEvent;
-//}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
 // Summary:
@@ -209,7 +206,8 @@ public:
 	//     nIndex - An integer index that is greater than or equal to 0
 	//              and may be greater than the value returned by GetCount.
 	//     pEvent      - Pointer to the event to insert.
-	//     bWithAddRef - Set this value to TRUE to increment the reference count of the inserted object,
+	//     bWithAddRef - Set this value to TRUE to increment the reference count of the inserted
+	//     object,
 	//                   FALSE to insert object without incrementing reference count.
 	//                   Default value is TRUE.
 	// Remarks:
@@ -354,7 +352,8 @@ public:
 	// See Also: CXTPCalendarEvents overview, CXTPCalendarEvent overview,
 	//-----------------------------------------------------------------------
 	CXTPCalendarEvent* FindEvent(DWORD dwEventID) const;
-	CXTPCalendarEvent* FindEvent(CXTPCalendarEvent* pFEvent) const; // <combine CXTPCalendarEvents::FindEvent@DWORD@const>
+	CXTPCalendarEvent* FindEvent(
+		CXTPCalendarEvent* pFEvent) const; // <combine CXTPCalendarEvents::FindEvent@DWORD@const>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -408,7 +407,8 @@ public:
 	// See Also: Sort method, CompareEvents_ForView function,
 	//           CompareEvents_ByID function
 	//-----------------------------------------------------------------------
-	typedef int (_cdecl* T_CompareFunc)(const CXTPCalendarEvent** ppEv1, const CXTPCalendarEvent** ppEv2);
+	typedef int(AFX_CDECL* T_CompareFunc)(const CXTPCalendarEvent** ppEv1,
+										  const CXTPCalendarEvent** ppEv2);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -447,7 +447,8 @@ public:
 	//     events in the order needed to display the events in the event's views.
 	// Example: See example for CXTPCalendarEvents::Sort method.
 	//-----------------------------------------------------------------------
-	static int _cdecl CompareEvents_ForView(const CXTPCalendarEvent** ppEv1, const CXTPCalendarEvent** ppEv2);
+	static int AFX_CDECL CompareEvents_ForView(const CXTPCalendarEvent** ppEv1,
+											   const CXTPCalendarEvent** ppEv2);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -462,7 +463,8 @@ public:
 	//     events in the order needed to display the events in the event's views.
 	// Example: See example for CXTPCalendarEvents::Sort method.
 	//-----------------------------------------------------------------------
-	static int _cdecl CompareEvents_ForViewByStart(const CXTPCalendarEvent** ppEv1, const CXTPCalendarEvent** ppEv2);
+	static int AFX_CDECL CompareEvents_ForViewByStart(const CXTPCalendarEvent** ppEv1,
+													  const CXTPCalendarEvent** ppEv2);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -479,31 +481,50 @@ public:
 	// See Also: method CXTPCalendarEvents::Sort overview,
 	//           CompareEvents_ForView function
 	//-----------------------------------------------------------------------
-	static int _cdecl CompareEvents_ByID(const CXTPCalendarEvent** ppEv1, const CXTPCalendarEvent** ppEv2);
+	static int AFX_CDECL CompareEvents_ByID(const CXTPCalendarEvent** ppEv1,
+											const CXTPCalendarEvent** ppEv2);
 
 protected:
-	CArray<CXTPCalendarEvent*, CXTPCalendarEvent*> m_arEvents; // An internal storage for CXTPCalendarEvent pointers.
+	CArray<CXTPCalendarEvent*, CXTPCalendarEvent*> m_arEvents; // An internal storage for
+															   // CXTPCalendarEvent pointers.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEvents);
+	DECLARE_ENUM_VARIANT(CXTPCalendarEvents)
+
+	LPDISPATCH OleGetItem(long nIndex);
+	int OleGetItemCount();
+
+	void OleAdd(LPDISPATCH pEventDisp);
+	void OleRemove(long nIndex);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-
-AFX_INLINE int CXTPCalendarEvents::GetCount() const {
+AFX_INLINE int CXTPCalendarEvents::GetCount() const
+{
 	return (int)m_arEvents.GetSize();
 }
-
 AFX_INLINE void CXTPCalendarEvents::SetSize(int nNewSize, int nGrowBy)
 {
 	m_arEvents.SetSize(nNewSize, nGrowBy);
 }
-
-AFX_INLINE BOOL CXTPCalendarEvents::RemoveByID(DWORD dwEventID) {
+AFX_INLINE BOOL CXTPCalendarEvents::RemoveByID(DWORD dwEventID)
+{
 	int nFIndex = Find(dwEventID);
-	if (nFIndex >= 0) {
+	if (nFIndex >= 0)
+	{
 		RemoveAt(nFIndex);
 	}
 	return (nFIndex >= 0);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDAREVENTS_H__)

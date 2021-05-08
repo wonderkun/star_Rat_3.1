@@ -1,7 +1,6 @@
 // XTPSyntaxEditBufferManager.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,22 +19,29 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITBUFFERMANAGER_H__)
-#define __XTPSYNTAXEDITBUFFERMANAGER_H__
+#	define __XTPSYNTAXEDITBUFFERMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 namespace XTPSyntaxEditLexAnalyser
 {
-	class CXTPSyntaxEditLexTextSchema;
-};
+class CXTPSyntaxEditLexTextSchema;
+class CXTPSyntaxEditLexParser;
+}; // namespace XTPSyntaxEditLexAnalyser
 
-typedef CXTPSyntaxEditLexTextSchema CXTPSyntaxEditTextSchema;
+typedef XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexTextSchema CXTPSyntaxEditTextSchema;
 class CXTPSyntaxEditLineMarksManager;
 class CXTPSyntaxEditUndoRedoManager;
+class CXTPNotifySink;
+class CXTPNotifyConnection;
+class CXTPSyntaxEditConfigurationManager;
+typedef CXTPSmartPtrInternalT<CXTPSyntaxEditConfigurationManager>
+	CXTPSyntaxEditConfigurationManagerPtr;
 
 //===========================================================================
 // Summary:
@@ -49,6 +55,7 @@ class _XTP_EXT_CLASS CXTPSyntaxEditBufferManager : public CXTPCmdTarget
 {
 	DECLARE_DYNCREATE(CXTPSyntaxEditBufferManager)
 	friend class CXTPSyntaxEditCtrl;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -69,7 +76,7 @@ public:
 	// Returns:
 	//      TRUE if modified, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsModified();
+	BOOL IsModified() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -77,7 +84,7 @@ public:
 	// Returns:
 	//      CodePage to be used for conversion.
 	//-----------------------------------------------------------------------
-	UINT GetCodePage();
+	UINT GetCodePage() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -105,7 +112,7 @@ public:
 	// Returns:
 	//      TRUE if OVR mode is set, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetOverwriteFlag();
+	BOOL GetOverwriteFlag() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -121,7 +128,7 @@ public:
 	// Returns:
 	//      TRUE if Parser is enabled, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsParserEnabled();
+	BOOL IsParserEnabled() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -137,7 +144,7 @@ public:
 	// Returns:
 	//      Current CRLF type.
 	//-----------------------------------------------------------------------
-	int GetCurCRLFType();
+	int GetCurCRLFType() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -176,9 +183,9 @@ public:
 	// Returns:
 	//      TRUE if the supplied text is a CRLF, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsTextCRLF(LPCTSTR szCompText, BOOL bFindReverse = FALSE);
+	BOOL IsTextCRLF(LPCTSTR szCompText, BOOL bFindReverse = FALSE) const;
 
-#ifdef _UNICODE
+#	ifdef _UNICODE
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Determines if the supplied text is a CRLF or not of the non-unicode string.
@@ -188,8 +195,8 @@ public:
 	// Returns:
 	//      TRUE if the supplied text is a CRLF, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsTextCRLF(LPCSTR szCompText, BOOL bFindReverse = FALSE);
-#endif
+	BOOL IsTextCRLF(LPCSTR szCompText, BOOL bFindReverse = FALSE) const;
+#	endif
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -205,7 +212,7 @@ public:
 	// Returns:
 	//      Pointer to a CXTPSyntaxEditUndoRedoManager object.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditUndoRedoManager* GetUndoRedoManager();
+	CXTPSyntaxEditUndoRedoManager* GetUndoRedoManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -213,7 +220,7 @@ public:
 	// Returns:
 	//      Pointer to a CXTPSyntaxEditLineMarksManager object.
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditLineMarksManager* GetLineMarksManager();
+	CXTPSyntaxEditLineMarksManager* GetLineMarksManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -221,7 +228,7 @@ public:
 	// Returns:
 	//      Pointer to a XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser object.
 	//-----------------------------------------------------------------------
-	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* GetLexParser();
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* GetLexParser() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -230,7 +237,7 @@ public:
 	//      A pointer to the configuration manager object.
 	//
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditConfigurationManager* GetLexConfigurationManager();
+	CXTPSyntaxEditConfigurationManager* GetLexConfigurationManager() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -246,7 +253,7 @@ public:
 	// Returns:
 	//      A pointer to the notify connection object.
 	//-----------------------------------------------------------------------
-	CXTPNotifyConnection* GetConnection();
+	CXTPNotifyConnection* GetConnection() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -260,7 +267,7 @@ public:
 	// Parameters:
 	//      ar : [in, out] The archive to save/load text.
 	//-----------------------------------------------------------------------
-	void Serialize(CArchive& ar);
+	virtual void Serialize(CArchive& ar);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -274,8 +281,9 @@ public:
 	//      nDataSizeLimit          : [in] The number of bytes to stop storing text to archive
 	//                                     (or -1 to store all).
 	//-----------------------------------------------------------------------
-	void SerializeEx(CArchive &ar, BOOL bUnicode = -1, BOOL bWriteUnicodeFilePrefix = TRUE,
-					  UINT nCodePage = (UINT)-1, LPCTSTR pcszFileExt = NULL, int nDataSizeLimit = -1);
+	virtual void SerializeEx(CArchive& ar, BOOL bUnicode = -1, BOOL bWriteUnicodeFilePrefix = TRUE,
+							 UINT nCodePage = (UINT)-1, LPCTSTR pcszFileExt = NULL,
+							 int nDataSizeLimit = -1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -286,7 +294,7 @@ public:
 	// See Also:
 	//      SetFileExt()
 	//-----------------------------------------------------------------------
-	void Load(CFile *pFile, LPCTSTR pcszFileExt = NULL);
+	void Load(CFile* pFile, LPCTSTR pcszFileExt = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -306,7 +314,7 @@ public:
 	// See also:
 	//      void SetFileExt(const CString& strExt);
 	//-----------------------------------------------------------------------
-	CString GetFileExt();
+	CString GetFileExt() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -329,7 +337,7 @@ public:
 	// Returns:
 	//      CString object with text line.
 	//-----------------------------------------------------------------------
-	CString GetLineText(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1);
+	CString GetLineText(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -341,7 +349,7 @@ public:
 	// Returns:
 	//      Text line length as integer value.
 	//-----------------------------------------------------------------------
-	int GetLineTextLength(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1);
+	int GetLineTextLength(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -353,7 +361,7 @@ public:
 	// Returns:
 	//      Text line length in characters as integer value.
 	//-----------------------------------------------------------------------
-	int GetLineTextLengthC(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1);
+	int GetLineTextLengthC(int iLine, BOOL bAddCRLF = FALSE, int iCRLFStyle = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -395,9 +403,8 @@ public:
 	// Returns:
 	//      TRUE if the succeeded, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetBuffer(int row1, int col1, int row2, int col2,
-					CMemFile& file, BOOL bColumnSelection = FALSE,
-					BOOL bForceDOSStyleCRLF = FALSE);
+	BOOL GetBuffer(int row1, int col1, int row2, int col2, CMemFile& file,
+				   BOOL bColumnSelection = FALSE, BOOL bForceDOSStyleCRLF = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -417,9 +424,8 @@ public:
 	// Returns:
 	//      TRUE if the succeeded, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetBuffer(const XTP_EDIT_LINECOL& lcStart, const XTP_EDIT_LINECOL& lcEnd,
-					CMemFile& file, BOOL bColumnSelection = FALSE,
-					BOOL bForceDOSStyleCRLF = FALSE);
+	BOOL GetBuffer(const XTP_EDIT_LINECOL& lcStart, const XTP_EDIT_LINECOL& lcEnd, CMemFile& file,
+				   BOOL bColumnSelection = FALSE, BOOL bForceDOSStyleCRLF = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -453,7 +459,7 @@ public:
 	//      TRUE if the succeeded, FALSE otherwise.
 	//-----------------------------------------------------------------------
 	BOOL InsertTextBlock(LPCTSTR szText, int nRow, int nCol, BOOL bCanUndo = TRUE,
-					XTP_EDIT_LINECOL* pFinalLC = NULL);
+						 XTP_EDIT_LINECOL* pFinalLC = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -469,8 +475,8 @@ public:
 	// Returns:
 	//      TRUE if the succeeded, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL DeleteText(int iRowFrom, int iColFrom, int iRowTo, int iColTo,
-					BOOL bCanUndo = TRUE, BOOL bDispCol = FALSE);
+	BOOL DeleteText(int iRowFrom, int iColFrom, int iRowTo, int iColTo, BOOL bCanUndo = TRUE,
+					BOOL bDispCol = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -495,7 +501,7 @@ public:
 	// See also:
 	//      CXTPSyntaxEditBufferManager::SetConfigFile().
 	//--------------------------------------------------------------------
-	CString GetConfigFile();
+	CString GetConfigFile() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -511,6 +517,8 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL SetConfigFile(LPCTSTR szPath);
 
+	void SetCodePage(UINT uCodePage);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Set the path to the main configuration file.
@@ -519,7 +527,7 @@ public:
 	// Returns:
 	//      CXTPSyntaxEditTextSchema
 	//-----------------------------------------------------------------------
-	CXTPSyntaxEditTextSchema* GetMasterTextSchema(const CString& strExt);
+	CXTPSyntaxEditTextSchema* GetMasterTextSchema(const CString& strExt) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -549,7 +557,8 @@ public:
 	// Remarks:
 	//      Configuration will be reloaded.
 	//-----------------------------------------------------------------------
-	void ChangeTabification(int nRow, int nDispFrom, int nDispTo, BOOL bTabify, BOOL bCanUndo = TRUE);
+	void ChangeTabification(int nRow, int nDispFrom, int nDispTo, BOOL bTabify,
+							BOOL bCanUndo = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -598,42 +607,37 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual UINT CalcAveDataSize(int nRowStart, int nRowEnd);
 
-	int m_nAverageLineLen;  // Stores average line length.
+	int m_nAverageLineLen; // Stores average line length.
 
-	CXTPNotifyConnection*   m_pConnect; // Connection object to send notifications.
+	CXTPNotifyConnection* m_pConnection; // Connection object to send notifications.
 
 protected:
+	int m_nTabSize;			   // Tab size
+	int m_iCRLFStyle;		   // CRLF style 0 - DOS, 1 - UNIX, 2 - MAC
+	UINT m_nCodePage;		   // CodePage for text conversion
+	BOOL m_bUnicodeFileFormat; // Determine is file format Unicode or ASCII.
+	BOOL m_bOverwrite;		   // Overwrite mode status
 
-	int m_nTabSize;     // Tab size
-	int m_iCRLFStyle;   // CRLF style 0 - DOS, 1 - UNIX, 2 - MAC
-	UINT m_nCodePage;                   // CodePage for text conversion
-	BOOL m_bUnicodeFileFormat;          // Determine is file format Unicode or ASCII.
-	BOOL m_bOverwrite;                  // Overwrite mode status
-
-	CXTPSyntaxEditUndoRedoManager* m_pUndoRedoManager;    // Undo / redo manager.
+	CXTPSyntaxEditUndoRedoManager* m_pUndoRedoManager; // Undo / redo manager.
 
 	CXTPSyntaxEditLineMarksManager* m_pLineMarksManager; // line marks manager
 
-	CXTPSyntaxEditLexParser* m_pLexParser; // Lexical parser
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* m_pLexParser; // Lexical parser
 
 	CXTPSyntaxEditConfigurationManagerPtr m_ptrLexConfigurationManager;
 	// Pointer to the Lexical configuration manager
 
-	static CXTPSyntaxEditConfigurationManagerPtr s_ptrLexConfigurationManager_Default;
-	// The common default Configuration Manager instance.
+	CXTPSyntaxEditConfigurationManagerPtr m_ptrDefaultLexConfigurationManager;
+	// The default Configuration Manager instance.
 
-	static LONG s_dwLexConfigurationManager_DefaultRefs;
-	// The reference count for common default Configuration Manager instance.
-
-	CString m_strFileExt;   // Stores file extension
+	CString m_strFileExt; // Stores file extension
 
 	BOOL m_bIsParserEnabled; // Stores flag of parser state (enabled/disabled)
 
 	//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK_MT(CXTPSyntaxEditBufferManager, m_LexConfigManSinkMT)
+	CXTPNotifySink* m_pLexConfigManSinkMT;
 
-	virtual void OnLexConfigManEventHandler(XTP_NOTIFY_CODE Event,
-											WPARAM wParam, LPARAM lParam);
+	virtual void OnLexConfigManEventHandler(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//------------------------------------------------------------------------
@@ -646,7 +650,6 @@ protected:
 		friend class CXTPSyntaxEditBufferManager;
 		//}}AFX_CODEJOCK_PRIVATE
 	public:
-
 		//----------------------------------------------------------------------
 		// Summary:
 		//      Default object constructor.
@@ -772,9 +775,8 @@ protected:
 		//      TRUE if text successfully inserted, FALSE otherwise.
 		// See Also: DeleteText
 		//-----------------------------------------------------------------------
-		BOOL InsertText(int nRow, int nPos, LPCTSTR pcszText,
-						BOOL bGrowArrayIfNeed = FALSE,
-						TCHAR chLeftSpaceFiller = _T(' ') );
+		BOOL InsertText(int nRow, int nPos, LPCTSTR pcszText, BOOL bGrowArrayIfNeed = FALSE,
+						TCHAR chLeftSpaceFiller = _T(' '));
 		//-----------------------------------------------------------------------
 		// Summary: Deletes text.
 		// Parameters:
@@ -841,53 +843,81 @@ protected:
 		CStringPtrArray m_arStrings; // String collection
 	};
 
-	CXTPSyntaxEditStringsManager    m_Strings; // A strings manager helper object
+	CXTPSyntaxEditStringsManager m_Strings; // A strings manager helper object
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPSyntaxEditBufferManager)
+
+	afx_msg BSTR OleGetFileExt();
+	afx_msg void OleSetFileExt(LPCTSTR pcszFileExt);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 ////////////////////////////////////////////////////////////////////////////
-AFX_INLINE CXTPSyntaxEditLineMarksManager* CXTPSyntaxEditBufferManager::GetLineMarksManager()
+AFX_INLINE CXTPSyntaxEditLineMarksManager* CXTPSyntaxEditBufferManager::GetLineMarksManager() const
 {
 	return m_pLineMarksManager;
 }
-
-AFX_INLINE XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser* CXTPSyntaxEditBufferManager::GetLexParser()
+AFX_INLINE XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexParser*
+	CXTPSyntaxEditBufferManager::GetLexParser() const
 {
 	return m_pLexParser;
 }
-
-AFX_INLINE CXTPSyntaxEditConfigurationManager* CXTPSyntaxEditBufferManager::GetLexConfigurationManager()
+AFX_INLINE CXTPSyntaxEditConfigurationManager*
+	CXTPSyntaxEditBufferManager::GetLexConfigurationManager() const
 {
 	return m_ptrLexConfigurationManager;
 }
-
-AFX_INLINE CXTPNotifyConnection* CXTPSyntaxEditBufferManager::GetConnection()
+AFX_INLINE CXTPNotifyConnection* CXTPSyntaxEditBufferManager::GetConnection() const
 {
-	return m_pConnect;
+	return m_pConnection;
 }
-
-AFX_INLINE CXTPSyntaxEditUndoRedoManager* CXTPSyntaxEditBufferManager::GetUndoRedoManager()
+AFX_INLINE CXTPSyntaxEditUndoRedoManager* CXTPSyntaxEditBufferManager::GetUndoRedoManager() const
 {
 	return m_pUndoRedoManager;
 }
-
 AFX_INLINE int CXTPSyntaxEditBufferManager::GetTabSize() const
 {
 	return m_nTabSize;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditBufferManager::GetBuffer(const XTP_EDIT_LINECOL& lcStart,
-					const XTP_EDIT_LINECOL& lcEnd,
-					CMemFile& file,
-					BOOL bColumnSelection,
-					BOOL bForceDOSStyleCRLF)
+													   const XTP_EDIT_LINECOL& lcEnd,
+													   CMemFile& file, BOOL bColumnSelection,
+													   BOOL bForceDOSStyleCRLF)
 {
-	return GetBuffer(lcStart.nLine, lcStart.nCol, lcEnd.nLine, lcEnd.nCol,
-					 file, bColumnSelection, bForceDOSStyleCRLF);
+	return GetBuffer(lcStart.nLine, lcStart.nCol, lcEnd.nLine, lcEnd.nCol, file, bColumnSelection,
+					 bForceDOSStyleCRLF);
+}
+AFX_INLINE BOOL CXTPSyntaxEditBufferManager::GetOverwriteFlag() const
+{
+	return m_bOverwrite;
+}
+AFX_INLINE int CXTPSyntaxEditBufferManager::GetCurCRLFType() const
+{
+	return m_iCRLFStyle;
+}
+AFX_INLINE UINT CXTPSyntaxEditBufferManager::GetCodePage() const
+{
+	return m_nCodePage;
+}
+AFX_INLINE CString CXTPSyntaxEditBufferManager::GetFileExt() const
+{
+	return m_strFileExt;
+}
+AFX_INLINE BOOL CXTPSyntaxEditBufferManager::IsParserEnabled() const
+{
+	return m_bIsParserEnabled;
 }
 
 ////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITBUFFERMANAGER_H__)

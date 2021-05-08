@@ -1,7 +1,6 @@
 // XTPDockingPaneKeyboardHook.h : interface for the CXTPDockingPaneKeyboardHook class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEKEYBOARDHOOK_H__)
-#define __XTPDOCKINGPANEKEYBOARDHOOK_H__
+#	define __XTPDOCKINGPANEKEYBOARDHOOK_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPane;
 class CXTPDockingPaneManager;
@@ -46,9 +47,9 @@ public:
 	//-----------------------------------------------------------------------
 	enum ItemType
 	{
-		itemPane,       // Item is docking pane
-		itemMDIFrame,   // Item is handle of MDI child
-		itemSDIFrame    // Item is handle of SDI frame
+		itemPane,	 // Item is docking pane
+		itemMDIFrame, // Item is handle of MDI child
+		itemSDIFrame  // Item is handle of SDI frame
 	};
 
 	//-----------------------------------------------------------------------
@@ -57,18 +58,17 @@ public:
 	//-----------------------------------------------------------------------
 	struct CItem
 	{
-		CRect rc;       // Item bounding rectangle
+		CRect rc; // Item bounding rectangle
 
-		union
-		{
+		union {
 			CXTPDockingPane* pPane;
 			HWND hWndFrame;
 		};
 
-		int nIndex;     // Index of the item
-		int nColumn;    // Column of the index
-		int nRow;       // Row of the item
-		ItemType type;  // Item type
+		int nIndex;	// Index of the item
+		int nColumn;   // Column of the index
+		int nRow;	  // Row of the item
+		ItemType type; // Item type
 	};
 
 	//-----------------------------------------------------------------------
@@ -80,7 +80,6 @@ public:
 		int nFirst;
 		int nLast;
 	};
-
 
 protected:
 	//-----------------------------------------------------------------------
@@ -147,7 +146,6 @@ public:
 	virtual CString GetItemPath(CItem* pItem) const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to update position of all items inside dialog.
@@ -157,18 +155,18 @@ public:
 	virtual BOOL Reposition();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPDockingPaneWindowSelect)
-	protected:
+protected:
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPDockingPaneWindowSelect)
-	public:
+public:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnCaptureChanged(CWnd *pWnd);
+	afx_msg void OnCaptureChanged(CWnd* pWnd);
 	afx_msg void OnPaint();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -178,7 +176,7 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	int CalcItemHeight(CDC* pDC);
@@ -186,29 +184,26 @@ private:
 	HWND GetMDIClient() const;
 
 private:
-	CXTPDockingPaneManager* m_pManager;      // Owner DockingPaneMaanager class
-	CArray<CItem*, CItem*> m_arrItems;       // Items in Windows Selector
-	CArray<CColumn, CColumn&> m_arrColumns;  // Columns collection
-	CItem* m_pSelected;                      // Selected item
-	HCURSOR m_hHandCursor;                   // Hand cursor handle
-	HCURSOR m_hArrowCursor;                  // Arrow cursor handle
-	int m_nFirstFile;                        // Index of first file in Items
-	int m_nPaneCount;                        // Total number of panes
+	CXTPDockingPaneManager* m_pManager;		// Owner DockingPaneMaanager class
+	CArray<CItem*, CItem*> m_arrItems;		// Items in Windows Selector
+	CArray<CColumn, CColumn&> m_arrColumns; // Columns collection
+	CItem* m_pSelected;						// Selected item
+	HCURSOR m_hHandCursor;					// Hand cursor handle
+	HCURSOR m_hArrowCursor;					// Arrow cursor handle
+	int m_nFirstFile;						// Index of first file in Items
+	int m_nPaneCount;						// Total number of panes
 
-	CString m_strActiveTools;                // ActiveTools string
-	CString m_strActiveFiles;                // ActiveFiles string
+	CString m_strActiveTools; // ActiveTools string
+	CString m_strActiveFiles; // ActiveFiles string
 
-	CFont m_fnt;                             // Normal font
-	CFont m_fntBold;                         // Bold font
-	BOOL m_bActivatePanes;                   // TRUE to activate panes
+	CXTPFont m_fnt;		   // Normal font
+	CXTPFont m_fntBold;	// Bold font
+	BOOL m_bActivatePanes; // TRUE to activate panes
 
 	friend class CXTPDockingPaneKeyboardHook;
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-
-#include "XTPDockingPaneManager.h"
-
 
 class _XTP_EXT_CLASS CXTPDockingPaneKeyboardHook : public CNoTrackObject
 {
@@ -228,25 +223,25 @@ protected:
 	CXTPDockingPaneManager* Lookup(HWND hSite) const;
 
 protected:
-	HHOOK m_hHookKeyboard;          // Keyboard hook
+	HHOOK m_hHookKeyboard; // Keyboard hook
 
-	static CThreadLocal<CXTPDockingPaneKeyboardHook> _xtpKeyboardThreadState;           // Instance of Keyboard hook
+	static CThreadLocal<CXTPDockingPaneKeyboardHook> _xtpKeyboardThreadState; // Instance of
+																			  // Keyboard hook
 
 	CMap<HWND, HWND, CXTPDockingPaneManager*, CXTPDockingPaneManager*> m_mapSites;
-#ifdef _AFXDLL
+#	ifdef _AFXDLL
 	AFX_MODULE_STATE* m_pModuleState; // Module state
-#endif
+#	endif
 
 	CXTPDockingPaneWindowSelect* m_pWindowSelect;
 };
 
-
-AFX_INLINE CXTPDockingPaneKeyboardHook* AFX_CDECL CXTPDockingPaneKeyboardHook::GetThreadState() {
+AFX_INLINE CXTPDockingPaneKeyboardHook* AFX_CDECL CXTPDockingPaneKeyboardHook::GetThreadState()
+{
 	return _xtpKeyboardThreadState.GetData();
 }
 
-
-
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPDOCKINGPANEKEYBOARDHOOK_H__)

@@ -1,7 +1,6 @@
 // XTPFunctions.h : global functions.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -19,22 +18,24 @@
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(__XTFUNCTIONS_H__)
-#define __XTFUNCTIONS_H__
+#if !defined(__XTPFUNCTIONS_H__)
+#	define __XTPFUNCTIONS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#if defined(XTP_INIT_BY_REGULAR_DLL)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+#	if defined(XTP_INIT_BY_REGULAR_DLL)
 
 // ------------------------------------------------------------------------------
 // Summary:
 //     This member function will initialize the resources for the Xtreme Toolkit.
 //     If using the Xtreme Toolkit as an extension DLL within a regular
 //     DLL, add the following two lines to your stdafx.h file. This will
-//     give you access to the exported function InitXtremeExtDll():
+//     give you access to the exported function XTPInitDLL():
 // Example:
 //     The following code sample demonstrates the usage of XTPInitDLL.
 // <code>
@@ -55,7 +56,9 @@
 // ------------------------------------------------------------------------------
 _XTP_EXT_CLASS void AFXAPI XTPInitDLL();
 
-#endif//#if defined(XTP_INIT_BY_REGULAR_DLL)
+#	endif //#if defined(XTP_INIT_BY_REGULAR_DLL)
+
+class CXTPImageManager;
 
 // --------------------------------------------------------------------
 // Summary:
@@ -82,7 +85,8 @@ _XTP_EXT_CLASS void AFXAPI XTPChangeWindowFont(CWnd* pWnd, CFont* pFont);
 //     bInColor -   TRUE to draw the item in color, otherwise the icon will
 //                  be drawn with the default disabled look.
 // ----------------------------------------------------------------------------
-_XTP_EXT_CLASS void AFXAPI XTPDrawEmbossed(CDC* pDC, CImageList& imageList, int nIndex, CPoint point, BOOL bInColor);
+_XTP_EXT_CLASS void AFXAPI XTPDrawEmbossed(CDC* pDC, CImageList& imageList, int nIndex,
+										   CPoint point, BOOL bInColor);
 
 // --------------------------------------------------------------------
 // Summary:
@@ -124,7 +128,6 @@ _XTP_EXT_CLASS HWND AFXAPI XTPChildWindowFromPoint(HWND hWnd, POINT point);
 // -------------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFXAPI XTPPathExists(LPCTSTR lpszFileName);
 
-
 // ----------------------------------------------------------------------------
 // Summary:
 //     Creates a view based on a CRuntimeClass object.
@@ -146,11 +149,14 @@ _XTP_EXT_CLASS BOOL AFXAPI XTPPathExists(LPCTSTR lpszFileName);
 // Example:
 // <code>
 // CView* pView = (CView*)XTPCreateView(this, RUNTIME_CLASS(CMyView));
-// ASSERT_VALID(pView);
+// ASSERT(pView);
 // </code>
 // ----------------------------------------------------------------------------
-_XTP_EXT_CLASS CWnd* AFXAPI XTPCreateView(CWnd* pParentWnd, CRuntimeClass *pViewClass, CDocument *pDocument = NULL, CCreateContext* pContext = NULL, DWORD dwStyle = AFX_WS_DEFAULT_VIEW, CWnd* pOwnerWnd = NULL, UINT nID = AFX_IDW_PANE_FIRST);
-
+_XTP_EXT_CLASS CWnd* AFXAPI XTPCreateView(CWnd* pParentWnd, CRuntimeClass* pViewClass,
+										  CDocument* pDocument	 = NULL,
+										  CCreateContext* pContext = NULL,
+										  DWORD dwStyle			   = AFX_WS_DEFAULT_VIEW,
+										  CWnd* pOwnerWnd = NULL, UINT nID = AFX_IDW_PANE_FIRST);
 
 // -------------------------------------------------------------------------
 // Summary:
@@ -209,8 +215,14 @@ _XTP_EXT_CLASS CWnd* AFXAPI XTPCreateView(CWnd* pParentWnd, CRuntimeClass *pView
 //     </code>
 //
 // -------------------------------------------------------------------------
-_XTP_EXT_CLASS BOOL AFXAPI XTPContextMenu(CMenu* pPopup, UINT nFlags, int xPos, int yPos, CWnd* pWnd, int nIDBitmap, BOOL bNoNotify = TRUE);
+_XTP_EXT_CLASS BOOL AFXAPI XTPContextMenu(CMenu* pPopup, UINT nFlags, int xPos, int yPos,
+										  CWnd* pWnd, int nIDBitmap, BOOL bNoNotify = TRUE);
+
+_XTP_EXT_CLASS BOOL AFXAPI XTPContextMenu(CMenu* pPopup, UINT nFlags, int xPos, int yPos,
+										  CWnd* pWnd, CXTPImageManager* pImageManager,
+										  BOOL bNoNotify = TRUE);
 
 //////////////////////////////////////////////////////////////////////
 
-#endif // #if !defined(__XTFUNCTIONS_H__)
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
+#endif // #if !defined(__XTPFUNCTIONS_H__)

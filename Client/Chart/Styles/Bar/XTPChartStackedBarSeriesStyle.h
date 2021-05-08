@@ -1,7 +1,6 @@
 // XTPChartStackedBarSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSTACKEDBARSERIESSTYLE_H__)
-#define __XTPCHARTSTACKEDBARSERIESSTYLE_H__
+#	define __XTPCHARTSTACKEDBARSERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
-
-#include "XTPChartBarSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -66,35 +65,10 @@ public:
 	int GetStackGroup() const;
 
 public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to create a diagram object,here it create
-	//     a CXTPChartDiagram2D object.
-	//     Override this function, to give a new implementation for the function.
-	// Returns:
-	//     A pointer to CXTPChartDiagram2D object, which is a kind of CXTPChartDiagram.
-	//-------------------------------------------------------------------------
-	virtual CXTPChartDiagram* CreateDiagram();
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to check a diagram object,is a CXTPChartDiagram2D
-	//     object.
-	//     Override this function, to give a new implementation for the function.
-	// Parameters:
-	//     pDiagram - A pointer to chart diagram object, whose type is to be
-	//     identified.
-	// Returns:
-	//     TRUE if the pDiagram is a CXTPChartDiagram2D object and FALSE if not.
-	//-------------------------------------------------------------------------
-	virtual BOOL IsStyleDiagram(CXTPChartDiagram* pDiagram) const;
-
 public:
 	void DoPropExchange(CXTPPropExchange* pPX);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to create the view of the bar series.
@@ -107,7 +81,8 @@ protected:
 	//     A pointer to CXTPChartSeriesView, refers a newly created CXTPChartStackedBarSeriesView
 	//     object.
 	//-------------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -123,17 +98,16 @@ protected:
 	//     A pointer to CXTPChartSeriesView, refers a newly created CXTPChartStackedBarSeriesView
 	//     object.
 	//-------------------------------------------------------------------------
-	virtual void CorrectAxisSideMargins(CXTPChartAxis* pAxis, double nMinValue, double nMaxValue, double& nCorrection);
-
+	virtual void CorrectAxisSideMargins(CXTPChartAxis* pAxis, double nMinValue, double nMaxValue,
+										double& nCorrection);
 
 protected:
-
 	double m_dStackHeight;
 	int m_nStackGroup;
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartStackedBarSeriesStyle);
@@ -142,7 +116,7 @@ public:
 	double OleGetStackHeight();
 	void OleSetStackHeight(double dStackHeight);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
 //===========================================================================
@@ -165,7 +139,6 @@ public:
 	CXTPChartStackedBarSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
 	virtual ~CXTPChartStackedBarSeriesView();
 
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -178,7 +151,9 @@ protected:
 	//     CXTPChartStackedBarSeriesPointView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -190,10 +165,8 @@ protected:
 	void UpdateRange(CXTPChartDeviceContext* pDC);
 
 protected:
-
 	friend class CXTPChartStackedBarSeriesPointView;
 };
-
 
 //===========================================================================
 // Summary:
@@ -204,7 +177,6 @@ protected:
 class _XTP_EXT_CLASS CXTPChartStackedBarSeriesPointView : public CXTPChartBarSeriesPointView
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartStackedBarSeriesPointView object.
@@ -212,16 +184,16 @@ public:
 	//     pPoint - A pointer to the chart series point object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartStackedBarSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartStackedBarSeriesPointView(CXTPChartSeriesPoint* pPoint,
+									   CXTPChartElementView* pParentView);
 
 public:
 	CXTPChartRectF GetScreenRect() const;
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a bar series point.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
@@ -231,30 +203,34 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 public:
-
 protected:
 	double m_dValueFrom;
 	double m_dValueTo;
 	friend class CXTPChartStackedBarSeriesView;
 };
 
-AFX_INLINE void CXTPChartStackedBarSeriesStyle::SetStackHeight(double dStackHeight) {
+AFX_INLINE void CXTPChartStackedBarSeriesStyle::SetStackHeight(double dStackHeight)
+{
 	m_dStackHeight = dStackHeight;
 	OnChartChanged();
 }
-AFX_INLINE double CXTPChartStackedBarSeriesStyle::GetStackHeight() const {
+AFX_INLINE double CXTPChartStackedBarSeriesStyle::GetStackHeight() const
+{
 	return m_dStackHeight;
 }
 
-AFX_INLINE void CXTPChartStackedBarSeriesStyle::SetStackGroup(int nStackGroup) {
+AFX_INLINE void CXTPChartStackedBarSeriesStyle::SetStackGroup(int nStackGroup)
+{
 	m_nStackGroup = nStackGroup;
 	OnChartChanged();
 }
-AFX_INLINE int CXTPChartStackedBarSeriesStyle::GetStackGroup() const {
+AFX_INLINE int CXTPChartStackedBarSeriesStyle::GetStackGroup() const
+{
 	return m_nStackGroup;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSTACKEDBARSERIESSTYLE_H__)

@@ -1,7 +1,6 @@
-// Includes.h
+// Includes.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,34 +17,39 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(__XTPFLOWGRAPHINCLUDES_H__)
-#define __XTPFLOWGRAPHINCLUDES_H__
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPFLOWGRAPH_INCLUDES_H__)
+#	define __XTPFLOWGRAPH_INCLUDES_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPFlowGraphElement.h"
-#include "XTPFlowGraphControl.h"
-#include "XTPFlowGraphPage.h"
-#include "XTPFlowGraphPages.h"
-#include "XTPFlowGraphNode.h"
-#include "XTPFlowGraphNodes.h"
-#include "XTPFlowGraphPaintManager.h"
-#include "XTPFlowGraphDrawContext.h"
-#include "XTPFlowGraphConnectionPoint.h"
-#include "XTPFlowGraphConnectionPoints.h"
-#include "XTPFlowGraphConnection.h"
-#include "XTPFlowGraphConnections.h"
-#include "XTPFlowGraphSelectedElements.h"
-#include "XTPFlowGraphUndoManager.h"
-#include "XTPFlowGraphNodeGroups.h"
-#include "XTPFlowGraphNodeGroup.h"
-#include "XTPFlowGraphMessages.h"
-#include "XTPFlowGraphMetallicTheme.h"
-#include "XTPFlowGraphImage.h"
-#include "XTPFlowGraphPageHistory.h"
-#include "XTPFlowGraphDrawContextGdiPlus.h"
+#	include "GraphicLibrary/GdiPlus/XTPGdiPlus.h"
 
+#	include "FlowGraph/XTPFlowGraphElement.h"
+#	include "FlowGraph/XTPFlowGraphControl.h"
+#	include "FlowGraph/XTPFlowGraphPage.h"
+#	include "FlowGraph/XTPFlowGraphPages.h"
+#	include "FlowGraph/XTPFlowGraphNode.h"
+#	include "FlowGraph/XTPFlowGraphNodeCustom.h"
+#	include "FlowGraph/XTPFlowGraphNodes.h"
+#	include "FlowGraph/XTPFlowGraphTools.h"
+#	include "FlowGraph/XTPFlowGraphPaintManager.h"
+#	include "FlowGraph/XTPFlowGraphDrawContext.h"
+#	include "FlowGraph/XTPFlowGraphConnectionPoint.h"
+#	include "FlowGraph/XTPFlowGraphConnectionPoints.h"
+#	include "FlowGraph/XTPFlowGraphConnection.h"
+#	include "FlowGraph/XTPFlowGraphConnections.h"
+#	include "FlowGraph/XTPFlowGraphSelectedElements.h"
+#	include "FlowGraph/XTPFlowGraphUndoManager.h"
+#	include "FlowGraph/XTPFlowGraphNodeGroups.h"
+#	include "FlowGraph/XTPFlowGraphNodeGroup.h"
+#	include "FlowGraph/XTPFlowGraphMessages.h"
+#	include "FlowGraph/XTPFlowGraphImage.h"
+#	include "FlowGraph/XTPFlowGraphPageHistory.h"
+#	include "FlowGraph/XTPFlowGraphDrawContextGdiPlus.h"
+#	include "FlowGraph/Resource.h"
 
-#endif //#if !defined(__XTPFLOWGRAPHINCLUDES_H__)
+#endif //#if !defined(__XTPFLOWGRAPH_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

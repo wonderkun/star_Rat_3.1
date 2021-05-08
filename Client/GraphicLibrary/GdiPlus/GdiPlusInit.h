@@ -1,6 +1,6 @@
 /**************************************************************************
 *
-* Copyright (c) 2000-2001 Microsoft Corporation
+* Copyright (c) 2000-2003 Microsoft Corporation
 *
 * Module Name:
 *
@@ -36,7 +36,7 @@ typedef VOID (WINAPI *NotificationUnhookProc)(ULONG_PTR token);
 
 struct GdiplusStartupInput
 {
-    UINT32 GdiplusVersion;             // Must be 1
+    UINT32 GdiplusVersion;             // Must be 1  (or 2 for the Ex version)
     DebugEventProc DebugEventCallback; // Ignored on free builds
     BOOL SuppressBackgroundThread;     // FALSE unless you're prepared to call 
                                        // the hook/unhook functions properly
@@ -54,6 +54,36 @@ struct GdiplusStartupInput
         SuppressExternalCodecs = suppressExternalCodecs;
     }
 };
+
+#if (GDIPVER >= 0x0110)
+struct GdiplusStartupInputEx : GdiplusStartupInput
+{
+    INT StartupParameters;  // Do we not set the FPU rounding mode
+
+    GdiplusStartupInputEx(
+        INT startupParameters = 0,
+        DebugEventProc debugEventCallback = NULL,
+        BOOL suppressBackgroundThread = FALSE,
+        BOOL suppressExternalCodecs = FALSE)
+    {
+        GdiplusVersion = 2;
+        DebugEventCallback = debugEventCallback;
+        SuppressBackgroundThread = suppressBackgroundThread;
+        SuppressExternalCodecs = suppressExternalCodecs;
+        StartupParameters = startupParameters;
+    }
+};
+
+enum GdiplusStartupParams
+{
+    GdiplusStartupDefault = 0,
+    GdiplusStartupNoSetRound = 1,
+    GdiplusStartupSetPSValue = 2,
+    GdiplusStartupTransparencyMask = 0xFF000000
+};
+
+#endif
+
 
 // Output structure for GdiplusStartup()
 
@@ -95,3 +125,4 @@ extern "C" Status WINAPI GdiplusStartup(
 extern "C" VOID WINAPI GdiplusShutdown(ULONG_PTR token);
 
 #endif
+

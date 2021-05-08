@@ -1,7 +1,6 @@
 // XTPKeyboardManager.h : interface for the CXTPKeyboardManager class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPKEYBOARDMANAGER_H__)
-#define __XTPKEYBOARDMANAGER_H__
+#	define __XTPKEYBOARDMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,7 +35,6 @@
 class _XTP_EXT_CLASS CXTPKeyboardManager : public CNoTrackObject
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPKeyboardManager object.
@@ -91,7 +90,10 @@ public:
 	// Returns:
 	//     TRUE if keyboard is hooked
 	//-----------------------------------------------------------------------
-	BOOL IsKeyboardHooked() { return m_lstKeyboardHooks.GetCount() > 0; }
+	BOOL IsKeyboardHooked()
+	{
+		return m_lstKeyboardHooks.GetCount() > 0;
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -106,35 +108,39 @@ public:
 	BOOL ProcessKeyboardHooks(UINT nMessage, WPARAM wParam, LPARAM lParam = 0);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	static LRESULT CALLBACK KeyboardProc(int code, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK CallWndProc(int code, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK GetMessageProc(int code, WPARAM wParam, LPARAM lParam);
 
-//}}AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+public:
+	void SetupGetMessageHook(BOOL bSetup = TRUE);
+#	endif
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	HHOOK m_hHookKeyboard;          // Keyboard hook
-	HHOOK m_hHookCallWndProc;       // Message hook
-	HHOOK m_hHookGetMessage;       // Message hook
+	HHOOK m_hHookKeyboard;	// Keyboard hook
+	HHOOK m_hHookCallWndProc; // Message hook
+	HHOOK m_hHookGetMessage;  // Message hook
 
-#ifdef _AFXDLL
+#	ifdef _AFXDLL
 	AFX_MODULE_STATE* m_pModuleState; // Module state
-#endif
+#	endif
 
-	static CThreadLocal<CXTPKeyboardManager> _xtpKeyboardThreadState;           // Instance of Keyboard hook
-	CList<CXTPHookManagerHookAble*, CXTPHookManagerHookAble*> m_lstKeyboardHooks;   // List of keyboard hooks
+	static CThreadLocal<CXTPKeyboardManager> _xtpKeyboardThreadState; // Instance of Keyboard hook
+	CList<CXTPHookManagerHookAble*, CXTPHookManagerHookAble*> m_lstKeyboardHooks; // List of
+																				  // keyboard hooks
 
 private:
 	friend CXTPKeyboardManager* XTPKeyboardManager();
 	friend class CXTPCommandBars;
-
 };
 
-
-AFX_INLINE CXTPKeyboardManager* XTPKeyboardManager() {
+AFX_INLINE CXTPKeyboardManager* XTPKeyboardManager()
+{
 	return CXTPKeyboardManager::_xtpKeyboardThreadState.GetData();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPKEYBOARDMANAGER_H__)

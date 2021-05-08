@@ -521,16 +521,16 @@ public:
             return SetStatus(InvalidParameter);
         }
         
-        SetStatus(DllExports::GdipGetLineColors((GpLineGradient*) nativeBrush, argb));
+        Status status = SetStatus(DllExports::GdipGetLineColors((GpLineGradient*) nativeBrush, argb));
 
-        if (lastResult == Ok)
+        if (status == Ok)
         {
             // use bitwise copy operator for Color copy
             colors[0] = Color(argb[0]);
             colors[1] = Color(argb[1]);
         }
 
-        return lastResult;
+        return status;
     }
 
     Status GetRectangle(OUT RectF* rect) const
@@ -838,3 +838,4 @@ protected:
 };
 
 #endif
+

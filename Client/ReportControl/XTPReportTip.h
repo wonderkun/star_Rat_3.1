@@ -1,7 +1,6 @@
 // XTPReportTip.h: interface for the CXTPReportTip class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTTIP_H__)
-#define __XTPREPORTTIP_H__
+#	define __XTPREPORTTIP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -47,7 +48,6 @@ class _XTP_EXT_CLASS CXTPReportTip : public CWnd
 	friend class CXTPReportRow;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportTip object.
@@ -185,18 +185,22 @@ public:
 	void Activate(BOOL bActive, BOOL bMultiline);
 
 protected:
-	CRect  m_rcHover;           // Hover window coordinates.
-	CRect  m_rcTooltip;         // Tooltip window coordinates.
-	CWnd * m_pParentWnd;        // Pointer to the parent report window.
-	CString m_strTooltipText;   // Tooltip text to display.
-	CXTPReportRecordItem* m_pItem;  // Item which tooltip is visible.
-	int m_nRowIndex;            // Index of item's row.
-	CFont m_fntToolTip;         // Font for displaying tooltip text.
-	BOOL m_bMultiline;          // Multiline tooltip flag.
+	CRect m_rcHover;			   // Hover window coordinates.
+	CRect m_rcTooltip;			   // Tooltip window coordinates.
+	CWnd* m_pParentWnd;			   // Pointer to the parent report window.
+	CString m_strTooltipText;	  // Tooltip text to display.
+	CXTPReportRecordItem* m_pItem; // Item which tooltip is visible.
+	int m_nRowIndex;			   // Index of item's row.
+
+	CXTPFont m_xtpFontToolTip; // Font for displaying tooltip text.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntToolTip, m_xtpFontToolTip,
+										  GetToolTipFontHandle);
+
+	BOOL m_bMultiline;					 // Multiline tooltip flag.
 	CXTPReportControl* m_pReportControl; // Parent Report Control
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG(CXTPReportTip)
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC*);
@@ -204,11 +208,12 @@ protected:
 	//}}AFX_MSG
 
 	friend class CXTPReportControl;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	void RecalcTooltipRect(CRect& rc);
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -216,47 +221,34 @@ AFX_INLINE CString CXTPReportTip::GetTooltipText() const
 {
 	return m_strTooltipText;
 }
-
 AFX_INLINE void CXTPReportTip::SetTooltipText(LPCTSTR str)
 {
 	m_strTooltipText = str;
 }
-
-AFX_INLINE void CXTPReportTip::SetFont(CFont* pFont)
-{
-	m_fntToolTip.DeleteObject();
-	LOGFONT lf;
-	pFont->GetLogFont(&lf);
-	m_fntToolTip.CreateFontIndirect(&lf);
-}
-
 AFX_INLINE void CXTPReportTip::SetHoverRect(CRect rc)
 {
 	m_rcHover = rc;
-	MoveWindow(rc);//?
+	MoveWindow(rc);
 }
-
 AFX_INLINE void CXTPReportTip::SetTooltipRect(CRect rc)
 {
 	m_rcTooltip = rc;
 	MoveWindow(rc);
 }
-
 AFX_INLINE CRect CXTPReportTip::GetHoverRect() const
 {
 	return m_rcHover;
 }
-
 AFX_INLINE CRect CXTPReportTip::GetTooltipRect() const
 {
 	return m_rcTooltip;
 }
-
-AFX_INLINE BOOL CXTPReportTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
-									  DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
-									  UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPReportTip::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									  const RECT& rect, CWnd* pParentWnd, UINT nID,
+									  CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPREPORTTIP_H__)

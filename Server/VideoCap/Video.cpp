@@ -1,7 +1,7 @@
 // DllTest.cpp : Defines the entry point for the DLL application.
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "VideoManager.h"
 #include "../Dllcomment/ClientSocket.h"
 

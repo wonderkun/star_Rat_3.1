@@ -1,7 +1,6 @@
 // XTPTabToolBar.h : interface for the CXTPTabToolBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -19,22 +18,23 @@
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_CODEJOCK_PRIVATE
-#if !defined(__XTPTABTOOLBAR_H__)
-#define __XTPTABTOOLBAR_H__
+#if !defined(__XTPTABTOOLBAR_H__) && defined(_XTP_INCLUDE_TABMANAGER)
+#	define __XTPTABTOOLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPToolBar.h"
-#include "TabManager/XTPTabManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
 //     CXTPTabToolBar is a CXTPToolBar derived class. It represents tabbable toolbar
 //===========================================================================
-class _XTP_EXT_CLASS CXTPTabToolBar : public CXTPToolBar, public CXTPTabManager
+class _XTP_EXT_CLASS CXTPTabToolBar
+	: public CXTPToolBar
+	, public CXTPTabManager
 {
 private:
 	DECLARE_XTP_COMMANDBAR(CXTPTabToolBar)
@@ -52,9 +52,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPTabToolBar();
 
-
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to add new tab to CXTPTabToolBar
@@ -68,8 +66,12 @@ public:
 	// Returns:
 	//     CXTPTabManagerItem class of new tab
 	//-----------------------------------------------------------------------
-	CXTPTabManagerItem* InsertCategory(int nItem, LPCTSTR lpszItem, UINT* pItems, int nCount, BOOL bLoadIcons = TRUE);
-	CXTPTabManagerItem* InsertCategory(int nItem, LPCTSTR lpszItem, UINT nIDResource, BOOL bLoadIcons = TRUE);// <combine CXTPTabToolBar::InsertCategory@int@LPCTSTR@UINT*@int@BOOL>
+	CXTPTabManagerItem* InsertCategory(int nItem, LPCTSTR lpszItem, UINT* pItems, int nCount,
+									   BOOL bLoadIcons = TRUE);
+	CXTPTabManagerItem* InsertCategory(
+		int nItem, LPCTSTR lpszItem, UINT nIDResource,
+		BOOL bLoadIcons = TRUE); // <combine
+								 // CXTPTabToolBar::InsertCategory@int@LPCTSTR@UINT*@int@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -101,7 +103,6 @@ public:
 	void SetMinimumWidth(int nMinWidth);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to update position of TabManager.
@@ -201,8 +202,8 @@ protected:
 	// Summary:
 	//     This method calculates the dimensions of a toolbar.
 	// Parameters:
-	//     nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//     dwMode - Mode to dock.
+	//     nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//     depending on dwMode. dwMode - Mode to dock.
 	// Returns:
 	//     Size of the docked toolbar.
 	//-----------------------------------------------------------------------
@@ -225,15 +226,35 @@ protected:
 	//     ptDrop      - Point where user drops the control.
 	//     ptDrag      - Point where user starts drag the control.
 	//-----------------------------------------------------------------------
-	void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop, CPoint ptDrag);
+	void OnCustomizeDrop(CXTPControl* pDataObject, DROPEFFECT& dropEffect, CPoint ptDrop,
+						 CPoint ptDrag);
 
 protected:
 	void BeforeCustomizeControlAdd(CXTPControl* pControl);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	LPDISPATCH OleInsertCategory(int nIndex, LPCTSTR lpszTitle);
+	long OleGetItemCount();
+	LPDISPATCH OleGetItem(int nIndex);
+	void OleRemoveCategory(int nIndex);
+	LPDISPATCH OleGetTabPaintManager();
+	void OleUpdateTabs();
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPTabToolBar);
+	DECLARE_INTERFACE_MAP()
+	DECLARE_ENUM_VARIANT(CXTPTabToolBar);
+
+	DECLARE_CONNECTION_EX(CXTPTabToolBar)
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTabToolBar)
@@ -248,17 +269,19 @@ protected:
 	//}}AFX_MSG
 
 protected:
-	CXTPTabPaintManager* m_pTabPaintManager;  // Tab PaintManager
-	CRect m_rcTabControl;                     // Bounding rectangle of Tabs
-	int m_nMinWidth;            // Minimum available width of toolbar
-
+	CXTPTabPaintManager* m_pTabPaintManager; // Tab PaintManager
+	CRect m_rcTabControl;					 // Bounding rectangle of Tabs
+	int m_nMinWidth;						 // Minimum available width of toolbar
 };
 
-AFX_INLINE CXTPTabPaintManager* CXTPTabToolBar::GetPaintManager() const {
+AFX_INLINE CXTPTabPaintManager* CXTPTabToolBar::GetPaintManager() const
+{
 	return m_pTabPaintManager;
 }
-AFX_INLINE void CXTPTabToolBar::SetMinimumWidth(int nMinWidth) {
+AFX_INLINE void CXTPTabToolBar::SetMinimumWidth(int nMinWidth)
+{
 	m_nMinWidth = nMinWidth;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTABTOOLBAR_H__)

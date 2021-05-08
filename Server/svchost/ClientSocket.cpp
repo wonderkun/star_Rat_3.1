@@ -2,7 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 #include "ClientSocket.h"
-#include "zlib/zlib.h"
+//#include "zlib/zlib.h"
+#include "../../common/zlib/zlib.h"
+#pragma comment(lib,"../../common/zlib/zlib.lib")
 #include <MSTcpIP.h>
 #include "common/Manager.h"
 #include "common/until.h"

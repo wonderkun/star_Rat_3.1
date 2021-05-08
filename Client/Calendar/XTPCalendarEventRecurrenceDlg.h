@@ -1,7 +1,6 @@
 // XTPCalendarEventRecurrenceDlg.h interface for the CXTPCalendarEventPropertiesDlg.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_EVENT_RECURRENCE_DLG_H__)
-#define _XTP_CALENDAR_EVENT_RECURRENCE_DLG_H__
+#	define _XTP_CALENDAR_EVENT_RECURRENCE_DLG_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarPtrs.h"
-#include "XTPCalendarUtils.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -52,9 +50,11 @@ class _XTP_EXT_CLASS CXTPCalendarEventRecurrenceDlg : public CDialog
 	DECLARE_DYNAMIC(CXTPCalendarEventRecurrenceDlg)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_CALENDAR_RECURRENCE_PROPERTIES };
+	enum
+	{
+		IDD = XTP_IDD_CALENDAR_RECURRENCE_PROPERTIES
+	};
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
@@ -76,12 +76,11 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarEventRecurrenceDlg();
 
-	BOOL m_bDisableRemove;  // Set TRUE to disable button remove recurrence. FALSE by default.
-	int nWorkWeekMask;      // This structure member represents week working days using XTPCalendarWeekDay enumeration.
+	BOOL m_bDisableRemove; // Set TRUE to disable button remove recurrence. FALSE by default.
+	int nWorkWeekMask;	 // This structure member represents week working days using
+						   // XTPCalendarWeekDay enumeration.
 
 protected:
-
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Initialize data for Start and End combobox controls.
@@ -139,8 +138,11 @@ protected:
 	// Remarks:
 	//      Message formatted using active resource file.
 	//-----------------------------------------------------------------------
-	virtual void MsgBox_WrongValue(CWnd *pWnd);
-	virtual void MsgBox_WrongValueRange(UINT nCtrlID, int nMin, int nMax); //<COMBINE CXTPCalendarEventRecurrenceDlg::MsgBox_WrongValue@CWnd *>
+	virtual void MsgBox_WrongValue(CWnd* pWnd);
+	virtual void MsgBox_WrongValueRange(
+		UINT nCtrlID, int nMin, int nMax); //<COMBINE
+										   // CXTPCalendarEventRecurrenceDlg::MsgBox_WrongValue@CWnd
+										   //*>
 
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual BOOL OnInitDialog();
@@ -158,7 +160,7 @@ protected:
 	afx_msg void OnBnClickedButtonRemoveRecurrence();
 
 	// Update visible state of controls, according to the selected mode:
-	//day/week/month/year. wparam - ID of the selected radio
+	// day/week/month/year. wparam - ID of the selected radio
 	afx_msg void OnBnClickedRadioDailyYearly(UINT wparam);
 
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -176,8 +178,8 @@ protected:
 	virtual void OnDurationChanged();
 	virtual void _OnDurationChanged();
 
-	//Gets Time in Minutes, shown in ComboBox
-	virtual int GetChangedComboTimeInMin(CComboBox &wndCb);
+	// Gets Time in Minutes, shown in ComboBox
+	virtual int GetChangedComboTimeInMin(CComboBox& wndCb);
 	virtual int GetDurationComboInMin();
 
 	// Shows or hides control on the dialog with specified id
@@ -189,49 +191,66 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPCalendarEventPtr m_ptrMasterEvent;          //Pointer to master event
-	CXTPCalendarRecurrencePatternPtr m_ptrPattern;  //recurrence pattern
+	CXTPCalendarEventPtr m_ptrMasterEvent;		   // Pointer to master event
+	CXTPCalendarRecurrencePatternPtr m_ptrPattern; // recurrence pattern
 
-	COleDateTime m_dtStart;     // Store StartTime editor value.
-	COleDateTime m_dtEnd;       // Store EndTime editor value.
-	COleDateTime m_dtStartDate; // Store StartDate editor value. UpdateData method used to Exchange value with dialog control.
-	COleDateTime m_dtEndDate;   // Store EndDate editor value. UpdateData method used to Exchange value with dialog control.
+	COleDateTime m_dtStart;		// Store StartTime editor value.
+	COleDateTime m_dtEnd;		// Store EndTime editor value.
+	COleDateTime m_dtStartDate; // Store StartDate editor value. UpdateData method used to Exchange
+								// value with dialog control.
+	COleDateTime m_dtEndDate;   // Store EndDate editor value. UpdateData method used to Exchange
+								// value with dialog control.
 
-	CComboBox m_wndCbStart;     // StartTime combobox object.
-	CComboBox m_wndCbEnd;       // EndTime combobox object.
-	CComboBox m_wndCbDuration;  // Duration combobox object.
+	CComboBox m_wndCbStart;	// StartTime combobox object.
+	CComboBox m_wndCbEnd;	  // EndTime combobox object.
+	CComboBox m_wndCbDuration; // Duration combobox object.
 
-	int m_nOccurNum;            // Store Number of occurrences editor value. UpdateData method used to Exchange value with dialog control.
+	int m_nOccurNum; // Store Number of occurrences editor value. UpdateData method used to Exchange
+					 // value with dialog control.
 
 	// Daly recurrence case
-	int m_nDayInterval;         // Store days interval editor value. UpdateData method used to Exchange value with dialog control.
+	int m_nDayInterval; // Store days interval editor value. UpdateData method used to Exchange
+						// value with dialog control.
 
 	// Weekly recurrence case
-	int m_nWeeklyInterval;      // Store weeks interval editor value. UpdateData method used to Exchange value with dialog control.
+	int m_nWeeklyInterval; // Store weeks interval editor value. UpdateData method used to Exchange
+						   // value with dialog control.
 
-	BOOL m_bMonday;             // Store Monday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bTuesday;            // Store Tuesday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bWednesday;          // Store Wednesday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bThursday;           // Store Thursday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bFriday;             // Store Friday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bSaturday;           // Store Saturday checkbox state. UpdateData method used to Exchange value with dialog control.
-	BOOL m_bSunday;             // Store Sunday checkbox state. UpdateData method used to Exchange value with dialog control.
+	BOOL m_bMonday;  // Store Monday checkbox state. UpdateData method used to Exchange value with
+					 // dialog control.
+	BOOL m_bTuesday; // Store Tuesday checkbox state. UpdateData method used to Exchange value with
+					 // dialog control.
+	BOOL m_bWednesday; // Store Wednesday checkbox state. UpdateData method used to Exchange value
+					   // with dialog control.
+	BOOL m_bThursday;  // Store Thursday checkbox state. UpdateData method used to Exchange value
+					   // with dialog control.
+	BOOL m_bFriday;	// Store Friday checkbox state. UpdateData method used to Exchange value with
+					   // dialog control.
+	BOOL m_bSaturday;  // Store Saturday checkbox state. UpdateData method used to Exchange value
+					   // with dialog control.
+	BOOL m_bSunday;	// Store Sunday checkbox state. UpdateData method used to Exchange value with
+					   // dialog control.
 
 	// Monthly recurrence case
-	int m_MonthDate;            // Store month day editor value. UpdateData method used to Exchange value with dialog control.
-	int m_nMonthInterval;       // Store month interval editor value. UpdateData method used to Exchange value with dialog control.
-	int m_nMonthInterval2;      // Store month interval editor value (for second case). UpdateData method used to Exchange value with dialog control.
+	int m_MonthDate; // Store month day editor value. UpdateData method used to Exchange value with
+					 // dialog control.
+	int m_nMonthInterval;  // Store month interval editor value. UpdateData method used to Exchange
+						   // value with dialog control.
+	int m_nMonthInterval2; // Store month interval editor value (for second case). UpdateData method
+						   // used to Exchange value with dialog control.
 
 	CComboBox m_wndCbMonthDay;   // Day of week combobox object for monthly recurrence.
 	CComboBox m_wndCbMonthWhich; // Which Day combobox object for monthly recurrence.
 
 	// Yearly recurrence case
-	int m_nDayOfMonth;              // Store month day editor value for Yearly recurrence. UpdateData method used to Exchange value with dialog control.
+	int m_nDayOfMonth; // Store month day editor value for Yearly recurrence. UpdateData method used
+					   // to Exchange value with dialog control.
 
-	CComboBox m_wndYearMonth;       // Month combobox object for Yearly recurrence.
-	CComboBox m_wndComboYearMonth2; // Month combobox object for Yearly recurrence (for second case).
-	CComboBox m_wndCbYearWhich;     // Which Day combobox object for Yearly recurrence.
-	CComboBox m_wndCbYearDay;       // Day of week combobox object for Yearly recurrence.
+	CComboBox m_wndYearMonth;		// Month combobox object for Yearly recurrence.
+	CComboBox m_wndComboYearMonth2; // Month combobox object for Yearly recurrence (for second
+									// case).
+	CComboBox m_wndCbYearWhich;		// Which Day combobox object for Yearly recurrence.
+	CComboBox m_wndCbYearDay;		// Day of week combobox object for Yearly recurrence.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -241,4 +260,5 @@ AFX_INLINE void CXTPCalendarEventRecurrenceDlg::ShowWindow(int nID, BOOL bShow)
 		GetDlgItem(nID)->ShowWindow(bShow ? SW_SHOW : SW_HIDE);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_EVENT_RECURRENCE_DLG_H__)

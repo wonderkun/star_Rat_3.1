@@ -1,7 +1,6 @@
 // XTPColorPageStandard.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOLORSTANDARD_H__)
-#define __XTPCOLORSTANDARD_H__
+#	define __XTPCOLORSTANDARD_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -37,7 +38,6 @@ class _XTP_EXT_CLASS CXTPColorHex : public CStatic
 	DECLARE_DYNAMIC(CXTPColorHex)
 
 protected:
-
 	//===========================================================================
 	// Summary:
 	//     CRgnCell is a CRgn derived class used by the CXTPColorHex to create
@@ -46,11 +46,31 @@ protected:
 	class CRgnCell : public CRgn
 	{
 	public:
+		//===========================================================================
+		// Summary: Contains precomputed hexagon data for both small and big hexagons.
+		//===========================================================================
+		struct CTX_DATA
+		{
+			//===========================================================================
+			// Summary: Describes precomputed hexagon data.
+			//===========================================================================
+			struct HEXAGON_DATA
+			{
+				float width;
+				float half;
+				float height;
+				float roof;
+				float side;
+			};
+			HEXAGON_DATA lg;
+			HEXAGON_DATA sm;
+		};
 
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CRgnCell object
 		// Parameters:
+		//     data   - precomputed data
 		//     rect   - Returns a reference to a CRect object that represents the
 		//              size and position of the color cell.
 		//     color  - An RGB value that represents the color of the cell to draw.
@@ -60,11 +80,11 @@ protected:
 		//     y      - Specifies the top of CRgnCell.
 		//     bLarge - TRUE if the cell size is large.
 		//-----------------------------------------------------------------------
-		CRgnCell(CRect& rect, COLORREF color, int u, int d);
-		CRgnCell(CRect& rect, COLORREF color, int u, int d, int x, int y, BOOL bLarge = FALSE);
+		CRgnCell(const CTX_DATA& data, CXTPRectF& rect, COLORREF color, float u, float d);
+		CRgnCell(const CTX_DATA& data, CXTPRectF& rect, COLORREF color, float u, float d, float x,
+				 float y, BOOL bLarge = FALSE);
 
 	protected:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Used by the CRgnCell to render each color cell.
@@ -86,12 +106,21 @@ protected:
 		//-----------------------------------------------------------------------
 		virtual BOOL DrawSelection(CDC* pDC);
 
-		int      m_iCell[2]; // Index array that indicates which cell should be selected when the up or down arrow key is pressed.
-		CRect    m_rect;     // Represents the size and position of the color cell.
-		CPoint   m_pts[6];   // CPoint array that represents the x and y coordinate for each vertex of the cell's polygon.
-		COLORREF m_color;    // An RGB value that represents the color of the cell.
+		int m_iCell[2];   // Index array that indicates which cell should be selected when the up or
+						  // down arrow key is pressed.
+		COLORREF m_color; // An RGB value that represents the color of the cell.
+		CXTPRectF m_rect; // Represents the size and position of the color cell.
+		CXTPPoint2f m_pts[6]; // CPoint array that represents the x and y coordinate for each vertex
+							  // of the cell's polygon.
 
 		friend class CXTPColorHex;
+
+	private:
+		static void AFX_CDECL ConvertFloatToIntPoints(const CXTPPoint2f (&from)[6],
+													  CPoint (&to)[6]);
+
+		static void AFX_CDECL ComputeHexagon(const CTX_DATA::HEXAGON_DATA& data, float left,
+											 float top, CXTPPoint2f (&points)[6]);
 	};
 
 	// ----------------------------------------------------------------------
@@ -104,10 +133,9 @@ protected:
 	// See Also:
 	//     CXTPColorHex, CRgnCell
 	// ----------------------------------------------------------------------
-	typedef CList <CRgnCell*,CRgnCell*> CRgnCellList;
+	typedef CList<CRgnCell*, CRgnCell*> CRgnCellList;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorHex object
@@ -121,7 +149,6 @@ public:
 	virtual ~CXTPColorHex();
 
 public:
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves a COLORREF value from a specified point.
@@ -175,7 +202,6 @@ public:
 	COLORREF GetSelectedColor() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPColorHex class to
@@ -218,7 +244,6 @@ protected:
 	void CreateCellArray();
 
 protected:
-
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
@@ -239,16 +264,18 @@ protected:
 	//}}AFX_MSG
 	//}}AFX_CODEJOCK_PRIVATE
 
-	CBitmap      m_bmpPicker;        // Background device context.
-	bool         m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
-	COLORREF     m_clrColor;         // A COLORREF value that contains the RGB information for the current color.
-	CRgnCellList m_rgnList;          // Array of CRgnCellList objects that represent displayed color cells.
-	CRgnCell*    m_pCell;            // Pointer to a CRgnCell object that represents the currently selected color.
+	CBitmap m_bmpPicker;	 // Background device context.
+	bool m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
+	COLORREF m_clrColor;	 // A COLORREF value that contains the RGB information for the current
+							 // color.
+	CRgnCellList m_rgnList;  // Array of CRgnCellList objects that represent displayed color cells.
+	CRgnCell* m_pCell; // Pointer to a CRgnCell object that represents the currently selected color.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE COLORREF CXTPColorHex::GetSelectedColor() const {
+AFX_INLINE COLORREF CXTPColorHex::GetSelectedColor() const
+{
 	return m_clrColor;
 }
 
@@ -285,7 +312,7 @@ public:
 	void SetColor(COLORREF clr);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorPageStandard)
@@ -298,24 +325,29 @@ protected:
 	//}}AFX_MSG
 
 	//{{AFX_DATA(CXTPColorPageStandard)
-	enum { IDD = XTP_IDD_COLORSTANDARD };
+	enum
+	{
+		IDD = XTP_IDD_COLORSTANDARD
+	};
 	//}}AFX_DATA
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPColorHex m_colorHex;                // ColorHex control.
-	CXTPColorDialog*     m_pParentSheet; // Points to the parent property sheet
-
+	CXTPColorHex m_colorHex;		 // ColorHex control.
+	CXTPColorDialog* m_pParentSheet; // Points to the parent property sheet
 
 	friend class CXTPColorHex;
+
 public:
 	virtual BOOL OnSetActive();
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPColorPageStandard::SetColor(COLORREF clr) {
+AFX_INLINE void CXTPColorPageStandard::SetColor(COLORREF clr)
+{
 	m_colorHex.SetSelectedColor(clr, FALSE);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCOLORSTANDARD_H__)

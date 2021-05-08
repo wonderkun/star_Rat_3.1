@@ -1,7 +1,6 @@
 // XTFlatControlsTheme.h: interface for the CXTFlatComboBoxTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTFLATCONTROLSTHEME_H__)
-#define __XTFLATCONTROLSTHEME_H__
+#	define __XTFLATCONTROLSTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPDrawHelpers.h"
-#include "XTThemeManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTFlatComboBox;
 class CXTFlatEdit;
@@ -56,7 +54,6 @@ public:
 	virtual void RefreshMetrics();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to draw a Flat ComboBox.
@@ -76,7 +73,8 @@ public:
 	// Returns:
 	//      A reference to a CSize object that contains 3-D border dimensions.
 	//-----------------------------------------------------------------------
-	CSize& GetThumbSize() {
+	CSize& GetThumbSize()
+	{
 		return m_sizeThumb;
 	}
 
@@ -87,7 +85,8 @@ public:
 	// Returns:
 	//      A reference to a CSize object that contains 3-D border dimensions.
 	//-----------------------------------------------------------------------
-	CSize& GetBorderSize() {
+	CSize& GetBorderSize()
+	{
 		return m_sizeBorder;
 	}
 
@@ -98,12 +97,12 @@ public:
 	// Returns:
 	//      A reference to a CSize object that contains 3-D edge dimensions.
 	//-----------------------------------------------------------------------
-	CSize& GetEdgeSize() {
+	CSize& GetEdgeSize()
+	{
 		return m_sizeEdge;
 	}
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      This member function is called by the Combo Box for drawing the
@@ -131,16 +130,18 @@ protected:
 	//      Call this function to draw the background for the arrow button.
 	// Parameters:
 	//      pDC     - A pointer to a valid device context.
-	//      rcArrow - A CRect object that contains the location and the dimensions of the background.
-	//      eState  - An int that contains the current state for the arrow button.
-	//      pCombo  - A pointer to a valid CXTFlatComboBox object.
+	//      rcArrow - A CRect object that contains the location and the dimensions of the
+	//      background. eState  - An int that contains the current state for the arrow button.
+	//      pCombo
+	//      - A pointer to a valid CXTFlatComboBox object.
 	// See Also:
-	//      CXTFlatComboBoxThemeOfficeXP::DrawArrowBack, CXTFlatComboBoxThemeOffice2003::DrawArrowBack
+	//      CXTFlatComboBoxThemeOfficeXP::DrawArrowBack,
+	//      CXTFlatComboBoxThemeOffice2003::DrawArrowBack
 	//-----------------------------------------------------------------------
 	virtual void DrawArrowBack(CDC* pDC, CRect& rcArrow, int eState, CXTFlatComboBox* pCombo);
 
 protected:
-	int m_cxArrow;      // This member variable contains the width of the drop down arrow.
+	int m_cxArrow;		// This member variable contains the width of the drop down arrow.
 	CSize m_sizeThumb;  // Stores dimensions, in pixels, of a 3-D drop down arrow box.
 	CSize m_sizeBorder; // Stores dimensions, in pixels, of a 3-D window border.
 	CSize m_sizeEdge;   // Stores dimensions, in pixels, of a 3-D window edge.
@@ -178,9 +179,10 @@ protected:
 	//      Call this function to draw the background for the arrow button.
 	// Parameters:
 	//      pDC     - A pointer to a valid device context.
-	//      rcArrow - A CRect object that contains the location and the dimensions of the background.
-	//      eState  - An int that contains the current state for the arrow button.
-	//      pCombo  - A pointer to a valid CXTFlatComboBox object.
+	//      rcArrow - A CRect object that contains the location and the dimensions of the
+	//      background. eState  - An int that contains the current state for the arrow button.
+	//      pCombo
+	//      - A pointer to a valid CXTFlatComboBox object.
 	// See Also:
 	//      CXTFlatComboBoxTheme::DrawArrowBack, CXTFlatComboBoxThemeOffice2003::DrawArrowBack
 	//-----------------------------------------------------------------------
@@ -231,9 +233,10 @@ protected:
 	//      Call this function to draw the background for the arrow button.
 	// Parameters:
 	//      pDC     - A pointer to a valid device context.
-	//      rcArrow - A CRect object that contains the location and the dimensions of the background.
-	//      eState  - An int that contains the current state for the arrow button.
-	//      pCombo  - A pointer to a valid CXTFlatComboBox object.
+	//      rcArrow - A CRect object that contains the location and the dimensions of the
+	//      background. eState  - An int that contains the current state for the arrow button.
+	//      pCombo
+	//      - A pointer to a valid CXTFlatComboBox object.
 	// See Also:
 	//      CXTFlatComboBoxTheme::DrawArrowBack, CXTFlatComboBoxThemeOfficeXP::DrawArrowBack
 	//-----------------------------------------------------------------------
@@ -263,7 +266,6 @@ public:
 	virtual void RefreshMetrics();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to draw a rectangle around an EditBox.
@@ -277,8 +279,8 @@ public:
 	virtual void DrawBorders(CDC* pDC, CXTFlatEdit* pEdit, const CRect& rWindow, int eState);
 
 protected:
-
-	friend class CXTThemeManager;  // Make the CXTThemeManager a friend of the CXTFlatEditTheme class.
+	friend class CXTThemeManager; // Make the CXTThemeManager a friend of the CXTFlatEditTheme
+								  // class.
 };
 
 //===========================================================================
@@ -316,14 +318,14 @@ public:
 	virtual void DrawBorders(CDC* pDC, CXTFlatEdit* pEdit, const CRect& rWindow, int eState);
 
 public:
-	CXTPPaintManagerColor m_clrHighlightText;   // Used to specify the color of highlighted text.
-	CXTPPaintManagerColor m_clrPushedText;      // Used to specify the color of pushed text.
-	CXTPPaintManagerColor m_clrHighlight;       // Used to specify the color a highlighted object.
-	CXTPPaintManagerColor m_clrPushed;          // Used to specify the color a pushed object.
-	CXTPPaintManagerColor m_clrFrameNormal;     // Used to specify the color a normal frame.
-	CXTPPaintManagerColor m_clrFrameHighlight;  // Used to specify the color a highlighted frame.
-	CXTPPaintManagerColor m_clrFrameEdit;       // Used to specify the color an edit frame.
-	CXTPPaintManagerColor m_clrNormal;          // Used to specify the color a normal object.
+	CXTPPaintManagerColor m_clrHighlightText;  // Used to specify the color of highlighted text.
+	CXTPPaintManagerColor m_clrPushedText;	 // Used to specify the color of pushed text.
+	CXTPPaintManagerColor m_clrHighlight;	  // Used to specify the color a highlighted object.
+	CXTPPaintManagerColor m_clrPushed;		   // Used to specify the color a pushed object.
+	CXTPPaintManagerColor m_clrFrameNormal;	// Used to specify the color a normal frame.
+	CXTPPaintManagerColor m_clrFrameHighlight; // Used to specify the color a highlighted frame.
+	CXTPPaintManagerColor m_clrFrameEdit;	  // Used to specify the color an edit frame.
+	CXTPPaintManagerColor m_clrNormal;		   // Used to specify the color a normal object.
 };
 
 //===========================================================================
@@ -362,5 +364,5 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTFLATCONTROLSTHEME_H__)

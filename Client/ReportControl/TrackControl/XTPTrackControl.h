@@ -1,7 +1,6 @@
 // XTPTrackControl.h: interface for the CXTPTrackControl class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,50 +19,54 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTRACKCONTROL_H__)
-#define __XTPTRACKCONTROL_H__
+#	define __XTPTRACKCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "../XTPReportControl.h"
-#include "XTPTrackBlock.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPTrackBlock;
+class CXTPTrackMarker;
+class CXTPTrackSelectedBlocks;
+class CXTPTrackMarkers;
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This notification is send to the parent, when the track slider is
 //     changed.
 //-----------------------------------------------------------------------
-#define  XTP_NM_TRACK_SLIDERCHANGED (NM_FIRST-200)
+#	define XTP_NM_TRACK_SLIDERCHANGED (NM_FIRST - 200)
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This notification is send to the parent, when the track time line is
 //     changed.
 //-----------------------------------------------------------------------
-#define  XTP_NM_TRACK_TIMELINECHANGED (NM_FIRST-201)
+#	define XTP_NM_TRACK_TIMELINECHANGED (NM_FIRST - 201)
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This notification is send to the parent, when the track marker is
 //     changed.
 //-----------------------------------------------------------------------
-#define  XTP_NM_TRACK_MARKERCHANGED (NM_FIRST-202)
+#	define XTP_NM_TRACK_MARKERCHANGED (NM_FIRST - 202)
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This notification is send to the parent, when the track block position
 //     changed.
 //-----------------------------------------------------------------------
-#define  XTP_NM_TRACK_BLOCKCHANGED (NM_FIRST-203)
+#	define XTP_NM_TRACK_BLOCKCHANGED (NM_FIRST - 203)
 
 //-----------------------------------------------------------------------
 // Summary:
 //     This notification is send to the parent, when the selected blocks position
 //     changed.
 //-----------------------------------------------------------------------
-#define  XTP_NM_TRACK_SELECTEDBLOCKSCHANGED (NM_FIRST-204)
+#	define XTP_NM_TRACK_SELECTEDBLOCKSCHANGED (NM_FIRST - 204)
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -71,11 +74,30 @@
 //-----------------------------------------------------------------------
 struct XTP_NM_TRACKCONTROL
 {
-	NMHDR hdr;                  //The NMHDR instance.
-	CXTPTrackBlock* pBlock;     //The track block.
-	CXTPTrackMarker* pMarker;   //The track marker.
+	NMHDR hdr;				  // The NMHDR instance.
+	CXTPTrackBlock* pBlock;   // The track block.
+	CXTPTrackMarker* pMarker; // The track marker.
 };
 
+//===========================================================================
+// Summary:
+//     Enumeration of operational mouse cursor modes.
+// Remarks:
+//     TrackControl has several mouse cursor states that handled
+//     by control. This enumeration helps to clearly identify
+//     each of these.
+// See Also: CXTPTrackControl::SetMouseCursorMode,
+//           CXTPTrackControl::GetMouseCursorMode,
+//           CXTPReportControl::XTPReportMouseMode
+//
+// <KEYWORDS xtpTrackCursorNothing, xtpTrackCursorDrag, xtpTrackCursorResize>
+//===========================================================================
+enum XTPTrackMouseCursorMode
+{
+	xtpTrackCursorNothing, // User is just watching.
+	xtpTrackCursorDrag,	// User is dragging something.
+	xtpTrackCursorResize   // User is resizing something.
+};
 
 class CXTPTrackPaintManager;
 class CXTPTrackUndoManager;
@@ -102,6 +124,16 @@ public:
 	~CXTPTrackControl();
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Register the window class if it has not already been registered.
+	// Parameters:
+	//     hInstance - Instance of resource where control is located
+	// Returns:
+	//     TRUE if the window class was successfully registered.
+	//-----------------------------------------------------------------------
+	BOOL RegisterWindowClass(HINSTANCE hInstance = NULL);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to set the time line Position.
@@ -225,7 +257,6 @@ public:
 	CXTPTrackSelectedBlocks* GetSelectedBlocks() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to populate the track control with the records.
@@ -239,7 +270,8 @@ public:
 	//     pDC - Provided DC to draw rows image with.
 	//     rcClient - A rectangle to draw rows image into.
 	//-----------------------------------------------------------------------
-	void DrawRows(CDC* pDC, CRect& rcClient);
+	int DrawRows(CDC* pDC, CRect& rcClient, int y, CXTPReportRows* pRows, int nTopRow,
+				 int nColumnFrom, int nColumnTo, int* pnHeight);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -262,7 +294,7 @@ public:
 	// Returns:
 	//     A pointer to the report column object.
 	//-----------------------------------------------------------------------
-	CXTPReportColumn* GetTrackColumn();
+	CXTPReportColumn* GetTrackColumn() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -284,7 +316,7 @@ public:
 	// Returns:
 	//     An integer value specifying the position on the tack control.
 	//-----------------------------------------------------------------------
-	int TrackToPosition(int nTrack);
+	int TrackToPosition(int nTrack) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -352,6 +384,18 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPTrackUndoManager* GetUndoManager() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines the report part at a specified position.
+	// Parameters:
+	//     pt    - A point to test.
+	//     pInfo - Pointer to a CXTPReportHitTestInfo that will hold the
+	//             returned information.
+	// Returns:
+	//     TRUE if the method was successful, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTest(CPoint pt, CXTPReportHitTestInfo* pInfo) const;
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -365,7 +409,8 @@ public:
 	//     This function is useful to send notification to the parent when some
 	//     event happens in the track control.
 	//-----------------------------------------------------------------------
-	LRESULT SendMessageToParent(UINT nMessage, CXTPTrackBlock* pBlock = NULL, CXTPTrackMarker* pMarker = NULL) const;
+	LRESULT SendMessageToParent(UINT nMessage, CXTPTrackBlock* pBlock = NULL,
+								CXTPTrackMarker* pMarker = NULL) const;
 
 public:
 	//-----------------------------------------------------------------------
@@ -405,12 +450,33 @@ public:
 	//-----------------------------------------------------------------------
 	void AdjustTrackColumnWidth();
 
-	CPoint m_ptStartDrag;   //The point on which the dragging starts.
+	void SetPaintManager(CXTPTrackPaintManager* pPaintManager);
+	void SetTheme(XTPReportPaintTheme paintTheme, BOOL bEnableMetrics /*=FALSE*/);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets new operational cursor mouse mode.
+	// Parameters:
+	//     enMode - New mouse cursor mode. For available values, see XTPTrackMouseCursorMode enum.
+	//-----------------------------------------------------------------------
+	void SetMouseCursorMode(XTPTrackMouseCursorMode enMode);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the current cursor mouse mode.
+	// Returns:
+	//     Current cursor mouse mode.
+	//     For available values, see XTPTrackMouseCursorMode enum.
+	//-----------------------------------------------------------------------
+	XTPTrackMouseCursorMode GetMouseCursorMode() const;
+
+	CPoint m_ptStartDrag; // The point on which the dragging starts.
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -423,26 +489,26 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int m_nTimeLineMin;             //Minimum value for the time line.
-	int m_nTimeLineMax;             //Maximum value for the time line.
+	int m_nTimeLineMin; // Minimum value for the time line.
+	int m_nTimeLineMax; // Maximum value for the time line.
 
-	double m_nViewPortMin;          //Minimum value for the view port.
-	double m_nViewPortMax;          //Maximum value for the view port.
+	double m_nViewPortMin; // Minimum value for the view port.
+	double m_nViewPortMax; // Maximum value for the view port.
 
-	int m_nOldTrackWidth;           //The old track width.
-	double m_nOldTrackViewPortRange;//The old track view port range.
+	int m_nOldTrackWidth;			 // The old track width.
+	double m_nOldTrackViewPortRange; // The old track view port range.
 
-	int m_nWorkAreaMin;             //The minimum value for the work area.
-	int m_nWorkAreaMax;             //The Maximum value for the work area.
+	int m_nWorkAreaMin; // The minimum value for the work area.
+	int m_nWorkAreaMax; // The Maximum value for the work area.
 
-	int m_nTimeLinePosition;        //The trim line position.
-	int m_nTrackColumnIndex;        //The track column index.
+	int m_nTimeLinePosition; // The trim line position.
+	int m_nTrackColumnIndex; // The track column index.
 
-	CRect m_rcSelectedArea;         //The selected area.
+	CRect m_rcSelectedArea; // The selected area.
 
-	CXTPTrackMarkers* m_pMarkers;   //The marker collection object.
+	CXTPTrackMarkers* m_pMarkers; // The marker collection object.
 
-	CRect m_rcTimelineArea;         //The area of the time line.
+	CRect m_rcTimelineArea; // The area of the time line.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -450,41 +516,47 @@ protected:
 	//-----------------------------------------------------------------------
 	struct DRAGBLOCK
 	{
-		int nOldPos;            //The old position.
-		int nOldLength;         //The old length.
-		CRect rcOrigin;         //The original rectangle.
-		CXTPTrackBlock* pBlock; //Pointer to the block.
+		int nOldPos;			// The old position.
+		int nOldLength;			// The old length.
+		CRect rcOrigin;			// The original rectangle.
+		CXTPTrackBlock* pBlock; // Pointer to the block.
 	};
-	CArray<DRAGBLOCK, DRAGBLOCK&> m_arrDragBlocks;  //The collection of blocks which are being dragged.
+	CArray<DRAGBLOCK, DRAGBLOCK&> m_arrDragBlocks; // The collection of blocks which are being
+												   // dragged.
 
-	CXTPTrackSelectedBlocks* m_pSelectedBlocks;     //The pointer to the selected blocks object.
-	CXTPTrackUndoManager* m_pUndoManager;           //The pointer to the undo manager object.
+	CXTPTrackSelectedBlocks* m_pSelectedBlocks; // The pointer to the selected blocks object.
+	CXTPTrackUndoManager* m_pUndoManager;		// The pointer to the undo manager object.
+
+	XTPTrackMouseCursorMode m_mouseCursorMode; // Current mouse operation mode
 
 public:
-	HCURSOR m_hMoveCursor;                          //The cursor while moving the blocks.
-	HCURSOR m_hResizeCursor;                        //The cursor while resizing the blocks.
+	HCURSOR m_hMoveCursor;   // The cursor while moving the blocks.
+	HCURSOR m_hResizeCursor; // The cursor while resizing the blocks.
 
-	int m_nSnapMargin;                              //The snap margin, specifies the margin that a block must be dragged into before it will snap to another block or snap to a marker.
-	BOOL m_bSnapToBlocks;                           //TRUE if the current block is about to be snapped to the blocks, FALSE else.
-	BOOL m_bSnapToMarkers;                          //TRUE if the current block is is about to be snapped to the markers, FALSE else.
+	int m_nSnapMargin;	// The snap margin, specifies the margin that a block must be dragged into
+						  // before it will snap to another block or snap to a marker.
+	BOOL m_bSnapToBlocks; // TRUE if the current block is about to be snapped to the blocks, FALSE
+						  // else.
+	BOOL m_bSnapToMarkers; // TRUE if the current block is is about to be snapped to the markers,
+						   // FALSE else.
 
-	BOOL m_bScaleOnResize;                          //Specifies whether to scale the track control view area when resizing the track control.
+	BOOL m_bScaleOnResize; // Specifies whether to scale the track control view area when resizing
+						   // the track control.
 
+	BOOL m_bFlexibleDrag; // Enables or disables flexible dragging of blocks in the track control.
 
-	BOOL m_bFlexibleDrag;                           //Enables or disables flexible dragging of blocks in the track control.
+	BOOL m_bAllowBlockRemove; // Specifies whether the user can move blocks from one track to
+							  // another.
+	BOOL m_bAllowBlockScale;  // Specifies whether the user can resize a block.
+	BOOL m_bAllowBlockMove;   // Specifies whether the user can move a block.
 
-	BOOL m_bAllowBlockRemove;                       //Specifies whether the user can move blocks from one track to another.
-	BOOL m_bAllowBlockScale;                        //Specifies whether the user can resize a block.
-	BOOL m_bAllowBlockMove;                         //Specifies whether the user can move a block.
-
-	BOOL m_bShowWorkArea;                           //TRUE to show the work area and FALSE to hide it.
+	BOOL m_bShowWorkArea; // TRUE to show the work area and FALSE to hide it.
 	BOOL m_bShowTimeLinePosition;
 
-	CString m_strTimeFormat;                        //The string which specifies the time format.
+	CString m_strTimeFormat; // The string which specifies the time format.
 
 	friend class CXTPTrackControlItem;
 };
-
 
 AFX_INLINE int CXTPTrackControl::GetTimeLinePosition() const
 {
@@ -560,8 +632,20 @@ AFX_INLINE CXTPTrackMarkers* CXTPTrackControl::GetMarkers() const
 	return m_pMarkers;
 }
 
-AFX_INLINE CXTPTrackUndoManager* CXTPTrackControl::GetUndoManager() const {
+AFX_INLINE CXTPTrackUndoManager* CXTPTrackControl::GetUndoManager() const
+{
 	return m_pUndoManager;
 }
 
+AFX_INLINE void CXTPTrackControl::SetMouseCursorMode(XTPTrackMouseCursorMode enMode)
+{
+	m_mouseCursorMode = enMode;
+}
+
+AFX_INLINE XTPTrackMouseCursorMode CXTPTrackControl::GetMouseCursorMode() const
+{
+	return m_mouseCursorMode;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPTRACKCONTROL_H__)

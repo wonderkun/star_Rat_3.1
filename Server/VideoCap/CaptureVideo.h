@@ -16,10 +16,10 @@
 #include <atlbase.h>
 #include <windows.h>
 #include <dshow.h>
-#include <Qedit.h> // ISampleGrabberCB
+
+#include "../../common/Qedit.h" // ISampleGrabberCB
 //#include <afxtempl.h>
-
-
+#pragma comment(lib, "strmiids.lib")
 #include "XvidEnc.h"
 class SmartString
 {

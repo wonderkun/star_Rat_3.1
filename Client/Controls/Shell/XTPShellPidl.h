@@ -1,7 +1,6 @@
 // XTPShellPidl.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHELLPIDL_H__)
-#define __XTPSHELLPIDL_H__
+#	define __XTPSHELLPIDL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -38,9 +38,9 @@
 // ----------------------------------------------------------------------
 struct XTP_LVITEMDATA
 {
-	ULONG           ulAttribs;  // Shell item attributes.
-	LPITEMIDLIST    lpi;        // Pointer to an item ID list.
-	LPSHELLFOLDER   lpsfParent; // Points to the parent shell folder item.
+	ULONG ulAttribs;		  // Shell item attributes.
+	LPITEMIDLIST lpi;		  // Pointer to an item ID list.
+	LPSHELLFOLDER lpsfParent; // Points to the parent shell folder item.
 };
 
 // ----------------------------------------------------------------------
@@ -53,9 +53,9 @@ struct XTP_LVITEMDATA
 // ----------------------------------------------------------------------
 struct XTP_TVITEMDATA
 {
-	LPITEMIDLIST    lpi;        // Pointer to an item ID list.
-	LPITEMIDLIST    lpifq;      // Pointer to an item ID list.
-	LPSHELLFOLDER   lpsfParent; // Pointer to the parent shell folder item.
+	LPITEMIDLIST lpi;		  // Pointer to an item ID list.
+	LPITEMIDLIST lpifq;		  // Pointer to an item ID list.
+	LPSHELLFOLDER lpsfParent; // Pointer to the parent shell folder item.
 };
 
 //===========================================================================
@@ -113,7 +113,7 @@ public:
 		//     block. NULL If insufficient memory is available, Alloc returns
 		//     NULL.
 		//-------------------------------------------------------------------
-		void* Alloc (DWORD nBytes)
+		void* Alloc(DWORD nBytes)
 		{
 			ASSERT(m_lpMalloc != NULL);
 			return m_lpMalloc ? m_lpMalloc->Alloc(nBytes) : NULL;
@@ -270,7 +270,9 @@ public:
 	//     A pointer to an item ID list.
 	//-----------------------------------------------------------------------
 	LPITEMIDLIST ConcatPidls(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2);
-	LPITEMIDLIST ConcatPidls(LPMALLOC lpMalloc, LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2); // <combine CXTPShellPidl::ConcatPidls@LPCITEMIDLIST@LPCITEMIDLIST>
+	LPITEMIDLIST ConcatPidls(
+		LPMALLOC lpMalloc, LPCITEMIDLIST pidl1,
+		LPCITEMIDLIST pidl2); // <combine CXTPShellPidl::ConcatPidls@LPCITEMIDLIST@LPCITEMIDLIST>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -306,7 +308,7 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL GetName(LPSHELLFOLDER lpsf, LPITEMIDLIST  lpi, DWORD dwFlags, CString& lpFriendlyName);
+	BOOL GetName(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, DWORD dwFlags, CString& lpFriendlyName);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -355,7 +357,10 @@ public:
 	//     TRUE on success, or FALSE on failure.
 	//-----------------------------------------------------------------------
 	BOOL ShowContextMenu(HWND hwnd, LPSHELLFOLDER lpsfParent, LPITEMIDLIST lpi, LPPOINT lppt);
-	BOOL ShowContextMenu(HWND hwnd, LPSHELLFOLDER lpsfParent, LPCITEMIDLIST* lppi, int nCount, LPPOINT lppt); // <combine CXTPShellPidl::ShowContextMenu@HWND@LPSHELLFOLDER@LPITEMIDLIST@LPPOINT>
+	BOOL ShowContextMenu(
+		HWND hwnd, LPSHELLFOLDER lpsfParent, LPCITEMIDLIST* lppi, int nCount,
+		LPPOINT lppt); // <combine
+					   // CXTPShellPidl::ShowContextMenu@HWND@LPSHELLFOLDER@LPITEMIDLIST@LPPOINT>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -422,7 +427,8 @@ public:
 	// Returns:
 	//     An HRESULT value.
 	//-----------------------------------------------------------------------
-	HRESULT GetSHContextMenu(LPSHELLFOLDER psfFolder, LPCITEMIDLIST* localPidl, int nCount, void** ppCM, int* pcmType);
+	HRESULT GetSHContextMenu(LPSHELLFOLDER psfFolder, LPCITEMIDLIST* localPidl, int nCount,
+							 void** ppCM, int* pcmType);
 
 	// ---------------------------------------------------------------------------
 	// Summary:
@@ -525,7 +531,8 @@ protected:
 	//     This method is called when item of context menu was executed
 	// Parameters:
 	//     idCmd - Item identifier was executed.
-	//     cmi   - CMINVOKECOMMANDINFO structure reference contained additional information about item was executed.
+	//     cmi   - CMINVOKECOMMANDINFO structure reference contained additional information about
+	//     item was executed.
 	//-----------------------------------------------------------------------
 	virtual void OnShowContextMenu(int idCmd, CMINVOKECOMMANDINFO& cmi);
 
@@ -540,38 +547,43 @@ protected:
 	//     dwAttributes - Shell attributes to translate
 	//-----------------------------------------------------------------------
 	virtual void MapShellFlagsToItemAttributes(CListCtrl* pListCtrl, int iItem, DWORD dwAttributes);
-	virtual void MapShellFlagsToItemAttributes(CTreeCtrl* pTreeCtrl, HTREEITEM hItem, DWORD dwAttributes); // <combine CXTPShellPidl::MapShellFlagsToItemAttributes@CListCtrl*@int@DWORD>
+	virtual void MapShellFlagsToItemAttributes(
+		CTreeCtrl* pTreeCtrl, HTREEITEM hItem,
+		DWORD dwAttributes); // <combine
+							 // CXTPShellPidl::MapShellFlagsToItemAttributes@CListCtrl*@int@DWORD>
 
 protected:
-	ULONG m_ulSFGAOFlags;        // SFGAO flags used to retrieve shell item attributes.
-	BOOL  m_bShowShellLinkIcons; // Set to FALSE to override shortcut link display.
+	ULONG m_ulSFGAOFlags;		// SFGAO flags used to retrieve shell item attributes.
+	BOOL m_bShowShellLinkIcons; // Set to FALSE to override shortcut link display.
 
 private:
-	static WNDPROC          m_pOldWndProc; // regular window proc
-	static LPCONTEXTMENU2   m_pIContext2;  // active shell context menu
+	static WNDPROC m_pOldWndProc;		// regular window proc
+	static LPCONTEXTMENU2 m_pIContext2; // active shell context menu
 	static LRESULT CALLBACK HookWndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
 };
 
-AFX_INLINE void CXTPShellPidl::ShowShellLinkIcons(BOOL bShowLinkIcons /*= TRUE*/) {
+AFX_INLINE void CXTPShellPidl::ShowShellLinkIcons(BOOL bShowLinkIcons /*= TRUE*/)
+{
 	m_bShowShellLinkIcons = bShowLinkIcons;
 }
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef CSIDL_MYPICTURES
-#define CSIDL_MYPICTURES        0x0027
-#endif
+#	ifndef CSIDL_MYPICTURES
+#		define CSIDL_MYPICTURES 0x0027
+#	endif
 
-#ifndef SFGAO_STREAM
-#define SFGAO_STREAM            0x00400000L
-#endif
+#	ifndef SFGAO_STREAM
+#		define SFGAO_STREAM 0x00400000L
+#	endif
 
-#ifndef SFGAO_ENCRYPTED
-#define SFGAO_ENCRYPTED         0x00002000L
-#endif
+#	ifndef SFGAO_ENCRYPTED
+#		define SFGAO_ENCRYPTED 0x00002000L
+#	endif
 
-#ifndef SHCIDS_ALLFIELDS
-#define SHCIDS_ALLFIELDS        0x80000000L
-#endif
+#	ifndef SHCIDS_ALLFIELDS
+#		define SHCIDS_ALLFIELDS 0x80000000L
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTPSHELLPIDL_H__

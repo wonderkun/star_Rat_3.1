@@ -1,7 +1,6 @@
 // Property Grid resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -38,6 +37,8 @@ BEGIN
     XTP_IDC_PROPERTYGRID_CATEGORIZED        "Categorized"
     XTP_IDC_PROPERTYGRID_ALPHABETIC         "Alphabetical"
     XTP_IDS_PROPERTYGRID_TRUEFALSE          "True\nFalse"
+    XTP_IDS_PROPERTYGRID_WIDTH              "Width"
+    XTP_IDS_PROPERTYGRID_HEIGHT             "Height"
 END
 
 #endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)

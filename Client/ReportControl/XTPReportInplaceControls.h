@@ -1,7 +1,6 @@
 // XTPReportInplaceControls.h
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTINPLACECONTROLS_H__)
-#define __XTPREPORTINPLACECONTROLS_H__
+#	define __XTPREPORTINPLACECONTROLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRecord;
 class CXTPReportControl;
 class CXTPReportRecordItem;
 class CXTPReportRecordItemConstraints;
 class CXTPReportRecordItemConstraint;
-
-#include "XTPReportRecordItem.h"
-
 
 //===========================================================================
 // Summary:
@@ -73,7 +71,6 @@ protected:
 	//     pItemArgs - Arguments of item.
 	//-------------------------------------------------------------------------
 	virtual void SetItemArgs(XTP_REPORTRECORDITEM_ARGS* pItemArgs);
-
 };
 
 //===========================================================================
@@ -81,11 +78,12 @@ protected:
 //     CXTPReportInplaceEdit is the CXTPReportInplaceControl derived  class,
 //     it represents edit control to allow users change cell of report control.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportInplaceEdit : public CEdit, public CXTPReportInplaceControl
+class _XTP_EXT_CLASS CXTPReportInplaceEdit
+	: public CEdit
+	, public CXTPReportInplaceControl
 {
 	DECLARE_DYNAMIC(CXTPReportInplaceEdit)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportInplaceEdit object
@@ -97,10 +95,9 @@ public:
 	//     Destroys a CXTPReportInplaceEdit object, handles cleanup
 	//     and deallocation.
 	//-----------------------------------------------------------------------
-	~CXTPReportInplaceEdit();
+	virtual ~CXTPReportInplaceEdit();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to hide in-place edit control
@@ -141,7 +138,7 @@ protected:
 	void SetFont(CFont* pFont);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPReportInplaceControl)
@@ -151,6 +148,7 @@ protected:
 	//{{AFX_MSG(CXTPReportInplaceControl)
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	afx_msg void OnEnKillfocus();
+	afx_msg void OnSetFocus(CWnd* pWnd);
 	afx_msg void OnEnChange();
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -159,20 +157,27 @@ protected:
 	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg HBRUSH CtlColor(CDC* pDC, UINT /*nCtlColor*/);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 protected:
-	CString m_strValue;                                     // The value of item before user change it.
-	CString m_strText_prev;                                 // The text value from previous change.
-	CFont m_fntEdit;                                        // Font of in-place edit.
-	CXTPReportRecordItemConstraint* m_pSelectedConstraint;  // Selected constraint.
-	COLORREF m_clrText;                                     // Text color of in-place edit.
-	BOOL m_bSetWindowText;                                  // Indicates that text is being set with SetWindowText function.
-//private:
+	CString m_strValue;		// The value of item before user change it.
+	CString m_strText_prev; // The text value from previous change.
+
+	CXTPFont m_xtpFontEdit; // Font of in-place edit.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntEdit, m_xtpFontEdit, GetEditFontHandle);
+
+	CXTPReportRecordItemConstraint* m_pSelectedConstraint; // Selected constraint.
+	COLORREF m_clrText;									   // Text color of in-place edit.
+	COLORREF m_clrBack;									   // Background color of in-place edit.
+	CXTPBrush m_xtpBrushBack;							   // Background brash of in-place edit.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brBack, m_xtpBrushBack, GetBackBrushHandle);
+	BOOL m_bSetWindowText; // Indicates that text is being set with SetWindowText function.
+						   // private:
 
 	friend class CXTPReportRecordItem;
 };
@@ -182,34 +187,42 @@ AFX_INLINE CXTPReportRecordItem* CXTPReportInplaceEdit::GetItem() const
 	return pItem;
 }
 
-AFX_INLINE BOOL CXTPReportInplaceEdit::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPReportInplaceEdit::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											  DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											  UINT nID, CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
-AFX_INLINE BOOL CXTPReportInplaceEdit::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID)
+AFX_INLINE BOOL CXTPReportInplaceEdit::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											  UINT nID)
 {
 	return CEdit::Create(dwStyle, rect, pParentWnd, nID);
 }
 
-const UINT XTP_ID_REPORT_EXPANDBUTTON = 100; //<ALIAS CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
-const UINT XTP_ID_REPORT_COMBOBUTTON = 101; //<ALIAS CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
-const UINT XTP_ID_REPORT_SPINBUTTON = 102; //<ALIAS CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
+const UINT XTP_ID_REPORT_EXPANDBUTTON =
+	100; //<ALIAS CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
+const UINT XTP_ID_REPORT_COMBOBUTTON = 101; //<ALIAS
+											// CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
+const UINT XTP_ID_REPORT_SPINBUTTON = 102; //<ALIAS
+										   // CXTPReportInplaceButton::CXTPReportInplaceButton@UINT>
 
 //===========================================================================
 // Summary:
 //     CXTPReportInplaceButton is the CXTPReportInplaceControl derived  class,
 //     it represents combo button and expand button of report cell.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportInplaceButton : public CStatic, public CXTPReportInplaceControl
+class _XTP_EXT_CLASS CXTPReportInplaceButton
+	: public CStatic
+	, public CXTPReportInplaceControl
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportInplaceButton object
 	// Parameters:
-	//     nID - Identifier of in-place button. Can be any of the values listed in the Remarks section.
+	//     nID - Identifier of in-place button. Can be any of the values listed in the Remarks
+	//     section.
 	// Remarks:
 	//     Default identifiers are:
 	//     * <b>XTP_ID_REPORT_EXPANDBUTTON</b> Indicates the button acts like an expand button
@@ -265,7 +278,7 @@ public:
 	// Returns:
 	//     A width of the button.
 	//-----------------------------------------------------------------------
-	int GetWidth();
+	int GetWidth() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -303,7 +316,7 @@ public:
 	// See Also:
 	//     SetIconIndex
 	//-----------------------------------------------------------------------
-	int GetIconIndex();
+	int GetIconIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -313,11 +326,9 @@ public:
 	// See Also:
 	//     SetSpinButtonMin, SetSpinButtonMax, SetSpinButtonStep
 	//-----------------------------------------------------------------------
-	int GetSpinButtonMin() { return m_nSpinMin; }
-	int GetSpinButtonMax(){ return m_nSpinMax; }
-	//<COMBINE CXTPReportInplaceButton::GetSpinButtonMin>
-	int GetSpinButtonStep(){ return m_nSpinStep; }
-	//<COMBINE CXTPReportInplaceButton::GetSpinButtonMin>
+	int GetSpinButtonMin() const;
+	int GetSpinButtonMax() const;  //<COMBINE CXTPReportInplaceButton::GetSpinButtonMin>
+	int GetSpinButtonStep() const; //<COMBINE CXTPReportInplaceButton::GetSpinButtonMin>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -327,21 +338,18 @@ public:
 	// See Also:
 	//     GetSpinButtonMin, GetSpinButtonMax, GetSpinButtonStep
 	//-----------------------------------------------------------------------
-	void SetSpinButtonMin(int nValue) { m_nSpinMin = nValue; }
-	void SetSpinButtonMax(int nValue) { m_nSpinMax = nValue; }
-	//<COMBINE CXTPReportInplaceButton::SetSpinButtonMin>
-	void SetSpinButtonStep(int nValue) { m_nSpinStep = nValue; }
-	//<COMBINE CXTPReportInplaceButton::SetSpinButtonMin>
+	void SetSpinButtonMin(int nValue);
+	void SetSpinButtonMax(int nValue);  //<COMBINE CXTPReportInplaceButton::SetSpinButtonMin>
+	void SetSpinButtonStep(int nValue); //<COMBINE CXTPReportInplaceButton::SetSpinButtonMin>
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to activate the button.
 	//-----------------------------------------------------------------------
 	void Activate();
-	BOOL m_bDraw;     // flag to eliminate flickering
 	int m_Items2Show; // Picklist desired item's number to show
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPReportInplaceButton)
@@ -357,32 +365,48 @@ protected:
 	afx_msg void OnCaptureChanged(CWnd* pWnd);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportInplaceButton);
+	LPDISPATCH OleGetRow();
+	LPDISPATCH OleGetColumn();
+	LPDISPATCH OleGetItem();
+
+	void OleGetRect(long* pnLeft, long* pnTop, long* pnRight, long* pnBottom);
+
 //}}AFX_CODEJOCK_PRIVATE
-
-
+#	endif
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID = 0xffff);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+				UINT nID = 0xffff);
 
 protected:
-	int m_nID;                              // Identifier of the button.
-	int m_nWidth;                           // Width of the button.
-	int m_nFixedHeight;                     // Height of the button.
-	BOOL m_bInsideCell;                     // Store button place: inside the cell rect, or outside.
-	int m_nIconIndex;                       // Icon index.
+	int m_nID;			// Identifier of the button.
+	int m_nWidth;		// Width of the button.
+	int m_nFixedHeight; // Height of the button.
+	BOOL m_bInsideCell; // Store button place: inside the cell rect, or outside.
+	int m_nIconIndex;   // Icon index.
 
-	BOOL m_bPressed;                        // TRUE if the button is pressed.
-	BOOL m_bOver;                           // TRUE if the mouse cursor is over the button.
-	int m_nState;                           // Button state.
+	BOOL m_bPressed; // TRUE if the button is pressed.
+	BOOL m_bOver;	// TRUE if the mouse cursor is over the button.
+	int m_nState;	// Button state.
 
-	int m_nSpinMin;                         // Spin button only: minimum value.
-	int m_nSpinMax;                         // Spin button only: maximum value.
-	int m_nSpinStep;                        // Spin button only: step value.
+	int m_nSpinMin;  // Spin button only: minimum value.
+	int m_nSpinMax;  // Spin button only: maximum value.
+	int m_nSpinStep; // Spin button only: step value.
 
-	UINT_PTR m_unSpinTimerCnt;              // Spin button only: timer counter.
-	UINT_PTR m_unSpinTimerId;               // Spin button only: timer identifier.
-	int m_nSpinIncrement;                   // Spin button only: increment value.
+	UINT_PTR m_unSpinTimerCnt; // Spin button only: timer counter.
+	UINT_PTR m_unSpinTimerId;  // Spin button only: timer identifier.
+	int m_nSpinIncrement;	  // Spin button only: increment value.
 
 	friend class CXTPReportRecordItem;
 };
@@ -391,38 +415,34 @@ AFX_INLINE int CXTPReportInplaceButton::GetID() const
 {
 	return m_nID;
 }
-
 AFX_INLINE BOOL CXTPReportInplaceButton::IsPressed() const
 {
 	return m_bPressed && m_bOver;
 }
-
 AFX_INLINE int CXTPReportInplaceButton::GetState() const
 {
 	return m_bOver ? m_nState : 0;
 }
-
-AFX_INLINE BOOL CXTPReportInplaceButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPReportInplaceButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+												DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+												UINT nID, CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-
-AFX_INLINE BOOL CXTPReportInplaceButton::Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID)
+AFX_INLINE BOOL CXTPReportInplaceButton::Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect,
+												CWnd* pParentWnd, UINT nID)
 {
 	return CStatic::Create(lpszText, dwStyle, rect, pParentWnd, nID);
 }
-
 AFX_INLINE CXTPReportRecordItem* CXTPReportInplaceButton::GetItem() const
 {
 	return pItem;
 }
-
 AFX_INLINE void CXTPReportInplaceButton::SetIconIndex(int nIconIndex)
 {
-	m_nIconIndex  = nIconIndex;
+	m_nIconIndex = nIconIndex;
 }
-
-AFX_INLINE int CXTPReportInplaceButton::GetIconIndex()
+AFX_INLINE int CXTPReportInplaceButton::GetIconIndex() const
 {
 	return m_nIconIndex;
 }
@@ -433,7 +453,9 @@ AFX_INLINE int CXTPReportInplaceButton::GetIconIndex()
 //     it represents list box with constraints of item.
 // See Also: CXTPReportRecordItemConstraints
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportInplaceList : public CListBox, public CXTPReportInplaceControl
+class _XTP_EXT_CLASS CXTPReportInplaceList
+	: public CListBox
+	, public CXTPReportInplaceControl
 {
 public:
 	//-------------------------------------------------------------------------
@@ -443,7 +465,6 @@ public:
 	CXTPReportInplaceList();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to create in-place list control.
@@ -466,8 +487,9 @@ public:
 	void Apply();
 
 	int m_Items2Show;
+
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPReportInplaceList)
@@ -483,8 +505,9 @@ protected:
 	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnLButtonUp(UINT, CPoint point);
+	afx_msg void OnNcPaint();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -507,35 +530,60 @@ private:
 	DWORD m_dwLastKeyDownTime;
 	BOOL m_bApply;
 
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPReportInplaceList::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+AFX_INLINE BOOL CXTPReportInplaceList::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											  DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											  UINT nID, CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-
-AFX_INLINE BOOL CXTPReportInplaceList::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID)
+AFX_INLINE BOOL CXTPReportInplaceList::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											  UINT nID)
 {
 	return CListBox::Create(dwStyle, rect, pParentWnd, nID);
 }
-
-AFX_INLINE int CXTPReportInplaceButton::GetWidth()
+AFX_INLINE int CXTPReportInplaceButton::GetWidth() const
 {
 	return m_nWidth;
 }
-
 AFX_INLINE BOOL CXTPReportInplaceButton::IsInsideCellButton() const
 {
 	return m_bInsideCell;
 }
-
 AFX_INLINE void CXTPReportInplaceButton::SetInsideCellButton(BOOL bInsideCell)
 {
 	m_bInsideCell = bInsideCell;
 }
+AFX_INLINE int CXTPReportInplaceButton::GetSpinButtonMin() const
+{
+	return m_nSpinMin;
+}
+AFX_INLINE int CXTPReportInplaceButton::GetSpinButtonMax() const
+{
+	return m_nSpinMax;
+}
+AFX_INLINE int CXTPReportInplaceButton::GetSpinButtonStep() const
+{
+	return m_nSpinStep;
+}
+AFX_INLINE void CXTPReportInplaceButton::SetSpinButtonMin(int nValue)
+{
+	m_nSpinMin = nValue;
+}
+AFX_INLINE void CXTPReportInplaceButton::SetSpinButtonMax(int nValue)
+{
+	m_nSpinMax = nValue;
+}
+AFX_INLINE void CXTPReportInplaceButton::SetSpinButtonStep(int nValue)
+{
+	m_nSpinStep = nValue;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPREPORTINPLACECONTROLS_H__)

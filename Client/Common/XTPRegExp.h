@@ -1,7 +1,6 @@
 // XTPRegExp.h : RegExp Helpers
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,38 +19,41 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREGEXP_H__)
-#define __XTPREGEXP_H__
+#	define __XTPREGEXP_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#pragma pack(push, 8)
+#	pragma pack(push, 8)
 
-#if (_MSC_VER > 1100)
-#pragma warning(push)
-#endif
+#	if (_MSC_VER > 1100)
+#		pragma warning(push)
+#	endif
 
-#pragma warning(disable : 4310)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4786)
+#	pragma warning(disable : 4310)
+#	pragma warning(disable : 4244)
+#	pragma warning(disable : 4786)
 
-#include <comdef.h>
-#include "XTPResourceManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableAdvancedWarnings.h"
+#	include <comdef.h>
+#	include "Common/Base/Diagnostic/XTPEnableAdvancedWarnings.h"
 
-namespace XTPREGEXP {
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
+namespace XTPREGEXP
+{
 //
 // Forward references and typedefs
 //
 
 struct __declspec(uuid("3f4daca0-160d-11d2-a8e9-00104b365c9f"))
-/* dual interface */ IRegExp;
+	/* dual interface */ IRegExp;
 struct __declspec(uuid("3f4daca1-160d-11d2-a8e9-00104b365c9f"))
-/* dual interface */ IMatch;
+	/* dual interface */ IMatch;
 struct __declspec(uuid("3f4daca2-160d-11d2-a8e9-00104b365c9f"))
-/* dual interface */ IMatchCollection;
+	/* dual interface */ IMatchCollection;
 struct /* coclass */ RegExp;
 
 //
@@ -66,79 +68,56 @@ _COM_SMARTPTR_TYPEDEF(IMatchCollection, __uuidof(IMatchCollection));
 // Type library items
 //
 
-struct __declspec(uuid("3f4daca0-160d-11d2-a8e9-00104b365c9f"))
-IRegExp : public IDispatch
+struct __declspec(uuid("3f4daca0-160d-11d2-a8e9-00104b365c9f")) IRegExp : public IDispatch
 {
 	//
 	// Raw methods provided by interface
 	//
 
-	virtual HRESULT __stdcall get_Pattern (
-		BSTR * pPattern ) = 0;
-	virtual HRESULT __stdcall put_Pattern (
-		BSTR pPattern ) = 0;
-	virtual HRESULT __stdcall get_IgnoreCase (
-		VARIANT_BOOL * pIgnoreCase ) = 0;
-	virtual HRESULT __stdcall put_IgnoreCase (
-		VARIANT_BOOL pIgnoreCase ) = 0;
-	virtual HRESULT __stdcall get_Global (
-		VARIANT_BOOL * pGlobal ) = 0;
-	virtual HRESULT __stdcall put_Global (
-		VARIANT_BOOL pGlobal ) = 0;
-	virtual HRESULT __stdcall Execute (
-		BSTR sourceString,
-		IDispatch * * ppMatches ) = 0;
-	virtual HRESULT __stdcall Test (
-		BSTR sourceString,
-		VARIANT_BOOL * pMatch ) = 0;
-	virtual HRESULT __stdcall Replace (
-		BSTR sourceString,
-		BSTR replaceString,
-		BSTR * pDestString ) = 0;
+	virtual HRESULT __stdcall get_Pattern(BSTR* pPattern)										= 0;
+	virtual HRESULT __stdcall put_Pattern(BSTR pPattern)										= 0;
+	virtual HRESULT __stdcall get_IgnoreCase(VARIANT_BOOL* pIgnoreCase)							= 0;
+	virtual HRESULT __stdcall put_IgnoreCase(VARIANT_BOOL pIgnoreCase)							= 0;
+	virtual HRESULT __stdcall get_Global(VARIANT_BOOL* pGlobal)									= 0;
+	virtual HRESULT __stdcall put_Global(VARIANT_BOOL pGlobal)									= 0;
+	virtual HRESULT __stdcall Execute(BSTR sourceString, IDispatch** ppMatches)					= 0;
+	virtual HRESULT __stdcall Test(BSTR sourceString, VARIANT_BOOL* pMatch)						= 0;
+	virtual HRESULT __stdcall Replace(BSTR sourceString, BSTR replaceString, BSTR* pDestString) = 0;
 };
 
-struct __declspec(uuid("3f4daca1-160d-11d2-a8e9-00104b365c9f"))
-IMatch : public IDispatch
+struct __declspec(uuid("3f4daca1-160d-11d2-a8e9-00104b365c9f")) IMatch : public IDispatch
 {
 	//
 	// Raw methods provided by interface
 	//
 
-	virtual HRESULT __stdcall get_Value (
-		BSTR * pValue ) = 0;
-	virtual HRESULT __stdcall get_FirstIndex (
-		long * pFirstIndex ) = 0;
-	virtual HRESULT __stdcall get_Length (
-		long * pLength ) = 0;
+	virtual HRESULT __stdcall get_Value(BSTR* pValue)			= 0;
+	virtual HRESULT __stdcall get_FirstIndex(long* pFirstIndex) = 0;
+	virtual HRESULT __stdcall get_Length(long* pLength)			= 0;
 };
 
-struct __declspec(uuid("3f4daca2-160d-11d2-a8e9-00104b365c9f"))
-IMatchCollection : public IDispatch
+struct __declspec(uuid("3f4daca2-160d-11d2-a8e9-00104b365c9f")) IMatchCollection : public IDispatch
 {
 	//
 	// Raw methods provided by interface
 	//
 
-	virtual HRESULT __stdcall get_Item (
-		long index,
-		IDispatch * * ppMatch ) = 0;
-	virtual HRESULT __stdcall get_Count (
-		long * pCount ) = 0;
-	virtual HRESULT __stdcall get__NewEnum (
-		IUnknown * * ppEnum ) = 0;
+	virtual HRESULT __stdcall get_Item(long index, IDispatch** ppMatch) = 0;
+	virtual HRESULT __stdcall get_Count(long* pCount)					= 0;
+	virtual HRESULT __stdcall get__NewEnum(IUnknown** ppEnum)			= 0;
 };
 
 struct __declspec(uuid("3f4daca4-160d-11d2-a8e9-00104b365c9f")) RegExp;
 
-}
+} // namespace XTPREGEXP
 
-class CXTPRegExp
+class _XTP_EXT_CLASS CXTPRegExp
 {
 public:
 	CXTPRegExp()
 	{
-
 	}
+
 public:
 	void SetPattern(LPCTSTR lpszPattern)
 	{
@@ -174,7 +153,8 @@ public:
 			return FALSE;
 
 		BSTR bstrResult = 0;
-		if (FAILED(m_regexpPtr->Replace(_bstr_t(XTP_CT2CW(lpszSourceString)), _bstr_t(XTP_CT2CW(lpszReplaceString)), &bstrResult)))
+		if (FAILED(m_regexpPtr->Replace(_bstr_t(XTP_CT2CW(lpszSourceString)),
+										_bstr_t(XTP_CT2CW(lpszReplaceString)), &bstrResult)))
 			return FALSE;
 
 		strDestString = bstrResult;
@@ -201,11 +181,11 @@ public:
 			{
 				m_matchesPtr->get_Count(&nCount);
 			}
-
 		}
-		if (_result) _result->Release();
-		if (nCount == 0) m_matchesPtr = NULL;
-
+		if (_result)
+			_result->Release();
+		if (nCount == 0)
+			m_matchesPtr = NULL;
 
 		return nCount;
 	}
@@ -227,8 +207,9 @@ public:
 		if (FAILED(m_matchesPtr->get_Item(nIndex, &_result)))
 			return FALSE;
 
-		XTPREGEXP::IMatchPtr match =_result;
-		if (_result) _result->Release();
+		XTPREGEXP::IMatchPtr match = _result;
+		if (_result)
+			_result->Release();
 
 		if (match == NULL)
 			return FALSE;
@@ -254,17 +235,16 @@ protected:
 		return TRUE;
 	}
 
-
 protected:
 	XTPREGEXP::IRegExpPtr m_regexpPtr;
 	XTPREGEXP::IMatchCollectionPtr m_matchesPtr;
 };
 
+#	if (_MSC_VER > 1100)
+#		pragma warning(pop)
+#	endif
 
-#if (_MSC_VER > 1100)
-#pragma warning(pop)
-#endif
+#	pragma pack(pop)
 
-#pragma pack(pop)
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREGEXP_H__)

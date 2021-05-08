@@ -1,7 +1,6 @@
-// XTPChartLineSeriesStyle.h
+// XTPChartFastLineSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTFASTLINESERIESSTYLE_H__)
-#define __XTPCHARTFASTLINESERIESSTYLE_H__
+#	define __XTPCHARTFASTLINESERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartLineStyle;
-
-#include "../Point/XTPChartPointSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -84,24 +83,24 @@ protected:
 	//     CXTPChartSeriesView.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
 	void DoPropExchange(CXTPPropExchange* pPX);
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartFastLineSeriesStyle);
 	DECLARE_OLECREATE_EX(CXTPChartFastLineSeriesStyle)
 	LPDISPATCH OleGetLineStyle();
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	CXTPChartLineStyle* m_pLineStyle;        //The line style.
+	CXTPChartLineStyle* m_pLineStyle; // The line style.
 	BOOL m_bAntialiasing;
-
 };
 
 //===========================================================================
@@ -135,41 +134,53 @@ protected:
 	//     CXTPChartSeriesPointView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of a line series.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of the line series.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
-	CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     This function creates a label view drawing command object.
+	// Parameters:
+	//     pDC      - Pointer to a CXTPChartDeviceContext object.
+	//     rcBounds - The rectangular boundary of the legend.
+	// Returns:
+	//     Returns a new label view drawing command object.
+	//-------------------------------------------------------------------------
+	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC,
+															  CRect rcBounds);
 
 	void CreatePointsView(CXTPChartDeviceContext* pDC);
-
 };
 
-
-AFX_INLINE CXTPChartLineStyle* CXTPChartFastLineSeriesStyle::GetLineStyle() const {
+AFX_INLINE CXTPChartLineStyle* CXTPChartFastLineSeriesStyle::GetLineStyle() const
+{
 	return m_pLineStyle;
 }
-AFX_INLINE BOOL CXTPChartFastLineSeriesStyle::GetAntialiasing() const {
+AFX_INLINE BOOL CXTPChartFastLineSeriesStyle::GetAntialiasing() const
+{
 	return m_bAntialiasing;
 }
-AFX_INLINE void CXTPChartFastLineSeriesStyle::SetAntialiasing(BOOL bAntialiasing)  {
+AFX_INLINE void CXTPChartFastLineSeriesStyle::SetAntialiasing(BOOL bAntialiasing)
+{
 	m_bAntialiasing = bAntialiasing;
 	OnChartChanged();
 }
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTFASTLINESERIESSTYLE_H__)

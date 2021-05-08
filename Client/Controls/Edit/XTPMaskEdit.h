@@ -1,7 +1,6 @@
 // XTPMaskEdit.h interface for the CXTPMaskEdit class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMASKEDIT_H__)
-#define __XTPMASKEDIT_H__
+#	define __XTPMASKEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -37,7 +38,6 @@ class _XTP_EXT_CLASS CXTPMaskEdit : public CXTPEdit
 	DECLARE_DYNAMIC(CXTPMaskEdit)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPMaskEdit object
@@ -161,7 +161,8 @@ public:
 // See Also:
 //     CXTPDateEdit
 // ----------------------------------------------------------------------------
-_XTP_EXT_CLASS void AFXAPI DDX_XTPOleDateTime(CDataExchange* pDX, int nIDC, CXTPDateEdit& rControl, COleDateTime& rDateTime);
+_XTP_EXT_CLASS void AFXAPI DDX_XTPOleDateTime(CDataExchange* pDX, int nIDC, CXTPDateEdit& rControl,
+											  COleDateTime& rDateTime);
 
 //===========================================================================
 // Summary:
@@ -180,7 +181,6 @@ public:
 	CXTPTimeEdit();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will update the hours displayed.
@@ -256,22 +256,25 @@ public:
 	void SetMilitary(BOOL bMilitary = TRUE);
 
 protected:
-	int m_iHours;       // Represents the hours to display.
-	int m_iMins;        // Represents the minutes to display.
-	BOOL m_bMilitary;   // true if military time is used.
+	int m_iHours;	 // Represents the hours to display.
+	int m_iMins;	  // Represents the minutes to display.
+	BOOL m_bMilitary; // true if military time is used.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE int CXTPTimeEdit::GetHours() const {
+AFX_INLINE int CXTPTimeEdit::GetHours() const
+{
 	return m_iHours;
 }
-AFX_INLINE int CXTPTimeEdit::GetMins() const {
+AFX_INLINE int CXTPTimeEdit::GetMins() const
+{
 	return m_iMins;
 }
-AFX_INLINE void CXTPTimeEdit::SetMilitary(BOOL bMilitary /*= TRUE*/) {
+AFX_INLINE void CXTPTimeEdit::SetMilitary(BOOL bMilitary /*= TRUE*/)
+{
 	m_bMilitary = bMilitary;
-
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPMASKEDIT_H__)

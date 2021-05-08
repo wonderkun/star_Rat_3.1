@@ -1,7 +1,6 @@
 // Defines.h : notification handlers
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,49 +19,62 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLSDEFINES_H__)
-#define __XTPCONTROLSDEFINES_H__
+#	define __XTPCONTROLSDEFINES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
 //{{AFX_CODEJOCK_PRIVATE
 
-#ifndef BTNS_WHOLEDROPDOWN
-#define BTNS_WHOLEDROPDOWN              0x80  /* draw dropdown arrow, but without split arrow section */
-#endif
+#	ifndef BTNS_WHOLEDROPDOWN
+#		define BTNS_WHOLEDROPDOWN 0x80 /* draw dropdown arrow, but without split arrow section */
+#	endif
 
 // Summary: The I_IMAGENONE constant is used when defining text-only toolbar buttons with no
 //          space allocated to the button icon
 //          The constant is normally defined in version 5.81 and greater SDK headers
-#ifndef I_IMAGENONE
-#define I_IMAGENONE (-2)
-#endif//I_IMAGENONE
+#	ifndef I_IMAGENONE
+#		define I_IMAGENONE (-2)
+#	endif // I_IMAGENONE
 
-#ifndef IDC_HAND
-#define IDC_HAND            MAKEINTRESOURCE(32649)
-#endif
+#	ifndef IDC_HAND
+#		define IDC_HAND MAKEINTRESOURCE(32649)
+#	endif
 
 const UINT WM_XTP_CONTROLS_BASE = (WM_USER + 9000);
 
-#ifndef ON_WM_MOUSELEAVE
-#define ON_WM_MOUSELEAVE() \
-	{ WM_MOUSELEAVE, 0, 0, 0, AfxSig_bv, \
-		(AFX_PMSG)(AFX_PMSGW)(BOOL (AFX_MSG_CALL CWnd::*)(void))&OnMouseLeave },
-#endif
+#	ifndef ON_WM_MOUSELEAVE
+#		define ON_WM_MOUSELEAVE()                                                                 \
+			{ WM_MOUSELEAVE,                                                                       \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  AfxSig_bv,                                                                           \
+			  (AFX_PMSG)(AFX_PMSGW)(BOOL(AFX_MSG_CALL CWnd::*)(void)) & OnMouseLeave },
+#	endif
 
-#ifndef ON_WM_PRINTCLIENT
-#define ON_WM_PRINTCLIENT() \
-	{ WM_PRINTCLIENT, 0, 0, 0, AfxSig_vh, \
-		(AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(HDC))&OnPrintClient },
-#endif
+#	ifndef ON_WM_PRINTCLIENT
+#		define ON_WM_PRINTCLIENT()                                                                \
+			{ WM_PRINTCLIENT,                                                                      \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  AfxSig_vh,                                                                           \
+			  (AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(HDC)) & OnPrintClient },
+#	endif
 
-#ifndef ON_WM_XTP_SETCONTROLTHEME
-#define ON_WM_XTP_SETCONTROLTHEME() \
-	{ WM_XTP_SETCONTROLTHEME, 0, 0, 0, AfxSig_vw, \
-		(AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(XTPControlTheme))&OnSetControlTheme },
-#endif
+#	ifndef ON_WM_XTP_SETCONTROLTHEME
+#		define ON_WM_XTP_SETCONTROLTHEME()                                                        \
+			{ WM_XTP_SETCONTROLTHEME,                                                              \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  0,                                                                                   \
+			  AfxSig_vw,                                                                           \
+			  (AFX_PMSG)(AFX_PMSGW)(void (AFX_MSG_CALL CWnd::*)(XTPControlTheme))                  \
+				  & OnSetControlTheme },
+#	endif
 
 //}}AFX_CODEJOCK_PRIVATE
 
@@ -92,15 +104,15 @@ const UINT WM_XTP_CONTROLS_BASE = (WM_USER + 9000);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP, CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP, CPN_XTP_SELENDOK,
+//     CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_SELCHANGE = (WM_XTP_CONTROLS_BASE + 1);
 //<ALIAS CPN_XTP_SELCHANGE>
-#define ON_CPN_XTP_SELCHANGE(id, memberFxn)
+#	define ON_CPN_XTP_SELCHANGE(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_SELCHANGE
-#define ON_CPN_XTP_SELCHANGE(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_SELCHANGE, id, memberFxn)
+#	undef ON_CPN_XTP_SELCHANGE
+#	define ON_CPN_XTP_SELCHANGE(id, memberFxn) ON_CONTROL(CPN_XTP_SELCHANGE, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -129,15 +141,15 @@ const UINT CPN_XTP_SELCHANGE = (WM_XTP_CONTROLS_BASE + 1);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_CLOSEUP, CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_CLOSEUP, CPN_XTP_SELENDOK,
+//     CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_DROPDOWN = (WM_XTP_CONTROLS_BASE + 2);
 //<ALIAS CPN_XTP_DROPDOWN>
-#define ON_CPN_XTP_DROPDOWN(id, memberFxn)
+#	define ON_CPN_XTP_DROPDOWN(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_DROPDOWN
-#define ON_CPN_XTP_DROPDOWN(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_DROPDOWN, id, memberFxn)
+#	undef ON_CPN_XTP_DROPDOWN
+#	define ON_CPN_XTP_DROPDOWN(id, memberFxn) ON_CONTROL(CPN_XTP_DROPDOWN, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -166,15 +178,15 @@ const UINT CPN_XTP_DROPDOWN = (WM_XTP_CONTROLS_BASE + 2);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN,
+//     CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_CLOSEUP = (WM_XTP_CONTROLS_BASE + 3);
 //<ALIAS CPN_XTP_CLOSEUP>
-#define ON_CPN_XTP_CLOSEUP(id, memberFxn)
+#	define ON_CPN_XTP_CLOSEUP(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_CLOSEUP
-#define ON_CPN_XTP_CLOSEUP(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_CLOSEUP, id, memberFxn)
+#	undef ON_CPN_XTP_CLOSEUP
+#	define ON_CPN_XTP_CLOSEUP(id, memberFxn) ON_CONTROL(CPN_XTP_CLOSEUP, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -203,15 +215,15 @@ const UINT CPN_XTP_CLOSEUP = (WM_XTP_CONTROLS_BASE + 3);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP, CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP,
+//     CPN_XTP_SELENDCANCEL, CPN_XTP_SELNOFILL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_SELENDOK = (WM_XTP_CONTROLS_BASE + 4);
 //<ALIAS CPN_XTP_SELENDOK>
-#define ON_CPN_XTP_SELENDOK(id, memberFxn)
+#	define ON_CPN_XTP_SELENDOK(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_SELENDOK
-#define ON_CPN_XTP_SELENDOK(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_SELENDOK, id, memberFxn)
+#	undef ON_CPN_XTP_SELENDOK
+#	define ON_CPN_XTP_SELENDOK(id, memberFxn) ON_CONTROL(CPN_XTP_SELENDOK, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -240,15 +252,15 @@ const UINT CPN_XTP_SELENDOK = (WM_XTP_CONTROLS_BASE + 4);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP, ON_CPN_XTP_SELENDOK, CPN_XTP_SELNOFILL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP,
+//     ON_CPN_XTP_SELENDOK, CPN_XTP_SELNOFILL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_SELENDCANCEL = (WM_XTP_CONTROLS_BASE + 5);
 //<ALIAS CPN_XTP_SELENDCANCEL>
-#define ON_CPN_XTP_SELENDCANCEL(id, memberFxn)
+#	define ON_CPN_XTP_SELENDCANCEL(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_SELENDCANCEL
-#define ON_CPN_XTP_SELENDCANCEL(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_SELENDCANCEL, id, memberFxn)
+#	undef ON_CPN_XTP_SELENDCANCEL
+#	define ON_CPN_XTP_SELENDCANCEL(id, memberFxn) ON_CONTROL(CPN_XTP_SELENDCANCEL, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -277,15 +289,15 @@ const UINT CPN_XTP_SELENDCANCEL = (WM_XTP_CONTROLS_BASE + 5);
 // }
 // </code>
 // See Also:
-//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP, ON_CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL
+//     CXTPColorPicker, CXTPColorSelectorCtrl, CPN_XTP_SELCHANGE, CPN_XTP_DROPDOWN, CPN_XTP_CLOSEUP,
+//     ON_CPN_XTP_SELENDOK, CPN_XTP_SELENDCANCEL
 // --------------------------------------------------------------------
 const UINT CPN_XTP_SELNOFILL = (WM_XTP_CONTROLS_BASE + 6);
 //<ALIAS CPN_XTP_SELNOFILL>
-#define ON_CPN_XTP_SELNOFILL(id, memberFxn)
+#	define ON_CPN_XTP_SELNOFILL(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_CPN_XTP_SELNOFILL
-#define ON_CPN_XTP_SELNOFILL(id, memberFxn) \
-	ON_CONTROL(CPN_XTP_SELNOFILL, id, memberFxn)
+#	undef ON_CPN_XTP_SELNOFILL
+#	define ON_CPN_XTP_SELNOFILL(id, memberFxn) ON_CONTROL(CPN_XTP_SELNOFILL, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // --------------------------------------------------------------------
@@ -319,11 +331,10 @@ const UINT CPN_XTP_SELNOFILL = (WM_XTP_CONTROLS_BASE + 6);
 // --------------------------------------------------------------------
 const UINT BEN_XTP_LABELEDITEND = (WM_XTP_CONTROLS_BASE + 7);
 //<ALIAS BEN_XTP_LABELEDITEND>
-#define ON_BEN_XTP_LABELEDITEND(id, memberFxn)
+#	define ON_BEN_XTP_LABELEDITEND(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_BEN_XTP_LABELEDITEND
-#define ON_BEN_XTP_LABELEDITEND(id, memberFxn) \
-	ON_CONTROL(BEN_XTP_LABELEDITEND, id, memberFxn)
+#	undef ON_BEN_XTP_LABELEDITEND
+#	define ON_BEN_XTP_LABELEDITEND(id, memberFxn) ON_CONTROL(BEN_XTP_LABELEDITEND, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -357,11 +368,11 @@ const UINT BEN_XTP_LABELEDITEND = (WM_XTP_CONTROLS_BASE + 7);
 // ----------------------------------------------------------------------
 const UINT BEN_XTP_LABELEDITCANCEL = (WM_XTP_CONTROLS_BASE + 8);
 //<ALIAS BEN_XTP_LABELEDITCANCEL>
-#define ON_BEN_XTP_LABELEDITCANCEL(id, memberFxn)
+#	define ON_BEN_XTP_LABELEDITCANCEL(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_BEN_XTP_LABELEDITCANCEL
-#define ON_BEN_XTP_LABELEDITCANCEL(id, memberFxn) \
-	ON_CONTROL(BEN_XTP_LABELEDITCANCEL, id, memberFxn)
+#	undef ON_BEN_XTP_LABELEDITCANCEL
+#	define ON_BEN_XTP_LABELEDITCANCEL(id, memberFxn)                                              \
+		ON_CONTROL(BEN_XTP_LABELEDITCANCEL, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -388,15 +399,15 @@ const UINT BEN_XTP_LABELEDITCANCEL = (WM_XTP_CONTROLS_BASE + 8);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM,
+//     LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const DWORD LBN_XTP_LABELEDITEND = BEN_XTP_LABELEDITEND;
 //<ALIAS LBN_XTP_LABELEDITEND>
-#define ON_LBN_XTP_LABELEDITEND(id, memberFxn)
+#	define ON_LBN_XTP_LABELEDITEND(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_LABELEDITEND
-#define ON_LBN_XTP_LABELEDITEND(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_LABELEDITEND, id, memberFxn)
+#	undef ON_LBN_XTP_LABELEDITEND
+#	define ON_LBN_XTP_LABELEDITEND(id, memberFxn) ON_CONTROL(LBN_XTP_LABELEDITEND, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -423,15 +434,16 @@ const DWORD LBN_XTP_LABELEDITEND = BEN_XTP_LABELEDITEND;
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM,
+//     LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const DWORD LBN_XTP_LABELEDITCANCEL = BEN_XTP_LABELEDITCANCEL;
 //<ALIAS LBN_XTP_LABELEDITCANCEL>
-#define ON_LBN_XTP_LABELEDITCANCEL(id, memberFxn)
+#	define ON_LBN_XTP_LABELEDITCANCEL(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_LABELEDITCANCEL
-#define ON_LBN_XTP_LABELEDITCANCEL(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_LABELEDITCANCEL, id, memberFxn)
+#	undef ON_LBN_XTP_LABELEDITCANCEL
+#	define ON_LBN_XTP_LABELEDITCANCEL(id, memberFxn)                                              \
+		ON_CONTROL(LBN_XTP_LABELEDITCANCEL, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -458,15 +470,15 @@ const DWORD LBN_XTP_LABELEDITCANCEL = BEN_XTP_LABELEDITCANCEL;
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_PREDELETEITEM,
+//     LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_NEWITEM = (WM_XTP_CONTROLS_BASE + 9);
 //<ALIAS LBN_XTP_NEWITEM>
-#define ON_LBN_XTP_NEWITEM(id, memberFxn)
+#	define ON_LBN_XTP_NEWITEM(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_NEWITEM
-#define ON_LBN_XTP_NEWITEM(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_NEWITEM, id, memberFxn)
+#	undef ON_LBN_XTP_NEWITEM
+#	define ON_LBN_XTP_NEWITEM(id, memberFxn) ON_CONTROL(LBN_XTP_NEWITEM, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -495,15 +507,15 @@ const UINT LBN_XTP_NEWITEM = (WM_XTP_CONTROLS_BASE + 9);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_PREDELETEITEM = (WM_XTP_CONTROLS_BASE + 10);
 //<ALIAS LBN_XTP_PREDELETEITEM>
-#define ON_LBN_XTP_PREDELETEITEM(id, memberFxn)
+#	define ON_LBN_XTP_PREDELETEITEM(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_PREDELETEITEM
-#define ON_LBN_XTP_PREDELETEITEM(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_PREDELETEITEM, id, memberFxn)
+#	undef ON_LBN_XTP_PREDELETEITEM
+#	define ON_LBN_XTP_PREDELETEITEM(id, memberFxn) ON_CONTROL(LBN_XTP_PREDELETEITEM, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -530,15 +542,15 @@ const UINT LBN_XTP_PREDELETEITEM = (WM_XTP_CONTROLS_BASE + 10);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_PREDELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_DELETEITEM = (WM_XTP_CONTROLS_BASE + 11);
 //<ALIAS LBN_XTP_DELETEITEM>
-#define ON_LBN_XTP_DELETEITEM(id, memberFxn)
+#	define ON_LBN_XTP_DELETEITEM(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_DELETEITEM
-#define ON_LBN_XTP_DELETEITEM(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_DELETEITEM, id, memberFxn)
+#	undef ON_LBN_XTP_DELETEITEM
+#	define ON_LBN_XTP_DELETEITEM(id, memberFxn) ON_CONTROL(LBN_XTP_DELETEITEM, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -565,15 +577,15 @@ const UINT LBN_XTP_DELETEITEM = (WM_XTP_CONTROLS_BASE + 11);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMDOWN, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_MOVEITEMUP = (WM_XTP_CONTROLS_BASE + 12);
 //<ALIAS LBN_XTP_MOVEITEMUP>
-#define ON_LBN_XTP_MOVEITEMUP(id, memberFxn)
+#	define ON_LBN_XTP_MOVEITEMUP(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_MOVEITEMUP
-#define ON_LBN_XTP_MOVEITEMUP(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_MOVEITEMUP, id, memberFxn)
+#	undef ON_LBN_XTP_MOVEITEMUP
+#	define ON_LBN_XTP_MOVEITEMUP(id, memberFxn) ON_CONTROL(LBN_XTP_MOVEITEMUP, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -600,15 +612,15 @@ const UINT LBN_XTP_MOVEITEMUP = (WM_XTP_CONTROLS_BASE + 12);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_PRENEWITEM
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_PRENEWITEM
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_MOVEITEMDOWN = (WM_XTP_CONTROLS_BASE + 13);
 //<ALIAS LBN_XTP_MOVEITEMDOWN>
-#define ON_LBN_XTP_MOVEITEMDOWN(id, memberFxn)
+#	define ON_LBN_XTP_MOVEITEMDOWN(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_MOVEITEMDOWN
-#define ON_LBN_XTP_MOVEITEMDOWN(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_MOVEITEMDOWN, id, memberFxn)
+#	undef ON_LBN_XTP_MOVEITEMDOWN
+#	define ON_LBN_XTP_MOVEITEMDOWN(id, memberFxn) ON_CONTROL(LBN_XTP_MOVEITEMDOWN, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -636,15 +648,15 @@ const UINT LBN_XTP_MOVEITEMDOWN = (WM_XTP_CONTROLS_BASE + 13);
 // }
 // </code>
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_PRENEWITEM = (WM_XTP_CONTROLS_BASE + 14);
 //<ALIAS LBN_XTP_PRENEWITEM>
-#define ON_LBN_XTP_PRENEWITEM(id, memberFxn)
+#	define ON_LBN_XTP_PRENEWITEM(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_PRENEWITEM
-#define ON_LBN_XTP_PRENEWITEM(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_PRENEWITEM, id, memberFxn)
+#	undef ON_LBN_XTP_PRENEWITEM
+#	define ON_LBN_XTP_PRENEWITEM(id, memberFxn) ON_CONTROL(LBN_XTP_PRENEWITEM, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -657,15 +669,15 @@ const UINT LBN_XTP_PRENEWITEM = (WM_XTP_CONTROLS_BASE + 14);
 //     The LBN_XTP_ONBROWSE notification message is sent
 //     to inform the owner when the browse button is pressed.
 // See Also:
-//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM, LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN
+//     CXTPEditListBox, LBN_XTP_LABELEDITEND, LBN_XTP_LABELEDITCANCEL, LBN_XTP_NEWITEM,
+//     LBN_XTP_PREDELETEITEM, LBN_XTP_DELETEITEM, LBN_XTP_MOVEITEMUP, LBN_XTP_MOVEITEMDOWN
 // ----------------------------------------------------------------------
 const UINT LBN_XTP_ONBROWSE = (WM_XTP_CONTROLS_BASE + 27);
 //<ALIAS LBN_XTP_ONBROWSE>
-#define ON_LBN_XTP_ONBROWSE(id, memberFxn)
+#	define ON_LBN_XTP_ONBROWSE(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_LBN_XTP_ONBROWSE
-#define ON_LBN_XTP_ONBROWSE(id, memberFxn) \
-	ON_CONTROL(LBN_XTP_ONBROWSE, id, memberFxn)
+#	undef ON_LBN_XTP_ONBROWSE
+#	define ON_LBN_XTP_ONBROWSE(id, memberFxn) ON_CONTROL(LBN_XTP_ONBROWSE, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -696,11 +708,10 @@ const UINT LBN_XTP_ONBROWSE = (WM_XTP_CONTROLS_BASE + 27);
 // ----------------------------------------------------------------------
 const UINT SON_XTP_ITEMEXPANDING = (WM_XTP_CONTROLS_BASE + 15);
 //<ALIAS SON_XTP_ITEMEXPANDING>
-#define ON_SON_XTP_ITEMEXPANDING(id, memberFxn)
+#	define ON_SON_XTP_ITEMEXPANDING(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_SON_XTP_ITEMEXPANDING
-#define ON_SON_XTP_ITEMEXPANDING(id, memberFxn) \
-	ON_CONTROL(SON_XTP_ITEMEXPANDING, id, memberFxn)
+#	undef ON_SON_XTP_ITEMEXPANDING
+#	define ON_SON_XTP_ITEMEXPANDING(id, memberFxn) ON_CONTROL(SON_XTP_ITEMEXPANDING, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -731,11 +742,10 @@ const UINT SON_XTP_ITEMEXPANDING = (WM_XTP_CONTROLS_BASE + 15);
 // ----------------------------------------------------------------------
 const UINT SON_XTP_ITEMEXPAND = (WM_XTP_CONTROLS_BASE + 16);
 //<ALIAS SON_XTP_ITEMEXPAND>
-#define ON_SON_XTP_ITEMEXPAND(id, memberFxn)
+#	define ON_SON_XTP_ITEMEXPAND(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_SON_XTP_ITEMEXPAND
-#define ON_SON_XTP_ITEMEXPAND(id, memberFxn) \
-	ON_CONTROL(SON_XTP_ITEMEXPAND, id, memberFxn)
+#	undef ON_SON_XTP_ITEMEXPAND
+#	define ON_SON_XTP_ITEMEXPAND(id, memberFxn) ON_CONTROL(SON_XTP_ITEMEXPAND, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -766,11 +776,11 @@ const UINT SON_XTP_ITEMEXPAND = (WM_XTP_CONTROLS_BASE + 16);
 // ----------------------------------------------------------------------
 const UINT SON_XTP_ITEMCONTRACTING = (WM_XTP_CONTROLS_BASE + 17);
 //<ALIAS SON_XTP_ITEMCONTRACTING>
-#define ON_SON_XTP_ITEMCONTRACTING(id, memberFxn)
+#	define ON_SON_XTP_ITEMCONTRACTING(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_SON_XTP_ITEMCONTRACTING
-#define ON_SON_XTP_ITEMCONTRACTING(id, memberFxn) \
-	ON_CONTROL(SON_XTP_ITEMCONTRACTING, id, memberFxn)
+#	undef ON_SON_XTP_ITEMCONTRACTING
+#	define ON_SON_XTP_ITEMCONTRACTING(id, memberFxn)                                              \
+		ON_CONTROL(SON_XTP_ITEMCONTRACTING, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
 
 // ----------------------------------------------------------------------
@@ -801,13 +811,11 @@ const UINT SON_XTP_ITEMCONTRACTING = (WM_XTP_CONTROLS_BASE + 17);
 // ----------------------------------------------------------------------
 const UINT SON_XTP_ITEMCONTRACT = (WM_XTP_CONTROLS_BASE + 18);
 //<ALIAS SON_XTP_ITEMCONTRACT>
-#define ON_SON_XTP_ITEMCONTRACT(id, memberFxn)
+#	define ON_SON_XTP_ITEMCONTRACT(id, memberFxn)
 //{{AFX_CODEJOCK_PRIVATE
-#undef ON_SON_XTP_ITEMCONTRACT
-#define ON_SON_XTP_ITEMCONTRACT(id, memberFxn) \
-	ON_CONTROL(SON_XTP_ITEMCONTRACT, id, memberFxn)
+#	undef ON_SON_XTP_ITEMCONTRACT
+#	define ON_SON_XTP_ITEMCONTRACT(id, memberFxn) ON_CONTROL(SON_XTP_ITEMCONTRACT, id, memberFxn)
 //}}AFX_CODEJOCK_PRIVATE
-
 
 const UINT WM_XTP_SHORTCUTLBOX_NOTIFY = (WM_XTP_CONTROLS_BASE + 19);
 
@@ -818,8 +826,10 @@ const UINT WM_XTP_SHORTCUTLBOX_NOTIFY = (WM_XTP_CONTROLS_BASE + 19);
 //     the control.
 // Parameters:
 //     nShellAction -  (int) wParam; - value of <i>wParam</i> specifies a shell tree
-//                     value that indicates the users request. See Remarks section for a list of values.
-//     pItemData -     (XTP_TVITEMDATA*) lParam; - value of <i>lParam</i> points to an XTP_TVITEMDATA
+//                     value that indicates the users request. See Remarks section for a list of
+//                     values.
+//     pItemData -     (XTP_TVITEMDATA*) lParam; - value of <i>lParam</i> points to an
+//     XTP_TVITEMDATA
 //                     structure that contains information for the specified item.
 //                     Depending on the action, this pointer can be NULL.
 // Remarks:
@@ -873,15 +883,42 @@ const UINT WM_XTP_SHORTCUTLBOX_NOTIFY = (WM_XTP_CONTROLS_BASE + 19);
 //     CXTPShellTreeCtrl, CXTPShellListCtrl, CXTPShellListBase,
 //     CXTPDirWatcher
 // ----------------------------------------------------------------------------------------------------
-const UINT WM_XTP_SHELL_NOTIFY = (WM_XTP_CONTROLS_BASE + 20);
-const int SHN_XTP_SHELLMENU       = 1; //<ALIAS WM_XTP_SHELL_NOTIFY>
+const UINT WM_XTP_SHELL_NOTIFY	= (WM_XTP_CONTROLS_BASE + 20);
+const int SHN_XTP_SHELLMENU		  = 1; //<ALIAS WM_XTP_SHELL_NOTIFY>
 const int SHN_XTP_TREESELCHANGE   = 2; //<ALIAS WM_XTP_SHELL_NOTIFY>
-const int SHN_XTP_SELECTCHILD     = 3; //<ALIAS WM_XTP_SHELL_NOTIFY>
-const int SHN_XTP_NOFOLDER        = 4; //<ALIAS WM_XTP_SHELL_NOTIFY>
-const int SHN_XTP_INETFOLDER      = 5; //<ALIAS WM_XTP_SHELL_NOTIFY>
+const int SHN_XTP_SELECTCHILD	 = 3; //<ALIAS WM_XTP_SHELL_NOTIFY>
+const int SHN_XTP_NOFOLDER		  = 4; //<ALIAS WM_XTP_SHELL_NOTIFY>
+const int SHN_XTP_INETFOLDER	  = 5; //<ALIAS WM_XTP_SHELL_NOTIFY>
 const int SHN_XTP_CONTENTSCHANGED = 6; //<ALIAS WM_XTP_SHELL_NOTIFY>
 const int SHN_XTP_REFRESHFOLDER   = 7; //<ALIAS WM_XTP_SHELL_NOTIFY>
-const int SHN_XTP_REFRESHTREE     = 8; //<ALIAS WM_XTP_SHELL_NOTIFY>
+const int SHN_XTP_REFRESHTREE	 = 8; //<ALIAS WM_XTP_SHELL_NOTIFY>
+
+const DWORD CPS_XTP_NOFILL = 0x0001;	 // CXTPColorSelectorCtrl style displays a "No Fill" button
+										 // rather than the default Automatic Color button.
+const DWORD CPS_XTP_EXTENDED = 0x0002;   // CXTPColorSelectorCtrl style displays 40 extended colors
+										 // rather than the default 16 colors.
+const DWORD CPS_XTP_MORECOLORS = 0x0004; // CXTPColorSelectorCtrl style displays a "More Colors"
+										 // button which will display a CXTPColorDialog.
+const DWORD CPS_XTP_PICKBOX = 0x0008; // CXTPColorSelectorCtrl style internal style used to define a
+									  // color picker button.
+const DWORD CPS_XTP_NOAUTOMATIC = 0x0010;  // CXTPColorSelectorCtrl style does not display an
+										   // "Automatic Color" button.
+const DWORD CPS_XTP_RECENTCOLORS = 0x0020; // CXTPColorSelectorCtrl style displays a recently used
+										   // color list for the control.
+const DWORD CPS_XTP_RIGHTALIGN = 0x0040;   // CXTPColorSelectorCtrl style displays the color picker
+										   // popup window right aligned.
+const DWORD CPS_XTP_COLORBORDERS = 0x0080; // CXTPColorSelectorCtrl style displays color borders in
+										   // color.
+
+const DWORD CPS_XTP_SHOWHEXVALUE = 0x0100; // CXTPColorDialog style displays hex value of the color.
+const DWORD CPS_XTP_SHOW3DSELECTION = 0x0200; // CXTPColorDialog style displays a 3D border around
+											  // the color selection box.
+const DWORD CPS_XTP_SHOWEYEDROPPER = 0x0400;  // CXTPColorDialog style displays an eye dropper
+											  // selection tool.
+
+//{{AFX_CODEJOCK_PRIVATE
+#	define CPS_XTP_USERCOLORS CPS_XTP_RECENTCOLORS // deprecated.
+//}}AFX_CODEJOCK_PRIVATE
 
 // -------------------------------------------------------------------------------------
 // Summary:
@@ -1033,8 +1070,8 @@ const UINT CPN_XTP_PUSHPINBUTTON = (WM_XTP_CONTROLS_BASE + 22);
 //     The CPN_XTP_PUSHPINCANCEL message is sent to the owner of a CXTPCaptionPopupWnd whenever
 //     the push pin button selection has been canceled.
 // Remarks:
-//     When the user cancels a selection of the push pin button, the CPN_XTP_PUSHPINCANCEL message is
-//     sent to the caption popup window's owner window.
+//     When the user cancels a selection of the push pin button, the CPN_XTP_PUSHPINCANCEL message
+//     is sent to the caption popup window's owner window.
 // Example:
 //     Here is an example of how an application would process the CPN_XTP_PUSHPINCANCEL
 //     message.
@@ -1082,7 +1119,8 @@ const UINT CPN_XTP_PUSHPINCANCEL = (WM_XTP_CONTROLS_BASE + 23);
 // }
 // </code>
 // See Also:
-//     CXTPColorDialog, CXTPColorBase, CXTPColorLum, CXTPColorPageCustom, CXTPColorHex, CXTPColorPageStandard
+//     CXTPColorDialog, CXTPColorBase, CXTPColorLum, CXTPColorPageCustom, CXTPColorHex,
+//     CXTPColorPageStandard
 // ----------------------------------------------------------------------
 const DWORD WM_XTP_UPDATECOLOR = (WM_XTP_CONTROLS_BASE + 26);
 
@@ -1186,9 +1224,10 @@ const UINT WM_XTP_EYEDROPPER_SELECT = (WM_XTP_CONTROLS_BASE + 33);
 // }
 // </code>
 // See Also:
-//     CXTPColorDialog, CXTPColorBase, CXTPColorLum, CXTPColorPageCustom, CXTPColorHex, CXTPColorPageStandard
+//     CXTPColorDialog, CXTPColorBase, CXTPColorLum, CXTPColorPageCustom, CXTPColorHex,
+//     CXTPColorPageStandard
 // ----------------------------------------------------------------------
-const DWORD WM_XTP_COLORDBLCLK   = (WM_XTP_CONTROLS_BASE + 34);
+const DWORD WM_XTP_COLORDBLCLK = (WM_XTP_CONTROLS_BASE + 34);
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -1210,8 +1249,12 @@ const DWORD WM_XTP_COLORDBLCLK   = (WM_XTP_CONTROLS_BASE + 34);
 //     * <b>xtpControlThemeVisualStudio2005</b> Use Visual Studio 2008 theme.
 //     * <b>xtpControlThemeVisualStudio2008</b> Use Visual Studio 2008 theme.
 //     * <b>xtpControlThemeVisualStudio2010</b> Use Visual Studio 2008 theme.
-//     * <b>xtpControlThemeNativeWinXP</b>  Use Native Windows theme.
+//     * <b>xtpControlThemeNativeWinXP</b> Use Native Windows theme.
 //     * <b>xtpControlThemeCustom</b> User defined custom theme.
+//     * xtpControlThemeOffice2013</b> Office 2013 control theme.
+//     * xtpControlThemeVisualStudio2012Light</b> VS 2012 Light style theme.
+//     * xtpControlThemeVisualStudio2012Dark</b> VS 2012 Dark style theme.
+
 // Example:
 //     Here is an example of how an application would process the WM_XTP_SETCONTROLTHEME
 //     message.
@@ -1235,6 +1278,123 @@ const DWORD WM_XTP_COLORDBLCLK   = (WM_XTP_CONTROLS_BASE + 34);
 //     XTPControlTheme
 // ----------------------------------------------------------------------
 const DWORD WM_XTP_SETCONTROLTHEME = (WM_XTP_CONTROLS_BASE + 35);
+
+// --------------------------------------------------------------------
+// Summary:
+//     WM_XTP_TAGCLOUDSELCHANGE notification message handler.
+// Remarks:
+//     The WM_XTP_TAGCLOUDSELCHANGE notification message is sent to inform
+//     the owner window that the current color selection has changed.
+// Example:
+//     Here is an example of how an application would handle this message.
+// <code>
+// BEGIN_MESSAGE_MAP(CUserDialog, CDialog
+//     //{{AFX_MSG_MAP(CUserDialog)
+//     ON_WM_XTP_TAGCLOUDSELCHANGE()
+//     //}}AFX_MSG_MAP
+// END_MESSAGE_MAP()
+//
+// void CUserDialog::OnTagCloudSelChange(XTP_TAGCLOUDTAG* pTag)
+// {
+//     if (pTag)
+//     {
+//         // TODO: handle message.
+//     }
+// }
+// </code>
+// --------------------------------------------------------------------
+const UINT WM_XTP_TAGCLOUDSELCHANGE = (WM_XTP_CONTROLS_BASE + 36);
+//<ALIAS WM_XTP_TAGCLOUDSELCHANGE>
+#	define ON_WM_XTP_TAGCLOUDSELCHANGE()
+//{{AFX_CODEJOCK_PRIVATE
+#	undef ON_WM_XTP_TAGCLOUDSELCHANGE
+#	define ON_WM_XTP_TAGCLOUDSELCHANGE()                                                          \
+		{ WM_XTP_TAGCLOUDSELCHANGE,                                                                \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vw,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(                                                                   \
+			  static_cast<void (AFX_MSG_CALL CWnd::*)(XTP_TAGCLOUDTAG*)>(&OnTagCloudSelChange)) },
+//}}AFX_CODEJOCK_PRIVATE
+
+// --------------------------------------------------------------------
+// Summary:
+//     WM_XTP_TAGCLOUDRIGHTCLK notification message handler.
+// Remarks:
+//     The WM_XTP_TAGCLOUDRIGHTCLK notification message is sent to inform
+//     the owner window that the current color selection has changed.
+// Example:
+//     Here is an example of how an application would handle this message.
+// <code>
+// BEGIN_MESSAGE_MAP(CUserDialog, CDialog
+//     //{{AFX_MSG_MAP(CUserDialog)
+//     ON_WM_XTP_TAGCLOUDRIGHTCLK()
+//     //}}AFX_MSG_MAP
+// END_MESSAGE_MAP()
+//
+// void CUserDialog::OnTagCloudRightClk(XTP_TAGCLOUDTAG* pTag)
+// {
+//     if (pTag)
+//     {
+//         // TODO: handle message.
+//     }
+// }
+// </code>
+// --------------------------------------------------------------------
+const UINT WM_XTP_TAGCLOUDRIGHTCLK = (WM_XTP_CONTROLS_BASE + 37);
+//<ALIAS WM_XTP_TAGCLOUDRIGHTCLK>
+#	define ON_WM_XTP_TAGCLOUDRIGHTCLK()
+//{{AFX_CODEJOCK_PRIVATE
+#	undef ON_WM_XTP_TAGCLOUDRIGHTCLK
+#	define ON_WM_XTP_TAGCLOUDRIGHTCLK()                                                           \
+		{ WM_XTP_TAGCLOUDRIGHTCLK,                                                                 \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vw,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(                                                                   \
+			  static_cast<void (AFX_MSG_CALL CWnd::*)(XTP_TAGCLOUDTAG*)>(&OnTagCloudRightClk)) },
+//}}AFX_CODEJOCK_PRIVATE
+
+// --------------------------------------------------------------------
+// Summary:
+//     WM_XTP_TAGCLOUDDBLCLK notification message handler.
+// Remarks:
+//     The WM_XTP_TAGCLOUDDBLCLK notification message is sent to inform
+//     the owner window that the current color selection has changed.
+// Example:
+//     Here is an example of how an application would handle this message.
+// <code>
+// BEGIN_MESSAGE_MAP(CUserDialog, CDialog
+//     //{{AFX_MSG_MAP(CUserDialog)
+//     ON_WM_XTP_TAGCLOUDDBLCLK()
+//     //}}AFX_MSG_MAP
+// END_MESSAGE_MAP()
+//
+// void CUserDialog::OnTagCloudDblClk(XTP_TAGCLOUDTAG* pTag)
+// {
+//     if (pTag)
+//     {
+//         // TODO: handle message.
+//     }
+// }
+// </code>
+// --------------------------------------------------------------------
+const UINT WM_XTP_TAGCLOUDDBLCLK = (WM_XTP_CONTROLS_BASE + 38);
+//<ALIAS WM_XTP_TAGCLOUDDBLCLK>
+#	define ON_WM_XTP_TAGCLOUDDBLCLK()
+//{{AFX_CODEJOCK_PRIVATE
+#	undef ON_WM_XTP_TAGCLOUDDBLCLK
+#	define ON_WM_XTP_TAGCLOUDDBLCLK()                                                             \
+		{ WM_XTP_TAGCLOUDDBLCLK,                                                                   \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  0,                                                                                       \
+		  AfxSig_vw,                                                                               \
+		  (AFX_PMSG)(AFX_PMSGW)(                                                                   \
+			  static_cast<void (AFX_MSG_CALL CWnd::*)(XTP_TAGCLOUDTAG*)>(&OnTagCloudDblClk)) },
+//}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////
 

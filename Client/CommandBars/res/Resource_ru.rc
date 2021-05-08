@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
@@ -48,7 +47,7 @@ BEGIN
                     SS_NOTIFY,7,17,86,80
     CTEXT           "",XTP_IDC_STATIC_PREVIEW,14,117,73,54,SS_CENTERIMAGE,
                     WS_EX_STATICEDGE
-    LTEXT           "Удалить",IDC_STATIC,135,156,42,8
+    LTEXT           "Прозрачный",IDC_STATIC,135,156,42,8
     LTEXT           "",XTP_IDC_CLR_ERASE,116,153,15,15,SS_NOTIFY
     CTEXT           "Инструменты",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
@@ -303,7 +302,7 @@ BEGIN
     XTP_ID_WORKSPACE_MOVENEXT "\nПереместить в следующую группу"
     XTP_ID_WORKSPACE_NEWHORIZONTAL "\nНовая горизонтальная группа"
     XTP_ID_WORKSPACE_NEWVERTICAL "\nНовая вертикальная группа"
-    XTP_ID_WORKSPACE_CANCEL "Отмена"
+    XTP_ID_WORKSPACE_CANCEL "\nОтмена"
     XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Активные файлы"
 END
 
@@ -314,6 +313,8 @@ BEGIN
     XTP_ID_PREVIEW_NEXT     "Перейти к следующей странице\nCледующая страница"
     XTP_ID_PREVIEW_ZOOMIN   "Увеличить\nУвеличить"
     XTP_ID_PREVIEW_ZOOMOUT  "Уменьшить\nУменьшить"
+    XTP_ID_PREVIEW_ONEPAGE  "Одна страница"
+    XTP_ID_PREVIEW_TWOPAGE  "Несколько страниц"
     XTP_ID_PREVIEW_CLOSE    "Закрыть\nЗакрыть"
     XTP_IDS_PREVIEW_WHOLEPAGE "Целая страница"
     XTP_IDS_PREVIEW_PAGEWIDTH "По ширине"
@@ -321,4 +322,4 @@ BEGIN
     XTP_IDS_PREVIEW_PAGEIOFI  "Страница %i из %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)

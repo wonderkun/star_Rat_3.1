@@ -1,7 +1,6 @@
 // XTPCaptionTheme.h: interface for the CXTPCaptionTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCAPTIONTHEME_H__)
-#define __XTPCAPTIONTHEME_H__
+#	define __XTPCAPTIONTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCaption;
 class CXTPButtonTheme;
@@ -39,7 +40,6 @@ class CXTPButtonTheme;
 class _XTP_EXT_CLASS CXTPCaptionTheme : public CXTPControlTheme
 {
 public:
-
 	// -----------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCaptionTheme object.
@@ -94,7 +94,6 @@ public:
 public:
 	CXTPPaintManagerColor m_clrEdgeShadow; // The color of the edge shadow for the current theme.
 	CXTPPaintManagerColor m_clrEdgeLight;  // The color of the edge light for the current theme.
-
 };
 
 //===========================================================================
@@ -106,7 +105,6 @@ public:
 class _XTP_EXT_CLASS CXTPCaptionThemeOfficeXP : public CXTPCaptionTheme
 {
 public:
-
 	// -----------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCaptionThemeOfficeXP object.
@@ -134,16 +132,15 @@ protected:
 class _XTP_EXT_CLASS CXTPCaptionThemeOffice2003 : public CXTPCaptionTheme
 {
 public:
-
 	// -----------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCaptionThemeOffice2003 object.
 	// -----------------------------------------------
 	CXTPCaptionThemeOffice2003();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	CXTPCaptionThemeOffice2003(BOOL bPrimaryCaption); // deprecated.
-//}}AFX_CODEJOCK_PRIVATE
+													  //}}AFX_CODEJOCK_PRIVATE
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -205,81 +202,5 @@ protected:
 	virtual void DrawButtonBackground(CDC* pDC, CXTPButton* pButton);
 };
 
-//===========================================================================
-// Summary: Class CXTPCaptionButtonThemeOfficeXP is a CXTPButtonOfficeXPTheme
-//          derived class.  This class is used to create a button caption that
-//          resembles an Office XP button caption.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCaptionButtonThemeOfficeXP : public CXTPButtonOfficeXPTheme
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary: Default class constructor.  Call this member function to
-	//          construct a CXTPCaptionButtonThemeOfficeXP object.
-	//-----------------------------------------------------------------------
-	CXTPCaptionButtonThemeOfficeXP();
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary: Call this member function to draw the button caption text.
-	// Parameters:
-	//       pDC     - A pointer to a valid device context.
-	//       pButton - A pointer to a valid CXTPButton object.
-	//-----------------------------------------------------------------------
-	virtual void DrawButtonText(CDC* pDC, CXTPButton* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary: Call this member function to draw the background of the caption.
-	// Parameters:
-	//     lpDIS   - An LPDRAWITEMSTRUCT struct that contains the information the
-	//               owner window must have to determine how to paint an owner-drawn
-	//               control.
-	//     pButton - A pointer to valid CXTPButton object.
-	// Returns:
-	//     A TRUE if the background was successfully drawn.  FALSE otherwise.
-	//-----------------------------------------------------------------------
-	virtual void DrawButtonBackground(CDC* pDC, CXTPButton* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary: Call this member function to get the text color of the button caption.
-	// Parameters:
-	//      pButton - A pointer to a valid CXTPButton object.
-	// Returns:
-	//      An RGB value specifying the text color.
-	//-----------------------------------------------------------------------
-	virtual COLORREF GetTextColor(CXTPButton* pButton);
-};
-
-//===========================================================================
-// Summary: Class CXTPCaptionButtonThemeOffice2003 is a CXTPButtonOffice2003Theme
-// derived class.  This class is used to create a button caption that resembles
-// an Office 2003 button caption.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCaptionButtonThemeOffice2003 : public CXTPButtonOffice2003Theme
-{
-protected:
-	//-----------------------------------------------------------------------
-	// Summary: Call this member function to draw the background of the caption.
-	// Parameters:
-	//     lpDIS   - An LPDRAWITEMSTRUCT struct that contains the information the
-	//               owner window must have to determine how to paint an owner-drawn
-	//               control.
-	//     pButton - A pointer to valid CXTPButton object.
-	// Returns:
-	//     A TRUE if the background was successfully drawn.  FALSE otherwise.
-	//-----------------------------------------------------------------------
-	virtual void DrawButtonBackground(CDC* pDC, CXTPButton* pButton);
-
-	//-----------------------------------------------------------------------
-	// Summary: Call this member function to get the text color of the button caption.
-	// Parameters:
-	//      pButton - A pointer to a valid CXTPButton object.
-	// Returns:
-	//      An RGB value specifying the text color.
-	//-----------------------------------------------------------------------
-	virtual COLORREF GetTextColor(CXTPButton* pButton);
-};
-
-/////////////////////////////////////////////////////////////////////////////
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCAPTIONTHEME_H__)

@@ -1,6 +1,9 @@
+#include "Stdafx.h"
+
+
 // ShllCodeDec.cpp : Defines the entry point for the application.
 //
-#include "Stdafx.h"
+
 HANDLE hDllFile;
 void*  MemDll;
 int    SizeDll;

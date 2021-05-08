@@ -1,7 +1,6 @@
 // XTPDockingPaneMiniWnd.h : interface for the CXTPDockingPaneMiniWnd class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEMINIWND_H__)
-#define __XTPDOCKINGPANEMINIWND_H__
+#	define __XTPDOCKINGPANEMINIWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneBase.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,7 +34,9 @@
 //     CMiniFrameWnd and CXTPDockingPaneBase. It is used internally as a
 //     MiniWnd container for CXTPDockingPaneBase derived classes.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneMiniWnd : public CMiniFrameWnd, public CXTPDockingPaneBase
+class _XTP_EXT_CLASS CXTPDockingPaneMiniWnd
+	: public CMiniFrameWnd
+	, public CXTPDockingPaneBase
 {
 protected:
 	//-----------------------------------------------------------------------
@@ -60,6 +61,14 @@ public:
 	//     TRUE if the frame is active
 	//-----------------------------------------------------------------------
 	BOOL IsActive() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns TRUE if caption drawn vertically
+	// Returns:
+	//     TRUE if the caption drawn vertically
+	//-----------------------------------------------------------------------
+	virtual BOOL IsCaptionVertical() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,6 +98,14 @@ public:
 	//-----------------------------------------------------------------------
 	void Collapse(BOOL bDelay = FALSE);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the text in the caption for the tabbed container (group of
+	//     panes).
+	// Returns:
+	//     The text in the caption for the tabbed container (group of panes).
+	//-----------------------------------------------------------------------
+	CString GetTitle() const;
 
 protected:
 	// -----------------------------------------------------------------------
@@ -112,8 +129,8 @@ protected:
 	//     rc    - Rectangle of floating frame.
 	//-----------------------------------------------------------------------
 	virtual void Init(CXTPDockingPaneBase* pPane, CRect rc);
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to remove a pane from collection.
@@ -222,6 +239,7 @@ protected:
 	//     pMinMaxInfo - LPMINMAXINFO to fill wil the min\max information.
 	//-----------------------------------------------------------------------
 	void GetMinMaxInfo(LPMINMAXINFO pMinMaxInfo) const;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -246,7 +264,6 @@ protected:
 	virtual void InvalidatePane(BOOL bSelectionChanged);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to update Opacity of floating frame
@@ -288,13 +305,14 @@ protected:
 	//-----------------------------------------------------------------------
 	void CreateContainer();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPDockingPaneMiniWnd)
-	public:
+public:
 	virtual void RecalcLayout(BOOL bNotify = TRUE);
-	protected:
+
+protected:
 	virtual void PostNcDestroy();
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
@@ -320,35 +338,57 @@ protected:
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
 	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneMiniWnd);
+	DECLARE_ENUM_VARIANT(CXTPDockingPaneMiniWnd);
+
+	LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	afx_msg int OleGetPosition();
 //}}AFX_CODEJOCK_PRIVATE
-
-
+#	endif
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle = WS_OVERLAPPEDWINDOW, const RECT& rect = rectDefault, CWnd* pParentWnd = NULL, LPCTSTR lpszMenuName = NULL, DWORD dwExStyle = 0, CCreateContext* pContext = NULL);
-	BOOL Create(LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd = NULL, UINT nID = 0);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle = WS_OVERLAPPEDWINDOW,
+				const RECT& rect = rectDefault, CWnd* pParentWnd = NULL,
+				LPCTSTR lpszMenuName = NULL, DWORD dwExStyle = 0, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd = NULL, UINT nID = 0);
 	void UpdatePosition();
 
 public:
-	static BOOL m_bShowPinButton;                       // TRUE to show pin button of the frame.
+	static BOOL m_bShowPinButton; // TRUE to show pin button of the frame.
 
 protected:
-	CXTPDockingPaneSplitterContainer* m_pTopContainer;  // Top level container.
-	BOOL m_bCloseEnabled;       // Close button of frame is enabled.
+	CXTPDockingPaneSplitterContainer* m_pTopContainer; // Top level container.
+	BOOL m_bCloseEnabled;							   // Close button of frame is enabled.
 
-	int m_nExpandedHeight;      // Expanded height of the frame.
+	int m_nExpandedHeight; // Expanded height of the frame.
 
-	int m_nStepsCount;          // Total steps of animation process
-	int m_nSlideStep;           // Current step of animation process
-	int m_nDeactivationCount;   // Deactivation counter.
+	int m_nStepsCount;		  // Total steps of animation process
+	int m_nSlideStep;		  // Current step of animation process
+	int m_nDeactivationCount; // Deactivation counter.
 
-	BOOL m_bCollapsed;          // Pane is collapsed
-	BOOL m_bExpanded;           // Pane is collapsed but expanded now
-	BOOL m_bSlideOut;           // Pane is currently expanding.
+	BOOL m_bCollapsed; // Pane is collapsed
+	BOOL m_bExpanded;  // Pane is collapsed but expanded now
+	BOOL m_bSlideOut;  // Pane is currently expanding.
 
-	BOOL m_bDelayInvalidate;    // True to redraw frame after small delay
-
+	BOOL m_bDelayInvalidate; // True to redraw frame after small delay
 
 	DECLARE_DYNAMIC(CXTPDockingPaneMiniWnd)
 
@@ -356,27 +396,60 @@ protected:
 	friend class CXTPDockingPaneLayout;
 };
 
-AFX_INLINE CXTPDockingPaneSplitterContainer* CXTPDockingPaneMiniWnd::GetTopPane() const {
+AFX_INLINE CString CXTPDockingPaneMiniWnd::GetTitle() const
+{
+	CString strTitle;
+	GetWindowText(strTitle);
+	return strTitle;
+}
+
+AFX_INLINE CXTPDockingPaneSplitterContainer* CXTPDockingPaneMiniWnd::GetTopPane() const
+{
 	return m_pTopContainer;
 }
-AFX_INLINE BOOL CXTPDockingPaneMiniWnd::IsActive() const {
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::IsActive() const
+{
 	return m_bActive;
 }
-AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::IsCaptionVertical() const
+{
+	return FALSE; // Floating pane always has horizontal caption
+}
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											   DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											   UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, LPCTSTR lpszMenuName, DWORD dwExStyle, CCreateContext* pContext) {
-	return CFrameWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, lpszMenuName, dwExStyle, pContext);
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											   DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											   LPCTSTR lpszMenuName, DWORD dwExStyle,
+											   CCreateContext* pContext)
+{
+	return CFrameWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, lpszMenuName,
+							 dwExStyle, pContext);
 }
-AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::Create(LPCTSTR lpClassName, LPCTSTR lpWindowName,
+											   DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											   UINT nID)
+{
 	return CMiniFrameWnd::Create(lpClassName, lpWindowName, dwStyle, rect, pParentWnd, nID);
 }
-AFX_INLINE BOOL CXTPDockingPaneMiniWnd::IsCollapsed() const {
+
+AFX_INLINE BOOL CXTPDockingPaneMiniWnd::IsCollapsed() const
+{
 	return m_bCollapsed;
 }
-AFX_INLINE HWND CXTPDockingPaneMiniWnd::GetPaneHwnd() const {
+
+AFX_INLINE HWND CXTPDockingPaneMiniWnd::GetPaneHwnd() const
+{
 	return CWnd::GetSafeHwnd();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANEMINIWND_H__)

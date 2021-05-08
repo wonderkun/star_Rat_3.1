@@ -1,7 +1,6 @@
 // XTPDirWatcher.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDIRWATCHER_H__)
-#define __XTPDIRWATCHER_H__
+#	define __XTPDIRWATCHER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -57,11 +58,11 @@
 // </code>
 //
 //          You can add a message handler to the window receiving messages and handle your
-//          change event notifications.  The thread will send two notifications, the wParam indicates
-//          what event has occurred.  If wParam equal HN_XT_REFRESHFOLDER this indicates that the
-//          folder list has changed and needs to be updated.  If wParam equals SHN_XTP_REFRESHTREE this
-//          indicates the folder tree has changed and needs to be updated.  The lParam value represents
-//          a pointer to a XTP_TVITEMDATA structure for the folder:
+//          change event notifications.  The thread will send two notifications, the wParam
+//          indicates what event has occurred.  If wParam equal HN_XT_REFRESHFOLDER this indicates
+//          that the folder list has changed and needs to be updated.  If wParam equals
+//          SHN_XTP_REFRESHTREE this indicates the folder tree has changed and needs to be updated.
+//          The lParam value represents a pointer to a XTP_TVITEMDATA structure for the folder:
 //
 // <code>
 // BEGIN_MESSAGE_MAP(CNotifyWnd, CWnd)
@@ -125,17 +126,17 @@ protected:
 	virtual ~CXTPDirWatcher();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to monitor the directory specified by strPath.
 	// Parameters:
 	//     pMainWnd       - Points to the window to receive change notifications.
 	//     lpszFolderPath - Full path of directory to monitor.
+	//     bWatchSubtree  - Monitors the directory tree rooted at the specified directory
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	BOOL SetFolderPath(CWnd* pMainWnd, LPCTSTR lpszFolderPath);
+	BOOL SetFolderPath(CWnd* pMainWnd, LPCTSTR lpszFolderPath, BOOL bWatchSubtree = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -174,7 +175,8 @@ public:
 	//     the second version TRUE if successful, otherwise FALSE.
 	// ----------------------------------------------------------------------
 	XTP_TVITEMDATA* GetFolderData();
-	BOOL GetFolderData(LPCTSTR lpszFolderPath, XTP_TVITEMDATA& lpTVID); //<combine CXTPDirWatcher::GetFolderData>
+	BOOL GetFolderData(LPCTSTR lpszFolderPath,
+					   XTP_TVITEMDATA& lpTVID); //<combine CXTPDirWatcher::GetFolderData>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -194,14 +196,13 @@ public:
 	void StopNotifications();
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPDirWatcher)
 	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the thread whenever the monitored
@@ -233,27 +234,30 @@ protected:
 	BOOL WaitPathChangedEvent();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPDirWatcher)
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	HANDLE          m_dwMonitorEvents[4];   // Change event handles.
-	CString         m_strFolderPath;        // Path that is monitored.
-	XTP_TVITEMDATA   m_tvid;                 // Tree view item data.
+	HANDLE m_dwMonitorEvents[4]; // Change event handles.
+	CString m_strFolderPath;	 // Path that is monitored.
+	XTP_TVITEMDATA m_tvid;		 // Tree view item data.
+	BOOL m_bWatchSubtree;		 // Monitors the directory tree.
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CString CXTPDirWatcher::GetFolderPath() const {
+AFX_INLINE CString CXTPDirWatcher::GetFolderPath() const
+{
 	return m_strFolderPath;
 }
-AFX_INLINE XTP_TVITEMDATA* CXTPDirWatcher::GetFolderData() {
+AFX_INLINE XTP_TVITEMDATA* CXTPDirWatcher::GetFolderData()
+{
 	return &m_tvid;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPDIRWATCHER_H__)

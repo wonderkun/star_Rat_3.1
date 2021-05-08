@@ -1,7 +1,6 @@
 // XTPReportRows.h: interface for the CXTPReportRows class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTROWS_H__)
-#define __XTPREPORTROWS_H__
+#	define __XTPREPORTROWS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPReportRow;
+class CXTPReportRecord;
+class CXTPReportRecordItem;
 class CXTPReportControl;
 class CXTPReportColumns;
 
@@ -38,9 +41,9 @@ class CXTPReportColumns;
 //===========================================================================
 enum XTPReportSelectionChangeType
 {
-	xtpReportSelectionAdd,      // Row will be added to selected rows collection.
-	xtpReportSelectionRemove,   // Row will be removed from selected rows collection.
-	xtpReportSelectionClear     // The selected rows collection will be cleared.
+	xtpReportSelectionAdd,	// Row will be added to selected rows collection.
+	xtpReportSelectionRemove, // Row will be removed from selected rows collection.
+	xtpReportSelectionClear   // The selected rows collection will be cleared.
 };
 
 //===========================================================================
@@ -50,10 +53,10 @@ enum XTPReportSelectionChangeType
 //===========================================================================
 struct XTP_NM_SELECTION_CHANGING
 {
-	NMHDR hdr;                          // Standard structure, containing information
-	                                    // about a notification message.
-	CXTPReportRow* pRow;                // Pointer to the row associated with the
-	                                    // notification. It is NULL for xtpReportSelectionClear action.
+	NMHDR hdr;			 // Standard structure, containing information
+						 // about a notification message.
+	CXTPReportRow* pRow; // Pointer to the row associated with the
+						 // notification. It is NULL for xtpReportSelectionClear action.
 	XTPReportSelectionChangeType nType; // Selection change action.
 };
 
@@ -64,9 +67,28 @@ struct XTP_NM_SELECTION_CHANGING
 //===========================================================================
 struct XTP_NM_REPORTSTATECHANGED
 {
-	NMHDR hdr;    // Standard structure, containing information
-	int   nBegin; // Zero-based index of the first item in the range of items.
-	int   nEnd;   // Zero-based index of the last item in the range of items.
+	NMHDR hdr;  // Standard structure, containing information
+	int nBegin; // Zero-based index of the first item in the range of items.
+	int nEnd;   // Zero-based index of the last item in the range of items.
+};
+
+class _XTP_EXT_CLASS CXTPReportScreenRows : public CArray<CXTPReportRow*, CXTPReportRow*>
+{
+public:
+	CXTPReportScreenRows();
+	~CXTPReportScreenRows();
+
+public:
+	CXTPReportRow* HitTest(CPoint pt) const;
+	void Clear();
+};
+
+class _XTP_EXT_CLASS CXTPReportRowsArray : public CArray<CXTPReportRow*, CXTPReportRow*>
+{
+	friend class CXTPReportSection;
+
+public:
+	void ReserveSize(INT_PTR nNewSize, INT_PTR nGrowBy = -1);
 };
 
 //===========================================================================
@@ -77,19 +99,12 @@ struct XTP_NM_REPORTSTATECHANGED
 //     See CXTPReportRows::Add for an example of how to work with this class.
 // See Also: CXTPReportRow, CXTPReportSelectedRows
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportRows : public CXTPHeapObjectT<CCmdTarget, CXTPReportDataAllocator>
+class _XTP_EXT_CLASS CXTPReportRows : public CXTPHeapObjectT<CXTPCmdTarget, CXTPReportDataAllocator>
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Define a function pointer for comparing events.
-	// Remarks:
-	//     This function pointer is used in the SortEx method.
-	// See Also:
-	//     Sort, SortEx, CXTPReportControl::SetRowsCompareFunc
-	//-----------------------------------------------------------------------
-	typedef int (_cdecl* T_CompareFunc)(const CXTPReportRow** pRow1, const CXTPReportRow** pRow2);
+	void _swapIndexes(int& A, int& B);
+	void _clampIndexes(int& nOrig, const int& nMin, const int& nMax);
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs an empty CXTPReportRow pointer array.
@@ -109,6 +124,12 @@ public:
 	//     Destroys CXTPReportRows object. Performs cleanup operations.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPReportRows();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns whether this row collection contains a specific row.
+	//-----------------------------------------------------------------------
+	virtual BOOL Contains(const CXTPReportRow* pRow) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -153,6 +174,36 @@ public:
 	//     The row element currently at this index.
 	//-----------------------------------------------------------------------
 	virtual CXTPReportRow* GetAt(int nIndex) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the currently displayed rows of this rows collection.
+	//-----------------------------------------------------------------------
+	virtual CXTPReportScreenRows* GetScreenRows();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the currently focused row index.
+	//-----------------------------------------------------------------------
+	virtual int GetFocusedRowIndex() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns whether a row of the collection currently has the focus.
+	//-----------------------------------------------------------------------
+	virtual BOOL HasFocus() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the currently focused row index.
+	//-----------------------------------------------------------------------
+	virtual void SetFocusedRowIndex(int nRow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the currently focused row index.
+	//-----------------------------------------------------------------------
+	virtual CXTPReportRow* GetFocusedRow();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -283,6 +334,7 @@ public:
 	//     A pointer to associated row object or NULL.
 	//-----------------------------------------------------------------------
 	virtual CXTPReportRow* Find(CXTPReportRecord* pRecord);
+	virtual CXTPReportRow* Find(CXTPReportRecord* pRecord, BOOL bRecursive);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -301,7 +353,8 @@ public:
 	//     This function performs search in children too.
 	// Parameters:
 	//     pRow  - A row to insert.
-	//     bInsertAfter  - the function sets it to TRUE if a row has to be inserted after the row found.
+	//     bInsertAfter  - the function sets it to TRUE if a row has to be inserted after the row
+	//     found.
 	// Returns:
 	//     A pointer to the found row object or NULL.
 	//-----------------------------------------------------------------------
@@ -317,6 +370,12 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Reset all CXTPReportRow::m_nMergeHeight to -1 (undefined).
+	//-----------------------------------------------------------------------
+	void ClearMergeHeight();
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Sorts collection elements.
 	// Parameters:
 	//     pCompareFunc - A T_CompareFunc function pointer that is used
@@ -329,7 +388,7 @@ public:
 	//     Sort() internally uses CompareRows method for comparing 2 rows.
 	// See Also: CompareRows
 	//-----------------------------------------------------------------------
-	virtual void SortEx(T_CompareFunc pCompareFunc);
+	virtual void SortEx(XTPReportRowsCompareFunc pCompareFunc);
 	virtual void Sort(); // <COMBINE SortEx>
 
 	//-----------------------------------------------------------------------
@@ -356,7 +415,7 @@ public:
 	//     Greater than zero if pRow1 is greater than pRow2.
 	// See Also: Sort, CXTPReportRecordItem::Compare
 	//-----------------------------------------------------------------------
-	static int _cdecl CompareRows(const CXTPReportRow** pRow1, const CXTPReportRow** pRow2);
+	static int AFX_CDECL CompareRows(const CXTPReportRow** pRow1, const CXTPReportRow** pRow2);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -382,8 +441,9 @@ public:
 	//     Greater than zero if pRow1 is greater than pRow2.
 	// See Also: Sort, CXTPReportRecordItem::Compare
 	//-----------------------------------------------------------------------
-	static int _cdecl CompareRows2(const CXTPReportRow** pRow1, const CXTPReportRow** pRow2); //<COMBINE CompareRows>
-//<<>>
+	static int AFX_CDECL CompareRows2(const CXTPReportRow** pRow1,
+									  const CXTPReportRow** pRow2); //<COMBINE CompareRows>
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to search for a record item by rows.
@@ -401,419 +461,65 @@ public:
 	//     xtpReportTextSearchExactPhrase - Search exact phrase.
 	//     xtpReportTextSearchMatchCase   - Match case during search.
 	//     xtpReportTextSearchBackward    - Search backwards.
-	//     xtpReportTextSearchExactStart  - Search phrase where the start of the phrase matches exactly.
+	//     xtpReportTextSearchExactStart  - Search phrase where the start of the phrase matches
+	//     exactly.
 	//                                      For those familiar with grep this is just like using the
-	//                                      "^" to state that the text must start with the specified search.
+	//                                      "^" to state that the text must start with the specified
+	//                                      search.
 	// Returns:
 	//    Report record item found or NULL otherwise.
 	//-----------------------------------------------------------------------
-	virtual CXTPReportRecordItem* FindRecordItemByRows(
-		int nStartIndex, int nEndIndex,
-		int nStartColumn, int nEndColumn,
-		int nRecordIndex, int nItem,
-		LPCTSTR pcszText, int nFlags);
-//<<>>
+	virtual CXTPReportRecordItem* FindRecordItemByRows(int nStartIndex, int nEndIndex,
+													   int nStartColumn, int nEndColumn,
+													   int nRecordIndex, int nItem,
+													   LPCTSTR pcszText, int nFlags);
+
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual void ReserveSize(INT_PTR nNewSize, INT_PTR nGrowBy = -1);
 	virtual void SetSize(INT_PTR nNewSize, INT_PTR nGrowBy = -1);
 	virtual void SetAt(INT_PTR nIndex, CXTPReportRow* pRow);
 	//}}AFX_CODEJOCK_PRIVATE
 protected:
-
 	//{{AFX_CODEJOCK_PRIVATE
-	class CXTPReportRowsArray : public CArray<CXTPReportRow*, CXTPReportRow*>
-	{
-	public:
-		void ReserveSize(INT_PTR nNewSize, INT_PTR nGrowBy = -1)
-		{
-			if (GetSize() != 0)
-			{
-				ASSERT(FALSE);
-				return;
-			}
 
-			SetSize(1, nNewSize);
-			Add(NULL);
-			SetSize(1, nGrowBy < 0 ? 0 : nGrowBy);
-
-			m_nSize = 0;
-
-			//ASSERT(m_pData == NULL);
-			//if (m_pData)
-			//  delete m_pData;
-			//m_pData = (CXTPReportRow**) new CXTPReportRow*[nNewSize];
-			//m_nSize = 0;
-			//m_nMaxSize = nNewSize;
-			//m_nGrowBy = nGrowBy < 0 ? 0 : nGrowBy;
-		}
-	};
-	CXTPReportRowsArray m_arrRows;   // Internal storage for CXTPReportRow objects.
+	CXTPReportRowsArray m_arrRows; // Internal storage for CXTPReportRow objects.
 	//}}AFX_CODEJOCK_PRIVATE
 
-	CXTPReportRow* m_pVirtualRow;    // Virtual row.
-	int m_nVirtualRowsCount;         // Count of virtual rows.
+	CXTPReportRow* m_pVirtualRow;		 // Virtual row.
+	CXTPReportScreenRows* m_pScreenRows; // Rows currently presented on screen.
+	int m_nVirtualRowsCount;			 // Count of virtual rows.
 
-};
+	int m_nFocusedRow; // Current focused row index
 
-//===========================================================================
-// Summary:
-//     Encapsulates a collection of CXTPReportRow pointers that represent
-//     the selected rows in a Report Control.
-// Remarks:
-//     Use this class to programmatically manage a collection of
-//     CXTPReportRow pointers that represent the selected rows in a
-//     Report Control. This class is commonly used to add or remove rows
-//     from the collection.
-//
-//     Typical work flow is using Add and Remove methods for changing
-//     contents of the selection and using Contains method for checking
-//     a specific row for its presence in the selection.
-// Example:
-//     The following example demonstrates how to programmatically use
-//     the CXTPReportSelectedRows class to select rows in the Report control.
-// <code>
-// CXTPReportSelectedRows* pSelRows = pReportControl->GetSelectedRows();
-// pSelRows->Add(pRow1);
-// pSelRows->Add(pRow2);
-// ASSERT(TRUE == pSelRows->Contains(pRow1));
-// ASSERT(TRUE == pSelRows->Contains(pRow2));
-// pSelRows->Remove(pRow1);
-// ASSERT(FALSE == pSelRows->Contains(pRow1));
-// pSelRows->Select(pRow1);
-// ASSERT(TRUE == pSelRows->Contains(pRow1));
-// ASSERT(FALSE == pSelRows->Contains(pRow2));
-// </code>
-//
-// See Also: CXTPReportRow, CXTPReportSelectedRows, CXTPReportControl::GetSelectedRows
-//===========================================================================
-class _XTP_EXT_CLASS CXTPReportSelectedRows : public CXTPCmdTarget
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs an empty CXTPReportSelectedRows collection.
-	// Parameters:
-	//     pControl - Pointer to the parent report control.
-	// Remarks:
-	//     This collection could be created only in association with
-	//     the CXTPReportControl object.
-	// Example:
-	// <code>
-	// // from CXTPReportControl member function
-	// CXTPReportSelectedRows* pSelectedRows = new CXTPReportSelectedRows(this);
-	// </code>
-	// See Also: CXTPReportSelectedRows overview
-	//-----------------------------------------------------------------------
-	CXTPReportSelectedRows(CXTPReportControl* pControl);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Selects a block of rows.
-	// Parameters:
-	//  nBlockBegin - First row index from the block.
-	//  nBlockEnd   - Final row index from the block.
-	//  bControlKey - BOOL flag to clear previous during new selection step
-	// Remarks:
-	//     This function uses nBlockBegin and nBlockEnd as the bound for the
-	//     required selection. It enumerates parent report control rows collection
-	//     and adds all rows from nBlockEnd to nBlockEnd inclusively to the selection.
-	//-----------------------------------------------------------------------
-	void SelectBlock(int nBlockBegin, int nBlockEnd, BOOL bControlKey = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Clears itself, removing selection.
-	// Remarks:
-	//     Removes all the elements from the selection.
-	//-----------------------------------------------------------------------
-	void Clear();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Clears itself, removing selection.
-	// Remarks:
-	//     Removes all the elements from the selection.
-	// Parameters:
-	//     bNotifyOnClear - TRUE to send clear notification.
-	//-----------------------------------------------------------------------
-	void Clear(BOOL bNotifyOnClear);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Adds a row to the selection.
-	// Parameters:
-	//     pRow - Pointer to the row to be added to the selection.
-	// Remarks:
-	//     This method adds a pointer to the provided row to the selection.
-	//     After adding, Contains method will return TRUE for all
-	//     checking attempts of this row pointer.
-	// Example:
-	//     See example at CXTPReportSelectedRows overview
-	// See Also: CXTPReportSelectedRows overview, Remove, Select, Clear, Contains
-	//-----------------------------------------------------------------------
-	void Add(CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Adds a rows to the selection.
-	// Parameters:
-	//     nIndexBegin - First row index of block to be selected.
-	//     nIndexEnd - Last row index of block to be selected.
-	//-----------------------------------------------------------------------
-	void AddBlock(int nIndexBegin, int nIndexEnd);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Removes a row from the selection.
-	// Parameters:
-	//     pRow - Pointer to the row to be removed from the selection.
-	// Remarks:
-	//     This method removes a provided row pointer from the selection.
-	//     After removing, Contains method will return FALSE for all
-	//     checking attempts of this row pointer.
-	// Example:
-	//     See example at CXTPReportSelectedRows overview
-	// See Also: CXTPReportSelectedRows overview, Add, Select, Clear, Contains
-	//-----------------------------------------------------------------------
-	void Remove(CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns a value indicating whether the CXTPReportSelectedRows
-	//     contains the specified CXTPReportRow pointer.
-	// Parameters:
-	//     pRow - The CXTPReportRow pointer to search for in the CXTPReportSelectedRows.
-	// Remarks:
-	//     Use this method to determine whether the CXTPReportSelectedRows
-	//     contains the specified CXTPReportRow pointer.
-	// Returns:
-	//     TRUE if row is contained in the selection, FALSE otherwise.
-	// Example:
-	//     See example at CXTPReportSelectedRows overview
-	// See Also: CXTPReportSelectedRows overview, Add, Remove, Select, Clear
-	//-----------------------------------------------------------------------
-	BOOL Contains(const CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Inverts selection for the specified row.
-	// Parameters:
-	//     pRow - Pointer to the specified row.
-	// Remarks:
-	//     This methods checks the specified method for its presence in
-	//     the collection and adds or removes it in the reverse order
-	//     depending on the result.
-	// Example:
-	// <code>
-	// CXTPReportSelectedRows* pSelRows = pReportControl->GetSelectedRows();
-	// ASSERT(TRUE == pSelRows->Contains(pRow1));
-	// pSelRows->Invert(pRow1);
-	// ASSERT(FALSE == pSelRows->Contains(pRow1));
-	// pSelRows->Invert(pRow1);
-	// ASSERT(TRUE == pSelRows->Contains(pRow1));
-	// </code>
-	// See Also: Add, Remove, Contains
-	//-----------------------------------------------------------------------
-	void Invert(CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Selects only the specified row.
-	// Parameters:
-	//     pRow - Pointer to the specified row.
-	// Remarks:
-	//     This method clears the initial selection and
-	//     selects only the specified row.
-	// Example:
-	//     See example at CXTPReportSelectedRows overview
-	// See Also: CXTPReportSelectedRows overview, Add, Remove, Contains, Clear
-	//-----------------------------------------------------------------------
-	void Select(CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Gets the number of selected rows in the collection.
-	// Remarks:
-	//     Call this method to retrieve the number of selected rows
-	//     in the array.
-	// Returns:
-	//     The number of items in the collection.
-	// See Also: CXTPReportRows overview
-	//-----------------------------------------------------------------------
-	int GetCount();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves selected row by index.
-	// Parameters:
-	//     nIndex - Index of selected row to retrieve.
-	// Returns:
-	//     A pointer to report row object.
-	// Remarks:
-	//     Recommended to use GetFirstSelectedRowPosition / GetNextSelectedRow methods.
-	// See Also: GetFirstSelectedRowPosition, GetNextSelectedRow
-	//-----------------------------------------------------------------------
-	CXTPReportRow* GetAt (int nIndex);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Gets the position of the first selected row in the list report control.
-	// Returns:
-	//     value that can be used for iteration or object pointer retrieval;
-	//     NULL if no items are selected.
-	// See Also: GetNextSelectedItem
-	//-----------------------------------------------------------------------
-	POSITION GetFirstSelectedRowPosition();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Gets next selected row in the list report control.
-	// Parameters:
-	//     pos - A reference to a POSITION value returned by a previous call to
-	//           GetNextSelectedRow or GetFirstSelectedRowPosition.
-	//           The value is updated to the next position by this call.
-	// Returns:
-	//     The pointer of the next selected row in the list report control.
-	//-----------------------------------------------------------------------
-	CXTPReportRow* GetNextSelectedRow(POSITION& pos);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to check if selection was changed.
-	// Returns:
-	//     TRUE if the selection was changed and FALSE else.
-	//-----------------------------------------------------------------------
-	BOOL IsChanged() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method is called to reset changed flag.
-	// Parameters:
-	//     bChanged - TRUE to reset.
-	//-----------------------------------------------------------------------
-	void SetChanged(BOOL bChanged = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//    Use this function to swap to integers.
-	// Parameters:
-	//     indexB - First value.
-	//     indexE - The second integer.
-	// Returns:
-	//     TRUE if the operation is successful, FALSE else.
-	//-----------------------------------------------------------------------
-	BOOL SwapIfNeed(int& indexB, int& indexE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to enable\disable clear notifications during
-	//  CXTPReportSelectedRows::Select and SelectBlock.
-	// Parameters:
-	//  bNotifyOnSelectedRowsClear - TRUE, then calling CXTPReportSelectedRows::Select and SelectBlock
-	//                              will send xtpReportSelectionClear notificatoins when
-	//                              the selected rows are internally cleared (normal behavior),
-	//                              if FALSE it will not send the clear notifications during
-	//                              CXTPReportSelectedRows::Select and SelectBlock.
-	//-----------------------------------------------------------------------
-	void SetNotifyOnSelectedRowsClear(BOOL bNotifyOnSelectedRowsClear = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used determine whether clear notifications are sent during
-	//  CXTPReportSelectedRows::Select and SelectBlock.
-	// Returns:
-	//  TRUE, then calling CXTPReportSelectedRows::Select and SelectBlock
-	//  will send xtpReportSelectionClear notificatoins when
-	//  the selected rows are internally cleared (normal behavior),
-	//  if FALSE it will not send the clear notifications during
-	//  CXTPReportSelectedRows::Select and SelectBlock.
-	//-----------------------------------------------------------------------
-	BOOL GetNotifyOnSelectedRowsClear();
-
-	BOOL m_bNotifyOnSelectedRowsClear; // If TRUE, then calling CXTPReportSelectedRows::Select and SelectBlock will send xtpReportSelectionClear notificatoins when the selected rows are internally cleared (normal behavior), if FALSE it will not send the clear notifications during CXTPReportSelectedRows::Select and SelectBlock
-
+#	ifdef _XTP_ACTIVEX
 	//{{AFX_CODEJOCK_PRIVATE
-	void _NotifySelChanging(XTPReportSelectionChangeType nType, CXTPReportRow* pRow = NULL);
-	void _NotifyStateChanged(int nBegin, int nEnd);
-	void _InsertBlock(int nIndexInsert, int nIndexBegin, int nIndexEnd);
-	void _OnExpanded(int nIndex, int nCount);
-	void _OnCollapsed(int nIndex, int nCount);
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
-	struct SELECTED_BLOCK
+	DECLARE_OLETYPELIB_EX(CXTPReportRows);
+
+	afx_msg LPDISPATCH OleGetItem(long nIndex);
+	int OleGetItemCount();
+	DECLARE_ENUM_VARIANT(CXTPReportRows)
+
+	afx_msg LPDISPATCH OleFindRow(LPDISPATCH pRecordDisp);
+	afx_msg LPDISPATCH OleFindRowInTree(LPDISPATCH pRecordDisp);
+	afx_msg LPDISPATCH OleFindRecordItemByRows(int nStartIndex, int nEndIndex, int nStartColumn,
+											   int nEndColumn, int nRecord, int nItem,
+											   LPCTSTR pcszText, int nFlags);
+	enum
 	{
-		int nIndexBegin;
-		int nIndexEnd;
-
-		// For future:
-		//int GetTopIndex() { return min(nIndexBegin, nIndexEnd); }
-		//int GetBottomIndex() { return max(nIndexBegin, nIndexEnd); }
-		//BOOL IsInBlock(int iIndex) { return iIndex >= GetTopIndex() && iIndex <= GetBottomIndex(); }
-		//int& GetClosestIndex(int iIndex) { return (abs(iIndex - nIndexBegin) < abs(iIndex - nIndexEnd)) ? nIndexBegin : nIndexEnd; }
-
-		//BOOL IsContaining(const SELECTED_BLOCK* pBlock, bool bPartial = TRUE)
-		//{
-		//  return ((bPartial
-		//      && (IsInBlock(pBlock->GetTopIndex()
-		//          || IsInBlock(pBlock->GetBottomIndex()))
-		//      || (!bPartial && (IsInBlock(pBlock->GetTopIndex()
-		//          && IsInBlock(pBlock->GetBottomIndex())))
-		//}
-
-		//BOOL IsContaining(const SELECTED_BLOCK* pBlock, BOOL bPartial = TRUE)
-		//{
-		//  int iT = pBlock->GetTopIndex();
-		//  int iB = pBlock->GetBottomIndex();
-		//  BOOL bAdd = IsInBlock(iT) && IsInBlock(iB);
-		//  BOOL bOr = IsInBlock(iT) || IsInBlock(iB);
-
-		//  return (bPartial && bOr) || (!bPartial && bAdd);
-		//}
-
-		//BOOL IsContaining(int iT, int iB, BOOL bPartial = TRUE)
-		//{
-		////    int iT = pBlock->GetTopIndex();
-		////    int iB = pBlock->GetBottomIndex();
-		//  BOOL bAdd = IsInBlock(iT) && IsInBlock(iB);
-		//  BOOL bOr = IsInBlock(iT) || IsInBlock(iB);
-
-		//  return (bPartial && bOr) || (!bPartial && bAdd);
-		//}
+		dispidCount = 1L,
 	};
 
-	CXTPReportControl* m_pControl;      // Pointer to the parent report control.
-	int m_nRowBlockBegin;               // Pointer to the row where rows block begin from.
-	int m_nPosSelected;
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
-	CArray<SELECTED_BLOCK, SELECTED_BLOCK&> m_arrSelectedBlocks;
-
-	BOOL m_bChanged;
-	XTPReportRowType m_nRowType;        // Only rows of one type can be selected (i.e. body, header, or footer).
-	//}}AFX_CODEJOCK_PRIVATE
-
-	//{{AFX_CODEJOCK_PRIVATE
 	friend class CXTPReportControl;
-	//}}AFX_CODEJOCK_PRIVATE
+	friend class CXTPTrackControl;
+	friend class CXTPReportNavigator;
+	friend class CXTPReportSection;
 };
 
-AFX_INLINE void CXTPReportSelectedRows::SetNotifyOnSelectedRowsClear(BOOL bNotifyOnSelectedRowsClear)
-{
-	m_bNotifyOnSelectedRowsClear = bNotifyOnSelectedRowsClear;
-}
-
-AFX_INLINE BOOL CXTPReportSelectedRows::GetNotifyOnSelectedRowsClear()
-{
-	return m_bNotifyOnSelectedRowsClear;
-}
-
-AFX_INLINE BOOL CXTPReportSelectedRows::IsChanged() const
-{
-	return m_bChanged;
-}
-
-AFX_INLINE void CXTPReportSelectedRows::SetChanged(BOOL bChanged /*= TRUE*/)
-{
-	m_bChanged = bChanged;
-}
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTROWS_H__)

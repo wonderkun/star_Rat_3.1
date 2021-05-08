@@ -1,7 +1,6 @@
 // XTPBrowseEdit.h : interface for the CXTPBrowseEdit class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPBROWSEEDIT_H__)
-#define __XTPBROWSEEDIT_H__
+#	define __XTPBROWSEEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPBrowseEdit;
 
-#define XTP_IDC_LBOX_EDIT                101
+#	define XTP_IDC_LBOX_EDIT 101
 
 // --------------------------------------------------------------------
 // Summary:
@@ -42,7 +43,6 @@ class _XTP_EXT_CLASS CXTPBrowseButton : public CXTPButton
 	DECLARE_DYNAMIC(CXTPBrowseButton)
 
 public:
-
 	// ----------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBrowseButton object
@@ -57,7 +57,6 @@ public:
 	virtual ~CXTPBrowseButton();
 
 public:
-
 	// ----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called to create the browse button used by
@@ -71,7 +70,8 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise FALSE.
 	// ----------------------------------------------------------------------
-	virtual BOOL Create(CXTPBrowseEdit* pEditWnd, DWORD dwBStyle, UINT nID, UINT nMenu = (UINT)-1, UINT nSubMenuIndx = (UINT)-1);
+	virtual BOOL Create(CXTPBrowseEdit* pEditWnd, DWORD dwBStyle, UINT nID, UINT nMenu = (UINT)-1,
+						UINT nSubMenuIndx = (UINT)-1);
 
 	// ----------------------------------------------------------------------------
 	// Summary:
@@ -90,11 +90,8 @@ public:
 	// ----------------------------------------------------------------------------
 	void SetBrowseStyle(DWORD dwxStyle);
 
-
-
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPItemEdit)
@@ -106,19 +103,19 @@ protected:
 	afx_msg void OnEnable(BOOL bEnable);
 	afx_msg void OnBtnClicked();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL Create(LPCTSTR lpszCaption, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
 protected:
-
-	DWORD           m_dwBStyle;     // Search type
-	UINT            m_nID;          // Resource id for push button
-	UINT            m_nMenu;        // Popup menu id
-	UINT            m_nSubMenuIndx; // Index of popup submenu.
-	CXTPBrowseEdit*  m_pEditWnd;     // Parent edit control.
+	DWORD m_dwBStyle;			// Search type
+	UINT m_nID;					// Resource id for push button
+	UINT m_nMenu;				// Popup menu id
+	UINT m_nSubMenuIndx;		// Index of popup submenu.
+	CXTPBrowseEdit* m_pEditWnd; // Parent edit control.
 
 	friend class CXTPBrowseEdit;
 };
@@ -134,7 +131,6 @@ class _XTP_EXT_CLASS CXTPBrowseEdit : public CXTPEdit
 	DECLARE_DYNAMIC(CXTPBrowseEdit)
 
 public:
-
 	// --------------------------------------------
 	// Summary:
 	//     Constructs a CXTPBrowseEdit object
@@ -149,7 +145,6 @@ public:
 	virtual ~CXTPBrowseEdit();
 
 public:
-
 	// -----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to determine if the browse edit control
@@ -291,7 +286,8 @@ public:
 	//     TRUE if initialization was successful, otherwise FALSE.
 	// -----------------------------------------------------------------------------
 	virtual bool Initialize(CWnd* pParentWnd, DWORD dwBStyle, UINT nMenu = 0, int nSubMenuIndx = 0);
-	virtual bool Initialize(CWnd* pParentWnd); //<COMBINE CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
+	virtual bool Initialize(CWnd* pParentWnd); //<COMBINE
+											   // CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
 
 	// ----------------------------------------------------------------------
 	// Summary:
@@ -338,78 +334,88 @@ public:
 	CXTPBrowseButton* GetBrowseButton();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_MSG(CXTPBrowseEdit)
 	afx_msg void OnEnable(BOOL bEnable);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	static int       m_nDefaultGap;     // Default distance between the button and edit control.
+	static int m_nDefaultGap; // Default distance between the button and edit control.
 
 protected:
-
-	int              m_nGap;            // Distance between the button and edit control.
-	bool             m_bBrowsing;       // true if in browse operation.
-	BOOL             m_bOpenFileDialog; // TRUE for Open File dialog, FALSE for Save as. See SetDlgOpenFile.
-	UINT             m_nMenu;           // Popup menu ID.
-	UINT             m_nSubMenuIndx;    // Index of a popup submenu.
-	DWORD            m_dwFlags;         // File dialog styles.
-	DWORD            m_dwBStyle;        // Search type.
-	CString          m_strDefExt;       // Default file extension.
-	CString          m_strFileName;     // Default file name.
-	CString          m_strFilter;       // Default file filter.
-	CString          m_strInitialDir;   // Initial directory.
-	CString          m_strTitle;        // Directory dialog title.
-	CFileDialog*     m_pFileDialog;     // Points to a valid CFileDialog object.
-	CXTPBrowseButton  m_btnBrowse;       // Pointer to a push button.
-
-
+	int m_nGap;					// Distance between the button and edit control.
+	bool m_bBrowsing;			// true if in browse operation.
+	BOOL m_bOpenFileDialog;		// TRUE for Open File dialog, FALSE for Save as. See SetDlgOpenFile.
+	UINT m_nMenu;				// Popup menu ID.
+	UINT m_nSubMenuIndx;		// Index of a popup submenu.
+	DWORD m_dwFlags;			// File dialog styles.
+	DWORD m_dwBStyle;			// Search type.
+	CString m_strDefExt;		// Default file extension.
+	CString m_strFileName;		// Default file name.
+	CString m_strFilter;		// Default file filter.
+	CString m_strInitialDir;	// Initial directory.
+	CString m_strTitle;			// Directory dialog title.
+	CFileDialog* m_pFileDialog; // Points to a valid CFileDialog object.
+	CXTPBrowseButton m_btnBrowse; // Pointer to a push button.
 };
 
 //////////////////////////////////////////////////////////////////////
-AFX_INLINE bool CXTPBrowseEdit::Initialize(CWnd* pParentWnd) {
+AFX_INLINE bool CXTPBrowseEdit::Initialize(CWnd* pParentWnd)
+{
 	return CXTPEdit::Initialize(pParentWnd);
 }
-AFX_INLINE void CXTPBrowseEdit::SetGap(int nGap) {
-	ASSERT(nGap >= 0); m_nGap = nGap;
+AFX_INLINE void CXTPBrowseEdit::SetGap(int nGap)
+{
+	ASSERT(nGap >= 0);
+	m_nGap = nGap;
 }
-AFX_INLINE void CXTPBrowseEdit::SetFileDialog(CFileDialog* pFileDialog/*=NULL*/) {
+AFX_INLINE void CXTPBrowseEdit::SetFileDialog(CFileDialog* pFileDialog /*=NULL*/)
+{
 	m_pFileDialog = pFileDialog;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgOpenFile(BOOL bOpenFileDialog/*=TRUE*/) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgOpenFile(BOOL bOpenFileDialog /*=TRUE*/)
+{
 	m_bOpenFileDialog = bOpenFileDialog;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgDefExt(LPCTSTR strDefExt/*=NULL*/) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgDefExt(LPCTSTR strDefExt /*=NULL*/)
+{
 	m_strDefExt = strDefExt;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgFileName(LPCTSTR strFileName/*=NULL*/) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgFileName(LPCTSTR strFileName /*=NULL*/)
+{
 	m_strFileName = strFileName;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgStyle(DWORD dwFlags/*=OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT*/) {
+AFX_INLINE void
+	CXTPBrowseEdit::SetDlgStyle(DWORD dwFlags /*=OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT*/)
+{
 	m_dwFlags = dwFlags;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgFilter(LPCTSTR strFilter/*=NULL*/) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgFilter(LPCTSTR strFilter /*=NULL*/)
+{
 	m_strFilter = strFilter;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgTitle(LPCTSTR strTitle/*=NULL*/) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgTitle(LPCTSTR strTitle /*=NULL*/)
+{
 	m_strTitle = strTitle;
 }
-AFX_INLINE bool CXTPBrowseEdit::IsBrowsing() {
+AFX_INLINE bool CXTPBrowseEdit::IsBrowsing()
+{
 	return m_bBrowsing;
 }
-AFX_INLINE void CXTPBrowseEdit::SetDlgInitialDir(LPCTSTR lpszInitialDir) {
+AFX_INLINE void CXTPBrowseEdit::SetDlgInitialDir(LPCTSTR lpszInitialDir)
+{
 	m_strInitialDir = lpszInitialDir;
 }
 
-const DWORD BES_XTP_CHOOSEDIR       = 0x0001;  //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
-const DWORD BES_XTP_CHOOSEFILE      = 0x0002;  //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
-const DWORD BES_XTP_POPUPMENU       = 0x0004;  //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
+const DWORD BES_XTP_CHOOSEDIR  = 0x0001; //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
+const DWORD BES_XTP_CHOOSEFILE = 0x0002; //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
+const DWORD BES_XTP_POPUPMENU  = 0x0004; //<ALIAS CXTPBrowseEdit::Initialize@CWnd*@DWORD@UINT@int>
 // Note: this must match the LBS_XTP_BROWSE define
-const DWORD BES_XTP_BROWSE          = 0x0010; // Display a user defined dialog for browsing
+const DWORD BES_XTP_BROWSE = 0x0010; // Display a user defined dialog for browsing
 
 //===========================================================================
 // Summary:
@@ -422,7 +428,6 @@ class _XTP_EXT_CLASS CXTPItemEdit : public CXTPBrowseEdit
 	DECLARE_DYNAMIC(CXTPItemEdit)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPItemEdit object that can be used as an "in-place" edit
@@ -444,7 +449,7 @@ public:
 	//     bAutoDelete   - Set to true if the object is to be self deleting.
 	//-----------------------------------------------------------------------
 	BOOL Create(CWnd* pParent, const CRect& rect, CString& strWindowText,
-		DWORD dwBStyle = BES_XTP_CHOOSEDIR, bool bAutoDelete = true);
+				DWORD dwBStyle = BES_XTP_CHOOSEDIR, bool bAutoDelete = true);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -453,7 +458,6 @@ public:
 	virtual ~CXTPItemEdit();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called whenever the control loses focus.
@@ -464,12 +468,12 @@ public:
 	virtual void EndLabelEdit();
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_VIRTUAL(CXTPItemEdit)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+
+protected:
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 
@@ -478,31 +482,35 @@ protected:
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	bool     m_bModified;     // true if the item was modified.
-	bool     m_bAutoDelete;   // true if self deleting.
-	bool     m_bEscapeKey;    // true if the edit window was closed with the escape key.
-	CString  m_strWindowText; // The edit controls text.
+	bool m_bModified;		 // true if the item was modified.
+	bool m_bAutoDelete;		 // true if self deleting.
+	bool m_bEscapeKey;		 // true if the edit window was closed with the escape key.
+	CString m_strWindowText; // The edit controls text.
 
 protected:
-	bool m_bClosePosted;    // Used internally to determine if a WM_CLOSE message has been sent.
-
+	bool m_bClosePosted; // Used internally to determine if a WM_CLOSE message has been sent.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPBrowseButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPBrowseButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										 DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+										 UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPBrowseButton::Create(LPCTSTR lpszCaption, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTPBrowseButton::Create(LPCTSTR lpszCaption, DWORD dwStyle, const RECT& rect,
+										 CWnd* pParentWnd, UINT nID)
+{
 	return CButton::Create(lpszCaption, dwStyle, rect, pParentWnd, nID);
-
 }
-AFX_INLINE CXTPBrowseButton* CXTPBrowseEdit::GetBrowseButton() {
+AFX_INLINE CXTPBrowseButton* CXTPBrowseEdit::GetBrowseButton()
+{
 	return &m_btnBrowse;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPBROWSEEDIT_H__)

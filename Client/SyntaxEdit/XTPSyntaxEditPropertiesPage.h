@@ -1,7 +1,6 @@
 // XTPSyntaxEditPropertiesPage.h : header file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,28 +19,30 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITPROPERTIESPAGE_H__)
-#define __XTPSYNTAXEDITPROPERTIESPAGE_H__
+#	define __XTPSYNTAXEDITPROPERTIESPAGE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditPropertiesDlg;
 class CXTPSyntaxEditView;
 class CXTPSyntaxEditTextSchemesManager;
+class CXTPSyntaxEditPaintManager;
 struct XTP_EDIT_SCHEMAFILEINFO;
 
 class CXTPSyntaxEditConfigurationManager;
 
-
 namespace XTPSyntaxEditLexAnalyser
 {
-	class CXTPSyntaxEditLexPropInfoArray;
-	class CXTPSyntaxEditLexClassInfoArray;
-	struct XTP_EDIT_LEXCLASSINFO;
-	struct XTP_EDIT_LEXPROPINFO;
-}
+class CXTPSyntaxEditLexPropInfoArray;
+class CXTPSyntaxEditLexClassInfoArray;
+struct XTP_EDIT_LEXCLASSINFO;
+struct XTP_EDIT_LEXPROPINFO;
+} // namespace XTPSyntaxEditLexAnalyser
 
 //===========================================================================
 // Summary:
@@ -71,6 +72,8 @@ public:
 	// See Also: ShowTip
 	//-----------------------------------------------------------------------
 	virtual BOOL Create(CListBox* pListBox);
+
+	using CWnd::Create;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -118,7 +121,6 @@ public:
 	virtual COLORREF GetBackColor() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Register the window class if it has not already been registered.
@@ -164,14 +166,14 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL CalcItemRect(int iItem, CRect& rItem);
 
-	//{{AFX_VIRTUAL(CXTPSyntaxEditTipWnd)
-	//}}AFX_VIRTUAL
+//{{AFX_VIRTUAL(CXTPSyntaxEditTipWnd)
+//}}AFX_VIRTUAL
 
-	//{{AFX_CODEJOCK_PRIVATE
-	#ifdef _DEBUG
+//{{AFX_CODEJOCK_PRIVATE
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-	#endif
+#	endif
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_CODEJOCK_PRIVATE
@@ -184,18 +186,17 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int         m_iIndex;       // Current item index.
-	CRect       m_rWindow;      // Store window rect.
-	CPoint      m_ptCursor;     // Store cursor position.
-	CListBox*   m_pListBox;     // Store pointer to attached list box.
+	int m_iIndex;		  // Current item index.
+	CRect m_rWindow;	  // Store window rect.
+	CPoint m_ptCursor;	// Store cursor position.
+	CListBox* m_pListBox; // Store pointer to attached list box.
 
 private:
 	void SetTipTimer();
 	void KillTipTimer();
-	UINT        m_uIDEvent1;
-	UINT        m_uIDEvent2;
+	UINT m_uIDEvent1;
+	UINT m_uIDEvent2;
 };
-
 
 //===========================================================================
 // Summary:
@@ -262,10 +263,10 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	DWORD                   m_dwIdx;        // Selection indexes: LOWORD - previous selection index, HIWORD - active selection index.
-	CXTPSyntaxEditTipWnd    m_wndInfoTip;   // A tooltip window.
+	DWORD m_dwIdx; // Selection indexes: LOWORD - previous selection index, HIWORD - active
+				   // selection index.
+	CXTPSyntaxEditTipWnd m_wndInfoTip; // A tooltip window.
 };
-
 
 //===========================================================================
 // Summary:
@@ -294,7 +295,8 @@ private:
 	CXTPSyntaxEditTipListBox m_wndListBox;
 };
 
-AFX_INLINE CXTPSyntaxEditTipListBox& CXTPSyntaxEditTipComboBox::GetListBox() {
+AFX_INLINE CXTPSyntaxEditTipListBox& CXTPSyntaxEditTipComboBox::GetListBox()
+{
 	return m_wndListBox;
 }
 
@@ -313,7 +315,7 @@ public:
 	// Parameters:
 	//     pEditView  - Pointer to CXTPSyntaxEditView object.
 	// -------------------------------------------------------------------
-	CXTPSyntaxEditPropertiesPageEdit(CXTPSyntaxEditView* pEditView=NULL);
+	CXTPSyntaxEditPropertiesPageEdit(CXTPSyntaxEditView* pEditView = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -322,32 +324,34 @@ public:
 	virtual ~CXTPSyntaxEditPropertiesPageEdit();
 
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_EDIT_PAGEEDITOR };
-	BOOL    m_bAutoReload;
-	BOOL    m_bHorzScrollBar;
-	BOOL    m_bVertScrollBar;
-	BOOL    m_bSyntaxColor;
-	BOOL    m_bAutoIndent;
-	BOOL    m_bSelMargin;
-	BOOL    m_bLineNumbers;
-	BOOL    m_bVirtualSpace;
-	BOOL    m_bCollapsibleNodes;
-	int     m_nCaretStyle;
-	int     m_nTabType;
-	int     m_nTabSize;
+	enum
+	{
+		IDD = XTP_IDD_EDIT_PAGEEDITOR
+	};
+	BOOL m_bAutoReload;
+	BOOL m_bHorzScrollBar;
+	BOOL m_bVertScrollBar;
+	BOOL m_bSyntaxColor;
+	BOOL m_bAutoIndent;
+	BOOL m_bSelMargin;
+	BOOL m_bLineNumbers;
+	BOOL m_bVirtualSpace;
+	BOOL m_bCollapsibleNodes;
+	int m_nCaretStyle;
+	int m_nTabType;
+	int m_nTabSize;
 	CButton m_btnRadioSpaces;
 	CButton m_btnRadioTab;
 	CButton m_btnRadioCaretThin;
 	CButton m_btnRadioCaretThick;
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	public:
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+public:
 	virtual BOOL OnApply();
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Use this method to load controls state (options) from the registry.
@@ -395,8 +399,8 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL                m_bModified;    // Store modified flag.
-	CXTPSyntaxEditView* m_pEditView;    // Store pointer to CXTPSyntaxEditView object.
+	BOOL m_bModified;				 // Store modified flag.
+	CXTPSyntaxEditView* m_pEditView; // Store pointer to CXTPSyntaxEditView object.
 };
 
 //===========================================================================
@@ -412,7 +416,7 @@ public:
 	//     Default object constructor.
 	// Parameters:
 	//     pEditView  - Pointer to CXTPSyntaxEditView object.
-	CXTPSyntaxEditPropertiesPageFont(CXTPSyntaxEditView* pEditView=NULL);
+	CXTPSyntaxEditPropertiesPageFont(CXTPSyntaxEditView* pEditView = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -454,23 +458,26 @@ public:
 	BOOL CreateSafeFontIndirect(CFont& editFont, const LOGFONT& lf);
 
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_EDIT_PAGEFONT };
+	enum
+	{
+		IDD = XTP_IDD_EDIT_PAGEFONT
+	};
 	CXTPSyntaxEditColorComboBox m_wndComboHiliteText;
 	CXTPSyntaxEditColorComboBox m_wndComboHiliteBack;
 	CXTPSyntaxEditColorComboBox m_wndComboText;
 	CXTPSyntaxEditColorComboBox m_wndComboBack;
-	CXTPSyntaxEditColorSampleText   m_txtSampleSel;
-	CXTPSyntaxEditColorSampleText   m_txtSample;
-	CButton     m_btnCustomText;
-	CButton     m_btnCustomBack;
-	CButton     m_btnCustomHiliteText;
-	CButton     m_btnCustomHiliteBack;
-	CXTPSyntaxEditTipComboBox   m_wndComboScript;
-	CXTPSyntaxEditTipComboBox   m_wndComboStyle;
-	CXTPSyntaxEditTipComboBox   m_wndComboSize;
-	CXTPSyntaxEditTipComboBox   m_wndComboName;
-	BOOL    m_bStrikeOut;
-	BOOL    m_bUnderline;
+	CXTPSyntaxEditColorSampleText m_txtSampleSel;
+	CXTPSyntaxEditColorSampleText m_txtSample;
+	CButton m_btnCustomText;
+	CButton m_btnCustomBack;
+	CButton m_btnCustomHiliteText;
+	CButton m_btnCustomHiliteBack;
+	CXTPSyntaxEditTipComboBox m_wndComboScript;
+	CXTPSyntaxEditTipComboBox m_wndComboStyle;
+	CXTPSyntaxEditTipComboBox m_wndComboSize;
+	CXTPSyntaxEditTipComboBox m_wndComboName;
+	BOOL m_bStrikeOut;
+	BOOL m_bUnderline;
 	CString m_csName;
 	CString m_csSize;
 	CString m_csStyle;
@@ -482,13 +489,12 @@ public:
 
 	//{{AFX_CODEJOCK_PRIVATE
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 public:
 	virtual BOOL OnApply();
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Initialize font name combo box.
@@ -602,17 +608,19 @@ protected:
 protected:
 	const UINT m_uFaceSize; // Store face name maximum string size.
 
-	BYTE                m_iCharSet;     // Store char set.
-	BOOL                m_bModified;    // Store modified flag.
-	CXTPSyntaxEditView* m_pEditView;    // Store pointer to CXTPSyntaxEditView object.
-	CFont               m_editFont;     // Store editor font.
-};
+	BYTE m_iCharSet;				 // Store char set.
+	BOOL m_bModified;				 // Store modified flag.
+	CXTPSyntaxEditView* m_pEditView; // Store pointer to CXTPSyntaxEditView object.
 
+	CXTPFont m_xtpFontEdit; // Store editor font.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_editFont, m_xtpFontEdit, GetEditFontHandle);
+};
 
 //---------------------------------------------------------------------------
 
-AFX_INLINE CFont& CXTPSyntaxEditPropertiesPageFont::GetEditFont() {
-	return m_editFont;
+AFX_INLINE CFont& CXTPSyntaxEditPropertiesPageFont::GetEditFont()
+{
+	return m_xtpFontEdit;
 }
 
 //===========================================================================
@@ -630,7 +638,7 @@ public:
 	// Parameters:
 	//     pEditView  - Pointer to CXTPSyntaxEditView object.
 	// -------------------------------------------------------------------
-	CXTPSyntaxEditPropertiesPageColor(CXTPSyntaxEditView* pEditView=NULL);
+	CXTPSyntaxEditPropertiesPageColor(CXTPSyntaxEditView* pEditView = NULL);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -656,26 +664,29 @@ public:
 	void SetModified(BOOL bChanged = TRUE);
 
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_EDIT_PAGECOLOR };
-	CXTPSyntaxEditColorSampleText   m_txtSampleSel;
-	CXTPSyntaxEditColorSampleText   m_txtSample;
+	enum
+	{
+		IDD = XTP_IDD_EDIT_PAGECOLOR
+	};
+	CXTPSyntaxEditColorSampleText m_txtSampleSel;
+	CXTPSyntaxEditColorSampleText m_txtSample;
 	CXTPSyntaxEditColorComboBox m_wndComboHiliteText;
 	CXTPSyntaxEditColorComboBox m_wndComboHiliteBack;
 	CXTPSyntaxEditColorComboBox m_wndComboText;
 	CXTPSyntaxEditColorComboBox m_wndComboBack;
-	CButton     m_btnBold;
-	CButton     m_btnItalic;
-	CButton     m_btnUnderline;
-	CButton     m_btnCustomText;
-	CButton     m_btnCustomBack;
-	CButton     m_btnCustomHiliteText;
-	CButton     m_btnCustomHiliteBack;
-	CXTPSyntaxEditTipListBox    m_lboxName;
-	CXTPSyntaxEditTipListBox    m_lboxProp;
-	CStatic     m_gboxSampleText;
-	BOOL    m_bBold;
-	BOOL    m_bItalic;
-	BOOL    m_bUnderline;
+	CButton m_btnBold;
+	CButton m_btnItalic;
+	CButton m_btnUnderline;
+	CButton m_btnCustomText;
+	CButton m_btnCustomBack;
+	CButton m_btnCustomHiliteText;
+	CButton m_btnCustomHiliteBack;
+	CXTPSyntaxEditTipListBox m_lboxName;
+	CXTPSyntaxEditTipListBox m_lboxProp;
+	CStatic m_gboxSampleText;
+	BOOL m_bBold;
+	BOOL m_bItalic;
+	BOOL m_bUnderline;
 	COLORREF m_crHiliteText;
 	COLORREF m_crHiliteBack;
 	COLORREF m_crText;
@@ -683,14 +694,14 @@ public:
 
 public:
 	virtual BOOL OnSetActive();
+
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 public:
 	virtual BOOL OnApply();
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
 	// -------------------------------------------------------------------
 	// Summary:
 	//     Use this member function to update font for a sample text control.
@@ -719,7 +730,7 @@ protected:
 	// Parameters:
 	//      infoClass - A reference to XTP_EDIT_LEXCLASSINFO object.
 	// -------------------------------------------------------------------
-	void InitClassData(const XTP_EDIT_LEXCLASSINFO& infoClass);
+	void InitClassData(const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO& infoClass);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -729,7 +740,7 @@ protected:
 	// Returns:
 	//      TRUE if specified class is a top level schema class, FALSE otherwise.
 	// -------------------------------------------------------------------
-	BOOL IsTopLevelClass(const XTP_EDIT_LEXCLASSINFO& infoClass);
+	BOOL IsTopLevelClass(const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO& infoClass);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -747,7 +758,7 @@ protected:
 	//      A comma separated string.
 	// See Also: XTP_EDIT_LEXPROPINFO
 	// -------------------------------------------------------------------
-	CString GetPropValue(const XTP_EDIT_LEXPROPINFO& infoProp) const;
+	CString GetPropValue(const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXPROPINFO& infoProp) const;
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -765,7 +776,8 @@ protected:
 	// Returns:
 	//      Property data index in the array or -1
 	// -------------------------------------------------------------------
-	int PropExists(CXTPSyntaxEditLexPropInfoArray& arrProp, LPCTSTR lpszPropName);
+	int PropExists(XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexPropInfoArray& arrProp,
+				   LPCTSTR lpszPropName);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -792,7 +804,8 @@ protected:
 	//      TRUE if successful, FALSE otherwise.
 	// See Also: UpdateFontValue
 	// -------------------------------------------------------------------
-	BOOL UpdateColorValue(CXTPSyntaxEditColorComboBox& combo, COLORREF& color, LPCTSTR lpszPropName);
+	BOOL UpdateColorValue(CXTPSyntaxEditColorComboBox& combo, COLORREF& color,
+						  LPCTSTR lpszPropName);
 
 	// -------------------------------------------------------------------
 	// Summary:
@@ -803,7 +816,7 @@ protected:
 	// Returns:
 	//      Display name property value for a lex class.
 	// -------------------------------------------------------------------
-	CString GetDisplayName(const XTP_EDIT_LEXCLASSINFO& info) const;
+	CString GetDisplayName(const XTPSyntaxEditLexAnalyser::XTP_EDIT_LEXCLASSINFO& info) const;
 
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual BOOL OnInitDialog();
@@ -827,13 +840,17 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	BOOL                                    m_bModified;        // Store modified flag.
-	CXTPSyntaxEditView*                     m_pEditView;        // Store pointer to CXTPSyntaxEditView object.
-	CXTPSyntaxEditConfigurationManager*     m_ptrConfigMgr;     // Store pointer to Configuration Manager.
-	CXTPSyntaxEditTextSchemesManager*       m_pTextSchemesMgr;  // Store pointer to Schemes Manager.
-	CFont                                   m_editFont;         // Store editor font.
-	CMapStringToPtr                         m_mapLexClassInfo;  // Map lex schema name to schema classes array (CXTPSyntaxEditLexClassInfoArray*).
-	CXTPSyntaxEditLexClassInfoArray*        m_parLexClassInfo;  // Store currently selected schema classes.
+	BOOL m_bModified;				 // Store modified flag.
+	CXTPSyntaxEditView* m_pEditView; // Store pointer to CXTPSyntaxEditView object.
+	CXTPSyntaxEditConfigurationManager* m_ptrConfigMgr;  // Store pointer to Configuration Manager.
+	CXTPSyntaxEditTextSchemesManager* m_pTextSchemesMgr; // Store pointer to Schemes Manager.
+	CXTPFont m_xtpFontEdit;								 // Store editor font.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_editFont, m_xtpFontEdit, GetEditFontHandle);
+	CMapStringToPtr m_mapLexClassInfo; // Map lex schema name to schema classes array
+									   // (CXTPSyntaxEditLexClassInfoArray*).
+	XTPSyntaxEditLexAnalyser::CXTPSyntaxEditLexClassInfoArray* m_parLexClassInfo; // Store currently
+																				  // selected schema
+																				  // classes.
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -841,4 +858,5 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITPROPERTIESPAGE_H__)

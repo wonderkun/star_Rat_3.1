@@ -1,7 +1,6 @@
 // XTPTabPaintManager.inl: inlines of the CXTPTabPaintManager class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -64,5 +63,5 @@ AFX_INLINE void SwapColors(COLORREF& clrLight, COLORREF& clrDark)
 {
 	COLORREF clr(clrLight);
 	clrLight = clrDark;
-	clrDark = clr;
+	clrDark  = clr;
 }

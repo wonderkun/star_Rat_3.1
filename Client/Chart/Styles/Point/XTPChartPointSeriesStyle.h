@@ -1,7 +1,6 @@
 // XTPChartPointSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPOINTSERIESSTYLE_H__)
-#define __XTPCHARTPOINTSERIESSTYLE_H__
+#	define __XTPCHARTPOINTSERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartMarker;
-
-#include "XTPChartDiagram2DSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -85,12 +84,12 @@ protected:
 	//     CXTPChartSeriesView object.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartPointSeriesStyle);
@@ -98,100 +97,16 @@ public:
 	LPDISPATCH OleGetMarker();
 
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
 	CXTPChartMarker* m_pMarker;
 };
 
-//===========================================================================
-// Summary:
-//     This class represents the view of a point series ,which is a kind of
-//     CXTPChartSeriesView.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartPointSeriesView : public CXTPChartDiagram2DSeriesView
+AFX_INLINE CXTPChartMarker* CXTPChartPointSeriesStyle::GetMarker() const
 {
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartPointSeriesView object.
-	// Parameters:
-	//     pSeries      - A pointer to the chart series object.
-	//     pDiagramView - A pointer to the diagram view object.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to create view of the series points.
-	// Parameters:
-	//     pDC    - A pointer to chart device context.
-	//     pPoint - A pointer to the chart series point object.
-	// Returns:
-	//     A pointer to CXTPChartPointSeriesPointView object which is a kind of
-	//     CXTPChartSeriesPointView object.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
-
-public:
-	virtual CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
-};
-
-//===========================================================================
-// Summary:
-//     This class represents the view of a point series point ,which is a kind of
-//     CXTPChartSeriesPointView.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartPointSeriesPointView : public CXTPChartSeriesPointView
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartPointSeriesPointView object.
-	// Parameters:
-	//     pPoint       - A pointer to the chart series point.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartPointSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
-
-public:
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of the series point.
-	// Parameters:
-	//     pDC      - Pointer to a CXTPChartDeviceContext object.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
-	//     the drawing of the series point.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
-
-	CXTPChartDeviceCommand* CreateLegendDeviceCommand(CXTPChartDeviceContext* pDC, CRect rcBounds);
-public:
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the screen point from the series point.
-	// Returns:
-	//     Returns a screen point object CXTPChartPointF.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartPointF GetScreenPoint() const;
-
-};
-
-AFX_INLINE CXTPChartMarker* CXTPChartPointSeriesStyle::GetMarker() const {
 	return m_pMarker;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPOINTSERIESSTYLE_H__)

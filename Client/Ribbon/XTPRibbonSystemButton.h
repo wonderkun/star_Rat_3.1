@@ -1,7 +1,6 @@
 // XTPRibbonSystemButton.h: interface for the CXTPRibbonControlSystemButton class.
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONSYSTEMBUTTON_H__)
-#define __XTPRIBBONSYSTEMBUTTON_H__
+#	define __XTPRIBBONSYSTEMBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-
-#include "CommandBars/XTPControlPopup.h"
-#include "CommandBars/XTPPopupBar.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -41,7 +37,6 @@ class _XTP_EXT_CLASS CXTPRibbonControlSystemButton : public CXTPControlPopup
 {
 	DECLARE_XTP_CONTROL(CXTPRibbonControlSystemButton)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonControlSystemButton object
@@ -77,6 +72,14 @@ public:
 	//----------------------------------------------------------------------
 	virtual CSize GetSize(CDC* pDC);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the control's caption.
+	// Returns:
+	//     The caption of the control.
+	//-----------------------------------------------------------------------
+	virtual CString GetCaption() const;
+
 protected:
 	//----------------------------------------------------------------------
 	// Summary:
@@ -98,13 +101,21 @@ protected:
 	// ----------------------------------------------------------------------
 	void AdjustExcludeRect(CRect& rc, BOOL bVertical);
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPRibbonControlSystemButton);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 protected:
 	BOOL m_bCloseOnDblClick;
 
 	friend class CXTPRibbonBackstageView;
 	friend class CXTPRibbonBar;
 };
-
 
 //===========================================================================
 // Summary:
@@ -178,7 +189,6 @@ class _XTP_EXT_CLASS CXTPRibbonSystemPopupBar : public CXTPPopupBar
 	DECLARE_XTP_COMMANDBAR(CXTPRibbonSystemPopupBar)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonSystemPopupBar object
@@ -186,7 +196,6 @@ public:
 	CXTPRibbonSystemPopupBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to get borders margins of commandbar
@@ -208,19 +217,20 @@ public:
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. dwMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
 	virtual CSize CalcDynamicLayout(int nLength, DWORD dwMode);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg LRESULT OnNcHitTest(CPoint point);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //===========================================================================
@@ -233,7 +243,6 @@ class _XTP_EXT_CLASS CXTPRibbonSystemPopupBarPage : public CXTPPopupBar
 	DECLARE_XTP_COMMANDBAR(CXTPRibbonSystemPopupBarPage)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonSystemPopupBarPage object
@@ -241,13 +250,13 @@ public:
 	CXTPRibbonSystemPopupBarPage();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      dwMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. dwMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
@@ -272,7 +281,6 @@ class _XTP_EXT_CLASS CXTPRibbonControlSystemPopupBarListCaption : public CXTPCon
 {
 	DECLARE_XTP_CONTROL(CXTPRibbonControlSystemPopupBarListCaption)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonControlSystemPopupBarListCaption object
@@ -309,7 +317,6 @@ class _XTP_EXT_CLASS CXTPRibbonControlSystemPopupBarListItem : public CXTPContro
 	DECLARE_XTP_CONTROL(CXTPRibbonControlSystemPopupBarListItem)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonControlSystemPopupBarListItem object
@@ -335,15 +342,16 @@ public:
 	virtual void Draw(CDC* pDC);
 
 protected:
-	BOOL m_bAlignShortcut;  // Alignment of the shortcut in the list.
+	BOOL m_bAlignShortcut; // Alignment of the shortcut in the list.
 };
 
 //===========================================================================
 // Summary:
-//     CXTPRibbonControlSystemPopupBarPinableListItem is CXTPRibbonControlSystemPopupBarListItem derived class.
-//     It used in Ribbon system popup to draw recent file list items.
+//     CXTPRibbonControlSystemPopupBarPinableListItem is CXTPRibbonControlSystemPopupBarListItem
+//     derived class. It used in Ribbon system popup to draw recent file list items.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPRibbonControlSystemPopupBarPinableListItem : public CXTPRibbonControlSystemPopupBarListItem
+class _XTP_EXT_CLASS CXTPRibbonControlSystemPopupBarPinableListItem
+	: public CXTPRibbonControlSystemPopupBarListItem
 {
 	DECLARE_XTP_CONTROL(CXTPRibbonControlSystemPopupBarPinableListItem)
 
@@ -356,10 +364,10 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Destroys a CXTPRibbonControlSystemPopupBarPinableListItem object, handles cleanup and deallocation
+	//     Destroys a CXTPRibbonControlSystemPopupBarPinableListItem object, handles cleanup and
+	//     deallocation
 	//-----------------------------------------------------------------------
 	~CXTPRibbonControlSystemPopupBarPinableListItem();
-
 
 protected:
 	//----------------------------------------------------------------------
@@ -397,21 +405,21 @@ protected:
 	virtual BOOL OnSetSelected(int bSelected);
 
 protected:
-	CXTPImageManager* m_pIcons;  // Icons used for the MRU item.
-
+	CXTPImageManager* m_pIcons; // Icons used for the MRU item.
 };
 
 //===========================================================================
 // Summary:
-//     CXTPRibbonControlSystemRecentFileList is a CXTPRibbonControlSystemPopupBarListCaption derived class.
-//     It used in Ribbon system popup to draw recent file list controls
+//     CXTPRibbonControlSystemRecentFileList is a CXTPRibbonControlSystemPopupBarListCaption derived
+//     class. It used in Ribbon system popup to draw recent file list controls
 //===========================================================================
-class _XTP_EXT_CLASS CXTPRibbonControlSystemRecentFileList : public CXTPRibbonControlSystemPopupBarListCaption
+class _XTP_EXT_CLASS CXTPRibbonControlSystemRecentFileList
+	: public CXTPRibbonControlSystemPopupBarListCaption
 {
 	class CControlFileItem;
 	class CControlPinableFileItem;
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonControlSystemRecentFileList object
@@ -419,7 +427,6 @@ public:
 	CXTPRibbonControlSystemRecentFileList();
 
 protected:
-
 	//----------------------------------------------------------------------
 	// Summary:
 	//     This method is called before recalculating the parent command
@@ -440,7 +447,8 @@ protected:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
-	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point, DROPEFFECT& dropEffect);
+	virtual BOOL IsCustomizeDragOverAvail(CXTPCommandBar* pCommandBar, CPoint point,
+										  DROPEFFECT& dropEffect);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -464,72 +472,7 @@ private:
 	DECLARE_XTP_CONTROL(CXTPRibbonControlSystemRecentFileList)
 };
 
+#	define CXTPPinableRecentFileList CXTPRecentFileList
 
-//===========================================================================
-// Summary:
-//     CXTPPinableRecentFileList is CRecentFileList derived class.  This is used as a
-//     pinnable MRU for the ribbon.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPPinableRecentFileList : public CCmdTarget, public CRecentFileList
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPPinableRecentFileList object
-	// Parameters:
-	//     nStart - Index of item to start pinned
-	//     lpszSection - Section
-	//     lpszEntryFormat - Format
-	//     nSize - Initial list size
-	//     nMaxDispLen - Maximum list size
-	//-----------------------------------------------------------------------
-	CXTPPinableRecentFileList(UINT nStart, LPCTSTR lpszSection, LPCTSTR lpszEntryFormat, int nSize, int nMaxDispLen = AFX_ABBREV_FILENAME_LEN);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Destroys a CXTPPinableRecentFileList object, handles cleanup and deallocation
-	//-----------------------------------------------------------------------
-	~CXTPPinableRecentFileList();
-
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Removes an item from the MRU.
-	// Parameters:
-	//     nIndex - Index of the item to remove from the MRU.
-	//-----------------------------------------------------------------------
-	virtual void Remove(int nIndex);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Adds an item to the MRU.
-	// Parameters:
-	//     lpszPathName - Path of the filename, including file name, to include
-	//     in the MRU.  Only the filename will be drawn in the MRU.  The entire
-	//     path will be displayed in a tooltip on mouseover.
-	//-----------------------------------------------------------------------
-	virtual void Add(LPCTSTR lpszPathName);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Reads from registry or ini file.
-	//-----------------------------------------------------------------------
-	virtual void ReadList();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Writes to registry or ini file.
-	//-----------------------------------------------------------------------
-	virtual void WriteList();
-
-
-
-
-public:
-	BOOL* m_pbPinState;     // Current pin state of the selected item in the MRU.
-	BOOL m_bPinable;        // True if the MRU is a pinnable MRU (for ribbon).
-
-};
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONSYSTEMBUTTON_H__)

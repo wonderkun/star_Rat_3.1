@@ -1,0 +1,4 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vista", ".\Vista_vc150.vcxproj", "{86247783-1495-4266-1168-889192581457}"
+EndProject

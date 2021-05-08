@@ -1,7 +1,6 @@
 // XTPFlowGraphTools.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHTOOLS_H__)
-#define __XTPFLOWGRAPHTOOLS_H__
+#	define __XTPFLOWGRAPHTOOLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 template<typename Traits>
@@ -85,7 +86,7 @@ public:
 			m_nCount++;
 
 		m_arr[0].hFrom = hFrom;
-		m_arr[0].hTo = CreateHandle(hFrom);
+		m_arr[0].hTo   = CreateHandle(hFrom);
 
 		return m_arr[0].hTo;
 	}
@@ -109,13 +110,16 @@ struct CXTPFlowGraphFontTraits
 	typedef LOGFONT FromType;
 	typedef HFONT ToType;
 
-	void DestroyHandle(HFONT hFont) {
+	void DestroyHandle(HFONT hFont)
+	{
 		DeleteObject(hFont);
 	}
-	HFONT CreateHandle(const LOGFONT& lf) {
+	HFONT CreateHandle(const LOGFONT& lf)
+	{
 		return CreateFontIndirect(&lf);
 	}
-	BOOL CompareHandle(const LOGFONT& lfLeft, const LOGFONT& lfRight) {
+	BOOL CompareHandle(const LOGFONT& lfLeft, const LOGFONT& lfRight)
+	{
 		if (lfLeft.lfHeight != lfRight.lfHeight)
 			return FALSE;
 
@@ -125,10 +129,10 @@ struct CXTPFlowGraphFontTraits
 		if (lfLeft.lfItalic != lfRight.lfItalic)
 			return FALSE;
 
-		if (lfLeft.lfQuality !=lfRight.lfQuality)
+		if (lfLeft.lfQuality != lfRight.lfQuality)
 			return FALSE;
 
-		if (_tcscmp(lfLeft.lfFaceName,lfRight.lfFaceName) != 0)
+		if (_tcscmp(lfLeft.lfFaceName, lfRight.lfFaceName) != 0)
 			return FALSE;
 
 		return TRUE;
@@ -140,17 +144,20 @@ struct CXTPFlowGraphBrushTraits
 	typedef COLORREF FromType;
 	typedef HBRUSH ToType;
 
-	void DestroyHandle(HBRUSH hFont) {
+	void DestroyHandle(HBRUSH hFont)
+	{
 		DeleteObject(hFont);
 	}
-	HBRUSH CreateHandle(COLORREF clr) {
+	HBRUSH CreateHandle(COLORREF clr)
+	{
 		return CreateSolidBrush(clr);
 	}
-	BOOL CompareHandle(COLORREF clrLeft, COLORREF clrRight) {
+	BOOL CompareHandle(COLORREF clrLeft, COLORREF clrRight)
+	{
 		return clrLeft == clrRight;
 	}
 };
 //}}AFX_CODEJOCK_PRIVATE
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHTOOLS_H__)

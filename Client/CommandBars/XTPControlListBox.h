@@ -1,7 +1,6 @@
 // XTPControlListBox.h : interface for the CXTPControlListBox class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTROLLISTBOX_H__)
-#define __XTPCONTROLLISTBOX_H__
+#	define __XTPCONTROLLISTBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -44,8 +44,8 @@
 //
 // void CMainFrame::OnListBoxControlSelChange(NMHDR* pNMHDR, LRESULT* pResult)
 // {
-//     CXTPControlListBox* pControlListBox = DYNAMIC_DOWNCAST(CXTPControlListBox, ((NMXTPCONTROL*)pNMHDR)->pControl);
-//     if (pControlListBox)
+//     CXTPControlListBox* pControlListBox = DYNAMIC_DOWNCAST(CXTPControlListBox,
+//     ((NMXTPCONTROL*)pNMHDR)->pControl); if (pControlListBox)
 //     {
 //          *pResult = 1;
 //     }
@@ -53,11 +53,12 @@
 // </code>
 // See Also: CXTPControlListBox, XTP_LBN_POPUP
 //-----------------------------------------------------------------------
-const UINT XTP_LBN_SELCHANGE   = 0x1003;
+const UINT XTP_LBN_SELCHANGE = 0x1003;
 
 //-----------------------------------------------------------------------
 // Summary:
-//     The XTP_LBN_POPUP is sent to active view when the CXTPControlListBox is about to become visible.
+//     The XTP_LBN_POPUP is sent to active view when the CXTPControlListBox is about to become
+//     visible.
 // Example:
 //     Here is an example of how an application would process the XTP_LBN_POPUP
 //     message.
@@ -70,8 +71,8 @@ const UINT XTP_LBN_SELCHANGE   = 0x1003;
 //
 // void CMainFrame::OnListBoxControlPopup(NMHDR* pNMHDR, LRESULT* pResult)
 // {
-//     CXTPControlListBox* pControlListBox = DYNAMIC_DOWNCAST(CXTPControlListBox, ((NMXTPCONTROL*)pNMHDR)->pControl);
-//     if (pControlListBox)
+//     CXTPControlListBox* pControlListBox = DYNAMIC_DOWNCAST(CXTPControlListBox,
+//     ((NMXTPCONTROL*)pNMHDR)->pControl); if (pControlListBox)
 //     {
 //          *pResult = 1;
 //     }
@@ -79,7 +80,7 @@ const UINT XTP_LBN_SELCHANGE   = 0x1003;
 // </code>
 // See Also: CXTPControlListBox, XTP_LBN_SELCHANGE
 //-----------------------------------------------------------------------
-const UINT XTP_LBN_POPUP    = 0x1004;
+const UINT XTP_LBN_POPUP = 0x1004;
 
 //{{AFX_CODEJOCK_PRIVATE
 class CXTPControlListBoxCtrl;
@@ -290,18 +291,16 @@ protected:
 	//----------------------------------------------------------------------
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
-
 protected:
 	CXTPControlListBoxCtrl* m_pListBox; // List box control.
-	int          m_nListBoxLinesMin;    // Minimum lines.
-	int          m_nListBoxLinesMax;    // Maximum lines.
-	BOOL         m_bMultiplSel;         // Multiple selection style.
-	BOOL         m_bMouseLocked;        // TRUE to lock mouse events.
+	int m_nListBoxLinesMin;				// Minimum lines.
+	int m_nListBoxLinesMax;				// Maximum lines.
+	BOOL m_bMultiplSel;					// Multiple selection style.
+	BOOL m_bMouseLocked;				// TRUE to lock mouse events.
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_XTP_CONTROL(CXTPControlListBox)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	friend class CXTPControlListBoxCtrl;
 };
@@ -367,8 +366,7 @@ protected:
 
 private:
 	DECLARE_XTP_CONTROL(CXTPControlStatic)
-
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCONTROLLISTBOX_H__)

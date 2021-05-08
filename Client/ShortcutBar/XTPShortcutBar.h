@@ -1,7 +1,6 @@
 // XTPShortcutBar.h interface for the CXTPShortcutBar class.
 //
-// This file is a part of the XTREME SHORTCUTBAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSHORTCUTBAR_H__)
-#define __XTPSHORTCUTBAR_H__
+#	define __XTPSHORTCUTBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPShortcutBarAnimation;
 class CXTPShortcutBarPopup;
-
-#include "XTPShortcutBarPaintManager.h"
+class CXTPImageManagerIcon;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -47,7 +47,7 @@ class CXTPShortcutBarPopup;
 // See Also:
 //     XTPWM_SHORTCUTBAR_NOTIFY, XTP_SBN_RCLICK
 //-----------------------------------------------------------------------
-const UINT XTP_SBN_SELECTION_CHANGING  = 1;
+const UINT XTP_SBN_SELECTION_CHANGING = 1;
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -78,8 +78,6 @@ const UINT XTP_SBN_SELECTION_CHANGED = 3;
 //-----------------------------------------------------------------------
 const UINT XTP_SBN_RCLICK = 2;
 
-
-
 //-----------------------------------------------------------------------
 // Summary:
 //     XTP_SBN_MINIMIZEBUTTONCLICKED is used to indicate that the user has pressed the
@@ -94,7 +92,6 @@ const UINT XTP_SBN_RCLICK = 2;
 //-----------------------------------------------------------------------
 const UINT XTP_SBN_MINIMIZEBUTTONCLICKED = 4;
 
-
 //-----------------------------------------------------------------------
 // Summary:
 //     The XTPWM_SHORTCUTBAR_NOTIFY message is sent to the CXTPShortcutBar owner window
@@ -102,12 +99,15 @@ const UINT XTP_SBN_MINIMIZEBUTTONCLICKED = 4;
 // Parameters:
 //     nAction -  Value of wParam specifies a ShortcutBar value that indicates the user's
 //                request.
-//     pItem    - The value of lParam points to an CXTPShortcutBarItem object that contains information for the
+//     pItem    - The value of lParam points to an CXTPShortcutBarItem object that contains
+//     information for the
 //                specified item. This pointer should <b>never</b> be NULL.
 // Remarks:
 //     nAction parameter can be one of the following values:
-//         * <b>XTP_SBN_SELECTION_CHANGING</b> Indicates the selection has changed in the shortcut bar.
-//         * <b>XTP_SBN_RCLICK</b> Indicates the user pressed the right mouse button on the shortcut bar item.
+//         * <b>XTP_SBN_SELECTION_CHANGING</b> Indicates the selection has changed in the shortcut
+//         bar.
+//         * <b>XTP_SBN_RCLICK</b> Indicates the user pressed the right mouse button on the shortcut
+//         bar item.
 //
 // Returns:
 //     If the application is to process this message, the return value should be TRUE, otherwise the
@@ -138,9 +138,8 @@ const UINT XTP_SBN_MINIMIZEBUTTONCLICKED = 4;
 //              return TRUE;
 //          case XTP_SBN_RCLICK:
 //              {
-//                  CPoint point(lParam);
-//                  CXTPShortcutBarItem* pItem = m_wndShortcutBar.HitTest(point);
-//                  if (pItem)
+//                  CXTPShortcutBarItem* pItem =
+//                  m_wndShortcutBar.HitTest(XTP_POINT_FROM_LPARAM(lParam)); if (pItem)
 //                  {
 //                      TRACE(_T("RClick. Item.ID = %i\n"), pItem->GetID());
 //
@@ -149,7 +148,8 @@ const UINT XTP_SBN_MINIMIZEBUTTONCLICKED = 4;
 //
 //                      m_wndShortcutBar.ClientToScreen(&point);
 //
-//                      CXTPCommandBars::TrackPopupMenu(mnu.GetSubMenu(0), 0, point.x, point.y, AfxGetMainWnd());
+//                      CXTPCommandBars::TrackPopupMenu(mnu.GetSubMenu(0), 0, point.x, point.y,
+//                      AfxGetMainWnd());
 //
 //                  }
 //              }
@@ -165,7 +165,6 @@ const UINT XTP_SBN_MINIMIZEBUTTONCLICKED = 4;
 //-----------------------------------------------------------------------
 const UINT XTPWM_SHORTCUTBAR_NOTIFY = (WM_USER + 9190 + 1);
 
-
 class CXTPShortcutBar;
 class CXTPImageManager;
 class CXTPToolTipContext;
@@ -177,6 +176,8 @@ class CXTPToolTipContext;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPShortcutBarItem : public CXTPCmdTarget
 {
+	DECLARE_DYNAMIC(CXTPShortcutBarItem);
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -187,7 +188,9 @@ protected:
 	//     pWnd - Client window of the item
 	//     pShortcutBar - Points to the parent ShortcutBar class.
 	//-----------------------------------------------------------------------
-	CXTPShortcutBarItem(CXTPShortcutBar* pShortcutBar, int nID, CWnd* pWnd); // <combine CXTPShortcutBarItem::CXTPShortcutBarItem@CXTPShortcutBar*>
+	CXTPShortcutBarItem(CXTPShortcutBar* pShortcutBar, int nID,
+						CWnd* pWnd); // <combine
+									 // CXTPShortcutBarItem::CXTPShortcutBarItem@CXTPShortcutBar*>
 
 public:
 	//-----------------------------------------------------------------------
@@ -400,24 +403,50 @@ public:
 	void SetEnabled(BOOL bEnabled);
 
 protected:
-	CString m_strCaption;               // Caption for the item.
-	CString m_strTooltip;               // Tooltip for the item.
-	int m_nID;                          // Item's identifier.
-	CRect m_rcItem;                     // Bounding rectangle of the item
-	BOOL m_bVisible;                    // TRUE if the item is visible
-	BOOL m_bExpanded;                   // TRUE if the item is expanded
-	BOOL m_bHidden;                     // TRUE if the item is hidden
-	HWND m_hwndChild;                   // Child window associated with the item
-	BOOL m_bExpandButton;               // True if the item is expand button
-	BOOL m_bNavigateButton;             // True if the item is navigate button
-	DWORD_PTR m_dwData;                 // The 32-bit value associated with the item
-	CXTPShortcutBar* m_pShortcutBar;    // Parent CXTPShortcutBar class
-	BOOL m_bSelected;                   // TRUE if item selected
-	int m_nIconId;                      // Identifier of the item's image.
-	BOOL m_bEnabled;                    // RUE if the item is Enabled
+	CString m_strCaption;			 // Caption for the item.
+	CString m_strTooltip;			 // Tooltip for the item.
+	int m_nID;						 // Item's identifier.
+	CRect m_rcItem;					 // Bounding rectangle of the item
+	BOOL m_bVisible;				 // TRUE if the item is visible
+	BOOL m_bExpanded;				 // TRUE if the item is expanded
+	BOOL m_bHidden;					 // TRUE if the item is hidden
+	HWND m_hwndChild;				 // Child window associated with the item
+	BOOL m_bExpandButton;			 // True if the item is expand button
+	BOOL m_bNavigateButton;			 // True if the item is navigate button
+	DWORD_PTR m_dwData;				 // The 32-bit value associated with the item
+	CXTPShortcutBar* m_pShortcutBar; // Parent CXTPShortcutBar class
+	BOOL m_bSelected;				 // TRUE if item selected
+	int m_nIconId;					 // Identifier of the item's image.
+	BOOL m_bEnabled;				 // RUE if the item is Enabled
 
 private:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPShortcutBarItem)
+public:
+	enum
+	{
+		dispidCaption	= 1L,
+		dispidTooltip	= 2L,
+		dispidId		 = 3L,
+		dispidIconIndex  = 4L,
+		dispidVisible	= 5L,
+		dispidIconHandle = 6L,
+	};
+	afx_msg BSTR OleGetCaption();
+	afx_msg BSTR OleGetTooltip();
+
+	DECLARE_PROPERTY(IconHandle, int);
+	DECLARE_PROPERTY(Handle, OLE_HANDLE);
+
+	static CXTPShortcutBarItem* AFX_CDECL FromDispatch(LPDISPATCH pDisp);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif /*_XTP_ACTIVEX*/
 	friend class CXTPShortcutBar;
 };
 
@@ -446,7 +475,6 @@ public:
 	//     Destroys a CXTPShortcutBar object, handles cleanup and deallocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPShortcutBar();
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -647,7 +675,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetExpandedLinesHeight(int nHeight);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to enable/disable resize client area
@@ -682,7 +709,6 @@ public:
 	// See Also: IsSingleSelection, SetSelectItemOnFocus
 	//-----------------------------------------------------------------------
 	void SetSingleSelection(BOOL bSingleSelection = TRUE);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -933,9 +959,10 @@ public:
 	//     Call this method to show Navigation Pane if user resize ShortcutBar to small size
 	// Parameters:
 	//     bAllowMinimize - TRUE to allow minimize feature
-	//     nMinimizedWidth - Width of shortcutBar considered as minimized
+	//     nMinimizedWidth - Width of shortcutBar considered as minimized.
+	//                       If 0 specified, the default width 32 will be used.
 	//-----------------------------------------------------------------------
-	void AllowMinimize(BOOL bAllowMinimize = TRUE, int nMinimizedWidth = 32);
+	void AllowMinimize(BOOL bAllowMinimize = TRUE, int nMinimizedWidth = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -950,7 +977,8 @@ public:
 	// Summary:
 	//     Determines if Minimized ShortcutBar feature is enabled
 	// Returns:
-	//     TRUE to show Navigation Pane item when Width of ShortcutBar is less than m_nMinimizedWidth
+	//     TRUE to show Navigation Pane item when Width of ShortcutBar is less than
+	//     m_nMinimizedWidth
 	//-----------------------------------------------------------------------
 	BOOL IsAllowMinimize() const;
 
@@ -959,7 +987,6 @@ public:
 	virtual void OnMinimizeButtonClicked();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when reposition is done.
@@ -991,8 +1018,7 @@ protected:
 	void SetHotItem(CXTPShortcutBarItem* pItem);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPShortcutBar)
@@ -1020,7 +1046,7 @@ protected:
 	afx_msg void OnMouseLeave();
 	afx_msg void OnSysColorChange();
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point) ;
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg LRESULT OnExpandPopupExecute(WPARAM wparam, LPARAM lParam);
 	afx_msg void OnShowMoreButtons();
 	afx_msg void OnShowFewerButtons();
@@ -1028,46 +1054,48 @@ protected:
 	afx_msg void OnUpdateShowFewerButtons(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pWnd);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	CXTPShortcutBarItem* CreateNavigationItem();
 	CXTPShortcutBarItem* CreateConfigureButton();
 
 protected:
-	CXTPShortcutBarPaintManager* m_pPaintManager;   // Current paint manager.
-	CXTPImageManager* m_pImageManager;      // Current image manager.
-	int m_nExpandedLines;                   // Number of lines currently visible
-	int m_nDesiredExpandedLinesHeight;      // Desired visible lines height height.
-	int m_nMinClientHeight;                 // The height of client area.
-	BOOL m_bAllowResize;                    // TRUE to allow resize
-	XTPShortcutBarPaintTheme m_paintTheme;  // Current theme.
-	CShortcutArray m_arrItems;              // Array of items.
-	CSize m_szItem;                         // Size of items
-	CRect m_rcClient;                       // Client's rectangle.
-	CRect m_rcGripper;                      // Gripper's rectangle.
-	HWND m_hwndClient;                      // Client window handle
-	HCURSOR m_hSizeCursor;                  // Handle to the cursor displayed for the size icon.
-	BOOL m_bTrackingSize;                   // TRUE if control in tracking mode.
-	BOOL m_bShowActiveItemOnTop;            // TRUE to show active item on top
-	BOOL m_bAllowFreeResize;                // TRUE to allow resize gripper by pixel;
-	BOOL m_bAllowCollapse;                  // TRUE to allow collapse items.
-	BOOL m_bShowGripper;                    // TRUE to show gripper.
+	CXTPShortcutBarPaintManager* m_pPaintManager; // Current paint manager.
+	CXTPImageManager* m_pImageManager;			  // Current image manager.
+	int m_nExpandedLines;						  // Number of lines currently visible
+	int m_nDesiredExpandedLinesHeight;			  // Desired visible lines height height.
+	int m_nMinClientHeight;						  // The height of client area.
+	BOOL m_bAllowResize;						  // TRUE to allow resize
+	XTPShortcutBarPaintTheme m_paintTheme;		  // Current theme.
+	CShortcutArray m_arrItems;					  // Array of items.
+	CSize m_szItem;								  // Size of items
+	CRect m_rcClient;							  // Client's rectangle.
+	CRect m_rcGripper;							  // Gripper's rectangle.
+	HWND m_hwndClient;							  // Client window handle
+	HCURSOR m_hSizeCursor;		 // Handle to the cursor displayed for the size icon.
+	BOOL m_bTrackingSize;		 // TRUE if control in tracking mode.
+	BOOL m_bShowActiveItemOnTop; // TRUE to show active item on top
+	BOOL m_bAllowFreeResize;	 // TRUE to allow resize gripper by pixel;
+	BOOL m_bAllowCollapse;		 // TRUE to allow collapse items.
+	BOOL m_bShowGripper;		 // TRUE to show gripper.
 
-	CXTPShortcutBarItem* m_pHotItem;        // Pointer to hot item.
-	CXTPShortcutBarItem* m_pSelectedItem;   // Pointer to selected item.
-	CXTPShortcutBarItem* m_pPressedItem;    // Pointer to pressed item.
+	CXTPShortcutBarItem* m_pHotItem;	  // Pointer to hot item.
+	CXTPShortcutBarItem* m_pSelectedItem; // Pointer to selected item.
+	CXTPShortcutBarItem* m_pPressedItem;  // Pointer to pressed item.
 
 	CXTPShortcutBarPopup* m_pActivePopup;
 
 	CXTPShortcutBarItem* m_pNavigationPaneItem;
 
-	BOOL m_bClientPaneVisible;              // TRUE is client Pane in ShortcutBar is visible
-	HCURSOR m_hHandCursor;                  // Hand cursor that is displayed when the cursor is positioned over a shortcut bar item.
-	BOOL m_bSingleSelection;                // TRUE to use single selected items.
+	BOOL m_bClientPaneVisible; // TRUE is client Pane in ShortcutBar is visible
+	HCURSOR m_hHandCursor;	 // Hand cursor that is displayed when the cursor is positioned over a
+							   // shortcut bar item.
+	BOOL m_bSingleSelection;   // TRUE to use single selected items.
 	CXTPToolTipContext* m_pToolTipContext;  // Tooltip Context.
-	BOOL m_bPreSubclassWindow;              // True if PreSubclassWindow was called
+	BOOL m_bPreSubclassWindow;				// True if PreSubclassWindow was called
 	CXTPShortcutBarAnimation* m_pAnimation; // Animation helper
 
 	int m_bAllowMinimize;
@@ -1075,135 +1103,170 @@ protected:
 	BOOL m_bMinimized;
 	BOOL m_bShowMinimizeButton;
 
-
 	friend class CXTPShortcutBarItem;
 	friend class CShortcutBarCtrl;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CString CXTPShortcutBarItem::GetCaption() const{
+AFX_INLINE CString CXTPShortcutBarItem::GetCaption() const
+{
 	return m_strCaption;
 }
-AFX_INLINE CString CXTPShortcutBarItem::GetTooltip() const{
+AFX_INLINE CString CXTPShortcutBarItem::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE BOOL CXTPShortcutBarItem::IsItemExpandButton() const{
+AFX_INLINE BOOL CXTPShortcutBarItem::IsItemExpandButton() const
+{
 	return m_bExpandButton;
 }
-AFX_INLINE BOOL CXTPShortcutBarItem::IsExpanded() const {
+AFX_INLINE BOOL CXTPShortcutBarItem::IsExpanded() const
+{
 	return m_bExpanded;
 }
-AFX_INLINE CXTPShortcutBar* CXTPShortcutBarItem::GetShortcutBar() const {
+AFX_INLINE CXTPShortcutBar* CXTPShortcutBarItem::GetShortcutBar() const
+{
 	return m_pShortcutBar;
 }
-AFX_INLINE CRect CXTPShortcutBarItem::GetItemRect() const {
+AFX_INLINE CRect CXTPShortcutBarItem::GetItemRect() const
+{
 	return m_rcItem;
 }
-AFX_INLINE void CXTPShortcutBarItem::SetItemData(DWORD_PTR dwData) {
+AFX_INLINE void CXTPShortcutBarItem::SetItemData(DWORD_PTR dwData)
+{
 	m_dwData = dwData;
 }
-AFX_INLINE DWORD_PTR CXTPShortcutBarItem::GetItemData() const {
+AFX_INLINE DWORD_PTR CXTPShortcutBarItem::GetItemData() const
+{
 	return m_dwData;
 }
-AFX_INLINE CWnd* CXTPShortcutBarItem::GetClientWindow() const {
+AFX_INLINE CWnd* CXTPShortcutBarItem::GetClientWindow() const
+{
 	return CWnd::FromHandle(m_hwndChild);
 }
 
-AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetHotItem() const {
+AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetHotItem() const
+{
 	return m_pHotItem;
 }
-AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetSelectedItem() const {
+AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetSelectedItem() const
+{
 	return m_pSelectedItem;
 }
-AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetPressedItem() const {
+AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetPressedItem() const
+{
 	return m_pPressedItem;
 }
-AFX_INLINE CRect CXTPShortcutBar::GetGripperRect() const {
+AFX_INLINE CRect CXTPShortcutBar::GetGripperRect() const
+{
 	return m_rcGripper;
 }
-AFX_INLINE CSize CXTPShortcutBar::GetItemSize() const {
+AFX_INLINE CSize CXTPShortcutBar::GetItemSize() const
+{
 	return m_szItem;
 }
-AFX_INLINE void CXTPShortcutBar::SetItemSize(CSize szItem) {
+AFX_INLINE void CXTPShortcutBar::SetItemSize(CSize szItem)
+{
 	m_szItem = szItem;
 }
-AFX_INLINE int CXTPShortcutBar::GetExpandedLinesCount() const{
+AFX_INLINE int CXTPShortcutBar::GetExpandedLinesCount() const
+{
 	return m_nExpandedLines;
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsClientPaneVisible() const{
+AFX_INLINE BOOL CXTPShortcutBar::IsClientPaneVisible() const
+{
 	return m_bClientPaneVisible;
 }
-AFX_INLINE void CXTPShortcutBar::SetClientPaneVisible(BOOL bVisible) {
+AFX_INLINE void CXTPShortcutBar::SetClientPaneVisible(BOOL bVisible)
+{
 	m_bClientPaneVisible = bVisible;
 	Reposition();
 }
-AFX_INLINE CXTPShortcutBarPaintManager* CXTPShortcutBar::GetPaintManager() const{
+AFX_INLINE CXTPShortcutBarPaintManager* CXTPShortcutBar::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE void CXTPShortcutBar::SetMinimumClientHeight(int nMinHeight) {
+AFX_INLINE void CXTPShortcutBar::SetMinimumClientHeight(int nMinHeight)
+{
 	m_nMinClientHeight = nMinHeight;
 }
-AFX_INLINE XTPShortcutBarPaintTheme CXTPShortcutBar::GetCurrentTheme() const{
+AFX_INLINE XTPShortcutBarPaintTheme CXTPShortcutBar::GetCurrentTheme() const
+{
 	return m_paintTheme;
 }
-AFX_INLINE BOOL CXTPShortcutBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPShortcutBar::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+										DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
+										CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPShortcutBar::AllowGripperResize(BOOL bAllowResize) {
+AFX_INLINE void CXTPShortcutBar::AllowGripperResize(BOOL bAllowResize)
+{
 	m_bAllowResize = bAllowResize;
 }
-AFX_INLINE void CXTPShortcutBar::SetSingleSelection(BOOL bSingleSelection) {
+AFX_INLINE void CXTPShortcutBar::SetSingleSelection(BOOL bSingleSelection)
+{
 	m_bSingleSelection = bSingleSelection;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsSingleSelection() const{
+AFX_INLINE BOOL CXTPShortcutBar::IsSingleSelection() const
+{
 	return m_bSingleSelection;
 }
-AFX_INLINE void CXTPShortcutBar::ShowActiveItemOnTop(BOOL bActiveItemOnTop) {
+AFX_INLINE void CXTPShortcutBar::ShowActiveItemOnTop(BOOL bActiveItemOnTop)
+{
 	m_bShowActiveItemOnTop = bActiveItemOnTop;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsShowActiveItemOnTop() const {
+AFX_INLINE BOOL CXTPShortcutBar::IsShowActiveItemOnTop() const
+{
 	return m_bShowActiveItemOnTop;
 }
-AFX_INLINE void CXTPShortcutBar::AllowFreeResize(BOOL bAllowFreeResize) {
+AFX_INLINE void CXTPShortcutBar::AllowFreeResize(BOOL bAllowFreeResize)
+{
 	m_bAllowFreeResize = bAllowFreeResize;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsAllowFreeResize() const {
+AFX_INLINE BOOL CXTPShortcutBar::IsAllowFreeResize() const
+{
 	return m_bAllowFreeResize;
 }
-AFX_INLINE void CXTPShortcutBar::AllowCollapse(BOOL bAllowCollapse) {
+AFX_INLINE void CXTPShortcutBar::AllowCollapse(BOOL bAllowCollapse)
+{
 	m_bAllowCollapse = bAllowCollapse;
 	Reposition();
 }
-AFX_INLINE void CXTPShortcutBar::ShowGripper(BOOL bShowGripper) {
+AFX_INLINE void CXTPShortcutBar::ShowGripper(BOOL bShowGripper)
+{
 	m_bShowGripper = bShowGripper;
 	Reposition();
 }
-AFX_INLINE int CXTPShortcutBar::GetExpandedLinesHeight() const {
+AFX_INLINE int CXTPShortcutBar::GetExpandedLinesHeight() const
+{
 	return m_nDesiredExpandedLinesHeight;
 }
-AFX_INLINE CRect CXTPShortcutBar::GetClientPaneRect() const {
+AFX_INLINE CRect CXTPShortcutBar::GetClientPaneRect() const
+{
 	return m_rcClient;
 }
-AFX_INLINE void CXTPShortcutBar::AllowMinimize(BOOL bAllowMinimize, int nMinimizedWidth) {
-	m_bAllowMinimize = bAllowMinimize;
-	m_nMinimizedWidth = nMinimizedWidth;
-}
-AFX_INLINE void CXTPShortcutBar::ShowMinimizeButton(BOOL bShowMinimizeButton) {
+AFX_INLINE void CXTPShortcutBar::ShowMinimizeButton(BOOL bShowMinimizeButton)
+{
 	m_bShowMinimizeButton = bShowMinimizeButton;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsAllowMinimize() const {
+AFX_INLINE BOOL CXTPShortcutBar::IsAllowMinimize() const
+{
 	return m_bAllowMinimize;
 }
-AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetNavigationPaneItem() const {
+AFX_INLINE CXTPShortcutBarItem* CXTPShortcutBar::GetNavigationPaneItem() const
+{
 	return m_pNavigationPaneItem;
 }
-AFX_INLINE BOOL CXTPShortcutBar::IsMinimizeButtonVisible() const {
+AFX_INLINE BOOL CXTPShortcutBar::IsMinimizeButtonVisible() const
+{
 	return m_bShowMinimizeButton;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSHORTCUTBAR_H__)

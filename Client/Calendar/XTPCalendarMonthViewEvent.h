@@ -1,7 +1,6 @@
 // XTPCalendarMonthViewEvent.h: interface for the CXTPCalendarMonthViewEvent class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,25 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARMONTHVIEWEVENT_H__)
-#define _XTPCALENDARMONTHVIEWEVENT_H__
+#	define _XTPCALENDARMONTHVIEWEVENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPDrawHelpers.h"
-
-#include "XTPCalendarViewEvent.h"
-#include "XTPCalendarPaintManager.h"
-#include "XTPCalendarPtrs.h"
-#include "XTPCalendarPtrCollectionT.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarEvent;
 class CXTPCalendarControl;
 class CXTPCalendarMonthViewDay;
 class CXTPCalendarMonthViewGroup;
-struct XTP_CALENDAR_HITTESTINFO_MONTH_VIEW;
+struct XTP_CALENDAR_HITTESTINFO;
 
 //===========================================================================
 // Summary:
@@ -54,24 +48,21 @@ struct XTP_CALENDAR_HITTESTINFO_MONTH_VIEW;
 //
 // See Also: CXTPCalendarViewEvent, CXTPCalendarViewEventT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarMonthViewEvent : public CXTPCalendarViewEventT<
-										CXTPCalendarMonthViewGroup,
-										XTP_CALENDAR_HITTESTINFO_MONTH_VIEW>
+class _XTP_EXT_CLASS CXTPCalendarMonthViewEvent
+	: public CXTPCalendarViewEventT<CXTPCalendarMonthViewGroup>
 {
 	//{{AFX_CODEJOCK_PRIVATE
-	friend class CXTPCalendarPaintManager::CMonthViewEventPart;
+	// friend class CXTPCalendarPaintManager::CMonthViewEventPart;
 	friend class CXTPCalendarMonthViewDay;
 
 	DECLARE_DYNAMIC(CXTPCalendarMonthViewEvent)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//------------------------------------------------------------------------
 	// Remarks:
 	//     Base class type definition.
 	//------------------------------------------------------------------------
-	typedef CXTPCalendarViewEventT< CXTPCalendarMonthViewGroup,
-									XTP_CALENDAR_HITTESTINFO_MONTH_VIEW> TBase;
+	typedef CXTPCalendarViewEventT<CXTPCalendarMonthViewGroup> TBase;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,7 +80,6 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarMonthViewEvent();
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to draw the view content using
@@ -105,18 +95,18 @@ public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill a
-	//     XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     XTP_CALENDAR_HITTESTINFO structure.
 	// Parameters:
 	//     point - A CPoint that contains the point to test.
-	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO_MONTH_VIEW structure.
+	//     pInfo - A pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Returns:
 	//     TRUE if the test is successful, FALSE else.
 	// Remarks:
 	//     Call this member function to gather hit test information from
 	//     the day view.
-	// See Also: XTP_CALENDAR_HITTESTINFO_MONTH_VIEW
+	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO_MONTH_VIEW* pInfo);
+	virtual BOOL HitTestEx(CPoint point, XTP_CALENDAR_HITTESTINFO* pInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -134,7 +124,8 @@ public:
 	//     when theme is set.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber);
-	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax, int nEventPlaceNumber); //<COMBINE AdjustLayout>
+	virtual void AdjustLayout2(CDC* pDC, const CRect& rcEventMax,
+							   int nEventPlaceNumber); //<COMBINE AdjustLayout>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -145,7 +136,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the view is visible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible();
+	virtual BOOL IsVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -157,7 +148,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the view shows the end time value. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsShowEndTime();
+	BOOL IsShowEndTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,7 +160,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the view shows the time as a clock. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsTimeAsClock();
+	BOOL IsTimeAsClock() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -179,22 +170,22 @@ public:
 	//     all adjustment activities are completed.
 	//-----------------------------------------------------------------------
 	virtual void OnPostAdjustLayout();
-protected:
 
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the editor window font.
 	// Returns:
 	//     A pointer to a CFont object that contains the editor window font.
 	//-----------------------------------------------------------------------
-	virtual CFont* GetSubjectEditorFont();
+	virtual CFont* GetSubjectEditorFont() const;
 
 private:
 };
-
 
 //===========================================================================
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARMONTHVIEWEVENT_H__)

@@ -1,7 +1,6 @@
 // XTPChartDeviceCommand.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,39 +19,88 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTDEVICECOMMAND_H__)
-#define __XTPCHARTDEVICECOMMAND_H__
+#	define __XTPCHARTDEVICECOMMAND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../Types/XTPChartDiagramPoint.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-class CXTPChartDeviceCommand;
 class CXTPChartDeviceContext;
-class CXTPChartOpenGLDeviceContext;
 class CXTPChartFont;
-class CXTPChartMatrix;
 class CXTPChartElement;
+class CXTPChartSeriesStyle;
+class CXTPChartElementView;
 
-//===========================================================================
+//-----------------------------------------------------------------------
 // Summary:
-//     This class handles the rendering elements in a chart.
-//     This class act as a base class for all the specialized device
-//     command objects which do specific rendering jobs related to each
-//     element in a chart.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartDeviceCommand
+//      Defines a callback interface for chart device command event sink.
+// See also:
+//      CXTPChartDeviceCommand
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartDeviceCommandEvents
+	: public CXTPTypeIdProvider<CXTPChartDeviceCommandEvents>
 {
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Constructs event sink.
+	//-----------------------------------------------------------------------
+	CXTPChartDeviceCommandEvents();
+
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Notifies that a command enters BeforeExecute step.
+	// Parameters:
+	//      pCommand - Sender command pointer.
+	//      pDC - Device context pointer for which a command is being executed.
+	//-----------------------------------------------------------------------
+	virtual void OnBeforeExecute(CXTPChartDeviceCommand* pCommand, CXTPChartDeviceContext* pDC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//      Notifies that a command enters AfterExecute step.
+	// Parameters:
+	//      pCommand - Sender command pointer.
+	//      pDC - Device context pointer for which a command has been executed.
+	//-----------------------------------------------------------------------
+	virtual void OnAfterExecute(CXTPChartDeviceCommand* pCommand, CXTPChartDeviceContext* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Notifies about updated boundaries of the command result.
+	// Parameters:
+	//      pCommand - Sender command pointer.
+	//      rcBounds - Updated bounray rectangle.
+	//-----------------------------------------------------------------------
+	virtual void OnUpdateBounds(CXTPChartDeviceCommand* pCommand, CRect rcBounds);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Invoked when event sink is to be unsubscribed from command events.
+	// Parameters:
+	//      pCommand - Sender command pointer.
+	//-----------------------------------------------------------------------
+	void OnUnsubscribe(CXTPChartDeviceCommand* pCommand);
+};
+
+//===========================================================================
+// Summary:
+//     Defines a common implementation interface for chart drawing commands.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPChartDeviceCommand
+	: public CXTPChartObject
+	, public CXTPObservable<CXTPChartDeviceCommand, CXTPChartDeviceCommandEvents>
+{
+	DECLARE_DYNAMIC(CXTPChartDeviceCommand);
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Constructs a CXTPChartDeviceCommand object.
-	// Remarks:
 	//-----------------------------------------------------------------------
 	CXTPChartDeviceCommand();
 
@@ -63,6 +111,48 @@ public:
 	virtual ~CXTPChartDeviceCommand();
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines if the execution of the command has been committed.
+	// Returns:
+	//      TRUE if the execution of the command has been committed.
+	// See also:
+	//      Commit
+	//-----------------------------------------------------------------------
+	BOOL IsCommitted() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Commits the execution of the command. A command cannot be modified
+	//      after being committed.
+	// See also:
+	//      IsCommitted
+	//-----------------------------------------------------------------------
+	void Commit();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains the number of immediate children commands.
+	// Returns:
+	//      The number of immediate children commands.
+	// See also:
+	//      GetChildCommand
+	//-----------------------------------------------------------------------
+	int GetChildCommandCount() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains immediate child command point by index.
+	// Parameters:
+	//      nIndex - Child command index. Must not exceed value returned by
+	//               GetChildCommandCount call.
+	// Returns:
+	//      Child command pointer or NULL if no child command is defined
+	//      at the specified location.
+	// See also:
+	//      GetChildCommandCount
+	//-----------------------------------------------------------------------
+	CXTPChartDeviceCommand* GetChildCommand(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,21 +179,9 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this function to execute the drawing in OpenGL mode.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//     An instruction to execute the drawing of the parent object triggers the
-	//     drawing of children as well.
-	//-----------------------------------------------------------------------
-	virtual void Execute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Override this function to do some ground works if any, before the drawing.
 	// Parameters:
 	//     pDC - A pointer to the chart device context.
-	// Remarks:
 	//-----------------------------------------------------------------------
 	virtual void BeforeExecute(CXTPChartDeviceContext* pDC);
 
@@ -112,7 +190,6 @@ public:
 	//     Override this function to do some final cut if any, after the drawing.
 	// Parameters:
 	//     pDC - A pointer to the chart device context.
-	// Remarks:
 	//-----------------------------------------------------------------------
 	virtual void AfterExecute(CXTPChartDeviceContext* pDC);
 
@@ -121,336 +198,240 @@ public:
 	//     Override this function to write the drawing code for specific objects.
 	// Parameters:
 	//     pDC - A pointer to the chart device context.
-	// Remarks:
 	//-----------------------------------------------------------------------
 	virtual void ExecuteOverride(CXTPChartDeviceContext* pDC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Override this function to do some ground works if any, before the OpenGL
-	//      mode drawing.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
+	//      Get the number of executions made by the command.
+	// Returns:
+	//      The number of executions made by the command.
 	//-----------------------------------------------------------------------
-	virtual void BeforeExecute(CXTPChartOpenGLDeviceContext* pDC);
+	UINT GetPassNumber() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Override this function to do some final cut if any, after the OpenGL
-	//     drawing.
+	//      Performs recursive hit testing of the element at the specified point.
 	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
 	//-----------------------------------------------------------------------
-	virtual void AfterExecute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Override this function to write the drawing code in OpenGL for
-	//     specific objects.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	virtual void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
 	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Override this function to write the code for the transformation of
-	//     matrices.
+	//      Applies series style to the current element.
 	// Parameters:
-	//     matrix - A pointer to the matrix.
-	// Remarks:
+	//      pStyle - Series style to apply.
 	//-----------------------------------------------------------------------
-	virtual void TransformMatrix(CXTPChartMatrix* matrix);
+	virtual void ApplySeriesStyle(CXTPChartSeriesStyle* pStyle);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Performs inital preparation steps necessary for successful command execution.
+	// Parameters:
+	//      pDC - Device context pointer for which the command is to be prepared.
+	// See also:
+	//      PrepareOverride
+	//-----------------------------------------------------------------------
+	virtual void Prepare(CXTPChartDeviceContext* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Derived implementation must override this method for implementing
+	//      implementation specific preparation behavior.
+	// Parameters:
+	//      pDC - Device context pointer for which the command is to be prepared.
+	// See also:
+	//      Prepare
+	//-----------------------------------------------------------------------
+	virtual void PrepareOverride(CXTPChartDeviceContext* pDC);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Determines if the command is currently enabled.
+	// Returns:
+	//      TRUE if the command is currently enabled.
+	// See also:
+	//      SetEnabled
+	//-----------------------------------------------------------------------
+	virtual BOOL IsEnabled() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Enables/disable the command.
+	// Parameters:
+	//      bEnabled - TRUE to enable the command.
+	//-----------------------------------------------------------------------
+	void SetEnabled(BOOL bEnabled = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains device context pointer for which the command is currenly
+	//      being prepared or executed.
+	// Returns:
+	//      Device context pointer for which the command is currenly
+	//      being prepared or executed or NULL if no preparation or execution
+	//      is in progress.
+	//-----------------------------------------------------------------------
+	CXTPChartDeviceContext* GetCurrentDC() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Binds a view to the command object. The view reference is held
+	//      until another view is bound.
+	// Parameters:
+	//      pView - A view pointer. If another view is bound its reference
+	//              is released. NULL unbinds the current view.
+	//-----------------------------------------------------------------------
+	void BindView(CXTPChartElementView* pView);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Obtains a bound view pointer or NULL if no view is bound.
+	// Returns:
+	//      A bound view pointer or NULL if no view is bound.
+	//-----------------------------------------------------------------------
+	CXTPChartElementView* GetBoundView() const;
 
 protected:
-	CArray<CXTPChartDeviceCommand*, CXTPChartDeviceCommand*> m_arrChildren;   //The array of child device commands.
+	// The array of child device commands.
+	CArray<CXTPChartDeviceCommand*, CXTPChartDeviceCommand*> m_arrChildren;
+
+private:
+	BOOL m_bCommitted;
+	UINT m_nPassNumber;
+	BOOL m_bEnabled;
+	CXTPChartDeviceContext* m_pCurrentDC;
+	CXTPChartElementView* m_pBoundView;
+};
+
+AFX_INLINE BOOL CXTPChartDeviceCommand::IsCommitted() const
+{
+	return m_bCommitted;
+}
+AFX_INLINE void CXTPChartDeviceCommand::Commit()
+{
+	ASSERT("Must not be committed twice" && !m_bCommitted);
+	m_bCommitted = TRUE;
+}
+
+AFX_INLINE UINT CXTPChartDeviceCommand::GetPassNumber() const
+{
+	return m_nPassNumber;
+}
+
+AFX_INLINE void CXTPChartDeviceCommand::SetEnabled(BOOL bEnabled /*= TRUE*/)
+{
+	m_bEnabled = bEnabled;
+}
+
+AFX_INLINE CXTPChartDeviceContext* CXTPChartDeviceCommand::GetCurrentDC() const
+{
+	return m_pCurrentDC;
+}
+
+AFX_INLINE CXTPChartElementView* CXTPChartDeviceCommand::GetBoundView() const
+{
+	return m_pBoundView;
+}
+
+enum XTPChart3dAntialiasingPolicy
+{
+	xtpChart3dAntialiasingPolicyDefault,
+	xtpChart3dAntialiasingPolicyEnabled,
+	xtpChart3dAntialiasingPolicyDisabled,
 };
 
 //===========================================================================
 // Summary:
-//     This class is a kind of CXTPChartDeviceCommand and it does handle some
-//     house keeping works when the drawing mode is switched between native
-//     and OpenGL.
-// Remarks:
+//     Defines a common implementation interface for chart 3D drawing commands.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPChartDrawingTypeDeviceCommand : public CXTPChartDeviceCommand
+class _XTP_EXT_CLASS CXTPChart3dDeviceCommand : public CXTPChartDeviceCommand
 {
+	DECLARE_DYNAMIC(CXTPChart3dDeviceCommand);
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPChart3dDeviceCommand object.
+	//-----------------------------------------------------------------------
+	CXTPChart3dDeviceCommand(XTPChart3dAntialiasingPolicy nAntialiasingPolicy);
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Constructs a CXTPChartDrawingTypeDeviceCommand object.
-	// Parameters:
-	//      bNativeDrawing - TRUE if the drawing is native and FALSE if the drawing
-	//      is OpenGL.
+	//      Determines if the command is currently enabled.
+	// Returns:
+	//      TRUE if the command is currently enabled.
 	// Remarks:
+	//      3D commands consider anti-aliasing policy and current device context
+	//      rendering state in order to determine current enabled status.
+	//      If device context is skipping anti-aliasing phase when calling
+	//      this method then the policy is disregarded and the command is
+	//      considered enabled unles it's been explicitly disabled by the user.
+	//      If device context is in anti-alising od refault rendering state when
+	//      this method is called the policy determines the command state
+	//      unless it's been explicitly disabled by the user.
+	// See also:
+	//      SetEnabled, XTPChart3dAntialiasingPolicy
 	//-----------------------------------------------------------------------
-	CXTPChartDrawingTypeDeviceCommand(BOOL bNativeDrawing);
+	virtual BOOL IsEnabled() const;
 
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Override this function to do some ground works if any, before the OpenGL
-	//      mode drawing.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	virtual void BeforeExecute(CXTPChartOpenGLDeviceContext* pDC);
-	virtual void BeforeExecute(CXTPChartDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Override this function to do some final cut if any, after the OpenGL
-	//     drawing.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	virtual void AfterExecute(CXTPChartOpenGLDeviceContext* pDC);
-	virtual void AfterExecute(CXTPChartDeviceContext* pDC);
-
-protected:
-	BOOL m_bDrawingType;        //TRUE if the native drawing is used and FALSE if OpenGL is used.
-	BOOL m_bOldDrawingType;     //Stores the old drawing mode.
+private:
+	XTPChart3dAntialiasingPolicy m_nAntialiasingPolicy;
 };
 
-//===========================================================================
+//-----------------------------------------------------------------------
 // Summary:
-//     This class is a kind of CXTPChartDeviceCommand and it draws the element and
-//     does some additional task to smooth the drawings using antialiasing.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartPolygonAntialiasingDeviceCommand : public CXTPChartDeviceCommand
+//      Defines a base class interface for 2D hit test command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartHitTestElementCommand : public CXTPChartDeviceCommand
 {
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Constructs a CXTPChartPolygonAntialiasingDeviceCommand object.
+	//      Constructs CXTPChartHitTestElementCommand object instance.
 	// Parameters:
-	//      bAntiAlias - TRUE if the antialiasing is enabled and FALSE if the
-	//      antialiasing is disabled.
-	// Remarks:
+	//      pElement - Chart element pointer for which hit testing is to be performed
+	//                 including all its children elements recursively.
+	//      rcBounds - Hit test boundary rectangle.
+	// Returns:
+	//
+	// See also:
+	//
 	//-----------------------------------------------------------------------
-	CXTPChartPolygonAntialiasingDeviceCommand(BOOL bAntiAlias = TRUE);
-	virtual ~CXTPChartPolygonAntialiasingDeviceCommand();
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      This override do some ground works if any, before the OpenGL mode
-	//      antialiased drawing of polygons.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void BeforeExecute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Override this function to write the drawing code in OpenGL for
-	//     specific objects.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//     An instruction to execute the drawing of the object triggers the
-	//     drawing of children as well.
-	//-----------------------------------------------------------------------
-	void Execute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This override do some final cut if any, after the OpenGL antialiased
-	//     drawing of polygons.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void AfterExecute(CXTPChartOpenGLDeviceContext* pDC);
-
-	void RestoreImage(CSize size);
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      This override do some ground works if any, before the native mode
-	//      antialiased drawing of polygons.
-	// Parameters:
-	//     pDC - A pointer to the chart native device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void BeforeExecute(CXTPChartDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This override do some final cut if any, after the native antialiased
-	//     drawing of polygons.
-	// Parameters:
-	//     pDC - A pointer to the chart native device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void AfterExecute(CXTPChartDeviceContext* pDC);
-
-protected:
-	int shiftCount;
-	double shifts[4];
-	int viewport[4];                //The view port.
-	double projectionMatrix[16];    //The projection matrix.
-	LPBYTE pixelData;               //The pixel data.
-
-	BOOL m_bAntiAlias;              //TRUE if antialiasing enabled, FALSE if not.
-	long m_bOldAntiAlias;           //The previous value of anti aliasing.
-};
-
-//===========================================================================
-// Summary:
-//     This class is a kind of CXTPChartDeviceCommand and it helps in drawing
-//     lighting for OpenGL drawing.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartLightingDeviceCommand : public CXTPChartDeviceCommand
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartLightingDeviceCommand object.
-	// Parameters:
-	//      ambientColor            - The ambient color.
-	//      materialSpecularColor   - The material specular reflection color.
-	//      materialEmissionColor   - The material emission color.
-	//      materialShininess       - The material shininess value.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartLightingDeviceCommand(CXTPChartColor ambientColor, CXTPChartColor materialSpecularColor,
-		CXTPChartColor materialEmissionColor, float materialShininess);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to do some final cut if any, after the drawing.
-	// Parameters:
-	//     pDC - A pointer to the OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void AfterExecute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to write the drawing code in OpenGL for
-	//     specific objects.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
-protected:
-	CXTPChartColor m_ambientColor;           //This specifies the ambient RGBA reflectance of the material.
-	CXTPChartColor m_materialSpecularColor;  //This specifies the specular RGBA reflectance of the material.
-	CXTPChartColor m_materialEmissionColor;  //This specifies the RGBA emitted light intensity of the material.
-	float m_materialShininess;              //This float value specifies the RGBA specular exponent of the material.
-
-};
-//===========================================================================
-// Summary:
-//     This class is a kind of CXTPChartDeviceCommand and it helps in providing
-//     light source for  drawing lighting for OpenGL.
-// Remarks:
-//===========================================================================
-class _XTP_EXT_CLASS CXTPChartLightDeviceCommand : public CXTPChartDeviceCommand
-{
-public:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPChartLightingDeviceCommand object.
-	// Parameters:
-	//      index                   - The light source number.
-	//      ambientColor            - This specifies the ambient RGBA intensity of the light.
-	//                                Ambient light is the average volume of light that is created
-	//                                by emission of light from all of the light sources surrounding
-	//                                (or located inside of) the lit area.
-	//      diffuseColor            - This specifies the diffuse RGBA intensity of the light.Diffuse
-	//                                light represents a directional light cast by a light source.
-	//      specularColor           - This specifys the specular RGBA intensity of the light.The
-	//                                specular light reflects off the surface in a sharp and uniform way.
-	//      position                - The light source position.
-	//      spotDirection           - The spot light direction.
-	//      spotExponent            - The spot exponent, a floating-point value that specifies the
-	//                                intensity distribution of the light.
-	//      spotCutoff              - The spot cut off value.This floating-point value specifies
-	//                                the maximum spread angle of a light source
-	//      constantAttenuation     - The constant attennuation.Constant attenuation affects the
-	//                                overall intensity of the light, regardless of the distance
-	//                                of a surface from the light source.
-	//      linearAttenuation       - The linear attenuation.In linear attenuation ss a light moves
-	//                                away from a surface, the intensity of light striking the surface
-	//                                is inversely proportional to the distance between the light and
-	//                                the object.
-	//      quadraticAttenuation    - The quadratic attenuation.In Quadratic attenuation, the light
-	//                                intensity is attenuated by the square of the distance between
-	//                                the surface and the light.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	CXTPChartLightDeviceCommand(int index, CXTPChartColor ambientColor, CXTPChartColor diffuseColor, CXTPChartColor specularColor,
-		CXTPChartDiagramPoint position, CXTPChartDiagramPoint spotDirection, float spotExponent, float spotCutoff, float constantAttenuation, float linearAttenuation, float quadraticAttenuation);
-
-protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to do some final cut if any, after the drawing.
-	// Parameters:
-	//     pDC - A pointer to the OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void AfterExecute(CXTPChartOpenGLDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to write the drawing code in OpenGL for
-	//     specific objects.
-	// Parameters:
-	//     pDC - A pointer to the chart OpenGL device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
-
-protected:
-	int m_index;                            //The light source index.
-	CXTPChartColor m_ambientColor;           //The ambient light color.
-	CXTPChartColor m_diffuseColor;           //The diffuse light color.
-	CXTPChartColor m_specularColor;          //The specular light color.
-	CXTPChartDiagramPoint m_position;        //The position of the light in homogeneous object coordinates.
-	CXTPChartDiagramPoint m_spotDirection;   //The direction of the light in homogeneous object coordinates.
-	float m_spotExponent;                   //The intensity distribution of the light.
-	float m_spotCutoff;                     //The maximum spread angle of a light source.
-	float m_constantAttenuation;            //The constant attenuation.It affects the overall intensity of the light,
-	                                        //regardless of the distance of a surface from the light source.
-	float m_linearAttenuation;              //The linear attenuation.In linear attenuation a light moves
-	                                        //away from a surface, the intensity of light striking the surface
-	                                        //is inversely proportional to the distance between the light and
-	                                        //the object.
-	float m_quadraticAttenuation;           //The Quadratic attenuation, Here the light intensity is attenuated by
-	                                        //the square of the distance between the surface and the light.
-	bool m_directional;                     //TRUE if the light is directional, FALSE if not.
-};
-
-
-class CXTPChartHitTestElementCommand : public CXTPChartDeviceCommand
-{
-public:
 	CXTPChartHitTestElementCommand(CXTPChartElement* pElement);
-	CXTPChartHitTestElementCommand(CXTPChartElement* pElement, const CRect& rcBounds);
-	CXTPChartHitTestElementCommand(CXTPChartElement* pElement, const CXTPChartRectF& rcBounds);
+	CXTPChartHitTestElementCommand(
+		CXTPChartElement* pElement,
+		const CRect&
+			rcBounds); // <combine
+					   // CXTPChartHitTestElementCommand::CXTPChartHitTestElementCommand@CXTPChartElement*>
+	CXTPChartHitTestElementCommand(
+		CXTPChartElement* pElement,
+		const CXTPChartRectF&
+			rcBounds); // <combine
+					   // CXTPChartHitTestElementCommand::CXTPChartHitTestElementCommand@CXTPChartElement*>
 
-public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Performs recursive hit testing of the element at the specified point.
+	// Parameters:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
+	//-----------------------------------------------------------------------
 	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
 
 protected:
-	CXTPChartElement* m_pElement;
-	CRect m_rcBounds;
+	CXTPChartElement* m_pElement; // Chart element pointer for which hit testing is to be performed.
+	CRect m_rcBounds;			  // Hit test boundary rectangle.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTDEVICECOMMAND_H__)

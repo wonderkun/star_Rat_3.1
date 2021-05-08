@@ -1,7 +1,6 @@
 // XTPChartControl.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTCONTROL_H__)
-#define __XTPCHARTCONTROL_H__
+#	define __XTPCHARTCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+const UINT WM_XTP_CHART_BASE = (WM_USER + 9700);
+
+static const DWORD XTP_NC_CHARTMOUSEMOVE = (WM_XTP_CHART_BASE + 1);
 
 class CXTPChartContent;
 class CXTPChartDeviceCommand;
@@ -34,14 +39,15 @@ class CXTPChartDrawThreadDeviceCommand;
 class CXTPChartContentView;
 class CXTPToolTipContext;
 
-#include "XTPChartElement.h"
-
 //===========================================================================
 // Summary:
-//     CXTPChartControl is CWnd derived class, represents main Window that holds Content and draw chart
+//     CXTPChartControl is CWnd derived class, represents main Window that holds Content and draw
+//     chart
 // Remarks:
 //===========================================================================
-class _XTP_EXT_CLASS CXTPChartControl : public CWnd, public CXTPChartContainer
+class _XTP_EXT_CLASS CXTPChartControl
+	: public CWnd
+	, public CXTPChartContainer
 {
 public:
 	//-----------------------------------------------------------------------
@@ -79,8 +85,12 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
+
+	using CWnd::Create;
+
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
+	void Draw(CDC* pDC, CRect rc);
 
 public:
 	//-----------------------------------------------------------------------
@@ -142,12 +152,12 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set for best reaction to Chart changes. After each chart Changes, ChartControl will call UpdateWindow to redraw it.
+	//     Call this method to set for best reaction to Chart changes. After each chart Changes,
+	//     ChartControl will call UpdateWindow to redraw it.
 	// Parameters:
 	//     bUpdateWindow - TRUE to call UpdateWindow after each changes.
 	//-----------------------------------------------------------------------
 	void SetUpdateWindow(BOOL bUpdateWindow);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -161,7 +171,6 @@ public:
 	//-----------------------------------------------------------------------
 	void EnableToolTips(BOOL bEnable /* = TRUE */);
 
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -172,12 +181,14 @@ public:
 	void SetCapture(CXTPChartElementView* pView);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP();
-
+	//{{AFX_VIRTUAL(CXTPReportControl)
+	virtual void PreSubclassWindow();
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
+	//}}AFX_VIRTUAL
 
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_MESSAGE_MAP();
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -189,35 +200,38 @@ protected:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnCaptureChanged(CWnd* pWnd);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPChartContent* m_pContent;       // Chart Content
+	CXTPChartContent* m_pContent; // Chart Content
 
-	CBitmap m_bmpCache;                 // Bitmap Cache
-	CXTPChartDrawThreadDeviceCommand* m_pCommand;  // Root of Chart Command tree
-	CXTPChartContentView* m_pContentView;   // Current Content View
-	DWORD m_dwUpdateOptions;                // Update options
-	CXTPToolTipContext* m_pToolTipContext;          // Tooltip Context.
+	CBitmap m_bmpCache;							  // Bitmap Cache
+	CXTPChartDrawThreadDeviceCommand* m_pCommand; // Root of Chart Command tree
+	CXTPChartContentView* m_pContentView;		  // Current Content View
+	DWORD m_dwUpdateOptions;					  // Update options
+	CXTPToolTipContext* m_pToolTipContext;		  // Tooltip Context.
 
-
-	CXTPChartDrawThread* m_pDrawThread; // Helper draw thread that render 3D Charts
-	CXTPChartElementView* m_pCaptureView;   // Captured View.
-	BOOL m_bUpdateWindow;   // UpdateWindow flag.
+	CXTPChartDrawThread* m_pDrawThread;   // Helper draw thread that render 3D Charts
+	CXTPChartElementView* m_pCaptureView; // Captured View.
+	BOOL m_bUpdateWindow;				  // UpdateWindow flag.
 };
 
-AFX_INLINE CXTPChartContent* CXTPChartControl::GetContent() const {
+AFX_INLINE CXTPChartContent* CXTPChartControl::GetContent() const
+{
 	return m_pContent;
 }
-AFX_INLINE void CXTPChartControl::SetUpdateWindow(BOOL bUpdateWindow) {
+AFX_INLINE void CXTPChartControl::SetUpdateWindow(BOOL bUpdateWindow)
+{
 	m_bUpdateWindow = bUpdateWindow;
 }
-AFX_INLINE CXTPToolTipContext* CXTPChartControl::GetToolTipContext() const {
+AFX_INLINE CXTPToolTipContext* CXTPChartControl::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTCONTROL_H__)

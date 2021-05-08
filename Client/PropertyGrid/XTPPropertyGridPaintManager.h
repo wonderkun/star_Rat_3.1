@@ -1,7 +1,6 @@
 // XTPPropertyGridPaintManager.h interface for the CXTPPropertyGridPaintManager class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,76 +19,24 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPPROPERTYGRIDPAINTMANAGER_H__)
-#define _XTPPROPERTYGRIDPAINTMANAGER_H__
+#	define _XTPPROPERTYGRIDPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPPropertyGrid;
 class CXTPPropertyGridInplaceButton;
 class CXTPPropertyGridItem;
 class CXTPPropertyGridItemConstraint;
 class CXTPPropertyGridItemBool;
+class CXTPWinThemeWrapper;
 
-//-----------------------------------------------------------------------
-// Summary:
-//     Visual theme enumeration
-// Example:
-//     <code> m_wndPropertyGrid.SetTheme(xtpGridThemeWhidbey); </code>
-// See Also: CXTPPropertyGrid::SetTheme, CXTPPropertyGrid::GetCurrentTheme
-//
-// <KEYWORDS xtpGridThemeDefault, xtpGridThemeNativeWinXP, xtpGridThemeOffice2003, xtpGridThemeCool, xtpGridThemeSimple, xtpGridThemeDelphi, xtpGridThemeWhidbey>
-//-----------------------------------------------------------------------
-enum XTPPropertyGridPaintTheme
-{
-	xtpGridThemeDefault,     // Default theme.
-	xtpGridThemeNativeWinXP, // WinXP style theme.
-	xtpGridThemeOffice2003,  // Office 2003 style theme.
-	xtpGridThemeCool,        // Cool theme.
-	xtpGridThemeSimple,      // Visual Basic style theme.
-	xtpGridThemeDelphi,      // Delphi style theme.
-	xtpGridThemeWhidbey,     // Visual Studio 2005 "Whidbey" style theme.
-	xtpGridThemeOfficeXP,    // Office XP style theme.
-	xtpGridThemeResource,     // Office 2007 / 2010 style theme.
-	xtpGridThemeVisualStudio2010   // Visual Studio 2010 style theme.
-};
-
-#define xtpGridThemeOffice2007 xtpGridThemeResource
-
-//-----------------------------------------------------------------------
-// Summary:
-//     Border Style enumeration
-// Example:
-//     <code>m_wndPropertyGrid.SetBorderStyle(xtpGridBorderClientEdge);</code>
-// See Also: CXTPPropertyGrid::SetBorderStyle
-//-----------------------------------------------------------------------
-enum XTPPropertyGridBorderStyle
-{
-	xtpGridBorderNone,      // Without borders
-	xtpGridBorderFlat,      // Black flat borders
-	xtpGridBorderStaticEdge,// Static edge
-	xtpGridBorderClientEdge // Client edge
-};
-
-//-----------------------------------------------------------------------
-// Summary:
-//     InplaceButtons style
-// Example:
-//     pPaintManager->m_buttonsStyle = xtpGridButtonsOfficeXP;
-// See Also: CXTPPropertyGrid::SetTheme, CXTPPropertyGrid::GetCurrentTheme
-//-----------------------------------------------------------------------
-enum XTPPropertyGridInplaceButtonsStyle
-{
-	xtpGridButtonsDefault,          // Default button style
-	xtpGridButtonsThemed,           // Themed button style
-	xtpGridButtonsOfficeXP,         // Office XP button style
-};
-
+class CXTPButton;
+class CXTPComboBox;
 
 class CXTPPropertyGridPaintManager;
 
@@ -115,28 +62,66 @@ public:
 	virtual void SetDefaultValues();
 
 public:
-	CFont                         m_fontNormal;         // Normal font.
-	CFont                         m_fontBold;           // Bold font.
-	CFont                         m_fontUnderline;      // Underline Font.
-	int                           m_nImage;             // Image index.
+	CXTPFont m_xtpFontNormal;	// Normal font.
+	CXTPFont m_xtpFontBold;		 // Bold font.
+	CXTPFont m_xtpFontUnderline; // Underline Font.
 
-	CXTPPaintManagerColor         m_clrHelpBack;        // Color of the description background.
-	CXTPPaintManagerColor         m_clrHelpFore;        // Color of the description text.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontNormal, m_xtpFontNormal,
+										  GetNormalFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontBold, m_xtpFontBold, GetBoldFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontUnderline, m_xtpFontUnderline,
+										  GetUnderlineFontHandle);
 
-	CXTPPaintManagerColor         m_clrLine;            // Line color.
-	CXTPPaintManagerColor         m_clrFore;            // Color of the item's text.
-	CXTPPaintManagerColor         m_clrCategoryFore;    // Color of the category text.
-	CXTPPaintManagerColor         m_clrBack;            // Background color.
-	CXTPPaintManagerColor         m_clrReadOnlyFore;    // Color of read-only text.
-	CXTPPaintManagerColor         m_clrVerbFace;        // Text color of verbs.
-	UINT                          m_uDrawTextFormat;    // Text formatting style for the property item.
-	int                           m_nMaxLength;         // Maximum number of characters that can be entered into an editable item (Edit limit).
+	int m_nImage; // Image index.
+
+	CXTPPaintManagerColor m_clrHelpBack;	 // Color of the description background.
+	CXTPPaintManagerColor m_clrHelpFore;	 // Color of the description text.
+	CXTPPaintManagerColor m_clrLine;		 // Line color.
+	CXTPPaintManagerColor m_clrFore;		 // Color of the item's text.
+	CXTPPaintManagerColor m_clrCategoryFore; // Color of the category text.
+	CXTPPaintManagerColor m_clrBack;		 // Background color.
+	CXTPPaintManagerColor m_clrReadOnlyFore; // Color of read-only text.
+	CXTPPaintManagerColor m_clrVerbFace;	 // Text color of verbs.
+
+	UINT m_uDrawTextFormat; // Text formatting style for the property item.
+	int m_nMaxLength; // Maximum number of characters that can be entered into an editable item
+					  // (Edit limit).
 
 protected:
-	CXTPPropertyGridPaintManager* m_pPaintManager;          // Pointer to the paint manager used to draw the property grid.
+	CXTPPropertyGridPaintManager* m_pPaintManager; // Pointer to the paint manager used to draw the
+												   // property grid.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+public:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemMetrics)
+
+	afx_msg COLORREF OleGetForeColor();
+	afx_msg void OleSetForeColor(COLORREF clr);
+	afx_msg COLORREF OleGetBackColor();
+	afx_msg void OleSetBackColor(COLORREF clr);
+	afx_msg void OleSetFont(LPFONTDISP pFontDisp);
+	afx_msg LPFONTDISP OleGetFont();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
+//-----------------------------------------------------------------------
+// Summary:
+//     Window identifiers.
+// See Also: CXTPPropertyGridPaintManager::DrawPropertyGridBorder
+//-----------------------------------------------------------------------
+enum XTPPropertyGridWindow
+{
+	xtpGridVerbWindow, // Verb window
+	xtpGridGridWindow, // Grid window
+	xtpGridHelpWindow  // Help window
+};
 
 //===========================================================================
 // Summary:
@@ -145,7 +130,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridPaintManager : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridPaintManager object.
@@ -196,7 +180,6 @@ public:
 	virtual CFont* GetItemFont(CXTPPropertyGridItem* pItem, BOOL bValuePart);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw property grid background.
@@ -217,12 +200,21 @@ public:
 	// Summary:
 	//     This method is called to draw grid borders
 	// Parameters:
-	//      pDC - Pointer to a valid device context
-	//      rcBorder - Bounding rectangle
-	//      bAdjustRect - TURE to adjust bounding rectangle
+	//      pDC      - Pointer to a valid device context
+	//      rcBorder - Size of the border to draw.
+	//      nWindow  - Specifies for which window the border is to be drawn,
+	//                 1 = Grid, 2 = Help, 3 = Verb.
 	// See Also: FillPropertyGridView
 	//-----------------------------------------------------------------------
-	virtual void DrawPropertyGridBorder(CDC* pDC, RECT& rcBorder, BOOL bAdjustRect);
+	virtual void DrawPropertyGridBorder(CDC* pDC, RECT& rcBorder, XTPPropertyGridWindow nWindow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to adjust the bounding rectangle for the grid.
+	// Parameters:
+	//      rc - Bounding rectangle
+	//-----------------------------------------------------------------------
+	virtual void OnNcCalcSize(RECT& rc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -242,7 +234,8 @@ public:
 	//     bSelected - TRUE if constraint is currently selected.
 	//     pConstraint - Constraint to draw.
 	//-----------------------------------------------------------------------
-	virtual void DrawInplaceListItem(CDC* pDC, CXTPPropertyGridItemConstraint* pConstraint, CRect rc, BOOL bSelected);
+	virtual void DrawInplaceListItem(CDC* pDC, CXTPPropertyGridItemConstraint* pConstraint,
+									 CRect rc, BOOL bSelected);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -272,6 +265,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
+	void FillInplaceButtonThemed(CDC* pDC, CXTPPropertyGridInplaceButton* pButton);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw in-place button of the grid.
@@ -286,6 +281,12 @@ public:
 	//     This method is called to refresh the visual metrics of manager.
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -308,9 +309,38 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemMetrics* GetItemMetrics() const;
 
+	//-----------------------------------------------------------------------
+	// Summary: This member function is called by the property-grid to determine
+	//          the size of the splitter bar.
+	// Input:   rc       - Size of the property grid client area.
+	//          bIsHelp  - TRUE if retrieving the height of the help splitter
+	//                     bar, otherwise the height of the verbs splitter bar
+	//                     is retrieved.
+	// Returns: If bIsHelp is TRUE returns the size of the splitter
+	//          bar used the help window, otherwise if bIsHelp is FALSE
+	//          returns the size of the verbs splitter bar.
+	//-----------------------------------------------------------------------
+	CRect GetSplitterRect(CRect rc, BOOL bIsHelp);
+
+	//-----------------------------------------------------------------------
+	// Summary:  Call this method to get height of horizontal grid line
+	//           between PropertyGridItems.
+	// Returns:
+	//           Height in pixels of the horizontal grid line
+	//           between PropertyGridItems.
+	//-----------------------------------------------------------------------
+	virtual int GetItemsBorderHeight() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:  Call this method to set height of horizontal grid line
+	//           between PropertyGridItems.
+	// Parameters:
+	//   nHeight  - Height in pixels of the horizontal grid line
+	//           between PropertyGridItems.
+	//-----------------------------------------------------------------------
+	virtual void SetItemsBorderHeight(int nHeight);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw expand buttons of the grid.
@@ -363,11 +393,13 @@ public:
 	//     pItem   - Property Grid item to draw
 	//     rcValue - Value bounding rectangle
 	//-----------------------------------------------------------------------
-	virtual void DrawInplaceButtons(CDC* pDC, PDRAWITEMSTRUCT lpDrawItemStruct, CXTPPropertyGridItem* pItem, CRect rcValue);
+	virtual void DrawInplaceButtons(CDC* pDC, PDRAWITEMSTRUCT lpDrawItemStruct,
+									CXTPPropertyGridItem* pItem, CRect rcValue);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called to draw checkbox of CXTPPropertyGridItemOption item with CheckBox style.
+	//     This method is called to draw checkbox of CXTPPropertyGridItemOption item with CheckBox
+	//     style.
 	// Parameters:
 	//     pDC - Pointer to device context to draw.
 	//     pButton - Pointer to Bool item.
@@ -387,7 +419,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to draw a radio button for a CXTPPropertyGridItemOption item with RadioButton (default) style.
+	//     Call this member function to draw a radio button for a CXTPPropertyGridItemOption item
+	//     with RadioButton (default) style.
 	// Parameters:
 	//     pDC - Pointer to device context to draw.
 	//     rc - Specifies the rectangle in logical units.
@@ -396,35 +429,88 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void DrawRadioMark(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bChecked);
 
+	virtual void DrawSplitter(CDC* pDC, BOOL bIsHelp);
+
 	//{{AFX_CODEJOCK_PRIVATE
 	void DrawInplaceButtons(CDC* pDC, CXTPPropertyGridItem* pItem, CRect rcValue); // Obsolete
 	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_INCLUDE_CONTROLS
+	void DrawCheckMarkThemed(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bChecked);
+	void DrawRadioMarkThemed(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bChecked);
+	void SetControlsTheme(int eTheme); // XTPControlTheme
+#	endif
 
 public:
-	XTPPropertyGridInplaceButtonsStyle m_buttonsStyle;   // TRUE to use WinXP themes.
+	XTPPropertyGridInplaceButtonsStyle m_buttonsStyle; // TRUE to use WinXP themes.
 
-	CXTPWinThemeWrapper m_themeTree;                // Themes for Tree controls.
-	CXTPWinThemeWrapper m_themeButton;              // Themes for button controls
-	CXTPWinThemeWrapper m_themeCombo;               // Themes for combo button.
-	BOOL m_bTransparent;                            // TRUE to draw background with parent color
+	CXTPWinThemeWrapper* m_themeTree;   // Themes for Tree controls.
+	CXTPWinThemeWrapper* m_themeButton; // Themes for button controls
+	CXTPWinThemeWrapper* m_themeCombo;  // Themes for combo button.
+	BOOL m_bTransparent;				// TRUE to draw background with parent color
+
+#	ifdef _XTP_INCLUDE_CONTROLS
+	CXTPButton* m_pButton;
+	CXTPButton* m_pButtonCheck;
+	CXTPComboBox* m_pCombo;
+	BOOL m_bUseThemedControls;
+#	else
+private:
+	CXTPExcludedMemberPadding<CXTPButton*> m_pButton;
+	CXTPExcludedMemberPadding<CXTPButton*> m_pButtonCheck;
+	CXTPExcludedMemberPadding<CXTPComboBox*> m_pCombo;
+	CXTPExcludedMemberPadding<BOOL> m_bUseThemedControls;
 
 public:
-	CXTPPaintManagerColor m_clrFace;                             // Face color.
-	CXTPPaintManagerColor m_clrShadow;                           // Shadow color.
-	CXTPPaintManagerColor m_clrHighlight;                        // Highlight color.
-	CXTPPaintManagerColor m_clrHighlightText;                    // Highlight text color.
-	CXTPPaintManagerColor m_clrCategorySeparator;                   // Face color.
+#	endif
+
+public:
+	CXTPPaintManagerColor m_clrFace;			  // Face color.
+	CXTPPaintManagerColor m_clrShadow;			  // Shadow color.
+	CXTPPaintManagerColor m_clrHighlight;		  // Highlight color.
+	CXTPPaintManagerColor m_clrHighlightText;	 // Highlight text color.
+	CXTPPaintManagerColor m_clrNonHighlightBack;  // Non highlight background color.
+	CXTPPaintManagerColor m_clrNonHighlightText;  // Non highlight text color.
+	CXTPPaintManagerColor m_clrCategorySeparator; // Face color.
+	CXTPPaintManagerColor m_clrSplitter;		  // Splitter border color.
 
 protected:
-	CXTPPropertyGrid* m_pGrid;                      // Parent grid class.
+	int m_nItemsBorderHeight;  // Height in pixels of the horizontal border between
+							   // PropertyGridItems.
+	int m_nSplitterHeight;	 // Height in pixels of the splitter bar.
+	int m_nHelpHeight;		   // Height of the description area (help panel).
+	int m_nVerbsHeight;		   // Height of the verbs panel.
+	BOOL m_bThinSplitter;	  // TRUE to draw a single line for splitter.
+	CXTPPropertyGrid* m_pGrid; // Parent grid class.
 
-	CXTPPropertyGridItemMetrics* m_pMetrics;        // Default metrics of the item
+	CXTPPropertyGridItemMetrics* m_pMetrics; // Default metrics of the item
 
 	friend class CXTPPropertyGrid;
 
-};
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridPaintManager)
+	DECLARE_PROPERTY(HelpBackColor, COLORREF);
+	DECLARE_PROPERTY(HelpForeColor, COLORREF);
+	DECLARE_PROPERTY(ViewBackColor, COLORREF);
+	DECLARE_PROPERTY(ViewForeColor, COLORREF);
+	DECLARE_PROPERTY(LineColor, COLORREF);
+	DECLARE_PROPERTY(ViewCategoryForeColor, COLORREF);
+	DECLARE_PROPERTY(ViewReadOnlyForeColor, COLORREF);
+
+	DECLARE_PROPERTY(BackgroundColor, COLORREF);
+	DECLARE_PROPERTY(ShadowColor, COLORREF);
+	DECLARE_PROPERTY(HighlightBackColor, COLORREF);
+	DECLARE_PROPERTY(HighlightForeColor, COLORREF);
+	DECLARE_PROPERTY(HyperlinkColor, COLORREF);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+};
 
 //===========================================================================
 // Summary:
@@ -434,7 +520,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridOffice2003Theme : public CXTPPropertyGridPaintManager
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridOffice2003Theme object.
@@ -450,9 +535,14 @@ public:
 	//-------------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 
 protected:
-	BOOL m_bLunaTheme;  // TRUE to use luna colors, FALSE otherwise
+	BOOL m_bLunaTheme; // TRUE to use luna colors, FALSE otherwise
 };
 
 //===========================================================================
@@ -463,7 +553,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridOffice2007Theme : public CXTPPropertyGridOffice2003Theme
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridOffice2003Theme object.
@@ -480,7 +569,6 @@ public:
 	virtual void RefreshMetrics();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to draw in-place button of the grid.
@@ -503,7 +591,8 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to draw a radio button for a CXTPPropertyGridItemOption item with RadioButton (default) style.
+	//     Call this member function to draw a radio button for a CXTPPropertyGridItemOption item
+	//     with RadioButton (default) style.
 	// Parameters:
 	//     pDC - Pointer to device context to draw.
 	//     rc - Specifies the rectangle in logical units.
@@ -511,6 +600,22 @@ protected:
 	//     bChecked - TRUE if checked, FALSE if not checked.
 	//-----------------------------------------------------------------------
 	virtual void DrawRadioMark(CDC* pDC, CRect rc, BOOL bEnabled, BOOL bChecked);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw expand buttons of the grid.
+	// Parameters:
+	//     dc        - Reference to a valid device context
+	//     pItem     - Points to a CXTPPropertyGridItem object
+	//     rcCaption - Caption button rectangle.
+	//-----------------------------------------------------------------------
+	void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 };
 
 //===========================================================================
@@ -521,7 +626,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridNativeXPTheme : public CXTPPropertyGridPaintManager
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridNativeXPTheme object.
@@ -536,6 +640,12 @@ public:
 	//     property grid.
 	//-------------------------------------------------------------------------
 	virtual void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 };
 
 //===========================================================================
@@ -546,7 +656,6 @@ public:
 class _XTP_EXT_CLASS CXTPPropertyGridOfficeXPTheme : public CXTPPropertyGridPaintManager
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridOfficeXPTheme object.
@@ -561,6 +670,12 @@ public:
 	//     property grid.
 	//-------------------------------------------------------------------------
 	void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 };
 
 //===========================================================================
@@ -594,8 +709,13 @@ public:
 	//     property grid.
 	//-------------------------------------------------------------------------
 	void RefreshMetrics();
-};
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+};
 
 //===========================================================================
 // Summary:
@@ -628,8 +748,13 @@ public:
 	//     property grid.
 	//-------------------------------------------------------------------------
 	void RefreshMetrics();
-};
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+};
 
 //===========================================================================
 // Summary:
@@ -663,28 +788,30 @@ public:
 	//-------------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
 };
-
 
 //===========================================================================
 // Summary:
-//     CXTPPropertyGridWhidbeyTheme is a CXTPPropertyGridPaintManager derived
-//     class.  This represents a Visual Studio 2005 "Whidbey" style theme.
+//     CXTPPropertyGridVisualStudio2005Theme is a CXTPPropertyGridPaintManager derived
+//     class.  This represents a Visual Studio 2005 style theme.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPPropertyGridWhidbeyTheme : public CXTPPropertyGridPaintManager
+class _XTP_EXT_CLASS CXTPPropertyGridVisualStudio2005Theme : public CXTPPropertyGridPaintManager
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Constructs a CXTPPropertyGridWhidbeyTheme object.
+	//     Constructs a CXTPPropertyGridVisualStudio2005Theme object.
 	// Parameters:
 	//     pGrid - Points to a CXTPPropertyGrid object
 	//-----------------------------------------------------------------------
-	CXTPPropertyGridWhidbeyTheme(CXTPPropertyGrid* pGrid);
+	CXTPPropertyGridVisualStudio2005Theme(CXTPPropertyGrid* pGrid);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called to draw the bounding rectangle for a
@@ -712,8 +839,13 @@ protected:
 	//     rcCaption - Caption button rectangle.
 	//-----------------------------------------------------------------------
 	void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
-};
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+};
 
 //===========================================================================
 // Summary:
@@ -723,7 +855,6 @@ protected:
 class _XTP_EXT_CLASS CXTPPropertyGridVisualStudio2010Theme : public CXTPPropertyGridPaintManager
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridVisualStudio2010Theme object.
@@ -731,8 +862,55 @@ public:
 	//     pGrid - Points to a CXTPPropertyGrid object
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridVisualStudio2010Theme(CXTPPropertyGrid* pGrid);
+	~CXTPPropertyGridVisualStudio2010Theme();
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw expand buttons of the grid.
+	// Parameters:
+	//     dc - Reference to a valid device context
+	//     pItem - Points to a CXTPPropertyGridItem object
+	//     rcCaption - Caption button rectangle.
+	//-----------------------------------------------------------------------
+	virtual void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     This method is called to refresh the visual metrics of the
+	//     property grid.
+	//-------------------------------------------------------------------------
+	virtual void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+};
+
+//===========================================================================
+// Summary:
+//     CXTPPropertyGridVisualStudio2012Theme is a CXTPPropertyGridVisualStudio2010Theme derived
+//     class.  This represents a Office XP style theme.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPPropertyGridVisualStudio2012Theme : public CXTPPropertyGridPaintManager
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPPropertyGridVisualStudio2012Theme object.
+	// Parameters:
+	//     pGrid - Points to a CXTPPropertyGrid object
+	//-----------------------------------------------------------------------
+	CXTPPropertyGridVisualStudio2012Theme(CXTPPropertyGrid* pGrid, BOOL bLight);
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     This method is called to refresh the visual metrics of the
+	//     property grid.
+	//-------------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -744,31 +922,122 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+
 protected:
+	BOOL m_bLight;
+};
+
+//===========================================================================
+// Summary:
+//     CXTPPropertyGridOffice2013Theme is a CXTPPropertyGridPaintManager derived
+//     class.  This represents a Office XP style theme.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPPropertyGridOffice2013Theme : public CXTPPropertyGridPaintManager
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPPropertyGridOffice2013Theme object.
+	// Parameters:
+	//     pGrid - Points to a CXTPPropertyGrid object
+	//-----------------------------------------------------------------------
+	CXTPPropertyGridOffice2013Theme(CXTPPropertyGrid* pGrid);
+
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to refresh the visual metrics of the
 	//     property grid.
 	//-------------------------------------------------------------------------
-	void RefreshMetrics();
+	virtual void RefreshMetrics();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw expand buttons of the grid.
+	// Parameters:
+	//     dc - Reference to a valid device context
+	//     pItem - Points to a CXTPPropertyGridItem object
+	//     rcCaption - Caption button rectangle.
+	//-----------------------------------------------------------------------
+	virtual void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+
+	CXTPPaintManagerColor m_clrGlyphExpand;   // Expand glyph color.
+	CXTPPaintManagerColor m_clrGlyphBorder;   // Expand glyph border color.
+	CXTPPaintManagerColor m_clrGlyphContract; // Contract glyph color.
 };
 
-
-//{{AFX_CODEJOCK_PRIVATE
-namespace XTPPropertyGridPaintThemes
+//===========================================================================
+// Summary:
+//     CXTPPropertyGridVisualStudio2015Theme is a CXTPPropertyGridVisualStudio2010Theme derived
+//     class.  This represents a Office XP style theme.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPPropertyGridVisualStudio2015Theme
+	: public CXTPPropertyGridVisualStudio2010Theme
 {
-}
-using namespace XTPPropertyGridPaintThemes;
-//}}AFX_CODEJOCK_PRIVATE
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPPropertyGridVisualStudio2015Theme object.
+	// Parameters:
+	//     pGrid - Points to a CXTPPropertyGrid object
+	//-----------------------------------------------------------------------
+	CXTPPropertyGridVisualStudio2015Theme(CXTPPropertyGrid* pGrid);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method is called to draw expand buttons of the grid.
+	// Parameters:
+	//     dc - Reference to a valid device context
+	//     pItem - Points to a CXTPPropertyGridItem object
+	//     rcCaption - Caption button rectangle.
+	//-----------------------------------------------------------------------
+	virtual void DrawExpandButton(CDC& dc, CXTPPropertyGridItem* pItem, CRect rcCaption);
 
-AFX_INLINE CXTPPropertyGridItemMetrics* CXTPPropertyGridPaintManager::GetItemMetrics() const {
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     This method is called to refresh the visual metrics of the
+	//     property grid.
+	//-------------------------------------------------------------------------
+	virtual void RefreshMetrics();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns scroll bar theme identifier.
+	//-----------------------------------------------------------------------
+	virtual XTPScrollBarTheme GetScrollBarTheme() const;
+};
+
+AFX_INLINE CXTPPropertyGridItemMetrics* CXTPPropertyGridPaintManager::GetItemMetrics() const
+{
 	return m_pMetrics;
 }
-AFX_INLINE void CXTPPropertyGridPaintManager::DrawInplaceButtons(CDC* pDC, CXTPPropertyGridItem* pItem, CRect rcValue) {
+
+AFX_INLINE void CXTPPropertyGridPaintManager::DrawInplaceButtons(CDC* pDC,
+																 CXTPPropertyGridItem* pItem,
+																 CRect rcValue)
+{
 	DrawInplaceButtons(pDC, NULL, pItem, rcValue);
 }
 
+AFX_INLINE int CXTPPropertyGridPaintManager::GetItemsBorderHeight() const
+{
+	return m_nItemsBorderHeight;
+}
 
+AFX_INLINE void CXTPPropertyGridPaintManager::SetItemsBorderHeight(int nHeight)
+{
+	m_nItemsBorderHeight = nHeight;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPPROPERTYGRIDPAINTMANAGER_H__)

@@ -1,7 +1,6 @@
 // XTPEdit.h interface for the CXTPEdit class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPEDIT_H__)
-#define __XTPEDIT_H__
+#	define __XTPEDIT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRegExp;
+class CXTPWinThemeWrapper;
+class CXTPEditTheme;
 
 //===========================================================================
 // Summary:
@@ -119,7 +122,6 @@ class _XTP_EXT_CLASS CXTPEdit : public CXTPMaskEditT<CEdit>
 	typedef CXTPMaskEditT<CEdit> TBase;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPEdit object
@@ -130,9 +132,8 @@ public:
 	// Summary:
 	//     Destroys a CXTPEdit object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
-	~CXTPEdit();
+	virtual ~CXTPEdit();
 
-public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will set the mask for the edit control.
@@ -170,9 +171,12 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault = NULL);
 
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to set the pattern for the edit mask.
+	// Input:   lpszPattern - text pattern to set.
+	//-----------------------------------------------------------------------
 	void SetPattern(LPCTSTR lpszPattern);
 
-public:
 	// ------------------------------------------------------------------------
 	// Summary:
 	//     Determines if the clipboard contains valid information.
@@ -193,22 +197,34 @@ public:
 	//-----------------------------------------------------------------------
 	BOOL HasSelection() const;
 
-
-public:
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to adjust the size of the area to draw
+	//          the buddy control borders on.
+	// Input:   pBuddy     - Points to the buddy control associated with the edit.
+	//          rcUpDown   - Size of the buddy border area to be drawn.
+	//          nAlignment - Side of the edit box the buddy is attached to,
+	//                       either UDS_ALIGNRIGHT or UDS_ALIGNLEFT.
+	// Returns: TRUE if successful, otherwise FALSE.
+	//-----------------------------------------------------------------------
 	void AdjustBuddyRect(CWnd* pBuddy, CRect& rcUpDown, int nAlignemnt);
-	void DrawBuddyBorders(CWnd* pBuddy, CDC* pDC, CRect rc, int nAlignemnt);
 
-public:
-//{{AFX_CODEJOCK_PRIVATE
-	virtual bool Initialize(CWnd* pParentWnd); // Obsolete
-//}}AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to draw the borders for the associated
+	//          buddy window.
+	// Input:   pBuddy     - Points to the buddy control associated with the edit.
+	//          pDC        - Points to a valid device context.
+	//          rc         - Size of the buddy border area to be drawn.
+	//          nAlignment - Side of the edit box the buddy is attached to,
+	//                       either UDS_ALIGNRIGHT or UDS_ALIGNLEFT.
+	//-----------------------------------------------------------------------
+	void DrawBuddyBorders(CWnd* pBuddy, CDC* pDC, CRect rc, int nAlignemnt);
 
 	// -----------------------------------------------------------------
 	// Summary:
 	//     This member is called to update color, text and other visual elements
 	//     of the control.
 	// -----------------------------------------------------------------
-	void RefreshMetrics();
+	virtual void RefreshMetrics();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -224,8 +240,23 @@ public:
 	//     * <b>xtpControlThemeOfficeXP</b> Office XP appearance style.
 	//     * <b>xtpControlThemeOffice2003</b> Office 2003 appearance style.
 	//     * <b>xtpControlThemeResource</b> Office 2007 appearance style.
+	//     * <b>xtpControlThemeVisualStudio2012Light</b> VS 2012 Light style theme.
+	//     * <b>xtpControlThemeVisualStudio2012Dark</b> VS 2012 Dark style theme.
 	//-----------------------------------------------------------------------
-	void SetTheme(XTPControlTheme nTheme);
+	virtual void SetTheme(XTPControlTheme nTheme);
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to get the style for the theme.
+	// Returns: A XTPControlTheme enumerator index value representing the
+	//          theme style.
+	//-----------------------------------------------------------------------
+	XTPControlTheme GetThemeID();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member to retrieve a pointer to the current theme.
+	// Returns: A CXTPEditTheme object that represents the current theme.
+	//-----------------------------------------------------------------------
+	CXTPEditTheme* GetTheme();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -289,25 +320,75 @@ public:
 	//-----------------------------------------------------------------------
 	void SetUseVisualStyle(BOOL bUseVisualStyle = TRUE);
 
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to determine if the pattern set using
+	//          SetPattern() is valid.
+	// Returns: TRUE if the previously set pattern is valid.
+	//-----------------------------------------------------------------------
 	BOOL IsPatternValid();
 
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to enable / disable theme border
+	//          display:
+	// Input:   bShowThemedBorder - TRUE to display themed borders.
+	//-----------------------------------------------------------------------
 	void ShowThemedBorder(BOOL bShowThemedBorder);
 
-protected:
-	virtual void DrawNcBorders(CDC* pDC, CRect rc);
-	void RedrawFocusedFrame();
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to determine if the edit state
+	//          is highilghted, meaning the mouse cursor is currently hovering
+	//          the control.
+	// Returns: TRUE if the edit state is highlighted, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsHighlighted() const;
 
-private:
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to determine if the edit-box has
+	//          input focus.
+	// Returns: TRUE if the edit-box has input focus, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL IsFocused() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Gets the flat style appearance of the edit control.
+	// Remarks: The control will appear flat until the mouse pointer moves
+	//          over it, at which point it appears three-dimensional.
+	// Returns: TRUE if the flat style is used, FALSE otherwise.
+	//-----------------------------------------------------------------------
+	BOOL IsFlatStyle() const;
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member to determine if non client borders are displayed.
+	// Returns: TRUE if non-client borders are to be drawn.
+	//-----------------------------------------------------------------------
+	BOOL ShowBorder() const;
+
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual bool Initialize(CWnd* pParentWnd); // Obsolete
+											   //}}AFX_CODEJOCK_PRIVATE
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary: Retreives a handle to the client background brush.
+	// Input:   pDC - Points to a valid device context.
+	// Returns: A HBRUSH handle representing the client background brush.
+	//-----------------------------------------------------------------------
 	HBRUSH GetClientBrush(CDC* pDC);
-	void FillSolidRect(HDC hdc, int x, int y, int cx, int cy, HBRUSH hBrush);
-	void DrawFrame(HDC hdc, LPRECT lprc, int nSize, HBRUSH hBrush);
+
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to redraw the edit-control.
+	//-----------------------------------------------------------------------
 	void RedrawEdit();
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary: Called by the framework to redraw the focus rectangle for the
+	//          edit control.
+	//-----------------------------------------------------------------------
+	void RedrawFocusedFrame();
 
+	CXTPEditTheme* m_pTheme; // Points to the current edit theme.
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
+	//{{AFX_CODEJOCK_PRIVATE
 
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
 	void PreSubclassWindow();
@@ -339,41 +420,119 @@ protected:
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg BOOL OnChange();
 	afx_msg void OnSysColorChange();
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
+
+	DECLARE_MESSAGE_MAP()
+
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-
-protected:
-	BOOL m_bPreSubclassInit;
-
-	BOOL m_bUseVisualStyle;
-	XTPControlTheme m_nTheme;
-
-	COLORREF m_clrBorderNormal;
-	COLORREF m_clrBorderHot;
-	BOOL m_bShowBorder;
-	BOOL m_bHighlighted;
-	BOOL m_bFocused;
-	BOOL m_bFlatStyle;
-	CXTPRegExp* m_pRegExp;
-
-
-	CXTPWinThemeWrapper m_wrapperEdit;
+	BOOL m_bPreSubclassInit; // TRUE if the control has been subclassed.
+	BOOL m_bShowBorder;		 // TRUE if non client borders are displayed.
+	BOOL m_bHighlighted;	 // TRUE when the mouse is overing over the control.
+	BOOL m_bFocused;		 // TRUE when the control has input focus.
+	CXTPRegExp* m_pRegExp;   // Points to the CXTPRegExp object for this control.
 };
 
-AFX_INLINE BOOL CXTPEdit::GetUseVisualStyle() const {
-	return m_bUseVisualStyle;
+AFX_INLINE BOOL CXTPEdit::IsHighlighted() const
+{
+	return m_bHighlighted;
 }
-AFX_INLINE BOOL CXTPEdit::GetFlatStyle() const{
-	return m_bFlatStyle;
+
+AFX_INLINE BOOL CXTPEdit::IsFocused() const
+{
+	return m_bFocused;
 }
-AFX_INLINE void CXTPEdit::SetFlatStyle(BOOL bFlatStyle/* = TRUE*/) {
-	m_bFlatStyle = bFlatStyle;
-	RedrawEdit();
+
+AFX_INLINE BOOL CXTPEdit::GetFlatStyle() const
+{
+	return IsFlatStyle();
 }
-AFX_INLINE void CXTPEdit::ShowThemedBorder(BOOL bShowThemedBorder) {
+
+AFX_INLINE BOOL CXTPEdit::ShowBorder() const
+{
+	return m_bShowBorder;
+}
+
+AFX_INLINE void CXTPEdit::ShowThemedBorder(BOOL bShowThemedBorder)
+{
 	m_bShowBorder = bShowThemedBorder;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// CXTPScrollableEditT
 
+//=======================================================================
+// Summary:
+//	An adaptor for any CEdit derived control that overrides standard scroll bars with custom scroll
+// bars.
+// Parameters:
+//	EditBase - base CEdit derived class name.
+// See also:
+//	CXTPScrollable
+//=======================================================================
+template<class EditBase>
+class CXTPScrollableEditT : public CXTPScrollable<EditBase>
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//	Initializes scrollable control instance.
+	//-----------------------------------------------------------------------
+	CXTPScrollableEditT();
+
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	virtual void DisableScrollbars();
+	virtual void DisableScrollbars(CWnd& wnd);
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//	Type alias for CXTPEdit derived scrollable control.
+//-----------------------------------------------------------------------
+typedef CXTPScrollableEditT<CXTPEdit> CXTPScrollableEdit;
+
+template<class EditBase>
+AFX_INLINE CXTPScrollableEditT<EditBase>::CXTPScrollableEditT()
+{
+	ASSERT(GetRuntimeClass()->IsDerivedFrom(RUNTIME_CLASS(CEdit)));
+}
+
+template<class EditBase>
+AFX_INLINE void CXTPScrollableEditT<EditBase>::DisableScrollbars()
+{
+	ModifyStyle(WS_VSCROLL | WS_HSCROLL, 0);
+	ModifyStyleEx(WS_EX_LEFTSCROLLBAR, 0);
+}
+
+template<class EditBase>
+AFX_INLINE void CXTPScrollableEditT<EditBase>::DisableScrollbars(CWnd& wnd)
+{
+	UNREFERENCED_PARAMETER(wnd);
+	// Do nothing as EDIT behaves improperly if scroll bars gets disabled repeatedly.
+}
+
+//{{AFX_CODEJOCK_PRIVATE
+class _XTP_EXT_CLASS CXTPEditor_Deprecated : public CXTPEdit
+{
+	DECLARE_DYNAMIC(CXTPEditor_Deprecated)
+
+public:
+	// -----------------------------------------------------------------
+	// Summary:
+	//     This member is called to update color, text and other visual elements
+	//     of the control.
+	// -----------------------------------------------------------------
+	virtual void RefreshMetrics();
+};
+
+_XTP_DEPRECATE("Use CXTPEdit instead")
+typedef CXTPEditor_Deprecated CXTPEditor;
+
+//}}AFX_CODEJOCK_PRIVATE
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPEDIT_H__)

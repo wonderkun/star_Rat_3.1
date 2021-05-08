@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA))
 #ifdef _WIN32
 LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
 #pragma code_page(1252)
@@ -104,18 +103,18 @@ CAPTION "Disponi finestre"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Seleziona &finestra:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,209,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,199,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Attivazione",XTP_IDC_BTN_ACTIVATE,218,7,81,14
-    PUSHBUTTON      "OK",IDOK,218,24,81,14
-    PUSHBUTTON      "Salva",XTP_IDC_BTN_SAVE,218,41,81,14
-    PUSHBUTTON      "Chiudi finestra",XTP_IDC_BTN_CLOSEWINDOWS,218,58,81,14
-    PUSHBUTTON      "Sovrapponi",XTP_IDC_BTN_CASCADE,218,75,81,14
-    PUSHBUTTON      "Affianca orizzontalmente",XTP_IDC_BTN_TILEHORZ,218,92,81,14
-    PUSHBUTTON      "Affianca verticalmente",XTP_IDC_BTN_TILEVERT,218,109,81,14
-    PUSHBUTTON      "Riduci a icona",XTP_IDC_BTN_MINIMIZE,218,126,81,14
+    PUSHBUTTON      "Attivazione",XTP_IDC_BTN_ACTIVATE,210,7,89,14
+    PUSHBUTTON      "OK",IDOK,210,24,89,14
+    PUSHBUTTON      "Salva",XTP_IDC_BTN_SAVE,210,41,89,14
+    PUSHBUTTON      "Chiudi finestra",XTP_IDC_BTN_CLOSEWINDOWS,210,58,89,14
+    PUSHBUTTON      "Sovrapponi",XTP_IDC_BTN_CASCADE,210,75,89,14
+    PUSHBUTTON      "Affianca orizzontalmente",XTP_IDC_BTN_TILEHORZ,210,92,89,14
+    PUSHBUTTON      "Affianca verticalmente",XTP_IDC_BTN_TILEVERT,210,109,89,14
+    PUSHBUTTON      "Riduci a icona",XTP_IDC_BTN_MINIMIZE,210,126,89,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Colori standard"
+	XTP_IDS_RECENT_COLORS    "Colori recenti"
+	XTP_IDS_THEME_COLORS     "Colori del tema"
+	XTP_IDS_TAGCLOUD_TIP     "Tag %s, %d il Punteggio"
     XTP_IDS_TIPTEXT          "Suggerimento"
     XTP_IDS_DIDYOUKNOW       "Non tutti sanno che..."
     XTP_IDS_FILE_ABSENT      "Il file specificato non esiste."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Nascondi dettagli"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "sfondo 1"
+    XTP_IDS_BACKGROUND2        "sfondo 2"
+    XTP_IDS_TEXT1              "Testo 1"
+    XTP_IDS_TEXT2              "Testo 2"
+    XTP_IDS_ACCENT1            "Accento 1"
+    XTP_IDS_ACCENT2            "Accento 2"
+    XTP_IDS_ACCENT3            "Accento 3"
+    XTP_IDS_ACCENT4            "Accento 4"
+    XTP_IDS_ACCENT5            "Accento 5"
+    XTP_IDS_ACCENT6            "Accento 6"
+    XTP_IDS_LIGHTER            "Accendino"
+    XTP_IDS_DARKER             "Più scuro"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA))

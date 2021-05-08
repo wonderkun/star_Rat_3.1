@@ -1,7 +1,6 @@
 // XTPReBar.h : header file
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,52 +19,55 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREBAR_H__)
-#define __XTPREBAR_H__
+#	define __XTPREBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPToolBar;
 
 //{{AFX_CODEJOCK_PRIVATE
-#if _MSC_VER < 1200 // MFC 6.0
+#	if _MSC_VER < 1200 // MFC 6.0
 
-#ifndef AFX_IDW_REBAR
-#define AFX_IDW_REBAR                   0xE804
-#endif
+#		ifndef AFX_IDW_REBAR
+#			define AFX_IDW_REBAR 0xE804
+#		endif
 
 class _XTP_EXT_CLASS CXTPReBarBase : public CControlBar
 {
 	DECLARE_DYNAMIC(CXTPReBarBase)
 
-// Construction
+	// Construction
 public:
 	CXTPReBarBase();
 	BOOL Create(CWnd* pParentWnd, DWORD dwCtrlStyle = RBS_BANDBORDERS,
-		DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_TOP,
-		UINT nID = AFX_IDW_REBAR);
+				DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
+								| CBRS_TOP,
+				UINT nID = AFX_IDW_REBAR);
 
-// Attributes
+	// Attributes
 public:
 	int m_iComCtlVersion;
 
-// Operations
+	// Operations
 public:
 	BOOL AddBar(CWnd* pBar, LPCTSTR pszText = NULL, CBitmap* pbmp = NULL,
-		DWORD dwStyle = RBBS_GRIPPERALWAYS | RBBS_FIXEDBMP);
-	BOOL AddBar(CWnd* pBar, COLORREF clrFore, COLORREF clrBack,
-		LPCTSTR pszText = NULL, DWORD dwStyle = RBBS_GRIPPERALWAYS);
+				DWORD dwStyle = RBBS_GRIPPERALWAYS | RBBS_FIXEDBMP);
+	BOOL AddBar(CWnd* pBar, COLORREF clrFore, COLORREF clrBack, LPCTSTR pszText = NULL,
+				DWORD dwStyle = RBBS_GRIPPERALWAYS);
 
-// Implementation
+	// Implementation
 	virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 	virtual CSize CalcFixedLayout(BOOL bStretch, BOOL bHorz);
 	virtual CSize CalcDynamicLayout(int nLength, DWORD nMode);
-#ifdef _DEBUG
+#		ifdef _DEBUG
 	void EnableDocking(DWORD dwDockStyle);
-#endif
+#		endif
 
 protected:
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -82,9 +84,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-#else
-#define CXTPReBarBase CReBar
-#endif
+#	else
+#		define CXTPReBarBase CReBar
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -111,7 +113,6 @@ public:
 	virtual ~CXTPReBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to add a band to the rebar. The specified Toolbar
@@ -120,13 +121,18 @@ public:
 	//     pToolBar - Pointer to the Toolbar object that will be added to
 	//                rebar band.
 	//     dwStyle  - Contains styles that can be applied to the rebar.
-	//                <p>RBBS_BREAK          - The band is on a new line.
-	//                <p>RBBS_CHILDEDGE      - The band has an edge at the top and bottom of the child window.
-	//                <p>RBBS_FIXEDBMP       - The background bitmap does not move when the band is resized.
-	//                <p>RBBS_FIXEDSIZE      - The band cannot be sized. With this style, the sizing grip is not displayed on the band.
-	//                <p>RBBS_GRIPPERALWAYS  - The band will always have sizing grip, even if it is the only band in the rebar.
-	//                <p>RBBS_HIDDEN         - The band will not be visible.
-	//                <p>RBBS_NOVERT         - The band is not displayed when the rebar control uses the CCS_VERT style.
+	//                * RBBS_BREAK          - The band is on a new line.
+	//                * RBBS_CHILDEDGE      - The band has an edge at the top and bottom of the
+	//                child window.
+	//                * RBBS_FIXEDBMP       - The background bitmap does not move when the band is
+	//                resized.
+	//                * RBBS_FIXEDSIZE      - The band cannot be sized. With this style, the sizing
+	//                grip is not displayed on the band.
+	//                * RBBS_GRIPPERALWAYS  - The band will always have sizing grip, even if it is
+	//                the only band in the rebar.
+	//                * RBBS_HIDDEN         - The band will not be visible.
+	//                * RBBS_NOVERT         - The band is not displayed when the rebar control uses
+	//                the CCS_VERT style.
 	// Remarks:
 	//     The id of the band that contains the toolbar is assigned the same id
 	//     as the toolbar.
@@ -193,9 +199,9 @@ public:
 	//     RB_SETBANDINFO, as described in the Platform SDK.
 	// Parameters:
 	//     uBand - Zero-based index of the band to receive the new settings.
-	//             prbbi - Pointer to a REBARBANDINFO structure that defines the band to be inserted.
-	//             You must set the 'cbSize' member of this structure to sizeof(REBARBANDINFO)
-	//             before sending this message.
+	//             prbbi - Pointer to a REBARBANDINFO structure that defines the band to be
+	//             inserted. You must set the 'cbSize' member of this structure to
+	//             sizeof(REBARBANDINFO) before sending this message.
 	// Returns:
 	//     Nonzero if successful, otherwise returns zero.
 	// Example:
@@ -226,7 +232,7 @@ public:
 	BOOL SetBandInfo(UINT uBand, REBARBANDINFO* prbbi);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPReBar)
@@ -236,16 +242,18 @@ protected:
 	virtual CSize CalcFixedLayout(BOOL bStretch, BOOL bHorz);
 	//}}AFX_MSG
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	static const LPCTSTR m_lpszStateInfoEntry;
 	static const LPCTSTR m_lpszStateInfoFormat;
 };
 
-AFX_INLINE BOOL CXTPReBar::SetBandInfo(UINT uBand, REBARBANDINFO* prbbi) {
+AFX_INLINE BOOL CXTPReBar::SetBandInfo(UINT uBand, REBARBANDINFO* prbbi)
+{
 	return (BOOL)DefWindowProc(RB_SETBANDINFO, uBand, (LPARAM)prbbi);
 }
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPREBAR_H__)

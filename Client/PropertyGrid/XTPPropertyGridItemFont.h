@@ -1,7 +1,6 @@
 // XTPPropertyGridItemFont.h interface for the CXTPPropertyGridItemFont class.
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPPROPERTYGRIDITEMFONT_H__)
-#define __XTPPROPERTYGRIDITEMFONT_H__
+#	define __XTPPROPERTYGRIDITEMFONT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -35,7 +36,6 @@
 class _XTP_EXT_CLASS CXTPPropertyGridItemFont : public CXTPPropertyGridItem
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPPropertyGridItemFont object.
@@ -45,7 +45,10 @@ public:
 	//     font       - Initial font value.
 	//-----------------------------------------------------------------------
 	CXTPPropertyGridItemFont(LPCTSTR strCaption, LOGFONT& font);
-	CXTPPropertyGridItemFont(UINT nID, LOGFONT& font); // <COMBINE CXTPPropertyGridItemFont::CXTPPropertyGridItemFont@LPCTSTR@LOGFONT&>
+	CXTPPropertyGridItemFont(
+		UINT nID,
+		LOGFONT& font); // <COMBINE
+						// CXTPPropertyGridItemFont::CXTPPropertyGridItemFont@LPCTSTR@LOGFONT&>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -54,7 +57,6 @@ public:
 	virtual ~CXTPPropertyGridItemFont();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to change the item's value.
@@ -88,7 +90,6 @@ public:
 	virtual COLORREF GetColor();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called when the user presses the in-place button.
@@ -137,18 +138,42 @@ protected:
 private:
 	static UINT_PTR CALLBACK FontDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-
 protected:
-
-	LOGFONT m_lfValue;      // Value of the item, this holds the current font value.
-	COLORREF m_clrValue;    // Font color.
-
+	LOGFONT m_lfValue;   // Value of the item, this holds the current font value.
+	COLORREF m_clrValue; // Font color.
 
 protected:
 	DECLARE_DYNAMIC(CXTPPropertyGridItemFont)
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPPropertyGridItemFont)
+
+	afx_msg void OleSetValue(const VARIANT* varValue);
+	afx_msg const VARIANT OleGetValue();
+	BSTR OleGetFaceName();
+	void OleSetFaceName(LPCTSTR lpszFaceName);
+	int OleGetSize();
+	void OleSetSize(int nHeigth);
+	int OleGetWeight();
+	void OleSetWeight(int nWeight);
+	BOOL OleGetBold();
+	void OleSetBold(BOOL bBold);
+	BOOL OleGetItalic();
+	void OleSetItalic(BOOL bItalic);
+	BOOL OleGetUnderline();
+	void OleSetUnderline(BOOL bUnderline);
+	BOOL OleGetStrikeOut();
+	void OleSetStrikeOut(BOOL bStrikeOut);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPPROPERTYGRIDITEMFONT_H__)

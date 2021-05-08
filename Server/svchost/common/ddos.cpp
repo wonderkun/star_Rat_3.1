@@ -1397,7 +1397,7 @@ unsigned long  CALLBACK sfsf(LPVOID dParam)
 		{
 			name[i]=table[SEU_Rand(36)];
 		}
-		for(i=0;i<9;i++)
+		for(int i=0;i<9;i++)
 		{
 			pass[i]=table[SEU_Rand(36)];
 		}

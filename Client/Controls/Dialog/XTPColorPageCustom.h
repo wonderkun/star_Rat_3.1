@@ -1,7 +1,6 @@
 // XTPColorPageCustom.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCOLORCUSTOM_H__)
-#define __XTPCOLORCUSTOM_H__
+#	define __XTPCOLORCUSTOM_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPColorDialog;
 
@@ -50,13 +51,12 @@ public:
 	// ----------------------------------------------------------------------
 	enum FocusedControl
 	{
-		focusNone,       // Color window does not have input focus.
+		focusNone,		 // Color window does not have input focus.
 		focusColorWheel, // Color wheel window has focus.
 		focusLumination  // Lumination window has focus.
 	};
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorBase object
@@ -70,7 +70,6 @@ public:
 	virtual ~CXTPColorBase();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to update the cursor position.
@@ -89,7 +88,7 @@ public:
 	//     s     - Represents the color saturation.
 	//     l     - Represents the color illumination.
 	//-----------------------------------------------------------------------
-	static void RGBtoHSL(COLORREF color, double *h, double *s, double* l);
+	static void AFX_CDECL RGBtoHSL(COLORREF color, double* h, double* s, double* l);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -102,10 +101,9 @@ public:
 	// Returns:
 	//     A COLORREF value.
 	//-----------------------------------------------------------------------
-	static COLORREF HLStoRGB(double h, double l, double s);
+	static COLORREF AFX_CDECL HLStoRGB(double h, double l, double s);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPColorBase class to
@@ -115,7 +113,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual bool Init();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	DECLARE_MESSAGE_MAP()
 
@@ -131,17 +129,16 @@ protected:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	static
-	FocusedControl m_eHasFocus;        // Determines which property page has input focus.
-	bool           m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
+	static FocusedControl m_eHasFocus; // Determines which property page has input focus.
+	bool m_bPreSubclassInit;		   // true when initializing from PreSubclassWindow.
 
 public:
-	double m_nLum;       // Current illumination value.
-	double m_nSat;       // Current saturation value.
-	double m_nHue;       // Current hue value.
+	double m_nLum;		 // Current illumination value.
+	double m_nSat;		 // Current saturation value.
+	double m_nHue;		 // Current hue value.
 	CPoint m_ptMousePos; // Current mouse position relative to the device context.
 };
 
@@ -153,7 +150,6 @@ public:
 class _XTP_EXT_CLASS CXTPColorWnd : public CXTPColorBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorWnd object
@@ -167,7 +163,6 @@ public:
 	virtual ~CXTPColorWnd();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to set the color for the selection window.
@@ -212,7 +207,7 @@ public:
 	void SetSaturation(double s);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorWnd)
@@ -225,10 +220,10 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CBitmap        m_bmpPicker;         // Background device context.
+	CBitmap m_bmpPicker; // Background device context.
 };
 
 //===========================================================================
@@ -239,7 +234,6 @@ protected:
 class _XTP_EXT_CLASS CXTPColorLum : public CXTPColorBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPColorLum object
@@ -253,7 +247,6 @@ public:
 	virtual ~CXTPColorLum();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to set the color for the selection window.
@@ -306,8 +299,7 @@ public:
 	void GetLumBarRect(CRect& rect);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorLum)
@@ -320,11 +312,10 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 };
-
 
 //===========================================================================
 // Summary:
@@ -349,7 +340,6 @@ public:
 	virtual ~CXTPColorPageCustom();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called to retrieve the HSL values of the RGB
@@ -363,8 +353,7 @@ public:
 	void RGBtoHSL(COLORREF color, int* xtFocusLumination, int* sat, int* hue);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPColorPageCustom)
@@ -382,12 +371,15 @@ protected:
 	afx_msg LRESULT OnUpdateColor(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnColorDblClick(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_DATA(CXTPColorPageCustom)
-	enum { IDD = XTP_IDD_COLORCUSTOM };
+	enum
+	{
+		IDD = XTP_IDD_COLORCUSTOM
+	};
 	CXTPColorWnd m_colorWnd;
 	CXTPColorLum m_colorLum;
 	CStatic m_txtSat;
@@ -408,20 +400,20 @@ protected:
 	CEdit m_editLum;
 	CEdit m_editRed;
 	CEdit m_editSat;
-	int     m_nR;
-	int     m_nB;
-	int     m_nG;
-	int     m_nH;
-	int     m_nL;
-	int     m_nS;
+	int m_nR;
+	int m_nB;
+	int m_nG;
+	int m_nH;
+	int m_nL;
+	int m_nS;
 	//}}AFX_DATA
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPColorDialog*     m_pParentSheet; // Points to the parent property sheet
-
+	CXTPColorDialog* m_pParentSheet; // Points to the parent property sheet
 
 	friend class CXTPColorLum;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCOLORCUSTOM_H__)

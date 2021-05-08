@@ -1,7 +1,6 @@
 // XTPSkinObjectButton.h: interface for the CXTPSkinObjectButton class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPSKINOBJECTBUTTON_H__)
-#define _XTPSKINOBJECTBUTTON_H__
+#	define _XTPSKINOBJECTBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObjectFrame.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
 //     CXTPSkinObjectButton is a CXTPSkinObjectFrame derived class.
 //     It implements standard buttons
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinObjectButton: public CXTPSkinObjectFrame
+class _XTP_EXT_CLASS CXTPSkinObjectButton : public CXTPSkinObjectFrame
 {
 	DECLARE_DYNCREATE(CXTPSkinObjectButton)
 public:
@@ -51,7 +50,7 @@ public:
 	virtual ~CXTPSkinObjectButton();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL OnHookMessage(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
 	void OnSkinChanged(BOOL bPrevState, BOOL bNewState);
 	BOOL OnHookDefWindowProc(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
@@ -68,7 +67,6 @@ protected:
 
 	BYTE GetButtonStyle();
 	void OnDraw(CDC* pDC);
-
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -90,16 +88,15 @@ protected:
 	afx_msg LRESULT OnUpdateUIState(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	BYTE m_bStyle;          // Custom style of button
+	BYTE m_bStyle; // Custom style of button
 
 protected:
-
-	BOOL m_bHot;            // TRUE if mouse under button
-	BOOL m_bPushed;         // TRUE if button was pressed
+	BOOL m_bHot;	// TRUE if mouse under button
+	BOOL m_bPushed; // TRUE if button was pressed
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPSKINOBJECTBUTTON_H__)

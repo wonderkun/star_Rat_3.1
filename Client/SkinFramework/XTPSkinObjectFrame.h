@@ -1,7 +1,6 @@
 // XTPSkinObjectFrame.h: interface for the CXTPSkinObjectFrame class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,90 +19,50 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTFRAME_H__)
-#define __XTPSKINOBJECTFRAME_H__
+#	define __XTPSKINOBJECTFRAME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObject.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifndef WM_NCMOUSELEAVE
-#define WM_NCMOUSELEAVE     0x02A2
-#endif
+#	ifndef WM_NCMOUSELEAVE
+#		define WM_NCMOUSELEAVE 0x02A2
+#	endif
 
-#ifndef WM_QUERYUISTATE
-#define WM_UPDATEUISTATE    0x0128
-#define WM_QUERYUISTATE     0x0129
+#	ifndef WM_QUERYUISTATE
+#		define WM_UPDATEUISTATE 0x0128
+#		define WM_QUERYUISTATE 0x0129
 
-#define UISF_HIDEACCEL      0x2
-#define UISF_HIDEFOCUS      0x1
-#endif
+#		define UISF_HIDEACCEL 0x2
+#		define UISF_HIDEFOCUS 0x1
+#	endif
 
-#define XTP_HTSCROLLUP          60
-#define XTP_HTSCROLLDOWN        61
-#define XTP_HTSCROLLUPPAGE      62
-#define XTP_HTSCROLLDOWNPAGE    63
-#define XTP_HTSCROLLTHUMB       64
+#	define XTP_TID_MOUSELEAVE 0xACB
+#	define XTP_TID_REFRESHFRAME 0xACD
+#	define XTP_REFRESHFRAME_AFFECTED_STYLES WS_DLGFRAME
+#	define XTP_REFRESHFRAME_DURATION 1000
 
-#define XTP_TID_MOUSELEAVE  0xACB
-#define XTP_TID_REFRESHFRAME  0xACD
-
-
-struct XTP_SKINSCROLLBARPOSINFO
+struct _XTP_EXT_CLASS XTP_SKINSCROLLBAR_POSINFO : public XTP_SCROLLBAR_POSINFO
 {
-	int    posMin;
-	int    posMax;
-	int    page;
-	int    pos;
-
-	int    pxTop;
-	int    pxBottom;
-	int    pxLeft;
-	int    pxRight;
-	int    cpxThumb;
-	int    pxUpArrow;
-	int    pxDownArrow;
-	int    pxStart;
-	int    pxThumbBottom;
-	int    pxThumbTop;
-	int    cpx;
-	int    pxMin;
-
-	RECT   rc;
-	int    ht;
-	BOOL   fVert;
-	int    nBar;
-	BOOL   fVisible;
+	int nBar;
+	BOOL fVisible;
 };
 
-struct XTP_SKINSCROLLBARTRACKINFO
+struct _XTP_EXT_CLASS XTP_SKINSCROLLBAR_TRACKINFO : public XTP_SCROLLBAR_TRACKINFO
 {
-	BOOL   fHitOld;
-	BOOL   fTrackVert;
-	RECT   rcTrack;
-	UINT   cmdSB;
-	UINT_PTR  hTimerSB;
-	int    dpxThumb;
-	int    pxOld;
-	int    posOld;
-	int    posNew;
-
-	BOOL   bTrackThumb;
-
-	HWND   hWndSB;
-	HWND   hWndSBNotify;
-
-	int    nBar;
-	BOOL   fNonClient;
-
-	XTP_SKINSCROLLBARPOSINFO* pSBInfo;
+	BOOL fTrackVert;
+	HWND hWndSB;
+	HWND hWndSBNotify;
+	int nBar;
+	BOOL fNonClient;
+	XTP_SKINSCROLLBAR_POSINFO* pSBInfo; // Overwrite XTP_SCROLLBAR_TRACKINFO::pSBInfo
 };
 
 //}}AFX_CODEJOCK_PRIVATE
-
 
 //===========================================================================
 // Summary:
@@ -121,10 +80,9 @@ public:
 	class _XTP_EXT_CLASS CCaptionButton
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
-		//     Constructs a CXTPSkinObject object.
+		//     Constructs a CCaptionButton object.
 		// Parameters:
 		//     nCommand - Command id of button
 		//     pFrame - Parent frame object
@@ -132,6 +90,12 @@ public:
 		//     m_nClassPart - Class part
 		//-----------------------------------------------------------------------
 		CCaptionButton(int nCommand, CXTPSkinObjectFrame* pFrame, UINT nHTCode, int m_nClassPart);
+
+		//-----------------------------------------------------------------------
+		// Summary:
+		//     Destructs a CCaptionButton object.
+		//-----------------------------------------------------------------------
+		virtual ~CCaptionButton();
 
 		//-----------------------------------------------------------------------
 		// Summary:
@@ -155,18 +119,17 @@ public:
 		BOOL IsHighlighted() const;
 
 	public:
-		UINT m_nHTCode;         // HitTest code
-		CRect m_rcButton;       // Button bounding rectangle
-		int m_nClassPart;       // Class part
-		CXTPSkinObjectFrame* m_pFrame;      // Parent frame object
-		int m_nCommand;         // Button Command
+		UINT m_nHTCode;				   // HitTest code
+		CRect m_rcButton;			   // Button bounding rectangle
+		int m_nClassPart;			   // Class part
+		CXTPSkinObjectFrame* m_pFrame; // Parent frame object
+		int m_nCommand;				   // Button Command
 		BOOL m_bEnabled;
 	};
 
 	typedef CArray<CCaptionButton*, CCaptionButton*> CCaptionButtons;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSkinObjectFrame object.
@@ -178,7 +141,6 @@ public:
 	//     Destroys a CXTPSkinObjectFrame object, handles cleanup and deallocation.
 	//-----------------------------------------------------------------------
 	virtual ~CXTPSkinObjectFrame();
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -216,14 +178,14 @@ public:
 	virtual HBRUSH GetClientBrush(CDC* pDC);
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL IsFrameScrollBars();
 	HBRUSH GetClientBrush(HDC hDC, HWND hWnd, UINT nCtlColor);
-	XTP_SKINSCROLLBARTRACKINFO* GetScrollBarTrackInfo() const;
+	XTP_SKINSCROLLBAR_TRACKINFO* GetScrollBarTrackInfo() const;
 
 	BOOL DrawMenuBar();
 	virtual void UpdateMenuBar();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	//-----------------------------------------------------------------------
@@ -264,13 +226,13 @@ protected:
 	// ---------------------------------------------------------------------
 	void OnHookDetached(BOOL bAuto);
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	void RedrawFrame();
+	BOOL HasCaption() const;
+	BOOL HasWindowBorder() const;
 
 protected:
-	void CreateHeaderRgn(CRgn& rgnHeader, int nWidth);
 	void UpdateFrameRegion(CSize szFrameRegion);
 	void UpdateButtons();
 	void InvalidateButtons();
@@ -278,7 +240,6 @@ protected:
 	void UpdateButton(int nID, BOOL bVisible, BOOL bEnabled, UINT htCode, int nClassPart);
 	void RemoveButtons();
 	void RefreshFrameStyle();
-	BOOL HasCaption() const;
 	HBRUSH FillBackground(CDC* pDC, LPCRECT lprc, int nMessage = WM_CTLCOLORSTATIC);
 	HBRUSH GetFillBackgroundBrush(CDC* pDC, int nMessage);
 	void ResizeFrame();
@@ -291,20 +252,22 @@ protected:
 	void AdjustFrame(CRect& rc);
 	BOOL OnHookMessage(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
 	BOOL OnHookDefWindowProc(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult);
+	BOOL OnCtlColor(UINT nMessage, WPARAM& wParam, LPARAM& lParam, LRESULT& lResult,
+					BOOL bConsiderDlgTexture = FALSE);
 
 protected:
-	void DrawScrollBar(CDC* pDC, XTP_SKINSCROLLBARPOSINFO* pSBInfo);
-	void TrackInit(CPoint point, XTP_SKINSCROLLBARPOSINFO* pSBInfo, BOOL bDirect);
+	void DrawScrollBar(CDC* pDC, XTP_SKINSCROLLBAR_POSINFO* pSBInfo);
+	void TrackInit(CPoint point, XTP_SKINSCROLLBAR_POSINFO* pSBInfo, BOOL bDirect);
 	void ContScroll();
 	void DoScroll(HWND hwnd, HWND hwndNotify, int cmd, int pos, BOOL fVert);
 	void TrackBox(UINT message, CPoint point);
 	void TrackThumb(UINT message, CPoint point);
 	void MoveThumb(int px);
-	int HitTestScrollBar(XTP_SKINSCROLLBARPOSINFO* pSBInfo, POINT pt);
+	int HitTestScrollBar(XTP_SKINSCROLLBAR_POSINFO* pSBInfo, POINT pt);
 	void EndScroll(BOOL fCancel);
-	void CalcScrollBarInfo(LPRECT lprc, XTP_SKINSCROLLBARPOSINFO* pSBInfo, SCROLLINFO* pSI);
-	void RedrawScrollBar(XTP_SKINSCROLLBARPOSINFO* pSBInfo);
-	void SetupScrollInfo(XTP_SKINSCROLLBARPOSINFO* pSBInfo);
+	void CalcScrollBarInfo(LPRECT lprc, XTP_SKINSCROLLBAR_POSINFO* pSBInfo, SCROLLINFO* pSI);
+	void RedrawScrollBar(XTP_SKINSCROLLBAR_POSINFO* pSBInfo);
+	void SetupScrollInfo(XTP_SKINSCROLLBAR_POSINFO* pSBInfo);
 	CRect GetScrollBarRect(int sbCode);
 	void TrackCaptionButton();
 	BOOL IsSizeBox();
@@ -313,11 +276,10 @@ protected:
 	BOOL IsFlatScrollBarInitialized() const;
 	HWND FindMDIClient();
 	virtual BOOL HandleSysCommand(UINT nID, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPSkinObjectFrame)
@@ -337,7 +299,10 @@ protected:
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowPosChanging(WINDOWPOS FAR* lpwndpos);
+	afx_msg void OnPaint();
 	afx_msg LRESULT OnPrint(WPARAM, LPARAM);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -352,38 +317,67 @@ protected:
 	static void CALLBACK OnTimerInternal(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 	afx_msg LRESULT OnSetIcon(WPARAM, LPARAM);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	void CancelMouseLeaveTracking();
 	HWND GetTopLevelWindow() const;
 
+private:
+	void RefreshScrollBarsData();
+
 public:
-	BOOL  m_bLockFrameDraw;         // TRUE to lock draw
-	DWORD m_dwDialogTexture;            // Dialog texture
+	BOOL m_bLockFrameDraw;   // TRUE to lock draw
+	DWORD m_dwDialogTexture; // Dialog texture
 	CXTPSkinObjectFrame* m_pMDIClient;
+
 protected:
-	CCaptionButtons m_arrButtons;           // Caption buttons
-	CRect m_rcBorders;          // Frame borders
-	CCaptionButton* m_pButtonHot;           // Hot caption button
-	CCaptionButton* m_pButtonPressed;       // Pressed caption button
-	BOOL m_bRegionChanged;          // TRUE if region was changed
-	XTP_SKINSCROLLBARTRACKINFO* m_pSBTrack; // Track info of scroll bars
-	XTP_SKINSCROLLBARPOSINFO m_spi[2];          // Scroll bar position info
-	CSize m_szFrameRegion;          // Lase frame region
-	BOOL m_bMDIClient;              // TRUE if frame is MDI client
-	BOOL m_bActive;                 // TRUE if caption is active
-	DWORD m_dwStyle;                // Styles of window
-	DWORD m_dwExStyle;              // ExStyles of window
+	CCaptionButtons m_arrButtons;			 // Caption buttons
+	CRect m_rcBorders;						 // Frame borders
+	CCaptionButton* m_pButtonHot;			 // Hot caption button
+	CCaptionButton* m_pButtonPressed;		 // Pressed caption button
+	BOOL m_bRegionChanged;					 // TRUE if region was changed
+	XTP_SKINSCROLLBAR_TRACKINFO* m_pSBTrack; // Track info of scroll bars
+	XTP_SKINSCROLLBAR_POSINFO m_spi[2];		 // Scroll bar position info
+	CSize m_szFrameRegion;					 // Lase frame region
+	BOOL m_bMDIClient;						 // TRUE if frame is MDI client
+	BOOL m_bActive;							 // TRUE if caption is active
+	DWORD m_dwStyle;						 // Styles of window
+	DWORD m_dwExStyle;						 // ExStyles of window
+
 	BOOL m_bInUpdateRegion;
+	BOOL m_bInWindowPosChanged;
+
 	int m_nCtlColorMessage;
-	static BOOL m_bMenuStatus;
+	static CXTPThreadLocal<BOOL> m_bMenuStatus;
 
 private:
 	friend class CXTPSkinManager;
 	friend class CCaptionButton;
 };
 
+AFX_INLINE BOOL CXTPSkinObjectFrame::IsActive() const
+{
+	return m_bActive;
+}
+
+AFX_INLINE CRect CXTPSkinObjectFrame::GetBorders() const
+{
+	return m_rcBorders;
+}
+
+AFX_INLINE XTP_SKINSCROLLBAR_TRACKINFO* CXTPSkinObjectFrame::GetScrollBarTrackInfo() const
+{
+	return m_pSBTrack;
+}
+
+AFX_INLINE CXTPSkinObjectFrame::CCaptionButtons* CXTPSkinObjectFrame::GetCaptionButtons()
+{
+	return &m_arrButtons;
+}
+AFX_INLINE void CXTPSkinObjectFrame::UpdateMenuBar()
+{
+}
 
 //===========================================================================
 // Summary:
@@ -407,10 +401,10 @@ protected:
 	virtual void CheckScrollBarsDraw();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
-// Overrides
+	// Overrides
 	//{{AFX_VIRTUAL(CXTPSkinObjectUser32Control)
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
@@ -426,9 +420,8 @@ protected:
 
 protected:
 	SCROLLINFO m_si[2];
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
-
 
 //===========================================================================
 // Summary:
@@ -452,23 +445,42 @@ protected:
 	virtual void CheckScrollBarsDraw();
 };
 
-AFX_INLINE BOOL CXTPSkinObjectFrame::IsActive() const {
-	return m_bActive;
-}
+//===========================================================================
+// Summary:
+//     CXTPSkinObjectSolidFilled is a CXTPSkinObjectFrame derived class.
+//     It is a helper class for unknown window classes that have to
+//     be filled with solid color or brush.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPSkinObjectSolidFilled : public CXTPSkinObjectFrame
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPSkinObjectSolidFilled object.
+	// Parameters:
+	//     crFill - Color to fill window background with.
+	//-----------------------------------------------------------------------
+	explicit CXTPSkinObjectSolidFilled(COLORREF crFill);
 
-AFX_INLINE CRect CXTPSkinObjectFrame::GetBorders() const {
-	return m_rcBorders;
-}
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Constructs a CXTPSkinObjectSolidFilled object.
+	// Parameters:
+	//     hbrFill - Brush handle to fill window background with.
+	//-----------------------------------------------------------------------
+	explicit CXTPSkinObjectSolidFilled(HBRUSH hbrFill);
 
-AFX_INLINE XTP_SKINSCROLLBARTRACKINFO* CXTPSkinObjectFrame::GetScrollBarTrackInfo() const {
-	return m_pSBTrack;
-}
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_MESSAGE_MAP()
 
-AFX_INLINE CXTPSkinObjectFrame::CCaptionButtons* CXTPSkinObjectFrame::GetCaptionButtons() {
-	return &m_arrButtons;
-}
-AFX_INLINE void CXTPSkinObjectFrame::UpdateMenuBar() {
+	//{{AFX_MSG(CXTPSkinObjectUser32Control)
+	afx_msg void OnPaint();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	//}}AFX_MSG
 
-}
+	//}}AFX_CODEJOCK_PRIVATE
+};
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTFRAME_H__)

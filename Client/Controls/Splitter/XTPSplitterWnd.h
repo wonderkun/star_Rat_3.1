@@ -1,7 +1,6 @@
 // XTPSplitterWnd.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSPLITTERWND_H__)
-#define __XTPSPLITTERWND_H__
+#	define __XTPSPLITTERWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSplitterWndTheme;
 
@@ -35,7 +36,7 @@ class CXTPSplitterWndTheme;
 //     adds the ability to hide and show splitter panes based upon its
 //     index.
 // --------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPSplitterWnd : public CSplitterWnd
+class _XTP_EXT_CLASS CXTPSplitterWnd : public CXTPScrollBarContainer<CSplitterWnd>
 {
 	DECLARE_DYNAMIC(CXTPSplitterWnd)
 
@@ -54,7 +55,6 @@ public:
 	virtual ~CXTPSplitterWnd();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to switch the visual theme of the control.
@@ -75,7 +75,7 @@ public:
 	// Returns:
 	//     A pointer to a CXTPSplitterWndTheme object representing the currently selected theme.
 	//-----------------------------------------------------------------------
-	CXTPSplitterWndTheme* GetTheme();
+	CXTPSplitterWndTheme* GetTheme() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -145,65 +145,53 @@ public:
 	//     SwitchView
 	//-----------------------------------------------------------------------
 	virtual CView* ReplaceView(int nRow, int nCol, CView* pNewView);
-	virtual CView* ReplaceView(int nRow, int nCol, CRuntimeClass* pViewClass); //<COMBINE CXTPSplitterWnd::ReplaceView@int@int@CView*>
+	virtual CView* ReplaceView(
+		int nRow, int nCol,
+		CRuntimeClass* pViewClass); //<COMBINE CXTPSplitterWnd::ReplaceView@int@int@CView*>
 
-	// -------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to modify a splitter window's style.
-	//     Styles to be added or removed can be combined by using the bitwise
-	//     OR (|) operator.
+	//     Call this method to enable full drag windows.
 	// Parameters:
-	//     dwxStyle -  Specifies XTP_SPLIT_ styles to be added during style
-	//                 modification. See the Remarks section for a list of styles.
+	//     nFullDrag - 1 to enable full drag, 0 to disable, -1 to use system settings for full drag.
 	// Remarks:
-	//     The splitter window can be modified to use one or more of the
-	//     following styles:
-	//     * <b>XTP_SPLIT_DOTTRACKER</b> The splitter window will use a
-	//       dotted tracker rather than the splitter default.
-	//     * <b>XTP_SPLIT_NOFULLDRAG</b> Disable the "Show window contents
-	//       while dragging" option even if it is set in Windows.
-	//     * <b>XTP_SPLIT_NOBORDER</b> The splitter window will not draw a
-	//       border around the pane.
-	//     * <b>XTP_SPLIT_NOSIZE</b> Do not allow splitter window panes to
-	//       be resized.
-	// See Also:
-	//     GetSplitterStyle
-	// -------------------------------------------------------------------------------
-	virtual void SetSplitterStyle(DWORD dwxStyle);
+	//     This member function will enable / disable the display of windows contents for each child
+	//     pane while the splitter is resized if nFullDrag is set to 1.
+	//-----------------------------------------------------------------------
+	void EnableFullDrag(int nFullDrag);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to set full drag state.
+	//     Call this member function to enable dotted tracker display rather than the default.
 	// Parameters:
-	//     bFullDrag -  TRUE to enable full drag.
-	// Remarks:
-	//     This member function will display the contents for child pane
-	//     while the splitter is resized if bFullDrag is set to TRUE.
-	// See Also:
-	//     SetSplitterStyle
+	//     bEnable - TRUE to enable dotted tracker display.
 	//-----------------------------------------------------------------------
-	void SetFullDrag(BOOL bFullDrag);
+	void EnableDotTracker(BOOL bEnable);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to return the current style for the splitter
-	//     window.
+	//     Call this member function to show/hide border of splitter
+	// Parameters:
+	//     bBorder - TRUE to show border; FALSE to hide
+	//-----------------------------------------------------------------------
+	void EnableBorder(BOOL bBorder);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if border display has been
+	//     disabled for the splitter client area.
 	// Returns:
-	//     The current style of the splitter window.
-	// See Also:
-	//     SetSplitterStyle
+	//     TRUE if border shown, otherwise FALSE if borders are hidden.
 	//-----------------------------------------------------------------------
-	virtual DWORD GetSplitterStyle();
+	BOOL IsBorderVisible() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to enable or disable flat splitters.
+	//     Call this member function to disable resizing splitter pane windows.
 	// Parameters:
-	//     bFlatSplitter -  TRUE to enable flat splitters.
-	// See Also:
-	//     SetSplitterStyle
+	//     bEnable - TRUE to disable splitter resizing.
 	//-----------------------------------------------------------------------
-	virtual void EnableFlatLook(BOOL bFlatSplitter);
+	void EnableNoSize(BOOL bEnable);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -214,7 +202,7 @@ public:
 	// See Also:
 	//     GetHiddenRowIndex
 	//-----------------------------------------------------------------------
-	int GetHiddenColIndex();
+	int GetHiddenColIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -225,7 +213,7 @@ public:
 	// See Also:
 	//     GetHiddenColIndex
 	//-----------------------------------------------------------------------
-	int GetHiddenRowIndex();
+	int GetHiddenRowIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -251,15 +239,45 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetActivePane(int row, int col, CWnd* pWnd = NULL);
 
-protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to check if full drag windows is enabled.
+	// Returns:
+	//     TRUE if full drag windows is supported, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	BOOL FullDragWindows() const;
 
+	//{{AFX_CODEJOCK_PRIVATE
+
+	//-----------------------------------------------------------------------
+	// Note: The following functions are deprecated and could be removed
+	// in a future release.
+	//-----------------------------------------------------------------------
+
+	void SetFullDrag(BOOL bFullDrag);
+	virtual void SetSplitterStyle(DWORD dwxStyle);
+	virtual DWORD GetSplitterStyle();
+	virtual void EnableFlatLook(BOOL bFlatSplitter);
+
+	//}}AFX_CODEJOCK_PRIVATE
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to refresh theme colors and redraw the control.
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Called by the framework to draw the client area in the specified
+	//     device context, most commonly in a printer device context.
+	// Parameters:
+	//     pDC - A pointer to the device context to draw in.
+	//-----------------------------------------------------------------------
+	void PrintClient(CDC* pDC);
+
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPSplitterWnd)
@@ -273,42 +291,63 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPSplitterWnd)
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnNcHitTest(CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM /*lParam*/);
-	//}}AFX_MSG
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	//}}AFX_MSG
+	afx_msg LRESULT OnNcHitTest(CPoint point);
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	int     m_nHiddenCol;       // Index of the hidden column.
-	int     m_nHiddenRow;       // Index of the hidden row.
-	BOOL    m_bFullDrag;        // TRUE if full window dragging is enabled.
-	BOOL    m_bForceFullDrag;   // TRUE to use full drag always.
-	BOOL    m_bFlatSplit;       // TRUE if the flat splitter style is used.
-	DWORD   m_dwxStyle;         // The style of the splitter window. See SetSplitterStyle(...).
-	CPoint  m_point;            // Previous cursor position.
-	BOOL    m_bClipStyles;      // Clip styles before dragging.
-	CXTPSplitterWndTheme* m_pTheme;      // Pointer to the current theme object.
-	BOOL                  m_bSubclassed; // TRUE if the window was sub-classed.
+	int m_nHiddenCol;   // Index of the hidden column.
+	int m_nHiddenRow;   // Index of the hidden row.
+	int m_nFullDrag;	// 1 to enable full drag, 0 to disable, -1 to use system settings for full
+						// drag.
+	BOOL m_bFullDrag;   // TRUE if full window dragging is enabled for the operating system.
+	BOOL m_bDotTracker; // TRUE to enable dotted tracker display.
+	BOOL m_bNoSize;		// TRUE to disable splitter resizing.
+	BOOL m_bShowBorder; // TRUE to show a border around client area.
+	BOOL m_bClipStyles; // Clip styles before dragging.
+	BOOL m_bSubclassed; // TRUE if the window was sub-classed.
+	CPoint m_point;		// Previous cursor position.
+	CXTPSplitterWndTheme* m_pTheme; // Pointer to the current theme object.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE DWORD CXTPSplitterWnd::GetSplitterStyle() {
-	return m_dwxStyle;
-}
-AFX_INLINE int CXTPSplitterWnd::GetHiddenColIndex() {
+AFX_INLINE int CXTPSplitterWnd::GetHiddenColIndex() const
+{
 	return m_nHiddenCol;
 }
-AFX_INLINE int CXTPSplitterWnd::GetHiddenRowIndex() {
+AFX_INLINE int CXTPSplitterWnd::GetHiddenRowIndex() const
+{
 	return m_nHiddenRow;
 }
-AFX_INLINE CXTPSplitterWndTheme* CXTPSplitterWnd::GetTheme() {
+AFX_INLINE CXTPSplitterWndTheme* CXTPSplitterWnd::GetTheme() const
+{
 	return m_pTheme;
+}
+AFX_INLINE void CXTPSplitterWnd::EnableFullDrag(int nFullDrag)
+{
+	m_nFullDrag = nFullDrag;
+}
+AFX_INLINE void CXTPSplitterWnd::EnableDotTracker(BOOL bEnable)
+{
+	m_bDotTracker = bEnable;
+}
+AFX_INLINE void CXTPSplitterWnd::EnableNoSize(BOOL bEnable)
+{
+	m_bNoSize = bEnable;
+}
+AFX_INLINE void CXTPSplitterWnd::EnableBorder(BOOL bBorder)
+{
+	m_bShowBorder = bBorder;
+
+	if (::IsWindow(m_hWnd))
+		RedrawWindow();
+}
+AFX_INLINE BOOL CXTPSplitterWnd::IsBorderVisible() const
+{
+	return m_bShowBorder;
 }
 
 // ---------------------------------------------------------------------
@@ -322,7 +361,6 @@ class _XTP_EXT_CLASS CXTPSplitterWndEx : public CXTPSplitterWnd
 	DECLARE_DYNAMIC(CXTPSplitterWndEx)
 
 public:
-
 	// -----------------------------------------------
 	// Summary:
 	//     Constructs a CXTPSplitterWndEx object
@@ -349,9 +387,7 @@ public:
 	// ------------------------------------------------------------------------------
 	virtual void ShowTopBorder(bool bShowTopBorder = true, int cyTopBorderGap = 7);
 
-
 protected:
-
 	// -------------------------
 	// Summary:
 	//     Called to retrieve the client area minus the inside 3D borders.
@@ -364,7 +400,6 @@ protected:
 	virtual void GetInsideRect(CRect& rect) const;
 
 public:
-
 	// -----------------
 	// Summary:
 	//     Call to redisplay the splitter window after adjusting row or column size.
@@ -419,37 +454,41 @@ public:
 	virtual void OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg);
 
 private:
-	static void AFX_CDECL DeferClientPos(AFX_SIZEPARENTPARAMS* lpLayout,
-		CWnd* pWnd, int x, int y, int cx, int cy, BOOL bScrollBar);
+	static void AFX_CDECL DeferClientPos(AFX_SIZEPARENTPARAMS* lpLayout, CWnd* pWnd, int x, int y,
+										 int cx, int cy, BOOL bScrollBar);
 
-	static  void AFX_CDECL LayoutRowCol(CSplitterWnd::CRowColInfo* pInfoArray,
-		int nMax, int nSize, int nSizeSplitter);
+	static void AFX_CDECL LayoutRowCol(CSplitterWnd::CRowColInfo* pInfoArray, int nMax, int nSize,
+									   int nSizeSplitter);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPSplitterWndEx)
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int  m_cyTopBorderGap; // Size in pixels of the top border.
+	int m_cyTopBorderGap;  // Size in pixels of the top border.
 	bool m_bShowTopBorder; // true to draw a top border line.
-
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPSplitterWndEx::ShowTopBorder(bool bShowTopBorder, int cyTopBorderGap) {
-	m_bShowTopBorder = bShowTopBorder; m_cyTopBorderGap = cyTopBorderGap;
+AFX_INLINE void CXTPSplitterWndEx::ShowTopBorder(bool bShowTopBorder, int cyTopBorderGap)
+{
+	m_bShowTopBorder = bShowTopBorder;
+	m_cyTopBorderGap = cyTopBorderGap;
 }
 
-const DWORD XTP_SPLIT_DOTTRACKER    = 0x0001; //<ALIAS CXTPSplitterWnd::SetSplitterStyle@DWORD>
-const DWORD XTP_SPLIT_NOFULLDRAG    = 0x0002; //<ALIAS CXTPSplitterWnd::SetSplitterStyle@DWORD>
-const DWORD XTP_SPLIT_NOBORDER      = 0x0004; //<ALIAS CXTPSplitterWnd::SetSplitterStyle@DWORD>
-const DWORD XTP_SPLIT_NOSIZE        = 0x0008; //<ALIAS CXTPSplitterWnd::SetSplitterStyle@DWORD>
+//{{AFX_CODEJOCK_PRIVATE
+const DWORD XTP_SPLIT_DOTTRACKER = 0x0001; // deprecated see EnableDotTracker().
+const DWORD XTP_SPLIT_NOFULLDRAG = 0x0002; // deprecated see EnableFullDrag().
+const DWORD XTP_SPLIT_NOBORDER   = 0x0004; // deprecated see EnableBorder().
+const DWORD XTP_SPLIT_NOSIZE	 = 0x0008; // deprecated see EnableNoSize().
+//}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSPLITTERWND_H__)

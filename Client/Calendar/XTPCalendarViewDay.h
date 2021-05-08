@@ -1,7 +1,6 @@
 // XTPCalendarViewDay.h: interface for the CXTPCalendarViewDay class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARVIEWDAY_H__)
-#define _XTPCALENDARVIEWDAY_H__
+#	define _XTPCALENDARVIEWDAY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "XTPCalendarPaintManager.h"
-#include "XTPCalendarView.h"
-#include "XTPCalendarResource.h"
-#include "XTPCalendarControl.h"
-#include "XTPCalendarOptions.h"
-
-#pragma warning(disable : 4786)
+#	pragma warning(disable : 4786)
 
 class CXTPCalendarView;
 class CXTPCalendarViewDay;
@@ -67,15 +61,14 @@ class _XTP_EXT_CLASS CXTPCalendarViewGroup : public CXTPCalendarWMHandler
 	DECLARE_DYNAMIC(CXTPCalendarViewGroup)
 	//}}AFX_CODEJOCK_PRIVATE
 
-	typedef CXTPCalendarWMHandler TBase;    // Base class shortcut
+	typedef CXTPCalendarWMHandler TBase; // Base class shortcut
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor. Construct CXTPCalendarViewGroup object.
 	// See Also: ~CXTPCalendarViewGroup()
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewGroup();
+	CXTPCalendarViewGroup(CXTPCalendarViewDay* pViewDay);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -96,7 +89,7 @@ public:
 	// See Also:
 	//     CXTPCalendarResources overview, SetResources, AddResource
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarResources* GetResources();
+	virtual CXTPCalendarResources* GetResources() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -107,7 +100,7 @@ public:
 	// See Also:
 	//     CXTPCalendarData overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarData* GetDataProvider();
+	virtual CXTPCalendarData* GetDataProvider() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -142,7 +135,7 @@ public:
 	//     The first existing Schedule ID or
 	//     XTP_CALENDAR_UNKNOWN_SCHEDULE_ID if not found.
 	//-----------------------------------------------------------------------
-	virtual UINT GetScheduleID();
+	virtual UINT GetScheduleID() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -154,7 +147,7 @@ public:
 	//     This is a pure virtual function. This function must be defined
 	//     in the derived class.
 	//-----------------------------------------------------------------------
-	virtual void Populate(COleDateTime dtDayDate) = 0;
+	virtual void Populate(COleDateTime dtDayDate);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -202,7 +195,35 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) = 0;
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine which view item,
+	//     if any, is at the specified position index, and returns additional
+	//     info in the XTP_CALENDAR_HITTESTINFO template object.
+	// Parameters:
+	//     pt       - A CPoint that contains the coordinates of the point test.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO structure.
+	// Remarks:
+	//     Implements standard functionality for the HitTestEx method.
+	// Returns:
+	//     A BOOL. TRUE if the item is found. FALSE otherwise.
+	// See Also: XTP_CALENDAR_HITTESTINFO
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to fill the pHitTest structure
+	//     members with the default values for the current day view object.
+	// Parameters:
+	//     pHitTest - A Pointer to a XTP_CALENDAR_HITTESTINFO structure.
+	// Remarks:
+	//     This is a pure virtual function.  This function must be defined
+	//     in the derived class.
+	//-----------------------------------------------------------------------
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -213,7 +234,7 @@ public:
 	// See Also:
 	//     GetHeaderRect
 	//-----------------------------------------------------------------------
-	virtual CRect GetRect()
+	virtual CRect GetRect() const
 	{
 		return m_Layout.m_rcGroup;
 	}
@@ -229,7 +250,7 @@ public:
 	// See Also:
 	//     GetRect
 	//-----------------------------------------------------------------------
-	virtual CRect GetHeaderRect()
+	virtual CRect GetHeaderRect() const
 	{
 		return m_Layout.m_rcGroupHeader;
 	}
@@ -249,7 +270,8 @@ public:
 	//     Actual tooltip rectangle is calculated by ViewGroups of specific
 	//     views (currently DayView and MonthView are supported).
 	//-----------------------------------------------------------------------
-	virtual CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo);
+	virtual CRect GetTooltipRect(const CPoint& ptHit,
+								 const XTP_CALENDAR_HITTESTINFO& hitInfo) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -261,7 +283,7 @@ public:
 	// Returns:
 	//     An int that contains the number of event views.
 	//-----------------------------------------------------------------------
-	virtual int GetViewEventsCount() = 0;
+	int GetViewEventsCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -278,7 +300,7 @@ public:
 	//     A pointer to a CXTPCalendarViewEvent object.
 	// See Also: GetViewEventsCount()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* GetViewEvent_(int nIndex) = 0;
+	CXTPCalendarViewEvent* GetViewEvent_(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -287,7 +309,7 @@ public:
 	// Returns:
 	//     A pointer to the CXTPCalendarViewDay object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewDay* GetViewDay_() const = 0;
+	CXTPCalendarViewDay* GetViewDay_() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -305,7 +327,7 @@ public:
 	// Returns:
 	//     A CString object that contains the group's view caption.
 	//-----------------------------------------------------------------------
-	virtual CString GetCaption();
+	virtual CString GetCaption() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -321,7 +343,7 @@ public:
 	// See Also:
 	//     GetChildHandlerAt
 	//-----------------------------------------------------------------------
-	virtual int GetChildHandlersCount();
+	virtual int GetChildHandlersCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -338,7 +360,7 @@ public:
 	// See Also:
 	//     GetChildHandlersCount
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex);
+	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -350,7 +372,7 @@ public:
 	//     A pointer to a CXTPCalendarViewEvent object.
 	// See Also: CXTPCalendarEvent, CXTPCalendarViewEvent
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* GetViewEventByEvent_(CXTPCalendarEvent* pEvent);
+	virtual CXTPCalendarViewEvent* GetViewEventByEvent_(CXTPCalendarEvent* pEvent) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -362,7 +384,7 @@ public:
 	//     A pointer to a CXTPCalendarViewEvent object.
 	// See Also: CXTPCalendarEvent, CXTPCalendarViewEvent
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* GetViewEventByPlace_(int nEventPlace);
+	virtual CXTPCalendarViewEvent* GetViewEventByPlace_(int nEventPlace) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -423,25 +445,35 @@ protected:
 	virtual void OnPrePopulate(CXTPCalendarEvents* pEvents);
 
 public:
-	//{{AFX_CODEJOCK_PRIVATE
-	// This structure describes coordinates of the group View.
-	struct XTP_VIEW_GROUP_LAYOUT
-	{
-		CRect m_rcGroup;        // Group View rectangle.
-		CRect m_rcGroupHeader;  // Group View header rectangle.
-	};
-	//}}AFX_CODEJOCK_PRIVATE
+	virtual void AddViewEvent(CXTPCalendarEvent* pEvent);
 
 protected:
-	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_VIEW_GROUP_LAYOUT& GetLayout_();
-	//}}AFX_CODEJOCK_PRIVATE
+	virtual CXTPCalendarViewEvent* CreateViewEvent(CXTPCalendarEvent* pEvent) = 0;
+
+protected:
+	XTP_VIEW_GROUP_LAYOUT& GetLayout_();
 
 protected:
 	XTP_VIEW_GROUP_LAYOUT m_Layout; // This group view client coordinates.
 
-	CXTPCalendarResources*  m_pResources;   // An associated resource object.
+	CXTPCalendarPtrCollectionT<CXTPCalendarViewEvent> m_arEvents; // Storage for events views.
 
+	CXTPCalendarResources* m_pResources; // An associated resource object.
+
+	CXTPCalendarViewDay* m_pViewDay; // Parent day view
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarViewGroup);
+
+	LPDISPATCH OleGetViewDay();
+	LPDISPATCH OleGetViewEvents();
+	LPDISPATCH OleGetMultipleResources();
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -484,7 +516,6 @@ class _XTP_EXT_CLASS CXTPCalendarViewDay : public CXTPCalendarWMHandler
 	typedef CXTPCalendarWMHandler TBase;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor. Construct CXTPCalendarViewDay object.
@@ -492,7 +523,7 @@ public:
 	//     pView - Pointer to CXTPCalendarView object.
 	// See Also: ~CXTPCalendarViewDay()
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewDay(CXTPCalendarView* pView);
+	CXTPCalendarViewDay(const CXTPCalendarView* pView);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -512,7 +543,7 @@ public:
 	//     This is a pure virtual function. This function must be defined
 	//     in the derived class.
 	//-----------------------------------------------------------------------
-	virtual void Populate(COleDateTime dtDayDate) = 0;
+	virtual void Populate(COleDateTime dtDayDate);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -554,7 +585,10 @@ public:
 	// Returns:
 	//     A count of resource group views elements.
 	//-----------------------------------------------------------------------
-	virtual int GetChildHandlersCount() { return GetViewGroupsCount(); }
+	virtual int GetChildHandlersCount() const
+	{
+		return GetViewGroupsCount();
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -569,7 +603,7 @@ public:
 	//     The pointer to the CXTPCalendarWMHandler element currently at this
 	//     index.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex)
+	virtual CXTPCalendarWMHandler* GetChildHandlerAt(int nIndex) const
 	{
 		ASSERT_KINDOF(CXTPCalendarWMHandler, GetViewGroup_(nIndex));
 		return GetViewGroup_(nIndex);
@@ -592,7 +626,35 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) = 0;
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine which view item,
+	//     if any, is at the specified position index, and returns additional
+	//     info in the XTP_CALENDAR_HITTESTINFO template object.
+	// Parameters:
+	//     pt       - A CPoint that contains the coordinates of the point test.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO structure.
+	// Remarks:
+	//     Implements standard functionality for the HitTestEx method.
+	// Returns:
+	//     A BOOL. TRUE if the item is found. FALSE otherwise.
+	// See Also: XTP_CALENDAR_HITTESTINFO
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to fill the pHitTest structure
+	//     members with the default values for the current day view object.
+	// Parameters:
+	//     pHitTest - A Pointer to a XTP_CALENDAR_HITTESTINFO structure.
+	// Remarks:
+	//     This is a pure virtual function.  This function must be defined
+	//     in the derived class.
+	//-----------------------------------------------------------------------
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -604,7 +666,7 @@ public:
 	// Returns:
 	//     A pointer to a CXTPCalendarView object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarView* GetView_() const = 0;
+	virtual CXTPCalendarView* GetView_() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -624,7 +686,7 @@ public:
 	// See Also:
 	//     CXTPCalendarResources overview, CXTPCalendarResource overview
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarResources* GetResources();
+	virtual CXTPCalendarResources* GetResources() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -647,7 +709,7 @@ public:
 	// Returns:
 	//     An int that contains the number of event views.
 	//-----------------------------------------------------------------------
-	virtual int GetViewEventsCount();
+	virtual int GetViewEventsCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -664,7 +726,7 @@ public:
 	//     A pointer to a CXTPCalendarViewEvent object.
 	// See Also: GetViewEventsCount()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* GetViewEvent_(int nIndex);
+	virtual CXTPCalendarViewEvent* GetViewEvent_(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -676,7 +738,7 @@ public:
 	// Returns:
 	//     An int that contains the number of event views.
 	//-----------------------------------------------------------------------
-	virtual int GetViewGroupsCount() = 0;
+	int GetViewGroupsCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -693,7 +755,7 @@ public:
 	//     A pointer to a CXTPCalendarViewGroup object.
 	// See Also: GetViewGroupsCount()
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewGroup* GetViewGroup_(int nIndex) = 0;
+	CXTPCalendarViewGroup* GetViewGroup_(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -727,7 +789,17 @@ public:
 	//     A BOOL. TRUE if there is at least one event that is completely
 	//     invisible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL _NoAllEventsAreVisible();
+	virtual BOOL _NoAllEventsAreVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member function to determine if all of the day's event
+	//     views are not visible and to calculate the rectangle for the ExpandSign.
+	// Returns:
+	//     TRUE if there are invisible event views. FALSE otherwise.
+	// See Also: CXTPCalendarViewDay::_NoAllEventsAreVisible
+	//-----------------------------------------------------------------------
+	virtual BOOL NoAllEventsAreVisible();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -752,7 +824,7 @@ public:
 	//     A CRect object containing the day view rectangle coordinates.
 	// See Also: SetDayRect(CRect rcDay)
 	//-----------------------------------------------------------------------
-	virtual CRect GetDayRect();
+	virtual CRect GetDayRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -771,7 +843,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if there are invisible views. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsExpanded();
+	virtual BOOL IsExpanded() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -779,7 +851,7 @@ public:
 	// Returns:
 	//     A CRect object that contains the expand sign rectangle coordinates.
 	//-----------------------------------------------------------------------
-	virtual CRect GetExpandSignRect();
+	virtual CRect GetExpandSignRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -836,36 +908,53 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnPrePopulateDay();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to crete new instance of group.
+	//-----------------------------------------------------------------------
+	virtual CXTPCalendarViewGroup* CreateGroup() = 0;
+
 public:
-	//{{AFX_CODEJOCK_PRIVATE
-	struct XTP_VIEW_DAY_LAYOUT
-	{
-		CRect m_rcDay;          // Day rectangle.
-		CRect m_rcDayHeader;    // Day header rectangle.
+	const XTP_VIEW_DAY_LAYOUT& GetLayout_() const;
 
-		CRect m_rcExpandSign;       // Expand Sign rectangle.
-
-		int   m_nHotState;  // Last Items Hot state.
-
-		enum XTPEnumHotItem
-		{
-			xtpHotExpandButton  = 0x001,
-			xtpHotDayHeader     = 0x002,
-		};
-	};
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual XTP_VIEW_DAY_LAYOUT& GetLayout_();
+	XTP_VIEW_DAY_LAYOUT& GetLayout_();
 	//}}AFX_CODEJOCK_PRIVATE
 protected:
 	XTP_VIEW_DAY_LAYOUT m_Layout; // Layout data.
 
-	COleDateTime m_dtDate;          // Day date.
+	COleDateTime m_dtDate; // Day date.
 
-	CXTPCalendarResources*  m_pResources; // Resources array
+	CXTPCalendarResources* m_pResources; // Resources array
+
+	CXTPCalendarPtrCollectionT<CXTPCalendarViewGroup> m_arViewGroups; // Storage for views of
+																	  // groups.
+
+	CXTPCalendarView* m_pView; // Storage for a owner view.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarViewDay);
+
+	DATE OleGetDate();
+	LPDISPATCH OleGetView();
+	LPDISPATCH OleGetViewGroups();
+
+	LPDISPATCH OleGetItem(long nIndex);
+	int OleGetItemCount();
+
+	LPDISPATCH OleGetMultipleResources();
+	void OleSetMultipleResources(LPDISPATCH pDispResources);
+
+	DECLARE_ENUM_VARIANT(CXTPCalendarViewDay);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -879,14 +968,14 @@ protected:
 //     These are template parameters:
 //     _TView      - Type of owner View object.
 //     _TViewGroup - Type of View Resource objects stored in View Day.
-//     _THitTest   - Type of HitTest struct, used as parameter in the
+//     XTP_CALENDAR_HITTESTINFO   - Type of HitTest struct, used as parameter in the
 //                   member functions.
 //     _TPThis     - The last derived class type in the class hierarchy.
 //
 //          You must provide all of the above parameters.
 // See Also: CXTPCalendarViewDay
 //===========================================================================
-template<class _TView, class _TViewGroup, class _THitTest, class _TPThis >
+template<class _TView, class _TViewGroup, class XTP_CALENDAR_HITTESTINFO, class _TPThis>
 class CXTPCalendarViewDayT : public CXTPCalendarViewDay
 {
 public:
@@ -896,13 +985,7 @@ public:
 	//------------------------------------------------------------------------
 	typedef _TView TView;
 
-	//------------------------------------------------------------------------
-	// Remarks:
-	//     Resource views collection type definition.
-	//------------------------------------------------------------------------
-	typedef CXTPCalendarPtrCollectionT< _TViewGroup > TViewGroupsCollection;
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -910,9 +993,9 @@ public:
 	//     pView - Pointer to owner view object.
 	// See Also: ~CXTPCalendarViewDayT()
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewDayT(_TView* pView) : CXTPCalendarViewDay((CXTPCalendarView*)pView)
+	CXTPCalendarViewDayT(const _TView* pView)
+		: CXTPCalendarViewDay((CXTPCalendarView*)pView)
 	{
-		m_pView = pView;
 	}
 
 	//-----------------------------------------------------------------------
@@ -921,124 +1004,19 @@ public:
 	// Remarks:
 	//     Handles class members deallocation.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarViewDayT()
-	{
-	};
-
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at a specified position index, and returns additional
-	//     info in a XTP_CALENDAR_HITTESTINFO struct.
-	// Parameters:
-	//     pt       - A CPoint object that contains the coordinates of
-	//                the point to test.
-	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO struct that
-	//                contains information about the point to test.
-	// Remarks:
-	//     Implements standard functionality for the HitTest method.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest)
-	{
-		_THitTest hitInfo;
-		BOOL bRes = HitTestEx(pt, &hitInfo);
-		if (bRes && pHitTest)
-		{
-			*pHitTest = (XTP_CALENDAR_HITTESTINFO)hitInfo;
-		}
-		return bRes;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at the specified position index, and returns additional
-	//     info in the _THitTest template object.
-	// Parameters:
-	//     pt       - A CPoint that contains the coordinates of the point test.
-	//     pHitTest - A pointer to a _THitTest structure.
-	// Remarks:
-	//     Implements standard functionality for the HitTestEx method.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, _THitTest* pHitTest)
-	{
-		if (!pHitTest)
-		{
-			ASSERT(FALSE);
-			return FALSE;
-		}
-
-		if (!m_Layout.m_rcDay.PtInRect(pt))
-		{
-			return FALSE;
-		}
-
-		if (m_Layout.m_rcDayHeader.PtInRect(pt))
-		{
-			FillHitTestEx(pHitTest);
-			pHitTest->uHitCode = xtpCalendarHitTestDayHeader;
-			return TRUE;
-		}
-
-		if (m_Layout.m_rcExpandSign.PtInRect(pt) &&
-			!XTP_SAFE_GET1(GetView_(), GetTheme(), NULL))
-		{
-			FillHitTestEx(pHitTest);
-			pHitTest->uHitCode = xtpCalendarHitTestDayExpandButton;
-			return TRUE;
-		}
-
-		int nCount = GetViewGroupsCount();
-		for (int i = 0; i < nCount; i++)
-		{
-			_TViewGroup* pViewGroup = GetViewGroup(i);
-			ASSERT(pViewGroup);
-			if (pViewGroup && pViewGroup->HitTestEx(pt, pHitTest))
-			{
-				ASSERT(!pHitTest->pViewGroup || pHitTest->pViewGroup == pViewGroup);
-				pHitTest->nGroup = i;
-				pHitTest->pViewGroup = pViewGroup;
-				return TRUE;
-			}
-		}
-
-		FillHitTestEx(pHitTest);
-		pHitTest->uHitCode = xtpCalendarHitTestDayArea;
-		return TRUE;
-	}
+	virtual ~CXTPCalendarViewDayT(){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill the pHitTest structure
 	//     members with the default values for the current day view object.
 	// Parameters:
-	//     pHitTest - A Pointer to a _THitTest structure.
+	//     pHitTest - A Pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     This is a pure virtual function.  This function must be defined
 	//     in the derived class.
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(_THitTest* pHitTest) = 0;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to obtain a pointer to the owner
-	//     view object.
-	// Returns:
-	//     A CXTPCalendarView pointer to the owner view object.
-	// See Also: GetView
-	//-----------------------------------------------------------------------
-	AFX_INLINE virtual CXTPCalendarView* GetView_() const
-	{
-		ASSERT(this);
-		return this ? (CXTPCalendarView*)m_pView : NULL;
-	}
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1047,22 +1025,9 @@ public:
 	//     A _TView template pointer to the owner view object.
 	// See Also: GetView_
 	//-----------------------------------------------------------------------
-	AFX_INLINE _TView* GetView() const
+	_TView* GetView() const
 	{
-		ASSERT(this);
-		return this ? m_pView : NULL;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to obtain the number of resource views
-	//     in the day view collection.
-	// Returns:
-	//     An int that contains the number of resource views.
-	//-----------------------------------------------------------------------
-	virtual int GetViewGroupsCount()
-	{
-		return m_arViewGroups.GetCount();
+		return (TView*)GetView_();
 	}
 
 	//-----------------------------------------------------------------------
@@ -1079,74 +1044,18 @@ public:
 	// See Also:
 	//     GetViewGroupsCount(), GetViewGroup_()
 	//-----------------------------------------------------------------------
-	virtual _TViewGroup* GetViewGroup(int nIndex)
+	virtual _TViewGroup* GetViewGroup(int nIndex) const
 	{
-		ASSERT(this);
-		if (!this)
-		{
-			return NULL;
-		}
-		int nCount = m_arViewGroups.GetCount();
-		ASSERT(nIndex >= 0 && nIndex < nCount);
-		return (nIndex >= 0 && nIndex < nCount) ? m_arViewGroups.GetAt(nIndex) : NULL;
+		return (_TViewGroup*)GetViewGroup_(nIndex);
 	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to obtain a pointer to the base CXTPCalendarViewGroup*
-	//     object that corresponds to the resource's index.
-	// Parameters:
-	//     nIndex  - An int that contains the resource view index in the day
-	//               view collection.
-	// Returns:
-	//     A pointer to a base of the _TViewGroup template object.
-	// Remarks:
-	//     Index number starts with 0 and cannot be negative.
-	// See Also:
-	//     GetViewGroupsCount(), GetViewGroup()
+	//     This member function is used to crete new instance of group.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewGroup* GetViewGroup_(int nIndex)
+	virtual CXTPCalendarViewGroup* CreateGroup()
 	{
-		ASSERT(this);
-		_TViewGroup* pViewGroup = this ? GetViewGroup(nIndex) : NULL;
-		return pViewGroup;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to populate the view with data for
-	//     all resource items contained in the view.
-	// Parameters:
-	//     dtDayDate - A COleDateTime object that contains the day's date.
-	// Remarks:
-	//     This function provides common functionality for all CXTPCalendarViewDay -
-	//     derived classes.
-	//-----------------------------------------------------------------------
-	virtual void Populate(COleDateTime dtDayDate)
-	{
-		m_dtDate = CXTPCalendarUtils::ResetTime(dtDayDate);
-		m_arViewGroups.RemoveAll();
-
-		if (!GetView_())
-		{
-			return;
-		}
-
-		OnPrePopulateDay();
-
-		CXTPCalendarResources* pResources = GetResources();
-		if (!pResources)
-			return;
-
-		_TViewGroup* pGroup = new _TViewGroup(GetPThis());
-		if (!pGroup)
-		{
-			return;
-		}
-		m_arViewGroups.Add(pGroup);
-
-		pGroup->SetResources(pResources);
-		pGroup->Populate(m_dtDate);
+		return new _TViewGroup(GetPThis());
 	}
 
 	//-----------------------------------------------------------------------
@@ -1177,34 +1086,6 @@ public:
 		}
 	}
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to determine if all of the day's event
-	//     views are not visible and to calculate the rectangle for the ExpandSign.
-	// Returns:
-	//     TRUE if there are invisible event views. FALSE otherwise.
-	// See Also: CXTPCalendarViewDay::_NoAllEventsAreVisible
-	//-----------------------------------------------------------------------
-	virtual BOOL NoAllEventsAreVisible()
-	{
-		if (CXTPCalendarViewDay::_NoAllEventsAreVisible())
-		{
-			if (GetView_() && !GetView_()->GetTheme())
-			{
-				CSize szBm = XTP_SAFE_GET2(GetView_(), GetPaintManager(), GetExpandSignSize(), CSize(0) );
-				m_Layout.m_rcExpandSign.SetRect(m_Layout.m_rcDay.right - szBm.cx, m_Layout.m_rcDay.bottom - szBm.cy,
-					m_Layout.m_rcDay.right, m_Layout.m_rcDay.bottom);
-			}
-			return TRUE;
-		}
-		else
-		{
-			m_Layout.m_rcExpandSign.SetRect(m_Layout.m_rcDay.right, m_Layout.m_rcDay.bottom,
-				m_Layout.m_rcDay.right, m_Layout.m_rcDay.bottom);
-			return FALSE;
-		}
-	}
-
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1219,10 +1100,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual _TPThis* GetPThis() = 0;
 
-
-	TViewGroupsCollection m_arViewGroups; // Storage for views of groups.
 private:
-	_TView* m_pView; // Storage for a owner view.
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1231,13 +1109,7 @@ AFX_INLINE COleDateTime CXTPCalendarViewDay::GetDayDate() const
 {
 	return m_dtDate;
 }
-AFX_INLINE COleDateTime CXTPCalendarViewDay::SetDayDate(COleDateTime dtDayDate)
-{
-	COleDateTime dtOld(m_dtDate);
-	m_dtDate = CXTPCalendarUtils::ResetTime(dtDayDate);
-	return dtOld;
-}
-AFX_INLINE CRect CXTPCalendarViewDay::GetDayRect()
+AFX_INLINE CRect CXTPCalendarViewDay::GetDayRect() const
 {
 	return m_Layout.m_rcDay;
 }
@@ -1245,13 +1117,11 @@ AFX_INLINE void CXTPCalendarViewDay::SetDayRect(CRect rcDay)
 {
 	m_Layout.m_rcDay.CopyRect(rcDay);
 }
-
-AFX_INLINE BOOL CXTPCalendarViewDay::IsExpanded()
+AFX_INLINE BOOL CXTPCalendarViewDay::IsExpanded() const
 {
 	return m_Layout.m_rcExpandSign.Width() > 0 ? TRUE : FALSE;
 }
-
-AFX_INLINE CRect CXTPCalendarViewDay::GetExpandSignRect()
+AFX_INLINE CRect CXTPCalendarViewDay::GetExpandSignRect() const
 {
 	return m_Layout.m_rcExpandSign;
 }
@@ -1267,14 +1137,14 @@ AFX_INLINE CRect CXTPCalendarViewDay::GetExpandSignRect()
 //     These are template parameters:
 //     _TView      - Type of owner View object.
 //     _TViewEvent - Type of View Event objects stored in Group View.
-//     _THitTest   - Type of HitTest struct, used as parameter in the
+//     XTP_CALENDAR_HITTESTINFO   - Type of HitTest struct, used as parameter in the
 //                   member functions.
 //     _TPThis     - The last derived class type in the class hierarchy.
 //
 //          You must provide all of the above parameters.
 // See Also: CXTPCalendarViewGroup
 //===========================================================================
-template<class _TViewDay, class _TViewEvent, class _THitTest, class _TPThis>
+template<class _TViewDay, class _TViewEvent, class _TPThis>
 class CXTPCalendarViewGroupT : public CXTPCalendarViewGroup
 {
 public:
@@ -1284,13 +1154,7 @@ public:
 	//------------------------------------------------------------------------
 	typedef _TViewDay TViewDay;
 
-	//------------------------------------------------------------------------
-	// Remarks:
-	//     Event views collection type definition.
-	//------------------------------------------------------------------------
-	typedef CXTPCalendarPtrCollectionT< _TViewEvent > TViewEventsCollection;
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -1299,8 +1163,8 @@ public:
 	// See Also: ~CXTPCalendarViewGroupT()
 	//-----------------------------------------------------------------------
 	CXTPCalendarViewGroupT(_TViewDay* pViewDay)
+		: CXTPCalendarViewGroup(pViewDay)
 	{
-		m_pViewDay = pViewDay;
 	}
 
 	//-----------------------------------------------------------------------
@@ -1309,114 +1173,19 @@ public:
 	// Remarks:
 	//     Handles class members deallocation.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarViewGroupT()
-	{
-	};
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at a specified position index, and returns additional
-	//     info in a XTP_CALENDAR_HITTESTINFO struct.
-	// Parameters:
-	//     pt       - A CPoint object that contains the coordinates of
-	//                the point to test.
-	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO struct that
-	//                contains information about the point to test.
-	// Remarks:
-	//     Implements standard functionality for the HitTest method.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest)
-	{
-		_THitTest hitInfo;
-		BOOL bRes = HitTestEx(pt, &hitInfo);
-		if (bRes && pHitTest)
-		{
-			*pHitTest = (XTP_CALENDAR_HITTESTINFO)hitInfo;
-		}
-		return bRes;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at the specified position index, and returns additional
-	//     info in the _THitTest template object.
-	// Parameters:
-	//     pt       - A CPoint that contains the coordinates of the point test.
-	//     pHitTest - A pointer to a _THitTest structure.
-	// Remarks:
-	//     Implements standard functionality for the HitTestEx method.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, _THitTest* pHitTest)
-	{
-		if (!pHitTest)
-		{
-			ASSERT(FALSE);
-			return FALSE;
-		}
-
-		if (!m_Layout.m_rcGroup.PtInRect(pt))
-		{
-			return FALSE;
-		}
-
-		if (m_Layout.m_rcGroupHeader.PtInRect(pt))
-		{
-			FillHitTestEx(pHitTest);
-			pHitTest->uHitCode = xtpCalendarHitTestGroupHeader;
-			return TRUE;
-		}
-
-		int nCount = GetViewEventsCount();
-		for (int i = 0; i < nCount; i++)
-		{
-			_TViewEvent* pViewEvent = GetViewEvent(i);
-			ASSERT(pViewEvent);
-			if (pViewEvent && pViewEvent->HitTestEx(pt, pHitTest))
-			{
-				ASSERT(!pHitTest->pViewEvent || pHitTest->pViewEvent == pViewEvent);
-				pHitTest->nEvent = i;
-				pHitTest->pViewEvent = pViewEvent;
-				return TRUE;
-			}
-		}
-		FillHitTestEx(pHitTest);
-		pHitTest->uHitCode = xtpCalendarHitTestGroupArea;
-		return TRUE;
-	}
+	virtual ~CXTPCalendarViewGroupT(){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to fill the pHitTest structure
 	//     members with the default values for the current group view object.
 	// Parameters:
-	//     pHitTest - A Pointer to a _THitTest structure.
+	//     pHitTest - A Pointer to a XTP_CALENDAR_HITTESTINFO structure.
 	// Remarks:
 	//     This is a pure virtual function.  This function must be defined
 	//     in the derived class.
 	//-----------------------------------------------------------------------
-	virtual void FillHitTestEx(_THitTest* pHitTest) = 0;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to obtain a pointer to the owner
-	//     view object.
-	// Returns:
-	//     A CXTPCalendarView pointer to the owner view object.
-	// See Also: GetView
-	//-----------------------------------------------------------------------
-	AFX_INLINE virtual CXTPCalendarViewDay* GetViewDay_() const
-	{
-		ASSERT(this);
-		return this ? (CXTPCalendarViewDay*)m_pViewDay : NULL;
-	}
+	virtual void FillHitTestEx(XTP_CALENDAR_HITTESTINFO* pHitTest) const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1425,22 +1194,9 @@ public:
 	//     A _TView template pointer to the owner view object.
 	// See Also: GetView_
 	//-----------------------------------------------------------------------
-	AFX_INLINE _TViewDay* GetViewDay() const
+	_TViewDay* GetViewDay() const
 	{
-		ASSERT(this);
-		return this ? m_pViewDay : NULL;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to obtain the number of event views
-	//     in the day view collection.
-	// Returns:
-	//     An int that contains the number of event views.
-	//-----------------------------------------------------------------------
-	virtual int GetViewEventsCount()
-	{
-		return m_arEvents.GetCount();
+		return (_TViewDay*)GetViewDay_();
 	}
 
 	//-----------------------------------------------------------------------
@@ -1457,177 +1213,14 @@ public:
 	// See Also:
 	//     GetViewEventsCount(), GetViewEvent_()
 	//-----------------------------------------------------------------------
-	virtual _TViewEvent* GetViewEvent(int nIndex)
+	virtual _TViewEvent* GetViewEvent(int nIndex) const
 	{
-		ASSERT(this);
-		if (!this)
-		{
-			return NULL;
-		}
-		int nCount = m_arEvents.GetCount();
-		ASSERT(nIndex >= 0 && nIndex < nCount);
-		return (nIndex >= 0 && nIndex < nCount) ? m_arEvents.GetAt(nIndex) : NULL;
+		return (_TViewEvent*)GetViewEvent_(nIndex);
 	}
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to obtain a pointer to the base CXTPCalendarViewEvent*
-	//     object that corresponds to the event's index.
-	// Parameters:
-	//     nIndex  - An int that contains the event view index in the day
-	//               view collection.
-	// Returns:
-	//     A pointer to a base of the _TViewEvent template object.
-	// Remarks:
-	//     Index number starts with 0 and cannot be negative.
-	// See Also:
-	//     GetViewEventsCount(), GetViewEvent()
-	//-----------------------------------------------------------------------
-	virtual CXTPCalendarViewEvent* GetViewEvent_(int nIndex)
+	CXTPCalendarViewEvent* CreateViewEvent(CXTPCalendarEvent* pEvent)
 	{
-		ASSERT(this);
-		_TViewEvent* pViewEvent = this ? GetViewEvent(nIndex) : NULL;
-		return pViewEvent;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to populate the view with data for
-	//     all event items contained in the view.
-	// Parameters:
-	//     dtDayDate - A COleDateTime object that contains the day's date.
-	// Remarks:
-	//     This function provides common functionality for all CXTPCalendarViewGroup -
-	//     derived classes.
-	//-----------------------------------------------------------------------
-	virtual void Populate(COleDateTime dtDayDate)
-	{
-		dtDayDate = CXTPCalendarUtils::ResetTime(dtDayDate);
-
-		m_arEvents.RemoveAll();
-
-		CXTPCalendarEventsPtr ptrEventsAr = new CXTPCalendarEvents();
-		CXTPCalendarView* pView = XTP_SAFE_GET1(GetViewDay_(), GetView_(), NULL);
-		if (!GetResources() || !pView || !ptrEventsAr)
-			return;
-
-		CXTPCalendarOptions* pOptions = GetCalendarControl()->GetCalendarOptions();
-		BOOL bNeedNextDay = (DATE)pOptions->dtScaleMaxTime > 1;
-
-		int nResourcesCount = GetResources()->GetCount();
-		for (int nRc = 0; nRc < nResourcesCount; nRc++)
-		{
-			CXTPCalendarResource* pRC = GetResources()->GetAt(nRc);
-			if (!pRC)
-				continue;
-
-			// to support dragging common mechanism "pView->RetrieveDayEvents" is used.
-			CXTPCalendarEventsPtr ptrEvents = pView->RetrieveDayEvents(pRC, dtDayDate);
-			if (ptrEvents)
-			{
-				// append events
-				ptrEventsAr->Append(ptrEvents);
-			}
-
-			if (bNeedNextDay)
-			{
-				CXTPCalendarEventsPtr ptrEvents = pView->RetrieveDayEvents(pRC, dtDayDate + COleDateTimeSpan(1, 0, 0, 0));
-				if (ptrEvents)
-				{
-					// append events
-					ptrEventsAr->Append(ptrEvents);
-				}
-			}
-		}
-
-		// sort events by start time and some other criteria
-		ptrEventsAr->Sort(CXTPCalendarEvents::CompareEvents_ForView);
-
-		//---------------------
-		CXTPCalendarEvent* pDragNew = XTP_SAFE_GET2(GetViewDay_(), GetView_(), GetDraggingEventNew(), NULL);
-		CXTPCalendarEvent* pDragOrig = XTP_SAFE_GET2(GetViewDay_(), GetView_(), GetDraggingEventOrig(), NULL);
-
-		// remove duplicated events
-		int nCount = ptrEventsAr->GetCount();
-		for (int nEvent = nCount - 2; nEvent >= 0; nEvent--)
-		{
-			CXTPCalendarEvent* pEvent0 = ptrEventsAr->GetAt(nEvent);
-			CXTPCalendarEvent* pEvent1 = ptrEventsAr->GetAt(nEvent + 1);
-			if (!pEvent0 || !pEvent1)
-				continue;
-			if (pEvent0 == pDragNew || pEvent1 == pDragNew)
-				continue;
-
-			if (pEvent0->GetDataProvider() == pEvent1->GetDataProvider() &&
-				pEvent0->IsEqualIDs(pEvent1))
-			{
-				ASSERT(pEvent0->GetScheduleID() == pEvent1->GetScheduleID());
-				ptrEventsAr->RemoveAt(nEvent + 1);
-			}
-		}
-
-		// dragging support
-		if (pDragNew && !pDragOrig)
-		{
-			int nFIdx = ptrEventsAr->Find(pDragNew);
-			if (nFIdx > 0)
-			{
-				ptrEventsAr->InsertAt(0, pDragNew, TRUE);
-				ptrEventsAr->RemoveAt(nFIdx+1);
-			}
-		}
-
-		// to allow some customization before show events
-		OnPrePopulate(ptrEventsAr);
-
-		// Create events views:
-		nCount = ptrEventsAr->GetCount();
-		for (int nEventId = 0; nEventId < nCount; nEventId++)
-		{
-			CXTPCalendarEvent* pEvent = ptrEventsAr->GetAt(nEventId);
-			if (!pEvent)
-			{
-				ASSERT(FALSE);
-				continue;
-			}
-
-			if (bNeedNextDay)
-			{
-				if ((DATE)pEvent->GetEndTime() <= dtDayDate + pOptions->dtScaleMinTime)
-					continue;
-
-				if ((DATE)pEvent->GetStartTime() >= dtDayDate + pOptions->dtScaleMaxTime)
-					continue;
-
-				if (pEvent->IsAllDayEvent() && (DATE)pEvent->GetStartTime() > dtDayDate)
-					continue;
-			}
-
-			// the same checking is in the data provider.
-			// check again for dragging event.
-			if (!(pEvent->GetStartTime() < dtDayDate
-				&& CXTPCalendarUtils::IsEqual(pEvent->GetEndTime(), dtDayDate)))
-			{
-				//m_arEvents.Add(new _TViewEvent(pEvent, GetPThis()));
-				AddViewEvent(pEvent);
-			}
-		}
-	}
-
-	void AddViewEvent(CXTPCalendarEvent* pEvent)
-	{
-		if (pEvent)
-		{
-			for (int i = 0; i < m_arEvents.GetCount(); i++)
-			{
-				if (m_arEvents.GetAt(i))
-				{
-					if (m_arEvents.GetAt(i)->GetEvent() == pEvent)
-						return;
-				}
-			}
-			m_arEvents.Add(new _TViewEvent(pEvent, GetPThis()));
-		}
+		return new _TViewEvent(pEvent, GetPThis());
 	}
 
 protected:
@@ -1643,38 +1236,85 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual _TPThis* GetPThis() = 0;
 
-
-	TViewEventsCollection m_arEvents; // Storage for events views.
 private:
-	_TViewDay* m_pViewDay; // Parent day view
 };
 
 ////////////////////////////////////////////////////////////////////////////
-AFX_INLINE CXTPCalendarViewDay::XTP_VIEW_DAY_LAYOUT& CXTPCalendarViewDay::GetLayout_()
+AFX_INLINE XTP_VIEW_DAY_LAYOUT& CXTPCalendarViewDay::GetLayout_()
 {
 	return m_Layout;
 }
-
-AFX_INLINE CXTPCalendarResources* CXTPCalendarViewGroup::GetResources()
+AFX_INLINE const XTP_VIEW_DAY_LAYOUT& CXTPCalendarViewDay::GetLayout_() const
+{
+	return m_Layout;
+}
+AFX_INLINE CXTPCalendarResources* CXTPCalendarViewGroup::GetResources() const
 {
 	return m_pResources;
 }
-
-AFX_INLINE int CXTPCalendarViewGroup::GetChildHandlersCount()
+AFX_INLINE int CXTPCalendarViewGroup::GetChildHandlersCount() const
 {
 	return GetViewEventsCount();
 }
-
-AFX_INLINE CXTPCalendarViewGroup::XTP_VIEW_GROUP_LAYOUT& CXTPCalendarViewGroup::GetLayout_()
+AFX_INLINE XTP_VIEW_GROUP_LAYOUT& CXTPCalendarViewGroup::GetLayout_()
 {
 	return m_Layout;
 }
-
 AFX_INLINE CXTPCalendarControl* CXTPCalendarViewGroup::GetCalendarControl() const
 {
 	if (GetViewDay_())
 		return GetViewDay_()->GetCalendarControl();
 	return NULL;
 }
+
+AFX_INLINE int CXTPCalendarViewGroup::GetViewEventsCount() const
+{
+	return m_arEvents.GetCount();
+}
+
+AFX_INLINE CXTPCalendarViewEvent* CXTPCalendarViewGroup::GetViewEvent_(int nIndex) const
+{
+	ASSERT(this);
+	if (!this)
+	{
+		return NULL;
+	}
+
+	int nCount = m_arEvents.GetCount();
+	ASSERT(nIndex >= 0 && nIndex < nCount);
+
+	return (nIndex >= 0 && nIndex < nCount) ? m_arEvents.GetAt(nIndex) : NULL;
+}
+
+AFX_INLINE int CXTPCalendarViewDay::GetViewGroupsCount() const
+{
+	return m_arViewGroups.GetCount();
+}
+AFX_INLINE CXTPCalendarViewGroup* CXTPCalendarViewDay::GetViewGroup_(int nIndex) const
+{
+	ASSERT(this);
+	if (!this)
+	{
+		return NULL;
+	}
+	int nCount = m_arViewGroups.GetCount();
+	ASSERT(nIndex >= 0 && nIndex < nCount);
+	return (nIndex >= 0 && nIndex < nCount) ? m_arViewGroups.GetAt(nIndex) : NULL;
+}
+
+AFX_INLINE CXTPCalendarViewDay* CXTPCalendarViewGroup::GetViewDay_() const
+{
+	ASSERT(this);
+	return this ? m_pViewDay : NULL;
+}
+
+AFX_INLINE CXTPCalendarView* CXTPCalendarViewDay::GetView_() const
+{
+	ASSERT(this);
+	return this ? m_pView : NULL;
+}
+
 ////////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARVIEWDAY_H__)

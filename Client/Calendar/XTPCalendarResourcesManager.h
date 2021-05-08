@@ -1,8 +1,7 @@
 // XTPCalendarResourcesManager.h: interface for the
 // CXTPCalendarResourcesManager class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,19 +20,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDAR_RESOURCES_MANAGER_H_)
-#define _XTPCALENDAR_RESOURCES_MANAGER_H_
+#	define _XTPCALENDAR_RESOURCES_MANAGER_H_
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarResource.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-//===========================================================================
-//class _XTP_EXT_CLASS
 class CXTPCalendarResourcesManager;
 class CCalendarResourcesDlg;
+class CXTPCalendarResource;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarResource)
 
 //===========================================================================
 // Summary: This class is a wrapper for CXTPCalendarResource class.
@@ -45,19 +45,30 @@ class _XTP_EXT_CLASS CXTPCalendarResourceDescription : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarResourceDescription)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
 	//-------------------------------------------------------------------------
 	CXTPCalendarResourceDescription();
 
-	BOOL    m_bEnabled;         // This flag indicates is resource enabled.
-	BOOL    m_bGenerateName;    // This flag indicates that resource name should be generated from the schedule(s) name(s).
+	BOOL m_bEnabled;	  // This flag indicates is resource enabled.
+	BOOL m_bGenerateName; // This flag indicates that resource name should be generated from the
+						  // schedule(s) name(s).
 
-	CXTPCalendarResourcePtr m_ptrResource;  // A smart pointer to the resource object.
+	CXTPCalendarResourcePtr m_ptrResource; // A smart pointer to the resource object.
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarResourceDescription)
+
+	LPDISPATCH OleGetResource();
+	void OleSetResource(LPDISPATCH pDispResource);
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -71,7 +82,6 @@ class _XTP_EXT_CLASS CXTPCalendarResourcesManager : public CXTPCmdTarget
 	DECLARE_DYNCREATE(CXTPCalendarResourcesManager)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -90,10 +100,13 @@ public:
 	//-------------------------------------------------------------------------
 	enum XTPEnumCalendarDataProviderFlags
 	{
-		xtpCalendarDPFUnknown               = 0,     // Zero value flag
-		xtpCalendarDPF_CreateIfNotExists    = 0x001, // Call Create method of data provider if Open method returns FALSE.
-		xtpCalendarDPF_SaveOnDestroy        = 0x010, // Call Save method of data provider on Resources Manager destroy.
-		xtpCalendarDPF_CloseOnDestroy       = 0x020, // Call Close method of data provider on Resources Manager destroy.
+		xtpCalendarDPFUnknown			 = 0,	 // Zero value flag
+		xtpCalendarDPF_CreateIfNotExists = 0x001, // Call Create method of data provider if Open
+												  // method returns FALSE.
+		xtpCalendarDPF_SaveOnDestroy = 0x010,	 // Call Save method of data provider on Resources
+												  // Manager destroy.
+		xtpCalendarDPF_CloseOnDestroy = 0x020,	// Call Close method of data provider on Resources
+												  // Manager destroy.
 	};
 
 	//-----------------------------------------------------------------------
@@ -102,14 +115,16 @@ public:
 	//     specified Calendar connection string.
 	// Parameters:
 	//     pcszConnectionString - A text Calendar connection string.
-	//     eDPFlags             - Additional flags to control data provider creation/Opening and destruction/Closing.
+	//     eDPFlags             - Additional flags to control data provider creation/Opening and
+	//     destruction/Closing.
 	// Returns:
 	//     TRUE if operation is successful, FALSE otherwise.
 	// See Also:
 	//     SetDataProvider, XTPEnumCalendarDataProviderFlags,
 	//     CXTPCalendarControl::CreateDataProvider, CXTPCalendarData overview.
 	//-----------------------------------------------------------------------
-	BOOL AddDataProvider(LPCTSTR pcszConnectionString, int eDPFlags = xtpCalendarDPF_CreateIfNotExists);
+	BOOL AddDataProvider(LPCTSTR pcszConnectionString,
+						 int eDPFlags = xtpCalendarDPF_CreateIfNotExists);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -118,14 +133,16 @@ public:
 	// Parameters:
 	//     nIndex               - Index of the data provider in the collection.
 	//     pcszConnectionString - A text Calendar connection string.
-	//     eDPFlags             - Additional flags to control data provider creation/Opening and destruction/Closing.
+	//     eDPFlags             - Additional flags to control data provider creation/Opening and
+	//     destruction/Closing.
 	// Returns:
 	//     TRUE if operation is successful, FALSE otherwise.
 	// See Also:
 	//     AddDataProvider, XTPEnumCalendarDataProviderFlags,
 	//     CXTPCalendarControl::CreateDataProvider, CXTPCalendarData overview.
 	//-----------------------------------------------------------------------
-	BOOL SetDataProvider(int nIndex, LPCTSTR pcszConnectionString, int eDPFlags = xtpCalendarDPF_CreateIfNotExists);
+	BOOL SetDataProvider(int nIndex, LPCTSTR pcszConnectionString,
+						 int eDPFlags = xtpCalendarDPF_CreateIfNotExists);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -147,7 +164,7 @@ public:
 	// See Also:
 	//     GetDataProvidersCount, AddDataProvider, SetDataProvider, RemoveDataProvider.
 	//-----------------------------------------------------------------------
-	CXTPCalendarData* GetDataProvider(int nIndex);
+	CXTPCalendarData* GetDataProvider(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -170,7 +187,7 @@ public:
 	//     presents in the collection, NULL otherwise.
 	// See Also: GetDataProvider_ConnStr
 	//-----------------------------------------------------------------------
-	CXTPCalendarData* GetDataProvider(LPCTSTR pcszConnectionString, int* pnIndex = NULL);
+	CXTPCalendarData* GetDataProvider(LPCTSTR pcszConnectionString, int* pnIndex = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -182,7 +199,7 @@ public:
 	//     A text Calendar connection string.
 	// See Also: GetDataProvider
 	//-----------------------------------------------------------------------
-	CString GetDataProvider_ConnStr(int nIndex);
+	CString GetDataProvider_ConnStr(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -217,7 +234,7 @@ public:
 	// See Also:
 	//     AddResource, GetResourcesCount, RemoveResource, MoveResource.
 	//-----------------------------------------------------------------------
-	CXTPCalendarResourceDescription* GetResource(int nIndex);
+	CXTPCalendarResourceDescription* GetResource(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -296,8 +313,9 @@ public:
 	void RemoveAll();
 
 protected:
-	CXTPCalendarPtrCollectionT<CXTPCalendarData> m_arDataProviders;             // Data providers collection.
-	CXTPCalendarPtrCollectionT<CXTPCalendarResourceDescription> m_arResources;  // Resources collection.
+	CXTPCalendarPtrCollectionT<CXTPCalendarData> m_arDataProviders; // Data providers collection.
+	CXTPCalendarPtrCollectionT<CXTPCalendarResourceDescription> m_arResources; // Resources
+																			   // collection.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -332,8 +350,28 @@ protected:
 	void _SaveCloseDPifNeed(CXTPCalendarData* pData);
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarResourcesManager)
+	DECLARE_OLECREATE_EX(CXTPCalendarResourcesManager)
+
+	LPDISPATCH OleGetDataProvider(long nIndex);
+	LPDISPATCH OleGetDataProvider2(LPCTSTR pcszConnectionString);
+	long OleGetDataProviderIndex(LPCTSTR pcszConnectionString);
+	BSTR OleGetDataProviderConnStr(long nIndex);
+
+	LPDISPATCH OleGetResource(long nIndex);
+
+	void OleDoExchangeCfg(LPDISPATCH pDispPropExchange);
+	void OleApplyToCalendar(LPDISPATCH pDispCalendar);
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDAR_RESOURCES_MANAGER_H_)

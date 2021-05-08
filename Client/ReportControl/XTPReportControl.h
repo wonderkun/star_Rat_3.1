@@ -1,7 +1,6 @@
 // XTPReportControl.h: interface for the CXTPReportControl class.
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,26 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTCONTROL_H__)
-#define __XTPREPORTCONTROL_H__
+#	define __XTPREPORTCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPReportDefines.h"
-#include "XTPReportRow.h"
-#include "XTPReportRows.h"
-#include "XTPReportPaintManager.h"
-#include "XTPReportTip.h"
-#include "XTPReportNavigator.h"
-#include "Common/XTPSmartPtrInternalT.h"
-#include "Common/XTPSystemHelpers.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPCompatibleDC;
+class CXTPPropExchange;
+class CXTPToolTipContext;
+class CXTPImageManager;
+class CXTPMarkupContext;
 
 struct XTP_REPORTRECORDITEM_DRAWARGS;
 struct XTP_REPORTRECORDITEM_METRICS;
+struct XTP_REPORTRECORDITEM_ARGS;
+struct XTP_NM_REPORTTOOLTIPINFO;
+
 class CXTPReportRecords;
 class CXTPReportRecordItem;
 class CXTPReportColumns;
@@ -45,21 +46,26 @@ class CXTPReportGroups;
 class CXTPReportColumn;
 class CXTPReportRecord;
 class CXTPReportRows;
+class CXTPReportRow;
 class CXTPReportPaintManager;
 class CXTPReportColumnOrder;
-class CXTPImageManager;
 class CXTPReportInplaceEdit;
 class CXTPReportInplaceButtons;
 class CXTPReportInplaceList;
-class CXTPPropExchange;
-class CXTPToolTipContext;
 class CXTPReportNavigator;
+class CXTPReportIconNavigator;
 class CXTPReportRecordItemConstraint;
-class CXTPMarkupContext;
 class CXTPReportDataManager;
-
-struct XTP_REPORTRECORDITEM_ARGS;
-struct XTP_NM_REPORTTOOLTIPINFO;
+class CXTPReportHyperlink;
+class CXTPReportRecordItemRange;
+class CXTPReportSelectedRows;
+class CXTPReportBehavior;
+class CXTPReportBehaviorRowMouseButton;
+class CXTPReportTip;
+class CXTPReportSection;
+class CXTPReportSections;
+class CXTPReportBorder;
+class CXTPReportHitTestInfo;
 
 //===========================================================================
 // Summary:
@@ -94,14 +100,15 @@ struct XTP_NM_REPORTTOOLTIPINFO;
 //===========================================================================
 struct XTP_NM_REPORTITEMMETRICS
 {
-	NMHDR hdr;                                      // Standard structure, containing information about a notification message.
-	XTP_REPORTRECORDITEM_DRAWARGS*  pDrawArgs;      // Pointer to XTP_REPORTRECORDITEM_DRAWARGS structure.
-	XTP_REPORTRECORDITEM_METRICS*   pItemMetrics;   // Pointer to XTP_REPORTRECORDITEM_METRICS structure to be filled.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
+	XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs; // Pointer to XTP_REPORTRECORDITEM_DRAWARGS structure.
+	XTP_REPORTRECORDITEM_METRICS* pItemMetrics; // Pointer to XTP_REPORTRECORDITEM_METRICS structure
+												// to be filled.
 };
 
 //===========================================================================
 // Summary:
-//     This structure is sent to main window in a WM_NOTIFY message from from report control
+//     This structure is sent to main window in a WM_NOTIFY message from report control
 //     to determine Records was dragged or dropped
 // Example:
 // <code>
@@ -121,18 +128,18 @@ struct XTP_NM_REPORTITEMMETRICS
 //===========================================================================
 struct XTP_NM_REPORTDRAGDROP
 {
-	NMHDR hdr;                          // Standard structure, containing information about a notification message.
-	CXTPReportRecords* pRecords;        // Records will be dragged/dropped
-	CXTPReportRecord*  pTargetRecord;   // Target record (if any)
-	int nTargetRow;                     // Index of target row
-	BOOL bAbove;                        // Where to insert (relative to the target record)
-	DROPEFFECT dropEffect;              // The DropEffect flags.
-	CPoint pt;                          // The current location of the cursor in client coordinates.
-	int nState;                         // The transition state (0 - enter, 1 - leave, 2 - over).
-	DWORD dwKeyState;                   // The key state.
-	COleDataSource* pDataSource;        // Data Source - issue 22675
-	COleDataObject* pDataObject;        // Data Object - Needed for drag over and drop
-	BOOL bReturnValue;                  // TRUE to accept dropEffect, FALSE to not accept dropEffect
+	NMHDR hdr; // Standard structure, containing information about a notification message.
+	CXTPReportRecords* pRecords;	 // Records will be dragged/dropped
+	CXTPReportRecord* pTargetRecord; // Target record (if any)
+	int nTargetRow;					 // Index of target row
+	BOOL bAbove;					 // Where to insert (relative to the target record)
+	DROPEFFECT dropEffect;			 // The DropEffect flags.
+	CPoint pt;						 // The current location of the cursor in client coordinates.
+	int nState;						 // The transition state (0 - enter, 1 - leave, 2 - over).
+	DWORD dwKeyState;				 // The key state.
+	COleDataSource* pDataSource;	 // Data Source - issue 22675
+	COleDataObject* pDataObject;	 // Data Object - Needed for drag over and drop
+	BOOL bReturnValue;				 // TRUE to accept dropEffect, FALSE to not accept dropEffect
 };
 
 //===========================================================================
@@ -145,14 +152,15 @@ struct XTP_NM_REPORTDRAGDROP
 //===========================================================================
 struct XTP_NM_REPORTPREVIEWKEYDOWN
 {
-	NMHDR hdr;      // Standard structure, containing information about a notification message.
+	NMHDR hdr; // Standard structure, containing information about a notification message.
 
 	// OnKeyDown parameters
-	UINT nChar;     // [in/out] Specifies the virtual key code of the given key.
-	UINT nRepCnt;   // [in] Repeat count.
-	UINT nFlags;    // [in] Specifies the scan code, key-transition code, previous key state, and context code.
+	UINT nChar;   // [in/out] Specifies the virtual key code of the given key.
+	UINT nRepCnt; // [in] Repeat count.
+	UINT nFlags;  // [in] Specifies the scan code, key-transition code, previous key state, and
+				  // context code.
 
-	BOOL bCancel;   // [out] TRUE to cancel processing key, FALSE to continue.
+	BOOL bCancel; // [out] TRUE to cancel processing key, FALSE to continue.
 };
 
 //===========================================================================
@@ -166,15 +174,16 @@ struct XTP_NM_REPORTPREVIEWKEYDOWN
 //         - Sends Messages:
 // See Also: CXTPReportControl::SetMouseMode, CXTPReportControl::GetMouseMode
 //
-// <KEYWORDS xtpReportMouseNothing, xtpReportMouseOverColumnDivide, xtpReportMousePrepareDragColumn, xtpReportMouseDraggingColumn>
+// <KEYWORDS xtpReportMouseNothing, xtpReportMouseOverColumnDivide, xtpReportMousePrepareDragColumn,
+// xtpReportMouseDraggingColumn>
 //===========================================================================
 enum XTPReportMouseMode
 {
-	xtpReportMouseNothing,            // User is just watching to the list.
-	xtpReportMouseOverColumnDivide,   // User watching, but mouse is under column divider.
-	xtpReportMousePrepareDragColumn,  // User holds mouse button pressed on the column header.
-	xtpReportMouseDraggingColumn,     // User is dragging column header.
-	xtpReportMouseOverRowDivide,      // User watching, but mouse is under row divider.
+	xtpReportMouseNothing,			 // User is just watching to the list.
+	xtpReportMouseOverColumnDivide,  // User watching, but mouse is under column divider.
+	xtpReportMousePrepareDragColumn, // User holds mouse button pressed on the column header.
+	xtpReportMouseDraggingColumn,	// User is dragging column header.
+	xtpReportMouseOverRowDivide,	 // User watching, but mouse is under row divider.
 };
 
 //-----------------------------------------------------------------------
@@ -183,16 +192,17 @@ enum XTPReportMouseMode
 // Remarks:
 //     Call CXTPReportControl::EnableDragDrop to allow drag/drop operations
 // Example:
-//     <code>m_wndReport.EnableDragDrop("MyApplication", xtpReportAllowDrop | xtpReportAllowDrag);</code>
+//     <code>m_wndReport.EnableDragDrop("MyApplication", xtpReportAllowDrop |
+//     xtpReportAllowDrag);</code>
 // See Also: CXTPReportControl::EnableDragDrop
 //-----------------------------------------------------------------------
-enum  XTPReportDragDrop
+enum XTPReportDragDrop
 {
-	xtpReportAllowDrop     = 1,         // Allow Drop records to report
-	xtpReportAllowDragCopy = 2,         // Allow copy records from report
-	xtpReportAllowDragMove = 4,         // Allow move records from report
-	xtpReportAllowDrag     = 6,         // Allow copy and move records from report
-	xtpReportDontDropAsText = 8        // Do not drag record as plain text
+	xtpReportAllowDrop		= 1, // Allow Drop records to report
+	xtpReportAllowDragCopy  = 2, // Allow copy records from report
+	xtpReportAllowDragMove  = 4, // Allow move records from report
+	xtpReportAllowDrag		= 6, // Allow copy and move records from report
+	xtpReportDontDropAsText = 8  // Do not drag record as plain text
 };
 
 //-----------------------------------------------------------------------
@@ -201,8 +211,8 @@ enum  XTPReportDragDrop
 //-----------------------------------------------------------------------
 enum XTPReportDropMarker
 {
-	xtpReportDropBetween = 1,   //Drop the row between two rows.
-	xtpReportDropSelect = 2,    //Drop the selected rows.
+	xtpReportDropBetween = 1, // Drop the row between two rows.
+	xtpReportDropSelect  = 2, // Drop the selected rows.
 };
 
 //-----------------------------------------------------------------------
@@ -214,23 +224,28 @@ enum XTPReportDropMarker
 //     <code>m_wndReport.SetWatermarkAlignment(xtpWatermarkCenter | xtpWatermarkBottom);</code>
 // See Also: CXTPReportControl::SetWatermarkAlignment, GetWatermarkAlignment
 //-----------------------------------------------------------------------
-enum  XTPReportWatermarkAlignment
+enum XTPReportWatermarkAlignment
 {
-	xtpReportWatermarkUnknown      = 0,    // Unknown (empty) value.
+	xtpReportWatermarkUnknown = 0, // Unknown (empty) value.
 
-	xtpReportWatermarkLeft         = 0x0001, // Horizontal alignment: left side of report control client rect.
-	xtpReportWatermarkCenter       = 0x0002, // Horizontal alignment: center of report control client rect.
-	xtpReportWatermarkRight        = 0x0004, // Horizontal alignment: right side of report control client rect.
-	xtpReportWatermarkHmask        = 0x000F, // A mask for horizontal alignment flags.
+	xtpReportWatermarkLeft = 0x0001,   // Horizontal alignment: left side of report control client
+									   // rect.
+	xtpReportWatermarkCenter = 0x0002, // Horizontal alignment: center of report control client
+									   // rect.
+	xtpReportWatermarkRight = 0x0004,  // Horizontal alignment: right side of report control client
+									   // rect.
+	xtpReportWatermarkHmask = 0x000F,  // A mask for horizontal alignment flags.
 
-	xtpReportWatermarkTop          = 0x0010, // Vertical alignment: top side of report control client rect.
-	xtpReportWatermarkVCenter      = 0x0020, // Vertical alignment: center of report control client rect.
-	xtpReportWatermarkBottom       = 0x0040, // Vertical alignment: bottom side of report control client rect.
-	xtpReportWatermarkVmask        = 0x00F0, // A mask for vertical alignment flags.
+	xtpReportWatermarkTop = 0x0010, // Vertical alignment: top side of report control client rect.
+	xtpReportWatermarkVCenter = 0x0020, // Vertical alignment: center of report control client rect.
+	xtpReportWatermarkBottom  = 0x0040, // Vertical alignment: bottom side of report control client
+										// rect.
+	xtpReportWatermarkVmask = 0x00F0,   // A mask for vertical alignment flags.
 
-	xtpReportWatermarkStretch       = 0x0100, // Stretch watermark to entire report control client rect.
-	xtpReportWatermarkEnlargeOnly   = 0x0200, // Watermark can be enlarged only, shrinking is disabled.
-	xtpReportWatermarkShrinkOnly    = 0x0400, // Watermark can be shirnked only, enlarging is disabled.
+	xtpReportWatermarkStretch = 0x0100, // Stretch watermark to entire report control client rect.
+	xtpReportWatermarkEnlargeOnly = 0x0200, // Watermark can be enlarged only, shrinking is
+											// disabled.
+	xtpReportWatermarkShrinkOnly = 0x0400, // Watermark can be shirnked only, enlarging is disabled.
 	xtpReportWatermarkPreserveRatio = 0x0800, // Watermark aspect ratio is preserved.
 };
 
@@ -240,19 +255,21 @@ enum  XTPReportWatermarkAlignment
 // Remarks:
 //     Call CXTPReportControl::GetElementRect to get report element rectangle
 // Example:
-//     <code>m_wndReport.GetElementRect(xtpReportRectGroupByArea, rc);</code>
+//     <code>CRect rcElement = m_wndReport.GetElementRect(xtpReportRectGroupByArea);</code>
 // See Also: CXTPReportControl::GetElementRect
 //-----------------------------------------------------------------------
-enum  XTPReportElementRect
+enum XTPReportElementRect
 {
-	xtpReportElementRectReportArea = 0,           // report area rectangle
-	xtpReportElementRectGroupByArea,              // report area rectangle
-	xtpReportElementRectHeaderArea,               // report area rectangle
-	xtpReportElementRectFooterArea,               // report area rectangle
-	xtpReportElementRectHeaderRecordsArea,        // report area rectangle
-	xtpReportElementRectFooterRecordsArea,        // report area rectangle
-	xtpReportElementRectHeaderRecordsDividerArea, // report area rectangle
-	xtpReportElementRectFooterRecordsDividerArea, // report area rectangle
+	xtpReportElementRectReportArea = 0,			  // The area occupied by the records.
+	xtpReportElementRectGroupByArea,			  // The area occupied by Group By item.
+	xtpReportElementRectHeaderArea,				  // The area occupied by the header.
+	xtpReportElementRectFooterArea,				  // The area occupied by the footer.
+	xtpReportElementRectHeaderRecordsArea,		  // The area occupied by the header records.
+	xtpReportElementRectFooterRecordsArea,		  // The area occupied by the footer records.
+	xtpReportElementRectHeaderRecordsDividerArea, // The area occupied by the header records
+												  // divider.
+	xtpReportElementRectFooterRecordsDividerArea, // The area occupied by the footer records
+												  // divider.
 };
 
 //-----------------------------------------------------------------------
@@ -264,11 +281,59 @@ enum  XTPReportElementRect
 //     <code>m_wndReport.SetRecordsTreeFilterMode(xtpReportFilterTreeSimple);</code>
 // See Also: CXTPReportControl::SetRecordsTreeFilterMode
 //-----------------------------------------------------------------------
-enum  XTPReportFilterMode
+enum XTPReportFilterMode
 {
-	xtpReportFilterTreeSimple               = 0,
-	xtpReportFilterTreeByParentAndChildren  = 1,
-	xtpReportFilterTreeByEndChildrenOnly    = 2
+	xtpReportFilterTreeSimple			   = 0,
+	xtpReportFilterTreeByParentAndChildren = 1,
+	xtpReportFilterTreeByEndChildrenOnly   = 2
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Enumeration of scroll update modes.
+//-----------------------------------------------------------------------
+enum XTPReportScrollUpdateMode
+{
+	xtpReportScrollUpdateModeImmediate, // Immediately updates the scroll position
+	xtpReportScrollUpdateModeDeferred   // Updates the scroll position deferred
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Enumeration of scroll modes.
+//-----------------------------------------------------------------------
+enum XTPReportScrollMode
+{
+	xtpReportScrollModeNone		  = 0, // No scrolling
+	xtpReportScrollModeBlockCount = 1, // Scrolls an entire row or column
+	xtpReportScrollModeBlockSize  = 3, // Scrolls an entire row or column
+	xtpReportScrollModeSmooth	 = 2, // Smooth scrolling
+
+	// Deprecated
+	xtpReportScrollModeBlock = xtpReportScrollModeBlockCount,
+};
+
+//-----------------------------------------------------------------------
+// Summary:
+//     Stores the mouse and key states.
+//-----------------------------------------------------------------------
+struct XTPReportInputState
+{
+	XTPReportInputState()
+		: ptMouse(-1, -1)
+		, bKeyControl(FALSE)
+		, bKeyShift(FALSE)
+		, nRow(-1)
+		, bSelected(FALSE)
+	{
+		// Nothing
+	}
+
+	CPoint ptMouse;   // Mouse position
+	BOOL bKeyControl; // Control key state
+	BOOL bKeyShift;   // Shift key state
+	int nRow;		  // Clicked row index
+	BOOL bSelected;   // Clicked row selection state
 };
 
 //===========================================================================
@@ -392,11 +457,14 @@ enum  XTPReportFilterMode
 //     CXTPReportRecords, CXTPReportRows, CXTPReportColumns,
 //     CXTPReportSubListControl, CXTPReportFilterEditControl
 //===========================================================================
-class _XTP_EXT_CLASS CXTPReportControl : public CWnd, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPReportControl
+	: public CWnd
+	, public CXTPAccessible
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNCREATE(CXTPReportControl)
 	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
 
 	friend class CXTPReportSubListControl;
 	friend class CXTPReportRow;
@@ -412,7 +480,6 @@ class _XTP_EXT_CLASS CXTPReportControl : public CWnd, public CXTPAccessible
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//===========================================================================
 	// Summary:
 	//     Internal report update helper.
@@ -420,7 +487,6 @@ public:
 	class _XTP_EXT_CLASS CUpdateContext
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Constructs a CXTPReportControlUpdateContext object.
@@ -441,8 +507,9 @@ public:
 		{
 			m_pControl->EndUpdate();
 		}
+
 	protected:
-		CXTPReportControl* m_pControl;          // Updated report control pointer
+		CXTPReportControl* m_pControl; // Updated report control pointer
 	};
 
 public:
@@ -457,7 +524,7 @@ public:
 	//     For custom heap used for classes derived from CXTPHeapObjectT template,
 	//     like CXTPReportRecord, CXTPReportRecordItem, CXTPReportRow and so others.
 	//     This template just overrides operators new and delete.
-	//     <P>It must be called on initialization before any allocations of classes
+	//     <p/>It must be called on initialization before any allocations of classes
 	//     which use custom heap. OnInitInstance is a fine place for this.
 	// Returns:
 	//     TRUE if custom heap feature is enabled for all report allocators,
@@ -481,7 +548,7 @@ public:
 	//      When all memory pieces from block free, it may be deallocated from
 	//      heap automatically (this depends on options in _TBatchAllocData)
 	//      or by FreeExtraData call,
-	//      <P>It must be called on initialization before any allocations of classes
+	//      <p/>It must be called on initialization before any allocations of classes
 	//      which use batch allocation. OnInitInstance is a fine place for this.
 	// Returns:
 	//     TRUE if batch allocation feature is enabled for report rows,
@@ -514,7 +581,8 @@ public:
 	// // Declare a dynamic CXTPReportControl object.
 	// CXTPReportControl* pMyReport = new CXTPReportControl();
 	//
-	// if (!myReport.Create(WS_CHILD | WS_TABSTOP | WS_VISIBLE | WM_VSCROLL, CRect(0, 0, 0, 0), this, ID_REPORT_CONTROL))
+	// if (!myReport.Create(WS_CHILD | WS_TABSTOP | WS_VISIBLE | WM_VSCROLL, CRect(0, 0, 0, 0),
+	// this, ID_REPORT_CONTROL))
 	// {
 	//     TRACE(_T("Failed to create view window\n"));
 	// }
@@ -550,7 +618,8 @@ public:
 	//     Nonzero if successful; otherwise 0.
 	// See Also: CXTPReportControl::CXTPReportControl
 	//-----------------------------------------------------------------------
-	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
+				CCreateContext* pContext = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -617,8 +686,9 @@ public:
 	// Parameters:
 	//     pRecord - Record data with items.
 	//     pParentRecord - Parent record.
-	//     nRowChildIndex    - child index a row to be inserted at for case when index does not defined by other conditions (or -1).
-	//     nRecordChildIndex - child index a record to be inserted at (or -1).
+	//     nRowChildIndex    - child index a row to be inserted at for case when index does not
+	//     defined by other conditions (or -1). nRecordChildIndex - child index a record to be
+	//     inserted at (or -1).
 	// Remarks:
 	//     Call this member function if you want to add a data record to the
 	//     report control's internal storage and associate a row with it.
@@ -635,7 +705,7 @@ public:
 	//           UpdateRecord
 	//-----------------------------------------------------------------------
 	virtual void AddRecordEx(CXTPReportRecord* pRecord, CXTPReportRecord* pParentRecord = NULL,
-					int nRowChildIndex = -1, int nRecordChildIndex = -1);
+							 int nRowChildIndex = -1, int nRecordChildIndex = -1);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -653,7 +723,8 @@ public:
 	// See Also: RemoveRowEx, AddRecordEx, CXTPReportRecords::RemoveRecord,
 	//           UpdateRecord
 	//-----------------------------------------------------------------------
-	virtual BOOL RemoveRecordEx(CXTPReportRecord* pRecord, BOOL bAdjustLayout = TRUE, BOOL bRemoveFromParent = TRUE);
+	virtual BOOL RemoveRecordEx(CXTPReportRecord* pRecord, BOOL bAdjustLayout = TRUE,
+								BOOL bRemoveFromParent = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -781,7 +852,8 @@ public:
 	//     Clipboard format that will be used with Report Control
 	// See Also: XTPReportDragDrop
 	//-----------------------------------------------------------------------
-	CLIPFORMAT EnableDragDrop(LPCTSTR lpszClipboardFormat, DWORD dwFlags, DWORD dwDropMarkerFlags = xtpReportDropBetween);
+	CLIPFORMAT EnableDragDrop(LPCTSTR lpszClipboardFormat, DWORD dwFlags,
+							  DWORD dwDropMarkerFlags = xtpReportDropBetween);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -797,14 +869,14 @@ public:
 	// Returns:
 	//     A DWORD value specifying the drop marker flags.
 	//-----------------------------------------------------------------------
-	DWORD GetDropMarkerFlags();
+	DWORD GetDropMarkerFlags() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Set or clear grid drawing style.
 	// Parameters:
-	//     bVertical - TRUE for changing vertical grid style,
-	//                 FALSE for changing horizontal grid style.
+	//     orientation - xtpReportOrientationVertical for changing vertical grid style,
+	//                   xtpReportOrientationHorizontal for changing horizontal grid style.
 	//     gridStyle - New grid style. Can be any of the values listed in the Remarks section.
 	// Remarks:
 	//     Call this member function if you want to change a style
@@ -819,14 +891,14 @@ public:
 	//
 	// See Also: XTPReportGridStyle overview, GetGridStyle, SetGridColor
 	//-----------------------------------------------------------------------
-	void SetGridStyle(BOOL bVertical, XTPReportGridStyle gridStyle);
+	void SetGridStyle(XTPReportOrientation orientation, XTPReportGridStyle gridStyle);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns current grid drawing mode.
 	// Parameters:
-	//     bVertical - TRUE for vertical grid style,
-	//                 FALSE for horizontal grid style.
+	//     bVertical - xtpReportOrientationVertical for vertical grid style,
+	//                 xtpReportOrientationHorizontal for horizontal grid style.
 	// Remarks:
 	//     Call this member function if you want to retrieve current
 	//     grid lines drawing style for the report control.
@@ -834,7 +906,7 @@ public:
 	//     Current grid drawing style.
 	// See Also: XTPReportGridStyle overview, SetGridStyle, SetGridColor
 	//-----------------------------------------------------------------------
-	XTPReportGridStyle GetGridStyle(BOOL bVertical) const;
+	XTPReportGridStyle GetGridStyle(XTPReportOrientation orientation) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -849,36 +921,6 @@ public:
 	// See Also: SetGridStyle, GetGridStyle
 	//-----------------------------------------------------------------------
 	COLORREF SetGridColor(COLORREF clrGridLine);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the collection of the data records.
-	// Returns:
-	//     The data records collection.
-	// Remarks:
-	//     Call this member function if you want to retrieve an access
-	//     to the collection of report records. You may then perform
-	//     standard operations on the collection like adding, removing, etc.
-	// See Also: CXTPReportRecords overview, AddRecord
-	//-----------------------------------------------------------------------
-	CXTPReportRecords* GetRecords() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the collection of the report rows
-	// Remarks:
-	//     Use this member function to retrieve an access to the collection
-	//     of report rows, representing current control view.
-	//
-	//     Note that rows collection could be rebuilt automatically
-	//     on executing Populate method.
-	// Returns:
-	//     The report rows collection.
-	// Example:
-	//     See example for CXTPReportControl::BeginUpdate method.
-	// See Also: CXTPReportRows overview, Populate
-	//-----------------------------------------------------------------------
-	CXTPReportRows* GetRows() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -919,7 +961,6 @@ public:
 	//     pPaintManager - A pointer to the custom paint manager.
 	//-----------------------------------------------------------------------
 	void SetPaintManager(CXTPReportPaintManager* pPaintManager);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -976,13 +1017,13 @@ public:
 	// Summary:
 	//     Ensures that a report control row is at least partially visible.
 	// Parameters:
-	//     pCheckRow - A pointer to the row that is to be visible.
+	//     pRow - A pointer to the row that is to be visible.
 	// Remarks:
 	//     Ensures that a report row item is at least partially visible.
 	//     The list view control is scrolled if necessary.
 	// See Also: MoveDown, MoveUp, MovePageDown, MovePageUp, MoveFirst, MoveLast
 	//-----------------------------------------------------------------------
-	void EnsureVisible(CXTPReportRow* pCheckRow);
+	void EnsureVisible(CXTPReportRow* pRow);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -998,14 +1039,25 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Determines which report row item, if any, is at a specified position.
+	//     Determines the report part at a specified position.
+	// Parameters:
+	//     pt    - A point to test.
+	//     pInfo - Pointer to a CXTPReportHitTestInfo that will hold the
+	//             returned information.
+	// Returns:
+	//     TRUE if the method was successful, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTest(CPoint pt, CXTPReportHitTestInfo* pInfo) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines the report row at a specified position.
 	// Parameters:
 	//     pt - A point to test.
 	// Returns:
-	//     The row item at the position specified by pt, if any,
-	//     or NULL otherwise.
+	//     The row at the position specified by pt, otherwise NULL.
 	//-----------------------------------------------------------------------
-	CXTPReportRow* HitTest(CPoint pt, BOOL bConsiderFastDeselectMode = FALSE) const;
+	CXTPReportRow* HitTest(CPoint pt) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1055,6 +1107,20 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Makes the provided row as currently focused.
+	// Parameters:
+	//.....bEnsureVisible   - TRUE if the row will be made visible
+	//     pRow             - The row to set as focused to.
+	//     bControlKey      - TRUE if select new focused row.
+	//     bShiftKey        - TRUE when selecting rows up to new focused row,
+	//                        FALSE otherwise.
+	// Returns:
+	//     TRUE if specified row has been focused, FALSE otherwise.
+	//-----------------------------------------------------------------------
+	BOOL SetFocusedRow(BOOL bEnsureVisible, CXTPReportRow* pRow, BOOL bShiftKey, BOOL bControlKey);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Returns rows from the visible report area.
 	// Parameters:
 	//     nStartRow - Row index to start calculating from.
@@ -1089,7 +1155,7 @@ public:
 	//     Top row index.
 	// See Also: SetTopRow
 	//-----------------------------------------------------------------------
-	long GetTopRowIndex() const;
+	int GetTopRowIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1100,7 +1166,15 @@ public:
 	//     This method takes effect only if auto column sizing is disable
 	// See Also: CXTPReportHeader::SetAutoColumnSizing
 	//-----------------------------------------------------------------------
-	void SetLeftOffset(int nOffset);
+	void SetScrollOffsetH(int nOffset);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to set vertical scroll position.
+	// Parameters:
+	//     nOffset - Vertical scroll position.
+	//-----------------------------------------------------------------------
+	void SetScrollOffsetV(int nOffset);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1274,6 +1348,19 @@ public:
 	//     at the left side.
 	//-----------------------------------------------------------------------
 	int GetFreezeColumnsCount() const;
+	int GetFreezeColumnsCount(int& rnLastFreezeColumnIndex) const;
+	int GetFreezeColumnsIndex() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the number of none-scrollable columns
+	// Parameters:
+	//     nCount - number of none-scrollable columns
+	//     bAdjust 0 flag used to adjust horizontal scrollbar vertical position
+	//     if some of freezed columns change width and scrollbar located
+	//     under not-freezed columns only (similar to Excel scrollbar location)
+	//-----------------------------------------------------------------------
+	void SetFreezeColumnsCount(int nCount, BOOL bAdjust = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1284,18 +1371,6 @@ public:
 	//     at the left side.
 	//-----------------------------------------------------------------------
 	int GetDisableReorderColumnsCount() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to set count of none-scrolled columns
-	//     at the left side.
-	// Parameters:
-	//     nCount - Count of none-scrolled columns at the left side.
-	//     bAdjust 0 flag used to adjust horizontal scrollbar vertical position
-	//     if some of freezed columns change width and scrollbar located
-	//     under not-freezed columns only (similar to Excel scrollbar location)
-	//-----------------------------------------------------------------------
-	void SetFreezeColumnsCount(int nCount, BOOL bAdjust = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1318,16 +1393,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      Get previous set horizontal scrolling mode flag.
-	// Returns:
-	//      Returns TRUE if horizontal scrolling is by full columns,
-	//      otherwise horizontal scrolling is by pixels.
-	// See Also: SetFullColumnScrolling
-	//-----------------------------------------------------------------------
-	BOOL IsFullColumnScrollingSet() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//      Set horizontal scrolling mode.
 	// Parameters:
 	//      bSet - If TRUE full columns scrolling mode is set,
@@ -1346,102 +1411,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns the collection of the header records.
-	// Returns:
-	//     The header records collection.
-	// Remarks:
-	//     Call this member function if you want to retrieve an access
-	//     to the collection of report header records. You may then perform
-	//     standard operations on the collection like adding, removing, etc.
-	// See Also: CXTPReportRecords overview, AddRecord
-	//-----------------------------------------------------------------------
-	CXTPReportRecords* GetHeaderRecords() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the collection of the footer records.
-	// Returns:
-	//     The footer records collection.
-	// Remarks:
-	//     Call this member function if you want to retrieve an access
-	//     to the collection of report footer records. You may then perform
-	//     standard operations on the collection like adding, removing, etc.
-	// See Also: CXTPReportRecords overview, AddRecord
-	//-----------------------------------------------------------------------
-	CXTPReportRecords* GetFooterRecords() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the collection of the report header rows
-	// Remarks:
-	//     Use this member function to retrieve an access to the collection
-	//     of report header rows, representing current control view.
-	//
-	//     Note that rows collection could be rebuilt automatically
-	//     on executing Populate method.
-	// Returns:
-	//     The report header rows collection.
-	// Example:
-	//
-	// See Also: CXTPReportRows overview, Populate
-	//-----------------------------------------------------------------------
-	CXTPReportRows* GetHeaderRows() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the collection of the report footer rows
-	// Remarks:
-	//     Use this member function to retrieve an access to the collection
-	//     of report footer rows.
-	//
-	//     Note that rows collection could be rebuilt automatically
-	//     on executing Populate method.
-	// Returns:
-	//     The report footer rows collection.
-	// Example:
-	//
-	// See Also: CXTPReportRows overview, Populate
-	//-----------------------------------------------------------------------
-	CXTPReportRows* GetFooterRows() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to hide/show header records.
-	// Parameters:
-	//     bShow - TRUE is header records will be displayed, FALSE to hide header records.
-	// See Also: IsHeaderRowsVisible, ShowFooterRows
-	//-----------------------------------------------------------------------
-	void ShowHeaderRows(BOOL bShow = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to hide/show footer records.
-	// Parameters:
-	//     bShow - TRUE is footer records will be displayed, FALSE to hide footer records.
-	// See Also: IsFooterRowsVisible, ShowHeaderRows
-	//-----------------------------------------------------------------------
-	void ShowFooterRows(BOOL bShow = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if header records are currently visible.
-	// Returns:
-	//     TRUE if header records are visible, FALSE if header records are hidden.
-	// See Also: ShowHeaderRows
-	//-----------------------------------------------------------------------
-	BOOL IsHeaderRowsVisible() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if footer records are currently visible.
-	// Returns:
-	//     TRUE if footer records are visible, FALSE if footer records are hidden.
-	// See Also: ShowFooterRows
-	//-----------------------------------------------------------------------
-	BOOL IsFooterRowsVisible() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Call this member to pin footer records to the last body row.
 	//     By default, footer records are docked to the footer.
 	// Parameters:
@@ -1454,10 +1423,31 @@ public:
 	// Summary:
 	//     Call this member to determine if footer records are pinned to the body rows.
 	// Returns:
-	//     TRUE if footer records are pinned to the body rows. FALSE if footer records are docked to the footer.
+	//     TRUE if footer records are pinned to the body rows. FALSE if footer records are docked to
+	//     the footer.
 	// See Also: PinFooterRows
 	//-----------------------------------------------------------------------
 	BOOL IsFooterRowsPinned() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to pin footer records to the last body row.
+	//     By default, footer records are docked to the footer.
+	// Parameters:
+	//     bPin - TRUE is footer records will be displayed immediately after the body rows.
+	// See Also: IsFooterRowsVisible, ShowFooterRows
+	//-----------------------------------------------------------------------
+	void PinFooterRowsPrinted(BOOL bPin = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if footer records are pinned to the body rows.
+	// Returns:
+	//     TRUE if footer records are pinned to the body rows. FALSE if footer records are docked to
+	//     the footer.
+	// See Also: PinFooterRowsPrinted
+	//-----------------------------------------------------------------------
+	BOOL IsFooterRowsPinnedPrinted() const;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -1581,7 +1571,9 @@ public:
 	//     its value depends on the message sent. (see CWnd::SendMessage)
 	// See Also: CXTPReportControl overview, SendNotifyMessage
 	//-----------------------------------------------------------------------
-	LRESULT SendMessageToParent(CXTPReportRow* pRow, CXTPReportRecordItem* pItem, CXTPReportColumn* pColumn, UINT nMessage, CPoint* pPoint, int nHyperlink = -1) const;
+	LRESULT SendMessageToParent(CXTPReportRow* pRow, CXTPReportRecordItem* pItem,
+								CXTPReportColumn* pColumn, UINT nMessage, CPoint* pPoint,
+								int nHyperlink = -1) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1650,7 +1642,8 @@ public:
 	// Parameters:
 	//     bMultiSelectionMode - TRUE for enabling, FALSE for disabling.
 	// Remarks:
-	//     Sets the flag that determines whether the report is in multi-selection mode i.e. VK_CTRL is always ON
+	//     Sets the flag that determines whether the report is in multi-selection mode i.e. VK_CTRL
+	//     is always ON
 	// See Also: IsMultiSelectionMode
 	//-----------------------------------------------------------------------
 	void SetMultiSelectionMode(BOOL bMultiSelectionMode);
@@ -1700,14 +1693,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this method to retrieve Report bounding rectangle.
-	// Returns:
-	//     Report bounding rectangle.
-	//-----------------------------------------------------------------------
-	CRect GetReportRectangle() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Adjusts scroll bars depending on currently visible rows.
 	//-----------------------------------------------------------------------
 	virtual void AdjustScrollBars();
@@ -1717,22 +1702,6 @@ public:
 	//     Adjusts main control areas depending on current control size.
 	//-----------------------------------------------------------------------
 	virtual void AdjustLayout();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to retrieve Header records bounding rectangle.
-	// Returns:
-	//     Header records bounding rectangle.
-	//-----------------------------------------------------------------------
-	CRect GetHeaderRowsRect() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to retrieve footer rows bounding rectangle.
-	// Returns:
-	//     Footer rows bounding rectangle.
-	//-----------------------------------------------------------------------
-	CRect GetFooterRowsRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1754,6 +1723,33 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member set the selection state of a row.
+	// Parameters:
+	//     index - The index of the row.
+	//     state - Tells where the check box is checked or not.
+	//-----------------------------------------------------------------------
+	void SetSelectionState(int index, int state);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to specify whether focused rows will be forced visible.
+	// Parameters:
+	//     bFocusSubItems - If TRUE, when a ReportRecordItem is focused, the
+	//                      entire row will become visible.
+	// See Also: IsEnsureFocusedRowVisible
+	//-----------------------------------------------------------------------
+	void EnsureFocusedRowVisible(BOOL bEnsureFocusedRowVisible);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if focused rows will be forced visible.
+	// Returns:
+	//     TRUE focused rows will be forced visible, otherwise false.
+	//-----------------------------------------------------------------------
+	BOOL IsEnsureFocusedRowVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to specify whether each individual CXTPReportRecordItem
 	//     will show focus when the item in a row is clicked.
 	// Parameters:
@@ -1771,30 +1767,11 @@ public:
 	//     Call this member to determine if individual CXTPReportRecordItem(s) will
 	//     receive focus when that item in the CXTPReportRow that they belong to is clicked.
 	// Returns:
-	//     TRUE if individual items can receive focus, FALSE if only the entire row can receive focus.
+	//     TRUE if individual items can receive focus, FALSE if only the entire row can receive
+	//     focus.
 	// See Also: FocusSubItems
 	//-----------------------------------------------------------------------
 	BOOL IsFocusSubItems() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the CXTPReportRecordItem(s)are editable.
-	// Returns:
-	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
-	// See Also: AllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	BOOL IsAllowEdit() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited.  This will
-	//     add an edit box to the item where the text can be edited.
-	// Parameters:
-	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
-	//                  FALSE to remove the edit box and not allow them to be edited.
-	// See Also: IsAllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	void AllowEdit(BOOL bAllowEdit);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1805,19 +1782,18 @@ public:
 	//                    the item will become editable.  The entire ReportControl
 	//                    or the specific CXTPReportRecordItem must have the bAllowEdit
 	//                    property set to TRUE for this to work.
-	//                    If FALSE, the item must be double-clicked to become editable.
 	// See Also: AllowEdit, IsAllowEdit, IsEditOnClick
 	//-----------------------------------------------------------------------
 	void EditOnClick(BOOL bEditOnClick);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member set the selection state of a raw.
-	// Parameters:
-	//     index - The index of the row.
-	//     state - Tells where the check box is checked or not.
+	//     Call this member to determine whether items are edited with a single-click.
+	// Returns:
+	//     TRUE it items can be edited with a single-click
+	// See Also: AllowEdit, IsAllowEdit, EditOnClick
 	//-----------------------------------------------------------------------
-	void SetSelectionState(int index, int state);
+	BOOL IsEditOnClick() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1837,6 +1813,28 @@ public:
 	//     not, TRUE if enabled and FALSE if not.
 	//-----------------------------------------------------------------------
 	BOOL IsEditOnDelayClick() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to specify whether a CXTPReportRecordItem can be edited by
+	//     double-clicking on the item.
+	// Parameters:
+	//     bEditOnClick - If TRUE, when the CXTPReportRecordItem is double-clicked,
+	//                    the item will become editable.  The entire ReportControl
+	//                    or the specific CXTPReportRecordItem must have the bAllowEdit
+	//                    property set to TRUE for this to work.
+	// See Also: AllowEdit, IsAllowEdit, IsEditOnDoubleClick
+	//-----------------------------------------------------------------------
+	void EditOnDoubleClick(BOOL bEditOnClick);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine whether items are edited with a double-click.
+	// Returns:
+	//     TRUE it items can be edited with a double-click
+	// See Also: AllowEdit, IsAllowEdit, EditOnDoubleClick
+	//-----------------------------------------------------------------------
+	BOOL IsEditOnDoubleClick() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1892,7 +1890,7 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this function to make sure that the deleay edit timer has
+	//     Call this function to make sure that the delay edit timer has
 	//     stopped properly.
 	//-----------------------------------------------------------------------
 	void EnsureStopDelayEditTimer();
@@ -1902,15 +1900,6 @@ public:
 	//     Call this function to start the delay edit timer.
 	//-----------------------------------------------------------------------
 	void StartDelayEditTimer();
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine whether items are edited with a single-click.
-	// Returns:
-	//     TRUE it items can be edited with a single-click, FALSE is a
-	//     double-click is needed to edit items.
-	// See Also: AllowEdit, IsAllowEdit, EditOnClick
-	//-----------------------------------------------------------------------
-	BOOL IsEditOnClick() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1928,8 +1917,8 @@ public:
 	// Summary:
 	//     Call this member to determine id auto check mode for check box items is enabled.
 	// Remarks:
-	//     If TRUE is returned, the check box will become checked or unchecked automatically when the
-	//     user clicks on the check box.
+	//     If TRUE is returned, the check box will become checked or unchecked automatically when
+	//     the user clicks on the check box.
 	// Returns:
 	//      TRUE if auto check mode is enabled, FALSE if auto check mode is disable.
 	// See Also: SetAutoCheckItems, CXTPReportRecordItem::OnClick, CXTPReportRecordItem::OnChar
@@ -2029,7 +2018,8 @@ public:
 	//         AddItem(new CXTPReportRecordItem());
 	//     }
 	//
-	//     void GetItemMetrics (XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pItemMetrics)
+	//     void GetItemMetrics (XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+	//     XTP_REPORTRECORDITEM_METRICS* pItemMetrics)
 	//     {
 	//         // Draw virtual record
 	//     }
@@ -2200,7 +2190,7 @@ public:
 	// Summary:
 	//     Set compare function to sort.
 	// Parameters:
-	//     pCompareFunc - A T_CompareFunc function pointer that is used
+	//     pCompareFunc - A XTPReportRowsCompareFunc function pointer that is used
 	//                    to compare rows or NULL to use the default one.
 	// Remarks:
 	//     This method uses Visual C++ run-time library (MSVCRT)
@@ -2211,9 +2201,9 @@ public:
 	//
 	// See Also:
 	//     SortRows, CXTPReportRows::SortEx, CXTPReportRows::Sort,
-	//     CXTPReportRows::T_CompareFunc
+	//     CXTPReportRows::XTPReportRowsCompareFunc
 	//-----------------------------------------------------------------------
-	virtual void SetRowsCompareFunc(CXTPReportRows::T_CompareFunc pCompareFunc);
+	virtual void SetRowsCompareFunc(XTPReportRowsCompareFunc pCompareFunc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2221,7 +2211,7 @@ public:
 	// Returns:
 	//      TRUE if sort order applied for record children, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsSortRecordChilds();
+	BOOL IsSortRecordChilds() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2229,7 +2219,7 @@ public:
 	// Parameters:
 	//     bSortRecordChilds - TRUE to sort record children.
 	//-----------------------------------------------------------------------
-	virtual void SetSortRecordChilds(BOOL bSortRecordChilds);
+	void SetSortRecordChilds(BOOL bSortRecordChilds);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2237,7 +2227,7 @@ public:
 	// Returns:
 	//      Horizontal scrolling step in pixels.
 	//-----------------------------------------------------------------------
-	virtual int GetHScrollStep();
+	int GetHScrollStep() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2245,7 +2235,7 @@ public:
 	// Parameters:
 	//      nStep - Horizontal scrolling step in pixels.
 	//-----------------------------------------------------------------------
-	virtual void SetHScrollStep(int nStep);
+	void SetHScrollStep(int nStep);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2253,7 +2243,7 @@ public:
 	// Returns:
 	//      Vertical scrolling timer resolution in milliseconds.
 	//-----------------------------------------------------------------------
-	virtual UINT GetAutoVScrollTimerResolution();
+	UINT GetAutoVScrollTimerResolution() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2263,47 +2253,7 @@ public:
 	// See also:
 	//      CWnd::SetTimer
 	//-----------------------------------------------------------------------
-	virtual void SetAutoVScrollTimerResolution(UINT nNewTimerResolution);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited (for header records only).
-	//     This will add an edit box to the item where the text can be edited.
-	// Parameters:
-	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
-	//                  FALSE to remove the edit box and not allow them to be edited.
-	// See Also: IsHeaderRowsAllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	void HeaderRowsAllowEdit(BOOL bAllowEdit);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited (for footer records only).
-	//     This will add an edit box to the item where the text can be edited.
-	// Parameters:
-	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
-	//                  FALSE to remove the edit box and not allow them to be edited.
-	// See Also: IsFooterRowsAllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	void FooterRowsAllowEdit(BOOL bAllowEdit);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the CXTPReportRecordItem(s) are editable (for header records only).
-	// Returns:
-	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
-	// See Also: HeaderRowsAllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	BOOL IsHeaderRowsAllowEdit() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the CXTPReportRecordItem(s) are editable (for footer records only).
-	// Returns:
-	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
-	// See Also: FooterRowsAllowEdit, EditOnClick, IsEditOnClick
-	//-----------------------------------------------------------------------
-	BOOL IsFooterRowsAllowEdit() const;
+	void SetAutoVScrollTimerResolution(UINT nNewTimerResolution);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2323,6 +2273,22 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Returns whether collapsing/expanding rows is locked.
+	// Returns:
+	//     TRUE if collapsing/expanding rows is locked.
+	//-----------------------------------------------------------------------
+	BOOL IsLockExpand() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets whether collapsing/expanding rows is locked.
+	// Parameter:
+	//     bLockExpand - TRUE to lock collapsing/expanding rows.
+	//-----------------------------------------------------------------------
+	void LockExpand(BOOL bLockExpand);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this function to recalculate and redraw the rows.
 	// Parameter:
 	//     bAll - TRUE to make the recalculation and drawing apply to the entire
@@ -2332,38 +2298,39 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to determine if rows selection is enabled.
-	// Returns:
-	//     TRUE if rows selection is enabled, FALSE otherwise.
-	// See Also: SelectionEnable
+	//     Enables or disables double-buffering.
+	// Parameter:
+	//     bEnable - TRUE to enable double-buffering, FALSE to disable it
 	//-----------------------------------------------------------------------
-	BOOL IsSelectionEnabled() const;
+	void EnableDoubleBuffering(BOOL bEnable);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to enable rows selection.
-	// Parameters:
-	//     bEnable - TRUE to enable rows selection.
-	//                  FALSE to disable rows selection.
-	// See Also: IsSelectionEnabled
+	//     Call this member to determine if double buffering is enabled.
+	// Returns:
+	//     TRUE if double buffering is enabled, FALSE otherwise.
+	// See Also: EnableDoubleBuffering
 	//-----------------------------------------------------------------------
-	void SelectionEnable(BOOL bEnable);
+	BOOL IsDoubleBuffering() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to get flag: enable initial (on Populate call) rows selection.
+	//     Determines whether the first row in the report will become selected
+	//     when initially populated.
 	// Returns:
-	//     TRUE if rows selection is enabled, FALSE otherwise.
+	//     TRUE if enabled, FALSE otherwise.
 	// See Also: SelectionEnable
 	//-----------------------------------------------------------------------
 	BOOL IsInitialSelectionEnabled() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to enable initial (on Populate call) rows selection.
+	//     Call this member to specify whether the first row in the report
+	//     will become selected when initially populated.  Use InitialSelectionEnable
+	//     to stop the report from automatically selecting the first row after populate.
 	// Parameters:
-	//     bEnable - TRUE to enable rows selection.
-	//                  FALSE to disable rows selection.
+	//     bEnable - TRUE to enable initial rows selection.
+	//               FALSE to disable initial rows selection.
 	// See Also: IsSelectionEnabled
 	//-----------------------------------------------------------------------
 	void InitialSelectionEnable(BOOL bEnable);
@@ -2386,6 +2353,523 @@ public:
 	// See Also: IsRowFocusVisible
 	//-----------------------------------------------------------------------
 	void ShowRowFocus(BOOL bShow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine current watermark alignment flags.
+	// Returns:
+	//     Current watermark alignment.
+	// See Also: XTPReportWatermarkAlignment, SetWatermarkAlignment.
+	//-----------------------------------------------------------------------
+	int GetWatermarkAlignment() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to set watermark alignment flags.
+	// Parameters:
+	//     nWatermarkAlignment - watermark alignment flags.
+	// See Also: XTPReportWatermarkAlignment, GetWatermarkAlignment.
+	//-----------------------------------------------------------------------
+	void SetWatermarkAlignment(int nWatermarkAlignment);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to draw a water mark
+	// Parameters:
+	//     pDC - Pointer to the device context.
+	//     rc  - The rectangular bounds of the water mark.
+	//-----------------------------------------------------------------------
+	void DrawWatermark(CDC* pDC, CRect rcWatermark, CRect rcClient);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve report element rectangle.
+	// Parameters:
+	//     nElement - One of XTPReportElementRect elements.
+	// Returns:
+	//     Report element rectangle.
+	// See Also: XTPReportElementRect
+	//-----------------------------------------------------------------------
+	CRect GetElementRect(XTPReportElementRect nElement) const;
+	//{{AFX_CODEJOCK_PRIVATE
+	_XTP_DEPRECATE("Use GetElementRect with XTPReportElementRect element identifier.")
+	CRect GetElementRect(int nElement) const;
+	//}}AFX_CODEJOCK_PRIVATE
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the report data manager
+	// Remarks:
+	//     Use this member function to retrieve an access to the data manager
+	// Returns:
+	//     The report data manager.
+	//-----------------------------------------------------------------------
+	CXTPReportDataManager* GetDataManager();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets new operational control mouse mode.
+	// Parameters:
+	//     nMode - New mouse mode. For available values, see XTPReportMouseMode enum.
+	// See Also: XTPReportMouseMode overview, GetMouseMode
+	//-----------------------------------------------------------------------
+	void SetMouseMode(XTPReportMouseMode nMode);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the current control mouse mode.
+	// Returns:
+	//     Current control mouse mode.
+	//     For available values, see XTPReportMouseMode enum.
+	// See Also: XTPReportMouseMode overview, SetMouseMode
+	//-----------------------------------------------------------------------
+	XTPReportMouseMode GetMouseMode() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Gets the watermark bitmap to be shown in the report control background.
+	// Returns:
+	//     hBitmap - bitmap handle.
+	//-----------------------------------------------------------------------
+	virtual HBITMAP GetWatermarkBitmap() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets a watermark bitmap to be shown in the report control background.
+	// Parameters:
+	//     hBitmap - bitmap handle.
+	//     Transparency - transparency value.
+	// Returns:
+	//     TRUE if watermark bitmap successfully added or removed, FALSE otherwise.
+	//-----------------------------------------------------------------------
+	virtual BOOL SetWatermarkBitmap(HBITMAP hBitmap, BYTE Transparency);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets a watermark bitmap to be shown in the report control background.
+	// Parameters:
+	//     szPath - path to bitmap file.
+	//     Transparency - transparency value.
+	// Returns:
+	//     TRUE if watermark bitmap successfully added or removed, FALSE otherwise.
+	//-----------------------------------------------------------------------
+	virtual BOOL SetWatermarkBitmap(LPCTSTR szPath, BYTE Transparency);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call function to get the next focusable column
+	// Parameter:
+	//     pRow         -  A pointer to the report row object.
+	//     nColumnIndex -  The column index.
+	//     nDirection   -  A positive integer specifying the right side and
+	//                     negative integer specifying the left side of the
+	//                     column, with index nColumnIndex.
+	// Remarks:
+	//     It is a virtual function.
+	//-----------------------------------------------------------------------
+	virtual CXTPReportColumn* GetNextFocusableColumn(CXTPReportRow* pRow, int nColumnIndex,
+													 int nDirection);
+
+	CXTPReportBehavior* GetBehavior() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this function to specify whether item icons are shown when the item
+	//  is getting edited.
+	// Parameters:
+	//  bShow - BOOL flag to set or not
+	//-----------------------------------------------------------------------
+	void ShowIconWhenEditing(BOOL bShow);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this function to determine whether item icons are shown when the item
+	//  is getting edited.
+	// Returns:
+	//  TRUE if item icons are shown while being edited.  FALSE by default.
+	//-----------------------------------------------------------------------
+	BOOL IsShowIconWhenEditing();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  This member used to set Fast Deselect Mode (like Windows Explorer use)
+	// Parameters:
+	//  bFastDeselect - BOOL flag to set or not
+	//-----------------------------------------------------------------------
+	void SetFastDeselectMode(BOOL bFastDeselect = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  This member used to set column as icon view column
+	// Parameters:
+	//  pColumn - pointer to column
+	//-----------------------------------------------------------------------
+	void SetIconColumn(CXTPReportColumn* pColumn);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  This member used to create column as icon view column
+	//  and also allows to reuse it for number column in report view
+	// Parameters:
+	//  bUseColumnForNum - flag to reuse icon column as number column in report view
+	//  nWidth - width of number column
+	//-----------------------------------------------------------------------
+	void CreateIconColumn(BOOL bUseColumnForNum = FALSE, int nWidth = 40);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  This member used to create column as icon view column
+	//  and also allows to reuse it for number column in report view
+	//  can be used on for non-virtual mode
+	// Parameters:
+	//  nCol - column index to use as icon column property (field)
+	//  nIcon - icon index to use in icon view
+	//  bUseColumnForNum - flag to reuse icon column as number column in report view
+	//  nWidth - width of number column
+	//-----------------------------------------------------------------------
+	void AssignIconViewPropNumAndIconNum(int nCol = 0, int nIcon = 0, BOOL bUseColumnForNum = FALSE,
+										 int nWidth = 20);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  This member used to toggle between IconView and ReportView modes
+	// Parameters:
+	//  bIconView - BOOL flag (TRUE for IconView mode, FALSE for ReportView mode)
+	//-----------------------------------------------------------------------
+	void SetIconView(BOOL bIconView = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this function to know whether the icon view mode is active or not.
+	// Returns:
+	//  TRUE if IconView mode active
+	//-----------------------------------------------------------------------
+	BOOL IsIconView() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this function to get the rows per line.
+	// Returns:
+	//  integer value denoting the rows per line
+	//-----------------------------------------------------------------------
+	int GetRowsPerLine() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this functions to get the number of rows in a line of arbitrary
+	//  length.
+	// Parameters:
+	//  iTotalWidth - passed param for total width
+	// Returns:
+	//  An integer specifying the number of lines in a row.
+	//-----------------------------------------------------------------------
+	int GetNumRowsOnLine(int iTotalWidth) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//  Call this function to set the report navigator.
+	// Parameters:
+	//  pNavigator - pointer to flag CXTPReportNavigator
+	//-----------------------------------------------------------------------
+	void SetNavigator(CXTPReportNavigator* pNavigator);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      ShowRowNumber
+	// Parameters:
+	//  bSet - BOOL flag to show or hide Row Number column
+	//-----------------------------------------------------------------------
+	void ShowRowNumber(BOOL bSet);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      IsShowRowNumber
+	// Returns:
+	//      TRUE if Row Number visible
+	//-----------------------------------------------------------------------
+	BOOL IsShowRowNumber();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Helper function
+	// Parameters:
+	//       row  - row number.
+	//       col  - column number.
+	//      sText - string to set
+	// Returns:
+	//      TRUE if success
+	//-----------------------------------------------------------------------
+	BOOL SetCellText(int row, int col, CString sText);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Helper function
+	// Parameters:
+	//          row      - row number.
+	//          col      - column number.
+	//          sFormula - Formula to set.
+	// Returns:
+	//      TRUE if success
+	//-----------------------------------------------------------------------
+	BOOL SetCellFormula(int row, int col, CString sFormula);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Unselect all Group Rows
+	//-----------------------------------------------------------------------
+	void UnselectGroupRows();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to release the sorted items and clear the memory.
+	//-----------------------------------------------------------------------
+	void ReleaseSorted();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to get the horizontal scroll position.
+	// Returns:
+	//     An integer denoting the horizontal scroll position.
+	//-----------------------------------------------------------------------
+	int GetLeftOffset() const;
+
+	// assessors for m_bDragMode
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to know whether current mouse context is dragging.
+	// Returns:
+	//     BOOL value of TRUE if the report control item(s) are in drag mode
+	//     FALSE if not.
+	//-----------------------------------------------------------------------
+	BOOL IsDragMode() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get the horizontal sensitivity of Drag'n'Drop operation.
+	// Returns:
+	//     Horizontal sensitivity of Drag'n'Drop operation in pixels.
+	// See Also: SetDragSensitivityX, GetDragSensitivityY, SetDragSensitivityY
+	//-----------------------------------------------------------------------
+	int GetDragSensitivityX() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this method to set the horizontal sensitivity of Drag'n'Drop operation.
+	// Parameters:
+	//      nDragSensitivityX - Horizontal sensitivity of Drag'n'Drop operation in pixels.
+	//                          The value must not be scaled to DPI and must be in the range
+	//                          1-10000.
+	// See Also: GetDragSensitivityX, GetDragSensitivityY, SetDragSensitivityY
+	//-----------------------------------------------------------------------
+	void SetDragSensitivityX(int nDragSensitivityX);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get the vertical sensitivity of Drag'n'Drop operation.
+	// Returns:
+	//     Vertical sensitivity of Drag'n'Drop operation in pixels.
+	// See Also: GetDragSensitivityX, SetDragSensitivityX, SetDragSensitivityY
+	//-----------------------------------------------------------------------
+	int GetDragSensitivityY() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Call this method to set the vertical sensitivity of Drag'n'Drop operation.
+	// Parameters:
+	//      nDragSensitivityY - Vertical sensitivity of Drag'n'Drop operation in pixels.
+	//                          The value must not be scaled to DPI and must be in the range
+	//                          1-10000.
+	// See Also: GetDragSensitivityX, SetDragSensitivityX, GetDragSensitivityY
+	//-----------------------------------------------------------------------
+	void SetDragSensitivityY(int nDragSensitivityY);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this function to reset the icon view column to is default values.
+	//     This should be called if the column in ever destroyed.
+	//-----------------------------------------------------------------------
+	void SetIconViewToDefaults();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the scroll mode
+	//-----------------------------------------------------------------------
+	XTPReportScrollMode GetScrollMode(XTPReportOrientation orientation) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets the scroll mode
+	//-----------------------------------------------------------------------
+	void SetScrollMode(XTPReportOrientation orientation, XTPReportScrollMode scrollMode);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns a pointer to the sections collection.
+	// Returns:
+	//     Pointer to the sections collection.
+	//-----------------------------------------------------------------------
+	CXTPReportSections* GetSections() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if merging of cells is allowed.
+	// Returns:
+	//     TRUE if merging of cells is allowed, otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL IsCellMergingAllowed() const;
+
+#	if XTP_REPORT_DEPRECATED()
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns current grid drawing mode.
+	// Parameters:
+	//     bVertical - TRUE for vertical grid style,
+	//                 FALSE for horizontal grid style.
+	// Remarks:
+	//     Call this member function if you want to retrieve current
+	//     grid lines drawing style for the report control.
+	// Returns:
+	//     Current grid drawing style.
+	// See Also: XTPReportGridStyle overview, SetGridStyle, SetGridColor
+	//-----------------------------------------------------------------------
+	XTPReportGridStyle GetGridStyle(BOOL bVertical) const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Set or clear grid drawing style.
+	// Parameters:
+	//     bVertical - TRUE for changing vertical grid style,
+	//                 FALSE for changing horizontal grid style.
+	//     gridStyle - New grid style. Can be any of the values listed in the Remarks section.
+	// Remarks:
+	//     Call this member function if you want to change a style
+	//     of report grid lines.
+	//
+	//     Possible grid line styles are the following:
+	//     * <b>xtpReportGridNoLines</b>  Empty line
+	//     * <b>xtpReportGridSmallDots</b> Line is drawn with small dots
+	//     * <b>xtpReportGridLargeDots</b> Line is drawn with large dots
+	//     * <b>xtpReportGridDashes</b> Line is drawn with dashes
+	//     * <b>xtpReportGridSolid</b> Draws solid line
+	//
+	// See Also: XTPReportGridStyle overview, GetGridStyle, SetGridColor
+	//-----------------------------------------------------------------------
+	void SetGridStyle(BOOL bVertical, XTPReportGridStyle gridStyle);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the data records.
+	// Returns:
+	//     The data records collection.
+	// Remarks:
+	//     Call this member function if you want to retrieve an access
+	//     to the collection of report records. You may then perform
+	//     standard operations on the collection like adding, removing, etc.
+	// See Also: CXTPReportRecords overview, AddRecord
+	//-----------------------------------------------------------------------
+	CXTPReportRecords* GetRecords() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the header records.
+	// Returns:
+	//     The header records collection.
+	// Remarks:
+	//     Call this member function if you want to retrieve an access
+	//     to the collection of report header records. You may then perform
+	//     standard operations on the collection like adding, removing, etc.
+	// See Also: CXTPReportRecords overview, AddRecord
+	//-----------------------------------------------------------------------
+	CXTPReportRecords* GetHeaderRecords() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the footer records.
+	// Returns:
+	//     The footer records collection.
+	// Remarks:
+	//     Call this member function if you want to retrieve an access
+	//     to the collection of report footer records. You may then perform
+	//     standard operations on the collection like adding, removing, etc.
+	// See Also: CXTPReportRecords overview, AddRecord
+	//-----------------------------------------------------------------------
+	CXTPReportRecords* GetFooterRecords() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the report rows
+	// Remarks:
+	//     Use this member function to retrieve an access to the collection
+	//     of report rows, representing current control view.
+	//
+	//     Note that rows collection could be rebuilt automatically
+	//     on executing Populate method.
+	// Returns:
+	//     The report rows collection.
+	// Example:
+	//     See example for CXTPReportControl::BeginUpdate method.
+	// See Also: CXTPReportRows overview, Populate
+	//-----------------------------------------------------------------------
+	CXTPReportRows* GetRows() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the report header rows
+	// Remarks:
+	//     Use this member function to retrieve an access to the collection
+	//     of report header rows, representing current control view.
+	//
+	//     Note that rows collection could be rebuilt automatically
+	//     on executing Populate method.
+	// Returns:
+	//     The report header rows collection.
+	// Example:
+	//
+	// See Also: CXTPReportRows overview, Populate
+	//-----------------------------------------------------------------------
+	CXTPReportRows* GetHeaderRows() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns the collection of the report footer rows
+	// Remarks:
+	//     Use this member function to retrieve an access to the collection
+	//     of report footer rows.
+	//
+	//     Note that rows collection could be rebuilt automatically
+	//     on executing Populate method.
+	// Returns:
+	//     The report footer rows collection.
+	// Example:
+	//
+	// See Also: CXTPReportRows overview, Populate
+	//-----------------------------------------------------------------------
+	CXTPReportRows* GetFooterRows() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve Report bounding rectangle.
+	// Returns:
+	//     Report bounding rectangle.
+	//-----------------------------------------------------------------------
+	CRect GetReportRectangle() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve Header records bounding rectangle.
+	// Returns:
+	//     Header records bounding rectangle.
+	//-----------------------------------------------------------------------
+	CRect GetHeaderRowsRect() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this method to retrieve footer rows bounding rectangle.
+	// Returns:
+	//     Footer rows bounding rectangle.
+	//-----------------------------------------------------------------------
+	CRect GetFooterRowsRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2425,6 +2909,25 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member to determine if rows selection is enabled.
+	// Returns:
+	//     TRUE if rows selection is enabled, FALSE otherwise.
+	// See Also: SelectionEnable
+	//-----------------------------------------------------------------------
+	BOOL IsSelectionEnabled() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable rows selection.
+	// Parameters:
+	//     bEnable - TRUE to enable rows selection.
+	//                  FALSE to disable rows selection.
+	// See Also: IsSelectionEnabled
+	//-----------------------------------------------------------------------
+	void SelectionEnable(BOOL bEnable);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member to enable selection in header rows.
 	// Parameters:
 	//     bEnable - TRUE - selection of header rows is enabled, FALSE otherwise.
@@ -2461,93 +2964,264 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to determine current watermark alignment flags.
+	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited.  This
+	//     will add an edit box to the item where the text can be edited.
+	// Parameters:
+	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
+	//                  FALSE to remove the edit box and not allow them to be edited.
+	// See Also: IsAllowEdit, EditOnClick, IsEditOnClick
+	//-----------------------------------------------------------------------
+	void AllowEdit(BOOL bAllowEdit);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if the CXTPReportRecordItem(s)are editable.
 	// Returns:
-	//     Current watermark alignment.
-	// See Also: XTPReportWatermarkAlignment, SetWatermarkAlignment.
+	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
+	// See Also: AllowEdit, EditOnClick, IsEditOnClick
 	//-----------------------------------------------------------------------
-	int GetWatermarkAlignment() const;
+	BOOL IsAllowEdit() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member to set watermark alignment flags.
+	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited (for
+	//     header records only). This will add an edit box to the item where the text can be edited.
 	// Parameters:
-	//     nWatermarkAlignment - watermark alignment flags.
-	// See Also: XTPReportWatermarkAlignment, GetWatermarkAlignment.
+	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
+	//                  FALSE to remove the edit box and not allow them to be edited.
+	// See Also: IsHeaderRowsAllowEdit, EditOnClick, IsEditOnClick
 	//-----------------------------------------------------------------------
-	void SetWatermarkAlignment(int nWatermarkAlignment);
+	void HeaderRowsAllowEdit(BOOL bAllowEdit);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this function to draw a water mark
-	// Parameters:
-	//     pDC - Pointer to the device context.
-	//     rc  - The rectangular bounds of the water mark.
-	//-----------------------------------------------------------------------
-	void DrawWatermark(CDC* pDC, CRect rc);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to retrieve report element rectangle.
-	// Parameters:
-	//  nElement - number
+	//     Call this member to determine if the CXTPReportRecordItem(s) are editable (for header
+	//     records only).
 	// Returns:
-	//     Report element rectangle.
+	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
+	// See Also: HeaderRowsAllowEdit, EditOnClick, IsEditOnClick
 	//-----------------------------------------------------------------------
-	CRect GetElementRect(int nElement) const;
+	BOOL IsHeaderRowsAllowEdit() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns the report data manager
+	//     Call this member to allow the text in all CXTPReportRecordItem(s) to be edited (for
+	//     footer records only). This will add an edit box to the item where the text can be edited.
+	// Parameters:
+	//     bAllowEdit - TRUE to add an edit box to the CXTPReportRecordItem(s) so they are editable.
+	//                  FALSE to remove the edit box and not allow them to be edited.
+	// See Also: IsFooterRowsAllowEdit, EditOnClick, IsEditOnClick
+	//-----------------------------------------------------------------------
+	void FooterRowsAllowEdit(BOOL bAllowEdit);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if the CXTPReportRecordItem(s) are editable (for footer
+	//     records only).
+	// Returns:
+	//     TRUE is the CXTPReportRecordItem(s) are editable, FALSE otherwise.
+	// See Also: FooterRowsAllowEdit, EditOnClick, IsEditOnClick
+	//-----------------------------------------------------------------------
+	BOOL IsFooterRowsAllowEdit() const;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Allow Group
+	//////////////////////////////////////////////////////////////////////////
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable grouping of rows.
+	// Parameters:
+	//     bAllowGroup - TRUE to enable grouping, FALSE to disable it.
+	// See Also: IsAllowGroup
+	//-----------------------------------------------------------------------
+	void AllowGroup(BOOL bAllowGroup);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if grouping of rows is allowed.
+	// Returns:
+	//     TRUE if grouping of rows is allowed, otherwise FALSE.
+	// See Also: AllowGroup
+	//-----------------------------------------------------------------------
+	BOOL IsAllowGroup() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable grouping of header rows.
+	// Parameters:
+	//     bAllowGroup - TRUE to enable grouping, FALSE to disable it.
+	// See Also: IsHeaderRowsAllowGroup
+	//-----------------------------------------------------------------------
+	void HeaderRowsAllowGroup(BOOL bAllowGroup);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if grouping of header rows is allowed.
+	// Returns:
+	//     TRUE if grouping of header rows is allowed, otherwise FALSE.
+	// See Also: HeaderRowsAllowGroup
+	//-----------------------------------------------------------------------
+	BOOL IsHeaderRowsAllowGroup() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable grouping of footer rows.
+	// Parameters:
+	//     bAllowGroup - TRUE to enable grouping, FALSE to disable it.
+	// See Also: IsFooterRowsAllowGroup
+	//-----------------------------------------------------------------------
+	void FooterRowsAllowGroup(BOOL bAllowGroup);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if grouping of footer rows is allowed.
+	// Returns:
+	//     TRUE if grouping of footer rows is allowed, otherwise FALSE.
+	// See Also: FooterRowsAllowGroup
+	//-----------------------------------------------------------------------
+	BOOL IsFooterRowsAllowGroup() const;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Allow Sort
+	//////////////////////////////////////////////////////////////////////////
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable sorting of rows.
+	// Parameters:
+	//     bAllowSort - TRUE to enable sorting, FALSE to disable it.
+	// See Also: IsAllowGroup
+	//-----------------------------------------------------------------------
+	void AllowSort(BOOL bAllowSort);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if sorting of rows is allowed.
+	// Returns:
+	//     TRUE if sorting of rows is allowed, otherwise FALSE.
+	// See Also: AllowSort
+	//-----------------------------------------------------------------------
+	BOOL IsAllowSort() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable sorting of header rows.
+	// Parameters:
+	//     bAllowSort - TRUE to enable sorting, FALSE to disable it.
+	// See Also: IsHeaderRowsAllowSort
+	//-----------------------------------------------------------------------
+	void HeaderRowsAllowSort(BOOL bAllowSort);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if sorting of header rows is allowed.
+	// Returns:
+	//     TRUE if sorting of header rows is allowed, otherwise FALSE.
+	// See Also: HeaderRowsAllowSort
+	//-----------------------------------------------------------------------
+	BOOL IsHeaderRowsAllowSort() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable sorting of footer rows.
+	// Parameters:
+	//     bAllowSort - TRUE to enable sorting, FALSE to disable it.
+	// See Also: IsFooterRowsAllowSort
+	//-----------------------------------------------------------------------
+	void FooterRowsAllowSort(BOOL bAllowSort);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if sorting of footer rows is allowed.
+	// Returns:
+	//     TRUE if sorting of footer rows is allowed, otherwise FALSE.
+	// See Also: FooterRowsAllowSort
+	//-----------------------------------------------------------------------
+	BOOL IsFooterRowsAllowSort() const;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Show Rows
+	//////////////////////////////////////////////////////////////////////////
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to hide/show header records.
+	// Parameters:
+	//     bShow - TRUE is header records will be displayed, FALSE to hide header records.
+	// See Also: IsHeaderRowsVisible, ShowFooterRows
+	//-----------------------------------------------------------------------
+	void ShowHeaderRows(BOOL bShow = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if header records are currently visible.
+	// Returns:
+	//     TRUE if header records are visible, FALSE if header records are hidden.
+	// See Also: ShowHeaderRows
+	//-----------------------------------------------------------------------
+	BOOL IsHeaderRowsVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to hide/show footer records.
+	// Parameters:
+	//     bShow - TRUE is footer records will be displayed, FALSE to hide footer records.
+	// See Also: IsFooterRowsVisible, ShowHeaderRows
+	//-----------------------------------------------------------------------
+	void ShowFooterRows(BOOL bShow = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to determine if footer records are currently visible.
+	// Returns:
+	//     TRUE if footer records are visible, FALSE if footer records are hidden.
+	// See Also: ShowFooterRows
+	//-----------------------------------------------------------------------
+	BOOL IsFooterRowsVisible() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to set the report control theme.
+	// Parameters:
+	//     paintTheme     - theme of report control. Can be one of the values
+	//                      listed in the Remarks section.
+	//     bEnableMetrics - Set to TRUE to allow the theme to override control metrics.
 	// Remarks:
-	//     Use this member function to retrieve an access to the data manager
-	// Returns:
-	//     The report data manager.
+	//     paintTheme can be one of the following values:
+	//      * <b>xtpReportThemeDefault</b> Enables default theme.
+	//      * <b>xtpReportThemeOfficeXP</b> Enables Office XP style theme.
+	//      * <b>xtpReportThemeOffice2003</b> Enables Office 2003 style theme.
+	//      * <b>xtpReportThemeOffice2007</b> Enables Office 2007 style theme.
+	//      * <b>xtpReportThemeOffice2010</b> Enables Office 2010 style theme.
+	//      * <b>xtpReportThemeOffice2013</b> Enables Office 2013 style theme.
+	//      * <b>xtpReportThemeVisualStudio2005</b> Enables Visual Studio 2005 style theme.
+	//      * <b>xtpReportThemeVisualStudio2010</b> Enables Visual Studio 2010 style theme.
+	//      * <b>xtpReportThemeVisualStudio2012Light</b> Enables VS 2012 Light style Property Report
+	//      theme.
+	//      * <b>xtpReportThemeVisualStudio2012Dark</b> Enables VS 2012 Dark style Property Report
+	//      theme.
+	//      * <b>xtpReportThemeResource</b> Enables visual style theme.
 	//-----------------------------------------------------------------------
-	CXTPReportDataManager* GetDataManager();
+	void SetTheme(XTPReportPaintTheme paintTheme, BOOL bEnableMetrics = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Sets new operational control mouse mode.
-	// Parameters:
-	//     nMode - New mouse mode. For available values, see XTPReportMouseMode enum.
-	// See Also: XTPReportMouseMode overview, GetMouseMode
+	//     Retrieves current theme of the report control.
 	//-----------------------------------------------------------------------
-	void SetMouseMode(XTPReportMouseMode nMode);
+	XTPReportPaintTheme GetCurrentTheme() const;
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns the current control mouse mode.
-	// Returns:
-	//     Current control mouse mode.
-	//     For available values, see XTPReportMouseMode enum.
-	// See Also: XTPReportMouseMode overview, SetMouseMode
-	//-----------------------------------------------------------------------
-	XTPReportMouseMode GetMouseMode() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sets a watermark bitmap to be shown in the report control background.
-	// Parameters:
-	//     hBitmap - bitmap handle.
-	//     Transparency - transparency value.
-	// Returns:
-	//     TRUE if watermark bitmap successfully added or removed, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	virtual BOOL SetWatermarkBitmap(HBITMAP hBitmap, BYTE Transparency);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sets a watermark bitmap to be shown in the report control background.
-	// Parameters:
-	//     szPath - path to bitmap file.
-	//     Transparency - transparency value.
-	// Returns:
-	//     TRUE if watermark bitmap successfully added or removed, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	virtual BOOL SetWatermarkBitmap(LPCTSTR szPath, BYTE Transparency);
+#	endif // XTP_REPORT_DEPRECATED()
 
 protected:
+	int GetPageRowCount(CDC* pDC) const;
+
+	void AdjustScrollBarH(BOOL bUpdate, UINT nMask); // Adjusts the horizontal scrollbar
+	void AdjustScrollBarV(BOOL bUpdate, UINT nMask); // Adjusts the vertical scrollbar
+	void UpdateScrollBarV();
+
+	void Paint(CDC* pDC);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Performs all drawing logic.
@@ -2562,8 +3236,13 @@ protected:
 	// Parameters:
 	//     pDC - Provided DC to draw rows image with.
 	//     rcClient - A rectangle to draw rows image into.
+	// Returns:
+	//     Index of last printed row
 	//-----------------------------------------------------------------------
-	virtual void DrawRows(CDC* pDC, CRect& rcClient);
+	virtual int DrawRows(CDC* pDC, CRect& rcClient, int y, CXTPReportRows* pRows, int nTopRow,
+						 int nColumnFrom, int nColumnTo, int* pnHeight = NULL);
+
+	virtual void DrawIconView(CDC* pDC, CRect& rcClient);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2586,25 +3265,10 @@ protected:
 	// Summary:
 	//     Sets new changed status flag for the control. Used for caching control image drawing.
 	// Parameters:
-	//     bChanged - TRUE when something was changed in the control contents and control needs to be republished.
+	//     bChanged - TRUE when something was changed in the control contents and control needs to
+	//     be republished.
 	//-----------------------------------------------------------------------
 	void SetChanged(BOOL bChanged = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sorts rows corresponding to the sort order taken from columns.
-	// Parameters:
-	//     pRows - A rows collection to sort.
-	//-----------------------------------------------------------------------
-	virtual void SortRows(CXTPReportRows* pRows);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Sorts rows tree corresponding to the sort order taken from columns.
-	// Parameters:
-	//     pTree - A rows tree collection to sort.
-	//-----------------------------------------------------------------------
-	virtual void SortTree(CXTPReportRows* pTree);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2618,40 +3282,6 @@ protected:
 	//     Update field chooser control with its content.
 	//-----------------------------------------------------------------------
 	void UpdateSubList();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Builds rows tree based on provided data record.
-	// Parameters:
-	//     pTree      - Rows tree to add items into.
-	//     pParentRow - Parent tree row.
-	//     pRecords   - Records collection for transferring to rows.
-	// Remarks:
-	//     Builds rows tree based on provided data record.
-	//     Recursively calls itself when build nested branches of rows
-	//-----------------------------------------------------------------------
-	virtual void BuildTree(CXTPReportRows* pTree, CXTPReportRow* pParentRow, CXTPReportRecords* pRecords);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Collapses all children of the specified row.
-	// Parameters:
-	//     pRow - A row to collapse.
-	//-----------------------------------------------------------------------
-	virtual void _DoCollapse(CXTPReportRow* pRow);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Expands all children of the specified row.
-	// Parameters:
-	//     nIndex - An index to insert rows from.
-	//     pRow   - A row to expand.
-	// Returns:
-	//     A count of the newly added rows or void.
-	//-----------------------------------------------------------------------
-	virtual int _DoExpand(int nIndex, CXTPReportRow* pRow);
-	virtual void _DoExpand(CXTPReportRow* pRow);
-	// <COMBINE CXTPReportControl::_DoExpand@int@CXTPReportRow*>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2670,16 +3300,6 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Recalculates indexes of all rows.
-	// Parameters:
-	//     bAdjustLayout - If TRUE, layout is adjusted.
-	//     bReverseOrder - If TRUE, row indices are updated in reverse order, starting from the last row.
-	//-----------------------------------------------------------------------
-	virtual void RefreshIndexes(BOOL bAdjustLayout = TRUE, BOOL bReverseOrder = FALSE);
-	virtual void _RefreshIndexes(BOOL bAdjustLayout = TRUE, BOOL bReverseOrder = FALSE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Checks a record for filter text.
 	// Parameters:
 	//     pRecord         - A record to apply filter to.
@@ -2694,7 +3314,8 @@ protected:
 	//     TRUE if record is filtered with the specified filter,
 	//     FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL ApplyFilter(CXTPReportRecord* pRecord, CString strFilterText, BOOL bIncludePreview);
+	virtual BOOL ApplyFilter(CXTPReportRecord* pRecord, CString strFilterText,
+							 BOOL bIncludePreview);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2729,7 +3350,8 @@ protected:
 	//     pDrawArgs    - Pointer to the provided draw arguments structure for calculating metrics.
 	//     pItemMetrics - Pointer to the metrics structure to fill.
 	//-----------------------------------------------------------------------
-	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs, XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
+	virtual void GetItemMetrics(XTP_REPORTRECORDITEM_DRAWARGS* pDrawArgs,
+								XTP_REPORTRECORDITEM_METRICS* pItemMetrics);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2770,7 +3392,8 @@ protected:
 	//     drag unless you pass nFlags.
 	//-----------------------------------------------------------------------
 	virtual void OnBeginDrag(CPoint point);
-	virtual void OnBeginDrag(CPoint point, UINT nFlags); // <COMBINE CXTPReportControl::OnBeginDrag@CPoint>
+	virtual void OnBeginDrag(CPoint point,
+							 UINT nFlags); // <COMBINE CXTPReportControl::OnBeginDrag@CPoint>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -2890,7 +3513,8 @@ protected:
 	//     Items captions maximum width.
 	//-----------------------------------------------------------------------
 	virtual int OnGetItemsCaptionMaxWidth(CDC* pDC, CXTPReportRows* pRows,
-										  CXTPReportColumn* pColumn, int nStartRow = 0, int nRowsCount= -1);
+										  CXTPReportColumn* pColumn, int nStartRow = 0,
+										  int nRowsCount = -1);
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is used to enable monitoring mouse position for automatic
@@ -2930,16 +3554,6 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Draws fixed rows on the provided DC.
-	// Parameters:
-	//     pDC - Provided DC to draw header rows image with.
-	//     rcClient - A rectangle to draw header rows image into.
-	//     pRows - Pointer to header/footer record rows.
-	//-----------------------------------------------------------------------
-	virtual void DrawFixedRows(CDC* pDC, CRect& rcClient, CXTPReportRows* pRows);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Returns calculated rows height.
 	// Parameters:
 	//  pRows - CXTPReportRows*
@@ -2955,36 +3569,6 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns header divider height.
-	// Returns:
-	//     The height of the header divider, depending on the chosen header divider style.
-	// See Also:
-	//     XTPReportFixedRowsDividerStyle in XTPReportPaintManager.h
-	//-----------------------------------------------------------------------
-	virtual int GetHeaderRowsDividerHeight();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Returns footer divider height.
-	// Returns:
-	//     The height of the header divider, depending on the chosen footer divider style.
-	// See Also:
-	//     XTPReportFixedRowsDividerStyle in XTPReportPaintManager.h
-	//-----------------------------------------------------------------------
-	virtual int GetFooterRowsDividerHeight();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Draws fixed rows divider on the provided DC.
-	// Parameters:
-	//     pDC - Provided DC to draw fixed rows divider image with.
-	//     rcClient - A rectangle to draw fixed rows divider into.
-	//     bHeaderRows - TRUE if the divider is under header rows; FALSE - if above footer rows.
-	//-----------------------------------------------------------------------
-	void DrawFixedRecordsDivider(CDC* pDC, CRect& rcClient, BOOL bHeaderRows);
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     This method is used to notify about changing constraint selection.
 	// Parameters:
 	//     pRow         - A pointer to current row object;
@@ -2996,7 +3580,8 @@ protected:
 	// Returns:
 	//     TRUE if notification successfully sent, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL OnConstraintSelecting(CXTPReportRow* pRow, CXTPReportRecordItem* pItem, CXTPReportColumn* pColumn,
+	virtual BOOL OnConstraintSelecting(CXTPReportRow* pRow, CXTPReportRecordItem* pItem,
+									   CXTPReportColumn* pColumn,
 									   CXTPReportRecordItemConstraint* pConstraint);
 
 	//-----------------------------------------------------------------------
@@ -3014,22 +3599,9 @@ protected:
 	// Returns:
 	//     A reference to XTP_NM_REPORTTOOLTIPINFO structure.
 	//-----------------------------------------------------------------------
-	virtual const XTP_NM_REPORTTOOLTIPINFO& OnGetToolTipInfo(CXTPReportRow* pRow, CXTPReportRecordItem* pItem, CString& rstrToolTipText);
-
-//{{AFX_CODEJOCK_PRIVATE
-	virtual CString _GetSelectedRowsVisibleColsText();
-	BOOL _GetSelectedRows(CXTPReportRecords* pRecords, CXTPInternalCollectionT<CXTPReportRow> * pRows = NULL);
-	void _SelectRows(CXTPReportRecords* pRecords);
-	virtual BOOL _ReadRecordsFromText(LPCTSTR pcszText, CXTPReportRecords& rarRecords);
-	virtual CXTPReportRecord* _CreateRecodFromText(LPCTSTR pcszRecord);
-
-	virtual BOOL _WriteSelectedRowsData(CXTPPropExchange* pPX);
-	virtual BOOL _ReadRecordsFromData(CXTPPropExchange* pPX, CXTPReportRecords& rarRecords);
-	BOOL _WriteRecordsData(CXTPPropExchange* pPX, CXTPReportRecords* pRecords);
-	virtual void DrawDropMarker(CDC* pDC);
-	virtual void DrawExtDropMarker(CDC* pDC, int y);
-	virtual BOOL _ApplyFilter(CXTPReportRecord* pRecord, CString strFilterText, BOOL bIncludePreview);
-//}}AFX_CODEJOCK_PRIVATE
+	virtual const XTP_NM_REPORTTOOLTIPINFO& OnGetToolTipInfo(CXTPReportRow* pRow,
+															 CXTPReportRecordItem* pItem,
+															 CString& rstrToolTipText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -3065,15 +3637,17 @@ protected:
 	//                                                  This is typically the default drop effect,
 	//                                                  when the view can accept the data object.
 	//-----------------------------------------------------------------------
-	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point, int nState);
+	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point,
+								  int nState);
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member is called when an item has been dropped into the report control.
 	// Parameters:
 	//     pDataObject - Points to the COleDataObject that is dropped into the drop target.
-	//     dropEffect  - The drop effect that the user has requested. Can be any of the values listed in the Remarks section.
-	//     point - The current mouse position relative to the report control.
+	//     dropEffect  - The drop effect that the user has requested. Can be any of the values
+	//     listed in the Remarks section. point - The current mouse position relative to the report
+	//     control.
 	// Remarks:
 	//     The <i>dropEffect</i> parameter can be one of the following values:
 	//     * <b>DROPEFFECT_COPY</b> Creates a copy of the data object being dropped.
@@ -3082,90 +3656,6 @@ protected:
 	//     TRUE if the drop was successful, otherwise FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
-
-//{{AFX_CODEJOCK_PRIVATE
-	// System accessibility support.
-	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
-	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
-	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
-	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
-	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
-	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
-	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
-	virtual CCmdTarget* GetAccessible();
-	//}}AFX_CODEJOCK_PRIVATE
-
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(CXTPReportControl)
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     PreTranslateMessage
-	// Parameters:
-	//     pMsg - pointer to MSG
-	// Returns:
-	//     BOOL
-	//-----------------------------------------------------------------------
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-
-	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
-	virtual CScrollBar* GetScrollBarCtrl(int nBar) const;
-	//{{AFX_VIRTUAL(CXTPReportControl)
-
-	//{{AFX_MSG(CXTPReportControl)
-	afx_msg void OnPaint();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     OnPrintClient
-	// Parameters:
-	//     wParam - param
-	//     lParam - param
-	// Returns:
-	//     LRESULT
-	//-----------------------------------------------------------------------
-	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
-
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnNcHitTest(CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint ptDblClick);
-	afx_msg void OnCaptureChanged(CWnd* pWnd);
-	afx_msg void OnSysColorChange();
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnKillFocus (CWnd* pNewWnd);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg UINT OnGetDlgCode();
-	afx_msg void OnChar(UINT nChar, UINT nRepCntr, UINT nFlags);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseLeave();
-	afx_msg void OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
-	afx_msg void OnEnable(BOOL bEnable);
-	afx_msg void OnTimer(UINT_PTR uTimerID);
-	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
-	//}}AFX_MSG
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call function to get the number of rows per unit mouse scroll.
-	// Returns:
-	//     A UINT value specifying the number of rows.
-	//-----------------------------------------------------------------------
-	static UINT AFX_CDECL GetMouseScrollLines();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -3179,431 +3669,469 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call function to get the next focusable column
-	// Parameter:
-	//     pRow         -  A pointer to the report row object.
-	//     nColumnIndex -  The column index.
-	//     nDirection   -  A positive integer specifying the right side and
-	//                     negative integer specifying the left side of the
-	//                     column, with index nColumnIndex.
-	// Remarks:
-	//     It is a virtual function.
+	//     Call function to get the number of rows per unit mouse scroll.
+	// Returns:
+	//     A UINT value specifying the number of rows.
 	//-----------------------------------------------------------------------
-	virtual CXTPReportColumn* GetNextFocusableColumn(CXTPReportRow* pRow, int nColumnIndex, int nDirection);
-
-public:
-	BOOL m_bFreezeColumnsAbs;                   //If TRUE - freeze after Specific Column # (m_nFreezeColumnsCount - 1)
-	                                            //instead of after any first m_nFreezeColumnsCount columns.
-
-	BOOL m_bMovePivot;                          //Tells whether the freeze column is displayed or not when columns are added to the group by box.
-	BOOL m_bStrictFiltering;                    //Tells whether strict filtering is enabled or not.
-
-	BOOL m_bForcePagination;                    //Specifies whether to force the report to be split up into "pages" while in print preview mode.
-	BOOL m_bSelectionExcludeGroupRows;          // TRUE if selection exclude group rows
-	CPoint m_ptMouseDown;                       // MouseDown last point
-
-	CXTPReportRow* m_pHotExpandButtonRow;          // Row with hot expand button
-
-private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	void DrawDefaultGrid(CDC* pDC, CRect rcClient, int nRowHeight, int nLeftOffset);
-
-protected:
-	BOOL m_bChanged;                // Internal member for storing changed flag.
-	BOOL m_bRefreshIndexes;         // TRUE when it is required to refresh items indexes.
-	BOOL m_bInternalMove;           // Internal member for storing DD run-time flag.
-
-	int m_nLockUpdateCount;         // A counter of the update locks. An image will be redrawn only when the lock counter is equal to zero.
-
-	CRect m_rcGroupByArea;          // The area occupied by Group By item.
-	CRect m_rcHeaderArea;           // The area occupied by the header.
-	CRect m_rcFooterArea;           // The area occupied by the footer.
-	CRect m_rcReportArea;           // The area occupied by rows.
-	CRect m_rcHeaderRecordsArea;    // The area occupied by the header records.
-	CRect m_rcFooterRecordsArea;    // The area occupied by the footer records.
-	CRect m_rcHeaderRecordsDividerArea;    // The area occupied by the header records divider.
-	CRect m_rcFooterRecordsDividerArea;    // The area occupied by the footer records divider.
-
-	CXTPReportRows* m_pRows;        // Virtual list rows container. Used for changing order, etc.
-	CXTPReportRows* m_pPlainTree;   // Tree rows container.
-	CXTPReportRecords* m_pRecords;  // List records container.
-	CXTPReportColumns* m_pColumns;  // List columns container.
-
-	CXTPReportRecords* m_pHeaderRecords;  // Header records container.
-	CXTPReportRecords* m_pFooterRecords;  // Footer records container.
-	CXTPReportRows*    m_pHeaderRows;  // Virtual list of header rows container.
-	CXTPReportRows*    m_pFooterRows;  // Virtual list of footer rows container.
-
-	CXTPReportPaintManager* m_pPaintManager;    // Paint manager.
-	CXTPReportNavigator* m_pNavigator;          // Navigator
-	int m_nTopRow;                              // Current top row in the visible area.
-	int m_nLeftOffset;                          // Horizontal scroll position.
-	int m_nFreezeColumnsCount;                  // Count of none-scrolled columns at the left side.
-	int m_nDisableReorderColumnsCount;          // Count of columns at the left side where reordering is disabled.
-
-	int m_nHScrollStep;                         // Horizontal scroll step (in pixels).
-
-	BOOL m_bFullColumnScrolling;                // Store Full Column Scrolling mode for horizontal scrolling.
-
-	int m_nFocusedRow;                          // Current focused row index.
-	int m_nFocusedHeaderRow;                    // Current focused header row index.
-	int m_nFocusedFooterRow;                    // Current focused footer row index.
-	//int m_nSelectionLastBlockStartRow;          // Starting row index of the last bloc of selection.
-
-	CXTPReportSelectedRows* m_pSelectedRows;    // Container for the currently selected rows.
-
-	CXTPReportRow* m_pHotRow;                   // Hot row
-
-	int m_nRowsPerWheel;                        // Amount of rows to scroll by mouse wheel.
-
-	CXTPReportTip m_wndTip;                     // Tip window.
-	CBitmap m_bmpCache;                         // Cached window bitmap.
-
-	BOOL m_bGroupByEnabled;                     // TRUE if Group By box is enabled
-	BOOL m_bSortRecordChilds;                   // TRUE to apply sort order for Record children.
-
-	XTPReportMouseMode m_mouseMode;             // Current mouse operation mode
-	BOOL m_bBlockSelection;                     // TRUE if multiple selection enabled.
-	BOOL m_bControlKeyAlwaysOn;                 // TRUE if multi selection mode enabled (i.e. VK_CTRL is always on).
-	BOOL m_bShowTooltips;                       // TRUE if showing tool tips enabled.
-	BOOL m_bAutoCheckItems;                     // TRUE to enable auto check mode, FALSE to disable auto check mode.
-
-	CXTPImageManager* m_pImageManager;          // Contains image list for report control
-	BOOL m_bSkipGroupsFocus;                    // TRUE if group rows are skipped when navigating rows with the Up and Down arrow keys
-
-	BOOL m_bFocusSubItems;                      // TRUE if sub-items can receive focus.
-	BOOL m_bEditOnClick;                        // TRUE if sub-items become editable on a single-click
-	BOOL m_bAllowEdit;                          // TRUE if sub-items can be edited.
-	BOOL m_bHeaderAllowEdit;                    // TRUE if sub-items of header rows can be edited.
-	BOOL m_bFooterAllowEdit;                    // TRUE if sub-items of footer rows can be edited.
-	BOOL m_bPreviewAllowEdit;                   // TRUE if Preview of the row can be edited.
-	BOOL m_bHeaderVisible;                      // TRUE if column headers are visible.
-	BOOL m_bFooterVisible;                      // TRUE if column footer are visible.
-	BOOL m_bHeaderRecordsVisible;               // TRUE if header records are visible.
-	BOOL m_bFooterRecordsVisible;               // TRUE if footer records are visible.
-	BOOL m_bPinFooterRecords;                   // TRUE if footer records are drawn immediately after the body rows.
-	BOOL m_bSelectionEnable;                    // TRUE if selection enabled.
-	BOOL m_bInitialSelectionEnable;             // TRUE if Initial (in Populate() call) selection enabled.
-	BOOL m_bRowFocusVisible;                    // TRUE if showing focused row rectangle enabled.
-	BOOL m_bHeaderRowsAllowAccess;              // TRUE if a header row can be selected by user.
-	BOOL m_bFooterRowsAllowAccess;              // TRUE if a footer row can be selected by user.
-
-	BOOL m_bHeaderRowsSelectionEnable;          // TRUE if header row selection enabled.
-	BOOL m_bFooterRowsSelectionEnable;          // TRUE if footer row selection enabled.
-
-	CXTPReportColumn* m_pFocusedColumn;         // Pointer to the currently focused CXTPReportColumn.
-
-	CXTPToolTipContext* m_pToolTipContext;              // Tool tip Context.
-	CXTPReportRecordItem* m_pActiveItem;                // Pointer to the currently focused CXTPReportRecordItem.
-	CXTPReportInplaceEdit* m_pInplaceEdit;              // In-place edit pointer
-	CXTPReportInplaceButtons* m_pInplaceButtons;        // In-place buttons pointer
-	CXTPReportInplaceList* m_pInplaceList;              // In-place list pointer
-	BOOL m_bVScrollBarVisible;                          // TRUE if vertical scroll bar is visible
-	BOOL m_bHScrollBarVisible;                          // TRUE if horizontal scroll bar is visible
-	UINT m_nAutoVScrollTimerResolution;                 // Vertical scrolling timer resolution in milliseconds
-	CPoint m_pointDrag;                                 // Drag position
-	BOOL m_bPrepareDrag;                                // TRUE if user click the report control and doesn't release button.
-	CXTPReportRows m_arrScreenRows;                     // Rows currently presented on screen.
-	CString m_strFilterText;                            // Filter text.
-	BOOL m_bFilterHiddenColumns;                        // Search filter text in hidden columns too.
-	int m_nRecordsTreeFilterMode;                       // Tree Filter mode.
-	CXTPReportHeader* m_pReportHeader;                  // List header member.
-
-	int m_nPopulatedRecordsCount;                       // Current number of records in the report after using m_strFilterText.
-	CLIPFORMAT m_cfReport;                              // Report Clipboard format for drag/drop operations
-
-	CReportDropTarget* m_pDropTarget;                   // Internal drag/drop helper.
-	BOOL m_bDragMode;                                   // TRUE if records currently dragging
-	BOOL m_bInternalDrag;                               // TRUE if records begin drag from this control
-	DWORD m_dwDragDropFlags;                            // Drag/drop flags.
-	DWORD m_dwDropMarkerFlags;                          // The drop marker flags.
-	CXTPReportSelectedRows* m_pSelectedRowsBeforeDrag;  // The selected rows before a dragging action.
-	int m_nDropPos;                                     // Position of records to be dropped
-	CXTPReportRecords* m_pDropRecords;                  // Drop records.
-
-	BOOL        m_bOnSizeRunning;                       // TRUE if OnSize handler is entered, FALSE otherwise. Used to prevent OnSize reenter and stack overflow in Win95/98/ME.
-	BOOL        m_bAdjustLayoutRunning;                 // TRUE if AdjustLayout handler is entered, FALSE otherwise. Used to prevent OnSize reenter and stack overflow in Win95/98/ME.
-	UINT_PTR    m_uAutoScrollTimerID;                   // Auto scroll timer ID or 0.
-
-	int m_nClickRow;                                    //The clicked row index.
+	static UINT AFX_CDECL GetMouseScrollLines();
 
 	//{{AFX_CODEJOCK_PRIVATE
-	long m_nOLEDropMode;                                // Store OLE drop mode.
-	BOOL m_nOLEDropAbove;                               // Drop above record?
+	virtual CString _GetSelectedRowsVisibleColsText();
+	BOOL _GetSelectedRows(CXTPReportRecords* pRecords,
+						  CXTPInternalCollectionT<CXTPReportRow>* pRows = NULL);
+
+	void _SelectChilds(CXTPReportRecords* pRecords);
+	void _SelectRows(CXTPReportRecords* pRecords);
+
+	virtual BOOL _ReadRecordsFromText(LPCTSTR pcszText, CXTPReportRecords& rarRecords);
+	virtual CXTPReportRecord* _CreateRecodFromText(LPCTSTR pcszRecord);
+
+	virtual BOOL _WriteSelectedRowsData(CXTPPropExchange* pPX);
+	virtual BOOL _ReadRecordsFromData(CXTPPropExchange* pPX, CXTPReportRecords& rarRecords);
+	BOOL _WriteRecordsData(CXTPPropExchange* pPX, CXTPReportRecords* pRecords);
+	virtual void DrawDropMarker(CDC* pDC);
+	virtual void DrawExtDropMarker(CDC* pDC, int y);
+	virtual BOOL _ApplyFilter(CXTPReportRecord* pRecord, CString strFilterText,
+							  BOOL bIncludePreview);
 	//}}AFX_CODEJOCK_PRIVATE
 
-	CXTPReportRow* m_ptrVirtualEditingRow;              // Currently editing row in virtual mode.
+	//{{AFX_CODEJOCK_PRIVATE
+	// System accessibility support.
+	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
+	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
+	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
+	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
+	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
+	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
+	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
+	virtual CCmdTarget* GetAccessible();
+	//}}AFX_CODEJOCK_PRIVATE
 
-	CXTPReportRows::T_CompareFunc m_pRowsCompareFunc;   // Pointer to rows compare function.
+	//{{AFX_VIRTUAL(CXTPReportControl)
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+						const RECT& rect, CWnd* pParentWnd, UINT nID,
+						CCreateContext* pContext = NULL);
+	virtual void PreSubclassWindow();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
+	virtual CScrollBar* GetScrollBarCtrl(int nBar) const;
+	//}}AFX_VIRTUAL
 
-	HBITMAP m_hbmpWatermark;                            // Watermark bitmap handle.
-	BYTE m_WatermarkTransparency;                       // Watermark bitmap transparency value.
-	BITMAP m_bmWatermark;                               // Watermark bitmap info.
-	XTPReportWatermarkAlignment m_WatermarkAlignment;   // Watermark alignment flags.
-	int m_nEnsureVisibleRowIdx;                         // Ensure visible row index.
-	int m_nTopRowIdx;                                   // Virtual mode helper
-	int m_nEnsureVisibleColumnIdx;                      // Ensure visible column index.
+	//{{AFX_MSG(CXTPReportControl)
+	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 
-	CXTPReportDataManager* m_pDataManager;              // Data manager.
+	// Window events
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnEnable(BOOL bEnable);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnPaint();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnTimer(UINT_PTR uTimerID);
+	afx_msg void OnNcPaint();
 
-	BOOL m_bShowIconWhenEditing;                        // Set to TRUE to show item icons while the item is being edited.
+	// Focus
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+
+	// Scrolling
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+
+	// Mouse events
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint point);
+	afx_msg void OnMouseLeave();
+
+	// Key events
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	afx_msg LRESULT OnNcHitTest(CPoint point);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);
+
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnCaptureChanged(CWnd* pWnd);
+	afx_msg void OnSysColorChange();
+	afx_msg UINT OnGetDlgCode();
+	afx_msg void OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
+	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
+
+#	ifdef _XTP_ACTIVEX
+	// Dispatch and event IDs
+public:
+	enum
+	{
+		//{{AFX_DISP_ID(CXTPReportControl)
+		eventidDrawItem			  = 11L,
+		eventidMeasureRow		  = 12L,
+		eventidDrawPreviewItem	= 24L,
+		eventidMeasurePreviewItem = 33L,
+		//}}AFX_DISP_ID
+	};
+#	endif
+
+#	ifdef _XTP_ACTIVEX
+
+public:
+	void SetCustomDraw(long dwFlags);
+
+	// Event maps
+	//{{AFX_EVENT(CXTPReportControl)
+	void FireMeasureRow(LPDISPATCH Row, OLE_HANDLE hDC, int nWidth, int* pnHeight)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidMeasureRow, EVENT_PARAM(VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_PI4), Row,
+						hDC, nWidth, pnHeight);
+	}
+
+	void FireMeasureRowV(LPDISPATCH Row, OLE_HANDLE hDC, int nWidth, VARIANT* pHeight)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidMeasureRow + 100,
+						EVENT_PARAM(VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_PVARIANT), Row, hDC, nWidth,
+						pHeight);
+	}
+
+	void FireDrawItem(LPDISPATCH Row, LPDISPATCH Column, LPDISPATCH Item, OLE_HANDLE hDC, CRect rc,
+					  BOOL* pbDoDefault)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidDrawItem,
+						EVENT_PARAM(VTS_DISPATCH VTS_DISPATCH VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_I4
+										VTS_I4 VTS_I4 VTS_PBOOL),
+						Row, Column, Item, hDC, rc.left, rc.top, rc.right, rc.bottom, pbDoDefault);
+	}
+
+	void FireDrawItemV(LPDISPATCH Row, LPDISPATCH Column, LPDISPATCH Item, OLE_HANDLE hDC, CRect rc,
+					   VARIANT* pbDoDefault)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidDrawItem + 100,
+						EVENT_PARAM(VTS_DISPATCH VTS_DISPATCH VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_I4
+										VTS_I4 VTS_I4 VTS_PVARIANT),
+						Row, Column, Item, hDC, rc.left, rc.top, rc.right, rc.bottom, pbDoDefault);
+	}
+
+	void FireDrawPreviewItem(LPDISPATCH Row, LPDISPATCH Item, OLE_HANDLE hDC, CRect rc,
+							 BOOL* pbDoDefault)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidDrawPreviewItem,
+						EVENT_PARAM(VTS_DISPATCH VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_I4 VTS_I4 VTS_I4
+										VTS_PBOOL),
+						Row, Item, hDC, rc.left, rc.top, rc.right, rc.bottom, pbDoDefault);
+	}
+
+	void FireDrawPreviewItemV(LPDISPATCH Row, LPDISPATCH Item, OLE_HANDLE hDC, CRect rc,
+							  VARIANT* pbDoDefault)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidDrawPreviewItem + 100,
+						EVENT_PARAM(VTS_DISPATCH VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_I4 VTS_I4 VTS_I4
+										VTS_PVARIANT),
+						Row, Item, hDC, rc.left, rc.top, rc.right, rc.bottom, pbDoDefault);
+	}
+
+	void FireMeasurePreviewItem(LPDISPATCH Row, OLE_HANDLE hDC, int nWidth, int* pnHeight)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidMeasurePreviewItem,
+						EVENT_PARAM(VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_PI4), Row, hDC, nWidth,
+						pnHeight);
+	}
+
+	void FireMeasurePreviewItemV(LPDISPATCH Row, OLE_HANDLE hDC, int nWidth, VARIANT* pHeight)
+	{
+		((COleControl*)GetParent())
+			->FireEvent(eventidMeasurePreviewItem + 100,
+						EVENT_PARAM(VTS_DISPATCH VTS_HANDLE VTS_I4 VTS_PVARIANT), Row, hDC, nWidth,
+						pHeight);
+	}
+	//}}AFX_EVENT
+#	endif
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+private:
+	void OnButton(UINT nFlags, CPoint point, CXTPReportBehaviorRowMouseButton* behavior);
+
+	int _GetFocusedRowType() const;
+
+	int _GetFocusedRowIndex() const;
+
+	BOOL _SetFocusedRow(CXTPReportRow* pRow);
+
+	BOOL _SetSelectedRow(CXTPReportRow* pRow, int nFocusedRowIndex, BOOL bShiftKey,
+						 BOOL bControlKey);
+
+	void DrawDefaultGrid(CDC* pDC, CRect rcClient, int nRowHeight, int nLeftOffset);
+	void RedrawScrollBar(int nBar);
+
+	void GetColumnTotalSize(int& nTotalCount, int& nTotalWidth) const;
+	void GetColumnOutOfViewSize(int& nOutOfViewCount, int& nOutOfViewWidth) const;
+	void GetColumnScrollSize(int nOutOfViewWidth, int& nScrollCount, int& nScrollWidth) const;
+	void GetParametersOfHScrollingBlockSize(int& nTotalWidth, int& nScrollPage) const;
+	void GetParametersOfHScrollingBlockCount(int& nTotalCount, int& nScrollPage) const;
+
+	void UpdateScrollBarVisibility(int nBar);
+
+public:
+	BOOL m_bThemeMetrics; // TRUE to allow themes to override control metrics.
+	BOOL m_bMovePivot; // Tells whether the freeze column is displayed or not when columns are added
+					   // to the group by box.
+	BOOL m_bStrictFiltering; // Tells whether strict filtering is enabled or not.
+
+	BOOL m_bForcePagination; // Specifies whether to force the report to be split up into "pages"
+							 // while in print preview mode.
+	BOOL m_bSelectionExcludeGroupRows; // TRUE if selection exclude group rows
+
+	XTPReportInputState m_mouseDownState; // MouseDown state
+
+	DWORD m_dwLastMouseMessage;
+
+	CXTPReportRow* m_pHotExpandButtonRow; // Row with hot expand button
+	CXTPReportHyperlink* m_pHotHyperlink; // Hot hyperlink
+
+protected:
+	CXTPReportBehavior* m_pBehavior; //
+
+	BOOL m_bDoubleBuffering; // Enables double-buffering
+	BOOL m_bChanged;		 // Internal member for storing changed flag.
+	BOOL m_bInternalMove;	// Internal member for storing DD run-time flag.
+
+	int m_nLockUpdateCount; // A counter of the update locks. An image will be redrawn only when the
+							// lock counter is equal to zero.
+
+	CRect m_rcGroupByArea; // The area occupied by Group By item.
+	CRect m_rcHeaderArea;  // The area occupied by the header.
+	CRect m_rcFooterArea;  // The area occupied by the footer.
+
+	CXTPReportColumns* m_pColumns; // List columns container.
+
+	CXTPReportRows* m_pRows; // Virtual list rows container. Used for changing order, etc.
+
+	CXTPReportHeader* m_pReportHeader; // List header member.
+
+	CXTPReportSections* m_pSections;
+	CXTPReportSection* m_pSectionHeader;
+	CXTPReportSection* m_pSectionBody;
+	CXTPReportSection* m_pSectionFooter;
+	CXTPReportSection* m_pSectionScroll;
+
+	CXTPMarkupContext* m_pMarkupContext;	 // Markup context
+	CXTPReportPaintManager* m_pPaintManager; // Paint manager
+	CXTPReportNavigator* m_pNavigator;		 // Navigator
+
+	CXTPReportNavigator* m_pNavigatorReport;
+	CXTPReportIconNavigator* m_pNavigatorIcon;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scrolling
+	//////////////////////////////////////////////////////////////////////////
+
+	XTPReportScrollUpdateMode m_scrollUpdateMode; // Scroll update mode
+	XTPReportScrollMode m_scrollModeH;			  // Horizontal scroll mode
+	XTPReportScrollMode m_scrollModeV;			  // Vertical scroll mode
+
+	int m_nScrollOffsetH; // Horizontal scroll position.
+
+	int m_nScrollStepH; // Horizontal scroll step (in pixels).
+	int m_nScrollStepV; // Vertical scroll step (in pixels).
+
+	int m_nDisableReorderColumnsCount; // Count of columns at the left side where reordering is
+									   // disabled.
+
+	CXTPReportSelectedRows* m_pSelectedRows; // Container for the currently selected rows.
+
+	CXTPReportRow* m_pHotRow; // Hot row
+
+	int m_nRowsPerWheel; // Amount of rows to scroll by mouse wheel.
+
+	CXTPReportTip* m_pTip; // Tip window.
+	CBitmap m_bmpCache;	// Cached window bitmap.
+
+	BOOL m_bGroupByEnabled;   // TRUE if Group By box is enabled
+	BOOL m_bSortRecordChilds; // TRUE to apply sort order for Record children.
+
+	XTPReportMouseMode m_mouseMode; // Current mouse operation mode
+	BOOL m_bBlockSelection;			// TRUE if multiple selection enabled.
+	BOOL m_bMultiSelectionMode; // TRUE if multi selection mode enabled (i.e. VK_CTRL is always on).
+	BOOL m_bShowTooltips;		// TRUE if showing tool tips enabled.
+	BOOL m_bAutoCheckItems;		// TRUE to enable auto check mode, FALSE to disable auto check mode.
+
+	CXTPImageManager* m_pImageManager; // Contains image list for report control
+	BOOL m_bSkipGroupsFocus; // TRUE if group rows are skipped when navigating rows with the Up and
+							 // Down arrow keys
+
+	BOOL m_bLockExpand;				 // TRUE if collapsing/expanding rows is locked.
+	BOOL m_bEnsureFocusedRowVisible; // TRUE if focused rows will be forced visible
+	BOOL m_bFocusSubItems;			 // TRUE if sub-items can receive focus.
+	BOOL m_bEditOnClick;			 // TRUE if sub-items become editable on a single-click
+	BOOL m_bEditOnDelayClick;		 // TRUE if sub-items become editable on a delay-click
+	BOOL m_bEditOnDoubleClick;		 // TRUE if sub-items become editable on a double-click
+
+	BOOL m_bPreviewAllowEdit;	 // TRUE if Preview of the row can be edited.
+	BOOL m_bHeaderVisible;		  // TRUE if column headers are visible.
+	BOOL m_bFooterVisible;		  // TRUE if column footer are visible.
+	BOOL m_bPinFooterRows;		  // TRUE if footer rows are drawn immediately after the body rows.
+	BOOL m_bPinFooterRowsPrinted; // TRUE if footer rows are printed immediately after the body
+								  // rows.
+	BOOL m_bInitialSelectionEnable; // TRUE if Initial (in Populate() call) selection enabled.
+	BOOL m_bRowFocusVisible;		// TRUE if showing focused row rectangle enabled.
+
+	CXTPReportColumn* m_pFocusedColumn; // Pointer to the currently focused CXTPReportColumn.
+
+	CXTPToolTipContext* m_pToolTipContext; // Tool tip Context.
+	CXTPReportRecordItem* m_pActiveItem;   // Pointer to the currently focused CXTPReportRecordItem.
+	CXTPReportInplaceEdit* m_pInplaceEdit; // In-place edit pointer
+	CXTPReportInplaceButtons* m_pInplaceButtons; // In-place buttons pointer
+	CXTPReportInplaceList* m_pInplaceList;		 // In-place list pointer
+	BOOL m_bVScrollBarVisible;					 // TRUE if vertical scroll bar is visible
+	BOOL m_bHScrollBarVisible;					 // TRUE if horizontal scroll bar is visible
+	UINT m_nAutoVScrollTimerResolution; // Vertical scrolling timer resolution in milliseconds
+	CPoint m_ptDrag;					// Drag position
+	int m_nDragSensitivityX; // Horizontal sensitivity of Drag'n'Drop operation in pixels. Default
+							 // value is 3. DPI aware.
+	int m_nDragSensitivityY; // Vertical sensitivity of Drag'n'Drop operation in pixels. Default
+							 // value is 3. DPI aware.
+	BOOL m_bPrepareDrag;	 // TRUE if user click the report control and doesn't release button.
+	CString m_strFilterText; // Filter text.
+	BOOL m_bFilterHiddenColumns;  // Search filter text in hidden columns too.
+	int m_nRecordsTreeFilterMode; // Tree Filter mode.
+
+	CLIPFORMAT m_cfReport; // Report Clipboard format for drag/drop operations
+
+	CReportDropTarget* m_pDropTarget; // Internal drag/drop helper.
+	BOOL m_bDragMode;				  // TRUE if records currently dragging
+	BOOL m_bInternalDrag;			  // TRUE if records begin drag from this control
+	DWORD m_dwDragDropFlags;		  // Drag/drop flags.
+	DWORD m_dwDropMarkerFlags;		  // The drop marker flags.
+	CXTPReportSelectedRows* m_pSelectedRowsBeforeDrag; // The selected rows before a dragging
+													   // action.
+	int m_nDropPos;									   // Position of records to be dropped
+	CXTPReportRecords* m_pDropRecords;				   // Drop records.
+
+	BOOL m_bAdjustLayoutRunning;   // TRUE if AdjustLayout handler is entered, FALSE otherwise. Used
+								   // to prevent OnSize reenter and stack overflow in Win95/98/ME.
+	UINT_PTR m_uAutoScrollTimerID; // Auto scroll timer ID or 0.
+
+	//{{AFX_CODEJOCK_PRIVATE
+	long m_nOLEDropMode;  // Store OLE drop mode.
+	BOOL m_nOLEDropAbove; // Drop above record?
+	//}}AFX_CODEJOCK_PRIVATE
+
+	CXTPReportRow* m_ptrVirtualEditingRow; // Currently editing row in virtual mode.
+
+	XTPReportRowsCompareFunc m_pRowsCompareFunc; // Pointer to rows compare function.
+
+	HBITMAP m_hbmpWatermark;						  // Watermark bitmap handle.
+	BYTE m_WatermarkTransparency;					  // Watermark bitmap transparency value.
+	BITMAP m_bmWatermark;							  // Watermark bitmap info.
+	XTPReportWatermarkAlignment m_WatermarkAlignment; // Watermark alignment flags.
+	int m_nEnsureVisibleRowIdx;						  // Ensure visible row index.
+	int m_nEnsureVisibleColumnIdx;					  // Ensure visible column index.
+
+	CXTPReportDataManager* m_pDataManager; // Data manager.
+
+	BOOL m_bShowIconWhenEditing; // Set to TRUE to show item icons while the item is being edited.
+
+#	ifdef _XTP_ACTIVEX
+
+public:
+	BOOL m_bCustomDrawItem;
+	BOOL m_bCustomDrawPreviewItem;
+	BOOL m_bCustomMeasureRow;
+	BOOL m_bCustomBeforeDrawRow;
+	BOOL m_bCustomMeasurePreviewItem;
+
+#	endif
 
 private:
 	XTP_NM_REPORTTOOLTIPINFO* m_pCachedToolTipInfo;
-	BOOL m_bAdjustScrollBars;
 
 public:
+	int m_iIconWidth;		  // icon geometry settings
+	int m_iIconHeight;		  // icon geometry settings
+	int m_iIconWidthSpacing;  // icon geometry settings
+	int m_iIconHeightSpacing; // icon geometry settings
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this function to specify whether item icons are shown when the item
-	//  is getting edited.
-	// Parameters:
-	//  bShow - BOOL flag to set or not
-	//-----------------------------------------------------------------------
-	void ShowIconWhenEditing(BOOL bShow);
+	int m_iIconPropNum; // icon view setting
+	int m_iIconNum;		// icon view setting
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this function to determine whether item icons are shown when the item
-	//  is getting edited.
-	// Returns:
-	//  TRUE if item icons are shown while being edited.  FALSE by default.
-	//-----------------------------------------------------------------------
-	BOOL IsShowIconWhenEditing();
+	BOOL m_bMarkupEnabled;			 // flag to check markup settings
+	int m_iIconViewColumn;			 // icon view setting
+	BOOL m_bIconColumnIndexNotValid; // used to indicate icon column is created, but does not yet
+									 // have a valid index
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to set Fast Deselect Mode (like Windows Explorer use)
-	// Parameters:
-	//  bFastDeselect - BOOL flag to set or not
-	//-----------------------------------------------------------------------
-	void SetFastDeselectMode(BOOL bFastDeselect = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to set column as icon view column
-	// Parameters:
-	//  pColumn - pointer to column
-	//-----------------------------------------------------------------------
-	void SetIconColumn(CXTPReportColumn* pColumn);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to create column as icon view column
-	//  and also allows to reuse it for number column in report view
-	// Parameters:
-	//  bUseColumnForNum - flag to reuse icon column as number column in report view
-	//  nWidth - width of number column
-	//-----------------------------------------------------------------------
-	void CreateIconColumn(BOOL bUseColumnForNum = FALSE, int nWidth = 40);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to create column as icon view column
-	//  and also allows to reuse it for number column in report view
-	//  can be used on for non-virtual mode
-	// Parameters:
-	//  nCol - column index to use as icon column property (field)
-	//  nIcon - icon index to use in icon view
-	//  bUseColumnForNum - flag to reuse icon column as number column in report view
-	//  nWidth - width of number column
-	//-----------------------------------------------------------------------
-	void AssignIconViewPropNumAndIconNum(int nCol = 0, int nIcon = 0,
-		BOOL bUseColumnForNum = FALSE, int nWidth = 20);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  This member used to toggle between IconView and ReportView modes
-	// Parameters:
-	//  bIconView - BOOL flag (TRUE for IconView mode, FALSE for ReportView mode)
-	//-----------------------------------------------------------------------
-	virtual void SetIconView(BOOL bIconView = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this function to know whether the icon view mode is active or not.
-	// Returns:
-	//  TRUE if IconView mode active
-	//-----------------------------------------------------------------------
-	BOOL IsIconView();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this function to get the rows per line.
-	// Returns:
-	//  integer value denoting the rows per line
-	//-----------------------------------------------------------------------
-	int GetRowsPerLine();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this functions to get the number of rows in a line of arbitrary
-	//  length.
-	// Parameters:
-	//  iTotalWidth - passed param for total width
-	// Returns:
-	//  An integer specifying the number of lines in a row.
-	//-----------------------------------------------------------------------
-	int GetNumRowsOnLine(int iTotalWidth);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//  Call this function to set the report navigator.
-	// Parameters:
-	//  pNavigator - pointer to flag CXTPReportNavigator
-	//-----------------------------------------------------------------------
-	void SetNavigator(CXTPReportNavigator* pNavigator);
-
-	int m_iIconWidth;               // icon geometry settings
-	int m_iIconHeight;              // icon geometry settings
-	int m_iIconWidthSpacing;        // icon geometry settings
-	int m_iIconHeightSpacing;       // icon geometry settings
-
-	int m_iIconPropNum;             // icon view setting
-	int m_iIconNum;                 // icon view setting
-
-	CUIntArray m_UaSelected;        // used for report view - icon view selection update
-
-	BOOL m_bMarkupEnabled;          //flag to check markup settings
-	BOOL m_iCheckWithRightButton;   // ext UI flags
-	BOOL m_iCheckRightButtonExtended;// ext UI flags
-	int m_iIconViewColumn;          // icon view setting
-	BOOL m_bIconColumnIndexNotValid;     // used to indicate icon column is created, but does not yet have a valid index
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      ShowRowNumber
-	// Parameters:
-	//  bSet - BOOL flag to show or hide Row Number column
-	//-----------------------------------------------------------------------
-	void ShowRowNumber(BOOL bSet);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      IsShowRowNumber
-	// Returns:
-	//      TRUE if Row Number visible
-	//-----------------------------------------------------------------------
-	BOOL IsShowRowNumber();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Helper function
-	// Parameters:
-	//       row  - row number.
-	//       col  - column number.
-	//      sText - string to set
-	// Returns:
-	//      TRUE if success
-	//-----------------------------------------------------------------------
-	BOOL SetCellText(int row, int col, CString sText);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//      Helper function
-	// Parameters:
-	//          row      - row number.
-	//          col      - column number.
-	//          sFormula - Formula to set.
-	// Returns:
-	//      TRUE if success
-	//-----------------------------------------------------------------------
-	BOOL SetCellFormula(int row, int col, CString sFormula);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Unselect all Group Rows
-	//-----------------------------------------------------------------------
-	void UnselectGroupRows();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to release the sorted items and clear the memory.
-	//-----------------------------------------------------------------------
-	void ReleaseSorted();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to get the horizontal scroll position.
-	// Returns:
-	//     An integer denoting the horizontal scroll position.
-	//-----------------------------------------------------------------------
-	int GetLeftOffset() const;
-
-	//assessors for m_bDragMode
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to know whether current mouse context is dragging.
-	// Returns:
-	//     BOOL value of TRUE if the report control item(s) are in drag mode
-	//     FALSE if not.
-	//-----------------------------------------------------------------------
-	BOOL IsDragMode() const;
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this function to reset the icon view column to is default values.
-	//     This should be called if the column in ever destroyed.
-	//-----------------------------------------------------------------------
-	void SetIconViewToDefaults();
-
-
-	BOOL m_bStrictBestFit;          // use BestFit only for non-autosize mode
-	BOOL m_bWasShiftKey;            // Flag set on MouseUp or KeyUp if Shift key was On
-	BOOL m_bSortedDragDrop;         // Flag to set Drag Drop mode:
-	                                // like Vista Windows Explorer or like XP Windows Explorer
-	BOOL m_bTrapTabKey;             // Flag to set Trap Tab key in m_bEditOnClick && m_bAllowEdit case
-	BOOL m_bDesktopTrackerMode;     // Flag to set Vista Tracker Mode On or Off
-	BOOL m_bUnrestrictedDragDrop;   // Child can be drop to any pos - default = FALSE
-	BOOL m_bFreeHeightMode;         // Flag to set RC Free Height Mode
-	int m_nDefaultRowFreeHeight;    // RowHeight for initialization
-	CString m_sCustomTitle;         // used for unique title - e.g. for PrintJob name
-	BOOL m_bRClickDrag;             // Allow drag on right click
+	BOOL m_bStrictBestFit;		  // use BestFit only for non-autosize mode
+	BOOL m_bWasShiftKey;		  // Flag set on MouseUp or KeyUp if Shift key was On
+	BOOL m_bSortedDragDrop;		  // Flag to set Drag Drop mode:
+								  // like Vista Windows Explorer or like XP Windows Explorer
+	BOOL m_bTrapTabKey;			  // Flag to set Trap Tab key in m_bEditOnClick && m_bAllowEdit case
+	BOOL m_bDesktopTrackerMode;   // Flag to set Vista Tracker Mode On or Off
+	BOOL m_bUnrestrictedDragDrop; // Child can be drop to any pos - default = FALSE
+	BOOL m_bFreeHeightMode;		  // Flag to set RC Free Height Mode
+	int m_nDefaultRowFreeHeight;  // RowHeight for initialization
+	CString m_sCustomTitle;		  // used for unique title - e.g. for PrintJob name
+	BOOL m_bRClickDrag;			  // Allow drag on right click
 	BOOL m_bKeepSelectionAfterSort; // Tells whether to keep the selection after sorting items.
 
-	int m_iColumnForNum;            // Index of the Row # column is used
+	int m_iColumnForNum; // Index of the Row # column is used
 
 protected:
-	BOOL m_bIconView;                           //TRUE if icon view, FALSE else.
-	// Height of a grid cell for items in large icon view, in pixels. Each item fits into a rectangle of size SM_CXICONSPACING by SM_CYICONSPACING when arranged. This value is always greater than or equal to SM_CYICON.
+	BOOL m_bCreated;  // TRUE if created using the Create() method
+	BOOL m_bIconView; // TRUE if icon view, FALSE else.
+	// Height of a grid cell for items in large icon view, in pixels. Each item fits into a
+	// rectangle of size SM_CXICONSPACING by SM_CYICONSPACING when arranged. This value is always
+	// greater than or equal to SM_CYICON.
 	int m_iColumnForNumPrev;
-	int m_iIconViewRowsPerLine;                 //The icon view rows per line.
+	int m_iIconViewRowsPerLine; // The icon view rows per line.
 	BOOL m_bUseIconColumnForNum;
-	CXTPReportColumnOrder* m_pPrevVisible;      //The pervious visible column order.
-	CXTPReportColumnOrder* m_pPrevGroupsOrder;  //The pervious group column order.
+	CXTPReportColumnOrder* m_pPrevVisible;	 // The pervious visible column order.
+	CXTPReportColumnOrder* m_pPrevGroupsOrder; // The pervious group column order.
 	// Visible columns before setting icon view
-	BOOL m_bPrevFocusSubItems;                  //TRUE if there are previous focused sub items, FALSE if not.
-	BOOL m_bPrevHeaderAutoSize;                 //TRUE if the previous header is auto size, FALSE if not.
+	BOOL m_bPrevFocusSubItems;  // TRUE if there are previous focused sub items, FALSE if not.
+	BOOL m_bPrevHeaderAutoSize; // TRUE if the previous header is auto size, FALSE if not.
 
-	BOOL m_bPrevHeaderRows;                     //TRUE if there are previous header rows, FALSE if not.
-	BOOL m_bPrevFooterRows;                     //TRUE if there are previous footer rows, FALSE if not.
-	int m_nPrevTreeIndent;                      //The tree indentation.
-	BOOL m_bPrevHeaderShow;                     //Tells whether the previous header is visible or not.
-	BOOL m_bPrevFooterShow;                     //Tells whether the previous footer is visible or not.
-	BOOL m_bPrevPreviewMode;                    //Tells whether the preview mode is enabled or not previously.
+	BOOL m_bPrevHeaderRows;  // TRUE if there are previous header rows, FALSE if not.
+	BOOL m_bPrevFooterRows;  // TRUE if there are previous footer rows, FALSE if not.
+	int m_nPrevTreeIndent;   // The tree indentation.
+	BOOL m_bPrevHeaderShow;  // Tells whether the previous header is visible or not.
+	BOOL m_bPrevFooterShow;  // Tells whether the previous footer is visible or not.
+	BOOL m_bPrevPreviewMode; // Tells whether the preview mode is enabled or not previously.
 
-	BOOL m_bNoNeedSortedDragDrop;               // Dynamic flag during Sorted DragDrop operation
+	BOOL m_bNoNeedSortedDragDrop; // Dynamic flag during Sorted DragDrop operation
 	//(set during OnDragOver state - used during OnDrop state)
 
-	CUIntArray m_UaPreSorted;                   //Pre sorted array.
-	CUIntArray m_UaSorted;                      //Sorted array.
+	UINT_PTR m_uiDelayEditTimer; // The delay edit timer.
+	UINT m_uiDelayEditMaxTime;   // The delay edit time interval.
 
-	UINT_PTR m_uiDelayEditTimer;                //The delay edit timer.
-	UINT m_uiDelayEditMaxTime;                  //The delay edit time interval.
+	int m_iLastRqstEditRow; // The last row which requested a delay edit.
+	int m_iLastRqstEditCol; // The last column which requested a delay edit.
 
-	int m_iLastRqstEditRow;                     //The last row which requested a delay edit.
-	int m_iLastRqstEditCol;                     //The last column which requested a delay edit.
+	// ICON_VIEW_MODE RELATED <<
+	UINT_PTR m_uRqstEditTimer;			// The edit timer id.
+	BOOL m_bFastDeselectMode;			// Tells whether the fast deselect mode is enabled or not.
+	XTPReportPaintTheme m_themeCurrent; // Currently set theme.
 
-	XTPReportGridStyle m_PrevVertStyle;         //The previous vertical style.
-	XTPReportGridStyle m_PrevHorStyle;          //The previous horizontal style.
-//ICON_VIEW_MODE RELATED <<
-	BOOL m_bEditOnDelayClick;                   //Tells whether the delay click edit is enabled or not.
-	UINT_PTR m_uRqstEditTimer;                  //The edit timer id.
-	BOOL m_bFastDeselectMode;                   //Tells whether the fast deselect mode is enabled or not.
+	BOOL m_bRelayWndMsg; // Used for relaying window messages.
 
 	friend class CReportControlCtrl;
 	friend class CReportDropTarget;
+	friend class CXTPReportPaintManager;
+	friend class CXTPReportSections;
+	friend class CXTPReportSection;
 };
 
 //===========================================================================
@@ -3615,8 +4143,8 @@ class _XTP_EXT_CLASS CXTPReportControlLocale
 {
 private:
 	CXTPReportControlLocale(){};
-public:
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Determine which locale is used active locale: current user locale
@@ -3666,7 +4194,8 @@ public:
 	// See Also:
 	//      GetActiveLCID, ::VariantChangeTypeEx API function.
 	//-----------------------------------------------------------------------
-	static BOOL AFX_CDECL VariantChangeTypeEx(VARIANT& rVarValue, VARTYPE vartype, BOOL bThrowError = TRUE);
+	static BOOL AFX_CDECL VariantChangeTypeEx(VARIANT& rVarValue, VARTYPE vartype,
+											  BOOL bThrowError = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -3686,14 +4215,19 @@ private:
 	static BOOL s_bUseResourceFileLocale;
 
 private:
-	static CString AFX_CDECL _FormatDateTime(const COleDateTime& dt, LPCTSTR lpcszFormatString, LCID lcLocaleID);
+	static CString AFX_CDECL _FormatDateTime(const COleDateTime& dt, LPCTSTR lpcszFormatString,
+											 LCID lcLocaleID);
 
 	static void AFX_CDECL _InitMappedSpecs();
 
-	static void AFX_CDECL _ProcessMappedSpecs(CString& rstrFormat, const SYSTEMTIME* pST, LCID lcLocaleID);
-	static void AFX_CDECL _ProcessDateTimeSpecs(CString& rstrFormat, const SYSTEMTIME* pST, LCID lcLocaleID);
-	static void AFX_CDECL __ProcessDate_x(CString& rstrFormat, const SYSTEMTIME* pST, LCID lcLocaleID);
-	static void AFX_CDECL __ProcessTime_X(CString& rstrFormat, const SYSTEMTIME* pST, LCID lcLocaleID);
+	static void AFX_CDECL _ProcessMappedSpecs(CString& rstrFormat, const SYSTEMTIME* pST,
+											  LCID lcLocaleID);
+	static void AFX_CDECL _ProcessDateTimeSpecs(CString& rstrFormat, const SYSTEMTIME* pST,
+												LCID lcLocaleID);
+	static void AFX_CDECL __ProcessDate_x(CString& rstrFormat, const SYSTEMTIME* pST,
+										  LCID lcLocaleID);
+	static void AFX_CDECL __ProcessTime_X(CString& rstrFormat, const SYSTEMTIME* pST,
+										  LCID lcLocaleID);
 	static void AFX_CDECL _ProcessOtherSpecs(CString& rstrFormat, const COleDateTime& dt);
 
 private:
@@ -3701,7 +4235,7 @@ private:
 	{
 		LPCTSTR pcszSpec;
 		LPCTSTR pcszFormat;
-		BOOL    bTime;
+		BOOL bTime;
 	};
 
 	static CArray<XTP_TIMESPEC, XTP_TIMESPEC&> s_arMappedSpecs;
@@ -3715,218 +4249,130 @@ AFX_INLINE CXTPReportPaintManager* CXTPReportControl::GetPaintManager() const
 {
 	return m_pPaintManager;
 }
-
 AFX_INLINE CXTPReportNavigator* CXTPReportControl::GetNavigator() const
 {
 	return m_pNavigator;
 }
-
 AFX_INLINE CXTPReportSelectedRows* CXTPReportControl::GetSelectedRows() const
 {
 	return m_pSelectedRows;
-}
-
-AFX_INLINE CXTPReportRows* CXTPReportControl::GetRows() const
-{
-	return m_pRows;
-}
-
-AFX_INLINE CXTPReportRecords* CXTPReportControl::GetRecords() const
-{
-	return m_pRecords;
 }
 
 AFX_INLINE CXTPReportColumns* CXTPReportControl::GetColumns() const
 {
 	return m_pColumns;
 }
-
 AFX_INLINE XTPReportMouseMode CXTPReportControl::GetMouseMode() const
 {
 	return m_mouseMode;
 }
-
-AFX_INLINE void CXTPReportControl::SetGridStyle(BOOL bVertical, XTPReportGridStyle gridStyle)
-{
-	m_pPaintManager->SetGridStyle(bVertical, gridStyle);
-	AdjustScrollBars();
-}
-
-AFX_INLINE XTPReportGridStyle CXTPReportControl::GetGridStyle(BOOL bVertical) const
-{
-	return bVertical ? m_pPaintManager->m_verticalGridStyle : m_pPaintManager->m_horizontalGridStyle;
-}
-
-AFX_INLINE COLORREF CXTPReportControl::SetGridColor(COLORREF clrGridLine)
-{
-	return m_pPaintManager->SetGridColor(clrGridLine);
-}
-
-AFX_INLINE void CXTPReportControl::EnablePreviewMode(BOOL bIsPreviewMode)
-{
-	m_pPaintManager->EnablePreviewMode(bIsPreviewMode);
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsPreviewMode() const
-{
-	return m_pPaintManager->IsPreviewMode();
-}
-
 AFX_INLINE BOOL CXTPReportControl::IsChanged() const
 {
 	return m_bChanged;
 }
-
 AFX_INLINE void CXTPReportControl::SetChanged(BOOL bChanged)
 {
 	m_bChanged = bChanged;
 }
-
 AFX_INLINE void CXTPReportControl::ShowGroupBy(BOOL bEnable)
 {
-//  ASSERT(!IsVirtualMode());
+	//  ASSERT(!IsVirtualMode());
 	m_bGroupByEnabled = bEnable;
 	AdjustLayout();
 	AdjustScrollBars();
+	RedrawControl();
 }
-
 AFX_INLINE BOOL CXTPReportControl::IsGroupByVisible() const
 {
 	return m_bGroupByEnabled;
 }
-
 AFX_INLINE void CXTPReportControl::ShowHeader(BOOL bShow /*= TRUE*/)
 {
 	m_bHeaderVisible = bShow;
 	AdjustLayout();
 	AdjustScrollBars();
 }
-
-AFX_INLINE BOOL CXTPReportControl::IsHeaderVisible()const
+AFX_INLINE BOOL CXTPReportControl::IsHeaderVisible() const
 {
 	return m_bHeaderVisible;
 }
-
 AFX_INLINE void CXTPReportControl::ShowFooter(BOOL bShow /*= TRUE*/)
 {
 	m_bFooterVisible = bShow;
 	AdjustLayout();
 	AdjustScrollBars();
 }
-
-AFX_INLINE BOOL CXTPReportControl::IsFooterVisible()const
+AFX_INLINE BOOL CXTPReportControl::IsFooterVisible() const
 {
 	return m_bFooterVisible;
 }
-
-AFX_INLINE void CXTPReportControl::ShadeGroupHeadings(BOOL bEnable)
-{
-	if (m_pPaintManager)
-		m_pPaintManager->m_bShadeGroupHeadings = bEnable;
-	AdjustScrollBars();
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsShadeGroupHeadingsEnabled() const
-{
-	return m_pPaintManager ? m_pPaintManager->m_bShadeGroupHeadings : FALSE;
-}
-
-AFX_INLINE void CXTPReportControl::SetGroupRowsBold(BOOL bBold)
-{
-	if (m_pPaintManager)
-		m_pPaintManager->m_bGroupRowTextBold = bBold;
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsGroupRowsBold() const
-{
-	return m_pPaintManager ? m_pPaintManager->m_bGroupRowTextBold : FALSE;
-}
-
-AFX_INLINE CRect CXTPReportControl::GetReportRectangle() const
-{
-	return m_rcReportArea;
-}
-
 AFX_INLINE BOOL CXTPReportControl::IsMultipleSelection() const
 {
 	return m_bBlockSelection;
 }
-
 AFX_INLINE void CXTPReportControl::SetMultipleSelection(BOOL bSet)
 {
 	m_bBlockSelection = bSet;
-	//SetFocusedRow(GetFocusedRow());
 }
 
 AFX_INLINE BOOL CXTPReportControl::IsMultiSelectionMode() const
 {
-	return m_bControlKeyAlwaysOn;
+	return m_bMultiSelectionMode;
 }
 
 AFX_INLINE void CXTPReportControl::SetMultiSelectionMode(BOOL bSet)
 {
-	m_bControlKeyAlwaysOn = bSet;
+	m_bMultiSelectionMode = bSet;
 }
 
 AFX_INLINE void CXTPReportControl::EnableToolTips(BOOL bEnable)
 {
 	m_bShowTooltips = bEnable;
 }
-
 AFX_INLINE void CXTPReportControl::SkipGroupsFocus(BOOL bSkipFocus)
 {
 	m_bSkipGroupsFocus = bSkipFocus;
 }
-
-AFX_INLINE BOOL CXTPReportControl::IsSkipGroupsFocusEnabled()const
+AFX_INLINE BOOL CXTPReportControl::IsSkipGroupsFocusEnabled() const
 {
 	return m_bSkipGroupsFocus;
 }
-
 AFX_INLINE CXTPImageManager* CXTPReportControl::GetImageManager() const
 {
 	return m_pImageManager;
 }
-
 AFX_INLINE CXTPReportColumn* CXTPReportControl::GetFocusedColumn() const
 {
 	return m_pFocusedColumn;
 }
-
 AFX_INLINE void CXTPReportControl::FocusSubItems(BOOL bFocusSubItems)
 {
 	m_bFocusSubItems = bFocusSubItems;
 	m_pFocusedColumn = NULL;
 }
-
-AFX_INLINE BOOL CXTPReportControl::IsAllowEdit() const
-{
-	return m_bAllowEdit;
-}
-
 AFX_INLINE CXTPReportInplaceEdit* CXTPReportControl::GetInplaceEdit() const
 {
 	return m_pInplaceEdit;
 }
-
 AFX_INLINE CXTPReportInplaceButtons* CXTPReportControl::GetInplaceButtons() const
 {
 	return m_pInplaceButtons;
 }
-
 AFX_INLINE CXTPReportInplaceList* CXTPReportControl::GetInplaceList() const
 {
 	return m_pInplaceList;
 }
-
 AFX_INLINE CXTPReportRecordItem* CXTPReportControl::GetActiveItem() const
 {
 	return m_pActiveItem;
 }
-
-AFX_INLINE void CXTPReportControl::AllowEdit(BOOL bAllowEdit)
+AFX_INLINE void CXTPReportControl::EnsureFocusedRowVisible(BOOL bEnsureFocusedRowVisible)
 {
-	m_bAllowEdit = bAllowEdit;
+	m_bEnsureFocusedRowVisible = bEnsureFocusedRowVisible;
+}
+AFX_INLINE BOOL CXTPReportControl::IsEnsureFocusedRowVisible() const
+{
+	return m_bEnsureFocusedRowVisible;
 }
 
 AFX_INLINE BOOL CXTPReportControl::IsFocusSubItems() const
@@ -3934,20 +4380,18 @@ AFX_INLINE BOOL CXTPReportControl::IsFocusSubItems() const
 	return m_bFocusSubItems;
 }
 
+AFX_INLINE BOOL CXTPReportControl::IsDoubleBuffering() const
+{
+	return m_bDoubleBuffering;
+}
+
 AFX_INLINE void CXTPReportControl::EditOnClick(BOOL bEditOnClick)
 {
 	if (bEditOnClick)
-		m_bEditOnDelayClick = !bEditOnClick;
+	{
+		m_bEditOnDelayClick = FALSE;
+	}
 	m_bEditOnClick = bEditOnClick;
-}
-//defaults
-//  m_bEditOnClick = TRUE;
-//  m_bEditOnDelayClick = FALSE;
-AFX_INLINE void CXTPReportControl::EditOnDelayClick(BOOL bEditOnDelayClick)
-{
-	if (bEditOnDelayClick)
-		m_bEditOnClick = !bEditOnDelayClick; // This flag need for delay click.
-	m_bEditOnDelayClick = bEditOnDelayClick;
 }
 
 AFX_INLINE BOOL CXTPReportControl::IsEditOnClick() const
@@ -3955,9 +4399,28 @@ AFX_INLINE BOOL CXTPReportControl::IsEditOnClick() const
 	return m_bEditOnClick;
 }
 
+AFX_INLINE void CXTPReportControl::EditOnDelayClick(BOOL bEditOnDelayClick)
+{
+	if (bEditOnDelayClick)
+	{
+		m_bEditOnClick = FALSE;
+	}
+	m_bEditOnDelayClick = bEditOnDelayClick;
+}
+
 AFX_INLINE BOOL CXTPReportControl::IsEditOnDelayClick() const
 {
 	return m_bEditOnDelayClick;
+}
+
+AFX_INLINE void CXTPReportControl::EditOnDoubleClick(BOOL bEditOnClick)
+{
+	m_bEditOnDoubleClick = bEditOnClick;
+}
+
+AFX_INLINE BOOL CXTPReportControl::IsEditOnDoubleClick() const
+{
+	return m_bEditOnDoubleClick;
 }
 
 AFX_INLINE int CXTPReportControl::GetLastRqstEditRow() const
@@ -3982,17 +4445,6 @@ AFX_INLINE void CXTPReportControl::SetLastRqstEdit(int iLastRqstEditRow, int iLa
 	m_iLastRqstEditCol = iLastRqstEditCol;
 }
 
-AFX_INLINE BOOL CXTPReportControl::Create(LPCTSTR lpszClassName,
-										  LPCTSTR lpszWindowName,
-										  DWORD dwStyle,
-										  const RECT& rect,
-										  CWnd* pParentWnd,
-										  UINT nID,
-										  CCreateContext* pContext)
-{
-	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
-}
-
 AFX_INLINE CString CXTPReportControl::GetFilterText()
 {
 	return m_strFilterText;
@@ -4008,11 +4460,6 @@ AFX_INLINE CXTPReportHeader* CXTPReportControl::GetReportHeader() const
 	return m_pReportHeader;
 }
 
-AFX_INLINE long CXTPReportControl::GetTopRowIndex() const
-{
-	return m_nTopRow;
-}
-
 AFX_INLINE void CXTPReportControl::SetAutoCheckItems(BOOL bAutoCheck)
 {
 	m_bAutoCheckItems = bAutoCheck;
@@ -4021,11 +4468,6 @@ AFX_INLINE void CXTPReportControl::SetAutoCheckItems(BOOL bAutoCheck)
 AFX_INLINE BOOL CXTPReportControl::IsAutoCheckItems() const
 {
 	return m_bAutoCheckItems;
-}
-
-AFX_INLINE int CXTPReportControl::GetFreezeColumnsCount() const
-{
-	return m_nFreezeColumnsCount;
 }
 
 AFX_INLINE int CXTPReportControl::GetDisableReorderColumnsCount() const
@@ -4038,109 +4480,40 @@ AFX_INLINE int CXTPReportControl::GetLockUpdateCount() const
 	return m_nLockUpdateCount;
 }
 
-AFX_INLINE void CXTPReportControl::SetRowsCompareFunc(CXTPReportRows::T_CompareFunc pCompareFunc)
+AFX_INLINE void CXTPReportControl::SetRowsCompareFunc(XTPReportRowsCompareFunc pCompareFunc)
 {
 	m_pRowsCompareFunc = pCompareFunc;
 }
 
-AFX_INLINE int CXTPReportControl::GetHScrollStep()
+AFX_INLINE int CXTPReportControl::GetHScrollStep() const
 {
-	return m_nHScrollStep;
+	return m_nScrollStepH;
 }
 
 AFX_INLINE void CXTPReportControl::SetHScrollStep(int nStep)
 {
 	ASSERT(nStep > 0);
-	m_nHScrollStep = max(1, nStep);
+	m_nScrollStepH = max(1, nStep);
 }
 
-AFX_INLINE UINT CXTPReportControl::GetAutoVScrollTimerResolution()
+AFX_INLINE UINT CXTPReportControl::GetAutoVScrollTimerResolution() const
 {
 	return m_nAutoVScrollTimerResolution;
 }
 
-AFX_INLINE CXTPReportRecords* CXTPReportControl::GetHeaderRecords() const
-{
-	return m_pHeaderRecords;
-}
-
-AFX_INLINE CXTPReportRecords* CXTPReportControl::GetFooterRecords() const
-{
-	return m_pFooterRecords;
-}
-
-AFX_INLINE CXTPReportRows* CXTPReportControl::GetHeaderRows() const
-{
-	return m_pHeaderRows;
-}
-
-AFX_INLINE CXTPReportRows* CXTPReportControl::GetFooterRows() const
-{
-	return m_pFooterRows;
-}
-
-AFX_INLINE CRect CXTPReportControl::GetHeaderRowsRect() const
-{
-	return m_rcHeaderRecordsArea;
-}
-
-AFX_INLINE CRect CXTPReportControl::GetFooterRowsRect() const
-{
-	return m_rcFooterRecordsArea;
-}
-
-AFX_INLINE void CXTPReportControl::ShowHeaderRows(BOOL bShow /*= TRUE*/)
-{
-	m_bHeaderRecordsVisible = bShow;
-
-	if (!bShow)
-		GetNavigator()->SetCurrentFocusInHeadersRows(FALSE);
-
-	AdjustLayout();
-	AdjustScrollBars();
-}
-
-AFX_INLINE void CXTPReportControl::ShowFooterRows(BOOL bShow /*= TRUE*/)
-{
-	m_bFooterRecordsVisible = bShow;
-
-	if (!bShow)
-		GetNavigator()->SetCurrentFocusInFootersRows(FALSE);
-
-	AdjustLayout();
-	AdjustScrollBars();
-}
-
-AFX_INLINE void CXTPReportControl::PinFooterRows(BOOL bPin /*= TRUE*/)
-{
-	m_bPinFooterRecords = bPin;
-	AdjustLayout();
-	AdjustScrollBars();
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsHeaderRowsVisible() const
-{
-	return m_bHeaderRecordsVisible;
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsFooterRowsVisible() const
-{
-	return m_bFooterRecordsVisible;
-}
-
 AFX_INLINE BOOL CXTPReportControl::IsFooterRowsPinned() const
 {
-	return m_bPinFooterRecords;
+	return m_bPinFooterRows;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsHeaderRowsAllowEdit() const
+AFX_INLINE void CXTPReportControl::PinFooterRowsPrinted(BOOL bPin)
 {
-	return m_bHeaderAllowEdit;
+	m_bPinFooterRowsPrinted = bPin;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsFooterRowsAllowEdit() const
+AFX_INLINE BOOL CXTPReportControl::IsFooterRowsPinnedPrinted() const
 {
-	return m_bFooterAllowEdit;
+	return m_bPinFooterRowsPrinted;
 }
 
 AFX_INLINE BOOL CXTPReportControl::IsPreviewAllowEdit() const
@@ -4153,22 +4526,12 @@ AFX_INLINE void CXTPReportControl::PreviewAllowEdit(BOOL bAllowEdit)
 	m_bPreviewAllowEdit = bAllowEdit;
 }
 
-AFX_INLINE void CXTPReportControl::HeaderRowsAllowEdit(BOOL bAllowEdit)
-{
-	m_bHeaderAllowEdit = bAllowEdit;
-}
-
-AFX_INLINE void CXTPReportControl::FooterRowsAllowEdit(BOOL bAllowEdit)
-{
-	m_bFooterAllowEdit = bAllowEdit;
-}
-
 AFX_INLINE void CXTPReportControl::SetSortRecordChilds(BOOL bSortRecordChilds)
 {
 	m_bSortRecordChilds = bSortRecordChilds;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsSortRecordChilds()
+AFX_INLINE BOOL CXTPReportControl::IsSortRecordChilds() const
 {
 	return m_bSortRecordChilds;
 }
@@ -4193,33 +4556,9 @@ AFX_INLINE void CXTPReportControl::SetRecordsTreeFilterMode(int nMode)
 	m_nRecordsTreeFilterMode = nMode;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsSelectionEnabled() const
-{
-	return m_bSelectionEnable;
-}
-
-AFX_INLINE void CXTPReportControl::SelectionEnable(BOOL bEnable)
-{
-	m_bSelectionEnable = bEnable;
-	if (!m_bSelectionEnable)
-	{
-		m_bInitialSelectionEnable = FALSE;
-		m_bBlockSelection = FALSE;
-		m_bControlKeyAlwaysOn = FALSE;
-		m_pSelectedRows->Clear();
-	}
-}
-
 AFX_INLINE BOOL CXTPReportControl::IsInitialSelectionEnabled() const
 {
 	return m_bInitialSelectionEnable;
-}
-
-AFX_INLINE void CXTPReportControl::InitialSelectionEnable(BOOL bEnable)
-{
-	m_bInitialSelectionEnable = bEnable;
-	if (!m_bInitialSelectionEnable)
-		m_pSelectedRows->Clear();
 }
 
 AFX_INLINE BOOL CXTPReportControl::IsRowFocusVisible() const
@@ -4232,46 +4571,6 @@ AFX_INLINE void CXTPReportControl::ShowRowFocus(BOOL bShow)
 	m_bRowFocusVisible = bShow;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsHeaderRowsAllowAccess() const
-{
-	return m_bHeaderRowsAllowAccess;
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsFooterRowsAllowAccess() const
-{
-	return m_bFooterRowsAllowAccess;
-}
-
-AFX_INLINE void CXTPReportControl::HeaderRowsAllowAccess(BOOL bAllowAccess)
-{
-	m_bHeaderRowsAllowAccess = bAllowAccess;
-}
-
-AFX_INLINE void CXTPReportControl::FooterRowsAllowAccess(BOOL bAllowAccess)
-{
-	m_bFooterRowsAllowAccess = bAllowAccess;
-}
-
-AFX_INLINE void CXTPReportControl::HeaderRowsEnableSelection(BOOL bEnable)
-{
-	m_bHeaderRowsSelectionEnable = bEnable;
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsHeaderRowsSelectionEnabled() const
-{
-	return m_bHeaderRowsSelectionEnable;
-}
-
-AFX_INLINE void CXTPReportControl::FooterRowsEnableSelection(BOOL bEnable)
-{
-	m_bFooterRowsSelectionEnable = bEnable;
-}
-
-AFX_INLINE BOOL CXTPReportControl::IsFooterRowsSelectionEnabled() const
-{
-	return m_bFooterRowsSelectionEnable;
-}
-
 AFX_INLINE int CXTPReportControl::GetWatermarkAlignment() const
 {
 	return m_WatermarkAlignment;
@@ -4282,27 +4581,19 @@ AFX_INLINE void CXTPReportControl::SetWatermarkAlignment(int nWatermarkAlignment
 	m_WatermarkAlignment = (XTPReportWatermarkAlignment)nWatermarkAlignment;
 }
 
-AFX_INLINE BOOL CXTPReportControl::IsFullColumnScrollingSet()  const
-{
-	return m_bFullColumnScrolling;
-}
-
-//ICON_VIEW_MODE RELATED <<
-AFX_INLINE BOOL CXTPReportControl::IsIconView()
+AFX_INLINE BOOL CXTPReportControl::IsIconView() const
 {
 	return m_bIconView;
 }
 
-AFX_INLINE int CXTPReportControl::GetRowsPerLine()
+AFX_INLINE int CXTPReportControl::GetRowsPerLine() const
 {
 	return m_iIconViewRowsPerLine;
 }
-//ICON_VIEW_MODE RELATED >>
-
 
 AFX_INLINE int CXTPReportControl::GetLeftOffset() const
 {
-	return m_nLeftOffset;
+	return m_nScrollOffsetH;
 }
 
 AFX_INLINE void CXTPReportControl::SetDropMarkerFlags(DWORD dwDropMarkerFlags)
@@ -4310,7 +4601,7 @@ AFX_INLINE void CXTPReportControl::SetDropMarkerFlags(DWORD dwDropMarkerFlags)
 	m_dwDropMarkerFlags = dwDropMarkerFlags;
 }
 
-AFX_INLINE DWORD CXTPReportControl::GetDropMarkerFlags()
+AFX_INLINE DWORD CXTPReportControl::GetDropMarkerFlags() const
 {
 	return m_dwDropMarkerFlags;
 }
@@ -4320,21 +4611,55 @@ AFX_INLINE BOOL CXTPReportControl::IsDragMode() const
 	return m_bDragMode;
 }
 
+AFX_INLINE int CXTPReportControl::GetDragSensitivityX() const
+{
+	return m_nDragSensitivityX;
+}
+
+AFX_INLINE int CXTPReportControl::GetDragSensitivityY() const
+{
+	return m_nDragSensitivityY;
+}
+
 AFX_INLINE void CXTPReportControl::SetFastDeselectMode(BOOL bFastDeselect)
 {
 	m_bFastDeselectMode = bFastDeselect;
 }
-//----------------------------------------------------------------------
-class CXTPPromptDlg : public CDialog
+
+AFX_INLINE CXTPReportBehavior* CXTPReportControl::GetBehavior() const
 {
-	DECLARE_DYNAMIC(CXTPPromptDlg )
+	return m_pBehavior;
+}
+
+AFX_INLINE void CXTPReportControl::LockExpand(BOOL bLockExpand)
+{
+	m_bLockExpand = bLockExpand;
+}
+
+AFX_INLINE BOOL CXTPReportControl::IsLockExpand() const
+{
+	return m_bLockExpand;
+}
+
+AFX_INLINE XTPReportPaintTheme CXTPReportControl::GetCurrentTheme() const
+{
+	return m_themeCurrent;
+}
+
+//----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPPromptDlg : public CDialog
+{
+	DECLARE_DYNAMIC(CXTPPromptDlg)
 public:
-	CXTPPromptDlg (CWnd* pParent = NULL);
-	virtual ~CXTPPromptDlg ();
+	CXTPPromptDlg(CWnd* pParent = NULL);
+	virtual ~CXTPPromptDlg();
 	virtual void OnOK();
 	virtual INT_PTR DoModal();
 	virtual BOOL OnInitDialog();
 	CString m_sName;
 };
 
+extern UINT XTP_WM_REPORT_SETTHEME;
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTCONTROL_H__)

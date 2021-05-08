@@ -1,7 +1,6 @@
 // XTPTabBase.h : header file
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,8 +23,10 @@
 //}}AFX_CODEJOCK_PRIVATE
 
 #if _MSC_VER >= 1000
-#pragma once
+#	pragma once
 #endif // _MSC_VER >= 1000
+
+#include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTabCtrlButtons;
 class CXTPTabBaseTheme;
@@ -56,7 +57,6 @@ enum XTPNavBtnState
 //===========================================================================
 class _XTP_EXT_CLASS CXTPTabBase
 {
-
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -71,7 +71,6 @@ public:
 	virtual ~CXTPTabBase();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves a pointer to the associated tab control.
@@ -144,7 +143,6 @@ public:
 	CXTPTabBaseTheme* GetTheme();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to refresh theme colors and redraw the control.
@@ -178,87 +176,100 @@ protected:
 	virtual void OnAddPadding(CString& strLabelText);
 
 public:
-	bool m_bBoldFont;       // true to set the selected tab font to bold.
-	bool m_bXPBorder;       // true to draw an XP border around the tab child window.
+	bool m_bBoldFont;		// true to set the selected tab font to bold.
+	bool m_bXPBorder;		// true to draw an XP border around the tab child window.
 	BOOL m_bAutoCondensing; // TRUE for auto-condensing tabs.
 
 protected:
-	CTabCtrl*           m_pTabCtrl;         // Pointer to the tab control associated with this object.
-	CXTPTabCtrlButtons* m_pNavBtns;         // Arrow buttons.
-	CXTPTabBaseTheme*   m_pTheme;           // Pointer to the current theme object.
-	BOOL                m_bSubclassed;      // TRUE if the window was sub-classed.
+	CTabCtrl* m_pTabCtrl;			// Pointer to the tab control associated with this object.
+	CXTPTabCtrlButtons* m_pNavBtns; // Arrow buttons.
+	CXTPTabBaseTheme* m_pTheme;		// Pointer to the current theme object.
+	BOOL m_bSubclassed;				// TRUE if the window was sub-classed.
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	virtual void PreSubclassWindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	afx_msg void OnSysColorChange();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //---------------------------------------------------------------------------
 
-AFX_INLINE CTabCtrl* CXTPTabBase::GetTabCtrlImpl() {
+AFX_INLINE CTabCtrl* CXTPTabBase::GetTabCtrlImpl()
+{
 	return m_pTabCtrl;
 }
-AFX_INLINE CXTPTabCtrlButtons* CXTPTabBase::GetButtons() {
+AFX_INLINE CXTPTabCtrlButtons* CXTPTabBase::GetButtons()
+{
 	return m_pNavBtns;
 }
-AFX_INLINE CXTPTabBaseTheme* CXTPTabBase::GetTheme() {
+AFX_INLINE CXTPTabBaseTheme* CXTPTabBase::GetTheme()
+{
 	return m_pTheme;
 }
 
 //===========================================================================
 
 //{{AFX_CODEJOCK_PRIVATE
-#define DECLATE_TABCTRL_BASE(ClassName, Tab, Base)\
-class _XTP_EXT_CLASS ClassName : public Tab, public Base\
-{\
-protected:\
-	virtual void PreSubclassWindow() {\
-		Tab::PreSubclassWindow();\
-		Base::PreSubclassWindow();\
-	}   \
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) {\
-		if (!Tab::PreCreateWindow(cs))\
-			return FALSE;\
-		return Base::PreCreateWindow(cs);\
-	}   \
-	afx_msg void OnPaint() {\
-		Base::OnPaint();\
-	}   \
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC) {\
-		return Base::OnEraseBkgnd(pDC);\
-	}   \
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {\
-		Base::OnSettingChange(uFlags, lpszSection);\
-	}   \
-	afx_msg void OnSysColorChange() {\
-		Base::OnSysColorChange();\
-	}   \
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct) {\
-		if (Tab::OnCreate(lpCreateStruct) == -1)\
-			return -1;\
-		return Base::OnCreate(lpCreateStruct);\
-	}   \
-	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam) {\
-		return Base::OnSetTheme(wParam, lParam);\
-	}   \
-};
+#define DECLARE_TABCTRL_BASE(ClassName, Tab, Base)                                                 \
+	class _XTP_EXT_CLASS ClassName                                                                 \
+		: public Tab                                                                               \
+		, public Base                                                                              \
+	{                                                                                              \
+	protected:                                                                                     \
+		virtual void PreSubclassWindow()                                                           \
+		{                                                                                          \
+			Tab::PreSubclassWindow();                                                              \
+			Base::PreSubclassWindow();                                                             \
+		}                                                                                          \
+		virtual BOOL PreCreateWindow(CREATESTRUCT& cs)                                             \
+		{                                                                                          \
+			if (!Tab::PreCreateWindow(cs))                                                         \
+				return FALSE;                                                                      \
+			return Base::PreCreateWindow(cs);                                                      \
+		}                                                                                          \
+		afx_msg void OnPaint()                                                                     \
+		{                                                                                          \
+			Base::OnPaint();                                                                       \
+		}                                                                                          \
+		afx_msg BOOL OnEraseBkgnd(CDC* pDC)                                                        \
+		{                                                                                          \
+			return Base::OnEraseBkgnd(pDC);                                                        \
+		}                                                                                          \
+		afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection)                             \
+		{                                                                                          \
+			Base::OnSettingChange(uFlags, lpszSection);                                            \
+		}                                                                                          \
+		afx_msg void OnSysColorChange()                                                            \
+		{                                                                                          \
+			Base::OnSysColorChange();                                                              \
+		}                                                                                          \
+		afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)                                        \
+		{                                                                                          \
+			if (Tab::OnCreate(lpCreateStruct) == -1)                                               \
+				return -1;                                                                         \
+			return Base::OnCreate(lpCreateStruct);                                                 \
+		}                                                                                          \
+		afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam)                                   \
+		{                                                                                          \
+			return Base::OnSetTheme(wParam, lParam);                                               \
+		}                                                                                          \
+	};
 
-#define ON_TABCTRL_REFLECT \
-	ON_MESSAGE(WM_XTP_SETCONTROLTHEME, OnSetTheme) \
-	ON_WM_PAINT() \
-	ON_WM_ERASEBKGND() \
-	ON_WM_SETTINGCHANGE() \
-	ON_WM_SYSCOLORCHANGE() \
+#define ON_TABCTRL_REFLECT                                                                         \
+	ON_MESSAGE(WM_XTP_SETCONTROLTHEME, OnSetTheme)                                                 \
+	ON_WM_PAINT()                                                                                  \
+	ON_WM_ERASEBKGND()                                                                             \
+	ON_WM_SETTINGCHANGE()                                                                          \
+	ON_WM_SYSCOLORCHANGE()                                                                         \
 	ON_WM_CREATE
 //}}AFX_CODEJOCK_PRIVATE
 
@@ -286,7 +297,6 @@ public:
 	virtual ~CXTPTabExBase();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to enable or disable the control from
@@ -345,7 +355,9 @@ public:
 	//     lpszText - Pointer to the text for the tool.
 	//-----------------------------------------------------------------------
 	virtual void UpdateToolTip(int nIDTab, LPCTSTR lpszText);
-	virtual void UpdateToolTip(CRuntimeClass* pViewClass, LPCTSTR lpszText); // <combine CXTPTabExBase::UpdateToolTip@int@LPCTSTR>
+	virtual void UpdateToolTip(CRuntimeClass* pViewClass,
+							   LPCTSTR lpszText); // <combine
+												  // CXTPTabExBase::UpdateToolTip@int@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -381,8 +393,12 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL AddView(LPCTSTR lpszLabel, CView* pView, int iIndex = -1, int iIconIndex = -1, LPARAM lParam = 0);
-	virtual BOOL AddView(LPCTSTR lpszLabel, CRuntimeClass* pViewClass, CDocument* pDoc = NULL, CCreateContext* pContext = NULL, int iIndex = -1, int iIconIndex = -1, LPARAM lParam = 0); // <combine CXTPTabExBase::AddView@LPCTSTR@CView*@int@int@LPARAM>
+	virtual BOOL AddView(LPCTSTR lpszLabel, CView* pView, int iIndex = -1, int iIconIndex = -1,
+						 LPARAM lParam = 0);
+	virtual BOOL AddView(
+		LPCTSTR lpszLabel, CRuntimeClass* pViewClass, CDocument* pDoc = NULL,
+		CCreateContext* pContext = NULL, int iIndex = -1, int iIconIndex = -1,
+		LPARAM lParam = 0); // <combine CXTPTabExBase::AddView@LPCTSTR@CView*@int@int@LPARAM>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -398,7 +414,8 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL AddControl(LPCTSTR lpszLabel, CWnd* pWnd, int iIndex = -1, int iIconIndex = -1, LPARAM lParam = 0);
+	virtual BOOL AddControl(LPCTSTR lpszLabel, CWnd* pWnd, int iIndex = -1, int iIconIndex = -1,
+							LPARAM lParam = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -442,7 +459,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetActiveView(int nActiveTab);
 	virtual void SetActiveView(CWnd* pTabView); // <combine CXTPTabExBase::SetActiveView@int>
-	virtual void SetActiveView(CRuntimeClass* pViewClass); // <combine CXTPTabExBase::SetActiveView@int>
+	virtual void SetActiveView(CRuntimeClass* pViewClass); // <combine
+														   // CXTPTabExBase::SetActiveView@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -455,8 +473,11 @@ public:
 	//     bDestroyWnd - TRUE to destroy the list item.
 	//-----------------------------------------------------------------------
 	virtual void DeleteView(int nView, BOOL bDestroyWnd = TRUE);
-	virtual void DeleteView(CWnd* pView, BOOL bDestroyWnd = TRUE); // <combine CXTPTabExBase::DeleteView@int@BOOL>
-	virtual void DeleteView(CRuntimeClass* pViewClass, BOOL bDestroyWnd = TRUE); // <combine CXTPTabExBase::DeleteView@int@BOOL>
+	virtual void DeleteView(
+		CWnd* pView, BOOL bDestroyWnd = TRUE); // <combine CXTPTabExBase::DeleteView@int@BOOL>
+	virtual void DeleteView(CRuntimeClass* pViewClass,
+							BOOL bDestroyWnd = TRUE); // <combine
+													  // CXTPTabExBase::DeleteView@int@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -469,7 +490,8 @@ public:
 	//     A NULL terminated string that represents the tab item text.
 	//-----------------------------------------------------------------------
 	virtual LPCTSTR GetViewName(int nView);
-	virtual LPCTSTR GetViewName(CRuntimeClass* pViewClass); // <combine CXTPTabExBase::GetViewName@int>
+	virtual LPCTSTR GetViewName(CRuntimeClass* pViewClass); // <combine
+															// CXTPTabExBase::GetViewName@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -554,8 +576,10 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	BOOL SetTabText(int nTab, LPCTSTR lpszLabel);
-	BOOL SetTabText(CWnd* pView, LPCTSTR lpszLabel); // <combine CXTPTabExBase::SetTabText@int@LPCTSTR>
-	BOOL SetTabText(CRuntimeClass* pViewClass, LPCTSTR lpszLabel); // <combine CXTPTabExBase::SetTabText@int@LPCTSTR>
+	BOOL SetTabText(CWnd* pView,
+					LPCTSTR lpszLabel); // <combine CXTPTabExBase::SetTabText@int@LPCTSTR>
+	BOOL SetTabText(CRuntimeClass* pViewClass,
+					LPCTSTR lpszLabel); // <combine CXTPTabExBase::SetTabText@int@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -705,7 +729,8 @@ protected:
 	// Returns:
 	//     A pointer to the newly created CWnd object, otherwise returns NULL.
 	//-----------------------------------------------------------------------
-	virtual CWnd* CreateTabView(CRuntimeClass *pViewClass, CDocument *pDocument, CCreateContext* pContext);
+	virtual CWnd* CreateTabView(CRuntimeClass* pViewClass, CDocument* pDocument,
+								CCreateContext* pContext);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -752,161 +777,205 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CList <CXTPTcbItem*, CXTPTcbItem*> m_tcbItems; // Template list containing tab information.
+	CList<CXTPTcbItem*, CXTPTcbItem*> m_tcbItems; // Template list containing tab information.
 
 protected:
-	int         m_nPos;             // Index of the popup menu contained in the menu.
-	UINT        m_popupMenuID;      // Popup menu resource ID.
-	BOOL        m_bInitialUpdate;   // TRUE to send initial update to views when created.
-	CWnd*       m_pParentWnd;       // Points to the parent and will equal 'm_pParentFrame' in non-dialog applications.
-	CView*      m_pLastActiveView;  // Points to the last active view that belongs to the main frame window.
-	CFrameWnd*  m_pParentFrame;     // Points to the parent frame.
+	int m_nPos;				   // Index of the popup menu contained in the menu.
+	UINT m_popupMenuID;		   // Popup menu resource ID.
+	BOOL m_bInitialUpdate;	 // TRUE to send initial update to views when created.
+	CWnd* m_pParentWnd;		   // Points to the parent and will equal 'm_pParentFrame' in non-dialog
+							   // applications.
+	CView* m_pLastActiveView;  // Points to the last active view that belongs to the main frame
+							   // window.
+	CFrameWnd* m_pParentFrame; // Points to the parent frame.
 
 private:
-	int        m_nOldIndex;
+	int m_nOldIndex;
 };
 
 //---------------------------------------------------------------------------
 
-AFX_INLINE CWnd* CXTPTabExBase::GetActiveView() {
+AFX_INLINE CWnd* CXTPTabExBase::GetActiveView()
+{
 	return GetView(m_pTabCtrl->GetCurSel());
 }
-AFX_INLINE CView* CXTPTabExBase::GetLastKnownChildView() {
+AFX_INLINE CView* CXTPTabExBase::GetLastKnownChildView()
+{
 	return m_pLastActiveView;
 }
-AFX_INLINE void CXTPTabExBase::SetMenuID(UINT popupMenuID, int nPos) {
-	m_popupMenuID = popupMenuID; m_nPos = nPos;
+AFX_INLINE void CXTPTabExBase::SetMenuID(UINT popupMenuID, int nPos)
+{
+	m_popupMenuID = popupMenuID;
+	m_nPos		  = nPos;
 }
-AFX_INLINE UINT CXTPTabExBase::GetMenuID() {
-	ASSERT(::IsWindow(m_pTabCtrl->GetSafeHwnd())); return m_popupMenuID;
+AFX_INLINE UINT CXTPTabExBase::GetMenuID()
+{
+	ASSERT(::IsWindow(m_pTabCtrl->GetSafeHwnd()));
+	return m_popupMenuID;
 }
-AFX_INLINE void CXTPTabExBase::SendInitialUpdate(BOOL bInitialUpdate) {
+AFX_INLINE void CXTPTabExBase::SendInitialUpdate(BOOL bInitialUpdate)
+{
 	m_bInitialUpdate = bInitialUpdate;
 }
 
 //===========================================================================
 
 //{{AFX_CODEJOCK_PRIVATE
-class _XTP_EXT_CLASS CXTPTabCtrlBaseEx : public CXTPTabExBase // CXTPTabCtrlBaseEx deprecated, use CXTPTabExBase instead (included for backward compatibility).
+class _XTP_EXT_CLASS CXTPTabCtrlBaseEx
+	: public CXTPTabExBase // CXTPTabCtrlBaseEx deprecated, use CXTPTabExBase instead (included for
+						   // backward compatibility).
 {
 public:
-	virtual BOOL EnableToolTipsImpl(BOOL bEnable) {
+	virtual BOOL EnableToolTipsImpl(BOOL bEnable)
+	{
 		return CXTPTabExBase::EnableToolTipsEx(bEnable);
 	}
+
 protected:
-	void OnRButtonDownImpl(UINT nFlags, CPoint point) {
+	void OnRButtonDownImpl(UINT nFlags, CPoint point)
+	{
 		CXTPTabExBase::OnRButtonDown(nFlags, point);
 	}
-	int OnCreateImpl_Post(LPCREATESTRUCT lpCreateStruct) {
+	int OnCreateImpl_Post(LPCREATESTRUCT lpCreateStruct)
+	{
 		return CXTPTabExBase::OnCreate(lpCreateStruct);
 	}
-	void OnDestroyImpl_Pre() {
+	void OnDestroyImpl_Pre()
+	{
 		CXTPTabExBase::OnDestroy();
 	}
-	BOOL OnSelchangeImpl(NMHDR* pNMHDR, LRESULT* pResult) {
+	BOOL OnSelchangeImpl(NMHDR* pNMHDR, LRESULT* pResult)
+	{
 		return CXTPTabExBase::OnSelchange(pNMHDR, pResult);
 	}
-	BOOL OnSelchangingImpl(NMHDR* pNMHDR, LRESULT* pResult) {
+	BOOL OnSelchangingImpl(NMHDR* pNMHDR, LRESULT* pResult)
+	{
 		return CXTPTabExBase::OnSelchanging(pNMHDR, pResult);
 	}
-	void OnWindowPosChangedImpl_Pre(WINDOWPOS FAR* lpwndpos) {
+	void OnWindowPosChangedImpl_Pre(WINDOWPOS FAR* lpwndpos)
+	{
 		CXTPTabExBase::OnPreWindowPosChanged(lpwndpos);
 	}
-	void OnWindowPosChangedImpl_Post(WINDOWPOS FAR*) {
+	void OnWindowPosChangedImpl_Post(WINDOWPOS FAR*)
+	{
 		CXTPTabExBase::OnPostWindowPosChanged();
 	}
-	BOOL PreTranslateMessageImpl(MSG* pMsg) {
+	BOOL PreTranslateMessageImpl(MSG* pMsg)
+	{
 		return CXTPTabExBase::PreTranslateMessage(pMsg);
 	}
-	void PreSubclassWindowImpl_Post() {
+	void PreSubclassWindowImpl_Post()
+	{
 		CXTPTabExBase::PreSubclassWindow();
 	}
-	BOOL OnCmdMsgImpl_Pre(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) {
+	BOOL OnCmdMsgImpl_Pre(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+	{
 		return CXTPTabExBase::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 	}
-	LRESULT OnInitializeImpl(WPARAM, LPARAM) {
-		ASSERT(0); return 0; // this is deprecated, tab is self initializing via Init().
+	LRESULT OnInitializeImpl(WPARAM, LPARAM)
+	{
+		ASSERT(0);
+		return 0; // this is deprecated, tab is self initializing via Init().
 	}
-	void OnInitialUpdateImpl() {
+	void OnInitialUpdateImpl()
+	{
 		CXTPTabExBase::Init();
 	}
 };
 //{{AFX_CODEJOCK_PRIVATE
 
 //{{AFX_CODEJOCK_PRIVATE
-#define DECLATE_TABCTRLEX_BASE(ClassName, Tab, Base)\
-class _XTP_EXT_CLASS ClassName : public Tab, public Base \
-{ \
-protected: \
-	virtual void PreSubclassWindow() { \
-		Tab::PreSubclassWindow(); \
-		Base::PreSubclassWindow(); \
-	} \
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) {\
-		if (!Tab::PreCreateWindow(cs))\
-			return FALSE;\
-		return Base::PreCreateWindow(cs);\
-	}   \
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) { \
-		if (Base::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo)) \
-			return TRUE; \
-		return Tab::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo); \
-	} \
-	virtual BOOL PreTranslateMessage(MSG* pMsg) { \
-		if (Base::PreTranslateMessage(pMsg)) \
-			return TRUE; \
-		return Tab::PreTranslateMessage(pMsg); \
-	} \
-	afx_msg void OnPaint() { \
-		Base::OnPaint(); \
-	} \
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC) { \
-		return Base::OnEraseBkgnd(pDC); \
-	} \
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection) { \
-		Tab::OnSettingChange(uFlags, lpszSection); \
-		Base::OnSettingChange(uFlags, lpszSection); \
-	} \
-	afx_msg void OnSysColorChange() { \
-		Tab::OnSysColorChange(); \
-		Base::OnSysColorChange(); \
-	} \
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct) { \
-		if (Tab::OnCreate(lpCreateStruct) == -1) \
-			return -1; \
-		return Base::OnCreate(lpCreateStruct); \
-	} \
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point) { \
-		Base::OnRButtonDown(nFlags, point); \
-	} \
-	afx_msg void OnDestroy() { \
-		Base::OnDestroy(); \
-		Tab::OnDestroy(); \
-	} \
-	afx_msg BOOL OnSelchange(NMHDR* pNMHDR, LRESULT* pResult) { \
-		return Base::OnSelchange(pNMHDR, pResult); \
-	} \
-	afx_msg BOOL OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult) { \
-		return Base::OnSelchanging(pNMHDR, pResult); \
-	} \
-	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos) { \
-		Base::OnPreWindowPosChanged(lpwndpos); \
-		Tab::OnWindowPosChanged(lpwndpos); \
-		Base::OnPostWindowPosChanged(); \
-	} \
-	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam) {\
-		return Base::OnSetTheme(wParam, lParam);\
-	} \
-};
+#define DECLARE_TABCTRLEX_BASE(ClassName, Tab, Base)                                               \
+	class _XTP_EXT_CLASS ClassName                                                                 \
+		: public Tab                                                                               \
+		, public Base                                                                              \
+	{                                                                                              \
+	protected:                                                                                     \
+		virtual void PreSubclassWindow()                                                           \
+		{                                                                                          \
+			Tab::PreSubclassWindow();                                                              \
+			Base::PreSubclassWindow();                                                             \
+		}                                                                                          \
+		virtual BOOL PreCreateWindow(CREATESTRUCT& cs)                                             \
+		{                                                                                          \
+			if (!Tab::PreCreateWindow(cs))                                                         \
+				return FALSE;                                                                      \
+			return Base::PreCreateWindow(cs);                                                      \
+		}                                                                                          \
+		virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) \
+		{                                                                                          \
+			if (Base::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))                                  \
+				return TRUE;                                                                       \
+			return Tab::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);                                \
+		}                                                                                          \
+		virtual BOOL PreTranslateMessage(MSG* pMsg)                                                \
+		{                                                                                          \
+			if (Base::PreTranslateMessage(pMsg))                                                   \
+				return TRUE;                                                                       \
+			return Tab::PreTranslateMessage(pMsg);                                                 \
+		}                                                                                          \
+		afx_msg void OnPaint()                                                                     \
+		{                                                                                          \
+			Base::OnPaint();                                                                       \
+		}                                                                                          \
+		afx_msg BOOL OnEraseBkgnd(CDC* pDC)                                                        \
+		{                                                                                          \
+			return Base::OnEraseBkgnd(pDC);                                                        \
+		}                                                                                          \
+		afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection)                             \
+		{                                                                                          \
+			Tab::OnSettingChange(uFlags, lpszSection);                                             \
+			Base::OnSettingChange(uFlags, lpszSection);                                            \
+		}                                                                                          \
+		afx_msg void OnSysColorChange()                                                            \
+		{                                                                                          \
+			Tab::OnSysColorChange();                                                               \
+			Base::OnSysColorChange();                                                              \
+		}                                                                                          \
+		afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct)                                        \
+		{                                                                                          \
+			if (Tab::OnCreate(lpCreateStruct) == -1)                                               \
+				return -1;                                                                         \
+			return Base::OnCreate(lpCreateStruct);                                                 \
+		}                                                                                          \
+		afx_msg void OnRButtonDown(UINT nFlags, CPoint point)                                      \
+		{                                                                                          \
+			Base::OnRButtonDown(nFlags, point);                                                    \
+		}                                                                                          \
+		afx_msg void OnDestroy()                                                                   \
+		{                                                                                          \
+			Base::OnDestroy();                                                                     \
+			Tab::OnDestroy();                                                                      \
+		}                                                                                          \
+		afx_msg BOOL OnSelchange(NMHDR* pNMHDR, LRESULT* pResult)                                  \
+		{                                                                                          \
+			return Base::OnSelchange(pNMHDR, pResult);                                             \
+		}                                                                                          \
+		afx_msg BOOL OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)                                \
+		{                                                                                          \
+			return Base::OnSelchanging(pNMHDR, pResult);                                           \
+		}                                                                                          \
+		afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos)                                   \
+		{                                                                                          \
+			Base::OnPreWindowPosChanged(lpwndpos);                                                 \
+			Tab::OnWindowPosChanged(lpwndpos);                                                     \
+			Base::OnPostWindowPosChanged();                                                        \
+		}                                                                                          \
+		afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam)                                   \
+		{                                                                                          \
+			return Base::OnSetTheme(wParam, lParam);                                               \
+		}                                                                                          \
+	};
 
-#define ON_TABCTRLEX_REFLECT \
-	ON_WM_CREATE() \
-	ON_WM_DESTROY() \
-	ON_WM_RBUTTONDOWN() \
-	ON_WM_WINDOWPOSCHANGED() \
-	ON_NOTIFY_REFLECT_EX(TCN_SELCHANGE, OnSelchange) \
-	ON_NOTIFY_REFLECT_EX(TCN_SELCHANGING, OnSelchanging) \
+#define ON_TABCTRLEX_REFLECT                                                                       \
+	ON_WM_CREATE()                                                                                 \
+	ON_WM_DESTROY()                                                                                \
+	ON_WM_RBUTTONDOWN()                                                                            \
+	ON_WM_WINDOWPOSCHANGED()                                                                       \
+	ON_NOTIFY_REFLECT_EX(TCN_SELCHANGE, OnSelchange)                                               \
+	ON_NOTIFY_REFLECT_EX(TCN_SELCHANGING, OnSelchanging)                                           \
 	ON_TABCTRL_REFLECT
 //}}AFX_CODEJOCK_PRIVATE
 
+#include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // __XTTABCTRLBASE_H__

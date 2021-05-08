@@ -1,7 +1,6 @@
 // XTMemDC.h interface for the CXTMemDC class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTMEMDC_H__)
-#define __XTMEMDC_H__
+#	define __XTMEMDC_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -54,7 +53,9 @@ public:
 	//     bHorz  - If crBack contains gradient colors indicates the direction
 	//              of the gradient fill.
 	//-----------------------------------------------------------------------
-	CXTMemDC(CDC* pDC, const CRect& rect, CXTPPaintManagerColorGradient crBack = GetXtremeColor(COLOR_3DFACE), BOOL bHorz = FALSE);
+	CXTMemDC(CDC* pDC, const CRect& rect,
+			 CXTPPaintManagerColorGradient crBack = GetXtremeColor(COLOR_3DFACE),
+			 BOOL bHorz							  = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -96,11 +97,12 @@ public:
 	BOOL IsValid() const;
 
 protected:
-	CDC*    m_pDC;          // Saves the CDC passed in constructor.
-	BOOL    m_bValid;       // Flag used for autodraw in destructor.
-	CRect   m_rc;           // Rectangle of the drawing area.
-	CBitmap m_bitmap;       // Off screen bitmap.
-	HBITMAP m_hOldBitmap;   // Original GDI object.
+	CDC* m_pDC;			  // Saves the CDC passed in constructor.
+	BOOL m_bValid;		  // Flag used for autodraw in destructor.
+	CRect m_rc;			  // Rectangle of the drawing area.
+	CBitmap m_bitmap;	 // Off screen bitmap.
+	HBITMAP m_hOldBitmap; // Original GDI object.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTMEMDC_H__)

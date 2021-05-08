@@ -1,7 +1,6 @@
 // XTPTaskPanel.h interface for the CXTPTaskPanel class.
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANEL_H__)
-#define __XTPTASKPANEL_H__
+#	define __XTPTASKPANEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanelGroups;
 class CXTPTaskPanelGroup;
@@ -37,9 +38,7 @@ class CXTPImageManager;
 class CXTPToolTipContext;
 class CXTPTaskPanelAnimation;
 class CXTPMarkupContext;
-
-#include "Common/XTPSystemHelpers.h"
-#include "XTPTaskPanelDefines.h"
+class CXTPScrollBar;
 
 //===========================================================================
 // Summary:
@@ -59,10 +58,9 @@ class CXTPMarkupContext;
 // See Also:
 //     m_pScrollButton
 //===========================================================================
-class CXTPTaskPanelScrollButton
+class _XTP_EXT_CLASS CXTPTaskPanelScrollButton
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPTaskPanelScrollButton object.
@@ -83,14 +81,19 @@ public:
 	BOOL IsVisible() const;
 
 public:
-	BOOL bScrollUp;                     // If TRUE, the button is the "scroll up" button, If FALSE, the button is a "scroll down" button.
-	BOOL bEnabled;                      // TRUE if the scroll button is enabled, FALSE if disabled.
-	BOOL bPressed;                      // TRUE if scroll button is currently pressed, FALSE otherwise.
-	CRect rcButton;                     // Bounding rectangle of the scroll button.  Will be empty is the button is not visible.
-	BOOL bHot;                          // TRUE if scroll button is "hot", FALSE otherwise.  A scroll button is how when the mouse cursor is placed over the button.
+	BOOL bScrollUp; // If TRUE, the button is the "scroll up" button, If FALSE, the button is a
+					// "scroll down" button.
+	BOOL bEnabled;  // TRUE if the scroll button is enabled, FALSE if disabled.
+	BOOL bPressed;  // TRUE if scroll button is currently pressed, FALSE otherwise.
+	CRect rcButton; // Bounding rectangle of the scroll button.  Will be empty is the button is not
+					// visible.
+	BOOL bHot; // TRUE if scroll button is "hot", FALSE otherwise.  A scroll button is how when the
+			   // mouse cursor is placed over the button.
 
-	CXTPTaskPanelGroup* pGroupScroll;   // Pointer to the group that uses this group item scroll button.
-	CXTPTaskPanelGroup* pGroupCaption;  // Pointer to the group that uses this group caption scroll button.
+	CXTPTaskPanelGroup* pGroupScroll;  // Pointer to the group that uses this group item scroll
+									   // button.
+	CXTPTaskPanelGroup* pGroupCaption; // Pointer to the group that uses this group caption scroll
+									   // button.
 };
 
 //---------------------------------------------------------------------------
@@ -98,16 +101,18 @@ public:
 //     CXTPTaskPanel is a CWnd derived class. It is used to implement
 //     an Explorer and Office-like Task Panel control.
 //---------------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPTaskPanel : public CWnd, public CXTPAccessible
+class _XTP_EXT_CLASS CXTPTaskPanel
+	: public CXTPScrollBarContainer<CWnd>
+	, public CXTPAccessible
 {
 	DECLARE_DYNAMIC(CXTPTaskPanel)
 	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
 
 private:
 	class CPanelDropTarget;
 
 public:
-
 	//===========================================================================
 	// Summary:
 	//     CRepositionContext is helper class to lock/unlock redraw of Task Panel
@@ -121,25 +126,17 @@ public:
 		// Parameters:
 		//     pTaskPanel - Parent task panel class.
 		//-----------------------------------------------------------------------
-		CRepositionContext(CXTPTaskPanel* pTaskPanel)
-			: m_pTaskPanel(pTaskPanel)
-		{
-			if (m_pTaskPanel) m_pTaskPanel->SetLockRedraw(TRUE);
-		}
+		CRepositionContext(CXTPTaskPanel* pTaskPanel);
 
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Destroys a CRepositionContext object, handles cleanup and deallocation.
 		//-----------------------------------------------------------------------
-		~CRepositionContext()
-		{
-			if (m_pTaskPanel) m_pTaskPanel->SetLockRedraw(FALSE);
-		}
+		~CRepositionContext();
 
 	protected:
-		CXTPTaskPanel* m_pTaskPanel;            // Parent Task Panel class
+		CXTPTaskPanel* m_pTaskPanel; // Parent Task Panel class
 	};
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -284,7 +281,8 @@ public:
 	//                       the item.
 	//
 	// -----------------------------------------------------------------------
-	virtual void SetFocusedItem(CXTPTaskPanelItem* pItem, BOOL bDrawFocusRect = FALSE, BOOL bSetFocus = TRUE);
+	virtual void SetFocusedItem(CXTPTaskPanelItem* pItem, BOOL bDrawFocusRect = FALSE,
+								BOOL bSetFocus = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -353,7 +351,8 @@ public:
 	//     This is used as the default margins for all groups.
 	// See Also:
 	//     GetMargins, CXTPTaskPanelPaintManager::GetGroupSpacing,
-	//     CXTPTaskPanelPaintManager::GetGroupOuterMargins, CXTPTaskPanelPaintManager::GetGroupInnerMargins
+	//     CXTPTaskPanelPaintManager::GetGroupOuterMargins,
+	//     CXTPTaskPanelPaintManager::GetGroupInnerMargins
 	//     CXTPTaskPanelPaintManager::GetControlMargins
 	//-----------------------------------------------------------------------
 	void SetMargins(long nLeft, long nTop, long nRight, long nBottom, long nMiddle);
@@ -418,7 +417,8 @@ public:
 	// Summary:
 	//     Call this method to set animation of the TaskPanel control
 	// Parameters:
-	//     panelAnimation - Animation type to be set. Can be any of the values listed in the Remarks section.
+	//     panelAnimation - Animation type to be set. Can be any of the values listed in the Remarks
+	//     section.
 	// Remarks:
 	//     Animation type can be one of the following:
 	//     * <b>xtpTaskPanelAnimationYes</b> Default value, enables animation.
@@ -473,7 +473,8 @@ public:
 	// Returns:
 	//     Next item.
 	//-----------------------------------------------------------------------
-	CXTPTaskPanelItem* GetNextItem(CXTPTaskPanelItem* pItem, int nDirection, BOOL bTab, BOOL bSkipRowItems = TRUE) const;
+	CXTPTaskPanelItem* GetNextItem(CXTPTaskPanelItem* pItem, int nDirection, BOOL bTab,
+								   BOOL bSkipRowItems = TRUE) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -516,7 +517,7 @@ public:
 	//     task panel is scrolled.  This does not get called when the scroll bar placed inside
 	//     a task panel group is scrolled.
 	//-----------------------------------------------------------------------
-	void OnSrollChanged(int nCurPos);
+	void OnScrollChanged(int nCurPos);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -611,12 +612,18 @@ public:
 	//     * <b>xtpTaskPanelThemeOfficeXPPlain</b> Enables classic Office XP style theme.
 	//     * <b>xtpTaskPanelThemeOffice2003Plain</b> Enables classic Office 2003 style theme.
 	//     * <b>xtpTaskPanelThemeNativeWinXPPlain</b> Enables classic Explorer style theme.
-	//     * <b>xtpTaskPanelThemeToolbox</b> Enables VS.NET style Toolbox theme.
-	//     * <b>xtpTaskPanelThemeToolboxWhidbey</b> Enables Whidbey VS 2005 style Toolbox theme.
+	//     * <b>xtpTaskPanelThemeVisualStudio2003</b> Enables VS 2003 style Toolbox theme.
+	//     * <b>xtpTaskPanelThemeVisualStudio2005</b> Enables VS 2005 style Toolbox theme.
 	//     * <b>xtpTaskPanelThemeListView</b> Enables Standard List View theme.
 	//     * <b>xtpTaskPanelThemeListViewOfficeXP</b> Enables Office XP List View theme.
 	//     * <b>xtpTaskPanelThemeListViewOffice2003</b> Enables Office 2003 List View theme.
 	//     * <b>xtpTaskPanelThemeShortcutBarOffice2003</b> Enables ShortcutBar Office 2003 theme.
+	//     * <b>xtpTaskPanelThemeResource</b> ShortcutBar Office 2007/2010 theme.
+	//     * <b>xtpTaskPanelThemeVisualStudio2010</b> VS 2010 style Toolbox theme.
+	//     * <b>xtpTaskPanelThemeVisualStudio2012Light</b> VS 2012 Light style Toolbox theme.
+	//     * <b>xtpTaskPanelThemeVisualStudio2012Dark</b> VS 2012 Dark style Toolbox theme.
+	//     * <b>xtpTaskPanelThemeCustom</b> User defined Custom theme is used.
+
 	//
 	// See Also: CXTPTaskPanel::GetCurrentTheme
 	//-----------------------------------------------------------------------
@@ -655,7 +662,6 @@ public:
 	CXTPToolTipContext* GetToolTipContext() const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to expand or collapse a group.
@@ -763,7 +769,6 @@ public:
 	//-----------------------------------------------------------------------
 	void SetSingleSelection(BOOL bSingleSelection = TRUE);
 
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this method to get Single Selection property of control.
@@ -810,11 +815,13 @@ public:
 	//     dragOptions parameter can be one or more of the following values:
 	//          * <b>xtpTaskItemAllowDragCopyWithinGroup</b> To allow copy within group only
 	//          * <b>xtpTaskItemAllowDragCopyWithinControl</b> To allow copy within task panel only
-	//          * <b>xtpTaskItemAllowDragCopyOutsideControl</b> To allow copy outside task panel only
+	//          * <b>xtpTaskItemAllowDragCopyOutsideControl</b> To allow copy outside task panel
+	//          only
 	//          * <b>xtpTaskItemAllowDragCopy</b> To allow copy operation
 	//          * <b>xtpTaskItemAllowDragMoveWithinGroup</b> To allow move within group only
 	//          * <b>xtpTaskItemAllowDragMoveWithinControl</b> To allow move within task panel only
-	//          * <b>xtpTaskItemAllowDragMoveOutsideControl</b> To allow move outside task panel only
+	//          * <b>xtpTaskItemAllowDragMoveOutsideControl</b> To allow move outside task panel
+	//          only
 	//          * <b>xtpTaskItemAllowDragMove </b> To allow move operation
 	//          * <b>xtpTaskItemAllowDragAll</b> To allow all drag operations
 	// See Also:
@@ -911,26 +918,30 @@ public:
 	// Remarks:
 	//     wParam parameter can be one of the following values:
 	//          * <b>XTP_TPN_CLICK</b> Indicates the user clicked a TaskPanel item.
-	//          * <b>XTP_TPN_RCLICK</b> Indicates the user pressed the right mouse button on a TaskPanel item.
+	//          * <b>XTP_TPN_RCLICK</b> Indicates the user pressed the right mouse button on a
+	//          TaskPanel item.
 	//          * <b>XTP_TPN_STARTDRAG</b> Indicates the user started to dragging an item.
 	//                                          You can return XTP_ACTION_CANCEL to cancel the drag.
 	//          * <b>XTP_TPN_ENDLABELEDIT</b> Indicates the user starts to rename an item.
 	//          * <b>XTP_TPN_ITEMDROP</b> Indicates the user dropped item in task panel.
 	//          * <b>XTP_TPN_GROUPEXPANDING</b> Indicates the group is about to be expanded.
-	//                                          <i>lParam</i> contains XTP_TPNGROUPEXPANDING pointer.
-	//                                          You can return XTP_ACTION_CANCEL to ignore expanding.
+	//                                          <i>lParam</i> contains XTP_TPNGROUPEXPANDING
+	//                                          pointer. You can return XTP_ACTION_CANCEL to ignore
+	//                                          expanding.
 	//          * <b>XTP_TPN_GROUPEXPANDED</b> Indicates the user has expanded a group.
 	//     <p/>
 	//     The following method in the task panel use NotifyOwner to send
 	//     messages:
 	//          * <b>CXTPTaskPanelGroup::OnAnimate</b>
 	//          * <b>CXTPTaskPanel::ExpandGroup</b> lParam contains XTP_TPNGROUPEXPANDING pointer.
-	//                                              You can return XTP_ACTION_CANCEL to ignore expanding.
+	//                                              You can return XTP_ACTION_CANCEL to ignore
+	//                                              expanding.
 	//          * <b>CXTPTaskPanel::OnDrop</b>  lParam contains item dropped.
 	//          * <b>CXTPTaskPanel::OnStartItemDrag</b> lParam contains item dragged.
 	//          * <b>CXTPTaskPanel::OnRButtonDown</b> lParam contains item right-clicked.
 	//          * <b>CXTPTaskPanel::OnClick</b> lParam contains item clicked.
-	//          * <b>CXTPTaskPanel::OnEndLabelEdit</b> lParam contains item who's caption is being renamed.
+	//          * <b>CXTPTaskPanel::OnEndLabelEdit</b> lParam contains item who's caption is being
+	//          renamed.
 	// See Also:
 	//     XTPWM_TASKPANEL_NOTIFY
 	//-----------------------------------------------------------------------
@@ -1014,7 +1025,6 @@ public:
 	CXTPMarkupContext* GetMarkupContext() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to determine if the Explorer behavior
@@ -1100,8 +1110,9 @@ protected:
 	//     This member is called when an item has been dropped into the task panel.
 	// Parameters:
 	//     pDataObject - Points to the COleDataObject that is dropped into the drop target.
-	//     dropEffect  - The drop effect that the user has requested. Can be any of the values listed in the Remarks section.
-	//     point - The current mouse position relative to the task panel.
+	//     dropEffect  - The drop effect that the user has requested. Can be any of the values
+	//     listed in the Remarks section. point - The current mouse position relative to the task
+	//     panel.
 	// Remarks:
 	//     The <i>dropEffect</i> parameter can be one of the following values:
 	//     * <b>DROPEFFECT_COPY</b> Creates a copy of the data object being dropped.
@@ -1202,23 +1213,24 @@ protected:
 	CXTPTaskPanelGroup* GetNextVisibleGroup(int nIndex, int nDirection = +1) const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	// System accessibility support.
 	virtual HRESULT GetAccessibleParent(IDispatch** ppdispParent);
 	virtual HRESULT GetAccessibleChildCount(long* pcountChildren);
 	virtual HRESULT GetAccessibleChild(VARIANT varChild, IDispatch** ppdispChild);
 	virtual HRESULT GetAccessibleName(VARIANT varChild, BSTR* pszName);
 	virtual HRESULT GetAccessibleRole(VARIANT varChild, VARIANT* pvarRole);
-	virtual HRESULT AccessibleLocation(long *pxLeft, long *pyTop, long *pcxWidth, long* pcyHeight, VARIANT varChild);
+	virtual HRESULT AccessibleLocation(long* pxLeft, long* pyTop, long* pcxWidth, long* pcyHeight,
+									   VARIANT varChild);
 	virtual HRESULT AccessibleHitTest(long xLeft, long yTop, VARIANT* pvarChild);
 	virtual HRESULT GetAccessibleState(VARIANT varChild, VARIANT* pvarState);
 	virtual CCmdTarget* GetAccessible();
 	CXTPTaskPanelItem* GetAccessibleItem(int nIndex);
 	int GetAccessibleIndex(CXTPTaskPanelItem* pItem);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTaskPanel)
@@ -1230,7 +1242,10 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPTaskPanel)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnNcPaint();
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
@@ -1258,11 +1273,11 @@ protected:
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnGetObject(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	BOOL GetMessageExt(MSG& msg);
 	void EnsureVisibleRect(const CRect& rc);
 	void GrabFocus();
@@ -1270,79 +1285,99 @@ private:
 	void CheckOldFocus(CWnd* pOldWnd);
 	CXTPTaskPanelGroupItem* FindControlItem(HWND hWnd);
 	HWND GetRootChild(HWND hWndTaskPanel, HWND hWnd);
+	void DrawBorders(CPaintDC& paintDC);
 
 protected:
-	CXTPTaskPanelGroups* m_pGroups;                 // Collection of groups.
-	CXTPTaskPanelAnimation* m_pAnimation;           // Animation context
+	CXTPTaskPanelGroups* m_pGroups;		  // Collection of groups.
+	CXTPTaskPanelAnimation* m_pAnimation; // Animation context
 
-	CXTPTaskPanelPaintManager* m_pPaintManager;     // Current Paint Manager.
-	XTPTaskPanelPaintTheme m_paintTheme;            // Current theme.
-	BOOL m_bPreSubclassWindow;                      // 'true' when initialized from PreSubclassWindow.
-	BOOL m_nLockRedraw;                             // TRUE when control is locked.
+	CXTPTaskPanelPaintManager* m_pPaintManager; // Current Paint Manager.
+	XTPTaskPanelPaintTheme m_paintTheme;		// Current theme.
+	BOOL m_bPreSubclassWindow;					// 'true' when initialized from PreSubclassWindow.
+	BOOL m_nLockRedraw;							// TRUE when control is locked.
 
-	int m_nClientHeight;                            // Group client height.  This is the area displayed under the group caption.
-	int m_nOldClientHeight;                         // Old group client height.
+	int m_nClientHeight;	// Group client height.  This is the area displayed under the group
+							// caption.
+	int m_nOldClientHeight; // Old group client height.
 
-	CRect m_rcMargins;                              // Outer margins of groups.
-	int m_nGroupSpacing;                            // Amount of space placed between groups.
+	CRect m_rcMargins;   // Outer margins of groups.
+	int m_nGroupSpacing; // Amount of space placed between groups.
 
-	BOOL m_bScrollVisible;                          // TRUE if scroll bar is visible. This refers to the scroll bar of the entire task panel, the the scroll bar uses to scroll group items or the group caption.
+	BOOL m_bScrollVisible; // TRUE if scroll bar is visible. This refers to the scroll bar of the
+						   // entire task panel, the the scroll bar uses to scroll group items or
+						   // the group caption.
 
-	CXTPTaskPanelItem* m_pItemHot;                  // Currently hot item.
-	CXTPTaskPanelItem* m_pItemFocused;              // Currently focused item.
-	CXTPTaskPanelItem* m_pItemPressed;              // Currently pressed item.
+	CXTPTaskPanelItem* m_pItemHot;	 // Currently hot item.
+	CXTPTaskPanelItem* m_pItemFocused; // Currently focused item.
+	CXTPTaskPanelItem* m_pItemPressed; // Currently pressed item.
 
-	CXTPTaskPanelItem* m_pItemDragging;             // Pointer to item currently being dragged.
-	CXTPTaskPanelItem* m_pItemDragOver;             // Pointer to item under mouse cursor with dragged icon.  This is the item that will appear directly under the dragged item if the item were dropped.
+	CXTPTaskPanelItem* m_pItemDragging; // Pointer to item currently being dragged.
+	CXTPTaskPanelItem* m_pItemDragOver; // Pointer to item under mouse cursor with dragged icon.
+										// This is the item that will appear directly under the
+										// dragged item if the item were dropped.
 
-	BOOL m_bAnimation;                              // TRUE if animation enabled.
-	XTPTaskPanelAnimation m_eAnimation;             // Current animation state.
+	BOOL m_bAnimation;					// TRUE if animation enabled.
+	XTPTaskPanelAnimation m_eAnimation; // Current animation state.
 
-	HCURSOR m_hHandCursor;                          // Hand cursor.
+	HCURSOR m_hHandCursor; // Hand cursor.
 
-	UINT_PTR m_nAnimateTimer;                       // Timer identifier for animation.
-	int m_nAnimationStep;                           // Current step of animation.
+	UINT_PTR m_nAnimateTimer; // Timer identifier for animation.
+	int m_nAnimationStep;	 // Current step of animation.
 
-	CXTPImageManager* m_pImageManager;              // Image manager of task panel.  This is the collection of images that are used for task panel group and group item icons.
+	CXTPImageManager* m_pImageManager; // Image manager of task panel.  This is the collection of
+									   // images that are used for task panel group and group item
+									   // icons.
 
-	BOOL m_bExpandable;                             // TRUE if groups are expandable.
+	BOOL m_bExpandable; // TRUE if groups are expandable.
 
-	BOOL m_bAcceptFocus;                            // TRUE if control accept focus.
-	BOOL m_bGrabbingFocus;                          // TRUE if control move focus to itself.
-	BOOL m_bDrawFocusRect;                          // TRUE to draw focused rectangle drawn around the item when the Up and Down arrows are used to navigate the items in the TaskPanel.
-	CSize m_szItemIcon;                             // Size of group item icons.
-	CSize m_szGroupIcon;                            // Size of icons displayed in group captions.
-	BOOL m_bSelectItemOnFocus;                      // TRUE if items receive focus when they are clicked.
+	BOOL m_bAcceptFocus;   // TRUE if control accept focus.
+	BOOL m_bGrabbingFocus; // TRUE if control move focus to itself.
+	BOOL m_bDrawFocusRect; // TRUE to draw focused rectangle drawn around the item when the Up and
+						   // Down arrows are used to navigate the items in the TaskPanel.
+	CSize m_szItemIcon;	// Size of group item icons.
+	CSize m_szGroupIcon;   // Size of icons displayed in group captions.
+	BOOL m_bSelectItemOnFocus; // TRUE if items receive focus when they are clicked.
 
-	CPoint m_ptPressed;                             // Point on task panel that was clicked.
+	CPoint m_ptPressed; // Point on task panel that was clicked.
 
-	long m_nAllowDrag;                              // TRUE to allow task panel group items to be dragged.
-	BOOL m_bAllowDrop;                              // TRUE to allow task panel group items to be dropped inside the task panel, FALSE to only allow items to be dropped outside the task panel.
+	long m_nAllowDrag; // TRUE to allow task panel group items to be dragged.
+	BOOL m_bAllowDrop; // TRUE to allow task panel group items to be dropped inside the task panel,
+					   // FALSE to only allow items to be dropped outside the task panel.
 
-	XTPTaskPanelItemLayout m_itemLayout;            // Currently set item layout.
-	BOOL m_bMultiColumn;                            // TRUE is multiple columns are used to display items in a group.
-	int m_nColumnWidth;                             // Width of task panel columns when m_bMultiColumn is TRUE.
-	XTPTaskPanelHotTrackStyle m_hotTrackStyle;      // Currently set hot tracking style.
-	XTPTaskPanelBehaviour m_panelBehaviour;         // Currently set TaskPanel behavior.
+	XTPTaskPanelItemLayout m_itemLayout; // Currently set item layout.
+	BOOL m_bMultiColumn; // TRUE is multiple columns are used to display items in a group.
+	int m_nColumnWidth;  // Width of task panel columns when m_bMultiColumn is TRUE.
+	XTPTaskPanelHotTrackStyle m_hotTrackStyle; // Currently set hot tracking style.
+	XTPTaskPanelBehaviour m_panelBehaviour;	// Currently set TaskPanel behavior.
 
-	CXTPTaskPanelGroup* m_pActiveGroup;             // Pointer to currently active group.
-	CPanelDropTarget* m_pDropTarget;                // Internal drag'n'drop helper.
-	static CLIPFORMAT m_cfItem;                     // Clipboard format.
+	CXTPTaskPanelGroup* m_pActiveGroup; // Pointer to currently active group.
+	CPanelDropTarget* m_pDropTarget;	// Internal drag'n'drop helper.
+	static CLIPFORMAT m_cfItem;			// Clipboard format.
 
-	BOOL m_bTimerGroupHover;                        // TRUE if Timer for Hover event is currently set.  The timer for the Hover event is set when the mouse is left in the same position for at least 500 milliseconds.
+	BOOL m_bTimerGroupHover; // TRUE if Timer for Hover event is currently set.  The timer for the
+							 // Hover event is set when the mouse is left in the same position for
+							 // at least 500 milliseconds.
 
-	CXTPTaskPanelScrollButton* m_pScrollButton[2];  // Scroll buttons of the task panel.  The task panel uses these scroll button in CXTPTaskPanelGroup objects when there are more items in the group than can be viewed.
-	                                                // Only the necessary buttons are displayed.  If the items in the group can not be scrolled anymore, then that button is removed.  Scroll buttons are only visible
-	                                                // when using the xtpTaskPanelBehaviourList and xtpTaskPanelBehaviourToolbox task panel behaviors.
-	BOOL m_bSingleSelection;                        // TRUE to use focused item as selected.
-	CXTPToolTipContext* m_pToolTipContext;          // Tooltip Context.
-	BOOL m_bInUpdateScrollBar;                      // TRUE is the CXTPTaskPanel::UpdateScrollBar() method is currently in use (Scrollbar is currently being updated).
-	int m_nGroupMinClientHeight;                    // Group minimum client height
-	long m_nOLEDropMode;                            // TRUE if ActiveX OLEDropMode used
-	BOOL m_bTabItems;                               // TRUE to tab all items in group
-	CXTPMarkupContext* m_pMarkupContext;            // Markup context of Task Panel
+	CXTPTaskPanelScrollButton*
+		m_pScrollButton[2]; // Scroll buttons of the task panel.  The task panel uses these scroll
+							// button in CXTPTaskPanelGroup objects when there are more items in the
+							// group than can be viewed. Only the necessary buttons are displayed.
+							// If the items in the group can not be scrolled anymore, then that
+							// button is removed.  Scroll buttons are only visible when using the
+							// xtpTaskPanelBehaviourList and xtpTaskPanelBehaviourToolbox task panel
+							// behaviors.
+	BOOL m_bSingleSelection;			   // TRUE to use focused item as selected.
+	CXTPToolTipContext* m_pToolTipContext; // Tooltip Context.
+	BOOL m_bInUpdateScrollBar;   // TRUE is the CXTPTaskPanel::UpdateScrollBar() method is currently
+								 // in use (Scrollbar is currently being updated).
+	int m_nGroupMinClientHeight; // Group minimum client height
+	long m_nOLEDropMode;		 // TRUE if ActiveX OLEDropMode used
+	BOOL m_bTabItems;			 // TRUE to tab all items in group
+	CXTPMarkupContext* m_pMarkupContext; // Markup context of Task Panel
+
+	COLORREF m_clrBorder[3];
+
 private:
-
 	friend class CXTPTaskPanelGroup;
 	friend class CXTPTaskPanelItem;
 	friend class CTaskPanelCtrl;
@@ -1355,102 +1390,134 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanel::GetGroups() const {
+AFX_INLINE CXTPTaskPanelItems* CXTPTaskPanel::GetGroups() const
+{
 	return (CXTPTaskPanelItems*)m_pGroups;
 }
-AFX_INLINE CXTPTaskPanelPaintManager* CXTPTaskPanel::GetPaintManager() const {
+AFX_INLINE CXTPTaskPanelPaintManager* CXTPTaskPanel::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE CXTPTaskPanelItem* CXTPTaskPanel::GetHotItem() const {
+AFX_INLINE CXTPTaskPanelItem* CXTPTaskPanel::GetHotItem() const
+{
 	return m_pItemHot;
 }
-AFX_INLINE XTPTaskPanelPaintTheme CXTPTaskPanel::GetCurrentTheme() const {
+AFX_INLINE XTPTaskPanelPaintTheme CXTPTaskPanel::GetCurrentTheme() const
+{
 	return m_paintTheme;
 }
-AFX_INLINE void CXTPTaskPanel::SetExpandable(BOOL bExpandable) {
+AFX_INLINE void CXTPTaskPanel::SetExpandable(BOOL bExpandable)
+{
 	m_bExpandable = bExpandable;
 }
-AFX_INLINE XTPTaskPanelAnimation CXTPTaskPanel::GetAnimation() const {
+AFX_INLINE XTPTaskPanelAnimation CXTPTaskPanel::GetAnimation() const
+{
 	return m_eAnimation;
 }
-AFX_INLINE BOOL CXTPTaskPanel::IsExpandable() const {
+AFX_INLINE BOOL CXTPTaskPanel::IsExpandable() const
+{
 	return m_bExpandable;
 }
-AFX_INLINE CSize CXTPTaskPanel::GetItemIconSize() const {
+AFX_INLINE CSize CXTPTaskPanel::GetItemIconSize() const
+{
 	return m_szItemIcon;
 }
-AFX_INLINE CSize CXTPTaskPanel::GetGroupIconSize() const {
+AFX_INLINE CSize CXTPTaskPanel::GetGroupIconSize() const
+{
 	return m_szGroupIcon;
 }
-AFX_INLINE BOOL CXTPTaskPanel::IsExplorerBehaviour() const {
+AFX_INLINE BOOL CXTPTaskPanel::IsExplorerBehaviour() const
+{
 	return m_panelBehaviour == xtpTaskPanelBehaviourExplorer;
 }
-AFX_INLINE CXTPTaskPanelGroup* CXTPTaskPanel::GetActiveGroup() const {
+AFX_INLINE CXTPTaskPanelGroup* CXTPTaskPanel::GetActiveGroup() const
+{
 	return m_pActiveGroup;
 }
-AFX_INLINE void CXTPTaskPanel::SetSelectItemOnFocus(BOOL bSelect) {
+AFX_INLINE void CXTPTaskPanel::SetSelectItemOnFocus(BOOL bSelect)
+{
 	m_bSelectItemOnFocus = bSelect;
 }
-AFX_INLINE void CXTPTaskPanel::DrawFocusRect(BOOL bAccept) {
+AFX_INLINE void CXTPTaskPanel::DrawFocusRect(BOOL bAccept)
+{
 	m_bAcceptFocus = bAccept;
 }
-AFX_INLINE CRect CXTPTaskPanel::GetMargins() const {
+AFX_INLINE CRect CXTPTaskPanel::GetMargins() const
+{
 	return m_rcMargins;
 }
-AFX_INLINE void CXTPTaskPanel::SetIconSize(CSize szIcon) {
+AFX_INLINE void CXTPTaskPanel::SetIconSize(CSize szIcon)
+{
 	m_szItemIcon = szIcon;
 	Reposition();
 }
-AFX_INLINE void CXTPTaskPanel::SetGroupIconSize(CSize szIcon) {
+AFX_INLINE void CXTPTaskPanel::SetGroupIconSize(CSize szIcon)
+{
 	m_szGroupIcon = szIcon;
 	Reposition();
 }
-AFX_INLINE CLIPFORMAT AFX_CDECL CXTPTaskPanel::GetClipboardFormat() {
+AFX_INLINE CLIPFORMAT AFX_CDECL CXTPTaskPanel::GetClipboardFormat()
+{
 	return m_cfItem;
 }
-AFX_INLINE void CXTPTaskPanel::AllowDrop(BOOL bAllowDrop) {
+AFX_INLINE void CXTPTaskPanel::AllowDrop(BOOL bAllowDrop)
+{
 	m_bAllowDrop = bAllowDrop;
 }
-AFX_INLINE CXTPTaskPanelScrollButton* CXTPTaskPanel::GetScrollButton(BOOL bScrollUp) const {
+AFX_INLINE CXTPTaskPanelScrollButton* CXTPTaskPanel::GetScrollButton(BOOL bScrollUp) const
+{
 	return bScrollUp ? m_pScrollButton[TRUE] : m_pScrollButton[FALSE];
 }
-AFX_INLINE BOOL CXTPTaskPanel::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPTaskPanel::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									  const RECT& rect, CWnd* pParentWnd, UINT nID,
+									  CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE void CXTPTaskPanel::SetSingleSelection(BOOL bSingleSelection) {
+AFX_INLINE void CXTPTaskPanel::SetSingleSelection(BOOL bSingleSelection)
+{
 	m_bSingleSelection = bSingleSelection;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPTaskPanel::IsSingleSelection() const {
+AFX_INLINE BOOL CXTPTaskPanel::IsSingleSelection() const
+{
 	return m_bSingleSelection;
 }
-AFX_INLINE void CXTPTaskPanel::SetMultiColumn(BOOL bMultiColumn) {
+AFX_INLINE void CXTPTaskPanel::SetMultiColumn(BOOL bMultiColumn)
+{
 	m_bMultiColumn = bMultiColumn;
 	Reposition();
 }
-AFX_INLINE BOOL CXTPTaskPanel::IsMultiColumn() const {
+AFX_INLINE BOOL CXTPTaskPanel::IsMultiColumn() const
+{
 	return m_bMultiColumn;
 }
-AFX_INLINE void CXTPTaskPanel::SetColumnWidth(int nColumnWidth) {
+AFX_INLINE void CXTPTaskPanel::SetColumnWidth(int nColumnWidth)
+{
 	m_nColumnWidth = nColumnWidth;
 	Reposition();
 }
-AFX_INLINE int CXTPTaskPanel::GetColumnWidth() const {
+AFX_INLINE int CXTPTaskPanel::GetColumnWidth() const
+{
 	return m_nColumnWidth;
 }
-AFX_INLINE int CXTPTaskPanel::GetMinimumGroupClientHeight() const {
+AFX_INLINE int CXTPTaskPanel::GetMinimumGroupClientHeight() const
+{
 	return m_nGroupMinClientHeight;
 }
 
-AFX_INLINE void CXTPTaskPanel::SetMinimumGroupClientHeight(int nMinClientHeight) {
+AFX_INLINE void CXTPTaskPanel::SetMinimumGroupClientHeight(int nMinClientHeight)
+{
 	m_nGroupMinClientHeight = nMinClientHeight;
 }
-AFX_INLINE void CXTPTaskPanel::NavigateItems(BOOL bTabItems) {
+AFX_INLINE void CXTPTaskPanel::NavigateItems(BOOL bTabItems)
+{
 	m_bTabItems = bTabItems;
 }
-AFX_INLINE CXTPMarkupContext* CXTPTaskPanel::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPTaskPanel::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANEL_H__)

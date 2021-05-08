@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK))
 #ifdef _WIN32
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 #pragma code_page(1254)
@@ -104,18 +103,18 @@ CAPTION "Pencereleri Yerleþtir"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Pencere Seç:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,216,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,196,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Etkinleþtir",XTP_IDC_BTN_ACTIVATE,233,7,62,14
-    PUSHBUTTON      "Tamam",IDOK,233,24,62,14
-    PUSHBUTTON      "Kaydet",XTP_IDC_BTN_SAVE,233,41,62,14
-    PUSHBUTTON      "Pencereyi kapat",XTP_IDC_BTN_CLOSEWINDOWS,233,58,62,14
-    PUSHBUTTON      "Basamakla",XTP_IDC_BTN_CASCADE,233,75,62,14
-    PUSHBUTTON      "Yatay Döþe",XTP_IDC_BTN_TILEHORZ,233,92,62,14
-    PUSHBUTTON      "Dikey Döþe",XTP_IDC_BTN_TILEVERT,233,109,62,14
-    PUSHBUTTON      "Simge Durumuna Küçült",XTP_IDC_BTN_MINIMIZE,233,126,62,14
+    PUSHBUTTON      "Etkinleþtir",XTP_IDC_BTN_ACTIVATE,208,7,87,14
+    PUSHBUTTON      "Tamam",IDOK,208,24,87,14
+    PUSHBUTTON      "Kaydet",XTP_IDC_BTN_SAVE,208,41,87,14
+    PUSHBUTTON      "Pencereyi kapat",XTP_IDC_BTN_CLOSEWINDOWS,208,58,87,14
+    PUSHBUTTON      "Basamakla",XTP_IDC_BTN_CASCADE,208,75,87,14
+    PUSHBUTTON      "Yatay Döþe",XTP_IDC_BTN_TILEHORZ,208,92,87,14
+    PUSHBUTTON      "Dikey Döþe",XTP_IDC_BTN_TILEVERT,208,109,87,14
+    PUSHBUTTON      "Simge Durumuna Küçült",XTP_IDC_BTN_MINIMIZE,208,126,87,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -182,29 +181,29 @@ BEGIN
     XTP_IDS_DEFFILT          "Tüm Dosyalar(*.*)|*.*||"
     XTP_IDS_DEFTITLE         "Dizin adý:"
     XTP_IDS_CLICKKEEPOPEN    "Açýk kalmasýný saðlamak için raptiyeyi týklatýn"
-    XTP_IDS_SE_0             "The operating system is out of memory or resources."
-    XTP_IDS_SE_ERR_FNF       "The specified file was not found."
-    XTP_IDS_SE_ERR_PNF       "The specified path was not found."
+    XTP_IDS_SE_0             "Ýþletim sistemi bellek veya kaynaklar yetersiz olduðunu."
+    XTP_IDS_SE_ERR_FNF       "Belirtilen dosya bulunamadý."
+    XTP_IDS_SE_ERR_PNF       "Belirtilen yol bulunamadý."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_SE_ERR_ACCESSDENIED 
-                            "The operating system denied access to the specified file."
-    XTP_IDS_SE_ERR_OOM       "There was not enough memory to complete the operation."
+                            "Ýþletim sistemi belirtilen dosyaya eriþim engellendi."
+    XTP_IDS_SE_ERR_OOM       "Ýþlemi tamamlamak için yeterli bellek yoktu."
     XTP_IDS_SE_ERR_BAD_FORMAT 
-                            "The .exe file is invalid (non-Win32® .exe or error in .exe image)."
-    XTP_IDS_SE_ERR_SHARE     "A sharing violation occurred."
+                            ".exe Dosyasý geçersiz (non-Win32® .exe veya hata .exe görüntüde) 'dir."
+    XTP_IDS_SE_ERR_SHARE     "Bir paylaþým ihlali oluþtu."
     XTP_IDS_SE_ERR_ASSOCINCOMPLETE 
-                            "The file name association is incomplete or invalid."
+                            "Dosya adý iliþkilendirmesi eksik veya geçersiz."
     XTP_IDS_SE_ERR_DDETIMEOUT 
-                            "The DDE transaction could not be completed because the request timed out."
-    XTP_IDS_SE_ERR_DDEFAIL   "The DDE transaction failed."
-    XTP_IDS_SE_ERR_DDEBUSY   "The DDE transaction could not be completed because other DDE transactions were being processed."
-    XTP_IDS_SE_ERR_NOASSOC   "There is no application associated with the given file name extension."
+                            "Istek zaman aþýmýna uðradýðýndan DDE iþlem tamamlanmýþ olamazdý."
+    XTP_IDS_SE_ERR_DDEFAIL   "DDE iþlem baþarýsýz oldu."
+    XTP_IDS_SE_ERR_DDEBUSY   "Diðer DDE iþlemleri iþleniyor çünkü DDE iþlem tamamlanmýþ olamazdý."
+    XTP_IDS_SE_ERR_NOASSOC   "Verilen dosya adý uzantýsýyla iliþkilendirilmiþ hiçbir uygulama yoktur."
     XTP_IDS_SE_ERR_DLLNOTFOUND 
                             "The specified dynamic-link library was not found."
-    XTP_IDS_SE_ERR_UNKOWN    "An unknown error number %d occured."
+    XTP_IDS_SE_ERR_UNKOWN    "Bilinmeyen bir hata numarasý %d oluþtu."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Standart Renkler"
+	XTP_IDS_RECENT_COLORS    "Son renkler"
+	XTP_IDS_THEME_COLORS     "Tema renkleri"
+	XTP_IDS_TAGCLOUD_TIP     "%s etiket, %d Puan"
     XTP_IDS_TIPTEXT          "Ýpucu metni"
     XTP_IDS_DIDYOUKNOW       "Biliyor muydunuz..."
     XTP_IDS_FILE_ABSENT      "Belirtilen dosya yok."
@@ -250,9 +252,25 @@ BEGIN
     XTP_IDS_TASK_CANCEL       "Ýptal"
     XTP_IDS_TASK_CLOSE        "Kapat"
     XTP_IDS_TASK_APPLY        "&Apply"
-    XTP_IDS_TASK_HELP         "Help"
+    XTP_IDS_TASK_HELP         "Yardým Edin"
     XTP_IDS_TASK_SEE_DETAILS  "Ayrýntýlarý Göster"
     XTP_IDS_TASK_HIDE_DETAILS "Ayrýntýlarý Gizle"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Arkaplan 1"
+    XTP_IDS_BACKGROUND2        "Arkaplan 2"
+    XTP_IDS_TEXT1              "Metin 1"
+    XTP_IDS_TEXT2              "Metin 2"
+    XTP_IDS_ACCENT1            "Vurgu 1"
+    XTP_IDS_ACCENT2            "Vurgu 2"
+    XTP_IDS_ACCENT3            "Vurgu 3"
+    XTP_IDS_ACCENT4            "Vurgu 4"
+    XTP_IDS_ACCENT5            "Vurgu 5"
+    XTP_IDS_ACCENT6            "Vurgu 6"
+    XTP_IDS_LIGHTER            "Çakmak"
+    XTP_IDS_DARKER             "Daha koyu"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_TRK))

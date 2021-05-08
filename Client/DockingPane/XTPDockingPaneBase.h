@@ -1,7 +1,6 @@
 // XTPDockingPaneBase.h : interface for the CXTPDockingPaneBase class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEBASE_H__)
-#define __XTPDOCKINGPANEBASE_H__
+#	define __XTPDOCKINGPANEBASE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPDockingPaneBase;
 class CXTPDockingPane;
@@ -42,10 +41,10 @@ class CXTPPropExchange;
 // Summary:
 //     CXTPDockingPaneCaptionButtons is CArray derived class used for manipulate Caption Buttons.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneCaptionButtons: public CArray <CXTPDockingPaneCaptionButton*, CXTPDockingPaneCaptionButton*>
+class _XTP_EXT_CLASS CXTPDockingPaneCaptionButtons
+	: public CArray<CXTPDockingPaneCaptionButton*, CXTPDockingPaneCaptionButton*>
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to determine if the mouse pointer is positioned
@@ -59,7 +58,6 @@ public:
 	BOOL CheckForMouseOver(CPoint pt);
 };
 
-
 //===========================================================================
 // Summary:
 //     CXTPDockingPaneBase is a stand alone class. It represents the parent
@@ -68,7 +66,6 @@ public:
 class _XTP_EXT_CLASS CXTPDockingPaneBase
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Protected constructor. You cannot create this class.
@@ -78,11 +75,13 @@ protected:
 	// Remarks:
 	//     Docking Pane type can be one of the following:
 	//     * <b>xtpPaneTypeDockingPane</b> Indicates the pane's style is a docking pane.
-	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for pane.
+	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for
+	//     pane.
 	//     * <b>xtpPaneTypeSplitterContainer</b> Indicates the pane's style is a splitter container.
 	//     * <b>xtpPaneTypeMiniWnd</b> Indicates the pane's style is a floating window container.
 	//     * <b>xtpPaneTypeClient</b> Indicates the pane's style is a container for client area.
-	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel container.
+	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel
+	//     container.
 	//-----------------------------------------------------------------------
 	CXTPDockingPaneBase(XTPDockingPaneType type, CXTPDockingPaneLayout* pLayout);
 
@@ -94,18 +93,45 @@ protected:
 	virtual ~CXTPDockingPaneBase();
 
 public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Determines if the frame is active
+	// Returns:
+	//     TRUE if the frame is active
+	//-----------------------------------------------------------------------
+	virtual BOOL IsActive() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Returns TRUE if caption drawn vertically
+	// Returns:
+	//     TRUE if the caption drawn vertically
+	//-----------------------------------------------------------------------
+	virtual BOOL IsCaptionVertical() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to get the text in the caption for the tabbed container (group of
+	//     panes).
+	// Returns:
+	//     The text in the caption for the tabbed container (group of panes).
+	//-----------------------------------------------------------------------
+	virtual CString GetTitle() const;
+
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to determine the type of the pane.
 	// Returns:
 	//     The type of the Pane. It can be one of the following:
 	//     * <b>xtpPaneTypeDockingPane</b> Indicates the pane's style is a docking pane.
-	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for pane.
+	//     * <b>xtpPaneTypeTabbedContainer</b> Indicates the pane's style is a tabbed container for
+	//     pane.
 	//     * <b>xtpPaneTypeSplitterContainer</b> Indicates the pane's style is a splitter container.
 	//     * <b>xtpPaneTypeMiniWnd</b> Indicates the pane's style is a floating window container.
 	//     * <b>xtpPaneTypeClient</b> Indicates the pane's style is a container for client area.
-	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel container.
+	//     * <b>xtpPaneTypeAutoHidePanel</b> Indicates the pane's style is an auto-hide panel
+	//     container.
 	//-----------------------------------------------------------------------
 	XTPDockingPaneType GetType() const;
 
@@ -160,7 +186,8 @@ public:
 	// Returns:
 	//     A reference to a CXTPDockingPaneCaptionButtons object
 	//-----------------------------------------------------------------------
-	CXTPDockingPaneCaptionButtons* GetCaptionButtons() const {
+	CXTPDockingPaneCaptionButtons* GetCaptionButtons() const
+	{
 		return m_pCaptionButtons;
 	}
 
@@ -238,7 +265,8 @@ public:
 	//     Returns NULL if the HWND is not attached to a window or if it
 	//     is used with a NULL HWND pointer.
 	//-----------------------------------------------------------------------
-	virtual HWND GetPaneHwnd() const {
+	virtual HWND GetPaneHwnd() const
+	{
 		return 0;
 	}
 
@@ -251,7 +279,6 @@ public:
 	virtual void InvalidatePane(BOOL bSelectionChanged);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method is called to set position of the pane.
@@ -275,7 +302,6 @@ protected:
 	//     pFrame - Points to a CWnd object
 	//-----------------------------------------------------------------------
 	virtual void SetDockingSite(CWnd* pFrame);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -323,7 +349,8 @@ protected:
 	// See Also:
 	//     CXTPPaneToPaneMap
 	//-----------------------------------------------------------------------
-	virtual CXTPDockingPaneBase* Clone(CXTPDockingPaneLayout* pLayout, CXTPPaneToPaneMap* pMap, DWORD dwIgnoredOptions = 0);
+	virtual CXTPDockingPaneBase* Clone(CXTPDockingPaneLayout* pLayout, CXTPPaneToPaneMap* pMap,
+									   DWORD dwIgnoredOptions = 0);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -376,22 +403,27 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void CreateContainer();
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	virtual LPDISPATCH OleGetDispatch(BOOL bAddRef) = 0;
 
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CSize m_szDocking;                          // Size of the pane.
-	CXTPDockingPaneLayout* m_pLayout;           // Parent layout.
+	CSize m_szDocking;				  // Size of the pane.
+	CXTPDockingPaneLayout* m_pLayout; // Parent layout.
 
-	CXTPDockingPaneBase* m_pParentContainer;    // Parent container.
-	CWnd* m_pDockingSite;                       // Parent frame.
-	XTPDockingPaneType m_type;                  // Type of the pane.
-	CRect m_rcWindow;                           // Position of the pane.
-	CXTPDockingPaneCaptionButtons* m_pCaptionButtons;  // Collection of caption buttons.
+	CXTPDockingPaneBase* m_pParentContainer;		  // Parent container.
+	CWnd* m_pDockingSite;							  // Parent frame.
+	XTPDockingPaneType m_type;						  // Type of the pane.
+	CRect m_rcWindow;								  // Position of the pane.
+	CXTPDockingPaneCaptionButtons* m_pCaptionButtons; // Collection of caption buttons.
 
 private:
 	int m_nLength;
 	int m_nIndex;
-
 
 private:
 	friend class CXTPDockingPaneManager;
@@ -409,7 +441,9 @@ private:
 };
 
 //{{AFX_CODEJOCK_PRIVATE
-class _XTP_EXT_CLASS CXTPDockingPaneClientContainer : public CXTPCmdTarget, public CXTPDockingPaneBase
+class _XTP_EXT_CLASS CXTPDockingPaneClientContainer
+	: public CXTPCmdTarget
+	, public CXTPDockingPaneBase
 {
 public:
 	CXTPDockingPaneClientContainer(CXTPDockingPaneLayout* pLayout);
@@ -417,28 +451,68 @@ public:
 protected:
 	virtual void DeletePane();
 
+#	ifdef _XTP_ACTIVEX
+private:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPDockingPaneClientContainer);
+	DECLARE_INTERFACE_MAP()
+
+	LPDISPATCH OleGetDispatch(BOOL /*bAddRef*/);
+	afx_msg LPDISPATCH OleGetItem(int nIndex);
+	afx_msg int OleGetItemCount();
+	afx_msg LPDISPATCH OleGetContainer();
+	afx_msg int OleGetType();
+	afx_msg LPDISPATCH OleGetPane(int nIndex);
+	afx_msg HWND OleGetHwnd();
+	afx_msg BOOL OleIsEmpty();
+	afx_msg int OleGetPosition();
+#	endif
 };
 //}}AFX_CODEJOCK_PRIVATE
 
-AFX_INLINE XTPDockingPaneType CXTPDockingPaneBase::GetType() const {
+AFX_INLINE BOOL CXTPDockingPaneBase::IsActive() const
+{
+	return FALSE;
+}
+
+AFX_INLINE BOOL CXTPDockingPaneBase::IsCaptionVertical() const
+{
+	return FALSE;
+}
+
+AFX_INLINE CString CXTPDockingPaneBase::GetTitle() const
+{
+	return CString(_T(""));
+}
+
+AFX_INLINE XTPDockingPaneType CXTPDockingPaneBase::GetType() const
+{
 	return m_type;
 }
-AFX_INLINE CXTPDockingPaneBase* CXTPDockingPaneBase::GetContainer() const {
+AFX_INLINE CXTPDockingPaneBase* CXTPDockingPaneBase::GetContainer() const
+{
 	return m_pParentContainer;
 }
-AFX_INLINE void CXTPDockingPaneBase::SetDockingSite(CWnd* pFrame) {
+AFX_INLINE void CXTPDockingPaneBase::SetDockingSite(CWnd* pFrame)
+{
 	m_pDockingSite = pFrame;
 }
-AFX_INLINE void CXTPDockingPaneBase::SetParentContainer(CXTPDockingPaneBase* pContainer) {
+AFX_INLINE void CXTPDockingPaneBase::SetParentContainer(CXTPDockingPaneBase* pContainer)
+{
 	m_pParentContainer = pContainer;
 }
-AFX_INLINE void CXTPDockingPaneBase::OnCaptionButtonRectChanged(CXTPDockingPaneCaptionButton*) {
+AFX_INLINE void CXTPDockingPaneBase::OnCaptionButtonRectChanged(CXTPDockingPaneCaptionButton*)
+{
 }
-AFX_INLINE BOOL CXTPDockingPaneBase::IsCaptionButtonVisible(CXTPDockingPaneCaptionButton* /*pButton*/) {
+AFX_INLINE BOOL
+	CXTPDockingPaneBase::IsCaptionButtonVisible(CXTPDockingPaneCaptionButton* /*pButton*/)
+{
 	return TRUE;
 }
-AFX_INLINE CWnd* CXTPDockingPaneBase::GetDockingSite() const {
+AFX_INLINE CWnd* CXTPDockingPaneBase::GetDockingSite() const
+{
 	return m_pDockingSite;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANEBASE_H__)

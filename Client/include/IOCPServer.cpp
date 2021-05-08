@@ -2,9 +2,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+//#include "StdAfx.h"
 #include "IOCPServer.h"
 #include "../MainFrm.h"
+#include "macros.h"
 
 #include "zlib/zlib.h"
 

@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM))
 #ifdef _WIN32
 LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -39,7 +38,7 @@ FONT 8, "MS Shell Dlg"
 BEGIN
     DEFPUSHBUTTON   "Închidere",IDOK,224,108,50,14
     CONTROL         "&Afisare sugestii la pornire",XTP_IDC_CHK_DAYTIP_SHOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,140,10
-    PUSHBUTTON      "Urmãtorul sfat",XTP_IDC_BTN_DAYTIP_NEXT,170,108,50,14
+    PUSHBUTTON      "Urmãtorul sfat",XTP_IDC_BTN_DAYTIP_NEXT,160,108,60,14
     CONTROL         "",XTP_IDC_BTN_DAYTIP_BORDER,"Static",SS_GRAYFRAME | NOT WS_VISIBLE,0,0,279,103
 END
 
@@ -104,18 +103,18 @@ CAPTION "Aranjare ferestre"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Alege &fereastra:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,209,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,204,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Activare",XTP_IDC_BTN_ACTIVATE,222,7,77,14
-    PUSHBUTTON      "OK",IDOK,222,24,77,14
-    PUSHBUTTON      "Salvare",XTP_IDC_BTN_SAVE,222,41,77,14
-    PUSHBUTTON      "Închidere fereastrã",XTP_IDC_BTN_CLOSEWINDOWS,222,58,77,14
-    PUSHBUTTON      "În cascadã",XTP_IDC_BTN_CASCADE,222,75,77,14
-    PUSHBUTTON      "Împãrþire pe orizontalã",XTP_IDC_BTN_TILEHORZ,222,92,77,14
-    PUSHBUTTON      "Împãrþire pe verticalã",XTP_IDC_BTN_TILEVERT,222,109,77,14
-    PUSHBUTTON      "Minimizare",XTP_IDC_BTN_MINIMIZE,222,126,77,14
+    PUSHBUTTON      "Activare",XTP_IDC_BTN_ACTIVATE,215,7,82,14
+    PUSHBUTTON      "OK",IDOK,215,24,82,14
+    PUSHBUTTON      "Salvare",XTP_IDC_BTN_SAVE,215,41,82,14
+    PUSHBUTTON      "Închidere fereastrã",XTP_IDC_BTN_CLOSEWINDOWS,215,58,82,14
+    PUSHBUTTON      "În cascadã",XTP_IDC_BTN_CASCADE,215,75,82,14
+    PUSHBUTTON      "Împãrþire pe orizontalã",XTP_IDC_BTN_TILEHORZ,215,92,82,14
+    PUSHBUTTON      "Împãrþire pe verticalã",XTP_IDC_BTN_TILEVERT,215,109,82,14
+    PUSHBUTTON      "Minimizare",XTP_IDC_BTN_MINIMIZE,215,126,82,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -193,7 +192,7 @@ BEGIN
                             "Sistemul de operare a interzis accesul la fisierul specificat."
     XTP_IDS_SE_ERR_OOM       "Nu este memorie suficienta pentru finalizarea operatiei."
     XTP_IDS_SE_ERR_BAD_FORMAT 
-                            "Fisierul .exe nu are formatul corect (non-Win32® .exe sau eroare in imaginea .exe)."
+                            "Fisierul .exe nu are formatul corect (non-Win32 .exe sau eroare in imaginea .exe)."
     XTP_IDS_SE_ERR_SHARE     "S-a produs o violare de partajare."
     XTP_IDS_SE_ERR_ASSOCINCOMPLETE 
                             "Asocierea numelui de fisier este incompleta sau incorecta."
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Culori standard"
+	XTP_IDS_RECENT_COLORS    "Culori recente"
+	XTP_IDS_THEME_COLORS     "Tema Culori"
+	XTP_IDS_TAGCLOUD_TIP     "Tag-ul %s, scor %d"
     XTP_IDS_TIPTEXT          "Sfat"
     XTP_IDS_DIDYOUKNOW       "ªtiaþi cã..."
     XTP_IDS_FILE_ABSENT      "Fiºierul nu existã."
@@ -249,10 +251,26 @@ BEGIN
     XTP_IDS_TASK_RETRY        "Reîncercare"
     XTP_IDS_TASK_CANCEL       "Revocare"
     XTP_IDS_TASK_CLOSE        "Închidere"
-    XTP_IDS_TASK_APPLY        "&Apply"
-    XTP_IDS_TASK_HELP         "Help"
+    XTP_IDS_TASK_APPLY        "&Aplica"
+    XTP_IDS_TASK_HELP         "Ajutor"
     XTP_IDS_TASK_SEE_DETAILS  "Afiºare detalii"
     XTP_IDS_TASK_HIDE_DETAILS "Ascundere detalii"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Fundal 1"
+    XTP_IDS_BACKGROUND2        "Fundal 2"
+    XTP_IDS_TEXT1              "Textul 1"
+    XTP_IDS_TEXT2              "Textul 2"
+    XTP_IDS_ACCENT1            "Accentuare 1"
+    XTP_IDS_ACCENT2            "Accentuare 2"
+    XTP_IDS_ACCENT3            "Accentuare 3"
+    XTP_IDS_ACCENT4            "Accentuare 4"
+    XTP_IDS_ACCENT5            "Accentuare 5"
+    XTP_IDS_ACCENT6            "Accentuare 6"
+    XTP_IDS_LIGHTER            "Mai luminã"
+    XTP_IDS_DARKER             "Mai inchisa"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM))

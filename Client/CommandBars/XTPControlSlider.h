@@ -1,7 +1,6 @@
 // XTPControlSlider.h : interface for the CXTPControlSlider class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCONTOLSLIDER_H__)
-#define __XTPCONTOLSLIDER_H__
+#	define __XTPCONTOLSLIDER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPControl.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPControlSlider;
 
@@ -35,31 +34,31 @@ class CXTPControlSlider;
 // Summary:
 //     Inplace slider control of CXTPControlSlider.
 //===========================================================================
-class CXTPControlSliderCtrl : public CSliderCtrl
+class _XTP_EXT_CLASS CXTPControlSliderCtrl : public CSliderCtrl
 {
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPControlSliderCtrl)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg HBRUSH CtlColor ( CDC* pDC, UINT nCtlColor );
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void HScroll(UINT nSBCode, UINT nPos);
 	afx_msg void VScroll(UINT nSBCode, UINT nPos);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	LRESULT OnWindowFromPoint(WPARAM, LPARAM);
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPControlSlider* m_pControl;          // Parent CXTPControlSlider control
+	CXTPControlSlider* m_pControl; // Parent CXTPControlSlider control
 
 private:
 	friend class CXTPControlSlider;
 };
-
 
 //===========================================================================
 // Summary:
@@ -81,7 +80,6 @@ public:
 	//     Destroys a CXTPControlSlider object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPControlSlider();
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -154,9 +152,8 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void OnScroll(UINT nSBCode, UINT nPos);
 
-
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL HasFocus() const;
 	CSize GetSize(CDC* pDC);
 	void Draw(CDC* pDC);
@@ -171,31 +168,42 @@ protected:
 	void Copy(CXTPControl* pControl, BOOL bRecursive = FALSE);
 	void DoPropExchange(CXTPPropExchange* pPX);
 
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CXTPControlSliderCtrl* m_pSliderCtrl;           // Pointer to slider control
-	int m_nMin;         // Lower range
-	int m_nMax;         // Upper range
-	int m_nPos;         // Current position of slider
-	DWORD m_dwSliderStyle; // Slider style;
-	CRect m_rcPadding;          // Padding around slider
+	CXTPControlSliderCtrl* m_pSliderCtrl; // Pointer to slider control
+	int m_nMin;							  // Lower range
+	int m_nMax;							  // Upper range
+	int m_nPos;							  // Current position of slider
+	DWORD m_dwSliderStyle;				  // Slider style;
+	CRect m_rcPadding;					  // Padding around slider
 
 	friend class CXTPControlSliderCtrl;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPControlSlider);
+	void OleRangeChanged();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-AFX_INLINE BOOL CXTPControlSlider::IsCustomizeResizeAllow() const {
+AFX_INLINE BOOL CXTPControlSlider::IsCustomizeResizeAllow() const
+{
 	return TRUE;
 }
-AFX_INLINE int CXTPControlSlider::GetCustomizeMinWidth() const {
+AFX_INLINE int CXTPControlSlider::GetCustomizeMinWidth() const
+{
 	return 20;
 }
-AFX_INLINE CSliderCtrl* CXTPControlSlider::GetSliderCtrl() const {
+AFX_INLINE CSliderCtrl* CXTPControlSlider::GetSliderCtrl() const
+{
 	return m_pSliderCtrl;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCONTOLSLIDER_H__)

@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR)
 #ifdef _WIN32
 LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
@@ -37,9 +36,9 @@ STYLE DS_SETFONT | DS_FIXEDSYS | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPT
 CAPTION "Редактор на бутони"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    LTEXT           "Грефика",IDC_STATIC,7,7,86,8
-    GROUPBOX        "Цевтове",IDC_STATIC,102,106,80,71
-    GROUPBOX        "Движение",IDC_STATIC,101,72,81,31
+    LTEXT           "Изображение",IDC_STATIC,7,7,86,8
+    GROUPBOX        "Цветове",IDC_STATIC,102,106,80,71
+    GROUPBOX        "Премести",IDC_STATIC,101,72,81,31
     GROUPBOX        "Преглед",IDC_STATIC,7,106,86,71
     GROUPBOX        "Инструменти",IDC_STATIC,101,9,81,60
     DEFPUSHBUTTON   "Да",IDOK,193,7,50,14
@@ -50,13 +49,13 @@ BEGIN
                     WS_EX_STATICEDGE
     LTEXT           "Прозрачност",IDC_STATIC,135,156,42,8
     LTEXT           "",XTP_IDC_CLR_ERASE,116,153,15,15,SS_NOTIFY
-    CTEXT           "Tools",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
+    CTEXT           "Инструменти",XTP_IDC_STATIC_TOOLS,112,21,60,43,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
-    CTEXT           "Move",XTP_IDC_STATIC_MOVE,111,83,62,12,SS_CENTERIMAGE | 
+    CTEXT           "Премести",XTP_IDC_STATIC_MOVE,111,83,62,12,SS_CENTERIMAGE | 
                     NOT WS_VISIBLE | WS_BORDER
     CONTROL         "",XTP_IDC_CLR_PICKER,"Static",SS_LEFTNOWORDWRAP | 
                     SS_NOTIFY | WS_GROUP,109,144,15,15
-    CTEXT           "Colors",XTP_IDC_STATIC_COLORS,107,121,68,12,
+    CTEXT           "Цветове",XTP_IDC_STATIC_COLORS,107,121,68,12,
                     SS_CENTERIMAGE | NOT WS_VISIBLE | WS_BORDER
 END
 
@@ -145,19 +144,19 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "Менюта"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Менюта на програмата",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Менюта прилагане",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
     LTEXT           "Контекстни менюта",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "Покажи меню:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Показване на меню:",IDC_STATIC,10,20,74,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,86,18,139,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Възстанови",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Меню по подразбиране\nМеню по подразбиране на програмата",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Начално състояние",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Менюто по подразбиране\nПо подразбиране менюто на приложенията",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Избор на конт.маню:",IDC_STATIC,10,92,77,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,87,90,126,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Изберете контекстно меню:",IDC_STATIC,10,92,97,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,108,90,116,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Възстанови",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Начално състояние",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -181,7 +180,7 @@ XTP_IDR_CUSTOMIZEMENU MENU DISCARDABLE
 BEGIN
     POPUP "Промяна"
     BEGIN
-        MENUITEM "Възстанови",                      XTP_ID_CUSTOMIZE_RESET
+        MENUITEM "Начално състояние",                      XTP_ID_CUSTOMIZE_RESET
         MENUITEM "Изтрий",                     XTP_ID_CUSTOMIZE_DELETE
         MENUITEM SEPARATOR
         MENUITEM "Име:",                      XTP_ID_CUSTOMIZE_NAME
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Промяна"
     XTP_IDS_NEWMENU         "Ново меню"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Персонализиране на лентата на състоянието"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Потребителски %d"
     XTP_IDS_ERROR_BLANKNAME "Името на лентата не може да е празно. Моля въведете име."
-    XTP_IDS_ERROR_LIMIT     "Съжалявам но е достигнат лимита ви."
+    XTP_IDS_ERROR_LIMIT     "За съжаление сте достигнали своя лимит."
     XTP_IDS_ERROR_EXISTS    "Лента с име '%s' вече съществува. Напишете друго име."
     XTP_IDS_RENAMETOOLBAR   "Преименуване на лента"
     XTP_IDS_CONFIRM_DELETE  "Да изтрия ли '%s' лента?"
@@ -255,12 +254,12 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Да възстановя ли всички клавишни комбинации?  Това действие ще премахне потребителски зададените клавиши на текстово ниво."
+                            "Наистина ли искате да нулирате комбинации? Това действие ще премахне всички потребителски комбинации на ниво текст."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "Този клавиш е прикачен.\nДа го променя ли?"
-    XTP_IDS_CONFIRM_UPDATE  "Поради подновяване на софтуерно обновяване лентата '%s' беше променена. Да възстановя ли лентата и да заредя новата?"
+                            "Този пряк път в момента е присвоен.\nИскате ли да ре-определям този пряк път?"
+    XTP_IDS_CONFIRM_UPDATE  "Поради актуализация на софтуера лентата с инструменти ""%s"" е променен. Искате ли да възстановите вашата персонализирана лента с инструменти и заредите новата?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Всички графични файлове|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Всички файлове(*.*)|*.*||"
+                            "Всички файлове с картини|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bit eslemler (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Метафайловете (*.wmf;*.emf)|*.wmf;*.emf|Икони (*.ico;*.cur)|*.ico;*.cur|Всички файлове (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nОпции на лентата с бутони"
     XTP_ID_TOOLBAR_HIDE     "\nЗатвори"
     XTP_ID_POPUPBAR_EXPAND  "\nРазшири"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nВъзстанови прозореца"
     XTP_ID_MENUBAR_MINIMIZE "\nМинимизирай прозореца"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) е бил натиснат. В очакване на втори ключ на акорд..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -309,16 +308,18 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Печат визуализираното елемент\nПечат"
+    XTP_ID_PREVIEW_PREV     "Отиди на предишната страница\nПредишна страница"
+    XTP_ID_PREVIEW_NEXT     "Отидете на следващата страница\nСледваща страница"
+    XTP_ID_PREVIEW_ZOOMIN   "Увеличаване на приближението на страницата за визуализация\nУвеличение в"
+    XTP_ID_PREVIEW_ZOOMOUT  "Намаляване на приближението на страницата за визуализация\nОтдалечаване"
+    XTP_ID_PREVIEW_ONEPAGE  "Една страница"
+    XTP_ID_PREVIEW_TWOPAGE  "Няколко страници"
+    XTP_ID_PREVIEW_CLOSE    "Затвори визуализацията\nЗатвори визуализацията"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Цялата страница"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Ширина на страницата"
+    XTP_IDS_PREVIEW_PAGEI     "Страница %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Страница %i на %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR)

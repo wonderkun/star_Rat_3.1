@@ -1,7 +1,6 @@
 // XTPChartFunnelSeriesLabel.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTFUNNELSERIESLABEL_H__)
-#define __XTPCHARTFUNNELSERIESLABEL_H__
+#	define __XTPCHARTFUNNELSERIESLABEL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../../XTPChartSeriesLabel.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartFunnelSeriesPointView;
@@ -72,7 +71,6 @@ public:
 	//-------------------------------------------------------------------------
 	virtual ~CXTPChartFunnelSeriesLabel();
 
-
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -101,6 +99,7 @@ public:
 
 public:
 	void DoPropExchange(CXTPPropExchange* pPX);
+
 protected:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -114,10 +113,11 @@ protected:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPointView* pPointView, CXTPChartElementView* pParentView);
+	virtual CXTPChartElementView* CreateView(CXTPChartDeviceContext* pDC,
+											 CXTPChartSeriesPointView* pPointView,
+											 CXTPChartElementView* pParentView);
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to check whether the label is inside the pie.
@@ -129,31 +129,28 @@ public:
 	BOOL IsInside() const;
 
 protected:
-
 protected:
-	XTPChartFunnelLabelPosition m_nPosition;    //The pie label position.
+	XTPChartFunnelLabelPosition m_nPosition; // The pie label position.
 
-
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartFunnelSeriesLabel);
 	//}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 };
 
-
-
-AFX_INLINE XTPChartFunnelLabelPosition CXTPChartFunnelSeriesLabel::GetPosition() const {
+AFX_INLINE XTPChartFunnelLabelPosition CXTPChartFunnelSeriesLabel::GetPosition() const
+{
 	return m_nPosition;
 }
-AFX_INLINE void CXTPChartFunnelSeriesLabel::SetPosition(XTPChartFunnelLabelPosition nPosition) {
+AFX_INLINE void CXTPChartFunnelSeriesLabel::SetPosition(XTPChartFunnelLabelPosition nPosition)
+{
 	m_nPosition = nPosition;
 	OnChartChanged();
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTFUNNELSERIESLABEL_H__)

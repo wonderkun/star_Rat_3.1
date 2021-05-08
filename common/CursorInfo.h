@@ -57,6 +57,7 @@ public:
 	int getCurrentCursorIndex()
 	{
 		CURSORINFO	ci;
+		int i;
 		ci.cbSize = sizeof(CURSORINFO);
 		if (!GetCursorInfo(&ci) || ci.flags != CURSOR_SHOWING)
 			return -1;

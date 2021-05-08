@@ -1,7 +1,7 @@
 // UpdateDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "UpdateDlg.h"
 

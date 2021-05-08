@@ -1,7 +1,6 @@
 // XTPSkinObjectToolBar.h: interface for the CXTPSkinObjectToolBar class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,16 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINOBJECTTOOLBAR_H__)
-#define __XTPSKINOBJECTTOOLBAR_H__
+#	define __XTPSKINOBJECTTOOLBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSkinObject.h"
-#include "XTPSkinObjectFrame.h"
-
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -53,7 +50,9 @@ public:
 	virtual ~CXTPSkinObjectToolBar();
 
 protected:
+	void FillBackOfViewControlClass();
 	void DrawToolbarH(CDC* pDC);
+	void DrawToolbarV(CDC* pDC);
 	void DrawButton(CDC* pDC, int nIndex);
 	HIMAGELIST GetImageList(int iMode, int iIndex);
 
@@ -61,15 +60,22 @@ protected:
 	BOOL HasSplitDropDown(LPTBBUTTON ptbb);
 	void DrawButtonImage(CDC* pDC, int x, int y, int nIndex);
 	BOOL HasButtonImage(LPTBBUTTON ptbb);
+	BOOL IsHorizontal();
 	BOOL IsAlphaImageList(HIMAGELIST himl);
 	void UpdateToolTipsPos();
 
+private:
+	int GetToolbarButtonCount() const;
+	BOOL GetToolbarButton(int nIndex, LPTBBUTTON lpButton) const;
+	BOOL GetToolbarItemRect(int nIndex, LPRECT lpRect) const;
+	int GetToolbarHotItem() const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	LRESULT CustomDrawNotify(DWORD dwDrawStage, NMCUSTOMDRAW* pnmcd);
+	virtual BOOL CheckDrawingEnabled();
 
 	//{{AFX_VIRTUAL(CXTPSkinObjectToolBar)
 	//}}AFX_VIRTUAL
@@ -83,8 +89,8 @@ protected:
 
 	CMap<HIMAGELIST, HIMAGELIST, BOOL, BOOL> m_mapAlphaImageList;
 
-
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINOBJECTTOOLBAR_H__)

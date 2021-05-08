@@ -120,7 +120,7 @@ FontFamily::Clone() const
 
 inline Status 
 FontFamily::GetFamilyName(
-    IN WCHAR name[LF_FACESIZE],
+    LPWSTR    name,
     IN LANGID language
 ) const
 {
@@ -205,3 +205,4 @@ FontFamily::SetStatus(Status status) const
 }
 
 #endif
+

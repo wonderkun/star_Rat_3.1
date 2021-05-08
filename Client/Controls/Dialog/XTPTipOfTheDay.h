@@ -1,7 +1,6 @@
 // XTPTipOfTheDay.h interface for the CXTPTipOfTheDay class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTIPOFTHEDAY_H__)
-#define __XTPTIPOFTHEDAY_H__
+#	define __XTPTIPOFTHEDAY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupContext;
 class CXTPMarkupUIElement;
@@ -66,7 +67,6 @@ public:
 	//-----------------------------------------------------------------------
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function will set the fonts to be used by the "Did you
@@ -143,12 +143,11 @@ public:
 	CXTPMarkupContext* GetMarkupContext() const;
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPTipOfTheDay)
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
@@ -158,53 +157,63 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnDaytipNext();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	//{{AFX_DATA(CXTPTipOfTheDay)
-	enum { IDD = XTP_IDD_TIPOFTHEDAY };
+	enum
+	{
+		IDD = XTP_IDD_TIPOFTHEDAY
+	};
 	CButton m_ok;
 	CButton m_showTips;
 	CButton m_btnNextTip;
 	CStatic m_staticBorder;
-	BOOL    m_bStartup;
+	BOOL m_bStartup;
 	//}}AFX_DATA
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-	BOOL m_bClassicStyle;   // Classic Style
+	BOOL m_bClassicStyle; // Classic Style
 
 protected:
-	FILE*   m_pStream;      // A pointer to the open file stream.
-	CRect   m_rcBorder;     // Size of the total display area.
-	CRect   m_rcTipText;    // Size of the display area for tip text.
-	CFont   m_fontTitle;    // Default font used for "Did you know..." text.
-	CFont   m_fontTip;      // Default font used for tips.
-	CFont*  m_pFontTitle;   // User defined font for "Did you know..." text.
-	CFont*  m_pFontTip;     // User defined font for tips.
-	CString m_strTipTitle;  // Represents the "Did you know" text.
-	CString m_strTipText;   // Represents the Tip Of The Day text.
-	CString m_strTipFile;   // Represents the file name and path for the tips file.
+	FILE* m_pStream;   // A pointer to the open file stream.
+	CRect m_rcBorder;  // Size of the total display area.
+	CRect m_rcTipText; // Size of the display area for tip text.
+
+	CXTPFont m_xtpFontTitle; // Default font used for "Did you know..." text.
+	CXTPFont m_xtpFontTip;   // Default font used for tips.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontTitle, m_xtpFontTitle, GetTitleFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontTip, m_xtpFontTip, GetTipFontHandle);
+
+	CFont* m_pFontTitle;					// User defined font for "Did you know..." text.
+	CFont* m_pFontTip;						// User defined font for tips.
+	CString m_strTipTitle;					// Represents the "Did you know" text.
+	CString m_strTipText;					// Represents the Tip Of The Day text.
+	CString m_strTipFile;					// Represents the file name and path for the tips file.
 	CXTPImageManagerIcon* m_pLightBulbIcon; // Bulb bitmap.
 
-	CXTPMarkupContext* m_pMarkupContext;  // Markup Context.
-	CXTPMarkupUIElement* m_pMarkupTipText;  // Markup element.
+	CXTPMarkupContext* m_pMarkupContext;   // Markup Context.
+	CXTPMarkupUIElement* m_pMarkupTipText; // Markup element.
 
-	CStringArray m_arrTips;  // Array of tips to display.
-	UINT m_nNextTip;  // Index of next tip to display.
+	CStringArray m_arrTips; // Array of tips to display.
+	UINT m_nNextTip;		// Index of next tip to display.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPTipOfTheDay::SetDefaultTitle(LPCTSTR lpszTitle) {
+AFX_INLINE void CXTPTipOfTheDay::SetDefaultTitle(LPCTSTR lpszTitle)
+{
 	m_strTipTitle = lpszTitle;
 }
-AFX_INLINE void CXTPTipOfTheDay::AddTip(LPCTSTR lpszTip) {
+AFX_INLINE void CXTPTipOfTheDay::AddTip(LPCTSTR lpszTip)
+{
 	m_arrTips.Add(lpszTip);
 }
-AFX_INLINE CXTPMarkupContext* CXTPTipOfTheDay::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPTipOfTheDay::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPTIPOFTHEDAY_H__)

@@ -1,7 +1,6 @@
 // XTPSyntaxEditAutoCompleteWnd.h: interface for the CXTPSyntaxEditAutoCompleteWnd class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITAUTOCOMPLETEWND_H__)
-#define __XTPSYNTAXEDITAUTOCOMPLETEWND_H__
+#	define __XTPSYNTAXEDITAUTOCOMPLETEWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSyntaxEditCtrl;
 
@@ -36,9 +37,8 @@ class CXTPSyntaxEditCtrl;
 //===========================================================================
 struct XTP_EDIT_ACDATA
 {
-	int     m_nIcon;    // The icon ID.
-	CString m_strText;  // The item text.
-
+	int m_nIcon;	   // The icon ID.
+	CString m_strText; // The item text.
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -49,10 +49,9 @@ struct XTP_EDIT_ACDATA
 	//-----------------------------------------------------------------------
 	XTP_EDIT_ACDATA(int nIcon, CString strText)
 	{
-		m_nIcon = nIcon;
+		m_nIcon   = nIcon;
 		m_strText = strText;
 	}
-
 };
 
 //===========================================================================
@@ -113,6 +112,8 @@ public:
 	//     TRUE if success; FALSE otherwise.
 	//-----------------------------------------------------------------------
 	virtual BOOL Create(CWnd* pParentWnd);
+
+	using CWnd::Create;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -211,7 +212,7 @@ public:
 	// Returns:
 	//     TRUE if window is visible and active; FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsActive();
+	BOOL IsActive() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -249,7 +250,6 @@ public:
 	void SetWndWidth(int nWidth);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Returns text line where user click mouse.
@@ -258,16 +258,16 @@ protected:
 	// Returns:
 	//     Integer identifier of affected text line.
 	//-----------------------------------------------------------------------
-	int HitTest(CPoint ptTest);
+	int HitTest(CPoint ptTest) const;
 
 	//{{AFX_CODEJOCK_PRIVATE
 	// message handlers
 	void OnLButtonDown(UINT nFlags, CPoint point);
 	void OnRButtonDown(UINT nFlags, CPoint point);
-	void OnLButtonDblClk( UINT nFlags, CPoint point );
+	void OnLButtonDblClk(UINT nFlags, CPoint point);
 	BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	void OnChar( UINT nChar, UINT nRepCnt, UINT nFlags );
+	void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	void OnPaint();
 	BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
@@ -276,58 +276,59 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+	CString m_strSearch;	  // Temporary stores chain of chars from user input to perform
+							  // incremental search
+	CString m_strCloseTags;   // Stores set of closed tags divided by ~
+							  // input closed tags lead to close AutoComplete window
+	CString m_strTmpCloseTag; // Temporary stores chain of chars from user input to
+							  // recognize close tags
+	CString m_strOpenTags;	// Stores open tags
 
-	CString     m_strSearch;    // Temporary stores chain of chars from user input to perform
-	                            // incremental search
-	CString     m_strCloseTags; // Stores set of closed tags divided by ~
-	                            // input closed tags lead to close AutoComplete window
-	CString     m_strTmpCloseTag;// Temporary stores chain of chars from user input to
-								// recognize close tags
-	CString     m_strOpenTags;  // Stores open tags
+	CString m_strTmpOpenTag; // Temporary stores chain of chars from user input to
+							 // recognize Open tags
 
-	CString     m_strTmpOpenTag;// Temporary stores chain of chars from user input to
-	                            // recognize Open tags
+	CXTPSyntaxEditCtrl* m_pParentWnd; // Pointer to the parent window
 
-	CXTPSyntaxEditCtrl* m_pParentWnd;   // Pointer to the parent window
+	CXTPFont m_xtpFontBasic; // Font to display text
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fontBasic, m_xtpFontBasic, GetBasicFontHandle);
 
-	CFont m_fontBasic;          // Font to display text
-	COLORREF m_clrWindow;       // Standard window color
-	COLORREF m_clrHighLight;    // Standard window highlight color
-	COLORREF m_clrWindowText;   // Standard windows text color
-	COLORREF m_clrHighLightText;// Standard windows highlight text color
+	COLORREF m_clrWindow;		 // Standard window color
+	COLORREF m_clrHighLight;	 // Standard window highlight color
+	COLORREF m_clrWindowText;	// Standard windows text color
+	COLORREF m_clrHighLightText; // Standard windows highlight text color
 
-	CXTPSyntaxEditACDataArray m_arrACData;// Stores list of choices (line of text and image)
+	CXTPSyntaxEditACDataArray m_arrACData; // Stores list of choices (line of text and image)
 
-	CXTPSyntaxEditACDataArray m_arrACDataFiltered; // Stores filtered list of choices (line of text and image)
+	CXTPSyntaxEditACDataArray m_arrACDataFiltered; // Stores filtered list of choices (line of text
+												   // and image)
 
-	CXTPSyntaxEditACGrid m_arrGrid;     // Stores list of rectangle areas where were
-								// displayed text\image strings from m_arrACData
+	CXTPSyntaxEditACGrid m_arrGrid; // Stores list of rectangle areas where were
+									// displayed text\image strings from m_arrACData
 
-	int m_nBordersHeight;       // Stores summary thickness of vertical window borders
-	int m_nLineHeight;          // Stores height of line
-	int m_nLines;               // Number of visible lines
-	int m_nWndHeight;           // Height of window
-	int m_nWndWidth;            // Width of window
+	int m_nBordersHeight; // Stores summary thickness of vertical window borders
+	int m_nLineHeight;	// Stores height of line
+	int m_nLines;		  // Number of visible lines
+	int m_nWndHeight;	 // Height of window
+	int m_nWndWidth;	  // Width of window
 
-	int m_nHighLightLine;       // Current highlight line identifier
-	int m_nFirstDisplayedStr;   // Current first visible (upper) line
+	int m_nHighLightLine;	 // Current highlight line identifier
+	int m_nFirstDisplayedStr; // Current first visible (upper) line
 
-	BOOL m_bFixedBottom;        // Store autocomplete window position: above or below at the cursor.
+	BOOL m_bFixedBottom; // Store autocomplete window position: above or below at the cursor.
 
-	BOOL m_bActive;             // Active flag
+	BOOL m_bActive; // Active flag
 
-	BOOL m_bFilteredMode;       // Flag to identify is current mode (filtered/full);
+	BOOL m_bFilteredMode; // Flag to identify is current mode (filtered/full);
 
-	BOOL m_bHighLight;          // This flag determines if selected string is highlighted.
+	BOOL m_bHighLight; // This flag determines if selected string is highlighted.
 
-	int m_nStartReplacePos;     // Position of first char in the Edit Control which will be replaced
-	                            // by the chosen text
-	int m_nEndReplacePos;       // Position of last char in the Edit Control which will be replaced
-	                            // by the chosen text
-	CImageList m_ilACGlyphs;    // Images for AutoComplete list
+	int m_nStartReplacePos;  // Position of first char in the Edit Control which will be replaced
+							 // by the chosen text
+	int m_nEndReplacePos;	// Position of last char in the Edit Control which will be replaced
+							 // by the chosen text
+	CImageList m_ilACGlyphs; // Images for AutoComplete list
 
-	CString m_strDelims;        // stores char list that are tag delimiters
-
+	CString m_strDelims; // stores char list that are tag delimiters
 
 private:
 	BOOL AdjusLayout(int nHeightMax = 0);
@@ -343,14 +344,14 @@ private:
 
 	void Sort();
 
-	static int _cdecl CompareACData(const XTP_EDIT_ACDATA** p1, const XTP_EDIT_ACDATA** p2);
+	static int AFX_CDECL CompareACData(const XTP_EDIT_ACDATA** p1, const XTP_EDIT_ACDATA** p2);
 
 	int Search(CString strSearch = _T(""));
 
 	int Filter(CString strSearch = _T(""));
 
-	static int _cdecl CompareACDataToSearch(const XTP_EDIT_ACDATA** ppKey, const XTP_EDIT_ACDATA** ppElem);
-
+	static int AFX_CDECL CompareACDataToSearch(const XTP_EDIT_ACDATA** ppKey,
+											   const XTP_EDIT_ACDATA** ppElem);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -358,6 +359,10 @@ AFX_INLINE int CXTPSyntaxEditAutoCompleteWnd::GetWndWidth() const
 {
 	return m_nWndWidth;
 }
+AFX_INLINE BOOL CXTPSyntaxEditAutoCompleteWnd::IsActive() const
+{
+	return m_bActive;
+}
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITAUTOCOMPLETEWND_H__)

@@ -1,7 +1,7 @@
 // Build.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pcl.h"
 #include "Client.h"
 #include "Build.h"
 #include "encode.h"
@@ -532,7 +532,8 @@ void CBuild::OnRandom()
 	
 	CHAR ServerShow[30]={NULL};
 	ZeroMemory(ServerShow,30);
-	
+	int i;
+
 	for (i=0;i<29;i++)
 	{
 		if(i==0)
@@ -553,7 +554,8 @@ void CBuild::OnRandom()
 	
 	CHAR ServerDesc[40]={NULL};
 	ZeroMemory(ServerDesc,40);
-	
+	//int i;
+
 	for (i=0;i<39;i++)
 	{
 		if(i==0)

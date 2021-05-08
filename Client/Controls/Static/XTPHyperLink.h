@@ -1,7 +1,6 @@
 // XTPHyperLink.h interface for the CXTPHyperLink class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPHYPERLINK_H__)
-#define __XTPHYPERLINK_H__
+#	define __XTPHYPERLINK_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -208,7 +209,8 @@ public:
 	// Returns:
 	//     TRUE if SUCCESSFUL, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	virtual bool GotoURL(LPCTSTR lpszLink = NULL, int nShowCmd = SW_SHOW, LPCTSTR lpszParams = NULL, LPCTSTR lpszDir = NULL);
+	virtual bool GotoURL(LPCTSTR lpszLink = NULL, int nShowCmd = SW_SHOW, LPCTSTR lpszParams = NULL,
+						 LPCTSTR lpszDir = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -257,7 +259,6 @@ public:
 	virtual void ReportError(int iErrorNo);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called by the CXTPHyperLink class to
@@ -288,13 +289,14 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual BOOL CreateFont(CFont& font, BOOL bUnderline);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPHyperLink)
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void PreSubclassWindow();
-	protected:
+
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -316,73 +318,100 @@ protected:
 	afx_msg UINT OnGetDlgCode();
 	//}}AFX_MSG
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	bool         m_bShellExec;       // true to cause the hyperlink to call ShellExecute for the specified URL.
-	bool         m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
-	bool         m_bUnderline;       // Set to true for underlined text.
-	bool         m_bMouseOver;       // Set to true when the cursor is hovering over the control.
-	bool         m_bVisited;         // Set to true when the hyperlink has been activated.
-	bool         m_bTipEnabled;      // Set to false to disable tooltips.
-	CFont        m_font;             // Font used by hyperlink control.
-	CString      m_strLink;          // String object that represents the URL for this control.
-	CString      m_strTipText;       // String object that represents the tooltip text for this control.
-	HCURSOR      m_hcurHand;         // Handle to the default cursor for this control.
-	COLORREF     m_clrLink;          // An RGB value representing the color for the hyperlink text color.
-	COLORREF     m_clrHover;         // An RGB value representing the color for the hyperlink text color when the mouse is hovering.
-	COLORREF     m_clrVisited;       // An RGB value representing the color for the hyperlink text color when the URL has been visited.
-	COLORREF     m_clrBack;          // An RGB value representing the background fill color for the hyperlink control.
-	CToolTipCtrl m_toolTip;          // Tooltip to be displayed for the control.
+	bool m_bShellExec; // true to cause the hyperlink to call ShellExecute for the specified URL.
+	bool m_bPreSubclassInit; // true when initializing from PreSubclassWindow.
+	bool m_bUnderline;		 // Set to true for underlined text.
+	bool m_bMouseOver;		 // Set to true when the cursor is hovering over the control.
+	bool m_bVisited;		 // Set to true when the hyperlink has been activated.
+	bool m_bTipEnabled;		 // Set to false to disable tooltips.
 
+	CXTPFont m_xtpFont; // Font used by hyperlink control.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_font, m_xtpFont, GetFontHandle);
+
+	CString m_strLink;		// String object that represents the URL for this control.
+	CString m_strTipText;   // String object that represents the tooltip text for this control.
+	HCURSOR m_hcurHand;		// Handle to the default cursor for this control.
+	COLORREF m_clrLink;		// An RGB value representing the color for the hyperlink text color.
+	COLORREF m_clrHover;	// An RGB value representing the color for the hyperlink text color when
+							// the mouse is hovering.
+	COLORREF m_clrVisited;  // An RGB value representing the color for the hyperlink text color when
+							// the URL has been visited.
+	COLORREF m_clrBack;		// An RGB value representing the background fill color for the hyperlink
+							// control.
+	CToolTipCtrl m_toolTip; // Tooltip to be displayed for the control.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CString CXTPHyperLink::GetURL() const {
+AFX_INLINE CString CXTPHyperLink::GetURL() const
+{
 	return m_strLink;
 }
-AFX_INLINE void CXTPHyperLink::SetColors(COLORREF clrLink, COLORREF clrVisited, COLORREF clrHover) {
-	m_clrLink = clrLink; m_clrVisited = clrVisited; m_clrHover = clrHover; RedrawWindow();
+AFX_INLINE void CXTPHyperLink::SetColors(COLORREF clrLink, COLORREF clrVisited, COLORREF clrHover)
+{
+	m_clrLink	= clrLink;
+	m_clrVisited = clrVisited;
+	m_clrHover   = clrHover;
+	RedrawWindow();
 }
-AFX_INLINE COLORREF CXTPHyperLink::GetLinkColor() const {
+AFX_INLINE COLORREF CXTPHyperLink::GetLinkColor() const
+{
 	return m_clrLink;
 }
-AFX_INLINE COLORREF CXTPHyperLink::GetVisitedColor() const {
+AFX_INLINE COLORREF CXTPHyperLink::GetVisitedColor() const
+{
 	return m_clrVisited;
 }
-AFX_INLINE COLORREF CXTPHyperLink::GetHoverColor() const {
+AFX_INLINE COLORREF CXTPHyperLink::GetHoverColor() const
+{
 	return m_clrHover;
 }
-AFX_INLINE void CXTPHyperLink::SetVisited(bool bVisited) {
-	m_bVisited = bVisited; RedrawWindow();
+AFX_INLINE void CXTPHyperLink::SetVisited(bool bVisited)
+{
+	m_bVisited = bVisited;
+	RedrawWindow();
 }
-AFX_INLINE bool CXTPHyperLink::GetVisited() const {
+AFX_INLINE bool CXTPHyperLink::GetVisited() const
+{
 	return m_bVisited;
 }
-AFX_INLINE void CXTPHyperLink::SetLinkCursor(HCURSOR hCursor) {
+AFX_INLINE void CXTPHyperLink::SetLinkCursor(HCURSOR hCursor)
+{
 	m_hcurHand = hCursor;
 }
-AFX_INLINE HCURSOR CXTPHyperLink::GetLinkCursor() const {
+AFX_INLINE HCURSOR CXTPHyperLink::GetLinkCursor() const
+{
 	return m_hcurHand;
 }
-AFX_INLINE void CXTPHyperLink::SetUnderline(bool bUnderline) {
-	m_bUnderline = bUnderline; InitFont();
+AFX_INLINE void CXTPHyperLink::SetUnderline(bool bUnderline)
+{
+	m_bUnderline = bUnderline;
+	InitFont();
 }
-AFX_INLINE bool CXTPHyperLink::GetUnderline() const {
+AFX_INLINE bool CXTPHyperLink::GetUnderline() const
+{
 	return m_bUnderline;
 }
-AFX_INLINE bool CXTPHyperLink::IsTextControl() {
+AFX_INLINE bool CXTPHyperLink::IsTextControl()
+{
 	return ((GetStyle() & 0xFF) <= SS_RIGHT) ? true : false;
 }
-AFX_INLINE void CXTPHyperLink::EnableShellExecute(bool bEnable) {
+AFX_INLINE void CXTPHyperLink::EnableShellExecute(bool bEnable)
+{
 	m_bShellExec = bEnable;
 }
-AFX_INLINE void CXTPHyperLink::SetBackColor(COLORREF clrBack) {
-	m_clrBack = clrBack; RedrawWindow();
+AFX_INLINE void CXTPHyperLink::SetBackColor(COLORREF clrBack)
+{
+	m_clrBack = clrBack;
+	RedrawWindow();
 }
-AFX_INLINE COLORREF CXTPHyperLink::GetBackColor() const {
+AFX_INLINE COLORREF CXTPHyperLink::GetBackColor() const
+{
 	return (m_clrBack == (COLORREF)-1) ? GetXtremeColor(COLOR_3DFACE) : m_clrBack;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPHYPERLINK_H__)

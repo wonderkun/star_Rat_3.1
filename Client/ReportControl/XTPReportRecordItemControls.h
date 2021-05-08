@@ -1,7 +1,6 @@
 // XTPReportRecordItemControls.h
 //
-// This file is a part of the XTREME REPORTCONTROL MFC class library.
-// (c)1998-2007 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPREPORTRECORDITEMCONTROLS_H__)
-#define __XTPREPORTRECORDITEMCONTROLS_H__
+#	define __XTPREPORTRECORDITEMCONTROLS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 struct XTP_NM_REPORTRECORDITEM;
 struct XTP_REPORTRECORDITEM_CLICKARGS;
@@ -39,7 +40,7 @@ enum XTPReportItemControlType
 {
 	xtpItemControlTypeUndefined = 0, // Undefined type.
 
-	xtpItemControlTypeButton    = 1, // Button.
+	xtpItemControlTypeButton = 1, // Button.
 };
 
 //-----------------------------------------------------------------------
@@ -48,10 +49,10 @@ enum XTPReportItemControlType
 //-----------------------------------------------------------------------
 enum XTPReportItemControlAlignment
 {
-	xtpItemControlUnknown     = 0,     // Unknown (empty) value.
+	xtpItemControlUnknown = 0, // Unknown (empty) value.
 
-	xtpItemControlLeft        = 0x001, // Aligns control to the left.
-	xtpItemControlRight       = 0x002, // Aligns control to the right.
+	xtpItemControlLeft  = 0x001, // Aligns control to the left.
+	xtpItemControlRight = 0x002, // Aligns control to the right.
 };
 
 //-----------------------------------------------------------------------
@@ -68,8 +69,6 @@ struct XTP_NM_REPORTITEMCONTROL : public XTP_NM_REPORTRECORDITEM
 	CXTPReportRecordItemControl* pItemControl; // Pointer to the item control.
 };
 
-
-
 //===========================================================================
 // Summary:
 //     This class represents a generic item control and handles control's
@@ -85,7 +84,6 @@ class _XTP_EXT_CLASS CXTPReportRecordItemControl : public CXTPCmdTarget
 {
 	DECLARE_SERIAL(CXTPReportRecordItemControl)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates a record item control.
@@ -117,7 +115,7 @@ public:
 	// See Also:
 	//     SetCaption
 	//-----------------------------------------------------------------------
-	CString GetCaption();
+	CString GetCaption() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -137,7 +135,7 @@ public:
 	// See Also:
 	//     XTPReportItemControlType
 	//-----------------------------------------------------------------------
-	int GetType();
+	int GetType() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -145,7 +143,7 @@ public:
 	// Returns:
 	//     Item control index.
 	//-----------------------------------------------------------------------
-	int GetIndex();
+	int GetIndex() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -175,7 +173,7 @@ public:
 	// See Also:
 	//     SetCaptionColor
 	//-----------------------------------------------------------------------
-	COLORREF GetCaptionColor();
+	COLORREF GetCaptionColor() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -195,7 +193,7 @@ public:
 	// See Also:
 	//     SetSize, GetWidth, SetWidth, GetHeight, SetHeight
 	//-----------------------------------------------------------------------
-	CSize GetSize();
+	CSize GetSize() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -216,7 +214,7 @@ public:
 	// See Also:
 	//     GetSize, SetSize, SetWidth, GetHeight, SetHeight
 	//-----------------------------------------------------------------------
-	int GetWidth();
+	int GetWidth() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -237,7 +235,7 @@ public:
 	// See Also:
 	//     GetSize, SetSize, GetWidth, SetWidth, SetHeight
 	//-----------------------------------------------------------------------
-	int GetHeight();
+	int GetHeight() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -256,7 +254,7 @@ public:
 	// Returns:
 	//     Item control rectangle.
 	//-----------------------------------------------------------------------
-	CRect GetRect();
+	CRect GetRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -266,7 +264,7 @@ public:
 	// See Also:
 	//     SetFlags
 	//-----------------------------------------------------------------------
-	UINT GetFlags();
+	UINT GetFlags() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -286,7 +284,7 @@ public:
 	// See Also:
 	//     XTPReportItemControlAlignment, SetAlignment
 	//-----------------------------------------------------------------------
-	int GetAlignment();
+	int GetAlignment() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -306,7 +304,7 @@ public:
 	// See Also:
 	//     SetEnable
 	//-----------------------------------------------------------------------
-	BOOL GetEnable();
+	BOOL GetEnable() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -327,7 +325,7 @@ public:
 	// Returns:
 	//     Item control state.
 	//-----------------------------------------------------------------------
-	int GetState();
+	int GetState() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -343,7 +341,7 @@ public:
 	// Returns:
 	//     TRUE if item control is themed, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL GetThemed();
+	BOOL GetThemed() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -369,10 +367,9 @@ public:
 	// See Also:
 	//     SetIconIndex
 	//-----------------------------------------------------------------------
-	int GetIconIndex(int nState);
+	int GetIconIndex(int nState) const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Sets the rectangle occupied by the item control.
@@ -384,7 +381,6 @@ protected:
 	void SetRect(CRect rcControl);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Processes mouse left button down clicks.
@@ -394,7 +390,10 @@ public:
 	//     Usually this function is called by ReportRecordItem's OnLButtonDown function
 	// See Also: XTP_REPORTRECORDITEM_CLICKARGS
 	//-----------------------------------------------------------------------
-	virtual void OnLButtonDown(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs) { UNREFERENCED_PARAMETER(pClickArgs); }
+	virtual void OnLButtonDown(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs)
+	{
+		UNREFERENCED_PARAMETER(pClickArgs);
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -405,7 +404,10 @@ public:
 	//     Usually this function is called by ReportRecordItem's OnLButtonUp function
 	// See Also: XTP_REPORTRECORDITEM_CLICKARGS
 	//-----------------------------------------------------------------------
-	virtual void OnLButtonUp(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs) { UNREFERENCED_PARAMETER(pClickArgs); }
+	virtual void OnLButtonUp(XTP_REPORTRECORDITEM_CLICKARGS* pClickArgs)
+	{
+		UNREFERENCED_PARAMETER(pClickArgs);
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -416,7 +418,11 @@ public:
 	// Remarks:
 	//     Usually this function is called by ReportRecordItem's OnMouseMove function
 	//-----------------------------------------------------------------------
-	virtual void OnMouseEnter(UINT nFlags, CPoint point) { UNREFERENCED_PARAMETER(nFlags); UNREFERENCED_PARAMETER(point); }
+	virtual void OnMouseEnter(UINT nFlags, CPoint point)
+	{
+		UNREFERENCED_PARAMETER(nFlags);
+		UNREFERENCED_PARAMETER(point);
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -427,7 +433,11 @@ public:
 	// Remarks:
 	//     Usually this function is called by ReportRecordItem's OnMouseMove function
 	//-----------------------------------------------------------------------
-	virtual void OnMouseLeave(UINT nFlags, CPoint point) { UNREFERENCED_PARAMETER(nFlags); UNREFERENCED_PARAMETER(point); }
+	virtual void OnMouseLeave(UINT nFlags, CPoint point)
+	{
+		UNREFERENCED_PARAMETER(nFlags);
+		UNREFERENCED_PARAMETER(point);
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -438,23 +448,49 @@ public:
 	// Remarks:
 	//     Usually this function is called by ReportRecordItem's OnMouseMove function
 	//-----------------------------------------------------------------------
-	virtual void OnMouseMove(UINT nFlags, CPoint point) { UNREFERENCED_PARAMETER(nFlags); UNREFERENCED_PARAMETER(point); }
+	virtual void OnMouseMove(UINT nFlags, CPoint point)
+	{
+		UNREFERENCED_PARAMETER(nFlags);
+		UNREFERENCED_PARAMETER(point);
+	}
 
 protected:
-	int m_nType;                                  // Control type. See XTPReportItemControlType for details.
-	int m_nIndex;                                 // Control index.
-	CString m_strCaption;                         // Control caption.
-	CFont m_fntCaption;                           // Control caption font.
-	COLORREF m_clrCaption;                        // Control caption color.
-	CSize m_sizeControl;                          // Control size. If size is (<=0, <=0), the control occupies entire cell.
-	CRect m_rcControl;                            // Control rectangle.
-	UINT m_unFlags;                               // Control flags.
-	XTPReportItemControlAlignment m_Alignment;    // Control alignment. See XTPReportItemControlAlignment for details.
-	BOOL m_bEnabled;                              // Control enable flag.
-	int m_nState;                                 // Control state. Depends on control type.
-	BOOL m_bThemed;                               // TRUE if control is themed, FALSE otherwise.
-	CMap<int, int, int, int> m_mapIcon;           // Control icon map.
+	int m_nType;		  // Control type. See XTPReportItemControlType for details.
+	int m_nIndex;		  // Control index.
+	CString m_strCaption; // Control caption.
 
+	CXTPFont m_xtpFontCaption; // Control caption font.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntCaption, m_xtpFontCaption,
+										  GetCaptionFontHandle);
+
+	COLORREF m_clrCaption; // Control caption color.
+	CSize m_sizeControl;   // Control size. If size is (<=0, <=0), the control occupies entire cell.
+	CRect m_rcControl;	 // Control rectangle.
+	UINT m_unFlags;		   // Control flags.
+	XTPReportItemControlAlignment m_Alignment; // Control alignment. See
+											   // XTPReportItemControlAlignment for details.
+	BOOL m_bEnabled;						   // Control enable flag.
+	int m_nState;							   // Control state. Depends on control type.
+	BOOL m_bThemed;							   // TRUE if control is themed, FALSE otherwise.
+	CMap<int, int, int, int> m_mapIcon;		   // Control icon map.
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRecordItemControl);
+
+	afx_msg BSTR OleGetCaption();
+	afx_msg void OleSetCaption(LPCTSTR pcszCaption);
+
+	LPFONTDISP OleGetFont();
+	void OleSetFont(LPFONTDISP pFontDisp);
+
+	afx_msg void OleSetSize(long cx, long cy);
+	afx_msg void OleGetRect(long* pnLeft, long* pnTop, long* pnRight, long* pnBottom);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 	friend class CXTPReportRecordItemControls;
 	friend class CXTPReportRecordItemButton;
@@ -473,7 +509,6 @@ class _XTP_EXT_CLASS CXTPReportRecordItemButton : public CXTPReportRecordItemCon
 {
 	DECLARE_SERIAL(CXTPReportRecordItemButton)
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Creates an item button.
@@ -549,14 +584,22 @@ public:
 protected:
 	int m_nSavedState; // Button state when the mouse cursor leaves the button area.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPReportRecordItemButton);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
 // Summary:
 //      This typedef used to declare a base class for CXTPReportRecordItemControls.
 //===========================================================================
-typedef CXTPArrayT<CXTPReportRecordItemControl*, CXTPReportRecordItemControl*, LPDISPATCH> CXTPReportRecordItemControls_base;
+typedef CXTPArrayT<CXTPReportRecordItemControl*, CXTPReportRecordItemControl*, LPDISPATCH>
+	CXTPReportRecordItemControls_base;
 
 //===========================================================================
 // Summary:
@@ -569,14 +612,14 @@ typedef CXTPArrayT<CXTPReportRecordItemControl*, CXTPReportRecordItemControl*, L
 //      Also serialization for array items is provided (see DoPropExchange method).
 //===========================================================================
 class _XTP_EXT_CLASS CXTPReportRecordItemControls : public CXTPReportRecordItemControls_base
-//class _XTP_EXT_CLASS CXTPReportRecordItemControls : public CXTPHeapObjectT<CXTPReportRecordItemControls_base, CXTPReportDataAllocator>
+// class _XTP_EXT_CLASS CXTPReportRecordItemControls : public
+// CXTPHeapObjectT<CXTPReportRecordItemControls_base, CXTPReportDataAllocator>
 {
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNAMIC(CXTPReportRecordItemControls)
 	typedef CXTPReportRecordItemControls_base TBase;
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPReportRecordItemControls object.
@@ -603,7 +646,6 @@ public:
 	virtual void DoPropExchange(CXTPPropExchange* pPX);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Adds new control to control list.
@@ -630,7 +672,7 @@ public:
 	// Summary:
 	//     Call this member to remove all controls of the CXTPReportRecordItemControls.
 	//-------------------------------------------------------------------------
-	//void RemoveControls();
+	// void RemoveControls();
 
 	//-----------------------------------------------------------------------
 	// Summary: Removed all controls from collection
@@ -654,25 +696,38 @@ protected:
 	// Summary: This method is called to update CXTPReportRecordItemControl::m_nIndex properties.
 	// Input:   nStartFrom - First item to update
 	//-----------------------------------------------------------------------
-	virtual void RefreshIndexes(int nStartFrom = 0);
+	virtual void RefreshIndexes(int nIndexStart = 0);
 
 public:
 	CXTPReportRecordItem* m_pRecordItem; // pointer to parent record item.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPReportRecordItemControls);
+	DECLARE_ENUM_VARIANT(CXTPReportRecordItemControls)
+
+	afx_msg int OleGetCount();
+	afx_msg LPDISPATCH OleAddButton(int nIndex);
+	// afx_msg LPDISPATCH OleGetButton(int nIndex);
+	virtual LPDISPATCH OleGetItem(long nIndex);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
 // Summary:
 //     This Class represents an item control hook window.
-//     An instance of this window is created when the user presses the left mouse button on an item control.
-//     Further all mouse input goes to this window until the use releases the left mouse button.
-//     The window hooks mouse events and redirects them to the report record item.
+//     An instance of this window is created when the user presses the left mouse button on an item
+//     control. Further all mouse input goes to this window until the use releases the left mouse
+//     button. The window hooks mouse events and redirects them to the report record item.
 // See Also: CXTPReportRecordItem, CXTPReportRecordItemControl
 //===========================================================================
-class CXTPReportRecordItemControlHookWnd : public CWnd
+class _XTP_EXT_CLASS CXTPReportRecordItemControlHookWnd : public CWnd
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary: Constructs CXTPReportRecordItemControlHookWnd window
 	// Input:   pClickArgs - Parameters of cell
@@ -686,13 +741,13 @@ public:
 	~CXTPReportRecordItemControlHookWnd();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	XTP_REPORTRECORDITEM_CLICKARGS m_ClickArgs; // Parameters of cell
 };
@@ -702,120 +757,98 @@ AFX_INLINE void CXTPReportRecordItemControl::SetCaption(LPCTSTR szCaption)
 {
 	m_strCaption = szCaption;
 }
-
-AFX_INLINE CString CXTPReportRecordItemControl::GetCaption()
+AFX_INLINE CString CXTPReportRecordItemControl::GetCaption() const
 {
 	return m_strCaption;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetType()
+AFX_INLINE int CXTPReportRecordItemControl::GetType() const
 {
 	return m_nType;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetIndex()
+AFX_INLINE int CXTPReportRecordItemControl::GetIndex() const
 {
 	return m_nIndex;
 }
-
-AFX_INLINE COLORREF CXTPReportRecordItemControl::GetCaptionColor()
+AFX_INLINE COLORREF CXTPReportRecordItemControl::GetCaptionColor() const
 {
 	return m_clrCaption;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetCaptionColor(COLORREF clrCaption)
 {
 	m_clrCaption = clrCaption;
 }
-
-AFX_INLINE CSize CXTPReportRecordItemControl::GetSize()
+AFX_INLINE CSize CXTPReportRecordItemControl::GetSize() const
 {
 	return m_sizeControl;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetSize(CSize sizeControl)
 {
 	m_sizeControl = sizeControl;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetWidth()
+AFX_INLINE int CXTPReportRecordItemControl::GetWidth() const
 {
 	return m_sizeControl.cx;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetWidth(int nWidth)
 {
 	m_sizeControl.cx = nWidth;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetHeight()
+AFX_INLINE int CXTPReportRecordItemControl::GetHeight() const
 {
 	return m_sizeControl.cy;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetHeight(int nHeight)
 {
 	m_sizeControl.cy = nHeight;
 }
-
-AFX_INLINE CRect CXTPReportRecordItemControl::GetRect()
+AFX_INLINE CRect CXTPReportRecordItemControl::GetRect() const
 {
 	return m_rcControl;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetFlags(UINT unFlags)
 {
 	m_unFlags = unFlags;
 }
-
-AFX_INLINE UINT CXTPReportRecordItemControl::GetFlags()
+AFX_INLINE UINT CXTPReportRecordItemControl::GetFlags() const
 {
 	return m_unFlags;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetAlignment()
+AFX_INLINE int CXTPReportRecordItemControl::GetAlignment() const
 {
 	return m_Alignment;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetAlignment(int nAlignment)
 {
 	m_Alignment = (XTPReportItemControlAlignment)nAlignment;
 }
-
-AFX_INLINE BOOL CXTPReportRecordItemControl::GetEnable()
+AFX_INLINE BOOL CXTPReportRecordItemControl::GetEnable() const
 {
 	return m_bEnabled;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetEnable(BOOL bEnable)
 {
 	m_bEnabled = bEnable;
 }
-
-AFX_INLINE int CXTPReportRecordItemControl::GetState()
+AFX_INLINE int CXTPReportRecordItemControl::GetState() const
 {
 	return m_nState;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetThemed(BOOL bThemed)
 {
 	m_bThemed = bThemed;
 }
-
-AFX_INLINE BOOL CXTPReportRecordItemControl::GetThemed()
+AFX_INLINE BOOL CXTPReportRecordItemControl::GetThemed() const
 {
 	return m_bThemed;
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetIconIndex(int nState, int nIconIndex)
 {
 	m_mapIcon.SetAt(nState, nIconIndex);
 }
-
 AFX_INLINE void CXTPReportRecordItemControl::SetRect(CRect rcControl)
 {
 	m_rcControl = rcControl;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPREPORTRECORDITEMCONTROLS_H__)

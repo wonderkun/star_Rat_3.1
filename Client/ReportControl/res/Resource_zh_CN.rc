@@ -1,7 +1,6 @@
 // ReportControl resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -22,7 +21,7 @@
 #include "ReportControl/Resource.h"
 #include "ReportControl/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
@@ -93,11 +92,11 @@ BEGIN
     XTP_IDS_REPORT_MARGINS_INCH      "页面边距 (英寸)"
     XTP_IDS_REPORT_FILERT_TEXT_HINT  "在此输入过滤文本"
 
-    XTP_IDS_REPORT_INCREASING        "/Increasing"
-    XTP_IDS_REPORT_DECREASING        "/Decreasing"
-    XTP_IDS_REPORT_EXPAND            "Expand"
-    XTP_IDS_REPORT_COLLAPSE          "Collapse"
+    XTP_IDS_REPORT_INCREASING        "或增加"
+    XTP_IDS_REPORT_DECREASING        "/減少"
+    XTP_IDS_REPORT_EXPAND            "擴大"
+    XTP_IDS_REPORT_COLLAPSE          "收起"
 
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)

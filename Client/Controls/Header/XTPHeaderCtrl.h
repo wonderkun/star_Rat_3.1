@@ -1,7 +1,6 @@
 // XTPHeaderCtrl.h interface for the CXTPHeaderCtrl class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTHEADERCTRL_H__)
-#define __XTHEADERCTRL_H__
+#	define __XTHEADERCTRL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManager;
 class CXTPHeaderCtrlTheme;
@@ -67,7 +68,6 @@ public:
 	virtual ~CXTPHeaderCtrl();
 
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to enable auto-sizing for the header control.
@@ -170,7 +170,8 @@ public:
 	// </code>
 	//--------------------------------------------------------------------
 	void SetBitmap(int iCol, UINT uBitmapID, DWORD dwRemove = NULL);
-	void SetBitmap(int iCol, UINT uBitmapID, BOOL bRemove, COLORREF crMask); //<combine CXTPHeaderCtrl::SetBitmap@int@UINT@DWORD>
+	void SetBitmap(int iCol, UINT uBitmapID, BOOL bRemove,
+				   COLORREF crMask); //<combine CXTPHeaderCtrl::SetBitmap@int@UINT@DWORD>
 
 	//--------------------------------------------------------------------
 	// Summary:
@@ -351,7 +352,8 @@ public:
 	//     Call this member to switch the visual theme of the control.
 	// Parameters:
 	//     eTheme  - New window theme. Can be any of the values listed in the Remarks section.
-	//     eScheme - Color scheme used the the theme.  Can be any of the values listed in the Remarks section.
+	//     eScheme - Color scheme used the the theme.  Can be any of the values listed in the
+	//     Remarks section.
 	// Remarks:
 	//     eTheme can be one of the following values:
 	//     * <b>xtpControlThemeDefault</b> Use default theme.
@@ -371,7 +373,6 @@ public:
 	CXTPHeaderCtrlTheme* GetTheme();
 
 protected:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     This member function is used by the header control to determine
@@ -431,7 +432,7 @@ protected:
 	//}}AFX_VIRTUAL
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPHeaderCtrl)
@@ -455,41 +456,48 @@ protected:
 	afx_msg void OnAlignRight();
 	//}}AFX_MSG
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	int                  m_iMinSize;      // Minimum column size for an auto-size header control.
-	int                  m_nPos;          // Index of the popup menu contained in the menu.
-	int                  m_iOverIndex;    // Column mouse is currently hovering.
-	int                  m_nSortedCol;    // Last column pressed during sort.
-	bool                 m_bRTL;          // Used internally to determine if text is right-to-left or left-to-right (depends on system locale).
-	bool                 m_bAutoSize;     // true if the header control columns are auto-sizing.
-	BOOL                 m_bEnableMenus;  // TRUE to disable the popup menu display.
-	BOOL                 m_bAscending;    // Used, when column is pressed, to draw a sort arrow.
-	BOOL                 m_bLBtnDown;     // TRUE if left mouse button is pressed.
-	BOOL                 m_bPainted;      // Used during paint operations.
-	UINT                 m_popupMenuID;   // Popup menu resource ID.
-	CPoint               m_pt;            // Point where right click took place.
-	CList<int, int&>     m_arFrozenCols;  // List of columns that are not sizable.
-	CXTPHeaderCtrlTheme* m_pTheme;        // Points to the active theme.
-	CXTPImageManager*    m_pImageManager; // Pointer to ImageManager associated with header.
+	int m_iMinSize;   // Minimum column size for an auto-size header control.
+	int m_nPos;		  // Index of the popup menu contained in the menu.
+	int m_iOverIndex; // Column mouse is currently hovering.
+	int m_nSortedCol; // Last column pressed during sort.
+	bool m_bRTL; // Used internally to determine if text is right-to-left or left-to-right (depends
+				 // on system locale).
+	bool m_bAutoSize;				   // true if the header control columns are auto-sizing.
+	BOOL m_bEnableMenus;			   // TRUE to disable the popup menu display.
+	BOOL m_bAscending;				   // Used, when column is pressed, to draw a sort arrow.
+	BOOL m_bLBtnDown;				   // TRUE if left mouse button is pressed.
+	BOOL m_bPainted;				   // Used during paint operations.
+	UINT m_popupMenuID;				   // Popup menu resource ID.
+	CPoint m_pt;					   // Point where right click took place.
+	CList<int, int&> m_arFrozenCols;   // List of columns that are not sizable.
+	CXTPHeaderCtrlTheme* m_pTheme;	 // Points to the active theme.
+	CXTPImageManager* m_pImageManager; // Pointer to ImageManager associated with header.
 
 	friend class CXTPHeaderCtrlTheme;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPHeaderCtrl::GetAscending() const {
-	ASSERT(::IsWindow(m_hWnd)); return m_bAscending;
+AFX_INLINE BOOL CXTPHeaderCtrl::GetAscending() const
+{
+	ASSERT(::IsWindow(m_hWnd));
+	return m_bAscending;
 }
-AFX_INLINE void CXTPHeaderCtrl::EnablePopupMenus(BOOL bEnableMenus) {
+AFX_INLINE void CXTPHeaderCtrl::EnablePopupMenus(BOOL bEnableMenus)
+{
 	m_bEnableMenus = bEnableMenus;
 }
-AFX_INLINE CXTPImageManager* CXTPHeaderCtrl::GetImageManager() const {
+AFX_INLINE CXTPImageManager* CXTPHeaderCtrl::GetImageManager() const
+{
 	return m_pImageManager;
 }
-AFX_INLINE CXTPHeaderCtrlTheme* CXTPHeaderCtrl::GetTheme() {
+AFX_INLINE CXTPHeaderCtrlTheme* CXTPHeaderCtrl::GetTheme()
+{
 	return m_pTheme;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTHEADERCTRL_H__)

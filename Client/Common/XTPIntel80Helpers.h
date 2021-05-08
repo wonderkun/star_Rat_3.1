@@ -1,7 +1,6 @@
 // XTPIntel80Helpers.h : Intel(R) C++ 8.0 helpers
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,58 +19,65 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPINTEL80HELPERS_H__)
-#define __XTPINTEL80HELPERS_H__
+#	define __XTPINTEL80HELPERS_H__
 
-#if (_MSC_VER >= 1000)
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if (_MSC_VER >= 1000)
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#ifdef __INTEL_COMPILER
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#define USES_PROTECTED_ACCESS(theFiend, theClass, theType, theMember)\
-class CAccess##theClass : public theClass\
-{ public: inline theType Get##theMember() {return theMember;}\
-	friend class theFiend;\
-};
+#	ifdef __INTEL_COMPILER
 
-#define PROTECTED_ACCESS(theClass, thePointer, theMember)\
-(((CAccess##theClass*)thePointer)->Get##theMember())
+#		define USES_PROTECTED_ACCESS(theFiend, theClass, theType, theMember)                      \
+			class CAccess##theClass : public theClass                                              \
+			{                                                                                      \
+			public:                                                                                \
+				inline theType Get##theMember()                                                    \
+				{                                                                                  \
+					return theMember;                                                              \
+				}                                                                                  \
+				friend class theFiend;                                                             \
+			};
 
-#define PROTECTED_DEFWINDOWPROC_CALL(theFiend, thePonter, m, w, l)\
-class CAccessWnd : public CWnd\
-{\
-	public: inline void DefWindowProcBase(UINT message, WPARAM wParam, LPARAM lParam) {\
-		CWnd::DefWindowProc(message, wParam, lParam);\
-	}\
-	friend class theFiend;\
-};\
-((CAccessWnd*)(thePonter))->DefWindowProcBase(m, w, l);
+#		define PROTECTED_ACCESS(theClass, thePointer, theMember)                                  \
+			(((CAccess##theClass*)thePointer)->Get##theMember())
 
+#		define PROTECTED_DEFWINDOWPROC_CALL(theFiend, thePonter, m, w, l)                         \
+			class CAccessWnd : public CWnd                                                         \
+			{                                                                                      \
+			public:                                                                                \
+				inline void DefWindowProcBase(UINT message, WPARAM wParam, LPARAM lParam)          \
+				{                                                                                  \
+					CWnd::DefWindowProc(message, wParam, lParam);                                  \
+				}                                                                                  \
+				friend class theFiend;                                                             \
+			};                                                                                     \
+			((CAccessWnd*)(thePonter))->DefWindowProcBase(m, w, l);
 
+#	else
 
+#		define USES_PROTECTED_ACCESS(theFiend, theClass, theType, theMember)                      \
+			class CAccess##theClass : public theClass                                              \
+			{                                                                                      \
+				friend class theFiend;                                                             \
+			};
 
-#else
+#		define PROTECTED_ACCESS(theClass, thePointer, theMember)                                  \
+			(((CAccess##theClass*)thePointer)->theMember)
 
-#define USES_PROTECTED_ACCESS(theFiend, theClass, theType, theMember)\
-class CAccess##theClass : public theClass\
-{\
-	friend class theFiend;\
-};
+#		define PROTECTED_DEFWINDOWPROC_CALL(theFiend, thePonter, m, w, l)                         \
+			class CAccessWnd : public CWnd                                                         \
+			{                                                                                      \
+				friend class theFiend;                                                             \
+			};                                                                                     \
+			((CAccessWnd*)thePonter)->DefWindowProc(m, w, l);
 
-#define PROTECTED_ACCESS(theClass, thePointer, theMember)\
-(((CAccess##theClass*)thePointer)->theMember)
-
-#define PROTECTED_DEFWINDOWPROC_CALL(theFiend, thePonter, m, w, l)\
-class CAccessWnd : public CWnd\
-{\
-	friend class theFiend;\
-};\
-((CAccessWnd*)thePonter)->DefWindowProc(m, w, l);
-
-#endif
+#	endif
 
 //}}AFX_CODEJOCK_PRIVATE
 
 //////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPINTEL80HELPERS_H__)

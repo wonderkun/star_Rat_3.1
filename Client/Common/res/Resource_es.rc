@@ -1,7 +1,6 @@
 // Common resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,12 +23,36 @@
 #include "Common/Resource.h"
 #include "Common/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESP)
 #ifdef _WIN32
 LANGUAGE LANG_SPANISH, SUBLANG_SPANISH_MODERN
 #pragma code_page(1252)
 #endif //_WIN32
 
+#ifndef _AFXDLL
+
+#if defined(XTP_MSVC_VER) && (XTP_MSVC_VER < 90)
+	#include <l.esp/afxctl.rc>
+	#include <l.esp/afxdb.rc>
+	#include <l.esp/afxolecl.rc>
+	#include <l.esp/afxolesv.rc>
+	#include <l.esp/afxprint.rc>
+	#include <l.esp/afxres.rc>
+#else
+	#include <l.esn/afxctl.rc>
+	#include <l.esn/afxdb.rc>
+	#include <l.esn/afxolecl.rc>
+	#include <l.esn/afxolesv.rc>
+	#include <l.esn/afxprint.rc>
+	#include <l.esn/afxres.rc>
+#endif
+
+#ifdef _XTP_INCLUDE_MFC_STRINGS
+	#include "Common/res/mfc/l.esn/indicate.rc"
+	#include "Common/res/mfc/l.esn/prompts.rc"
+#endif
+
+#endif	//_AFXDLL
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -87,7 +110,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_ONEPAGE         "&Una página"
     XTP_IDS_TWOPAGE         "Dos páginas"
-    XTP_IDS_PREVIEWPAGEDESC "Page %u\nPages %u-%u"
+    XTP_IDS_PREVIEWPAGEDESC "La página %u\nPáginas %u-%u"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -145,5 +168,5 @@ BEGIN
 END
 
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESP)
 #endif // __XTPCOMMONRESOURCE_RC__

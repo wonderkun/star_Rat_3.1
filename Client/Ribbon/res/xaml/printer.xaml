@@ -1,0 +1,16 @@
+﻿<StackPanel Orientation='Vertical'>
+  <Viewbox xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' Stretch='Uniform' Width="32" Height="32">
+    <Canvas Width='32' Height='32' Canvas.Left='0' Canvas.Top='0'>
+      <Canvas>
+        <Rectangle Canvas.Left='8.5' Canvas.Top='2.5' Width='15' Height='7.0667' Fill='#FFFFFF' Stroke='#797979' StrokeThickness='1' StrokeMiterLimit='1' StrokeLineJoin='Round'/>
+        <Path Data='M24.75,17h-17.5C6.0074,17,5,15.9926,5,14.75V9h22v5.75C27,15.9926,25.9926,17,24.75,17z' Fill='#FFFFFF'/>
+        <Path Data='M24.4833,16H7.5167C6.679,16,6,15.321,6,14.4833V8h20v6.4833C26,15.321,25.321,16,24.4833,16z' Fill='#3E79B4'/>
+        <Rectangle Canvas.Left='8.5' Canvas.Top='21.5' Width='15' Height='8' Fill='#FFFFFF' Stroke='#797979' StrokeThickness='1' StrokeMiterLimit='1' StrokeLineJoin='Round'/>
+        <Path Data='M11.5,24.5h9M11.5,26.5h9' Stroke='#B4B4B5' StrokeThickness='1' StrokeStartLineCap='Round' StrokeEndLineCap='Round' StrokeMiterLimit='1' StrokeLineJoin='Round'/>
+        <Path Data='M5,22H4c-0.5523,0,-1,-0.4477,-1,-1v0c0,-0.5523,0.4477,-1,1,-1h1c0.5523,0,1,0.4477,1,1v0C6,21.5523,5.5523,22,5,22z' Fill='#FFFFFF'/>
+        <Path Data='M29.2,9h-2.2v5.75c0,1.2426,-1.0074,2.25,-2.25,2.25h-17.5C6.0074,17,5,15.9926,5,14.75V9H2.8c-0.9941,0,-1.8,0.8059,-1.8,1.8v11.4c0,0.9941,0.8059,1.8,1.8,1.8h6.2v-2h14v2h6.2c0.9941,0,1.8,-0.8059,1.8,-1.8V10.8C31,9.8059,30.1941,9,29.2,9zM5,22H4c-0.5523,0,-1,-0.4477,-1,-1c0,-0.5523,0.4477,-1,1,-1h1c0.5523,0,1,0.4477,1,1C6,21.5523,5.5523,22,5,22z' Fill='#797979'/>
+      </Canvas>
+    </Canvas>
+  </Viewbox>
+  <TextBlock Padding='0, 0, 0, 0' FontSize='12' FontQuality='ClearType' HorizontalAlignment='Center'>Print</TextBlock>
+</StackPanel>

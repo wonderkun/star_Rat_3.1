@@ -1,7 +1,6 @@
 // XTButtonTheme.h: interface for the CXTButtonTheme class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,15 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTBUTTONTHEME_H__)
-#define __XTBUTTONTHEME_H__
+#	define __XTBUTTONTHEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#include "XTThemeManager.h"
-#include "Common/XTPDrawHelpers.h"
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
 class CXTButton;
+class CXTPWinThemeWrapper;
 
 DECLARE_THEME_FACTORY(CXTButtonTheme)
 
@@ -56,7 +53,6 @@ public:
 	virtual ~CXTButtonTheme();
 
 public:
-
 	//--------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to return a pointer to the Windows
@@ -151,7 +147,8 @@ public:
 	//     clrBtnText   - An RGB value that represents the user defined
 	//                    text color on push buttons.
 	//-----------------------------------------------------------------------
-	virtual void SetAlternateColors(COLORREF clr3DFace, COLORREF clr3DHilight, COLORREF clr3DShadow, COLORREF clrBtnText);
+	virtual void SetAlternateColors(COLORREF clr3DFace, COLORREF clr3DHilight, COLORREF clr3DShadow,
+									COLORREF clrBtnText);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -194,7 +191,6 @@ public:
 	virtual void SetColorText(COLORREF clrText);
 
 protected:
-
 	// --------------------------------------------------------------------
 	// Summary:
 	//     This member function will set the proper XY coordinates for the
@@ -269,7 +265,8 @@ protected:
 	//     A CPoint object that represents the x-y location for the button
 	//     image.
 	// --------------------------------------------------------------------------
-	virtual CPoint CalculateImagePosition(CDC* pDC, UINT nState, CRect& rcItem, bool bHasPushedImage, CXTButton* pButton);
+	virtual CPoint CalculateImagePosition(CDC* pDC, UINT nState, CRect& rcItem,
+										  bool bHasPushedImage, CXTButton* pButton);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -343,18 +340,18 @@ protected:
 	virtual void DrawFocusRect(CDC* pDC, UINT nState, CRect& rcItem, CXTButton* pButton);
 
 protected:
-
-	BOOL                  m_bShowIcon;          // TRUE if the buttons displays an icon.
-	BOOL                  m_bOffsetHiliteText;  // TRUE if highlighted text is animated.
-	CFont*                m_pFont;              // Points to a user defined font for the theme.
-	CXTPPaintManagerColor m_crBack;             // RGB value for background color.
-	CXTPPaintManagerColor m_crText;             // RGB value for text color.
-	CXTPPaintManagerColor m_crTextDisabled;     // RGB value for disabled text color.
-	CXTPPaintManagerColor m_crBorderHilite;     // RGB value for border highlight color.
-	CXTPPaintManagerColor m_crBorderShadow;     // RGB value for border shadow color.
-	CXTPPaintManagerColor m_crBorder3DHilite;   // RGB value for 3D border highlight color.
-	CXTPPaintManagerColor m_crBorder3DShadow;   // RGB value for 3D border shadow color.
-	CXTPWinThemeWrapper   m_themeWrapper;       // Wraps the Windows XP theme API that is used to display Windows XP themes.
+	BOOL m_bShowIcon;						  // TRUE if the buttons displays an icon.
+	BOOL m_bOffsetHiliteText;				  // TRUE if highlighted text is animated.
+	CFont* m_pFont;							  // Points to a user defined font for the theme.
+	CXTPPaintManagerColor m_crBack;			  // RGB value for background color.
+	CXTPPaintManagerColor m_crText;			  // RGB value for text color.
+	CXTPPaintManagerColor m_crTextDisabled;   // RGB value for disabled text color.
+	CXTPPaintManagerColor m_crBorderHilite;   // RGB value for border highlight color.
+	CXTPPaintManagerColor m_crBorderShadow;   // RGB value for border shadow color.
+	CXTPPaintManagerColor m_crBorder3DHilite; // RGB value for 3D border highlight color.
+	CXTPPaintManagerColor m_crBorder3DShadow; // RGB value for 3D border shadow color.
+	CXTPWinThemeWrapper* m_themeWrapper; // Wraps the Windows XP theme API that is used to display
+										 // Windows XP themes.
 
 	friend class CXTButton;
 	friend class CXTThemeManager;
@@ -362,13 +359,16 @@ protected:
 
 //===========================================================================
 
-AFX_INLINE CXTPWinThemeWrapper* CXTButtonTheme::GetThemeWrapper() {
-	return &m_themeWrapper;
+AFX_INLINE CXTPWinThemeWrapper* CXTButtonTheme::GetThemeWrapper()
+{
+	return m_themeWrapper;
 }
-AFX_INLINE void CXTButtonTheme::ShowIcon(BOOL bShowIcon) {
+AFX_INLINE void CXTButtonTheme::ShowIcon(BOOL bShowIcon)
+{
 	m_bShowIcon = bShowIcon;
 }
-AFX_INLINE BOOL CXTButtonTheme::IsIconVisible() const {
+AFX_INLINE BOOL CXTButtonTheme::IsIconVisible() const
+{
 	return m_bShowIcon;
 }
 
@@ -459,7 +459,6 @@ public:
 	virtual void SetTextHiliteColor(COLORREF color);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to return the color used to draw
@@ -519,19 +518,20 @@ protected:
 	virtual void DrawFocusRect(CDC* pDC, UINT nState, CRect& rcItem, CXTButton* pButton);
 
 protected:
-	BOOL     m_bWordTheme;   // TRUE if MS Word theme is used.
-	BOOL     m_bFadedIcon;   // TRUE if the button uses faded icons.
-	BOOL     m_bAnimateIcon; // TRUE if the button animates on mouse over.
-	CXTPPaintManagerColor m_crBackPushed; // RGB value for pushed background color.
-	CXTPPaintManagerColor m_crBackHilite; // RGB value for highlighted background color.
-	CXTPPaintManagerColor m_crTextPushed; // RGB value for highlighted text color.
-	CXTPPaintManagerColor m_crTextHilite; // RGB value for pushed text color.
-	CXTPPaintManagerColor m_crBackChecked;// RGB value for when the control is checked.
+	BOOL m_bWordTheme;					   // TRUE if MS Word theme is used.
+	BOOL m_bFadedIcon;					   // TRUE if the button uses faded icons.
+	BOOL m_bAnimateIcon;				   // TRUE if the button animates on mouse over.
+	CXTPPaintManagerColor m_crBackPushed;  // RGB value for pushed background color.
+	CXTPPaintManagerColor m_crBackHilite;  // RGB value for highlighted background color.
+	CXTPPaintManagerColor m_crTextPushed;  // RGB value for highlighted text color.
+	CXTPPaintManagerColor m_crTextHilite;  // RGB value for pushed text color.
+	CXTPPaintManagerColor m_crBackChecked; // RGB value for when the control is checked.
 };
 
 //===========================================================================
 
-AFX_INLINE void CXTButtonThemeOfficeXP::UseWordTheme(BOOL bWordTheme) {
+AFX_INLINE void CXTButtonThemeOfficeXP::UseWordTheme(BOOL bWordTheme)
+{
 	m_bWordTheme = bWordTheme;
 	RefreshMetrics();
 }

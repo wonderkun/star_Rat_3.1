@@ -1,7 +1,6 @@
-// XTPCalendarTheme.h: interface for the CXTPCalendarControlPaintManager class.
+// XTPCalendarTheme.h: interface for the CXTPCalendarPaintManager class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,32 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_THEME_H__)
-#define _XTP_CALENDAR_THEME_H__
+#	define _XTP_CALENDAR_THEME_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "XTPCalendarViewPart.h"
-#include "XTPCalendarPtrCollectionT.h"
+#	if (_MSC_VER > 1100)
+#		pragma warning(push)
+#	endif
 
-#include "XTPCalendarView.h"
-#include "XTPCalendarDayView.h"
-#include "XTPCalendarDayViewTimeScale.h"
-#include "XTPCalendarWeekView.h"
-#include "XTPCalendarTimeLineView.h"
-#include "XTPCalendarTimeLineViewTimeScale.h"
+#	pragma warning(disable : 4250)
 
-#if (_MSC_VER > 1100)
-#pragma warning(push)
-#endif
-
-#pragma warning(disable: 4250)
-
-#pragma warning(disable : 4100)// TODO: remove when themes will be finished
+#	pragma warning(disable : 4100) // TODO: remove when themes will be finished
 
 /////////////////////////////////////////////////////////////////////////////
 class CXTPCalendarControl;
@@ -66,8 +55,17 @@ class CXTPImageManager;
 class CXTPResourceImage;
 class CXTPResourceImages;
 class CXTPResourceImageList;
-
+class CXTPCalendarWeekViewDay;
+class CXTPCalendarEvent;
+class CXTPCalendarViewGroup;
 class CXTPCalendarTheme;
+class CXTPCalendarViewEventSubjectEditor;
+class CXTPPropExchange;
+class CXTPCalendarFlagsSet_imp;
+
+struct XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS;
+struct XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS;
+struct XTP_LC_TIMEFORMAT;
 
 /////////////////////////////////////////////////////////////////////////////
 //{{AFX_CODEJOCK_PRIVATE
@@ -76,141 +74,190 @@ class CXTPCalendarTheme;
 // The Service Pack 1 for VS 7.1 fix this compiler bug.
 // XTP_SAFE_CALL_BASE macro helps to avoid this problem in any VS version.
 //===========================================================================
-#if (_MSC_VER == 1310)
-	#define XTP_SAFE_CALL_BASE(_TBase, memberFunc) ((_TBase*)this)->_TBase::memberFunc
-#else
-	#define XTP_SAFE_CALL_BASE(_TBase, memberFunc) _TBase::memberFunc
-#endif
+#	if (_MSC_VER == 1310)
+#		define XTP_SAFE_CALL_BASE(_TBase, memberFunc) ((_TBase*)this)->_TBase::memberFunc
+#	else
+#		define XTP_SAFE_CALL_BASE(_TBase, memberFunc) _TBase::memberFunc
+#	endif
 
-#define DECLARE_THEMEPART_MEMBER_BASE
-#undef DECLARE_THEMEPART_MEMBER_BASE
-#define DECLARE_THEMEPART_MEMBER_BASE(cClassBase, memberName) \
-public:                             \
-	virtual cClassBase* Get##memberName##Part() {   \
-		ASSERT(FALSE);                          \
-		return NULL;                            \
-	}
+#	define DECLARE_THEMEPART_MEMBER_BASE
+#	undef DECLARE_THEMEPART_MEMBER_BASE
+#	define DECLARE_THEMEPART_MEMBER_BASE(cClassBase, memberName)                                  \
+	public:                                                                                        \
+		virtual cClassBase* Get##memberName##Part() const                                          \
+		{                                                                                          \
+			ASSERT(FALSE);                                                                         \
+			return NULL;                                                                           \
+		}
 
-#define DECLARE_THEMEPART_MEMBER_BASE2
-#undef DECLARE_THEMEPART_MEMBER_BASE2
-#define DECLARE_THEMEPART_MEMBER_BASE2(cClassBase, memberName) \
-public:                             \
-	virtual cClassBase* Get##memberName##Part() {   \
-		return NULL;                            \
-	}
+#	define DECLARE_THEMEPART_MEMBER_BASE2
+#	undef DECLARE_THEMEPART_MEMBER_BASE2
+#	define DECLARE_THEMEPART_MEMBER_BASE2(cClassBase, memberName)                                 \
+	public:                                                                                        \
+		virtual cClassBase* Get##memberName##Part() const                                          \
+		{                                                                                          \
+			return NULL;                                                                           \
+		}
 
 //=============================================================
-#define DECLARE_THEMEPART
-#undef DECLARE_THEMEPART
+#	define DECLARE_THEMEPART
+#	undef DECLARE_THEMEPART
 
-#define DECLARE_THEMEPART_CUSTOM
-#undef DECLARE_THEMEPART_CUSTOM
+#	define DECLARE_THEMEPART_CUSTOM
+#	undef DECLARE_THEMEPART_CUSTOM
 
-#define DECLARE_THEMEPART2
-#undef DECLARE_THEMEPART2
+#	define DECLARE_THEMEPART2
+#	undef DECLARE_THEMEPART2
 
-#if (_MSC_VER <= 1200) // Using Visual C++ 5.0, 6.0
-	#define DECLARE_THEMEPART(cClass, cClassBase) \
-		class _XTP_EXT_CLASS cClass##_Base : virtual public cClassBase {}; /* To access base class members (in VC 6 compiler) */ \
-		class _XTP_EXT_CLASS cClass : virtual public cClass##_Base \
-		{public:  \
-			typedef cClass##_Base TBase;    \
-		public:                             \
+#	if (_MSC_VER <= 1200) // Using Visual C++ 5.0, 6.0
+#		define DECLARE_THEMEPART(cClass, cClassBase)                                              \
+			class _XTP_EXT_CLASS cClass##_Base : virtual public cClassBase                         \
+			{                                                                                      \
+			}; /* To access base class members (in VC 6 compiler) */                               \
+			class _XTP_EXT_CLASS cClass : virtual public cClass##_Base                             \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClass##_Base TBase;                                                       \
+                                                                                                   \
+			public:
 
-	#define DECLARE_THEMEPART_CUSTOM(cClass, cClassBase) \
-		class cClass##_Base : virtual public cClassBase {}; /* To access base class members (in VC 6 compiler) */ \
-		class cClass : virtual public cClass##_Base \
-		{public:  \
-			typedef cClass##_Base TBase; \
-		public:
+#		define DECLARE_THEMEPART_CUSTOM(cClass, cClassBase)                                       \
+			class cClass##_Base : virtual public cClassBase                                        \
+			{                                                                                      \
+			}; /* To access base class members (in VC 6 compiler) */                               \
+			class cClass : virtual public cClass##_Base                                            \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClass##_Base TBase;                                                       \
+                                                                                                   \
+			public:
 
-	#define DECLARE_THEMEPART2(cClass, cClassBase, cClassBase2) \
-		class _XTP_EXT_CLASS cClass##_Base : virtual public cClassBase {}; /* To access base class members (in VC 6 compiler) */ \
-		class _XTP_EXT_CLASS cClass##_Base2 : virtual public cClassBase2 {}; /* To access base class members (in VC 6 compiler) */ \
-		class _XTP_EXT_CLASS cClass : virtual public cClass##_Base, virtual public cClass##_Base2 \
-		{public:  \
-			typedef cClass##_Base TBase; \
-			typedef cClass##_Base2 TBase2; \
-		public:
+#		define DECLARE_THEMEPART2(cClass, cClassBase, cClassBase2)                                \
+			class _XTP_EXT_CLASS cClass##_Base : virtual public cClassBase                         \
+			{                                                                                      \
+			}; /* To access base class members (in VC 6 compiler) */                               \
+			class _XTP_EXT_CLASS cClass##_Base2 : virtual public cClassBase2                       \
+			{                                                                                      \
+			}; /* To access base class members (in VC 6 compiler) */                               \
+			class _XTP_EXT_CLASS cClass                                                            \
+				: virtual public cClass##_Base                                                     \
+				, virtual public cClass##_Base2                                                    \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClass##_Base TBase;                                                       \
+				typedef cClass##_Base2 TBase2;                                                     \
+                                                                                                   \
+			public:
 
+#	else
+#		define DECLARE_THEMEPART(cClass, cClassBase)                                              \
+			class _XTP_EXT_CLASS cClass : virtual public cClassBase                                \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClassBase TBase;                                                          \
+                                                                                                   \
+			public:
 
-#else
-	#define DECLARE_THEMEPART(cClass, cClassBase) \
-		class _XTP_EXT_CLASS cClass : virtual public cClassBase \
-		{ public: \
-			typedef cClassBase TBase;    \
-		public:                             \
+#		define DECLARE_THEMEPART_CUSTOM(cClass, cClassBase)                                       \
+			class cClass : virtual public cClassBase                                               \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClassBase TBase;                                                          \
+                                                                                                   \
+			public:
 
-	#define DECLARE_THEMEPART_CUSTOM(cClass, cClassBase) \
-		class cClass : virtual public cClassBase \
-		{public: \
-			typedef cClassBase TBase; \
-		public:
+#		define DECLARE_THEMEPART2(cClass, cClassBase, cClassBase2)                                \
+			class _XTP_EXT_CLASS cClass                                                            \
+				: virtual public cClassBase                                                        \
+				, virtual public cClassBase2                                                       \
+			{                                                                                      \
+			public:                                                                                \
+				typedef cClassBase TBase;                                                          \
+				typedef cClassBase2 TBase2;                                                        \
+                                                                                                   \
+			public:
 
-	#define DECLARE_THEMEPART2(cClass, cClassBase, cClassBase2) \
-		class _XTP_EXT_CLASS cClass : virtual public cClassBase, virtual public cClassBase2 \
-		{public: \
-			typedef cClassBase TBase; \
-			typedef cClassBase2 TBase2; \
-		public:
-
-#endif
+#	endif
 
 //=============================================================
 
 // TODO: custom via defines...
-#define DECLARE_THEMEPART2_CUSTOM
-#undef DECLARE_THEMEPART2_CUSTOM
-#define DECLARE_THEMEPART2_CUSTOM(cClass, cClassBase, cClassBase2) \
-	class cClass##_Base : virtual public cClassBase {}; /* To access base class members (in VC 6 compiler) */ \
-	class cClass##_Base2 : virtual public cClassBase2 {}; /* To access base class members (in VC 6 compiler) */ \
-	class cClass : virtual public cClass##_Base, virtual public cClass##_Base2 \
-	{public: \
-		typedef cClass##_Base TBase; \
-		typedef cClass##_Base2 TBase2; \
-	public:
+#	define DECLARE_THEMEPART2_CUSTOM
+#	undef DECLARE_THEMEPART2_CUSTOM
+#	define DECLARE_THEMEPART2_CUSTOM(cClass, cClassBase, cClassBase2)                             \
+		class cClass##_Base : virtual public cClassBase                                            \
+		{                                                                                          \
+		}; /* To access base class members (in VC 6 compiler) */                                   \
+		class cClass##_Base2 : virtual public cClassBase2                                          \
+		{                                                                                          \
+		}; /* To access base class members (in VC 6 compiler) */                                   \
+		class cClass                                                                               \
+			: virtual public cClass##_Base                                                         \
+			, virtual public cClass##_Base2                                                        \
+		{                                                                                          \
+		public:                                                                                    \
+			typedef cClass##_Base TBase;                                                           \
+			typedef cClass##_Base2 TBase2;                                                         \
+                                                                                                   \
+		public:
 
 //=============================================================
-#define DECLARE_THEMEPART_MEMBER_
-#undef DECLARE_THEMEPART_MEMBER_
-#define DECLARE_THEMEPART_MEMBER_(nIndex, cClass, memberName, cClassBase) \
-protected:                                                  \
-	virtual CXTPCalendarThemePart* CreateMember##nIndex(){  \
-		ASSERT(TBase::CreateMember##nIndex() == NULL);      \
-		m_p##memberName = new cClass();                     \
-		if (m_p##memberName)                                \
-			m_p##memberName->SetInstanceName(_T(#memberName));  \
-		return m_p##memberName;     \
-	}                               \
-public:                             \
-	cClass* m_p##memberName;        \
-public:                             \
-	virtual cClassBase* Get##memberName##Part() {       \
-		return m_p##memberName;                         \
-	}                                                   \
-	virtual cClass* Get##memberName##PartX() {          \
-		return m_p##memberName;                         \
-	}                                                   \
-	virtual void Set##memberName##Part(cClass* pPart) { \
-		if (pPart)                                      \
-		{                                               \
-			if (!pPart->IsCreated())                    \
-				pPart->Create(GetTheme(), this);        \
-			pPart->SetInstanceName(_T(#memberName));    \
-		}                                               \
-		m_p##memberName = pPart;                        \
-		m_arMembers.SetAt(nIndex, pPart);               \
-	}
+#	define DECLARE_THEMEPART_MEMBER_
+#	undef DECLARE_THEMEPART_MEMBER_
+#	define DECLARE_THEMEPART_MEMBER_(nIndex, cClass, memberName, cClassBase)                      \
+	protected:                                                                                     \
+		virtual CXTPCalendarThemePart* CreateMember##nIndex()                                      \
+		{                                                                                          \
+			ASSERT(TBase::CreateMember##nIndex() == NULL);                                         \
+			m_p##memberName = new cClass();                                                        \
+			if (m_p##memberName)                                                                   \
+				m_p##memberName->SetInstanceName(_T(#memberName));                                 \
+			return m_p##memberName;                                                                \
+		}                                                                                          \
+                                                                                                   \
+	public:                                                                                        \
+		cClass* m_p##memberName;                                                                   \
+                                                                                                   \
+	public:                                                                                        \
+		virtual cClassBase* Get##memberName##Part() const                                          \
+		{                                                                                          \
+			return m_p##memberName;                                                                \
+		}                                                                                          \
+		virtual cClass* Get##memberName##PartX() const                                             \
+		{                                                                                          \
+			return m_p##memberName;                                                                \
+		}                                                                                          \
+		virtual void Set##memberName##Part(cClass* pPart)                                          \
+		{                                                                                          \
+			if (pPart)                                                                             \
+			{                                                                                      \
+				if (!pPart->IsCreated())                                                           \
+					pPart->Create(GetTheme(), this);                                               \
+				pPart->SetInstanceName(_T(#memberName));                                           \
+			}                                                                                      \
+			m_p##memberName = pPart;                                                               \
+			m_arMembers.SetAt(nIndex, pPart);                                                      \
+		}
 
 //=============================================================
-#define DECLARE_THEMEPART_MEMBER
-#undef DECLARE_THEMEPART_MEMBER
-#define DECLARE_THEMEPART_MEMBER(nIndex, cClass, memberName) \
-	DECLARE_THEMEPART_MEMBER_(nIndex, cClass, memberName, CXTPCalendarTheme::##cClass)
+#	define DECLARE_THEMEPART_MEMBER
+#	undef DECLARE_THEMEPART_MEMBER
+#	define DECLARE_THEMEPART_MEMBER(nIndex, cClass, memberName)                                   \
+		DECLARE_THEMEPART_MEMBER_(nIndex, cClass, memberName, CXTPCalendarTheme::##cClass)
 // }}AFX_CODEJOCK_PRIVATE
 
 // {{AFX_CODEJOCK_PRIVATE
 /////////////////////////////////////////////////////////////////////////////
+#	ifdef _XTP_ACTIVEX
+// {{ AFX_CODEJOCK_PRIVATE
+
+// TODO: Remove unused class....
+class CXTPCalendarThemeAxPart : public CXTPCmdTarget
+{
+public:
+protected:
+};
+#	endif
 
 //=============================================================================
 class _XTP_EXT_CLASS CXTPCalendarThemePart : public CXTPCmdTarget
@@ -222,7 +269,8 @@ public:
 	virtual ~CXTPCalendarThemePart();
 
 	virtual CXTPCalendarThemePart* GetOwner();
-	virtual CXTPCalendarTheme* GetTheme();
+	virtual CXTPCalendarTheme* GetTheme() const;
+	CXTPCalendarControl* GetCalendarControl() const;
 
 	virtual LPCTSTR GetInstanceName();
 	virtual void SetInstanceName(LPCTSTR pcszInstanceName);
@@ -236,26 +284,27 @@ public:
 	virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
 
 public:
-
 	virtual UINT_PTR SetTimer(UINT uTimeOut_ms);
 	virtual void KillTimer(UINT_PTR uTimerID);
 
 	// messages handlers
 	virtual void OnMouseMove(CCmdTarget* pObject, UINT nFlags, CPoint point){};
-	virtual BOOL OnLButtonDown(CCmdTarget* pObject, UINT nFlags, CPoint point){return FALSE;};
+	virtual BOOL OnLButtonDown(CCmdTarget* pObject, UINT nFlags, CPoint point)
+	{
+		return FALSE;
+	};
 
 	virtual BOOL OnTimer(UINT_PTR uTimerID);
 	virtual void OnDetachCalendar();
 
-
 protected:
-	CXTPCalendarTheme*      m_pTheme;
-	CXTPCalendarThemePart*  m_pOwner;
-	CString                 m_strInstanceName;
+	CXTPCalendarTheme* m_pTheme;
+	CXTPCalendarThemePart* m_pOwner;
+	CString m_strInstanceName;
 
 protected:
 	typedef CXTPCalendarPtrCollectionT<CXTPCalendarThemePart> CThemePartsArray;
-	CThemePartsArray    m_arMembers;
+	CThemePartsArray m_arMembers;
 
 public:
 	virtual BOOL IsCreated();
@@ -264,16 +313,46 @@ public:
 protected:
 	virtual void _CreateMembers();
 
-	virtual CXTPCalendarThemePart* CreateMember0(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember1(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember2(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember3(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember4(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember5(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember6(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember7(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember8(){return NULL;};
-	virtual CXTPCalendarThemePart* CreateMember9(){return NULL;};
+	virtual CXTPCalendarThemePart* CreateMember0()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember1()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember2()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember3()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember4()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember5()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember6()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember7()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember8()
+	{
+		return NULL;
+	};
+	virtual CXTPCalendarThemePart* CreateMember9()
+	{
+		return NULL;
+	};
 
 protected:
 	class _XTP_EXT_CLASS CXTPPropsState
@@ -288,9 +367,9 @@ protected:
 
 		void ClearAll();
 
-	#ifdef _DEBUG
+#	ifdef _DEBUG
 		static int s_dbg_nActiveStates;
-	#endif
+#	endif
 
 	protected:
 		CXTPCalendarTypedPtrAutoDeleteArray<CPtrArray, CMemFile*> m_arStates;
@@ -302,11 +381,12 @@ protected:
 	class _XTP_EXT_CLASS CXTPPropsStateContext
 	{
 		CXTPCalendarThemePart* m_pPart;
-		int                    m_eBeroreDrawFlag;
+		int m_eBeroreDrawFlag;
 
-		//BOOL  m_bAttached;
+		// BOOL  m_bAttached;
 	public:
-		CXTPPropsStateContext(CXTPCalendarThemePart* pPart = NULL, int eBDFlag = 0, BOOL bClearAll = FALSE);
+		CXTPPropsStateContext(CXTPCalendarThemePart* pPart = NULL, int eBDFlag = 0,
+							  BOOL bClearAll = FALSE);
 		virtual ~CXTPPropsStateContext();
 
 		BOOL IsActive()
@@ -317,14 +397,14 @@ protected:
 		void SetData(CXTPCalendarThemePart* pPart, int eBDFlag = 0, BOOL bClearAll = FALSE);
 		void Clear();
 
-		//void Attach(CXTPCalendarThemePart* pPart, int eBDFlag = 0);
+		// void Attach(CXTPCalendarThemePart* pPart, int eBDFlag = 0);
 
 		void RestoreState();
 		void SendBeforeDrawThemeObject(LPARAM lParam, int eBDFlag = 0);
 	};
 	friend class CXTPPropsStateContext;
 
-	virtual void SendNotificationAlways(XTP_NOTIFY_CODE EventCode, WPARAM wParam , LPARAM lParam);
+	virtual void SendNotificationAlways(XTP_NOTIFY_CODE EventCode, WPARAM wParam, LPARAM lParam);
 
 	CXTPPropsState m_xPropsState;
 	BOOL m_bSendBeforeDrawThemeObjectEnabled;
@@ -332,15 +412,17 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 // Initial version. Will be expanded in the future.
-class _XTP_EXT_CLASS CXTPCalendarTheme: public CXTPCalendarThemePart
+class _XTP_EXT_CLASS CXTPCalendarTheme : public CXTPCalendarThemePart
 {
 	friend class CXTPCalendarControl;
 	DECLARE_DYNAMIC(CXTPCalendarTheme)
 
 	typedef CXTPCalendarThemePart TBase;
+
 protected:
 	CXTPCalendarControl* m_pCalendar;
-	CMap<UINT, UINT, UINT, UINT&>   m_mapEventIdEventSlotId;        //The event id solt id map for allday/multiday events
+	CMap<UINT, UINT, UINT, UINT&> m_mapEventIdEventSlotId; // The event id solt id map for
+														   // allday/multiday events
 	virtual void SetCalendarControl(CXTPCalendarControl* pCalendar);
 
 	virtual void Init();
@@ -354,7 +436,7 @@ public:
 	// Remarks:
 	//     This map is used to calculate the empty slots in the all day/multiday events view port
 	//-----------------------------------------------------------------------
-	CMap<UINT, UINT, UINT, UINT&> & GetEventSlotMap();
+	CMap<UINT, UINT, UINT, UINT&>& GetEventSlotMap();
 
 	CXTPCalendarTheme();
 	virtual ~CXTPCalendarTheme();
@@ -365,7 +447,11 @@ public:
 	class _XTP_EXT_CLASS CThemeFontColorSet
 	{
 	public:
-		virtual CFont* Font() const = 0;
+		virtual ~CThemeFontColorSet()
+		{
+		}
+
+		virtual CFont* Font() const	= 0;
 		virtual COLORREF Color() const = 0;
 	};
 
@@ -373,8 +459,8 @@ public:
 	class _XTP_EXT_CLASS CThemeFontColorSetValue : public CThemeFontColorSet
 	{
 	public:
-		CXTPPaintManagerColor       clrColor;
-		CXTPCalendarThemeFontValue  fntFont;
+		CXTPPaintManagerColor clrColor;
+		CXTPCalendarThemeFontValue fntFont;
 
 		void SetStandardValue(const CThemeFontColorSet& fcsetValue)
 		{
@@ -426,7 +512,6 @@ public:
 	class _XTP_EXT_CLASS CTOEventIconsToDraw : virtual public CXTPCalendarThemePart
 	{
 	public:
-
 		CXTPCalendarThemeBOOLValue m_ShowReminder;
 		CXTPCalendarThemeBOOLValue m_ShowOccurrence;
 		CXTPCalendarThemeBOOLValue m_ShowException;
@@ -440,7 +525,8 @@ public:
 		virtual void Serialize(CArchive& ar);
 
 		CTOEventIconsToDraw();
-		virtual void FillIconIDs(CUIntArray& rarGlyphIDs, CUIntArray& rarGlyphIndex, CXTPCalendarEvent* pEvent);
+		virtual void FillIconIDs(CUIntArray& rarGlyphIDs, CUIntArray& rarGlyphIndex,
+								 CXTPCalendarEvent* pEvent);
 	};
 	friend class CTOEventIconsToDraw;
 
@@ -452,32 +538,35 @@ public:
 		COLORREF clrBkNonWorkCell;
 		COLORREF clrCellBorder;
 
-//      BOOL IsNull()
-//      {
-//          return clrBkAllDayEvents == 0 && clrBkWorkCell == 0 &&
-//                  clrBkNonWorkCell == 0 && clrCellBorder == 0;
-//      }
+		//      BOOL IsNull()
+		//      {
+		//          return clrBkAllDayEvents == 0 && clrBkWorkCell == 0 &&
+		//                  clrBkNonWorkCell == 0 && clrCellBorder == 0;
+		//      }
 	};
 
 	//=======================================================================
 	class _XTP_EXT_CLASS CTOHeader : virtual public CXTPCalendarThemePart
 	{
 	public:
-
 		enum XTPEnumCalendarItemState
 		{
-			xtpCalendarItemState_Normal     = 0,
-			xtpCalendarItemState_Selected   = 0x001,
-			xtpCalendarItemState_Today      = 0x002,
-			xtpCalendarItemState_Hot        = 0x004,
-			xtpCalendarItemState_mask       = 0x00F,
+			xtpCalendarItemState_Normal   = 0,
+			xtpCalendarItemState_Selected = 0x001,
+			xtpCalendarItemState_Today	= 0x002,
+			xtpCalendarItemState_Hot	  = 0x004,
+			xtpCalendarItemState_mask	 = 0x00F,
 
-			xtpCalendarItemFirst            = 0x010,
-			xtpCalendarItemLast             = 0x020,
+			xtpCalendarItemFirst = 0x010,
+			xtpCalendarItemLast  = 0x020,
 		};
 
 		struct _XTP_EXT_CLASS CHeaderText
 		{
+			virtual ~CHeaderText()
+			{
+			}
+
 			CThemeFontColorSetValue fcsetNormal;
 			CThemeFontColorSetValue fcsetSelected;
 			CThemeFontColorSetValue fcsetToday;
@@ -487,14 +576,19 @@ public:
 
 			virtual void CopySettings(const CHeaderText& rSrc);
 
-			virtual void doPX(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CXTPCalendarTheme* pTheme);
+			virtual void doPX(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
+							  CXTPCalendarTheme* pTheme);
 			virtual void Serialize(CArchive& ar);
 		};
 
 		struct _XTP_EXT_CLASS CHeaderBackground
 		{
-			CXTPCalendarThemeIntValue   nBitmapID;
-			CXTPCalendarThemeRectValue  rcBitmapBorder;
+			virtual ~CHeaderBackground()
+			{
+			}
+
+			CXTPCalendarThemeIntValue nBitmapID;
+			CXTPCalendarThemeRectValue rcBitmapBorder;
 
 			// effects ...
 			// CXTPCalendarThemeIntValue eDrawOptions;
@@ -508,7 +602,8 @@ public:
 				rcBitmapBorder.CopySettings(rSrc.rcBitmapBorder);
 			}
 
-			virtual void doPX(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CXTPCalendarTheme* pTheme);
+			virtual void doPX(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
+							  CXTPCalendarTheme* pTheme);
 			virtual void Serialize(CArchive& ar);
 		};
 
@@ -516,13 +611,13 @@ public:
 		CXTPPaintManagerColor m_clrBaseColor;
 		CXTPPaintManagerColor m_clrTodayBaseColor;
 
-		CHeaderBackground   m_bkNormal;
-		CHeaderBackground   m_bkSelected;
-		CHeaderBackground   m_bkToday;
-		CHeaderBackground   m_bkTodaySelected;
+		CHeaderBackground m_bkNormal;
+		CHeaderBackground m_bkSelected;
+		CHeaderBackground m_bkToday;
+		CHeaderBackground m_bkTodaySelected;
 
-		CHeaderText  m_TextLeftRight;
-		CHeaderText  m_TextCenter;
+		CHeaderText m_TextLeftRight;
+		CHeaderText m_TextCenter;
 
 		virtual void RefreshMetrics(BOOL bRefreshChildren = TRUE);
 		virtual void RefreshFromParent(CTOHeader* pParentSrc);
@@ -537,18 +632,15 @@ public:
 		virtual BOOL IsToday(CXTPCalendarViewDay* pViewDay);
 		virtual BOOL IsSelected(CXTPCalendarViewDay* pViewDay);
 		virtual BOOL IsSelected(CXTPCalendarViewGroup* pViewGroup);
-
 		//-------------------------------------------------------------------
-		virtual void Draw_Header(CDC* pDC, const CRect& rcRect, int nFlags,
-								 LPCTSTR pcszLeftText,
-								 LPCTSTR pcszCenterText = NULL,
-								 LPCTSTR pcszRightText = NULL,
+		virtual void Draw_Header(CDC* pDC, const CRect& rcRect, int nFlags, LPCTSTR pcszLeftText,
+								 LPCTSTR pcszCenterText = NULL, LPCTSTR pcszRightText = NULL,
 								 BOOL bMultiCase = FALSE);
 
 		virtual void Draw_Background(CDC* pDC, const CRect& rcRect, int nState);
 
-		virtual void Draw_TextLR(CDC* pDC, const CRect& rcRect, int nFlags,
-								 LPCTSTR pcszText, UINT uFormat, int* pnWidth = NULL);
+		virtual void Draw_TextLR(CDC* pDC, const CRect& rcRect, int nFlags, LPCTSTR pcszText,
+								 UINT uFormat, int* pnWidth = NULL);
 
 		virtual void Draw_TextCenter(CDC* pDC, const CRect& rcRect, int nState,
 									 LPCTSTR pcszCenterText, int* pnWidth = NULL);
@@ -561,20 +653,51 @@ public:
 	class _XTP_EXT_CLASS CTOEvent : virtual public CXTPCalendarThemePart
 	{
 	public:
-		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber){};
-		virtual int CalcMinEventHeight(CDC* pDC) {return 19;};
+		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect,
+								  int nEventPlaceNumber){};
+		virtual int CalcMinEventHeight(CDC* pDC)
+		{
+			return 19;
+		};
+
+		virtual CBrush* GetBusyStatusBrush(int nBusyStatus);
+		virtual void SetBusyStatusBrush(int nBusyStatus, CBrush* pBrush, BOOL bAutodeleteBrush);
 
 		DECLARE_THEMEPART_MEMBER_BASE2(CTOFormula_MulDivC, HeightFormula)
 		DECLARE_THEMEPART_MEMBER_BASE2(CTOEventIconsToDraw, EventIconsToDraw)
+
+	protected:
+		virtual void InitBusyStatusDefaultColors();
+
+		virtual CXTPCalendarViewPartBrushValue* _GetBusyStatusBrushValue(int nBusyStatus,
+																		 BOOL bCreateIfNotExist);
+		CXTPCalendarTypedPtrAutoDeleteMap<int, CXTPCalendarViewPartBrushValue*>
+			m_mapBusyStatusBrushes;
+
+		CBitmap m_bmpElsewherePattern; // Stores standard bitmap pattern to draw Elsewhere event
+									   // busy status.
+		CXTPBrush m_xtpBrushElsewhere; // Stores standard brush to draw Elsewhere event busy status.
+		XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushElsewhere, m_xtpBrushElsewhere,
+											  GetBrushElsewhereHandle);
+
+		CBitmap m_bmpTentativePattern; // Stores standard bitmap pattern to draw Tentative event
+									   // busy status.
+		CXTPBrush m_xtpBrushTentative; // Stores standard brush to draw Tentative event busy status.
+		XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CBrush, m_brushTentative, m_xtpBrushTentative,
+											  GetBrushTentativeHandle);
 	};
 
 	class _XTP_EXT_CLASS CTODay : virtual public CXTPCalendarThemePart
 	{
 	public:
 		virtual int GetExpandButtonHeight();
-		virtual int HitTestExpandDayButton(CXTPCalendarViewDay* pViewDay, const CPoint* pPoint = NULL); // return 0 or xtpCalendarHitTestDayExpandButton
+		virtual int HitTestExpandDayButton(
+			const CXTPCalendarViewDay* pViewDay,
+			const CPoint* pPoint = NULL); // return 0 or xtpCalendarHitTestDayExpandButton
 	protected:
-		virtual int _HitTestExpandDayButton(CXTPCalendarViewDay* pViewDay, const CRect& rc, const CPoint* pPoint = NULL); // return 0 or xtpCalendarHitTestDayExpandButton
+		virtual int _HitTestExpandDayButton(
+			const CXTPCalendarViewDay* pViewDay, const CRect& rc,
+			const CPoint* pPoint = NULL); // return 0 or xtpCalendarHitTestDayExpandButton
 	};
 
 	/////////////////////////////////////////////////////////////////////////
@@ -606,9 +729,8 @@ public:
 	class _XTP_EXT_CLASS CTODayViewTimeScale : virtual public CXTPCalendarThemePart
 	{
 	public:
-
-		CXTPPaintManagerColor   m_clrBackground;
-		CXTPPaintManagerColor   m_clrLine;
+		CXTPPaintManagerColor m_clrBackground;
+		CXTPPaintManagerColor m_clrLine;
 		CThemeFontColorSetValue m_fcsetCaption;
 
 		CThemeFontColorSetValue m_fcsetAMPM;
@@ -617,7 +739,7 @@ public:
 		CThemeFontColorSetValue m_fcsetBigBase;
 
 		CXTPPaintManagerColorGradient m_grclrNowLineBk;
-		CXTPPaintManagerColor         m_clrNowLine;
+		CXTPPaintManagerColor m_clrNowLine;
 
 		CXTPCalendarThemeBOOLValue m_ShowMinutes;
 
@@ -633,26 +755,27 @@ public:
 
 		virtual int CalcMinRowHeight(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale);
 		virtual int CalcWidth(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale, int nRowHeight);
-		virtual int CalcWidth_AmPmMinutesPart(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale, int* pnCharWidth = NULL);
+		virtual int CalcWidth_AmPmMinutesPart(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale,
+											  int* pnCharWidth = NULL);
 
 		virtual int GetRightOffsetX(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale);
 
 	public:
 		virtual void Draw_SmallHourCell(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale,
-										const CRect& rcCell,
-										const CString& strPart1, const CString& strPart2,
+										const CRect& rcCell, const CString& strPart1,
+										const CString& strPart2,
 										CThemeFontColorSetValue* pfcsetPart1,
 										CThemeFontColorSetValue* pfcsetPart2,
 										CXTPPropsStateContext& autoStateCnt,
-										XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS& tsCell);
+										XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS* tsCell);
 
 		virtual void Draw_BigHourCell(CDC* pDC, CXTPCalendarDayViewTimeScale* pTimeScale,
-									  const CRect& rcCell, int nRowPerHour,
-									  const CString& strHour, const CString& strMinAmPm,
+									  const CRect& rcCell, int nRowPerHour, const CString& strHour,
+									  const CString& strMinAmPm,
 									  CThemeFontColorSetValue* pfcsetHour,
 									  CThemeFontColorSetValue* pfcsetMinAmPm,
 									  CXTPPropsStateContext& autoStateCnt,
-									  XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS& tsCell);
+									  XTP_CALENDAR_THEME_DAYVIEWTIMESCALECELL_PARAMS* tsCell);
 
 		virtual void Draw_Caption(CDC* pDC, const CRect& rcRect, const CString& strCaption,
 								  CThemeFontColorSetValue* pfcsetCaption);
@@ -666,44 +789,35 @@ public:
 
 		CTODayViewTimeScale()
 		{
-			m_nWidthAmPmMinutesPart_ = 0;
+			m_nWidthAmPmMinutesPart_	 = 0;
 			m_nCharWidthAmPmMinutesPart_ = 0;
 		}
+
 	protected:
 		CThemeFontColorSetValue m_fcsetBigHour_;
-		int  m_nWidthAmPmMinutesPart_;
-		int  m_nCharWidthAmPmMinutesPart_;
+		int m_nWidthAmPmMinutesPart_;
+		int m_nCharWidthAmPmMinutesPart_;
 
 		CTOFormula_MulDivC m_hflaBigHourFont;
 		virtual void AdjustBigHourFont(CDC* pDC, const CRect& rcRowCell);
 		virtual void RefreshBigHourFontIfNeed(BOOL bRefreshToStandard);
 
-		struct XTP_LC_TIMEFORMAT
-		{
-			XTP_LC_TIMEFORMAT();
-			virtual void RefreshMetrics();
+		CString FormatTime(const XTP_LC_TIMEFORMAT& lcTimeFormat, COleDateTime dtTime,
+						   BOOL bAmPmEnshure, CString& rstrHour, CString& rstrMin,
+						   CString& rstrAmPm);
 
-			BOOL    bAMPM_timeFormat;
-			BOOL    bLeadingZeroTime;
-			CString strSeparator;
-			CString strAM;
-			CString strPM;
-		};
-
-		XTP_LC_TIMEFORMAT   m_localeTimeFormat;
-
-		CString FormatTime(XTP_LC_TIMEFORMAT& lcTimeFormat, COleDateTime dtTime,
-						BOOL bAmPmEnshure, CString& rstrHour, CString& rstrMin, CString& rstrAmPm);
+		void DrawTimescaleRTL(CCmdTarget* pObject, CDC* pDC);
+		void DrawTimescaleLTR(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTODayViewTimeScale;
-
 
 	/////////////////////////////////////////////////////////////////////////
 	// Day View Events (different types)
 	class _XTP_EXT_CLASS CTODayViewEvent : virtual public CTOEvent
 	{
 	public:
-		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber);
+		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect,
+								  int nEventPlaceNumber);
 	};
 	friend class CTODayViewEvent;
 
@@ -711,7 +825,8 @@ public:
 	class _XTP_EXT_CLASS CTODayViewEvent_MultiDay : virtual public CTODayViewEvent
 	{
 	public:
-		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber);
+		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect,
+								  int nEventPlaceNumber);
 
 		virtual void CalcEventYs(CRect& rcRect, int nEventPlaceNumber){};
 	};
@@ -721,20 +836,12 @@ public:
 	class _XTP_EXT_CLASS CTODayViewEvent_SingleDay : virtual public CTODayViewEvent
 	{
 	public:
-		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber);
-
-		virtual CBrush* GetBusyStatusBrush(int nBusyStatus);
-		virtual void SetBusyStatusBrush(int nBusyStatus, CBrush* pBrush, BOOL bAutodeleteBrush);
+		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect,
+								  int nEventPlaceNumber);
 
 		virtual void DrawShadow(CDC* pDC, CXTPCalendarDayViewEvent* pViewEvent){};
+
 	protected:
-		virtual void InitBusyStatusDefaultColors();
-
-		virtual CXTPCalendarViewPartBrushValue* _GetBusyStatusBrushValue(int nBusyStatus, BOOL bCreateIfNotExist);
-		CXTPCalendarTypedPtrAutoDeleteMap<int, CXTPCalendarViewPartBrushValue*> m_mapBusyStatusBrushes;
-
-		CBitmap     m_bmpTentativePattern;  // Stores standard bitmap pattern to draw Tentative event busy status.
-		CBrush      m_brushTentative;       // Stores standard brush to draw Tentative event busy status.
 	};
 	friend class CTODayViewEvent_SingleDay;
 
@@ -750,9 +857,9 @@ public:
 	class _XTP_EXT_CLASS CTODayViewDayGroupAllDayEvents : virtual public CXTPCalendarThemePart
 	{
 	public:
-		CXTPPaintManagerColor         m_clrBackground;
-		CXTPPaintManagerColor         m_clrBackgroundSelected;
-		CXTPPaintManagerColor         m_clrBottomBorder;
+		CXTPPaintManagerColor m_clrBackground;
+		CXTPPaintManagerColor m_clrBackgroundSelected;
+		CXTPPaintManagerColor m_clrBottomBorder;
 
 		virtual void DoPropExchange(CXTPPropExchange* pPX);
 		virtual void Serialize(CArchive& ar);
@@ -767,7 +874,6 @@ public:
 	class _XTP_EXT_CLASS CTODayViewDayGroupCell : virtual public CXTPCalendarThemePart
 	{
 	public:
-
 		struct XTP_GROUP_CELL_COLOR_SET
 		{
 			CXTPPaintManagerColor clrBackground;
@@ -786,34 +892,44 @@ public:
 		virtual void Serialize(CArchive& ar);
 
 		virtual void Draw(CDC* pDC, const CRect& rcRect,
-						  const XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS& cellParams, CXTPPropsStateContext* pStateCnt = NULL);
+						  const XTP_CALENDAR_THEME_DAYVIEWCELL_PARAMS& cellParams,
+						  CXTPPropsStateContext* pStateCnt = NULL);
+		using CXTPCalendarThemePart::Draw;
 
-		virtual int CalcHeight(CDC* pDC, int nCellWidth) {return 19;} // pDayView->CalculateHeaderFormatAndHeight(pDC, nCellWidth);
-
+		virtual int CalcHeight(CDC* pDC, int nCellWidth)
+		{
+			return 19;
+		} // pDayView->CalculateHeaderFormatAndHeight(pDC, nCellWidth);
 	};
 	friend class CTODayViewDayGroupCell;
 
 	//=======================================================================
-	class _XTP_EXT_CLASS CTODayViewDayGroup : virtual public CXTPCalendarThemePart
+	class _XTP_EXT_CLASS CTODayViewDayGroup : public CXTPCalendarThemePart
 	{
 	public:
-		CXTPPaintManagerColor         m_clrBorderLeft;
+		CXTPPaintManagerColor m_clrBorderLeft;
 
 		virtual void DoPropExchange(CXTPPropExchange* pPX);
 		virtual void Serialize(CArchive& ar);
 
 		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
 		virtual void Draw(CCmdTarget* pObject, CDC* pDC);
-		virtual BOOL IsSelected(CXTPCalendarViewGroup* pViewGroup){return FALSE;};
+		virtual void DrawAllDayAreaScrollIcons(CCmdTarget* pObject, CDC* pDC);
+		virtual BOOL IsSelected(CXTPCalendarViewGroup* pViewGroup)
+		{
+			return FALSE;
+		};
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupHeader,         Header)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupAllDayEvents,   AllDayEvents)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupCell,           Cell)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent_MultiDay,         MultiDayEvent)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent_SingleDay,        SingleDayEvent)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupHeader, Header)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupAllDayEvents, AllDayEvents)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroupCell, Cell)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent_MultiDay, MultiDayEvent)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent_SingleDay, SingleDayEvent)
 
-		virtual int HitTestScrollButton(CXTPCalendarDayViewGroup* pViewGroup, const CPoint* pPoint = NULL); // return 0 or ... flag
-		virtual CRect GetScrollButtonRect(const CXTPCalendarDayViewGroup::XTP_DAY_VIEW_GROUP_LAYOUT& groupLayout, int nButton) = 0;
+		virtual int HitTestScrollButton(const CXTPCalendarDayViewGroup* pViewGroup,
+										const CPoint* pPoint = NULL); // return 0 or ... flag
+		virtual CRect GetScrollButtonRect(const XTP_DAY_VIEW_GROUP_LAYOUT& groupLayout,
+										  int nButton) = 0;
 
 	protected:
 		virtual void AdjustDayEvents(CXTPCalendarDayViewGroup* pDayViewGroup, CDC* pDC);
@@ -835,12 +951,16 @@ public:
 	public:
 		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
 		virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		virtual void DrawTopmostLayer(CCmdTarget* pObject, CDC* pDC);
 
-		virtual CRect ExcludeDayBorder(CXTPCalendarDayViewDay* pDayViewDay, const CRect& rcDay) {return rcDay;};
-		virtual void Draw_DayBorder(CXTPCalendarDayViewDay* pDayViewDay, CDC* pDC) {};
+		virtual CRect ExcludeDayBorder(CXTPCalendarDayViewDay* pDayViewDay, const CRect& rcDay)
+		{
+			return rcDay;
+		};
+		virtual void Draw_DayBorder(CXTPCalendarDayViewDay* pDayViewDay, CDC* pDC){};
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayHeader,          Header)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroup,           Group)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayHeader, Header)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDayGroup, Group)
 	};
 	friend class CTODayViewDay;
 
@@ -852,15 +972,20 @@ public:
 		virtual void AdjustLayout(CDC* pDC, const CRect& rcRect);
 		virtual void OnPostAdjustLayout();
 		virtual void Draw(CDC* pDC);
+		using CXTPCalendarThemePart::Draw;
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTOHeader,            Header)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent,      Event)
-		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewTimeScale,  TimeScale)
+		DECLARE_THEMEPART_MEMBER_BASE(CTOHeader, Header)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewEvent, Event)
+		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewTimeScale, TimeScale)
 
 		DECLARE_THEMEPART_MEMBER_BASE(CTODayViewDay, Day)
 
 		// theme specific control options
-		virtual BOOL IsUseCellAlignedDraggingInTimeArea() {return FALSE;};
+		virtual BOOL IsUseCellAlignedDraggingInTimeArea() const
+		{
+			return FALSE;
+		};
+
 	protected:
 		virtual int CalcMinCellHeight(CDC* pDC, CXTPCalendarDayView* pDayView);
 	};
@@ -889,8 +1014,8 @@ public:
 	class _XTP_EXT_CLASS CTOMonthViewEvent : virtual public CTOEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOMonthViewEvent;
 
@@ -898,8 +1023,8 @@ public:
 	class _XTP_EXT_CLASS CTOMonthViewEvent_SingleDay : virtual public CTOMonthViewEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int
+		// nEventPlaceNumber); virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOMonthViewEvent_SingleDay;
 
@@ -907,28 +1032,29 @@ public:
 	class _XTP_EXT_CLASS CTOMonthViewEvent_MultiDay : virtual public CTOMonthViewEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOMonthViewEvent_MultiDay;
 
 	//==========================================================================
 	class _XTP_EXT_CLASS CTOMonthViewDayHeader : virtual public CTOHeader
 	{
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOMonthViewDayHeader;
 
 	//==========================================================================
-	class _XTP_EXT_CLASS CTOMonthViewDay : virtual public CTODay //virtual public CXTPCalendarThemePart
+	class _XTP_EXT_CLASS CTOMonthViewDay
+		: virtual public CTODay // virtual public CXTPCalendarThemePart
 	{
 	public:
 		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewDayHeader,       Header);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewEvent_MultiDay,  MultiDayEvent);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewDayHeader, Header);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewEvent_MultiDay, MultiDayEvent);
 		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewEvent_SingleDay, SingleDayEvent);
 	};
 	friend class CTOMonthViewDay;
@@ -937,8 +1063,8 @@ public:
 	class _XTP_EXT_CLASS CTOMonthViewWeekDayHeader : virtual public CTOHeader
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
 	};
 	friend class CTOMonthViewWeekDayHeader;
 
@@ -949,11 +1075,12 @@ public:
 	public:
 		virtual void AdjustLayout(CDC* pDC, const CRect& rcRect, BOOL bCallPostAdjustLayout);
 		virtual void Draw(CDC* pDC);
+		using CXTPCalendarThemePart::Draw;
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTOHeader,            Header);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewEvent,    Event);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewWeekDayHeader,        WeekDayHeader);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewDay,      Day);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOHeader, Header);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewEvent, Event);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewWeekDayHeader, WeekDayHeader);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOMonthViewDay, Day);
 	};
 	friend class CTOMonthView;
 
@@ -978,8 +1105,8 @@ public:
 	class _XTP_EXT_CLASS CTOWeekViewEvent : virtual public CTOEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int nEventPlaceNumber);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect, int
+		// nEventPlaceNumber); virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOWeekViewEvent;
 
@@ -987,8 +1114,8 @@ public:
 	class _XTP_EXT_CLASS CTOWeekViewEvent_SingleDay : virtual public CTOWeekViewEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOWeekViewEvent_SingleDay;
 
@@ -996,16 +1123,16 @@ public:
 	class _XTP_EXT_CLASS CTOWeekViewEvent_MultiDay : virtual public CTOWeekViewEvent
 	{
 	public:
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOWeekViewEvent_MultiDay;
 
 	// === WeekViewDayHeader ===
 	class _XTP_EXT_CLASS CTOWeekViewDayHeader : virtual public CTOHeader
 	{
-		//virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC);
+		// virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC);
 	};
 	friend class CTOWeekViewDayHeader;
 
@@ -1014,15 +1141,15 @@ public:
 	{
 	public:
 		virtual void AdjustLayout(CCmdTarget* pObject, CDC* pDC, const CRect& rcRect);
-		//virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
+		// virtual void Draw(CCmdTarget* pObject, CDC* pDC){};
 
-		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewDayHeader,       Header);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewEvent_MultiDay,  MultiDayEvent);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewDayHeader, Header);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewEvent_MultiDay, MultiDayEvent);
 		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewEvent_SingleDay, SingleDayEvent);
 
 		virtual int GetDayCol(CXTPCalendarWeekViewDay* pWVDay); // returns {0, 1}
 
-		virtual void SetDynColors(CXTPCalendarWeekViewDay* pWViewDay) {};
+		virtual void SetDynColors(CXTPCalendarWeekViewDay* pWViewDay){};
 	};
 	friend class CTOWeekViewDay;
 
@@ -1032,10 +1159,11 @@ public:
 	public:
 		virtual void AdjustLayout(CDC* pDC, const CRect& rcRect, BOOL bCallPostAdjustLayout);
 		virtual void Draw(CDC* pDC);
+		using CXTPCalendarThemePart::Draw;
 
-		//DECLARE_THEMEPART_MEMBER_BASE(CTOHeader, Header);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewEvent,         Event);
-		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewDay,           Day);
+		// DECLARE_THEMEPART_MEMBER_BASE(CTOHeader, Header);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewEvent, Event);
+		DECLARE_THEMEPART_MEMBER_BASE(CTOWeekViewDay, Day);
 	};
 	friend class CTOWeekView;
 
@@ -1049,39 +1177,38 @@ public:
 		virtual void RefreshMetrics(BOOL bRefreshChildren = TRUE);
 
 		virtual COLORREF GetColor(int nColorID, COLORREF clrBase = (COLORREF)-1);
-		virtual int GetScale(int nColorID);//, BOOL& rbHSL);
+		virtual int GetScale(int nColorID); //, BOOL& rbHSL);
 		virtual CString GetName(int nColorID);
 
 		virtual void SetColor(int nColorID, LPCTSTR pcszName, int nScale);
 		virtual void SetCLR_DarkenOffset(int nCLR_DarkenOffset);
 
-//      virtual void SetColorEx(int eCLR, COLORREF clrColor);
-//      virtual void CrearColorsEx();
+		//      virtual void SetColorEx(int eCLR, COLORREF clrColor);
+		//      virtual void CrearColorsEx();
 
-		//virtual void SetColorHSL(int eCLR, int nLshift);
+		// virtual void SetColorHSL(int eCLR, int nLshift);
 	protected:
 		COLORREF m_clrBase;
 		int m_nCLR_DarkenOffset;
 
 		struct _XTP_EXT_CLASS SColorInfo
 		{
-			int     nID;
-			TCHAR   szName[128];
+			int nID;
+			TCHAR szName[128];
 
-			int     nScale;
-			//COLORREF rgbColor;
+			int nScale;
+			// COLORREF rgbColor;
 		};
 
-		//typedef CMap<int, int, int, int> CScalesMap;
+		// typedef CMap<int, int, int, int> CScalesMap;
 		typedef CMap<int, int, SColorInfo, SColorInfo&> CColorInfoMap;
 
 		CColorInfoMap m_mapColors;
 
-		//CScalesMap m_mapScale;
+		// CScalesMap m_mapScale;
 
-		//CScalesMap m_mapHSLShift;
+		// CScalesMap m_mapHSLShift;
 	};
-
 
 	/////////////////////////////////////////////////////////////////////////
 	//
@@ -1090,21 +1217,29 @@ public:
 	/////////////////////////////////////////////////////////////////////////
 
 	// This base settings which used to initialize other settings by default.
-	CXTPPaintManagerColor       m_clrBaseColor;
-	CXTPCalendarThemeFontValue  m_fntBaseFont;
-	CXTPCalendarThemeFontValue  m_fntBaseFontBold;
+	CXTPPaintManagerColor m_clrBaseColor;
+	CXTPCalendarThemeFontValue m_fntBaseFont;
+	CXTPCalendarThemeFontValue m_fntBaseFontBold;
 
 	DECLARE_THEMEPART_MEMBER_BASE(CTOColorsSet, ColorsSet)
-	virtual COLORREF GetColor(int eCLR, COLORREF clrBase = (COLORREF)-1) { ASSERT(FALSE); return 0; };
-	virtual COLORREF GetColor2(LPCTSTR pcszColorName, COLORREF clrDefault) { ASSERT(FALSE); return 0; };
+	virtual COLORREF GetColor(int eCLR, COLORREF clrBase = (COLORREF)-1)
+	{
+		ASSERT(FALSE);
+		return 0;
+	};
+	virtual COLORREF GetColor2(LPCTSTR pcszColorName, COLORREF clrDefault)
+	{
+		ASSERT(FALSE);
+		return 0;
+	};
 
 	virtual CXTPResourceImage* GetBitmap(LPCTSTR pcszStdBmpName);
 
-	DECLARE_THEMEPART_MEMBER_BASE(CTOHeader,    Header)
-	DECLARE_THEMEPART_MEMBER_BASE(CTOEvent,     Event)
+	DECLARE_THEMEPART_MEMBER_BASE(CTOHeader, Header)
+	DECLARE_THEMEPART_MEMBER_BASE(CTOEvent, Event)
 	//==========================================================================
-	DECLARE_THEMEPART_MEMBER_BASE(CTODayView,   DayView)
-	DECLARE_THEMEPART_MEMBER_BASE(CTOWeekView,  WeekView)
+	DECLARE_THEMEPART_MEMBER_BASE(CTODayView, DayView)
+	DECLARE_THEMEPART_MEMBER_BASE(CTOWeekView, WeekView)
 	DECLARE_THEMEPART_MEMBER_BASE(CTOMonthView, MonthView)
 
 	virtual void RefreshMetrics();
@@ -1126,53 +1261,57 @@ public:
 	virtual void SetTipWindowRgn(CWnd* pTip);
 
 public:
-	static BOOL IsXPTheme();
+	static BOOL AFX_CDECL IsXPTheme();
 
 	// draw a single line text in the center of the rect.
 	// if rect width is not enough to draw all chars -
 	// text is aligned to left (or right, see nFormat) or the rect.
 	// nFormat = 0 or combination of flags: DT_VCENTER, DT_LEFT, DT_RIGHT.
-	static CSize DrawLine_CenterLR(CDC* pDC, LPCTSTR pcszText, CRect& rcRect, UINT nFormat);
+	static CSize AFX_CDECL DrawLine_CenterLR(CDC* pDC, LPCTSTR pcszText, CRect& rcRect,
+											 UINT nFormat);
 
 	// draw text1 and text2 as single line using different fonts.
 	// See Also: DrawLine_CenterLR
-	static CSize DrawLine2_CenterLR(CDC* pDC, LPCTSTR pcszText1, LPCTSTR pcszText2,
-						   CThemeFontColorSet* pFontColor1, CThemeFontColorSet* pFontColor2,
-						   CRect& rcRect, UINT nShortAlign = DT_VCENTER | DT_LEFT,
-						   UINT nFullAlign = DT_VCENTER | DT_CENTER);
+	static CSize AFX_CDECL DrawLine2_CenterLR(CDC* pDC, LPCTSTR pcszText1, LPCTSTR pcszText2,
+											  CThemeFontColorSet* pFontColor1,
+											  CThemeFontColorSet* pFontColor2, CRect& rcRect,
+											  UINT nShortAlign = DT_VCENTER | DT_LEFT,
+											  UINT nFullAlign  = DT_VCENTER | DT_CENTER);
 
 	// draw rect with round corners and fill it using grclrBk.
-	static void DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
-						BOOL bBoldBorder, CXTPPaintManagerColorGradient& grclrBk);
+	static void AFX_CDECL DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+										BOOL bBoldBorder, CXTPPaintManagerColorGradient& grclrBk);
 
-	static void DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
-						BOOL bBoldBorder, CBrush* pBrushBk);
+	static void AFX_CDECL DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+										BOOL bBoldBorder, CBrush* pBrushBk);
 
 	// fill rect using grclrBk and draw rect sides specified by isBorders.
 	// isBorders.top  = 0 - do not draw top side, 1 - draw;
 	// isBorders.left = 0 - do not draw left side, 1 - draw;
 	// ...
-	static void DrawRectPartly(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
-						int nBorderWidth, CRect isBorders);
+	static void AFX_CDECL DrawRectPartly(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+										 int nBorderWidth, CRect isBorders);
 
-	static void DrawRectPartly(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
-						BOOL bBoldBorder, CXTPPaintManagerColorGradient& grclrBk,
-						CRect isBorders);
-						//const CRect& isBorders);
+	static void AFX_CDECL DrawRectPartly(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+										 BOOL bBoldBorder, CXTPPaintManagerColorGradient& grclrBk,
+										 CRect isBorders);
+	// const CRect& isBorders);
 
 	static const int cnCornerSize;
 
 public:
-	static CXTPCalendarView::XTP_VIEW_LAYOUT& AFX_CDECL GetViewLayout(CXTPCalendarView* pView);
-	static CXTPCalendarViewDay::XTP_VIEW_DAY_LAYOUT& AFX_CDECL GetViewDayLayout(CXTPCalendarViewDay* pViewDay);
+	static XTP_VIEW_LAYOUT& AFX_CDECL GetViewLayout(CXTPCalendarView* pView);
+	static XTP_VIEW_DAY_LAYOUT& AFX_CDECL GetViewDayLayout(CXTPCalendarViewDay* pViewDay);
 
-	static CXTPCalendarDayView::XTP_DAY_VIEW_LAYOUT& AFX_CDECL GetDayViewLayout(CXTPCalendarDayView* pDayView);
-	static CXTPCalendarDayViewTimeScale::XTP_TIMESCALE_LAYOUT& AFX_CDECL GetTimeScaleLayout(CXTPCalendarDayViewTimeScale* pTimeScale);
+	static XTP_DAY_VIEW_LAYOUT& AFX_CDECL GetDayViewLayout(CXTPCalendarDayView* pDayView);
+	static XTP_TIMESCALE_LAYOUT& AFX_CDECL
+		GetTimeScaleLayout(CXTPCalendarDayViewTimeScale* pTimeScale);
 
-	static CXTPCalendarViewGroup::XTP_VIEW_GROUP_LAYOUT& AFX_CDECL GetViewGroupLayout(CXTPCalendarViewGroup* pViewGroup);
-	static CXTPCalendarDayViewGroup::XTP_DAY_VIEW_GROUP_LAYOUT& AFX_CDECL GetDayViewGroupLayout(CXTPCalendarDayViewGroup* pDayViewGroup);
+	static XTP_VIEW_GROUP_LAYOUT& AFX_CDECL GetViewGroupLayout(CXTPCalendarViewGroup* pViewGroup);
+	static XTP_DAY_VIEW_GROUP_LAYOUT& AFX_CDECL
+		GetDayViewGroupLayout(CXTPCalendarDayViewGroup* pDayViewGroup);
 
-	static CXTPCalendarWeekView::XTP_WEEK_VIEW_LAYOUT& AFX_CDECL GetWeekViewLayout(CXTPCalendarWeekView* pWeekView);
+	static XTP_WEEK_VIEW_LAYOUT& AFX_CDECL GetWeekViewLayout(CXTPCalendarWeekView* pWeekView);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1182,71 +1321,113 @@ public:
 	//     The custom value copied from the source only if this object has
 	//     no custom value and the source object has custom value set.
 	//-----------------------------------------------------------------------
-	static void AFX_CDECL CopySettings(CXTPPaintManagerColor& refDest, const CXTPPaintManagerColor& refSrc);
-	static void AFX_CDECL CopySettings(CXTPPaintManagerColorGradient& refDest, const CXTPPaintManagerColorGradient& refSrc); // <combine CopySettings@CXTPPaintManagerColor&@const CXTPPaintManagerColor&>
+	static void AFX_CDECL CopySettings(CXTPPaintManagerColor& refDest,
+									   const CXTPPaintManagerColor& refSrc);
+	static void AFX_CDECL CopySettings(
+		CXTPPaintManagerColorGradient& refDest,
+		const CXTPPaintManagerColorGradient& refSrc); // <combine
+													  // CopySettings@CXTPPaintManagerColor&@const
+													  // CXTPPaintManagerColor&>
 
-	static CFont* AFX_CDECL GetMaxHeightFont(CArray<CFont*, CFont*>& arFonts, CDC* pDC = NULL, int* pnMaxHeight = NULL);
+	static CFont* AFX_CDECL GetMaxHeightFont(CArray<CFont*, CFont*>& arFonts, CDC* pDC = NULL,
+											 int* pnMaxHeight = NULL);
 
 public:
-	virtual CXTPCalendarViewEventSubjectEditor* StartEditSubject(CXTPCalendarViewEvent* pViewEvent) {return NULL;};
+	virtual CXTPCalendarViewEventSubjectEditor* StartEditSubject(CXTPCalendarViewEvent* pViewEvent)
+	{
+		return NULL;
+	};
 	virtual void RemoveBoldAttrFromStd(CXTPCalendarThemeFontValue& rFont);
 
 	// for internal usage
 	enum XTPEnumThemeStdImages
 	{
-		xtpIMG_DayViewHeader            = -100,
-		xtpIMG_DayViewHeaderTooday      = -101,
-		xtpIMG_DayViewGroupHeader       = -102,
+		xtpIMG_DayViewHeader	   = -100,
+		xtpIMG_DayViewHeaderTooday = -101,
+		xtpIMG_DayViewGroupHeader  = -102,
 
-		xtpIMG_MonthViewDayHeader       = -120,
-		xtpIMG_MonthViewDayHeaderToday  = -121,
+		xtpIMG_MonthViewDayHeader	  = -120,
+		xtpIMG_MonthViewDayHeaderToday = -121,
 
-		//xtpIMG_MonthViewWeekDayHeader   = 0, //-122, // the base color is enough for default WeekDay header
-		xtpIMG_MonthViewWeekHeader      = -123,
+		// xtpIMG_MonthViewWeekDayHeader   = 0, //-122, // the base color is enough for default
+		// WeekDay header
+		xtpIMG_MonthViewWeekHeader = -123,
 
-		xtpIMG_WeekViewDayHeader        = -130,
+		xtpIMG_WeekViewDayHeader = -130,
 
-		xtpIMG_ExpandDayButtons         = -140,
-		xtpIMG_PrevNextEventButtons     = -150,
+		xtpIMG_ExpandDayButtons		= -140,
+		xtpIMG_PrevNextEventButtons = -150,
 	};
 
 protected:
 	virtual void RefreshMetrics(BOOL bRefreshChildren);
 	virtual void _DoPropExchange(CXTPPropExchange* pPX, BOOL bExchangeChildren);
 
-	static void _DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,BOOL bBoldBorder,
-							   CXTPPaintManagerColorGradient* pgrclrBk, CBrush* pBrushBk);
+	static void AFX_CDECL _DrawRoundRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+										 BOOL bBoldBorder, CXTPPaintManagerColorGradient* pgrclrBk,
+										 CBrush* pBrushBk);
 
 	virtual BOOL _LoadStdBitmap(int nBmpID, LPCTSTR pcszStdBmpName);
 
 public:
+	static void AFX_CDECL DrawRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+								   BOOL bBoldBorder, CXTPPaintManagerColorGradient& grclrBk);
+
+	static void AFX_CDECL DrawRect(CDC* pDC, const CRect& rcRect, COLORREF clrBorder,
+								   BOOL bBoldBorder, CBrush* pBrushBk);
 
 	virtual CRect DrawExpandDayButton(CDC* pDC, const CRect& rc, BOOL bUp, BOOL bHot);
-
 
 	virtual BOOL ExpandDayButton_HitTest(const CPoint& pt, const CRect& rc, BOOL bUp);
 	virtual CSize GetExpandDayButtonSize();
 
 protected:
 	CXTPImageManager* m_pCustomIcons;
-	CXTPResourceImageList*    m_pImageList;
+	CXTPResourceImageList* m_pImageList;
 
-	CXTPResourceImages*       m_pImagesStd;
+	CXTPResourceImages* m_pImagesStd;
 
-	DWORD   m_dwBeforeDrawFlags;
-	DWORD   m_dwAskItemTextFlags;
+	DWORD m_dwBeforeDrawFlags;
+	DWORD m_dwAskItemTextFlags;
 
 	XTPCalendarTheme m_nPaintTheme;
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	// {{ AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
 
+	virtual void OleRefreshMetrics();
 
+	virtual COLORREF OleGetBaseColor();
+	virtual void OleSetBaseColor(COLORREF clrColor);
+
+	LPFONTDISP OleGetBaseFont();
+	void OleSetBaseFont(LPFONTDISP pFontDisp);
+
+	LPFONTDISP OleGetBaseFontBold();
+	void OleSetBaseFontBold(LPFONTDISP pFontDisp);
+
+	LPDISPATCH OleGetCustomIcons();
+	void OleSetCustomIcons(LPDISPATCH newValue);
+	void OleSetCustomIconsImageList(LPDISPATCH pImageList);
+
+	LPDISPATCH OleGetImageList();
+
+	void OleDoPropExchange(LPDISPATCH pDispPXctrl);
+
+	friend class CCalendarControlCtrl;
+	CXTPCalendarFlagsSet_imp* AxGetAskItemTextFlags();
+	CXTPCalendarFlagsSet_imp* AxGetBeforeDrawThemeObjectFlags();
+
+	// }} AFX_CODEJOCK_PRIVATE
+#	endif
 };
 //}}AFX_CODEJOCK_PRIVATE
 
 /////////////////////////////////////////////////////////////////////////////
 
-AFX_INLINE  CMap<UINT, UINT, UINT, UINT&> & CXTPCalendarTheme::GetEventSlotMap()
+AFX_INLINE CMap<UINT, UINT, UINT, UINT&>& CXTPCalendarTheme::GetEventSlotMap()
 {
 	return m_mapEventIdEventSlotId;
 }
@@ -1254,6 +1435,11 @@ AFX_INLINE  CMap<UINT, UINT, UINT, UINT&> & CXTPCalendarTheme::GetEventSlotMap()
 AFX_INLINE BOOL CXTPCalendarThemePart::IsCreated()
 {
 	return !!m_pTheme;
+}
+
+AFX_INLINE CXTPCalendarControl* CXTPCalendarThemePart::GetCalendarControl() const
+{
+	return XTP_SAFE_GET1(GetTheme(), GetCalendarControl(), NULL);
 }
 
 AFX_INLINE CXTPCalendarControl* CXTPCalendarTheme::GetCalendarControl() const
@@ -1304,7 +1490,7 @@ AFX_INLINE void CXTPCalendarTheme::SetAskItemTextFlags(DWORD dwFlags)
 	m_dwAskItemTextFlags = dwFlags;
 }
 
-AFX_INLINE BOOL CXTPCalendarTheme::IsXPTheme()
+AFX_INLINE BOOL AFX_CDECL CXTPCalendarTheme::IsXPTheme()
 {
 	return XTPColorManager()->GetCurrentSystemTheme() != xtpSystemThemeUnknown;
 }
@@ -1331,8 +1517,9 @@ AFX_INLINE void CXTPCalendarTheme::SetPaintTheme(XTPCalendarTheme ePaintTheme)
 }
 
 //*********************************
-#if (_MSC_VER > 1100)
-#pragma warning(pop)
-#endif
+#	if (_MSC_VER > 1100)
+#		pragma warning(pop)
+#	endif
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_THEME_H__)

@@ -1,7 +1,6 @@
 // XTPMouseManager.h : interface for the CXTPMouseManager class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMOUSEMANAGER_H__)
-#define __XTPMOUSEMANAGER_H__
+#	define __XTPMOUSEMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCommandBar;
 
@@ -45,7 +46,6 @@ public:
 	CXTPMouseManager();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Array of the tracking bars.
@@ -53,7 +53,6 @@ public:
 	class _XTP_EXT_CLASS CTrackArray : public CArray<CXTPCommandBar*, CXTPCommandBar*>
 	{
 	public:
-
 		//-----------------------------------------------------------------------
 		// Summary:
 		//     Find position of specified commandbar.
@@ -62,40 +61,18 @@ public:
 		// Returns:
 		//     Position of command bar in list; -1 if not found.
 		//-----------------------------------------------------------------------
-		int Find(const CXTPCommandBar* pCommandBar) const
-		{
-			for (int i = 0; i < GetSize(); i++)
-			{
-				if (pCommandBar == GetAt(i))
-					return  i;
-			}
-			return -1;
-		}
+		int Find(const CXTPCommandBar* pCommandBar) const;
 	};
 
 private:
-	class _XTP_EXT_CLASS CTrustedArray : public CArray<HWND, HWND>
+	class CTrustedArray : public CArray<HWND, HWND>
 	{
 	public:
-		int Find(const HWND hWnd) const
-		{
-			for (int i = 0; i < GetSize(); i++)
-			{
-				if (hWnd == GetAt(i))
-					return  i;
-			}
-			return -1;
-		}
-
-		void Remove(HWND hWnd)
-		{
-			int i = Find(hWnd);
-			if (i != -1) RemoveAt(i);
-		}
+		int Find(const HWND hWnd) const;
+		void Remove(HWND hWnd);
 	};
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPMouseManager object, handles cleanup and deallocation.
@@ -240,8 +217,7 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPCommandBar* HitTest(POINT point) const;
 
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	BOOL PreviewTackLost(CXTPCommandBar* pContextMenu, MSG* msg) const;
 	void LockTrackRecurse(BOOL bLockTrack);
 	void SendTrackLostRecurse();
@@ -249,15 +225,16 @@ public:
 	CTrackArray& GetTrackArray();
 	CXTPCommandBar* GetTopTracked() const;
 	BOOL IsRelated(HWND hWndParent, HWND hWnd) const;
-//}}AFX_CODEJOCK_PRIVATE
+	void EnableSkipTrackedMouseMoveDuplicates(BOOL bEnable = TRUE);
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-
 	void DeliverMessage(CXTPCommandBar* pCapture, WPARAM wParam, POINT pt);
 	BOOL PreTranslateMouseEvents(WPARAM wParam, POINT point);
 	void SetupHook(BOOL);
 
-	static void CALLBACK TrackMouseTimerProc (HWND hWnd, UINT /*uMsg*/, UINT idEvent, DWORD /*dwTime*/);
+	static void CALLBACK TrackMouseTimerProc(HWND hWnd, UINT /*uMsg*/, UINT_PTR idEvent,
+											 DWORD /*dwTime*/);
 	static LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 private:
@@ -272,50 +249,66 @@ private:
 	BOOL m_bForceExpanded;
 	CTrustedArray m_arrTrusted;
 	BOOL m_bIgnoreLButtonUp;
+	BOOL m_bSkipTrackedMouseMoveDuplicates;
+	CPoint m_ptTrackedPos;
 
-	#ifdef _AFXDLL
-		AFX_MODULE_STATE* m_pModuleState;
-	#endif
+#	ifdef _AFXDLL
+	AFX_MODULE_STATE* m_pModuleState;
+#	endif
 
 	friend class CXTPCustomizeSheet;
 	friend class CXTPCommandBars;
 };
 
-
-AFX_INLINE CXTPMouseManager* XTPMouseManager() {
+AFX_INLINE CXTPMouseManager* XTPMouseManager()
+{
 	return CXTPMouseManager::_xtpMouseThreadState.GetData();
 }
 
-AFX_INLINE CXTPMouseManager::CTrackArray& CXTPMouseManager::GetTrackArray() {
+AFX_INLINE CXTPMouseManager::CTrackArray& CXTPMouseManager::GetTrackArray()
+{
 	return m_arrTracked;
 }
 
-AFX_INLINE void CXTPMouseManager::SetSelected(CXTPCommandBar* pSelected) {
+AFX_INLINE void CXTPMouseManager::SetSelected(CXTPCommandBar* pSelected)
+{
 	m_pSelected = pSelected;
 }
-AFX_INLINE void CXTPMouseManager::RemoveSelected(CXTPCommandBar* pSelected){
+AFX_INLINE void CXTPMouseManager::RemoveSelected(CXTPCommandBar* pSelected)
+{
 	if (m_pSelected == pSelected)
 		m_pSelected = NULL;
 }
-AFX_INLINE void CXTPMouseManager::LockMouseMove() {
+AFX_INLINE void CXTPMouseManager::LockMouseMove()
+{
 	m_nLock++;
 }
-AFX_INLINE void CXTPMouseManager::UnlockMouseMove() {
+AFX_INLINE void CXTPMouseManager::UnlockMouseMove()
+{
 	m_nLock--;
 }
-AFX_INLINE  BOOL CXTPMouseManager::IsMouseLocked() const{
+AFX_INLINE BOOL CXTPMouseManager::IsMouseLocked() const
+{
 	return m_nLock > 0;
 }
 
-AFX_INLINE  BOOL CXTPMouseManager::IsForceExpanded() const {
+AFX_INLINE BOOL CXTPMouseManager::IsForceExpanded() const
+{
 	return m_bForceExpanded;
 }
-AFX_INLINE void CXTPMouseManager::SetForceExpanded(BOOL bForceExpanded) {
+AFX_INLINE void CXTPMouseManager::SetForceExpanded(BOOL bForceExpanded)
+{
 	m_bForceExpanded = bForceExpanded;
 }
-AFX_INLINE void CXTPMouseManager::IgnoreLButtonUp() {
+AFX_INLINE void CXTPMouseManager::IgnoreLButtonUp()
+{
 	m_bIgnoreLButtonUp = TRUE;
 }
 
+AFX_INLINE void CXTPMouseManager::EnableSkipTrackedMouseMoveDuplicates(BOOL bEnable /*= TRUE*/)
+{
+	m_bSkipTrackedMouseMoveDuplicates = bEnable;
+}
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPMOUSEMANAGER_H__)

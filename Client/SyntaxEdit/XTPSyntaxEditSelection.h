@@ -1,7 +1,6 @@
-// XTPSyntaxEditSelection.h: interface for the CXTPSyntaxEditAutoCompleteWnd class.
+// XTPSyntaxEditSelection.h: interface for the CXTPSyntaxEditSelection class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSYNTAXEDITSELECTION_H__)
-#define __XTPSYNTAXEDITSELECTION_H__
+#	define __XTPSYNTAXEDITSELECTION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPSyntaxEditStruct.h"
-
-#include <imm.h>
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
+#	ifdef _XTP_ACTIVEX
+class CXTPSyntaxEditSelPosEx_imp;
+class CXTPSyntaxEditSelPosExNormal_imp;
+#	endif
 //}}AFX_CODEJOCK_PRIVATE
 
 //===========================================================================
@@ -50,7 +51,6 @@ class _XTP_EXT_CLASS CXTPSyntaxEditSelection : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPSyntaxEditSelection)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -83,7 +83,7 @@ public:
 	//      SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	const XTP_EDIT_LINECOL& GetStart_str();
+	const XTP_EDIT_LINECOL& GetStart_str() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -97,7 +97,7 @@ public:
 	//      SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	const XTP_EDIT_LINECOL& GetEnd_str();
+	const XTP_EDIT_LINECOL& GetEnd_str() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -111,7 +111,7 @@ public:
 	//      SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	const XTP_EDIT_LINECOL& GetStart_disp();
+	const XTP_EDIT_LINECOL& GetStart_disp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -125,7 +125,7 @@ public:
 	//      SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	const XTP_EDIT_LINECOL& GetEnd_disp();
+	const XTP_EDIT_LINECOL& GetEnd_disp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -138,7 +138,7 @@ public:
 	//      GetNormalEnd_disp, SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LINECOL GetNormalStart_str();
+	XTP_EDIT_LINECOL GetNormalStart_str() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -147,7 +147,7 @@ public:
 	//      A reference to XTP_EDIT_LINECOL object which contains normalized
 	//      selection start.
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LINECOL GetNormalStart_disp();
+	XTP_EDIT_LINECOL GetNormalStart_disp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -160,7 +160,7 @@ public:
 	//      GetNormalStart_disp, SetStart_str, SetStart_disp, SetEnd_str, SetEnd_disp,
 	//      Reset_str, Reset_disp
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LINECOL GetNormalEnd_str();
+	XTP_EDIT_LINECOL GetNormalEnd_str() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,7 +169,7 @@ public:
 	//      A reference to XTP_EDIT_LINECOL object which contains normalized
 	//      selection end.
 	//-----------------------------------------------------------------------
-	XTP_EDIT_LINECOL GetNormalEnd_disp();
+	XTP_EDIT_LINECOL GetNormalEnd_disp() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -263,15 +263,15 @@ public:
 	// Returns:
 	//      TRUE if selection  exists, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsSelExist();
+	BOOL IsSelExist() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//      Used to determine is selection 'Normal' (start < end).
+	//      Used to determine is selection 'Normal' (start \< end).
 	// Returns:
 	//      TRUE if selection  'Normal', FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsSelNormal();
+	BOOL IsSelNormal() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -286,7 +286,7 @@ public:
 	// See Also:
 	//      IsIntersectSel_str, IsIntersectSel_disp
 	//-----------------------------------------------------------------------
-	BOOL IsInSel_str(int nTextRow, int nStrPos);
+	BOOL IsInSel_str(int nTextRow, int nStrPos) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -298,7 +298,7 @@ public:
 	// Returns:
 	//      TRUE if specified position inside the selection, FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsInSel_disp(int nTextRow, int nDispCol);
+	BOOL IsInSel_disp(int nTextRow, int nDispCol) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -313,7 +313,7 @@ public:
 	// See Also:
 	//      IsIntersectSel_str, IsIntersectSel_disp
 	//-----------------------------------------------------------------------
-	BOOL IsIntersectSel_str(int nTextRow, int nStrPos1, int nStrPos2);
+	BOOL IsIntersectSel_str(int nTextRow, int nStrPos1, int nStrPos2) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -328,7 +328,7 @@ public:
 	// See Also:
 	//      IsIntersectSel_str, IsIntersectSel_disp
 	//-----------------------------------------------------------------------
-	BOOL IsIntersectSel_disp(int nTextRow, int nDispCol1, int nDispCol2);
+	BOOL IsIntersectSel_disp(int nTextRow, int nDispCol1, int nDispCol2) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -373,48 +373,144 @@ public:
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
-	BOOL _IsInSel(BOOL bStr, int nTextRow, int nColX);
-	BOOL _IsIntersectSel(BOOL bStr, int nTextRow, int nCol1, int nCol2);
+	BOOL _IsInSel(BOOL bStr, int nTextRow, int nColX) const;
+	BOOL _IsIntersectSel(BOOL bStr, int nTextRow, int nCol1, int nCol2) const;
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-	BOOL bSelectingRunning;             // Stores 'SelectingRunning' mode
-	BOOL bWordSelectionMode;            // Stores 'Word' selecting mode
-	BOOL bBlockSelectionMode;           // Stores 'Block' selecting mode
-	int  nSelStartTextRowFromLeftBar;   // Stores start selection line for full line selecting (from the left bar).
+	BOOL bSelectingRunning;			 // Stores 'SelectingRunning' mode
+	BOOL bWordSelectionMode;		 // Stores 'Word' selecting mode
+	BOOL bBlockSelectionMode;		 // Stores 'Block' selecting mode
+	int nSelStartTextRowFromLeftBar; // Stores start selection line for full line selecting (from
+									 // the left bar).
 
 private:
 	CXTPSyntaxEditCtrl* m_pOwnerCtrl;
 
-	XTP_EDIT_LINECOL    selStart_disp;
-	XTP_EDIT_LINECOL    selEnd_disp;
+	XTP_EDIT_LINECOL selStart_disp;
+	XTP_EDIT_LINECOL selEnd_disp;
 
-	XTP_EDIT_LINECOL    selStart_str;
-	XTP_EDIT_LINECOL    selEnd_str;
+	XTP_EDIT_LINECOL selStart_str;
+	XTP_EDIT_LINECOL selEnd_str;
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
 
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPSyntaxEditSelection)
+
+	LPDISPATCH OleGetStart();
+	LPDISPATCH OleGetEnd();
+	LPDISPATCH OleGetNormalStart();
+	LPDISPATCH OleGetNormalEnd();
+
+	BSTR OleGetText();
+	void OleSetText(LPCTSTR pcszSelText);
+	void OleReset();
+
+	CXTPSyntaxEditSelPosEx_imp* m_pAxStart;
+	CXTPSyntaxEditSelPosEx_imp* m_pAxEnd;
+
+	CXTPSyntaxEditSelPosExNormal_imp* m_pAxNormalStart;
+	CXTPSyntaxEditSelPosExNormal_imp* m_pAxNormalEnd;
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
+#	ifdef _XTP_ACTIVEX
+//{{AFX_CODEJOCK_PRIVATE
+
+class _XTP_EXT_CLASS CXTPSyntaxEditTextPosition_imp : public CXTPCmdTarget
+{
+	DECLARE_DYNAMIC(CXTPSyntaxEditTextPosition_imp)
+public:
+	CXTPSyntaxEditTextPosition_imp();
+
+	virtual long OleGetRow()	= 0;
+	virtual long OleGetCol()	= 0;
+	virtual long OleGetStrPos() = 0;
+
+	virtual void Ole_SetPos(long nRow, long nCol)		= 0;
+	virtual void Ole_SetPosStr(long nRow, long nStrPos) = 0;
+
+	virtual void OleSetRow(long nRow)
+	{
+		Ole_SetPos(nRow, OleGetCol());
+	};
+
+	virtual void OleSetCol(long nCol)
+	{
+		Ole_SetPos(OleGetRow(), nCol);
+	};
+
+	virtual void OleSetStrPos(long nStrPos)
+	{
+		Ole_SetPosStr(OleGetRow(), nStrPos);
+	};
+
+protected:
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPSyntaxEditTextPosition_imp)
+};
 
 //////////////////////////////////////////////////////////////////////////
-AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetStart_str()
+class _XTP_EXT_CLASS CXTPSyntaxEditSelPosEx_imp : public CXTPSyntaxEditTextPosition_imp
+{
+public:
+	CXTPSyntaxEditSelPosEx_imp(CXTPSyntaxEditSelection* pOwner, BOOL bUseStart);
+
+	virtual long OleGetRow();
+	virtual long OleGetCol();
+	virtual long OleGetStrPos();
+
+	virtual void Ole_SetPos(long nRow, long nCol);
+	virtual void Ole_SetPosStr(long nRow, long nStrPos);
+
+	void Detach()
+	{
+		m_pOwner = NULL;
+	}
+
+protected:
+	CXTPSyntaxEditSelection* m_pOwner;
+	BOOL m_bUseStart;
+};
+
+//////////////////////////////////////////////////////////////////////////
+class _XTP_EXT_CLASS CXTPSyntaxEditSelPosExNormal_imp : public CXTPSyntaxEditSelPosEx_imp
+{
+public:
+	CXTPSyntaxEditSelPosExNormal_imp(CXTPSyntaxEditSelection* pOwner, BOOL bUseStart);
+
+	virtual long OleGetRow();
+	virtual long OleGetCol();
+	virtual long OleGetStrPos();
+
+	virtual void Ole_SetPos(long nRow, long nCol);
+	virtual void Ole_SetPosStr(long nRow, long nStrPos);
+};
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
+
+//////////////////////////////////////////////////////////////////////////
+AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetStart_str() const
 {
 	return selStart_str;
 }
-
-AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetEnd_str()
+AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetEnd_str() const
 {
 	return selEnd_str;
 }
-
-AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetStart_disp()
+AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetStart_disp() const
 {
 	return selStart_disp;
 }
-
-AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetEnd_disp()
+AFX_INLINE const XTP_EDIT_LINECOL& CXTPSyntaxEditSelection::GetEnd_disp() const
 {
 	return selEnd_disp;
 }
@@ -422,98 +518,57 @@ AFX_INLINE BOOL CXTPSyntaxEditSelection::IsWordSelectionMode() const
 {
 	return bWordSelectionMode;
 }
-
 AFX_INLINE BOOL CXTPSyntaxEditSelection::IsbBlockSelectionMode() const
 {
 	return bBlockSelectionMode;
 }
-
-AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalStart_str()
+AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalStart_str() const
 {
 	if (bBlockSelectionMode)
 		return XTP_EDIT_LINECOL::min2(selStart_str, selEnd_str);
 	return selStart_str <= selEnd_str ? selStart_str : selEnd_str;
 }
-
-AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalEnd_str()
+AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalEnd_str() const
 {
 	if (bBlockSelectionMode)
 		return XTP_EDIT_LINECOL::max2(selStart_str, selEnd_str);
 	return selEnd_str <= selStart_str ? selStart_str : selEnd_str;
 }
-
-AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalStart_disp()
+AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalStart_disp() const
 {
 	if (bBlockSelectionMode)
 		return XTP_EDIT_LINECOL::min2(selStart_disp, selEnd_disp);
 	return selStart_disp <= selEnd_disp ? selStart_disp : selEnd_disp;
 }
-
-AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalEnd_disp()
+AFX_INLINE XTP_EDIT_LINECOL CXTPSyntaxEditSelection::GetNormalEnd_disp() const
 {
 	if (bBlockSelectionMode)
 		return XTP_EDIT_LINECOL::max2(selStart_disp, selEnd_disp);
 	return selEnd_disp <= selStart_disp ? selStart_disp : selEnd_disp;
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditSelection::IsSelNormal()
+AFX_INLINE BOOL CXTPSyntaxEditSelection::IsSelNormal() const
 {
 	return selStart_disp <= selEnd_disp;
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditSelection::IsInSel_str(int nTextRow, int nStrPos)
+AFX_INLINE BOOL CXTPSyntaxEditSelection::IsInSel_str(int nTextRow, int nStrPos) const
 {
 	ASSERT(nStrPos >= 0);
 	return _IsInSel(TRUE, nTextRow, nStrPos);
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditSelection::IsInSel_disp(int nTextRow, int nDispCol)
+AFX_INLINE BOOL CXTPSyntaxEditSelection::IsInSel_disp(int nTextRow, int nDispCol) const
 {
 	return _IsInSel(FALSE, nTextRow, nDispCol);
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditSelection::IsIntersectSel_str(int nTextRow, int nStrPos1, int nStrPos2)
+AFX_INLINE BOOL CXTPSyntaxEditSelection::IsIntersectSel_str(int nTextRow, int nStrPos1,
+															int nStrPos2) const
 {
 	return _IsIntersectSel(TRUE, nTextRow, nStrPos1, nStrPos2);
 }
-
-AFX_INLINE BOOL CXTPSyntaxEditSelection::IsIntersectSel_disp(int nTextRow, int nDispCol1, int nDispCol2)
+AFX_INLINE BOOL CXTPSyntaxEditSelection::IsIntersectSel_disp(int nTextRow, int nDispCol1,
+															 int nDispCol2) const
 {
 	return _IsIntersectSel(FALSE, nTextRow, nDispCol1, nDispCol2);
 }
 
-//{{AFX_CODEJOCK_PRIVATE
-class _XTP_EXT_CLASS CXTPImmWrapper
-{
-public:
-	CXTPImmWrapper();
-	virtual ~CXTPImmWrapper();
-
-	BOOL ImmIsIME(HKL hKL = NULL);
-
-	XTP_HIMC ImmGetContext(HWND hWnd);
-	BOOL ImmReleaseContext(HWND hWnd, XTP_HIMC hIMC);
-
-	BOOL ImmSetCompositionWindow(XTP_HIMC hIMC, COMPOSITIONFORM* pCompForm);
-	BOOL ImmSetCompositionFont(XTP_HIMC hIMC, LOGFONT* plfFont);
-public:
-	typedef BOOL     (WINAPI *PFN_ImmIsIME)(HKL);
-
-	typedef XTP_HIMC (WINAPI *PFN_ImmGetContext)(HWND);
-	typedef BOOL     (WINAPI *PFN_ImmReleaseContext)(HWND, XTP_HIMC);
-
-	typedef BOOL     (WINAPI *PFN_ImmSetCompositionFont)(XTP_HIMC, LPLOGFONT); // A/W
-	typedef BOOL     (WINAPI *PFN_ImmSetCompositionWindow)(XTP_HIMC, COMPOSITIONFORM*);
-
-protected:
-	HMODULE m_hImmDll;         // Handle to the imm32 dll.
-
-	PFN_ImmIsIME                m_pfnImmIsIME;
-	PFN_ImmGetContext           m_pfnImmGetContext;
-	PFN_ImmReleaseContext       m_pfnImmReleaseContext;
-	PFN_ImmSetCompositionFont   m_pfnImmSetCompositionFont;
-	PFN_ImmSetCompositionWindow m_pfnImmSetCompositionWindow;
-};
-//}}AFX_CODEJOCK_PRIVATE
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSYNTAXEDITSELECTION_H__)

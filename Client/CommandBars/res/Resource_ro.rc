@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)
 #ifdef _WIN32
 LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -60,7 +59,7 @@ BEGIN
                     SS_CENTERIMAGE | NOT WS_VISIBLE | WS_BORDER
 END
 
-XTP_IDD_PAGE_KEYBOARD DIALOGEX DISCARDABLE  0, 0, 247, 150
+XTP_IDD_PAGE_KEYBOARD DIALOGEX DISCARDABLE  0, 0, 252, 150
  STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "Tastaturã"
 FONT 8, "MS Shell Dlg"
@@ -76,9 +75,9 @@ BEGIN
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Apãsaþi noua tastã comenzi rapide:",XTP_IDC_TXT_NEWKEY,100,91,120,8
     EDITTEXT        XTP_IDC_EDIT_SHORTCUTKEY,100,103,75,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Asociere",XTP_IDC_BTN_ASSIGN,179,39,65,14
-    PUSHBUTTON      "Eliminare",XTP_IDC_BTN_REMOVE,179,56,65,14
-    PUSHBUTTON      "Reiniþializare totalã",XTP_IDC_BTN_ACCEL_RESET,179,73,65,14
+    PUSHBUTTON      "Asociere",XTP_IDC_BTN_ASSIGN,179,39,70,14
+    PUSHBUTTON      "Eliminare",XTP_IDC_BTN_REMOVE,179,56,70,14
+    PUSHBUTTON      "Reiniþializare totalã",XTP_IDC_BTN_ACCEL_RESET,179,73,70,14
     LTEXT           "Descriere:",XTP_IDC_TXT_DESC_TITLE,4,117,89,8
     LTEXT           "",XTP_IDC_TXT_DESC_OVERVIEW,4,127,224,19,0,
                     WS_EX_STATICEDGE
@@ -107,7 +106,7 @@ BEGIN
     LTEXT           "Meniuri ºi bare de instrumente personalizate",XTP_IDC_GROUP_PERSONALIZED,4,5,240,8
     CONTROL         "Întotdeauna se afiºeazã meniuri complete",XTP_IDC_CHECK_FULL_MENUS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,216,10
-    CONTROL         "Afiºare meniuri complete dupã o  scurtã întârziere",
+    CONTROL         "Afiºare meniuri complete dupã o scurtã întârziere",
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "&Reiniþializare date utilizator",
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Meniuri"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Cerere meniuri",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Meniuri context",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Afiºarea meniului:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,80,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Resetare",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Implicit Meniu\nImplicit cerere meniu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Selectaþi meniul contextual:",IDC_STATIC,10,92,98,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,108,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Resetare",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Particularizare"
     XTP_IDS_NEWMENU         "Meniu nou"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Personalizaþi bara de stare"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -230,7 +229,7 @@ BEGIN
                             "Aceasta va ºterge înregistrarea comenzilor pe care le-aþi utilizat în aceastã aplicaþie ºi va reface setul implicit de comenzi vizibile din meniuri ºi barele de instrumente. Orice particularizãri explicite nu vor fi anulate. Faceþi aceastã operaþie?"
     XTP_IDS_INVALID_NUMBER  "Numãr incorect."
     XTP_IDS_INVALID_FONTSIZE "Numãrul trebuie sã fie între 1 ºi 1638."
-    XTP_IDS_CONFIRM_RESET   "Are you sure you want to reset the changes made to the '%s' toolbar?"
+    XTP_IDS_CONFIRM_RESET   "Sigur reiniþializaþi modificãrile fãcute în bara de instrumente '%s'?"
     XTP_IDS_BUILTINMENUS    "Meniuri predefinite"
 END
 
@@ -257,18 +256,18 @@ BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
                             "Sunteti sigur ca doriti sa initializati asocierile de tastatura?  Aceasta actiune va sterge toate asocierile particularizate la nivelul textului."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Aceastã comandã rapidã este în prezent asociatã.\nVrei sã re-atribui aceastã comandã rapidã?"
+    XTP_IDS_CONFIRM_UPDATE  "Din cauza o actualizare de software-ul din bara de instrumente '%s' s-a schimbat. Doriþi sã resetaþi bara personalizate ºi încãrcaþi unul nou?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Toate fiºierele imagine|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|All Files(*.*)|*.*||"
+                            "Toate poze pentru Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmap-uri (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiºierele (*.wmf;*.emf)|*.wmf;*.emf|Icoane (*.ico;*.cur)|*.ico;*.cur|Toate fiºierele (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nOpþiuni barã de instrumente"
     XTP_ID_TOOLBAR_HIDE     "\nÎnchidere"
-    XTP_ID_POPUPBAR_EXPAND  "\nExpand"
+    XTP_ID_POPUPBAR_EXPAND  "\nExtinde"
     XTP_ID_MENUBAR_CLOSE    "\nÎnchidere fereastrã"
     XTP_ID_MENUBAR_RESTORE  "\nRestabilire fereastrã"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimizare fereastrã"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) a fost presat. Aºteptare pentru doua cheie de acord..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -284,7 +283,7 @@ BEGIN
     XTP_ID_BUTTON_CLEAR     "\nGolire"
     XTP_ID_BUTTON_UNDO      "\nAnulare"
     XTP_ID_BUTTON_REDO      "\nRefacere"
-    XTP_ID_BUTTON_OPEN      "\nImport from file"
+    XTP_ID_BUTTON_OPEN      "\nImport din fiºier"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Revocare"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMuta anterioare grup de fila"
+    XTP_ID_WORKSPACE_MOVENEXT "\nMutare la urmãtorul Tab grup"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNoul grup de fila orizontalã"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNoul grup de fila verticale"
+    XTP_ID_WORKSPACE_CANCEL "\nRevocare"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Fiºiere active"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Imprima elementul examinatã\nImprimare"
+    XTP_ID_PREVIEW_PREV     "Du-te la pagina anterioarã\nPagina anterioarã"
+    XTP_ID_PREVIEW_NEXT     "Du-te la pagina urmãtoare\nPagina urmãtoare"
+    XTP_ID_PREVIEW_ZOOMIN   "Majorarea mãrire de pagina de previzualizare\nZoom în"
+    XTP_ID_PREVIEW_ZOOMOUT  "Scãderea mãrire de pagina de previzualizare\nZoom depãrtare"
+    XTP_ID_PREVIEW_ONEPAGE  "Pagina singura"
+    XTP_ID_PREVIEW_TWOPAGE  "Pagini multiple"
+    XTP_ID_PREVIEW_CLOSE    "Aproape de previzualizare\nAproape de previzualizare"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Întreaga paginã"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Lãþimea pagina"
+    XTP_IDS_PREVIEW_PAGEI     "Pagina %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Pagina %i de %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)

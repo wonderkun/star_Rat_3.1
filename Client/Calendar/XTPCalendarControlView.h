@@ -1,7 +1,6 @@
 // XTPCalendarControlView.h: interface for the CXTPCalendarControlView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,28 +19,28 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCALENDARCONTROLVIEW_H__)
-#define __XTPCALENDARCONTROLVIEW_H__
+#	define __XTPCALENDARCONTROLVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarControl.h"
-#include "XTPCalendarView.h"
-#include "XTPCalendarDayView.h"
-#include "XTPCalendarUtils.h"
-#include "XTPCalendarCaptionBarControl.h"
-#include "Resource.h"
+#	include "Common/Base/Diagnostic/XTPDisableAdvancedWarnings.h"
+#	include <afxdtctl.h>
+#	include "Common/Base/Diagnostic/XTPEnableAdvancedWarnings.h"
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarControlViewPrintOptions;
 class CXTPCalendarPageSetupDialog;
+class CXTPNotifySink;
 
 //===========================================================================
 // Summary:
 //     Identifier of Calendar control child window of CXTPCalendarControlView.
 //===========================================================================
-const UINT XTP_ID_CALENDAR_CONTROL = 100;
+const UINT XTP_ID_CALENDAR_CONTROL			 = 100;
 const UINT XTP_ID_CALENDARCAPTIONBAR_CONTROL = 101;
 
 //===========================================================================
@@ -72,18 +71,21 @@ public:
 	COleDateTime m_dtPrintFrom; // Top bound of the printing area for a day view.
 	COleDateTime m_dtPrintTo;   // Bottom bound of the printing area for a day view.
 	BOOL m_bPrintFromToExactly; // Defines whether to cut printing
-	                            // area by showing only area between
-	                            // m_dtPrintFrom and m_dtPrintTo
+								// area by showing only area between
+								// m_dtPrintFrom and m_dtPrintTo
 
-	BOOL m_bPrintDateHeader; // Defines whether to print a date header or not.
-	LOGFONT m_lfDateHeaderFont; // Font for day header caption (Day 1 - Day 2)
-	LOGFONT m_lfDateHeaderWeekDayFont; // Font for day header week day(Monday, ...)
+	COleDateTime m_dtMonthViewPrintBeginDate; // Begin date to print for multi month print option
+	COleDateTime m_dtMonthViewPrintEndDate;   // End date to print for multi month print option
+
+	BOOL m_bPrintDateHeader;			// Defines whether to print a date header or not.
+	LOGFONT m_lfDateHeaderFont;			// Font for day header caption (Day 1 - Day 2)
+	LOGFONT m_lfDateHeaderWeekDayFont;  // Font for day header week day(Monday, ...)
 	LOGFONT m_lfDateHeaderCalendarFont; // Font for day header small calendar.
 
 	BOOL m_b3SmallCal; // Print 3 small calendars in header instead of 1.
-	//BOOL m_bNoBackGround;
-	//BOOL m_bGrayBackGround;
-	//BOOL m_bGrayEventBackGround;
+	// BOOL m_bNoBackGround;
+	// BOOL m_bGrayBackGround;
+	// BOOL m_bGrayEventBackGround;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -103,7 +105,23 @@ public:
 	virtual LCID GetActiveLCID();
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarControlViewPrintOptions);
+
+	afx_msg LPFONTDISP OleGetDateHeaderFont();
+	afx_msg void OleSetDateHeaderFont(LPFONTDISP pFontDisp);
+
+	afx_msg LPFONTDISP OleGetDateHeaderWeekDayFont();
+	afx_msg void OleSetDateHeaderWeekDayFont(LPFONTDISP pFontDisp);
+
+	afx_msg LPFONTDISP OleGetDateHeaderCalendarFont();
+	afx_msg void OleSetDateHeaderCalendarFont(LPFONTDISP pFontDisp);
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -125,9 +143,12 @@ protected:
 class _XTP_EXT_CLASS CXTPCalendarPageSetupDialog : public CPageSetupDialog
 {
 public:
-//{{AFX_CODEJOCK_PRIVATE
-	enum {IDD = XTP_IDD_CALENDAR_PRINT_PAGE_SETUP};
-//}}AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
+	enum
+	{
+		IDD = XTP_IDD_CALENDAR_PRINT_PAGE_SETUP
+	};
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -145,7 +166,7 @@ public:
 	//      CPageSetupDialog::CPageSetupDialog()
 	//-----------------------------------------------------------------------
 	CXTPCalendarPageSetupDialog(CXTPCalendarControlViewPrintOptions* pOptions,
-								DWORD dwFlags = PSD_MARGINS | PSD_INWININIINTLMEASURE,
+								DWORD dwFlags	= PSD_MARGINS | PSD_INWININIINTLMEASURE,
 								CWnd* pParentWnd = NULL);
 
 	//-----------------------------------------------------------------------
@@ -157,30 +178,36 @@ public:
 protected:
 	CXTPCalendarControlViewPrintOptions* m_pOptions; // Pointer to associated print options object.
 
-	CComboBox   m_ctrlPrintFromCmb;
+	CComboBox m_ctrlPrintFromCmb;
 	// A combo for choosing CXTPCalendarControlViewPrintOptions::m_dtPrintFrom value
-	CComboBox   m_ctrlPrintToCmb;
+	CComboBox m_ctrlPrintToCmb;
 	// A combo for choosing CXTPCalendarControlViewPrintOptions::m_dtPrintTo value
-	CButton     m_ctrlPrintFromTo;
+	CButton m_ctrlPrintFromTo;
 	// A check box for editing CXTPCalendarControlViewPrintOptions::m_bPrintFromToExactly value
-	CButton     m_ctrlPrintDateHeader;
+	CButton m_ctrlPrintDateHeader;
 	// A check box for editing CXTPCalendarControlViewPrintOptions::m_bPrintDateHeader value
-	CStatic     m_ctrlDateHeaderFontLabel;
+	CStatic m_ctrlDateHeaderFontLabel;
 	// A label for displaying CXTPCalendarControlViewPrintOptions::m_lfDateHeaderFont caption
-	CEdit       m_ctrlDateHeaderFont;
+	CEdit m_ctrlDateHeaderFont;
 	// A label for displaying CXTPCalendarControlViewPrintOptions::m_lfDateHeaderFont value
-	CButton     m_ctrlDateHeaderFontButton;
+	CButton m_ctrlDateHeaderFontButton;
 	// A button for choosing CXTPCalendarControlViewPrintOptions::m_lfDateHeaderFont value
-	CButton     m_ctrlBlackWhitePrinting;
+	CButton m_ctrlBlackWhitePrinting;
 	// A check box for editing CXTPCalendarControlViewPrintOptions::m_bBlackWhitePrinting value
-	CButton     m_ctrl3SmallCal;
+	CButton m_ctrl3SmallCal;
 	// A check box for setting CXTPCalendarControlViewPrintOptions::m_b3SmallCal value
-	LOGFONT     m_lfDateHeader;
+	LOGFONT m_lfDateHeader;
+	// a date time picker for begin date in month view printing
+	CDateTimeCtrl m_ctrlMonthViewPrintFrom;
+	// a date time picker for end date in month view printing
+	CDateTimeCtrl m_ctrlMonthViewPrintTo;
+	// a check box which swithes between use or not multimonth printing option
+	CButton m_ctrlMonthViewPrintRange;
 	// Date header font temporary storage
-	CEdit m_ctrlHeaderFormat;   // An edit for header format string
-	CEdit m_ctrlFooterFormat;   // An edit for footer format string
-	CButton m_ctrlHeaderFormatBtn;  // A button to show header specifiers menu
-	CButton  m_ctrlFooterFormatBtn; // A button to show footer specifiers menu
+	CEdit m_ctrlHeaderFormat;	  // An edit for header format string
+	CEdit m_ctrlFooterFormat;	  // An edit for footer format string
+	CButton m_ctrlHeaderFormatBtn; // A button to show header specifiers menu
+	CButton m_ctrlFooterFormatBtn; // A button to show footer specifiers menu
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -229,11 +256,14 @@ protected:
 	//-----------------------------------------------------------------------
 	afx_msg void OnBnClickedDateHeaderFont();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	afx_msg void OnBnClickedHeaderFormat();
 	afx_msg void OnBnClickedFooterFormat();
+	afx_msg void OnBnClickedMonthViewPrintRange();
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
+
+	void UpdateMonthViewDateControls();
 };
 
 //===========================================================================
@@ -245,11 +275,10 @@ protected:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPCalendarControlView : public CView
 {
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DYNCREATE(CXTPCalendarControlView)
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Protected constructor used by dynamic creation
@@ -290,16 +319,17 @@ public:
 	// Returns:
 	//     Pointer to an object describing print options of this view.
 	//-----------------------------------------------------------------------
-	CXTPCalendarControlViewPrintOptions* GetPrintOptions();
+	CXTPCalendarControlViewPrintOptions* GetPrintOptions() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//      Use this member function to set external scroll bar control.
 	// Parameters:
 	//      pScrollBar - Pointer to a scrollbar object.
+	//      nBar - Specifies the bar orientation either SB_VERT or SB_HORZ.
 	// See Also: CScrollBar
 	//-----------------------------------------------------------------------
-	void SetScrollBarCtrl(CScrollBar* pScrollBar);
+	void SetScrollBarCtrl(CScrollBar* pScrollBar, int nBar = SB_VERT);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -309,7 +339,7 @@ public:
 	// See Also:
 	//     ShowCaptionBar, CXTPCalendarCaptionBarControl
 	//-----------------------------------------------------------------------
-	virtual BOOL IsShowCaptionBar();
+	virtual BOOL IsShowCaptionBar() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -320,11 +350,10 @@ public:
 	//     IsShowCaptionBar, CXTPCalendarCaptionBarControl
 	//-----------------------------------------------------------------------
 	virtual void ShowCaptionBar(BOOL bShow);
-//move to public area
+	// move to public area
 	virtual void _ResizeControls();
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPCalendarControlView object, handles cleanup and deallocation.
@@ -332,7 +361,6 @@ protected:
 	virtual ~CXTPCalendarControlView();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draws main (central) date header area.
@@ -356,9 +384,8 @@ protected:
 	//     dtYearMonth- Which month's calendar to draw.
 	//     rrcHeaderCalendar - [out] Drawn rectangle area.
 	//-----------------------------------------------------------------------
-	virtual void _DrawDateHeaderCalendar(BOOL bCalculate, CDC* pDC,
-									COleDateTime dtYearMonth,
-									CRect& rrcHeaderCalendar);
+	virtual void _DrawDateHeaderCalendar(BOOL bCalculate, CDC* pDC, COleDateTime dtYearMonth,
+										 CRect& rrcHeaderCalendar);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -376,7 +403,6 @@ protected:
 	virtual int _GetDateHeaderMonths(COleDateTime& dtYearMonth1, COleDateTime& dtYearMonth2,
 									 CString& strHeader1, CString& strHeader2,
 									 CString& strHeaderWeekDay);
-
 
 	// ---------------------------------------------------------------------
 	// Summary:
@@ -409,17 +435,17 @@ protected:
 	// See also:
 	//     CDC::HIMETRICtoLP()
 	//-----------------------------------------------------------------------
-	static CRect _HimetricToLP(CDC* pDC, const CRect rcHimetric);
+	static CRect AFX_CDECL _HimetricToLP(CDC* pDC, const CRect rcHimetric);
 
 protected:
 	COleDateTime m_dtPrintFrom; // Top bound of the printing area for a day view.
 	COleDateTime m_dtPrintTo;   // Bottom bound of the printing area for a day view.
 
 //{{AFX_CODEJOCK_PRIVATE
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+#	endif
 
 	DECLARE_MESSAGE_MAP()
 
@@ -437,11 +463,24 @@ protected:
 	virtual void _OnPrint2(CDC* pDC, CPrintInfo* pInfo, CRect rcPrint);
 	//}}AFX_VIRTUAL
 
+	void DoPrintPage(CDC* pDC, CPrintInfo* pInfo);
+
+	void SetupCurrentPrintPage(CDC* pDC, CPrintInfo* pInfo);
+	void SetupCurrentDayViewPrintPage(CDC* pDC, CPrintInfo* pInfo);
+	void SetupCurrentMonthViewPrintPage(CPrintInfo* pInfo);
+
+	void SelectNextPrintPage(CPrintInfo* pInfo);
+	void SelectNextDayViewPrintPage(CPrintInfo* pInfo);
+
+	CRect ExcludeMarginsFromDrawRect(CDC* pDC, CPrintInfo* pInfo);
+	UINT CalculateMonthViewPrintPagesCount();
+
 	//{{AFX_MSG(CXTPCalendarControlView)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnPaint();
 	afx_msg void OnUndo();
@@ -452,15 +491,14 @@ protected:
 	afx_msg void OnUpdateCommand(CCmdUI* pCmdUI);
 	afx_msg void OnFilePageSetup();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
-	class CXTPCalendarPritAdjustContext
+	//{{AFX_CODEJOCK_PRIVATE
+	class CPritAdjustContext
 	{
 	public:
-		CXTPCalendarPritAdjustContext()
+		CPritAdjustContext()
 		{
 			Reset();
 		}
@@ -470,110 +508,58 @@ protected:
 			m_bAdjust = TRUE;
 			m_rcCalendar.SetRectEmpty();
 			m_rectDraw_prev.SetRectEmpty();
+			m_rcDateHeader.SetRectEmpty();
+			m_rcFooter.SetRectEmpty();
+			m_rcHeader.SetRectEmpty();
 		}
-		BOOL    m_bAdjust;
-		CRect   m_rcHeader;
-		CRect   m_rcDateHeader;
-		CRect   m_rcCalendar;
-		CRect   m_rcFooter;
-		CRect   m_rectDraw_prev;
+		BOOL m_bAdjust;
+		CRect m_rcHeader;
+		CRect m_rcDateHeader;
+		CRect m_rcCalendar;
+		CRect m_rcFooter;
+		CRect m_rectDraw_prev;
 	};
 
-	class CXTPCalendarBeforePrintState
+	class CBeforePrintState
 	{
 	public:
-		CXTPCalendarBeforePrintState()
-		{
-			ClearData();
-		}
+		CBeforePrintState();
+
+	public:
+		void ClearData();
+
+		void Save(CXTPCalendarControlView* pView);
+
+		void Restore(CXTPCalendarControlView* pView);
+
+	public:
 		BOOL m_bDataValid;
 		COleDateTimeSpan m_spScale_orig;
 		int m_nTopRow;
-		void ClearData()
-		{
-			m_bDataValid = FALSE;
-
-			m_spScale_orig = 0;
-			m_nTopRow = 0;
-		}
-		void Save(CXTPCalendarControlView* pView)
-		{
-			m_bDataValid = FALSE;
-			m_spScale_orig = 0;
-			m_nTopRow = 0;
-
-			BOOL b = pView->GetCalendarCtrl().m_bMultiColumnWeekMode;
-			int nViewType = pView->GetCalendarCtrl().GetActiveView()->GetViewType();
-			if (nViewType == xtpCalendarDayView
-				|| (b && nViewType == xtpCalendarWeekView)
-				|| nViewType == xtpCalendarWorkWeekView
-				|| nViewType == xtpCalendarFullWeekView)
-			{
-				CXTPCalendarDayView* pDayView = DYNAMIC_DOWNCAST(CXTPCalendarDayView, pView->GetCalendarCtrl().GetDayView());
-				ASSERT(pDayView);
-				if (!pDayView)
-					return;
-
-				m_spScale_orig = pDayView->GetScaleInterval();
-				m_nTopRow = pDayView->GetTopRow();
-
-				m_bDataValid = TRUE;
-			}
-		}
-
-		void Restore(CXTPCalendarControlView* pView)
-		{
-			if (!m_bDataValid)
-				return;
-
-			BOOL b = pView->GetCalendarCtrl().m_bMultiColumnWeekMode;
-			int nViewType = pView->GetCalendarCtrl().GetActiveView()->GetViewType();
-			if (nViewType == xtpCalendarDayView
-				|| (b && nViewType == xtpCalendarWeekView)
-				|| nViewType == xtpCalendarWorkWeekView
-				|| nViewType == xtpCalendarFullWeekView)
-			{
-				CXTPCalendarDayView* pDayView = DYNAMIC_DOWNCAST(CXTPCalendarDayView, pView->GetCalendarCtrl().GetDayView());
-				if (!pDayView)
-					return;
-
-				pDayView->SetScaleInterval(m_spScale_orig);
-				pView->GetCalendarCtrl().RedrawControl(TRUE);
-				pView->CalendarDayView_ScrolV(m_nTopRow);
-			}
-			pView->GetCalendarCtrl().AdjustLayout();
-		}
 	};
 
-
-	CXTPCalendarBeforePrintState         m_beforePrintState;
-	CXTPCalendarPritAdjustContext        m_pritAdjustContext;
+	CBeforePrintState m_beforePrintState;
+	CPritAdjustContext m_pritAdjustContext;
 	CXTPCalendarControl::CUpdateContext* m_pUpdateContect;
-	CBitmap                              m_bmpGrayDC;
-//}}AFX_CODEJOCK_PRIVATE
+	CBitmap m_bmpGrayDC;
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	friend class CCalendarControlCtrl;
-	friend class CXTPCalendarBeforePrintState;
-//}}AFX_CODEJOCK_PRIVATE
+	friend class CBeforePrintState;
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
+	//{{AFX_CODEJOCK_PRIVATE
+	void CalendarDayView_ScrolV(int nTopRow);
 
-//{{AFX_CODEJOCK_PRIVATE
-	void CalendarDayView_ScrolV(int nTopRow)
-	{
-		CXTPCalendarDayView* pDayView = DYNAMIC_DOWNCAST(CXTPCalendarDayView, GetCalendarCtrl().GetDayView());
-		ASSERT(pDayView);
-		if (pDayView)
-			pDayView->_ScrollV(nTopRow, nTopRow);
-	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_XTP_SINK(CXTPCalendarControlView, m_Sink)
+	//{{AFX_CODEJOCK_PRIVATE
+	CXTPNotifySink* m_pSink;
 
-	virtual void OnEvent_CalendarThemeChanged(XTP_NOTIFY_CODE Event, WPARAM wParam , LPARAM lParam);
-//}}AFX_CODEJOCK_PRIVATE
+	virtual void OnEvent_CalendarThemeChanged(XTP_NOTIFY_CODE Event, WPARAM wParam, LPARAM lParam);
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	CXTPCalendarControlViewPrintOptions* m_pPrintOptions;
@@ -586,17 +572,15 @@ private:
 	CXTPCalendarCaptionBarControl m_wndCalendarCaptionBar;
 	// Child Calendar Caption Bar window
 
-	CXTPCalendarControl m_wndCalendar;
-	// Child Calendar control window.
-
 	CXTPCalendarControl* m_pCalendar;
 	// Child Calendar control pointer (used to set external calendar control).
 
 	BOOL m_bReleaseCalendarWhenDestroy;
-	CScrollBar* m_pScrollBar;
+	CScrollBar* m_pVScrollBar;
+	CScrollBar* m_pHScrollBar;
 
 	BOOL m_bDayViewMode;
-	//internal flag for DayView and related Views printing
+	// internal flag for DayView and related Views printing
 
 public:
 	BOOL m_bPrintDirect;
@@ -606,38 +590,48 @@ public:
 	// if FALSE - attached Calendar control will not be resized with view. TRUE by default.
 
 	BOOL m_bPrintFullScale;
-	// extra flag for printing if no Range on Print Option selected, FALSE - use Working hour range, TRUE - Time Scale range
+	// extra flag for printing if no Range on Print Option selected, FALSE - use Working hour range,
+	// TRUE - Time Scale range
 
 	BOOL m_bPrintFineMode;
-	// if TRUE - default and all Print Option features, if FALSE - B/W print without Header and Footer
+	// if TRUE - default and all Print Option features, if FALSE - B/W print without Header and
+	// Footer
 
 	BOOL m_bPrintRepeatHeaderFooterMode;
-	//flag to repeat readers and footers on each page
+	// flag to repeat readers and footers on each page
 
 	BOOL m_bDF_mode;
 	// Last page print mode flag (FALSE - print last page same size as other,
 	// TRUE (default) - can be shorter then others)
 
 	COleDateTime m_dtTimeScaleOldMaxTime;
-	//stored original time scale settings during print / print preview
+	// stored original time scale settings during print / print preview
 	COleDateTime m_dtTimeScaleOldMinTime;
-	//stored original time scale settings during print / print preview
-//ext print support
+	// stored original time scale settings during print / print preview
+	// ext print support
 private:
-	int m_nStartCell, m_nEndCell, m_nCurCell, m_nCellSteps, m_nInitialTopCell; // internal cell's for printing loop
+	int m_nStartCell, m_nEndCell, m_nCurCell, m_nCellSteps,
+		m_nInitialTopCell; // internal cell's for printing loop
 	CUIntArray m_PageStart;
 	COleDateTimeSpan m_dtInitialScaleInterval;
+
+	COleDateTime m_dtMonthViewPrintBeginDate; // The range of days to print for month view
+	COleDateTime m_dtMonthViewPrintEndDate;
+	COleDateTime m_dtSavedMonthViewBeginDate; // stores first visible day of month view before
+											  // printing to restore the view after rint operation
+
+	BOOL m_bMonthViewMode;
 };
 
 /////////////////////////////////////////////////////////////////////////////
-AFX_INLINE CXTPCalendarControlViewPrintOptions* CXTPCalendarControlView::GetPrintOptions()
+AFX_INLINE CXTPCalendarControlViewPrintOptions* CXTPCalendarControlView::GetPrintOptions() const
 {
 	return m_pPrintOptions;
 }
-
 AFX_INLINE CXTPCalendarCaptionBarControl& CXTPCalendarControlView::GetCalendarCaptionBarCtrl()
 {
 	return m_wndCalendarCaptionBar;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPCALENDARCONTROLVIEW_H__)

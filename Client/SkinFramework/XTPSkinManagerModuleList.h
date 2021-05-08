@@ -1,7 +1,6 @@
 // XTPSkinManagerModuleList.h: interface for the CXTPSkinManagerModuleList class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINMANAGERMODULELIST_H__)
-#define __XTPSKINMANAGERMODULELIST_H__
+#	define __XTPSKINMANAGERMODULELIST_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableAdvancedWarnings.h"
+#	include <stddef.h>
+#	include "Common/Base/Diagnostic/XTPEnableAdvancedWarnings.h"
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //{{AFX_CODEJOCK_PRIVATE
 
@@ -35,8 +40,32 @@ struct XTP_MODULEINFO
 	DWORD SizeOfImage;
 	LPVOID EntryPoint;
 	HMODULE hModule;
+	UINT nLockCount;
+	BOOL bUnacceptable;
 };
 
+class CXTPSkinManagerModuleListSharedData
+{
+	friend class CXTPSingleton<CXTPSkinManagerModuleListSharedData>;
+
+private:
+	CXTPSkinManagerModuleListSharedData();
+
+public:
+	~CXTPSkinManagerModuleListSharedData();
+
+	const CXTPModuleHandle& GetPsapiDllHandle() const;
+	BOOL Exists() const;
+
+private:
+	void Init();
+
+	CXTPModuleHandle m_hPsapiDll;
+	BOOL m_bExists;
+	BOOL m_bInitialized;
+};
+
+#	define XTP_WIN32SDK_MODULEINFO_SIZE offsetof(XTP_MODULEINFO, hModule)
 
 class _XTP_EXT_CLASS CXTPSkinManagerModuleList
 {
@@ -45,30 +74,24 @@ class _XTP_EXT_CLASS CXTPSkinManagerModuleList
 	class CToolHelpModuleEnumerator;
 
 public:
-	class CSharedData
-	{
-	public:
-		CSharedData();
-		~CSharedData();
-	public:
-		HMODULE m_hPsapiDll;
-		BOOL m_bExists;
-	};
-
-public:
-	CXTPSkinManagerModuleList(DWORD dwProcessId);
+	CXTPSkinManagerModuleList(DWORD dwProcessId, BOOL bUseCache = FALSE);
 	virtual ~CXTPSkinManagerModuleList();
 
 public:
-	static BOOL AFX_CDECL IsEnumeratorExists();
-	static CSharedData& AFX_CDECL GetSharedData();
+	_XTP_DEPRECATE("CXTPSkinManagerModuleList::CSharedData is deprecated, "
+				   "CXTPSkinManagerModuleListSharedData must be used instead")
+	typedef CXTPSkinManagerModuleListSharedData CSharedData;
+
+	static BOOL AFX_CDECL DoesEnumeratorExist();
+	static CXTPSkinManagerModuleListSharedData& AFX_CDECL GetSharedData();
 
 public:
+	void PreLoad(BOOL bThreadSafe);
+
 	HMODULE GetFirstModule();
 	HMODULE GetNextModule();
 
 	BOOL GetModuleInformation(HMODULE hModule, XTP_MODULEINFO* lpmodinfo);
-
 
 protected:
 	CModuleEnumerator* m_pEnumerator;
@@ -76,4 +99,5 @@ protected:
 
 //}}AFX_CODEJOCK_PRIVATE
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINMANAGERMODULELIST_H__)

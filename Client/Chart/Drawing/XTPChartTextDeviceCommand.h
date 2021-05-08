@@ -1,7 +1,6 @@
 // XTPChartTextDeviceCommand.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTTEXTDEVICECOMMAND_H__)
-#define __XTPCHARTTEXTDEVICECOMMAND_H__
+#	define __XTPCHARTTEXTDEVICECOMMAND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPChartDeviceCommand.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupUIElement;
 
@@ -39,7 +38,7 @@ class CXTPMarkupUIElement;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartTextDeviceCommand : public CXTPChartDeviceCommand
 {
-public:
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartTextDeviceCommand object.
@@ -49,20 +48,8 @@ public:
 	//     color     - The color of the text.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartTextDeviceCommand(const CXTPChartString& strText, CXTPChartFont* pFont, const CXTPChartColor& color);
-
-protected:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This is a virtual function override of base class CXTPChartDeviceContext,
-	//     act polymorphically to do the actual drawing of the chart element using
-	//     OepnGL, to which this device command is associated with.
-	// Parameters:
-	//     pDC      - The device context of the chart.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	virtual void ExecuteOverride(CXTPChartOpenGLDeviceContext* pDC);
+	CXTPChartTextDeviceCommand(const CXTPChartString& strText, CXTPChartFont* pFont,
+							   const CXTPChartColor& color);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -86,12 +73,10 @@ protected:
 	virtual void ExecuteInternal(CXTPChartDeviceContext* pDC);
 
 protected:
-	CXTPChartString m_strText;   //The string to be rendered.
-	CXTPChartFont* m_pFont;      //The font used to render the text.
-	CXTPChartColor m_color;      //The color of the text.
-
+	CXTPChartString m_strText; // The string to be rendered.
+	CXTPChartFont* m_pFont;	// The font used to render the text.
+	CXTPChartColor m_color;	// The color of the text.
 };
-
 
 //===========================================================================
 // Summary:
@@ -113,36 +98,14 @@ public:
 	CXTPChartTextAntialiasingDeviceCommand(BOOL bAntialias = TRUE);
 
 protected:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     It is a virtual function override called just befor the drawing operation.
-	//     Here it does some initial process to enable antialiasing to texts.
-	// Parameters:
-	//     pDC   - The chart device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void BeforeExecute(CXTPChartDeviceContext* pDC);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     It is a virtual function override called just after the drawing operation.
-	//     Here it does some post process to enable antialiasing to texts.
-	// Parameters:
-	//     pDC   - The chart device context.
-	// Remarks:
-	//-----------------------------------------------------------------------
-	void AfterExecute(CXTPChartDeviceContext* pDC);
-
-protected:
-	BOOL m_bAntiAlias;      //TRUE if antialiasing is enabled, FALSE if antialiasing is not used.
+	BOOL m_bAntiAlias; // TRUE if antialiasing is enabled, FALSE if antialiasing is not used.
 	int m_nOldTextRenderingHint;
 };
 
 //===========================================================================
 // Summary:
 //     This class represents a bounded text device command,which is a kind of
-//     CXTPChartDeviceCommand.It handles the rendering of bounded texts in a chart.
+//     CXTPChartDeviceCommand. It handles the rendering of bounded texts in a chart.
 // Remarks:
 //===========================================================================
 class _XTP_EXT_CLASS CXTPChartBoundedTextDeviceCommand : public CXTPChartTextDeviceCommand
@@ -158,55 +121,70 @@ public:
 	//     rectangle - The text bounds.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartBoundedTextDeviceCommand(const CXTPChartString& strText, CXTPChartFont* pFont, const CXTPChartColor& color, const CXTPChartRectF& rectangle);
+	CXTPChartBoundedTextDeviceCommand(const CXTPChartString& strText, CXTPChartFont* pFont,
+									  const CXTPChartColor& color, const CXTPChartRectF& rectangle);
 
-protected:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This function do the actual drawing of the chart element, to which
-	//     this device command is associated with, here it renders the text inside
-	//     a rectangle.
+	//      Performs recursive hit testing of the element at the specified point.
 	// Parameters:
-	//     pDC      - The device context of the chart.
-	// Remarks:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
 	//-----------------------------------------------------------------------
-	virtual void ExecuteInternal(CXTPChartDeviceContext* pDC);
-
 	virtual CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
 
 protected:
-	CXTPChartRectF m_rect;   //The bounding rectangle of the text.
+	CXTPChartRectF m_rect; // The bounding rectangle of the text.
 };
 
-
-class CXTPChartMarkupElementDeviceCommand : public CXTPChartDeviceCommand
+//-----------------------------------------------------------------------
+// Summary:
+//      Implements 2D markup element drawing device command.
+//-----------------------------------------------------------------------
+class _XTP_EXT_CLASS CXTPChartMarkupElementDeviceCommand : public CXTPChartDeviceCommand
 {
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartMarkupElementDeviceCommand object.
 	// Parameters:
+	//     pMarkupUIElement - Markup element pointer to draw.
 	//     strText   - The text to be rendered.
-	//     pFont     - The font used to render.
-	//     color     - The color of the text.
+	//     pFont     - The default font used to render.
+	//     color     - The default color of the text.
 	//     rectangle - The text bounds.
-	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartMarkupElementDeviceCommand(CXTPMarkupUIElement* pMarkupUIElement, CXTPChartFont* pFont, const CXTPChartColor& color, const CXTPChartRectF& rectangle);
+	CXTPChartMarkupElementDeviceCommand(CXTPMarkupUIElement* pMarkupUIElement, CXTPChartFont* pFont,
+										const CXTPChartColor& color,
+										const CXTPChartRectF& rectangle);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      HAndles object deallocation.
+	//-----------------------------------------------------------------------
 	~CXTPChartMarkupElementDeviceCommand();
 
-public:
-	virtual void ExecuteOverride(CXTPChartDeviceContext* pDC);
-
-	static CXTPChartSizeF AFX_CDECL MeasureElement(CXTPChartDeviceContext* pDC, CXTPMarkupUIElement* pMarkupUIElement, CXTPChartFont* pFont);
-
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Performs recursive hit testing of the element at the specified point.
+	// Parameters:
+	//      point - Point at which an element to be found.
+	//      pParent - Parent element pointer.
+	// Returns:
+	//      A pointer to the element found at the specified point or NULL
+	//      if no element is found.
+	//-----------------------------------------------------------------------
 	CXTPChartElement* HitTest(CPoint point, CXTPChartElement* pParent) const;
 
 protected:
-	CXTPChartRectF m_rect;   //The bounding rectangle of the text.
-	CXTPMarkupUIElement* m_pMarkupUIElement;
-	CXTPChartColor m_color;
-	CXTPChartFont* m_pFont;
+	CXTPChartRectF m_rect;					 // The bounding rectangle of the text.
+	CXTPMarkupUIElement* m_pMarkupUIElement; // Markup element to draw.
+	CXTPChartColor m_color;					 // The default color of the text.
+	CXTPChartFont* m_pFont;					 // The default font of the text.
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTTEXTDEVICECOMMAND_H__)

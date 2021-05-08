@@ -1,7 +1,6 @@
 // XTPTaskPanelDefines.h
 //
-// This file is a part of the XTREME TASKPANEL MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPTASKPANELDEFINES_H__)
-#define __XTPTASKPANELDEFINES_H__
+#	define __XTPTASKPANELDEFINES_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPTaskPanelGroup;
 class CXTPTaskPanelItem;
@@ -38,7 +38,7 @@ class CXTPTaskPanelItem;
 struct XTP_TPNGROUPEXPANDING
 {
 	CXTPTaskPanelGroup* pGroup; // Group that is about to be expanded.
-	BOOL bExpanding;            // TRUE if group must be expanded.
+	BOOL bExpanding;			// TRUE if group must be expanded.
 };
 
 //-----------------------------------------------------------------------
@@ -47,8 +47,8 @@ struct XTP_TPNGROUPEXPANDING
 //-----------------------------------------------------------------------
 struct XTP_TPNENDLABELEDIT
 {
-	CXTPTaskPanelItem* pItem;   // Item that caption is will be changed
-	CString strNewString;       // New Caption of the item
+	CXTPTaskPanelItem* pItem; // Item that caption is will be changed
+	CString strNewString;	 // New Caption of the item
 };
 
 //-----------------------------------------------------------------------
@@ -67,12 +67,11 @@ struct XTP_TPNENDLABELEDIT
 //-----------------------------------------------------------------------
 enum XTPTaskPanelItemType
 {
-	xtpTaskItemTypeGroup,       // Item is group.
-	xtpTaskItemTypeLink,        // Item is link.
-	xtpTaskItemTypeText,        // Item is text.
-	xtpTaskItemTypeControl      // Item is control.
+	xtpTaskItemTypeGroup,  // Item is group.
+	xtpTaskItemTypeLink,   // Item is link.
+	xtpTaskItemTypeText,   // Item is text.
+	xtpTaskItemTypeControl // Item is control.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -84,23 +83,24 @@ enum XTPTaskPanelItemType
 // </code>
 // See Also: CXTPTaskPanel::AllowDrag
 //
-// <KEYWORDS xtpTaskItemAllowDragNone, xtpTaskItemAllowDragDefault, xtpTaskItemAllowDragCopy, xtpTaskItemAllowDragMove, xtpTaskItemAllowDragAll>
+// <KEYWORDS xtpTaskItemAllowDragNone, xtpTaskItemAllowDragDefault, xtpTaskItemAllowDragCopy,
+// xtpTaskItemAllowDragMove, xtpTaskItemAllowDragAll>
 //-----------------------------------------------------------------------
 enum XTPTaskPanelItemAllowDrag
 {
-	xtpTaskItemAllowDragNone                 = 0x00,            // Disable drag
-	xtpTaskItemAllowDragDefault              = 0x01,            // Default drag options (xtpTaskItemAllowDragAll)
-	xtpTaskItemAllowDragCopyWithinGroup      = 0x02,            // Allow copy within group only
-	xtpTaskItemAllowDragCopyWithinControl    = 0x04,            // Allow copy within task panel only
-	xtpTaskItemAllowDragCopyOutsideControl   = 0x08,            // Allow copy outside task panel only
-	xtpTaskItemAllowDragCopy                 = 0x04 + 0x08,     // Allow copy operation
-	xtpTaskItemAllowDragMoveWithinGroup      = 0x20,            // Allow move within group only
-	xtpTaskItemAllowDragMoveWithinControl    = 0x40,            // Allow move within task panel only
-	xtpTaskItemAllowDragMoveOutsideControl   = 0x80,            // Allow move outside task panel only
-	xtpTaskItemAllowDragMove                 = 0x40 + 0x80,     // Allow move operation
-	xtpTaskItemAllowDragWithinGroup          = 0x02 + 0x20,     // Allow drag within group only
-	xtpTaskItemAllowDragWithinControl        = 0x04 + 0x40,     // Allow drag within task panel only
-	xtpTaskItemAllowDrag                     = 0x04 + 0x08 + 0x40 + 0x80    // Allow all drag operations
+	xtpTaskItemAllowDragNone			   = 0x00, // Disable drag
+	xtpTaskItemAllowDragDefault			   = 0x01, // Default drag options (xtpTaskItemAllowDragAll)
+	xtpTaskItemAllowDragCopyWithinGroup	= 0x02, // Allow copy within group only
+	xtpTaskItemAllowDragCopyWithinControl  = 0x04, // Allow copy within task panel only
+	xtpTaskItemAllowDragCopyOutsideControl = 0x08, // Allow copy outside task panel only
+	xtpTaskItemAllowDragCopy			   = 0x04 + 0x08, // Allow copy operation
+	xtpTaskItemAllowDragMoveWithinGroup	= 0x20,		  // Allow move within group only
+	xtpTaskItemAllowDragMoveWithinControl  = 0x40,		  // Allow move within task panel only
+	xtpTaskItemAllowDragMoveOutsideControl = 0x80,		  // Allow move outside task panel only
+	xtpTaskItemAllowDragMove			   = 0x40 + 0x80, // Allow move operation
+	xtpTaskItemAllowDragWithinGroup		   = 0x02 + 0x20, // Allow drag within group only
+	xtpTaskItemAllowDragWithinControl	  = 0x04 + 0x40, // Allow drag within task panel only
+	xtpTaskItemAllowDrag				   = 0x04 + 0x08 + 0x40 + 0x80 // Allow all drag operations
 };
 
 //-----------------------------------------------------------------------
@@ -114,16 +114,16 @@ enum XTPTaskPanelItemAllowDrag
 //     CXTPTaskPanel::SetItemLayout, CXTPTaskPanel::GetItemLayout,
 //     CXTPTaskPanelGroup::SetItemLayout, CXTPTaskPanelGroup::GetItemLayout
 //
-// <KEYWORDS xtpTaskItemLayoutDefault, xtpTaskItemLayoutImages, xtpTaskItemLayoutImagesWithText, xtpTaskItemLayoutImagesWithTextBelow>
+// <KEYWORDS xtpTaskItemLayoutDefault, xtpTaskItemLayoutImages, xtpTaskItemLayoutImagesWithText,
+// xtpTaskItemLayoutImagesWithTextBelow>
 //-----------------------------------------------------------------------
 enum XTPTaskPanelItemLayout
 {
-	xtpTaskItemLayoutDefault,           // Default Layout.
-	xtpTaskItemLayoutImages,            // Only images are shown.
-	xtpTaskItemLayoutImagesWithText,    // Both images and text are shown.
-	xtpTaskItemLayoutImagesWithTextBelow// Images with the text shown below the image.
+	xtpTaskItemLayoutDefault,			 // Default Layout.
+	xtpTaskItemLayoutImages,			 // Only images are shown.
+	xtpTaskItemLayoutImagesWithText,	 // Both images and text are shown.
+	xtpTaskItemLayoutImagesWithTextBelow // Images with the text shown below the image.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -133,19 +133,20 @@ enum XTPTaskPanelItemLayout
 // Example:
 //     <code>m_wndTaskPanel.SetHotTrackStyle(xtpTaskPanelHighlightItem);</code>
 // See Also:
-//     CXTPTaskPanel::SetHotTrackStyle, CXTPTaskPanel::GetHotTrackStyle, CXTPTaskPanelItem::IsItemHot
+//     CXTPTaskPanel::SetHotTrackStyle, CXTPTaskPanel::GetHotTrackStyle,
+//     CXTPTaskPanelItem::IsItemHot
 //
-// <KEYWORDS xtpTaskPanelHighlightDefault, xtpTaskPanelHighlightText, xtpTaskPanelHighlightImage, xtpTaskPanelHighlightItem, xtpTaskPanelHighlightNone>
+// <KEYWORDS xtpTaskPanelHighlightDefault, xtpTaskPanelHighlightText, xtpTaskPanelHighlightImage,
+// xtpTaskPanelHighlightItem, xtpTaskPanelHighlightNone>
 //-----------------------------------------------------------------------
 enum XTPTaskPanelHotTrackStyle
 {
-	xtpTaskPanelHighlightDefault,       // Uses the default hot tracking style.
-	xtpTaskPanelHighlightText,          // Only text is highlighted on mouse over
-	xtpTaskPanelHighlightImage,         // Only Images are highlighted on mouse over.
-	xtpTaskPanelHighlightItem,          // The entire item is highlighted on mouse over.
-	xtpTaskPanelHighlightNone           // No hot tracking is used, nothing will happen on mouse over.
+	xtpTaskPanelHighlightDefault, // Uses the default hot tracking style.
+	xtpTaskPanelHighlightText,	// Only text is highlighted on mouse over
+	xtpTaskPanelHighlightImage,   // Only Images are highlighted on mouse over.
+	xtpTaskPanelHighlightItem,	// The entire item is highlighted on mouse over.
+	xtpTaskPanelHighlightNone	 // No hot tracking is used, nothing will happen on mouse over.
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -160,9 +161,9 @@ enum XTPTaskPanelHotTrackStyle
 //-----------------------------------------------------------------------
 enum XTPTaskPanelBehaviour
 {
-	xtpTaskPanelBehaviourExplorer,      // TaskPanel will behave like Windows Explorer.
-	xtpTaskPanelBehaviourList,          // TaskPanel will behave like Windows List Box.
-	xtpTaskPanelBehaviourToolbox        // TaskPanel will behave like VS. NET Toolbox.
+	xtpTaskPanelBehaviourExplorer, // TaskPanel will behave like Windows Explorer.
+	xtpTaskPanelBehaviourList,	 // TaskPanel will behave like Windows List Box.
+	xtpTaskPanelBehaviourToolbox   // TaskPanel will behave like VS. NET Toolbox.
 };
 
 //-----------------------------------------------------------------------
@@ -174,30 +175,43 @@ enum XTPTaskPanelBehaviour
 // See Also:
 //     CXTPTaskPanel::SetTheme, CXTPTaskPanel::GetCurrentTheme
 //
-// <KEYWORDS xtpTaskPanelThemeOffice2000, xtpTaskPanelThemeOffice2003, xtpTaskPanelThemeNativeWinXP, xtpTaskPanelThemeOffice2000Plain, xtpTaskPanelThemeOfficeXPPlain, xtpTaskPanelThemeOffice2003Plain, xtpTaskPanelThemeNativeWinXPPlain, xtpTaskPanelThemeToolbox, xtpTaskPanelThemeToolboxWhidbey, xtpTaskPanelThemeListView, xtpTaskPanelThemeListViewOfficeXP, xtpTaskPanelThemeListViewOffice2003, xtpTaskPanelThemeShortcutBarOffice2003, xtpTaskPanelThemeCustom>
+// <KEYWORDS xtpTaskPanelThemeOffice2000, xtpTaskPanelThemeOffice2003, xtpTaskPanelThemeNativeWinXP,
+// xtpTaskPanelThemeOffice2000Plain, xtpTaskPanelThemeOfficeXPPlain,
+// xtpTaskPanelThemeOffice2003Plain, xtpTaskPanelThemeNativeWinXPPlain,
+// xtpTaskPanelThemeVisualStudio2003, xtpTaskPanelThemeVisualStudio2005, xtpTaskPanelThemeListView,
+// xtpTaskPanelThemeListViewOfficeXP, xtpTaskPanelThemeListViewOffice2003,
+// xtpTaskPanelThemeShortcutBarOffice2003, xtpTaskPanelThemeCustom>
 //-----------------------------------------------------------------------
 enum XTPTaskPanelPaintTheme
 {
-	xtpTaskPanelThemeOffice2000,            // Office 2000 theme
-	xtpTaskPanelThemeOffice2003,            // Office 2003 theme
-	xtpTaskPanelThemeNativeWinXP,           // Win XP theme
-	xtpTaskPanelThemeOffice2000Plain,       // Office 2000 classic theme
-	xtpTaskPanelThemeOfficeXPPlain,         // Office XP classic theme
-	xtpTaskPanelThemeOffice2003Plain,       // Office 2003 classic theme
-	xtpTaskPanelThemeNativeWinXPPlain,      // Win XP classic theme
-	xtpTaskPanelThemeToolbox,               // VS.NET style Toolbox theme.
-	xtpTaskPanelThemeToolboxWhidbey,        // Whidbey VS 2005 style Toolbox theme.
-	xtpTaskPanelThemeListView,              // Standard List View theme.
-	xtpTaskPanelThemeListViewOfficeXP,      // Office XP List View theme.
-	xtpTaskPanelThemeListViewOffice2003,    // Office 2003 List View theme.
+	xtpTaskPanelThemeOffice2000,			// Office 2000 theme
+	xtpTaskPanelThemeOffice2003,			// Office 2003 theme
+	xtpTaskPanelThemeNativeWinXP,			// Win XP theme
+	xtpTaskPanelThemeOffice2000Plain,		// Office 2000 classic theme
+	xtpTaskPanelThemeOfficeXPPlain,			// Office XP classic theme
+	xtpTaskPanelThemeOffice2003Plain,		// Office 2003 classic theme
+	xtpTaskPanelThemeNativeWinXPPlain,		// Win XP classic theme
+	xtpTaskPanelThemeVisualStudio2003,		// VS 2003 style Toolbox theme.
+	xtpTaskPanelThemeVisualStudio2005,		// VS 2005 style Toolbox theme.
+	xtpTaskPanelThemeListView,				// Standard List View theme.
+	xtpTaskPanelThemeListViewOfficeXP,		// Office XP List View theme.
+	xtpTaskPanelThemeListViewOffice2003,	// Office 2003 List View theme.
 	xtpTaskPanelThemeShortcutBarOffice2003, // ShortcutBar Office 2003 theme.
-	xtpTaskPanelThemeResource,              // ShortcutBar Office 2007/2010 theme.
-	xtpTaskPanelThemeVisualStudio2010,      // VS 2010 style Toolbox theme.
-	xtpTaskPanelThemeCustom                 // User defined Custom theme is used.
+	xtpTaskPanelThemeResource,				// ShortcutBar Office 2007/2010 theme.
+	xtpTaskPanelThemeVisualStudio2010,		// VS 2010 style Toolbox theme.
+	xtpTaskPanelThemeVisualStudio2012Light, // VS 2012 Light style Toolbox theme.
+	xtpTaskPanelThemeVisualStudio2012Dark,  // VS 2012 Dark style Toolbox theme.
+	xtpTaskPanelThemeOffice2013,			// Office 2013 style Toolbox theme.
+	xtpTaskPanelThemeOffice2016 = xtpTaskPanelThemeOffice2013, // Office 2016 style Toolbox theme.
+	xtpTaskPanelThemeVisualStudio2015,						   // VS 2015 style Toolbox theme.
+	xtpTaskPanelThemeCustom									   // User defined Custom theme is used.
 };
 
-#define xtpTaskPanelThemeShortcutBarOffice2007 xtpTaskPanelThemeResource
-
+//{{AFX_CODEJOCK_PRIVATE
+#	define xtpTaskPanelThemeToolbox xtpTaskPanelThemeVisualStudio2003
+#	define xtpTaskPanelThemeToolboxWhidbey xtpTaskPanelThemeVisualStudio2005
+#	define xtpTaskPanelThemeShortcutBarOffice2007 xtpTaskPanelThemeResource
+//}}AFX_CODEJOCK_PRIVATE
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -211,11 +225,10 @@ enum XTPTaskPanelPaintTheme
 //-----------------------------------------------------------------------
 enum XTPTaskPanelAnimation
 {
-	xtpTaskPanelAnimationYes,               // Enable animation
-	xtpTaskPanelAnimationNo,                // Disable animation
-	xtpTaskPanelAnimationSystem             // Use system settings to determine animation
+	xtpTaskPanelAnimationYes,   // Enable animation
+	xtpTaskPanelAnimationNo,	// Disable animation
+	xtpTaskPanelAnimationSystem // Use system settings to determine animation
 };
-
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -224,7 +237,8 @@ enum XTPTaskPanelAnimation
 // Parameters:
 //     nAction -  Value of wParam specifies a TaskPanel value that indicates the user's
 //                request.
-//     pItem   -  The value of lParam points to an CXTPTaskPanelItem object that contains information for the
+//     pItem   -  The value of lParam points to an CXTPTaskPanelItem object that contains
+//     information for the
 //                specified item. This pointer should <b>never</b> be NULL.
 // Remarks:
 //     <code>XTPWM_SHORTCUTBAR_NOTIFY
@@ -234,7 +248,8 @@ enum XTPTaskPanelAnimation
 //
 //     nAction parameter can be one of the following values:
 //     * <b>XTP_TPN_CLICK</b> Indicates the user click TaskPanel item.
-//     * <b>XTP_TPN_RCLICK</b> Indicates the user presses the right mouse button on the TaskPanel item.
+//     * <b>XTP_TPN_RCLICK</b> Indicates the user presses the right mouse button on the TaskPanel
+//     item.
 //     * <b>XTP_TPN_STARTDRAG</b> Indicates the user start dragging item.
 //     * <b>XTP_TPN_ENDLABELEDIT</b> Indicates the user apply item rename.
 //     * <b>XTP_TPN_ITEMDROP</b> Indicates the user dropped item to task panel
@@ -262,7 +277,8 @@ enum XTPTaskPanelAnimation
 //          case XTP_TPN_CLICK:
 //              {
 //                  CXTPTaskPanelGroupItem* pItem = (CXTPTaskPanelGroupItem*)lParam;
-//                  TRACE(_T("Click Event: pItem.Caption = %s, pItem.ID = %i\n"), pItem->GetCaption(), pItem->GetID());
+//                  TRACE(_T("Click Event: pItem.Caption = %s, pItem.ID = %i\n"),
+//                  pItem->GetCaption(), pItem->GetID());
 //
 //                  if (IsToggleButtons())
 //                  {
@@ -285,19 +301,19 @@ enum XTPTaskPanelAnimation
 //-----------------------------------------------------------------------
 const UINT XTPWM_TASKPANEL_NOTIFY = (WM_USER + 9195 + 1);
 
-const UINT XTP_TPN_CLICK = 1; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_RCLICK = 2; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_STARTDRAG = 3; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_ENDLABELEDIT = 4; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_ITEMDROP = 5; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_GROUPEXPANDING = 6; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_GROUPEXPANDED = 7; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_DBLCLICK = 8; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_FOCUSEDITEMCHANGED = 9; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_ITEMREMOVED = 10; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_HOTITEMCHANGED = 11; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const UINT XTP_TPN_GROUPMOVE = 12; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
-const int XTP_ACTION_CANCEL = -1; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_CLICK			  = 1;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_RCLICK			  = 2;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_STARTDRAG		  = 3;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_ENDLABELEDIT		  = 4;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_ITEMDROP			  = 5;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_GROUPEXPANDING	 = 6;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_GROUPEXPANDED	  = 7;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_DBLCLICK			  = 8;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_FOCUSEDITEMCHANGED = 9;  //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_ITEMREMOVED		  = 10; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_HOTITEMCHANGED	 = 11; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const UINT XTP_TPN_GROUPMOVE		  = 12; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
+const int XTP_ACTION_CANCEL			  = -1; //<ALIAS XTPWM_TASKPANEL_NOTIFY>
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPTASKPANELDEFINES_H__)

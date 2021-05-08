@@ -1,7 +1,6 @@
 // XTPChartStackedAreaSeriesStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,19 +19,18 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTSTACKEDAREASERIESSTYLE_H__)
-#define __XTPCHARTSTACKEDAREASERIESSTYLE_H__
+#	define __XTPCHARTSTACKEDAREASERIESSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartSeriesView;
 class CXTPChartBorder;
 class CXTPChartFillStyle;
-
-#include "XTPChartAreaSeriesStyle.h"
-#include "../Point/XTPChartPointSeriesStyle.h"
 
 //===========================================================================
 // Summary:
@@ -49,7 +47,6 @@ class _XTP_EXT_CLASS CXTPChartStackedAreaSeriesStyle : public CXTPChartAreaSerie
 	DECLARE_SERIAL(CXTPChartStackedAreaSeriesStyle)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPChartStackedAreaSeriesStyle object.
@@ -67,12 +64,8 @@ public:
 	void SetStackHeight(double dLevel = 100);
 	double GetStackHeight() const;
 
-
 public:
-
-
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Use this function to create a chart series view object.
@@ -85,11 +78,12 @@ protected:
 	//     CXTPChartSeriesView abstracts the view of a series.
 	// See Also:
 	//-------------------------------------------------------------------------
-	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
+	virtual CXTPChartSeriesView* CreateView(CXTPChartSeries* pSeries,
+											CXTPChartDiagramView* pDiagramView);
 
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 	DECLARE_OLETYPELIB_EX(CXTPChartStackedAreaSeriesStyle);
@@ -98,11 +92,10 @@ public:
 	double OleGetStackHeight();
 	void OleSetStackHeight(double dStackHeight);
 //}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
 	double m_dStackHeight;
-
 };
 
 //===========================================================================
@@ -129,7 +122,6 @@ public:
 	CXTPChartStackedAreaSeriesView(CXTPChartSeries* pSeries, CXTPChartDiagramView* pDiagramView);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to create a chart area series point view object.
@@ -143,25 +135,26 @@ protected:
 	//     CXTPChartSeriesPointView object abstracts the view of a point in a series.
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC, CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartSeriesPointView* CreateSeriesPointView(CXTPChartDeviceContext* pDC,
+													CXTPChartSeriesPoint* pPoint,
+													CXTPChartElementView* pParentView);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of an area series in the chart.
 	// Parameters:
 	//     pDC     - Pointer to a CXTPChartDeviceContext object.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this polymorphic object handles
-	//     the rendering of an element in the chart.Here it handles the drawing
+	//     the rendering of an element in the chart. Here it handles the drawing
 	//     of the area series of the chart.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(CXTPChartDeviceContext* pDC);
 
 	void UpdateRange(CXTPChartDeviceContext* pDC);
-
 };
 
 class _XTP_EXT_CLASS CXTPChartStackedAreaSeriesPointView : public CXTPChartPointSeriesPointView
@@ -174,7 +167,8 @@ public:
 	//     pPoint       - A pointer to the chart series point.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartStackedAreaSeriesPointView(CXTPChartSeriesPoint* pPoint, CXTPChartElementView* pParentView);
+	CXTPChartStackedAreaSeriesPointView(CXTPChartSeriesPoint* pPoint,
+										CXTPChartElementView* pParentView);
 
 public:
 	double m_dValueFrom;
@@ -183,11 +177,15 @@ public:
 	friend class CXTPChartStackedAreaSeriesView;
 };
 
-AFX_INLINE void CXTPChartStackedAreaSeriesStyle::SetStackHeight(double dStackHeight) {
+AFX_INLINE void CXTPChartStackedAreaSeriesStyle::SetStackHeight(double dStackHeight)
+{
 	m_dStackHeight = dStackHeight;
 	OnChartChanged();
 }
-AFX_INLINE double CXTPChartStackedAreaSeriesStyle::GetStackHeight() const {
+AFX_INLINE double CXTPChartStackedAreaSeriesStyle::GetStackHeight() const
+{
 	return m_dStackHeight;
 }
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTSTACKEDAREASERIESSTYLE_H__)

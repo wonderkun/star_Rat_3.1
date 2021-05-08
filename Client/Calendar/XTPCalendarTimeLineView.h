@@ -1,7 +1,6 @@
 // XTPCalendarTimeLineView.h: interface for the CXTPCalendarTimeLineView class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,36 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARTIMELINEVIEW_H__)
-#define _XTPCALENDARTIMELINEVIEW_H__
+#	define _XTPCALENDARTIMELINEVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#pragma warning (disable: 4100)
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "Common/XTPDrawHelpers.h"
-
-#include "XTPCalendarView.h"
-#include "XTPCalendarViewEvent.h"
-#include "XTPCalendarTimeLineViewTimeScale.h"
-#include "XTPCalendarTimeLineViewGroup.h"
+#	pragma warning(disable : 4100)
 
 class CXTPCalendarTimeLineView;
-
-//============================================================================
-// Summary:
-//     predefine set of different scales based on time intervals
-//============================================================================
-enum XTPEnumCalendarTimeScaleParamsID
-{
-	xtpTSPID_Unknown    = 0,
-	xtpTSPID_Day        = 1, //Day scale
-	xtpTSPID_Week       = 2, //Week scale
-	xtpTSPID_Month      = 3, //Month scale
-	xtpTSPID_WorkWeek   = 4, //WorkWeek scale
-};
+class CXTPCalendarTimeLineViewGroups;
+class CXTPCalendarTimeLineViewTimeScale;
 
 //===========================================================================
 // Summary: Set of parameters transferred from calendar items to
@@ -61,7 +44,7 @@ enum XTPEnumCalendarTimeScaleParamsID
 //===========================================================================
 struct XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW : public XTP_CALENDAR_HITTESTINFO
 {
-	POINT pt;   // Point where the mouse was clicked in client coordinates.
+	POINT pt;		 // Point where the mouse was clicked in client coordinates.
 	COleDateTime dt; // datetime object to fill and return
 
 	//-----------------------------------------------------------------------
@@ -74,7 +57,7 @@ struct XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW : public XTP_CALENDAR_HITTESTINFO
 	XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW()
 	{
 		pt.x = pt.y = -1;
-		dt = COleDateTime::GetCurrentTime();
+		dt			= COleDateTime::GetCurrentTime();
 	}
 };
 
@@ -164,44 +147,6 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to obtain the view type flag.
-	// Returns:
-	//     An XTPCalendarViewType object that contains the view type flag.
-	// See Also: XTPCalendarViewType
-	//-----------------------------------------------------------------------
-	virtual XTPCalendarViewType GetViewType()
-	{
-		return xtpCalendarTimeLineView;
-	}
-
-	// -----------------------
-	// Summary:
-	//  This member function do nothing in Timeline case but we need to have it due
-	//  int CXTPCalendarView::GetViewDayCount(void) is abstract
-	// Returns:
-	//     number of days in view
-	// -----------------------
-	virtual int GetViewDayCount()
-	{
-		return 0;
-	}
-
-	// ---------------------------
-	// Summary:
-	//  This member function do nothing in Timeline case but we need to have it due
-	//  int CXTPCalendarView::GetViewDay_(int) is abstract
-	// Parameters:
-	//     nIndex :  index of day
-	// Returns:
-	//     pointer to CXTPCalendarViewDay
-	// ---------------------------
-	virtual CXTPCalendarViewDay* GetViewDay_(int nIndex)
-	{
-		return 0;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Call this member function to obtain the date of the day view by
 	//     the day's index.
 	// Parameters:
@@ -211,10 +156,7 @@ public:
 	// Returns:
 	//     A COleDateTime object that contains the day view date and time.
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetViewDayDate(int nIndex)
-	{
-		return CXTPCalendarUtils::ResetTime(GetStartViewDate());
-	}
+	virtual COleDateTime GetViewDayDate(int nIndex) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -222,7 +164,7 @@ public:
 	// Returns:
 	//     A COleDateTime object that contains the day view date and time.
 	//-----------------------------------------------------------------------
-	virtual COleDateTime GetStartViewDate();
+	virtual COleDateTime GetStartViewDate() const;
 
 	// ---------------------------
 	// Summary:
@@ -238,7 +180,7 @@ public:
 	// Returns:
 	//     int as scale ID
 	// ---------------------------
-	virtual int GetTimeScaleID();
+	virtual int GetTimeScaleID() const;
 
 	// ---------------------------
 	// Summary:
@@ -254,7 +196,7 @@ public:
 	// Returns:
 	//     pointer to CXTPCalendarTimeLineViewTimeScale
 	// -----------------------------
-	virtual CXTPCalendarTimeLineViewTimeScale* GetTimeScale();
+	CXTPCalendarTimeLineViewTimeScale* GetTimeScale() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -267,7 +209,7 @@ public:
 	// Returns:
 	//     TRUE if item found. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest);
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -281,10 +223,9 @@ public:
 	//     TRUE if item found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW* pHitTest)
-	{
-		return 0;
-	}
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO_TIMELINE_VIEW* pHitTest) const;
+
+	using CXTPCalendarView::HitTestEx;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -296,7 +237,7 @@ public:
 	//          TRUE if Vertical Scrollbar enabled
 	//          FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI);
+	virtual BOOL GetScrollBarInfoV(SCROLLINFO* pSI) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -309,7 +250,7 @@ public:
 	//          TRUE if the Horizontal Scrollbar enabled
 	//          FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL);
+	virtual BOOL GetScrollBarInfoH(SCROLLINFO* pSI, int* pnScrollStep = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -351,6 +292,12 @@ public:
 	void ShowCalendarPopup(COleDateTime dt, CPoint point);
 
 protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is called by the framework when metrics is
+	//     required to be updated.
+	//-----------------------------------------------------------------------
+	virtual void RefreshMetrics();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -381,7 +328,7 @@ protected:
 	//     This member function returns a rectangle calculated as a event
 	//     rect which user currently holds a mouse on.
 	//-----------------------------------------------------------------------
-	CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo);
+	CRect GetTooltipRect(const CPoint& ptHit, const XTP_CALENDAR_HITTESTINFO& hitInfo) const;
 
 	// -------------------------
 	// Summary:
@@ -394,37 +341,91 @@ protected:
 	// -------------------------
 	virtual CXTPCalendarEventsPtr _GetEvents(COleDateTime dtStartDay, COleDateTime dtEndDay);
 
-	CXTPCalendarTimeLineViewTimeScale*  m_pTimeScale; // pointer to attached Time Scale object
+	CXTPCalendarTimeLineViewTimeScale* m_pTimeScale; // pointer to attached Time Scale object
 
 	int m_nHScrollPos; // keep HScroll position
 	int m_nVScrollPos; // keep VScroll position
 
 private:
-	CRect m_rcLastPopulate;// last populated view rectangle - used for refresh by demand
+	CRect m_rcLastPopulate; // last populated view rectangle - used for refresh by demand
 
 public:
-	CXTPCalendarTimeLineViewGroups m_arGroups; // array of events organized in groups
+	CXTPCalendarTimeLineViewGroups* m_pGroups; // array of events organized in groups
 
-	BOOL m_bTimeLineSeparateGroup; // flag to use separatore line between groups or not
-	int m_nTimelineMaxPixelsForEvent_ScaleDay; // width in pixels for 1 event for day scale
+	BOOL m_bTimeLineSeparateGroup;				// flag to use separatore line between groups or not
+	int m_nTimelineMaxPixelsForEvent_ScaleDay;  // width in pixels for 1 event for day scale
 	int m_nTimelineMaxPixelsForEvent_ScaleWeek; //  width in pixels for 1 event for week scale
-	int m_nTimelineMaxPixelsForEvent; //  width in pixels for 1 event for month scale
+	int m_nTimelineMaxPixelsForEvent;			//  width in pixels for 1 event for month scale
 
-	COLORREF m_clrEventBar; // Event Bar Color
+	COLORREF m_clrEventBar;		// Event Bar Color
 	COLORREF m_clrEventBarLine; // Event Bar Line Color
 
 	COLORREF m_clrTimeScaleBackground; // Time Scale Background Color
-	COLORREF m_clrTimeScaleBorder; // Time Scale Border Color
-	COLORREF m_clrTimeScaleHighlight; // Time Scale Highlight Color
-	COLORREF m_clrTimeScaleText; // Time Scale Text Color
+	COLORREF m_clrTimeScaleBorder;	 // Time Scale Border Color
+	COLORREF m_clrTimeScaleHighlight;  // Time Scale Highlight Color
+	COLORREF m_clrTimeScaleText;	   // Time Scale Text Color
 
 	COLORREF m_clrSelectedBackground; // Selected Background Color
-	COLORREF m_clrSelectedText; // Selected Text Color
+	COLORREF m_clrSelectedText;		  // Selected Text Color
 
 	COLORREF m_clrBackground; // Background Color
-	COLORREF m_clrText; // Text Color
+	COLORREF m_clrText;		  // Text Color
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPCalendarTimeLineView);
 
+public:
+	afx_msg void OleSetMaxPixelsForEvent(long nPixels);
+	afx_msg long OleGetMaxPixelsForEvent();
+	afx_msg void OleSetMaxPixelsForEvent_ScaleDay(long nPixels);
+	afx_msg long OleGetMaxPixelsForEvent_ScaleDay();
+	afx_msg void OleSetMaxPixelsForEvent_ScaleWeek(long nPixels);
+	afx_msg long OleGetMaxPixelsForEvent_ScaleWeek();
+
+	afx_msg BOOL OleGetTimeLineSeparateGroup();
+	afx_msg void OleSetTimeLineSeparateGroup(BOOL bSet);
+
+	afx_msg OLE_COLOR OleGetTimeLineEventBarColor();
+	afx_msg void OleSetTimeLineEventBarColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineEventBarLineColor();
+	afx_msg void OleSetTimeLineEventBarLineColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineScaleBackgroundColor();
+	afx_msg void OleSetTimeLineScaleBackgroundColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineScaleBorderColor();
+	afx_msg void OleSetTimeLineScaleBorderColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineScaleHighlightColor();
+	afx_msg void OleSetTimeLineScaleHighlightColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineScaleTextColor();
+	afx_msg void OleSetTimeLineScaleTextColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineSelectedBackgroundColor();
+	afx_msg void OleSetTimeLineSelectedBackgroundColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineSelectedTextColor();
+	afx_msg void OleSetTimeLineSelectedTextColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineBackgroundColor();
+	afx_msg void OleSetTimeLineBackgroundColor(OLE_COLOR clrOleColor);
+
+	afx_msg OLE_COLOR OleGetTimeLineTextColor();
+	afx_msg void OleSetTimeLineTextColor(OLE_COLOR clrOleColor);
+
+	DATE OleGetTimeScaleMinTime();
+	void OleSetTimeScaleMinTime(DATE dtNewScaleMinTime);
+
+	DATE OleGetTimeScaleMaxTime();
+	void OleSetTimeScaleMaxTime(DATE dtNewScaleMaxTime);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -433,24 +434,10 @@ AFX_INLINE XTPCalendarViewType CXTPCalendarTimeLineView::GetViewType() const
 	return xtpCalendarTimeLineView;
 }
 
-AFX_INLINE COleDateTime CXTPCalendarTimeLineView::GetStartViewDate()
-{
-	ASSERT(m_pTimeScale);
-	return m_pTimeScale ? m_pTimeScale->GetStartViewDate() : COleDateTime::GetCurrentTime();
-}
-
-AFX_INLINE void CXTPCalendarTimeLineView::SetStartViewDate(COleDateTime dt)
-{
-	ASSERT(m_pTimeScale);
-	if (m_pTimeScale)
-		m_pTimeScale->SetStartViewDate(dt);
-
-	Populate();
-}
-
-AFX_INLINE CXTPCalendarTimeLineViewTimeScale* CXTPCalendarTimeLineView::GetTimeScale()
+AFX_INLINE CXTPCalendarTimeLineViewTimeScale* CXTPCalendarTimeLineView::GetTimeScale() const
 {
 	return m_pTimeScale;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARTIMELINEVIEW_H__)

@@ -1,7 +1,6 @@
 // XTPFlowGraphPageHistory.h: interface for the CXTPFlowGraphPageHistory class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHPAGEHISTORY_H__)
-#define __XTPFLOWGRAPHPAGEHISTORY_H__
+#	define __XTPFLOWGRAPHPAGEHISTORY_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphControl;
 class CXTPFlowGraphNodes;
@@ -43,7 +44,7 @@ class CXTPFlowGraphNode;
 struct CXTPFlowGraphPageHistoryItem
 {
 	CXTPFlowGraphNode* pFrom; // Pointer to the previous node.
-	CXTPFlowGraphNode* pTo; // Pointer to the destination node.
+	CXTPFlowGraphNode* pTo;   // Pointer to the destination node.
 };
 
 // --------------------------------------------------------------------
@@ -51,7 +52,7 @@ struct CXTPFlowGraphPageHistoryItem
 // Summary:
 //     Object that contains page transition history for the flow graph.
 // --------------------------------------------------------------------
-class _XTP_EXT_CLASS CXTPFlowGraphPageHistory: public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPFlowGraphPageHistory : public CXTPCmdTarget
 {
 public:
 	// -------------------------------------------------
@@ -67,7 +68,6 @@ protected:
 	//     deallocation.
 	// -------------------------------------------------------------------
 	virtual ~CXTPFlowGraphPageHistory();
-
 
 public:
 	// ---------------------------------------------------------------------
@@ -131,15 +131,25 @@ public:
 	// ---------------------------------------------------------------------------
 	void AnimatePageTransition(CXTPFlowGraphNode* pNodeFrom, CXTPFlowGraphNode* pNodeTo);
 
-
 protected:
 	CXTPFlowGraphControl* m_pControl; // Pointer to the parent flow graph control.
 
-	CArray<CXTPFlowGraphPageHistoryItem, CXTPFlowGraphPageHistoryItem&> m_arrPageUndo; // Contains all the undo actions from the history.
-	CArray<CXTPFlowGraphPageHistoryItem, CXTPFlowGraphPageHistoryItem&> m_arrPageRedo; // Contains all the redo actions from the history.
+	CArray<CXTPFlowGraphPageHistoryItem, CXTPFlowGraphPageHistoryItem&>
+		m_arrPageUndo; // Contains all the undo actions from the history.
+	CArray<CXTPFlowGraphPageHistoryItem, CXTPFlowGraphPageHistoryItem&>
+		m_arrPageRedo; // Contains all the redo actions from the history.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPFlowGraphPageHistory);
 
+	void OleAnimatePageTransition(LPDISPATCH lpDispFrom, LPDISPATCH lpDispTo);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHPAGEHISTORY_H__)

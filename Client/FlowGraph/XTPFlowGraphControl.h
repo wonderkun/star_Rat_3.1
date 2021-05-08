@@ -1,7 +1,6 @@
 // XTPFlowGraphControl.h: interface for the CXTPFlowGraphControl class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,21 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFLOWGRAPHCONTROL_H__)
-#define __XTPFLOWGRAPHCONTROL_H__
+#	define __XTPFLOWGRAPHCONTROL_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPFlowGraphPaintManager;
 class CXTPFlowGraphPage;
 class CXTPFlowGraphPages;
 class CXTPFlowGraphDrawContext;
 class CXTPFlowGraphNode;
+class CXTPFlowGraphNodeCustom;
 class CXTPPropExchange;
 class CXTPFlowGraphSelectedElements;
 class CXTPFlowGraphConnection;
@@ -42,6 +44,8 @@ class CXTPFlowGraphImages;
 class CXTPToolTipContext;
 class CXTPFlowGraphPageHistory;
 class CXTPMarkupContext;
+
+class CXTPMarkupDependencyProperty;
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -58,9 +62,10 @@ class CXTPMarkupContext;
 // ----------------------------------------------------------------------
 enum XTPFlowGraphResize
 {
+	xtpFlowGraphResizeNone		 = 0,
 	xtpFlowGraphResizeHorizontal = 1, // Nodes can be resized Horizontally only.
-	xtpFlowGraphResizeVertical = 2, // Nodes can be resized Vertically only.
-	xtpFlowGraphResizeBoth = 3 // Nodes can be resized both Vertically and Horizontally.
+	xtpFlowGraphResizeVertical   = 2, // Nodes can be resized Vertically only.
+	xtpFlowGraphResizeBoth		 = 3  // Nodes can be resized both Vertically and Horizontally.
 };
 
 // ----------------------------------------------------------------------
@@ -81,10 +86,53 @@ enum XTPFlowGraphResize
 // ----------------------------------------------------------------------
 enum XTPFlowGraphSmoothingMode
 {
-	xtpFlowGraphSmoothingModeHighQuality, // Uses GDI+ to draw the Flow Graph for the highest quality picture.  This option looks the best, but might be slow when performing drag operations on lower end graphic cards.
-	xtpFlowGraphSmoothingModeHighSpeed, // Uses GDI+ to draw the Flow Graph with slightly lower quality to improve speed over the High Quality option.
-	xtpFlowGraphSmoothingModeGDI, // Uses GDI Standard to draw the Flow Graph.  Performance will be good on lower end graphic cards, however the quality does not look as good as the GDI+ options.
-	xtpFlowGraphSmoothingModeAuto, // Will combine the various quality modes to get the best performance and quality.  It will draw with a higher quality mode for viewing then switch to a lower quality mode when performing drag operations.
+	xtpFlowGraphSmoothingModeHighQuality, // Uses GDI+ to draw the Flow Graph for the highest
+										  // quality picture.  This option looks the best, but might
+										  // be slow when performing drag operations on lower end
+										  // graphic cards.
+	xtpFlowGraphSmoothingModeHighSpeed,   // Uses GDI+ to draw the Flow Graph with slightly lower
+										  // quality to improve speed over the High Quality option.
+	xtpFlowGraphSmoothingModeGDI,  // Uses GDI Standard to draw the Flow Graph.  Performance will be
+								   // good on lower end graphic cards, however the quality does not
+								   // look as good as the GDI+ options.
+	xtpFlowGraphSmoothingModeAuto, // Will combine the various quality modes to get the best
+								   // performance and quality.  It will draw with a higher quality
+								   // mode for viewing then switch to a lower quality mode when
+								   // performing drag operations.
+};
+
+// ----------------------------------------------------------------------
+// Summary:
+//     Custom XAML properties used in CXTPFlowGraphNode and CXTPFlowGraphNodeCustom
+// ----------------------------------------------------------------------
+enum XTPFlowGraphCustomProperty
+{
+	xtpFlowGraphPropertyConnectionPoint = 0,	 // applied to default nodes only. Tells the control
+												 // that a given <Rectangle> is a connection point
+	xtpFlowGraphPropertyConnectionPointType = 1, // applied to default nodes only. Tells the control
+												 // that a given XAML element can have a color
+	xtpFlowGraphPropertyCanSetColor = 2, // applied to default nodes only. Tells the control that a
+										 // given XAML element can have a color
+	xtpFlowGraphPropertyConnectionPointIn =
+		3, // applied to custom  nodes only. Tells the control of how to place connection points
+		   // within the given XAML shape can be applied to canvas on custom markup nodes when the
+		   // markup doesn't contain a path
+	xtpFlowGraphPropertyResizable = 4 // applied to custom  nodes only. Tells the control that a
+									  // given shape is resizable or not. A shape is resizable when
+									  // this property is ommited
+};
+
+// ----------------------------------------------------------------------
+// Summary:
+//     Default XAML templates for default node and its table rows with connection points
+// ----------------------------------------------------------------------
+enum XTPFlowGraphDefaultXAMLTemplate
+{
+	xtpFlowGraphTemplateNode		   = 0, // a node
+	xtpFlowGraphTemplateNodePointNone  = 1, // node table row with no connection points
+	xtpFlowGraphTemplateNodePointIn	= 2, // node table row with input connection point
+	xtpFlowGraphTemplateNodePointOut   = 3, // node table row with output connection point
+	xtpFlowGraphTemplateNodePointInOut = 4  // node table row with input & output connection points
 };
 
 // ------------------------------------------------------------------------
@@ -121,6 +169,8 @@ enum XTPFlowGraphSmoothingMode
 // ------------------------------------------------------------------------
 class _XTP_EXT_CLASS CXTPFlowGraphControl : public CWnd
 {
+	DECLARE_DYNAMIC(CXTPFlowGraphControl)
+
 public:
 	// ---------------------------------------------
 	// Summary:
@@ -346,6 +396,8 @@ public:
 	// --------------------------------------------------------------
 	BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
+	using CWnd::Create;
+
 public:
 	// -----------------------------------------------
 	// Summary:
@@ -391,6 +443,14 @@ public:
 	//     dMaxZoom :  Maximum zoom value (0.0 \- 1.0)
 	// ---------------------------------------------------------------------------
 	void SetZoomRange(double dMinZoom, double dMaxZoom);
+
+	// ---------------------------------------------------------------------------
+	//
+	// Summary:
+	//     The method using current zoom level and scroll offset to transform Point
+	//     logical window coordinates to current drawing coordinates
+	//
+	CPoint TransformPoint(CPoint pt) const;
 
 	// -------------------------------------------------------------------------
 	//
@@ -478,7 +538,6 @@ public:
 	int GetAnimationDelay() const;
 
 public:
-
 	// ------------------------------------------------------------------
 	//
 	// Summary:
@@ -638,6 +697,16 @@ public:
 	// -----------------------------------------------------------------------
 	virtual void RenameConnectionPoint(CXTPFlowGraphConnectionPoint* pConnectionPoint);
 
+	//
+	// Summary:
+	//     Helper method to load custom XAML shape from toolkit using uts resource ID
+	// Parameters:
+	//     uResShapeID : shape ID
+	//     pPage :  if not defined, active page is used
+	// -----------------------------------------------------------------------
+	CXTPFlowGraphNodeCustom* AddCustomNodeFromToolkitResource(UINT uResShapeID,
+															  CXTPFlowGraphPage* pPage = NULL);
+
 public:
 	// --------------------------------------------------------------------
 	// Summary:
@@ -707,6 +776,13 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPToolTipContext* GetToolTipContext() const;
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Save the picture to the file
+	//-----------------------------------------------------------------------
+
+	BOOL SaveToFile(LPCTSTR szFile);
+
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -716,12 +792,116 @@ public:
 	//-------------------------------------------------------------------------
 	void EnableMarkup(BOOL bEnable = TRUE);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Enables or disables the scroll bar.
+	// Parameters:
+	//      nBar    : [in] The scroll-bar identifier.
+	//      bEnable : [in] Specifies whether the scroll bar is to be enabled
+	//                    or disabled.
+	// Remarks:
+	//      If the window has a sibling scroll-bar control, that scroll bar
+	//      is used; otherwise the window's own scroll bar is used.
+	// See also:
+	//      void ShowScrollBar(UINT nBar, BOOL bShow = TRUE );
+	//-----------------------------------------------------------------------
+	void EnableScrollBarCtrl(int nBar, BOOL bEnable = TRUE);
+
+	BOOL GetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL);
+
+	BOOL SetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, BOOL bRedraw = TRUE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Returns max scroll position identifier.
+	// Parameters:
+	//      nBar : [in] Specifies the type of scroll bar. The parameter can take
+	//                  one of the following values:
+	//                  [ul]
+	//                  [li]SB_HORZ - Retrieves the scroll limit of the horizontal
+	//                     scroll bar.[/li]
+	//                  [li]SB_VERT   Retrieves the scroll limit of the vertical
+	//                     scroll bar.[/li]
+	//                  [/ul]
+	// Remarks:
+	//      Call this member function to retrieve the maximum scrolling
+	//      position of the scroll bar.
+	// Returns:
+	//      An  integer value which specifies the maximum position of a scroll
+	//      bar if successful; otherwise 0.
+	//-----------------------------------------------------------------------
+	int GetScrollLimit(int nBar);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Return pointer to the specified CScrollBar object.
+	// Parameters:
+	//      nBar : [in] Specifies the type of scroll bar. The parameter can take
+	//                  one of the following values:
+	//                  [ul]
+	//                  [li]SB_HORZ - Retrieves the position of the horizontal scroll bar[/li]
+	//                  [li]SB_VERT - Retrieves the position of the vertical scroll bar[/li]
+	//                  [/ul]
+	// Remarks:
+	//      Call this member function to obtain a pointer to the specified sibling
+	//      scroll bar. This member function does not operate on scroll bars created
+	//      when the WS_HSCROLL or WS_VSCROLL bits are set during the creation
+	//      of a window. The CWnd implementation of this function simply returns
+	//      NULL. Derived classes, such as CView, implement the described
+	//      functionality.
+	// Returns:
+	//      A pointer to sibling scroll-bar control, or NULL if none.
+	//-----------------------------------------------------------------------
+	virtual CScrollBar* GetScrollBarCtrl(int nBar) const;
+
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Returns markup context
 	//-------------------------------------------------------------------------
 	CXTPMarkupContext* GetMarkupContext() const;
 
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get a custom property attached to markup
+	// Parameters:
+	//     propty - identifies the property to get
+	// Returns:
+	//     A pointer to a property from the custom properties map
+	//-------------------------------------------------------------------------
+	CXTPMarkupDependencyProperty* GetCustomMarkupProperty(XTPFlowGraphCustomProperty propty) const;
+
+	//-------------------------------------------------------------------------
+	// Summary:
+	//     Call this method to get default template markup string
+	// Parameters:
+	//     tmpl - identifies the template to get
+	// Returns:
+	//     A string containing the default markup template
+	//-------------------------------------------------------------------------
+	CString GetDefaultMarkupTemplate(XTPFlowGraphDefaultXAMLTemplate tmpl) const;
+
+	// ---------------------------------------------------------------
+	// Summary:
+	//     Attaches custom properties to a control
+	// ---------------------------------------------------------------
+	void RegisterCustomMarkupProperties();
+
+	// ---------------------------------------------
+	// Summary:
+	//     Setups default node's markup templates for a node and its rows
+	//     (used to be names connection points)
+	// ----------------------------------------------------------------------
+	void SetupDefaultMarkupTemplates();
+
+	// ----------------------------------------------------------------
+	// Summary:
+	//     Loads markup XAML template from a resource
+	// Parameters:
+	//     szTemplate: a string defining a resource of type 'XML'
+	// Returns:
+	//     A string containing markup string (applies to default nodes)
+	// ----------------------------------------------------------------
+	static CString AFX_CDECL LoadXamlTemplate(LPCTSTR szTemplate);
 
 public:
 	// --------------------------------------------------
@@ -757,7 +937,7 @@ protected:
 	//     pNode :  Pointer to the node that is being resized.
 	//
 	// ----------------------------------------------------------------------
-	virtual void StartResizeNode(CXTPFlowGraphNode* pNode);
+	virtual void StartResizeNode(CXTPFlowGraphNode* pNode, UINT hitTest);
 	// --------------------------------------------------------------------
 	// Summary:
 	//     \Internal method that is called when the screen has begun to get
@@ -833,44 +1013,69 @@ protected:
 	// ------------------------------------------------------------------
 	virtual CXTPFlowGraphDrawContext* CreateDrawContext(CDC& dc);
 
-//{{AFX_CODEJOCK_PRIVATE
+	// returns true when at least node was reset
+	bool ResetSelectedNodes(CXTPFlowGraphNode* pNodeToSkip = NULL);
+
+	void UpdateActiveNodeAtPoint(CPoint pt, CXTPFlowGraphNode* pNodeToSkip = NULL);
+
+	CXTPFlowGraphNode* IsPointInSizeRectOfSelectedNode(CPoint point, UINT& uHitTest) const;
+
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
 	DECLARE_MESSAGE_MAP()
 
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
+	//////////////////////////////////////////////////////////////////////////
+	// custom scrollbars related:
+	//////////////////////////////////////////////////////////////////////////
 
+	void RepositionCustomScrollBars();
+
+	void DeleteCustomScrollBars();
+
+public:
+	void GetClientRect(LPRECT lpRect) const;
+	void SetScrollbarTheme(XTPScrollBarTheme theme);
+
+	//////////////////////////////////////////////////////////////////////////
+	// end
+	//////////////////////////////////////////////////////////////////////////
+
+protected:
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	CBitmap m_bmpCache; // Bitmap Cache.
 	BOOL m_bReposition; // Specifies whether the control should reposition itself.
-	CXTPFlowGraphPaintManager* m_pPaintManager; // Pointer to the paint manager used to draw the flow graph.
-	CXTPFlowGraphPage* m_pActivePage; // Pointer to the currently active page.
-	CXTPFlowGraphPages* m_pPages; // Pointer to the flow graph's collection of pages.
-	BOOL m_bAdjustScrollBars; // Specifies whether to adjust the scrollbars.
+	CXTPFlowGraphPaintManager* m_pPaintManager; // Pointer to the paint manager used to draw the
+												// flow graph.
+	CXTPFlowGraphPage* m_pActivePage;			// Pointer to the currently active page.
+	CXTPFlowGraphPages* m_pPages;				// Pointer to the flow graph's collection of pages.
+	BOOL m_bAdjustScrollBars;					// Specifies whether to adjust the scrollbars.
 
-	CPoint m_ptStartDrag;  // Point to start dragging.
-	CPoint m_ptMouse; // Current point the mouse cursor is located.
+	CPoint m_ptStartDrag; // Point to start dragging.
+	CPoint m_ptMouse;	 // Current point the mouse cursor is located.
 
 	CRect m_rcSelectedArea; // Bounding rectangle of the currently selected area.
 
-	CXTPFlowGraphUndoManager* m_pUndoManager;  // The pointer to the undo manager object.
+	CXTPFlowGraphUndoManager* m_pUndoManager; // The pointer to the undo manager object.
 
-	CXTPFlowGraphImages* m_pImages;  // Image collection for the flow graph control.
+	CXTPFlowGraphImages* m_pImages; // Image collection for the flow graph control.
 
 	double m_dMinZoom; // Minimum zoom level allowed for the flow graph control.
 	double m_dMaxZoom; // Maximum zoom level allowed for the flow graph control.
@@ -879,20 +1084,38 @@ protected:
 
 	int m_nAnimationDelay; // Delay between animation steps used when zooming or scrolling.
 
-	CXTPFlowGraphPageHistory* m_pHistory;  // Object that keeps track of page history and allows the history to be navigated.
+	CXTPFlowGraphPageHistory* m_pHistory; // Object that keeps track of page history and allows the
+										  // history to be navigated.
 
-	BOOL m_bAllowMoveNodes;  // Specifies whether the user can drag\\move nodes.  True to allow nodes to be moved, False to lock them.
+	BOOL m_bAllowMoveNodes; // Specifies whether the user can drag\\move nodes.  True to allow nodes
+							// to be moved, False to lock them.
 	XTPFlowGraphResize m_nAllowResizeNodes; // Node resizing options (drag\\drop size of nodes).
-	BOOL m_bAllowModifyConnections; // Specifies whether the user can drag\\move\\add\\delete connections.  True to allow the user to drag\\move\\add\\delete connections.  False to lock them.
+	BOOL m_bAllowModifyConnections; // Specifies whether the user can drag\\move\\add\\delete
+									// connections.  True to allow the user to
+									// drag\\move\\add\\delete connections.  False to lock them.
 
-	BOOL m_bInAction;  // Internally used to tell the flow graph it is in animation (scrolling, zooming) or dragging.
+	BOOL m_bInAction; // Internally used to tell the flow graph it is in animation (scrolling,
+					  // zooming) or dragging.
 
 	XTPFlowGraphSmoothingMode m_nSmoothingMode; // Draw quality options for the Flow Graph.
 
-	CXTPMarkupContext* m_pMarkupContext;            // Markup context of Flow Graph
+	CXTPMarkupContext* m_pMarkupContext; // Markup context of Flow Graph
+
+	static CMap<XTPFlowGraphCustomProperty, XTPFlowGraphCustomProperty,
+				CXTPMarkupDependencyProperty*, CXTPMarkupDependencyProperty*&>
+		m_mapCustomProperties;
+
+	// map of nodes and its table rows markup templates (default connection points) that depend on a
+	// connection point type
+	CMap<XTPFlowGraphDefaultXAMLTemplate, XTPFlowGraphDefaultXAMLTemplate, CString, CString&>
+		m_mapDefaultXamlTemplates;
+
+	BOOL m_bCreateScrollbarOnParent; // TRUE if parent window scroll bars are used, otherwise FALSE.
+
+	CScrollBar* m_pCustomScrollBars[2];
 
 private:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	struct DRAGNODE
 	{
 		CPoint ptOrigin;
@@ -900,67 +1123,84 @@ private:
 		BOOL bNode;
 	};
 	CArray<DRAGNODE, DRAGNODE&> m_arrDragNodes;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
+
+	friend class CFlowGraphCtrl;
 };
 
-
-
-AFX_INLINE CXTPFlowGraphPaintManager* CXTPFlowGraphControl::GetPaintManager() const {
+AFX_INLINE CXTPFlowGraphPaintManager* CXTPFlowGraphControl::GetPaintManager() const
+{
 	return m_pPaintManager;
 }
-AFX_INLINE CXTPFlowGraphPages* CXTPFlowGraphControl::GetPages() const {
+AFX_INLINE CXTPFlowGraphPages* CXTPFlowGraphControl::GetPages() const
+{
 	return m_pPages;
 }
-AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphControl::GetActivePage() const {
+AFX_INLINE CXTPFlowGraphPage* CXTPFlowGraphControl::GetActivePage() const
+{
 	return m_pActivePage;
 }
-AFX_INLINE CXTPFlowGraphUndoManager* CXTPFlowGraphControl::GetUndoManager() const {
+AFX_INLINE CXTPFlowGraphUndoManager* CXTPFlowGraphControl::GetUndoManager() const
+{
 	return m_pUndoManager;
 }
-AFX_INLINE void CXTPFlowGraphControl::SetZoomRange(double dMinZoom, double dMaxZoom) {
+AFX_INLINE void CXTPFlowGraphControl::SetZoomRange(double dMinZoom, double dMaxZoom)
+{
 	m_dMinZoom = dMinZoom;
 	m_dMaxZoom = dMaxZoom;
 }
-AFX_INLINE CXTPToolTipContext* CXTPFlowGraphControl::GetToolTipContext() const {
+AFX_INLINE CXTPToolTipContext* CXTPFlowGraphControl::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
-AFX_INLINE void CXTPFlowGraphControl::SetAnimationDelay(int nDelay) {
+AFX_INLINE void CXTPFlowGraphControl::SetAnimationDelay(int nDelay)
+{
 	m_nAnimationDelay = nDelay;
 }
-AFX_INLINE int CXTPFlowGraphControl::GetAnimationDelay() const {
+AFX_INLINE int CXTPFlowGraphControl::GetAnimationDelay() const
+{
 	return m_nAnimationDelay;
 }
-AFX_INLINE CXTPFlowGraphImages* CXTPFlowGraphControl::GetImages() const {
+AFX_INLINE CXTPFlowGraphImages* CXTPFlowGraphControl::GetImages() const
+{
 	return m_pImages;
 }
-AFX_INLINE CXTPFlowGraphPageHistory* CXTPFlowGraphControl::GetHistory() const {
+AFX_INLINE CXTPFlowGraphPageHistory* CXTPFlowGraphControl::GetHistory() const
+{
 	return m_pHistory;
 }
-AFX_INLINE void CXTPFlowGraphControl::SetAllowMoveNodes(BOOL bAllow) {
+AFX_INLINE void CXTPFlowGraphControl::SetAllowMoveNodes(BOOL bAllow)
+{
 	m_bAllowMoveNodes = bAllow;
 }
-AFX_INLINE BOOL CXTPFlowGraphControl::GetAllowMoveNodes() const {
+AFX_INLINE BOOL CXTPFlowGraphControl::GetAllowMoveNodes() const
+{
 	return m_bAllowMoveNodes;
 }
-AFX_INLINE void CXTPFlowGraphControl::SetAllowResizeNodes(XTPFlowGraphResize bAllow) {
+AFX_INLINE void CXTPFlowGraphControl::SetAllowResizeNodes(XTPFlowGraphResize bAllow)
+{
 	m_nAllowResizeNodes = bAllow;
 }
-AFX_INLINE XTPFlowGraphResize CXTPFlowGraphControl::GetAllowResizeNodes() const {
+AFX_INLINE XTPFlowGraphResize CXTPFlowGraphControl::GetAllowResizeNodes() const
+{
 	return m_nAllowResizeNodes;
 }
-AFX_INLINE void CXTPFlowGraphControl::SetAllowModifyConnections(BOOL bAllowModifyConnections) {
+AFX_INLINE void CXTPFlowGraphControl::SetAllowModifyConnections(BOOL bAllowModifyConnections)
+{
 	m_bAllowModifyConnections = bAllowModifyConnections;
 }
-AFX_INLINE BOOL CXTPFlowGraphControl::GetAllowModifyConnections() const {
+AFX_INLINE BOOL CXTPFlowGraphControl::GetAllowModifyConnections() const
+{
 	return m_bAllowModifyConnections;
 }
-
-AFX_INLINE XTPFlowGraphSmoothingMode CXTPFlowGraphControl::GetSmoothingMode() const {
+AFX_INLINE XTPFlowGraphSmoothingMode CXTPFlowGraphControl::GetSmoothingMode() const
+{
 	return m_nSmoothingMode;
 }
-AFX_INLINE CXTPMarkupContext* CXTPFlowGraphControl::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPFlowGraphControl::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPFLOWGRAPHCONTROL_H__)

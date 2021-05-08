@@ -1,7 +1,6 @@
 // XTPSkinImage.h: interface for the CXTPSkinImage class.
 //
-// This file is a part of the XTREME SKINFRAMEWORK MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,21 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPSKINIMAGE_H__)
-#define __XTPSKINIMAGE_H__
+#	define __XTPSKINIMAGE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPSkinManagerResourceFile;
-
 
 //===========================================================================
 // Summary:
 //     CXTPSkinImage class represents simple bitmap holder and draw operations for Skin Framework
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinImage
+class _XTP_EXT_CLASS CXTPSkinImage : public CXTPSynchronized
 {
 private:
 	struct SOLIDRECT
@@ -42,6 +42,7 @@ private:
 		RECT rc;
 		COLORREF clr;
 	};
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -67,8 +68,8 @@ public:
 	//      TRUE if successful, otherwise returns FALSE
 	//-----------------------------------------------------------------------
 	BOOL LoadFile(LPCTSTR lpszFileName);
-	BOOL LoadFile(HMODULE hModule, LPCTSTR lpszBitmapFileName); //<COMBINE CXTPSkinImage::LoadFile@LPCTSTR>
-
+	BOOL LoadFile(HMODULE hModule,
+				  LPCTSTR lpszBitmapFileName); //<COMBINE CXTPSkinImage::LoadFile@LPCTSTR>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -91,8 +92,12 @@ public:
 	//     bBorderOnly - TRUE to draw only borders
 	//     clrTransparent - Transparent color
 	//-----------------------------------------------------------------------
-	void DrawImage(CDC* pDC, const CRect& rcDest, const CRect& rcSrc, const CRect& rcSizingMargins, int nSizingType, BOOL bBorderOnly);
-	void DrawImage(CDC* pDC, const CRect& rcDest, const CRect& rcSrc, const CRect& rcSizingMargins, COLORREF clrTransparent, int nSizingType, BOOL bBorderOnly); // <combine CXTPSkinImage::DrawImage@CDC*@const CRect&@const CRect&@const CRect&@int@BOOL>
+	void DrawImage(CDC* pDC, const CRect& rcDest, const CRect& rcSrc, const CRect& rcSizingMargins,
+				   int nSizingType, BOOL bBorderOnly);
+	void DrawImage(CDC* pDC, const CRect& rcDest, const CRect& rcSrc, const CRect& rcSizingMargins,
+				   COLORREF clrTransparent, int nSizingType,
+				   BOOL bBorderOnly); // <combine CXTPSkinImage::DrawImage@CDC*@const CRect&@const
+									  // CRect&@const CRect&@int@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -140,12 +145,13 @@ public:
 	void CreateSolidRectArray(int nBitmaps, BOOL bHorizontalImage, const CRect& rcSizingMargins);
 
 private:
+	void DrawImageInternal(CDC* pDC, const CRect& rcDest, const CRect& rcSrc,
+						   const CRect& rcSizingMargins, int nSizingType, BOOL bBorderOnly,
+						   COLORREF clrTransparent = COLORREF_NULL);
+	BOOL DrawImagePart(CDC* pDCDest, const CRect& rcDest, CDC* pDCSrc, const CRect& rcSrc) const;
 
-	BOOL DrawImagePart(CDC* pDCDest, const CRect& rcDest,
-		CDC* pDCSrc, const CRect& rcSrc) const;
-
-	BOOL DrawImageTile(CDC* pDCDest, const CRect& rcDest,
-		CDC* pDCSrc, const CRect& rcSrc, BOOL bTile) const;
+	BOOL DrawImageTile(CDC* pDCDest, const CRect& rcDest, CDC* pDCSrc, const CRect& rcSrc,
+					   BOOL bTile, COLORREF clrTransparent = COLORREF_NULL) const;
 
 	void FilterImage(COLORREF clrTransparent);
 	void InvertBitmap();
@@ -154,24 +160,23 @@ private:
 	BOOL CheckBitmapRect(LPBYTE pBits, CRect rcCheck, CSize sz);
 
 public:
-	BOOL m_bMirrorImage;    // TRUE to Invert image in RTL mode
+	BOOL m_bMirrorImage; // TRUE to Invert image in RTL mode
 
 protected:
-	HBITMAP m_hBitmap;      // Bitmap handle
-	BOOL m_bAlpha;          // TRUE if bitmap has alpha pixels
-	BOOL m_bFiltered;       // TRUE if image was filtered
-	BOOL m_bInvert;         // TRUE if image is inverted for RTL mode
-	BOOL m_bOptimized;      // TRUE if image is splited to solid parts
-	CSize m_szBitmap;       // Bitmaps size of image
-	COLORREF m_clrTransparent;
-	CArray<SOLIDRECT, SOLIDRECT&> m_arrSolidRects;  // Solid parts of image
+	HBITMAP m_hBitmap;							   // Bitmap handle
+	BOOL m_bAlpha;								   // TRUE if bitmap has alpha pixels
+	BOOL m_bFiltered;							   // TRUE if image was filtered
+	BOOL m_bInvert;								   // TRUE if image is inverted for RTL mode
+	BOOL m_bOptimized;							   // TRUE if image is splited to solid parts
+	CSize m_szBitmap;							   // Bitmaps size of image
+	CArray<SOLIDRECT, SOLIDRECT&> m_arrSolidRects; // Solid parts of image
 };
 
 //===========================================================================
 // Summary:
 //     CXTPSkinImages represents cashed collection of CXTPSkinImage classes
 //===========================================================================
-class _XTP_EXT_CLASS CXTPSkinImages
+class _XTP_EXT_CLASS CXTPSkinImages : public CXTPSynchronized
 {
 public:
 	//-----------------------------------------------------------------------
@@ -185,6 +190,7 @@ public:
 	//     Destroys a CXTPSkinImages object, handles cleanup and deallocation.
 	//-----------------------------------------------------------------------
 	~CXTPSkinImages();
+
 public:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -215,7 +221,8 @@ public:
 	CSize GetExtent(CXTPSkinManagerResourceFile* pResourceFile, LPCTSTR lpszImageFile);
 
 protected:
-	CMapStringToPtr m_mapImages;    // Collection of images
+	CMapStringToPtr m_mapImages; // Collection of images
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPSKINIMAGE_H__)

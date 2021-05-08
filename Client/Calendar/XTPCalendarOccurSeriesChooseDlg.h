@@ -1,7 +1,6 @@
 // XTPCalendarOccurSeriesChooseDlg.h interface for CXTPCalendarOccurSeriesChooseDlg class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,9 +23,11 @@
 //}}AFX_CODEJOCK_PRIVATE
 
 #if _MSC_VER > 1000
-#pragma once
+#	pragma once
 #endif // _MSC_VER > 1000
 /////////////////////////////////////////////////////////////////////////////
+
+#include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarEvent;
 //===========================================================================
@@ -41,7 +42,10 @@ class _XTP_EXT_CLASS CXTPCalendarOccurSeriesChooseDlg : public CDialog
 {
 public:
 	//{{AFX_CODEJOCK_PRIVATE
-	enum { IDD = XTP_IDD_CALENDAR_DIALOG_OCURR_SERIES };
+	enum
+	{
+		IDD = XTP_IDD_CALENDAR_DIALOG_OCURR_SERIES
+	};
 	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
@@ -65,8 +69,8 @@ public:
 	// See Also: ~CXTPCalendarEvent()
 	//-----------------------------------------------------------------------
 	CXTPCalendarOccurSeriesChooseDlg(CWnd* pParent, UINT nIDResourceLabels,
-									LPCTSTR lpszResourceIcon = IDI_EXCLAMATION,
-									UINT nIDTemplate = CXTPCalendarOccurSeriesChooseDlg::IDD);
+									 LPCTSTR lpszResourceIcon = IDI_EXCLAMATION,
+									 UINT nIDTemplate = CXTPCalendarOccurSeriesChooseDlg::IDD);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -86,11 +90,12 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetEvent(CXTPCalendarEvent* pEvent);
 
-	BOOL m_bOccur; // [in/out] Contain default/selected choice. If TRUE - occurrence is selected, otherwise series.
+	BOOL m_bOccur; // [in/out] Contain default/selected choice. If TRUE - occurrence is selected,
+				   // otherwise series.
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 
@@ -98,19 +103,19 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
-	CStatic m_ctrlMessage;  // Dialog message text control.
-	CStatic m_ctrlIcon;     // Dialog icon control.
-	CButton m_ctrlOccur;    // Occurrence radio button control.
-	CButton m_ctrlSeries;   // Series radio button control.
+	CStatic m_ctrlMessage; // Dialog message text control.
+	CStatic m_ctrlIcon;	// Dialog icon control.
+	CButton m_ctrlOccur;   // Occurrence radio button control.
+	CButton m_ctrlSeries;  // Series radio button control.
 
-	CString m_strTitle;     // Dialog title string.
-	CString m_strMessage;   // Dialog message text prepared string.
-	CString m_strOccur;     // Occurrence radio button label text string.
-	CString m_strSeries;    // Series radio button label text string.
+	CString m_strTitle;   // Dialog title string.
+	CString m_strMessage; // Dialog message text prepared string.
+	CString m_strOccur;   // Occurrence radio button label text string.
+	CString m_strSeries;  // Series radio button label text string.
 
-	UINT  m_nIDResourceLabels;  // Dialog labels string resource ID.
-	HICON m_hIcon;              // Dialog icon resource ID.
+	UINT m_nIDResourceLabels; // Dialog labels string resource ID.
+	HICON m_hIcon;			  // Dialog icon resource ID.
 };
 
-
+#include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // _XTPCALENDAROCCURSERIESCHOOSEDLG_H__

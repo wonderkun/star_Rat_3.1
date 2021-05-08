@@ -1,7 +1,6 @@
 // XTPChartFillStyle.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,15 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTFILLSTYLE_H__)
-#define __XTPCHARTFILLSTYLE_H__
+#	define __XTPCHARTFILLSTYLE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../XTPChartDefines.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPChartElement;
 class CXTPChartDeviceCommand;
@@ -83,27 +81,23 @@ public:
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     Call this function to set the direction for gradient filling.
+	//     Call this function to set the angle for gradient filling.
 	// Parameters:
-	//     nDirection - The enumerated value specifying the direction of gradient.
+	//     nDirection - The enumerated value specifying the angle of gradient.
 	// Remarks:
-	//     The common gradient directions are TopToBottom,BottomToTop,LeftToRight
-	//     RightToLeft,LeftToBottomRight,RightToTopLeft,RightToBottomLeft and
-	//     BottomLeftToTopRight.
+	//     The common gradient angle are 0, 45, 90, 135, 180, 225, 270, 315.
 	//-------------------------------------------------------------------------
-	void SetGradientDirection(XTPChartGradientDirection nDirection);
+	void SetGradientAngle(XTPChartGradientAngle nAngle);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     Call this function to get the direction for gradient filling.
+	//     Call this function to get the angle for gradient filling.
 	// Returns:
-	//     An enumerated value specifying the current direction of gradient.
+	//     An enumerated value specifying the current angle of gradient.
 	// Remarks:
-	//     The common gradient directions are TopToBottom,BottomToTop,LeftToRight
-	//     RightToLeft,LeftToBottomRight,RightToTopLeft,RightToBottomLeft and
-	//     BottomLeftToTopRight.
+	//     The common gradient angle are 0, 45, 90, 135, 180, 225, 270, 315.
 	//-------------------------------------------------------------------------
-	XTPChartGradientDirection GetGradientDirection() const;
+	XTPChartGradientAngle GetGradientAngle() const;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -125,11 +119,10 @@ public:
 	//-------------------------------------------------------------------------
 	XTPChartHatchStyle GetHatchStyle() const;
 
-
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of an element in the chart.
 	// Parameters:
 	//     bounds  - The rectangular boundary, within the limit the drawing has
@@ -142,11 +135,13 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartRectF& bounds, const CXTPChartColor& color, const CXTPChartColor& color2);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartRectF& bounds,
+														const CXTPChartColor& color,
+														const CXTPChartColor& color2);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of an element in the chart.
 	// Parameters:
 	//     arrPoints - The array of points which form a polygonal element.
@@ -158,13 +153,18 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPoints& arrPoints, const CXTPChartColor& color, const CXTPChartColor& color2);
+	virtual CXTPChartDeviceCommand* CreateDeviceCommand(const CXTPChartPoints& arrPoints,
+														const CXTPChartColor& color,
+														const CXTPChartColor& color2);
 
-	CXTPChartDeviceCommand* CreateCircleDeviceCommand(const CXTPChartPointF& center, double radius, const CXTPChartColor& color, const CXTPChartColor& color2);
+	virtual CXTPChartDeviceCommand* CreateCircleDeviceCommand(const CXTPChartPointF& center,
+															  double radius,
+															  const CXTPChartColor& color,
+															  const CXTPChartColor& color2);
 
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object for rendering,
+	//     This function creates a CXTPChartDeviceCommand object for rendering,
 	//     of a spline.
 	// Parameters:
 	//     arrPoints - The array of points which form a spline element.
@@ -176,7 +176,10 @@ public:
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateSplineDeviceCommand(const CXTPChartPoints& arrPoints, const CXTPChartColor& color, const CXTPChartColor& color2, BOOL bTwoSides = FALSE);
+	virtual CXTPChartDeviceCommand* CreateSplineDeviceCommand(const CXTPChartPoints& arrPoints,
+															  const CXTPChartColor& color,
+															  const CXTPChartColor& color2,
+															  BOOL bTwoSides = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -194,8 +197,7 @@ public:
 	CXTPChartFillStyle* CreateRotatedStyle();
 
 protected:
-
-#ifdef _XTP_ACTIVEX
+#	ifdef _XTP_ACTIVEX
 public:
 	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_DISPATCH_MAP()
@@ -204,30 +206,36 @@ public:
 
 	int OleGetFillMode();
 	int OleGetHatchStyle();
-	int OleGetGradientDirection();
+	int OleGetGradientAngle();
 	//}}AFX_CODEJOCK_PRIVATE
-#endif
+#	endif
 
 protected:
-	CXTPChartElement* m_pOwner;                      //The owner element.
-	XTPChartFillMode m_nFillMode;                    //The background fill mode.
-	XTPChartGradientDirection m_nGradientDirection;  //The gradient direction.
-	XTPChartHatchStyle m_nHatchStyle;                //The hatch style used.
+	CXTPChartElement* m_pOwner;				// The owner element.
+	XTPChartFillMode m_nFillMode;			// The background fill mode.
+	XTPChartGradientAngle m_nGradientAngle; // The gradient angle.
+	XTPChartHatchStyle m_nHatchStyle;		// The hatch style used.
 };
 
-
-AFX_INLINE void CXTPChartFillStyle::Release() {
+AFX_INLINE void CXTPChartFillStyle::Release()
+{
 	InternalRelease();
 }
-AFX_INLINE XTPChartFillMode CXTPChartFillStyle::GetFillMode() const {
+
+AFX_INLINE XTPChartFillMode CXTPChartFillStyle::GetFillMode() const
+{
 	return m_nFillMode;
 }
-AFX_INLINE XTPChartGradientDirection CXTPChartFillStyle::GetGradientDirection() const {
-	return m_nGradientDirection;
+
+AFX_INLINE XTPChartGradientAngle CXTPChartFillStyle::GetGradientAngle() const
+{
+	return m_nGradientAngle;
 }
-AFX_INLINE XTPChartHatchStyle CXTPChartFillStyle::GetHatchStyle() const {
+
+AFX_INLINE XTPChartHatchStyle CXTPChartFillStyle::GetHatchStyle() const
+{
 	return m_nHatchStyle;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTFILLSTYLE_H__)

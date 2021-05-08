@@ -1,7 +1,6 @@
 // XTPFontComboBox.h interface for the CXTPFontComboBox class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFONTCOMBOBOX_H__)
-#define __XTPFONTCOMBOBOX_H__
+#	define __XTPFONTCOMBOBOX_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -59,6 +60,8 @@ typedef CList<CXTPLogFont, CXTPLogFont&> CXTPFontList;
 //===========================================================================
 class _XTP_EXT_CLASS CXTPFontEnum
 {
+	friend class CXTPSingleton<CXTPFontEnum>;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -73,7 +76,6 @@ public:
 	//     Destroys a CXTPFontEnum object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPFontEnum();
-
 
 public:
 	//-----------------------------------------------------------------------
@@ -128,6 +130,14 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Retrieves the widest size of a string provided using available fonts.
+	// Returns:
+	//     An integer value that represents the widest size of a string.
+	//-----------------------------------------------------------------------
+	int GetMaxWidth(LPCTSTR lpString);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     This member function is used to get a reference to the font list.
 	// Returns:
 	//     A reference to the CXTPFontList used by this class.
@@ -149,7 +159,6 @@ public:
 	void Init(CDC* pDC = NULL, BYTE nCharSet = DEFAULT_CHARSET);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     The EnumFontFamExProc function is an application defined-callback
@@ -178,7 +187,8 @@ protected:
 	//     The return value must be a nonzero value to continue enumeration.
 	//     To stop enumeration, the return value must be zero.
 	//-----------------------------------------------------------------------
-	static BOOL CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* pelf, NEWTEXTMETRICEX* lpntm, DWORD dwFontType, LPARAM lParam);
+	static BOOL CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* pelf, NEWTEXTMETRICEX* lpntm,
+										   DWORD dwFontType, LPARAM lParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -201,11 +211,13 @@ protected:
 
 protected:
 	CXTPFontList m_listFonts; // List of fonts found during enumeration
+	CDC* m_pDC;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPFontList& CXTPFontEnum::GetFontList() {
+AFX_INLINE CXTPFontList& CXTPFontEnum::GetFontList()
+{
 	return m_listFonts;
 }
 
@@ -223,10 +235,125 @@ AFX_INLINE CXTPFontList& CXTPFontEnum::GetFontList() {
 // -------------------------------------------------------------------
 enum XTPFontStyle
 {
-	xtpFontUnknown   = 0x00, // Display type not defined.
-	xtpFontGUI       = 0x01, // Display font name with GUI font style.
-	xtpFontSample    = 0x02, // Display font name with its own font style.
-	xtpFontBoth      = 0x03, // Display font name with GUI font style, then a sample display to the right.
+	xtpFontUnknown = 0x00, // Display type not defined.
+	xtpFontGUI	 = 0x01, // Display font name with GUI font style.
+	xtpFontSample  = 0x02, // Display font name with its own font style.
+	xtpFontBoth	= 0x03, // Display font name with GUI font style, then a sample display to the
+						   // right.
+};
+
+class CXTPFontListBox;
+class CXTPFontComboBox;
+
+//===========================================================================
+// Summary: CXTPFontCtrlBase a base class used by CXTPFontListBox and
+//          CXTPFontComboBox controls to perform common drawing routines.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPFontCtrlBase
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary: Standard constructor.
+	//-----------------------------------------------------------------------
+	CXTPFontCtrlBase();
+
+	//-----------------------------------------------------------------------
+	// Summary: Handles object descruction.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPFontCtrlBase();
+
+	//-----------------------------------------------------------------------
+	// Summary: Call this member function to retrieve the default height for
+	//          combo or list items.
+	// Returns: Returns the height in pixes for a combo or list items.
+	//-----------------------------------------------------------------------
+	static int AFX_CDECL GetFontItemHeight();
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to create a default font for the
+	//             combo or list box.
+	// Parameters: font : Reference to a CFont object.
+	//-----------------------------------------------------------------------
+	static BOOL AFX_CDECL CreateUIFont(CFont& font);
+
+	// ------------------------------------------------------------------------
+	// Summary:    Call this member function to get the font for the currently
+	//             selected item.
+	// Parameters: lf          : Reference to an CXTPLogFont structure.
+	//             strFaceName : A reference to a valid CString object to receive
+	//                           the logfont face name.
+	// Remarks:    The first version of GetSelFont will retrieve the selected font
+	//             name. The second version will get the CXTPLogFont for the currently
+	//             selected item.
+	// Returns:    TRUE if successful, otherwise returns FALSE.
+	// ------------------------------------------------------------------------
+	virtual BOOL GetSelFont(CXTPLogFont& lf);
+	virtual BOOL GetSelFont(CString& strFaceName);
+
+	// -------------------------------------------------------------------
+	// Summary:    Call this member function to select the font for the list box.
+	// Parameters: lf          : Reference to an CXTPLogFont structure.
+	//             strFaceName : A reference to a valid CString object to receive
+	//                           the logfont face name.
+	// Remarks:    The first version of SetSelFont will set the selected font by
+	//             using its face name. The second version will set the selected font
+	//             by using a CXTPLogFont object.
+	// Returns:    TRUE if successful, otherwise returns FALSE.
+	// -------------------------------------------------------------------
+	virtual BOOL SetSelFont(CXTPLogFont& lf);
+	virtual BOOL SetSelFont(const CString& strFaceName);
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:    This method is called by the framework when a visual aspect
+	//             of an owner-drawn combo or list box changes.
+	// Parameters: lpDIS : A pointer to a DRAWITEMSTRUCT structure that contains
+	//                     information about the type of drawing required.
+	//-----------------------------------------------------------------------
+	virtual void OnDrawItem(LPDRAWITEMSTRUCT lpDIS);
+
+	//-----------------------------------------------------------------------
+	// Summary:    This method is called by the framework when a combo or list
+	//             box with an owner-drawn style is created.
+	// Parameters: lpMIS : A long pointer to a MEASUREITEMSTRUCT structure.
+	//-----------------------------------------------------------------------
+	virtual void OnMeasureItem(LPMEASUREITEMSTRUCT lpMIS);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Called by the framework to determine the relative position
+	//             of a new item in the list-box portion of a sorted owner-draw
+	//             combo box. By default, this member function does nothing.
+	// Parameters: lpCIS : A long pointer to a COMPAREITEMSTRUCT structure.
+	// Returns:    Indicates the relative position of the two items described
+	//             in the COMPAREITEMSTRUCT structure. It can be any of the
+	//             following values:
+	//
+	//             Value Meaning
+	//             -1	Item 1 sorts before item 2.
+	//              0	Item 1 and item 2 sort the same.
+	//              1	Item 1 sorts after item 2.
+	//-----------------------------------------------------------------------
+	virtual int OnCompareItem(LPCOMPAREITEMSTRUCT lpCIS);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member function to set the list or combo box pointer
+	//             for the base class.
+	// Parameters: pListBox  : Pointer to a valid CXTPFontListBox object.
+	//             pComboBox : Pointer to a valid CXTPFontComboBox object.
+	//-----------------------------------------------------------------------
+	virtual void OnInit(CXTPFontListBox* pListBox);
+	virtual void OnInit(CXTPFontComboBox* pComboBox);
+
+protected:
+	DWORD m_dwStyle;			   // Display style indicating how to render the font list.
+	CString m_csSymbol;			   // String displayed for the symbol characters.
+	CXTPFontListBox* m_pListBox;   // Points to the owner list box.
+	CXTPFontComboBox* m_pComboBox; // Points to the owner combo box.
+
+	enum
+	{
+		FontTypeWidth = 16
+	};
 };
 
 //===========================================================================
@@ -239,10 +366,11 @@ enum XTPFontStyle
 //     or display the font name with the default GUI font style and a sample
 //     display to the right.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPFontListBox : public CXTPListBox
+class _XTP_EXT_CLASS CXTPFontListBox
+	: public CXTPListBox
+	, public CXTPFontCtrlBase
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPFontListBox object
@@ -254,35 +382,6 @@ public:
 	//     Destroys a CXTPFontListBox object, handles cleanup and deallocation
 	//-----------------------------------------------------------------------
 	virtual ~CXTPFontListBox();
-
-public:
-
-	// ------------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to get the font for the currently selected
-	//     item.
-	// Parameters:
-	//     lf -           Reference to an CXTPLogFont structure.
-	//     strFaceName -  A reference to a valid CString object to receive the
-	//                    logfont face name.
-	// Returns:
-	//     true if successful, otherwise returns false.
-	// ------------------------------------------------------------------------
-	virtual bool GetSelFont(CXTPLogFont& lf);
-	virtual bool GetSelFont(CString& strFaceName); //<combine CXTPFontListBox::GetSelFont@CXTPLogFont&>
-
-	// -------------------------------------------------------------------
-	// Summary:
-	//     Call this member function to select the font for the list box.
-	// Parameters:
-	//     lf -           Reference to an CXTPLogFont structure.
-	//     strFaceName -  A NULL terminated string that represents the logfont
-	//                    face name.
-	// Returns:
-	//     true if successful, otherwise returns false.
-	// -------------------------------------------------------------------
-	virtual bool SetSelFont(CXTPLogFont& lf);
-	virtual bool SetSelFont(const CString& strFaceName); //<combine CXTPFontListBox::SetSelFont@CXTPLogFont&>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -309,7 +408,7 @@ public:
 	virtual void Initialize(bool bAutoFont = true);
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPFontListBox)
@@ -320,19 +419,13 @@ protected:
 
 	//{{AFX_MSG(CXTPFontListBox)
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
-protected:
-
-	DWORD       m_dwStyle;     // Display style indicating how to render the font list.
-	CString     m_csSymbol;    // String displayed for the symbol characters.
-	CImageList  m_ilFontType;  // True type font image list.
-
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPFontListBox::SetListStyle(DWORD dwStyle) {
+AFX_INLINE void CXTPFontListBox::SetListStyle(DWORD dwStyle)
+{
 	m_dwStyle = dwStyle;
 }
 
@@ -342,7 +435,9 @@ AFX_INLINE void CXTPFontListBox::SetListStyle(DWORD dwStyle) {
 //     a combo box that displays a drop list of available fonts for your system.
 //     The fonts are displayed in their various styles.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPFontComboBox : public CXTPComboBox
+class _XTP_EXT_CLASS CXTPFontComboBox
+	: public CXTPComboBox
+	, public CXTPFontCtrlBase
 {
 	DECLARE_DYNAMIC(CXTPFontComboBox)
 
@@ -360,40 +455,6 @@ public:
 	virtual ~CXTPFontComboBox();
 
 public:
-	// -------------------------------------------------------------------
-	// Summary:
-	//     Retrieves the selected font.
-	// Parameters:
-	//     lf -           Reference to an CXTPLogFont structure.
-	//     strFaceName -  A reference to a valid CString object to receive the
-	//                    logfont face name.
-	// Remarks:
-	//     The first version of GetSelFont will retrieve the selected font
-	//     name. The second version will get the CXTPLogFont for the currently
-	//     selected item.
-	// Returns:
-	//     true if successful, otherwise returns false.
-	// -------------------------------------------------------------------
-	virtual bool GetSelFont(CXTPLogFont& lf);
-	virtual bool GetSelFont(CString& strFaceName); //<combine CXTPFontComboBox::GetSelFont@CXTPLogFont&>
-
-	// ----------------------------------------------------------------------
-	// Summary:
-	//     Sets the selected font.
-	// Parameters:
-	//     lf -           Reference to an CXTPLogFont object.
-	//     strFaceName -  A NULL terminated string that represents the logfont
-	//                    face name.
-	// Remarks:
-	//     The first version of SetSelFont will set the selected font by
-	//     using its face name. The second version will set the selected font
-	//     by using a CXTPLogFont object.
-	// Returns:
-	//     true if successful, otherwise returns false.
-	// ----------------------------------------------------------------------
-	virtual bool SetSelFont(CXTPLogFont& lf);
-	virtual bool SetSelFont(const CString& strFaceName); //<combine CXTPFontComboBox::SetSelFont@CXTPLogFont&>
-
 	// --------------------------------------------------------------------------
 	// Summary:
 	//     Sets the font style for the CXTPFontComboBox control.
@@ -432,7 +493,6 @@ public:
 	virtual void InitControl(LPCTSTR lpszFaceName = NULL, UINT nWidth = 0, BOOL bEnable = TRUE);
 
 protected:
-
 	// ------------------------------------------------------------------------
 	// Summary:
 	//      Called by the font combo box to send CBN notifications to the owner
@@ -442,7 +502,7 @@ protected:
 	// ------------------------------------------------------------------------
 	virtual void NotifyOwner(UINT nCode);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPFontComboBox)
@@ -454,29 +514,28 @@ protected:
 
 	//{{AFX_MSG(CXTPFontComboBox)
 	afx_msg BOOL OnDropDown();
+	afx_msg BOOL OnCloseUp();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	virtual void AssertValid() const;
-#endif
-//}}AFX_CODEJOCK_PRIVATE
-
-protected:
-	DWORD       m_dwStyle;      // Enumerated style indicating how to display the font list.
-	CString     m_csSymbol;     // String displayed for symbol characters.
-	CImageList  m_ilFontType;   // true type font image list.
+#	endif
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	CString     m_csSelected;   // Selected text set when CBN_DROPDOWN is called.
+	CString m_csSelected; // Selected text set when CBN_DROPDOWN is called.
+	BOOL m_bIsOpen;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE void CXTPFontComboBox::SetListStyle(DWORD dwStyle) {
+AFX_INLINE void CXTPFontComboBox::SetListStyle(DWORD dwStyle)
+{
 	m_dwStyle = dwStyle;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPFONTCOMBOBOX_H__)

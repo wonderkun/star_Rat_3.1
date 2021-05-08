@@ -1,7 +1,6 @@
 // XTPMarkupDrawingContext.h: interface for the CXTPMarkupDrawingContext class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,29 +19,33 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMARKUPDRAWINGCONTEXT_H__)
-#define __XTPMARKUPDRAWINGCONTEXT_H__
+#	define __XTPMARKUPDRAWINGCONTEXT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPMarkupObject.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupDeviceContext;
-class CXTPMarkupPathGeometry;
+class CXTPMarkupPathData;
 class CXTPMarkupDoubleCollection;
 class CXTPMarkupContext;
 class CXTPMarkupBrush;
+class CXTPMarkupThickness;
+class CXTPMarkupTransformationMatrix;
+class CXTPMarkupDeviceDependentImage;
+class CXTPImageManagerIcon;
+struct XTPMarkupFontMetrics;
 
 namespace Gdiplus
 {
-	class GpGraphics;
-	class Graphics;
-};
+class GpGraphics;
+class Graphics;
+} // namespace Gdiplus
 
-
-class CXTPMarkupStrokeStyle
+class _XTP_EXT_CLASS CXTPMarkupStrokeStyle
 {
 public:
 	int nStrokeThickness;
@@ -52,7 +55,6 @@ public:
 	XTPMarkupLineCap nStrokeEndLineCap;
 	XTPMarkupLineJoin nStrokeLineJoin;
 };
-
 
 class _XTP_EXT_CLASS CXTPMarkupBrush : public CXTPMarkupObject
 {
@@ -64,7 +66,29 @@ public:
 public:
 	virtual COLORREF GetHintColor() const;
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_DISPATCH_MAP()
+#	ifdef _XTP_ACTIVEX
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMarkupBrush);
+#	endif
 
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
+class _XTP_EXT_CLASS CXTPMarkupBrushKey : public CXTPMarkupObject
+{
+	DECLARE_MARKUPCLASS(CXTPMarkupBrushKey);
+
+public:
+	CXTPMarkupBrushKey(int nIndex = 0)
+		: m_nIndex(nIndex)
+	{
+	}
+
+public:
+	int m_nIndex;
 };
 
 class _XTP_EXT_CLASS CXTPMarkupSolidColorBrush : public CXTPMarkupBrush
@@ -83,15 +107,26 @@ public:
 public:
 	BOOL IsEqual(const CXTPMarkupObject* pObject) const;
 
+	//{{AFX_CODEJOCK_PRIVATE
+public:
+	DECLARE_DISPATCH_MAP()
+#	ifdef _XTP_ACTIVEX
+	DECLARE_INTERFACE_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMarkupSolidColorBrush);
+#	endif
+
+	afx_msg COLORREF OleGetColor();
+	afx_msg void OleSetColor(COLORREF clr);
+	//}}AFX_CODEJOCK_PRIVATE
 
 protected:
 	static CXTPMarkupDependencyProperty* m_pColorProperty;
 };
 
-
 class _XTP_EXT_CLASS CXTPMarkupGradientStop : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupGradientStop);
+
 public:
 	CXTPMarkupGradientStop();
 	CXTPMarkupGradientStop(COLORREF clr, double dOffset = 0);
@@ -99,8 +134,8 @@ public:
 public:
 	COLORREF GetColor() const;
 	double GetOffset() const;
-protected:
 
+protected:
 protected:
 	static CXTPMarkupDependencyProperty* m_pColorProperty;
 	static CXTPMarkupDependencyProperty* m_pOffsetProperty;
@@ -109,6 +144,7 @@ protected:
 class _XTP_EXT_CLASS CXTPMarkupGradientStops : public CXTPMarkupCollection
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupGradientStops);
+
 public:
 	CXTPMarkupGradientStops();
 
@@ -119,12 +155,14 @@ public:
 class _XTP_EXT_CLASS CXTPMarkupPoint : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupPoint);
+
 public:
 	CXTPMarkupPoint();
 	CXTPMarkupPoint(double x, double y);
 
 public:
 	CXTPMarkupPoint& operator=(const CXTPMarkupPoint& srcPoint);
+
 protected:
 	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
 
@@ -133,12 +171,38 @@ public:
 	double y;
 };
 
+class _XTP_EXT_CLASS CXTPMarkupPointCollection : public CXTPMarkupObject
+{
+	DECLARE_MARKUPCLASS(CXTPMarkupPointCollection)
+public:
+	typedef CArray<Gdiplus::GpPointF, Gdiplus::GpPointF&> CPointArray;
+
+public:
+	CXTPMarkupPointCollection();
+	CXTPMarkupPointCollection(CPointArray& arr);
+
+public:
+	CRect GetBounds() const;
+	const CPointArray& GetPoints() const;
+
+	void Stretch(CPointArray& arr, CSize sz);
+
+protected:
+	CXTPMarkupObject* ConvertFrom(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject) const;
+	static BOOL AFX_CDECL ConvertFromString(CXTPMarkupBuilder* pBuilder, LPCWSTR lpszValue,
+											CPointArray& arr);
+	static BOOL AFX_CDECL GetNextValue(LPCWSTR& lpszValue, float& dValue);
+
+protected:
+	CPointArray m_arrPoints;
+	CRect m_rcBounds;
+};
 
 class _XTP_EXT_CLASS CXTPMarkupLinearGradientBrush : public CXTPMarkupBrush
 {
 public:
-
 	DECLARE_MARKUPCLASS(CXTPMarkupLinearGradientBrush);
+
 public:
 	CXTPMarkupLinearGradientBrush();
 	CXTPMarkupLinearGradientBrush(CXTPMarkupGradientStops* pGradientStops);
@@ -155,24 +219,19 @@ protected:
 	void SetContentObject(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pContent);
 
 public:
-
-protected:
-
-public:
 	static CXTPMarkupDependencyProperty* m_pStartPointProperty;
 	static CXTPMarkupDependencyProperty* m_pEndPointProperty;
 	static CXTPMarkupDependencyProperty* m_pGradientStopsProperty;
 };
-
 
 class _XTP_EXT_CLASS CXTPMarkupFont : public CXTPMarkupObject
 {
 public:
 	CXTPMarkupFont();
 	~CXTPMarkupFont();
+
 public:
-	HFONT m_hFont;
-	LOGFONT m_lf;
+	CXTPFont m_Font;
 	CXTPMarkupFont* m_pNextChain;
 	CXTPMarkupContext* m_pMarkupContext;
 };
@@ -192,6 +251,7 @@ public:
 
 protected:
 	void Init(CXTPMarkupContext* pMarkupContext);
+
 public:
 	void DrawFrame(CRect rc, CXTPMarkupBrush* pBrush);
 	void FillSolidRect(CRect rc, COLORREF clr);
@@ -199,9 +259,30 @@ public:
 	void SetFont(CXTPMarkupFont* pFont);
 	void SetTextColor(CXTPMarkupBrush* pBrush);
 
+	double GetOpacity() const;
+	void SetOpacity(double dOpacity) const;
+
 	HDC Detach();
 
+	CXTPMarkupTransformationMatrix* GetTransformationMatrix() const;
+	void SetTransformationMatrix(CXTPMarkupTransformationMatrix* pMatrix);
+
 	void OffsetViewport(const POINT& ptViewortOrg);
+	XTPMarkupSmoothingMode SetSmoothingMode(XTPMarkupSmoothingMode smoothingMode);
+	XTPMarkupSmoothingMode SetSmoothingMode(XTPMarkupSmoothingMode smoothingMode,
+											BOOL bUseTextSmoothing);
+
+	void SetUseTextSmoothing(BOOL bUseTextSmoothing);
+	BOOL GetUseTextSmoothing() const;
+
+	//{{AFX_CODEJOCK_PRIVATE
+	_XTP_DEPRECATE("The method is deprecated and will be removed in future versions. Use "
+				   "'SetUseTextSmoothing' instead.")
+	void SetUseTextSmooting(BOOL bUseTextSmoothing);
+	_XTP_DEPRECATE("The method is deprecated and will be removed in future versions. Use "
+				   "'GetUseTextSmoothing' instead.")
+	BOOL GetUseTextSmooting() const;
+	//}}AFX_CODEJOCK_PRIVATE
 
 	RECT GetClipBox() const;
 	HRGN SaveClipRegion();
@@ -210,23 +291,35 @@ public:
 
 	virtual BOOL IsPrinting() const;
 
+	BOOL GetFontMetrics(CXTPMarkupFont* pFont, XTPMarkupFontMetrics* pMetrics);
 	SIZE GetTextExtent(LPCWSTR lpszText, int nCount) const;
+	void GetTextExtent(LPCWSTR lpszText, int nCount, CXTPSizeF& size) const;
 	virtual void DrawTextLine(LPCWSTR lpszText, UINT nCount, LPCRECT lpRect);
 
+	CXTPMarkupDeviceContext* GetDeviceContext();
 	HDC GetDC();
 	void ReleaseDC(HDC hDC);
 
 public:
-	static void Register(BOOL bInit);
+	static void AFX_CDECL Register(BOOL bInit);
 
 public:
 	void Ellipse(CRect rc, CXTPMarkupStrokeStyle* pStrokeStyle, CXTPMarkupBrush* pFillBrush);
-	void DrawRectangle(CRect rc, CXTPMarkupBrush* pBrush, CXTPMarkupThickness* pThickness, double* pCornerRadius = 0);
+	void DrawRectangle(CRect rc, CXTPMarkupBrush* pBrush, CXTPMarkupThickness* pThickness,
+					   double* pCornerRadius = 0);
 	void FillRectangle(CRect rc, CXTPMarkupBrush* pBrush, double* pCornerRadius = 0);
 	void DrawLine(int x1, int y1, int x2, int y2, CXTPMarkupStrokeStyle* pStrokeStyle);
 	void Polyline(const POINT* points, int nCount, CXTPMarkupStrokeStyle* pStrokeStyle);
-	void Polygon(const POINT* points, int nCount, CXTPMarkupStrokeStyle* pStrokeStyle, CXTPMarkupBrush* pFillBrush);
-	void DrawPath(CXTPMarkupPathGeometry* pGeometry, CXTPMarkupStrokeStyle* pStrokeStyle, CXTPMarkupBrush* pFillBrush);
+	void Polyline(const void* points, int nCount, CXTPMarkupStrokeStyle* pStrokeStyle);
+	void Polygon(const POINT* points, int nCount, CXTPMarkupStrokeStyle* pStrokeStyle,
+				 CXTPMarkupBrush* pFillBrush);
+	void Polygon(const void* points, int nCount, CXTPMarkupStrokeStyle* pStrokeStyle,
+				 CXTPMarkupBrush* pFillBrush);
+	void DrawPath(CXTPMarkupPathData* pData, CXTPMarkupStrokeStyle* pStrokeStyle,
+				  CXTPMarkupBrush* pFillBrush);
+
+	void DrawImage(CXTPImageManagerIcon* pIcon, CRect rc);
+	void DrawImage(CXTPMarkupDeviceDependentImage* pImage, CRect rc);
 
 public:
 	HDWP m_hDWP;
@@ -242,6 +335,8 @@ protected:
 
 	CXTPMarkupDeviceContext* m_pDeviceContext;
 
+	CXTPMarkupContext* m_pMarkupContext;
+	BOOL m_bUseTextSmoothing;
 };
 
 class _XTP_EXT_CLASS CXTPMarkupPrintingContext : public CXTPMarkupDrawingContext
@@ -256,24 +351,56 @@ public:
 protected:
 };
 
-
-AFX_INLINE BOOL CXTPMarkupDrawingContext::IsPrinting() const {
+AFX_INLINE BOOL CXTPMarkupDrawingContext::IsPrinting() const
+{
 	return FALSE;
 }
 
-AFX_INLINE BOOL CXTPMarkupPrintingContext::IsPrinting() const {
+AFX_INLINE BOOL CXTPMarkupPrintingContext::IsPrinting() const
+{
 	return TRUE;
 }
 
-AFX_INLINE RECT CXTPMarkupDrawingContext::GetClipBox() const {
+AFX_INLINE RECT CXTPMarkupDrawingContext::GetClipBox() const
+{
 	return m_rcClipBox;
 }
 
-AFX_INLINE CXTPMarkupGradientStops* CXTPMarkupLinearGradientBrush::GetGradientStops() const {
-	return MARKUP_STATICCAST(CXTPMarkupGradientStops, GetValue(m_pGradientStopsProperty));
-}
-AFX_INLINE CXTPMarkupGradientStop* CXTPMarkupGradientStops::GetItem(int nIndex) const {
-	return nIndex >= 0 && nIndex < m_arrItems.GetSize() ? (CXTPMarkupGradientStop*)m_arrItems[nIndex] : NULL;
+AFX_INLINE CXTPMarkupDeviceContext* CXTPMarkupDrawingContext::GetDeviceContext()
+{
+	return m_pDeviceContext;
 }
 
+AFX_INLINE void CXTPMarkupDrawingContext::SetUseTextSmoothing(BOOL bUseTextSmoothing)
+{
+	m_bUseTextSmoothing = bUseTextSmoothing;
+}
+
+AFX_INLINE BOOL CXTPMarkupDrawingContext::GetUseTextSmoothing() const
+{
+	return m_bUseTextSmoothing;
+}
+
+AFX_INLINE void CXTPMarkupDrawingContext::SetUseTextSmooting(BOOL bUseTextSmoothing)
+{
+	SetUseTextSmoothing(bUseTextSmoothing);
+}
+
+AFX_INLINE BOOL CXTPMarkupDrawingContext::GetUseTextSmooting() const
+{
+	return GetUseTextSmoothing();
+}
+
+AFX_INLINE CXTPMarkupGradientStops* CXTPMarkupLinearGradientBrush::GetGradientStops() const
+{
+	return MARKUP_STATICCAST(CXTPMarkupGradientStops, GetValue(m_pGradientStopsProperty));
+}
+AFX_INLINE CXTPMarkupGradientStop* CXTPMarkupGradientStops::GetItem(int nIndex) const
+{
+	return nIndex >= 0 && nIndex < m_arrItems.GetSize()
+			   ? (CXTPMarkupGradientStop*)m_arrItems[nIndex]
+			   : NULL;
+}
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMARKUPDRAWINGCONTEXT_H__)

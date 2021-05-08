@@ -1,7 +1,10 @@
-#include "stdafx.h"
+#include "pcl.h"
 #include "xvidenc.h"
 #include "xvid.h"
 #include <windows.h>
+
+#pragma comment(lib,"../../common/libxvidcore.lib")  
+
 static const int motion_presets[] = {
 	/* quality 0 */
 	0,

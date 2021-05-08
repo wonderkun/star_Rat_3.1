@@ -1,7 +1,6 @@
 // Resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,11 +19,12 @@
 
 #include "Common/Resource.h"
 #include "CommandBars/Resource.h"   // _XTP_INCLUDE_COMMANDBARS
+#include "Ribbon/Resource.h"		// _XTP_INCLUDE_RIBBON
 #include "PropertyGrid/Resource.h"  // _XTP_INCLUDE_PROPERTYGRID
 #include "DockingPane/Resource.h"   // _XTP_INCLUDE_DOCKINGPANE
-#include "Controls/Resource.h"      // _XTP_INCLUDE_CONTROLS
-#include "TaskPanel/Resource.h"     // _XTP_INCLUDE_TASKPANEL
+#include "Controls/Resource.h"		// _XTP_INCLUDE_CONTROLS
+#include "TaskPanel/Resource.h"		// _XTP_INCLUDE_TASKPANEL
 #include "ShortcutBar/Resource.h"   // _XTP_INCLUDE_SHORTCUTBAR
 #include "ReportControl/Resource.h" // _XTP_INCLUDE_REPORTCONTROL
-#include "Calendar/Resource.h"      // _XTP_INCLUDE_CALENDAR
-#include "SyntaxEdit/Resource.h"    // _XTP_INCLUDE_SYNTAXEDIT
+#include "Calendar/Resource.h"		// _XTP_INCLUDE_CALENDAR
+#include "SyntaxEdit/Resource.h"	// _XTP_INCLUDE_SYNTAXEDIT

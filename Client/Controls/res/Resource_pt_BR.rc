@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB))
 #ifdef _WIN32
 LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
 #pragma code_page(1252)
@@ -181,7 +180,7 @@ BEGIN
     XTP_IDS_DEFEXT           "*.*"
     XTP_IDS_DEFFILT          "Todos os arquivos (*.*)|*.*||"
     XTP_IDS_DEFTITLE         "N&ome da pasta:"
-    XTP_IDS_CLICKKEEPOPEN    "Click push pin para manter aberto"
+    XTP_IDS_CLICKKEEPOPEN    "Clique na tacha para manter aberto"
     XTP_IDS_SE_0             "O sistema operacional está sem memória ou recursos."
     XTP_IDS_SE_ERR_FNF       "O arquivo especificado não foi encontrado."
     XTP_IDS_SE_ERR_PNF       "O caminho especificado não foi encontrado."
@@ -230,7 +229,10 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Cores pradrão"
-    XTP_IDS_TIPTEXT          "Texto de tip"
+	XTP_IDS_RECENT_COLORS    "Cores recentes"
+	XTP_IDS_THEME_COLORS     "Cores do tema"
+	XTP_IDS_TAGCLOUD_TIP     "Etiqueta: %s, Conta: %d"
+    XTP_IDS_TIPTEXT          "Texto de dica"
     XTP_IDS_DIDYOUKNOW       "Você sabia..."
     XTP_IDS_FILE_ABSENT      "O arquivo especificado não existe."
     XTP_IDS_FILE_CORRUPT     "Erro ao ler o arquivo."
@@ -249,10 +251,26 @@ BEGIN
     XTP_IDS_TASK_RETRY        "Repetir"
     XTP_IDS_TASK_CANCEL       "Cancelar"
     XTP_IDS_TASK_CLOSE        "Fechar"
-    XTP_IDS_TASK_APPLY        "&Apply"
+    XTP_IDS_TASK_APPLY        "&Aplicar"
     XTP_IDS_TASK_HELP         "Help"
     XTP_IDS_TASK_SEE_DETAILS  "Mostrar detalhes"
     XTP_IDS_TASK_HIDE_DETAILS "Ocultar detalhes"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Fundo 1"
+    XTP_IDS_BACKGROUND2        "Fundo 2"
+    XTP_IDS_TEXT1              "Texto 1"
+    XTP_IDS_TEXT2              "Texto 2"
+    XTP_IDS_ACCENT1            "Acento 1"
+    XTP_IDS_ACCENT2            "Acento 2"
+    XTP_IDS_ACCENT3            "Acento 3"
+    XTP_IDS_ACCENT4            "Acento 4"
+    XTP_IDS_ACCENT5            "Acento 5"
+    XTP_IDS_ACCENT6            "Acento 6"
+    XTP_IDS_LIGHTER            "Isqueiro"
+    XTP_IDS_DARKER             "Mais escuro"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB))

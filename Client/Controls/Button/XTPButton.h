@@ -1,7 +1,6 @@
 // XTPButton.h : interface for the CXTPButton class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPBUTTON_H__)
-#define __XTPBUTTON_H__
+#	define __XTPBUTTON_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPImageManager;
 class CXTPImageManagerIcon;
@@ -34,10 +35,6 @@ class CXTPMarkupUIElement;
 class CXTPButtonTheme;
 class CXTPImageManagerIconHandle;
 class CXTPToolTipContext;
-
-#ifndef CXTPButtonBase
-#define CXTPButtonBase CButton
-#endif
 
 // -------------------------------------------------------------------
 // Summary:
@@ -48,11 +45,11 @@ class CXTPToolTipContext;
 // -------------------------------------------------------------------
 enum XTPButtonTextImageRelation
 {
-	xtpButtonOverlay, // Image is displayed over top of the text.
-	xtpButtonImageAboveText, // Image is displayed above the text.
-	xtpButtonTextAboveImage, // Text is displayed above the image.
+	xtpButtonOverlay,		  // Image is displayed over top of the text.
+	xtpButtonImageAboveText,  // Image is displayed above the text.
+	xtpButtonTextAboveImage,  // Text is displayed above the image.
 	xtpButtonImageBeforeText, // Image is displayed before\to the left of the text.
-	xtpButtonTextBeforeImage // Text is displayed before\to the left of the image.
+	xtpButtonTextBeforeImage  // Text is displayed before\to the left of the image.
 };
 
 // -------------------------------------------------------------------
@@ -64,10 +61,15 @@ enum XTPButtonTextImageRelation
 // -------------------------------------------------------------------
 enum XTPPushButtonStyle
 {
-	xtpButtonNormal, // Normal push button.
-	xtpButtonDropDown, // Dropdown button.  Button will have an arrow indication it has a dropdown.  The dropdown will appear under the button.
-	xtpButtonDropDownRight, // Dropdown button.  Button will have an arrow indication it has a dropdown.  The dropdown will appear to the right of the button.
-	xtpButtonSplitDropDown, // Split button.  Button will be split into a "button" part and "arrow" part.  The "arrow" part will have an arrow indication it has a dropdown.  The dropdown will appear under the button when t he "arrow" part is clicked.
+	xtpButtonNormal,   // Normal push button.
+	xtpButtonDropDown, // Dropdown button.  Button will have an arrow indication it has a dropdown.
+					   // The dropdown will appear under the button.
+	xtpButtonDropDownRight, // Dropdown button.  Button will have an arrow indication it has a
+							// dropdown.  The dropdown will appear to the right of the button.
+	xtpButtonSplitDropDown, // Split button.  Button will be split into a "button" part and "arrow"
+							// part.  The "arrow" part will have an arrow indication it has a
+							// dropdown.  The dropdown will appear under the button when t he
+							// "arrow" part is clicked.
 	xtpButtonDropDownNoGlyph
 };
 
@@ -83,10 +85,18 @@ enum XTPPushButtonStyle
 // -------------------------------------------------------------------
 enum XTPGroupBoxBorderStyle
 {
-	xtpGroupBoxBorder, // Complete frame with caption.
+	xtpGroupBoxBorder,	 // Complete frame with caption.
 	xtpGroupBoxSingleLine, // Single line with caption.
-	xtpGroupBoxNone // No frame or caption.
+	xtpGroupBoxNone		   // No frame or caption.
 };
+
+#	define BST_INCLICK 0x0010
+#	define BST_CAPTURED 0x0020
+#	define BST_MOUSE 0x0040
+
+#	ifndef CXTPButtonBase
+#		define CXTPButtonBase CButton
+#	endif
 
 //===========================================================================
 // Summary:
@@ -94,9 +104,11 @@ enum XTPGroupBoxBorderStyle
 //===========================================================================
 class _XTP_EXT_CLASS CXTPButton : public CXTPButtonBase
 {
-#ifndef _XTP_ACTIVEX_BUTTON
+#	ifndef _XTP_ACTIVEX_BUTTON
 	DECLARE_DYNAMIC(CXTPButton)
-#endif
+#	else
+	DECLARE_DYNAMIC(CXTPOleButton)
+#	endif
 
 public:
 	// ----------------------------------------
@@ -113,10 +125,10 @@ public:
 	virtual ~CXTPButton();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Returns the button styles for this object. This function returns only the BS_ style values, not any of the other window styles.
+	//     Returns the button styles for this object. This function returns only the BS_ style
+	//     values, not any of the other window styles.
 	// Returns: Returns BS_ style for this button.
 	//-----------------------------------------------------------------------
 	BYTE GetButtonStyle() const;
@@ -131,7 +143,8 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Call this member function to determine if the the button is currently being highlighted (mouse over).
+	//     Call this member function to determine if the the button is currently being highlighted
+	//     (mouse over).
 	// Returns:
 	//     TRUE if the button is currently being highlighted (mouse over), FALSE otherwise.
 	//-----------------------------------------------------------------------
@@ -348,6 +361,22 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this member to check is DPI scaling of images enabled.
+	// Returns:
+	//     TRUE if DPI scaling of images enabled; otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual BOOL IsDpiImageScalingEnabled() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Call this member to enable or disable DPI scaling of images.
+	// Parameters:
+	//     bEnable - TRUE to enable scaling of images; otherwise FALSE.
+	//-----------------------------------------------------------------------
+	virtual void SetDpiImageScaling(BOOL bEnable);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Call this member function to return a pointer to the image
 	//     manager for the button control.
 	// Returns:
@@ -417,11 +446,15 @@ public:
 	//     * <b>xtpControlThemeOfficeXP</b> Office XP appearance style.
 	//     * <b>xtpControlThemeOffice2003</b> Office 2003 appearance style.
 	//     * <b>xtpControlThemeResource</b> Office 2007 appearance style.
+	//     * <b>xtpControlThemeVisualStudio2012Light</b> VS 2012 Light style theme.
+	//     * <b>xtpControlThemeVisualStudio2012Dark</b> VS 2012 Dark style theme.
+
 	// Returns:
-	//     The version that accepts a XTPControlTheme style returns TRUE if successful, otherwise FALSE.
+	//     The version that accepts a XTPControlTheme style returns TRUE if successful, otherwise
+	//     FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL SetTheme(XTPControlTheme eTheme);
-	void SetTheme(CXTPButtonTheme* pPaintManager);
+	virtual void SetTheme(CXTPButtonTheme* pPaintManager);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -512,9 +545,14 @@ public:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
 	virtual BOOL SetIcon(CSize size, HICON hIcon, HICON hIconHot = NULL, BOOL bRedraw = TRUE);
-	virtual BOOL SetIcon(CSize size, UINT nID, UINT nHotID = 0, BOOL bRedraw = TRUE);                //<COMBINE CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
-	virtual BOOL SetIcon(CSize size, LPCTSTR lpszID, LPCTSTR lpszHotID = NULL, BOOL bRedraw = TRUE); //<COMBINE CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
-	BOOL SetIcon(CSize size, CXTPImageManagerIcon* pIcon, BOOL bRedraw = TRUE); //<COMBINE CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
+	virtual BOOL SetIcon(CSize size, UINT nID, UINT nHotID = 0,
+						 BOOL bRedraw = TRUE); //<COMBINE
+											   // CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
+	virtual BOOL SetIcon(CSize size, LPCTSTR lpszID, LPCTSTR lpszHotID = NULL,
+						 BOOL bRedraw = TRUE); //<COMBINE
+											   // CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
+	BOOL SetIcon(CSize size, CXTPImageManagerIcon* pIcon,
+				 BOOL bRedraw = TRUE); //<COMBINE CXTPButton::SetIcon@CSize@HICON@HICON@BOOL>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -530,7 +568,8 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	//-----------------------------------------------------------------------
-	virtual BOOL SetIcon(CSize size, const CXTPImageManagerIconHandle& hIconHandle, const CXTPImageManagerIconHandle& hIconHotHandle, BOOL bRedraw = TRUE);
+	virtual BOOL SetIcon(CSize size, const CXTPImageManagerIconHandle& hIconHandle,
+						 const CXTPImageManagerIconHandle& hIconHotHandle, BOOL bRedraw = TRUE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -548,7 +587,6 @@ public:
 	virtual BOOL SetBitmap(CSize size, UINT nID, BOOL bRedraw = TRUE);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to return the button's text minus the '&'.
@@ -601,6 +639,12 @@ public:
 	virtual COLORREF GetButtonBackColor();
 
 	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is called when the text has changed.
+	//-----------------------------------------------------------------------
+	virtual void InternalTextChanged();
+
+	//-----------------------------------------------------------------------
 	// Summary: Returns markup context.
 	// Returns: Returns markup context.
 	//-----------------------------------------------------------------------
@@ -613,7 +657,6 @@ public:
 	CXTPMarkupUIElement* GetMarkupUIElement();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Occurs when the drop down button is dropped down.
@@ -631,12 +674,6 @@ protected:
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member function is called when the text has changed.
-	//-----------------------------------------------------------------------
-	virtual void InternalTextChanged();
-
-	//-----------------------------------------------------------------------
-	// Summary:
 	//     Manually drops down a drop down button.
 	//-----------------------------------------------------------------------
 	void DoDropDown();
@@ -648,8 +685,7 @@ protected:
 	virtual void RefreshMetrics();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
-	DECLARE_MESSAGE_MAP()
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_VIRTUAL(CXTPButton)
 	virtual void DoDraw(CDC* pDC);
@@ -658,163 +694,153 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CXTPButton)
-	afx_msg LRESULT OnSetStyle(WPARAM wParam, LPARAM lParam);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	// Window
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnPaint();
+	// Focus
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnPaint();
-	afx_msg LRESULT OnSetState(WPARAM wParam, LPARAM lParam);
+	// Mouse
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
+	//
+	afx_msg LRESULT OnSetStyle(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSetState(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSetCheck(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnInvalidate();
+	afx_msg LRESULT OnCaptureChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnDefaultAndInvalidate(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateUIState(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnSetText(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg LRESULT OnGetDlgCode(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
-
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	DECLARE_MESSAGE_MAP()
+	DECLARE_INTERFACE_MAP()
+	XTP_DECLARE_CMDTARGETPROVIDER_INTERFACE()
 
-protected:
-	BOOL m_bPushed;         // TRUE if button was pressed
-	BOOL m_bHot;            // TRUE if mouse under button
-	CXTPButtonTheme* m_pTheme;  // Pointer to the current theme object.
-	BOOL m_bChecked;  // TRUE if checked.
+	//}}AFX_CODEJOCK_PRIVATE
 
-	BOOL m_bFlatStyle;  // TRUE to se the flat style.
-	BOOL m_bUseVisualStyle;  // TRUE to use visual styles.
+public:
+	BOOL m_bPushed;			   // TRUE if button was pressed
+	BOOL m_bHot;			   // TRUE if mouse under button
+	CXTPButtonTheme* m_pTheme; // Pointer to the current theme object.
+	BOOL m_bChecked;		   // TRUE if checked.
 
-	long m_nImageAlignment;  // Image Alignment.
-	long m_nBorderGap; // Gap between the button edge and the image.
+	BOOL m_bFlatStyle;		// TRUE to see the flat style.
+	BOOL m_bUseVisualStyle; // TRUE to use visual styles.
+
+	long m_nImageAlignment; // Image Alignment.
+	long m_nBorderGap;		// Gap between the button edge and the image.
 
 	long m_nPushButtonStyle; // The style of the button,
 
-	BOOL m_bEnableMarkup;  // TRUE to enable markup.
+	BOOL m_bEnableMarkup; // TRUE to enable markup.
 
-	long m_nImageGap; // Gap between the button text and the image.
-	long m_nTextImageRelation;  // Image and text orientation.
+	long m_nImageGap;			   // Gap between the button text and the image.
+	long m_nTextImageRelation;	 // Image and text orientation.
 	CXTPImageManagerIcon* m_pIcon; // Multiple state icon manager converts icon to different states.
-	long m_nBorderStyle; // Border style used.
-	BOOL m_bShowFocus;  // TRUE to show the focus rectangle.
+	CSize m_szVectorIcon;		   // Size of displayed image if vector icon is used
+	long m_nBorderStyle;		   // Border style used.
+	BOOL m_bShowFocus;			   // TRUE to show the focus rectangle.
 
-	HWND m_hWndBuddy;  // Handle to the buddy control.
+	HWND m_hWndBuddy;					   // Handle to the buddy control.
 	CXTPToolTipContext* m_pToolTipContext; // TooltipContext
 
-	CString m_strTooltip;               // Tooltip of the item.
+	CString m_strTooltip; // Tooltip of the item.
 
 protected:
-	CXTPMarkupContext* m_pMarkupContext;  // Markup context.
-	CXTPMarkupUIElement* m_pUIElement;    // Markup element pointer.
+	CXTPMarkupContext* m_pMarkupContext; // Markup context.
+	CXTPMarkupUIElement* m_pUIElement;   // Markup element pointer.
+	BOOL m_bImageDPIScaling;			 // TRUE if DPI scaling of images enabled.
 };
 
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
-
-
-
-
-AFX_INLINE BOOL CXTPButton::IsPushed() {
+AFX_INLINE BOOL CXTPButton::IsPushed()
+{
 	return m_bPushed;
 }
-AFX_INLINE BOOL CXTPButton::IsHighlighted() {
-	return m_bHot || (::GetCapture() == m_hWnd);
-}
-AFX_INLINE BOOL CXTPButton::GetFlatStyle() const{
+AFX_INLINE BOOL CXTPButton::GetFlatStyle() const
+{
 	return m_bFlatStyle;
 }
-AFX_INLINE void CXTPButton::SetFlatStyle(BOOL bFlatStyle/* = TRUE*/) {
-	m_bFlatStyle = bFlatStyle;
-	RedrawButton();
-}
-AFX_INLINE BOOL CXTPButton::GetUseVisualStyle() const {
+AFX_INLINE BOOL CXTPButton::GetUseVisualStyle() const
+{
 	return m_bUseVisualStyle;
 }
-AFX_INLINE long CXTPButton::GetBorderGap() const {
+AFX_INLINE long CXTPButton::GetBorderGap() const
+{
 	return m_nBorderGap;
 }
-AFX_INLINE void CXTPButton::SetBorderGap(int nBorderGap) {
-	m_nBorderGap = nBorderGap;
-	RedrawButton();
+AFX_INLINE XTPPushButtonStyle CXTPButton::GetPushButtonStyle() const
+{
+	return static_cast<XTPPushButtonStyle>(m_nPushButtonStyle);
 }
-AFX_INLINE XTPPushButtonStyle CXTPButton::GetPushButtonStyle() const {
-	return (XTPPushButtonStyle)m_nPushButtonStyle;
-}
-AFX_INLINE void CXTPButton::SetPushButtonStyle(XTPPushButtonStyle nPushButtonStyle) {
-	m_nPushButtonStyle = nPushButtonStyle;
-	RedrawButton();
-}
-AFX_INLINE void CXTPButton::SetTextAlignment(DWORD dwAlignment) {
-	ModifyStyle(BS_LEFT | BS_CENTER | BS_RIGHT | BS_TOP | BS_BOTTOM | BS_VCENTER, dwAlignment);
-	RedrawButton();
-}
-AFX_INLINE int CXTPButton::GetImageAlignment() const {
+AFX_INLINE int CXTPButton::GetImageAlignment() const
+{
 	return m_nImageAlignment;
 }
-AFX_INLINE void CXTPButton::SetImageAlignment(DWORD dwAlignment) {
-	m_nImageAlignment = dwAlignment;
-	RedrawButton();
+AFX_INLINE XTPButtonTextImageRelation CXTPButton::GetTextImageRelation() const
+{
+	return static_cast<XTPButtonTextImageRelation>(m_nTextImageRelation);
 }
-AFX_INLINE XTPButtonTextImageRelation CXTPButton::GetTextImageRelation() const {
-	return (XTPButtonTextImageRelation)m_nTextImageRelation;
-}
-AFX_INLINE void CXTPButton::SetTextImageRelation(XTPButtonTextImageRelation realtion) {
-	m_nTextImageRelation = realtion;
-	RedrawButton();
-}
-AFX_INLINE long CXTPButton::GetImageGap() const {
+AFX_INLINE long CXTPButton::GetImageGap() const
+{
 	return m_nImageGap;
 }
-AFX_INLINE void CXTPButton::SetImageGap(int nImageGap) {
+AFX_INLINE void CXTPButton::SetImageGap(int nImageGap)
+{
 	m_nImageGap = nImageGap;
 }
-AFX_INLINE CXTPImageManagerIcon* CXTPButton::GetIcon() const {
+AFX_INLINE CXTPImageManagerIcon* CXTPButton::GetIcon() const
+{
 	return m_pIcon;
 }
-AFX_INLINE XTPGroupBoxBorderStyle CXTPButton::GetBorderStyle() const {
-	return (XTPGroupBoxBorderStyle)m_nBorderStyle;
+AFX_INLINE XTPGroupBoxBorderStyle CXTPButton::GetBorderStyle() const
+{
+	return static_cast<XTPGroupBoxBorderStyle>(m_nBorderStyle);
 }
-AFX_INLINE void CXTPButton::SetBorderStyle(XTPGroupBoxBorderStyle style) {
+AFX_INLINE void CXTPButton::SetBorderStyle(XTPGroupBoxBorderStyle style)
+{
 	m_nBorderStyle = style;
 }
-AFX_INLINE BOOL CXTPButton::GetShowFocus() const {
+AFX_INLINE BOOL CXTPButton::GetShowFocus() const
+{
 	return m_bShowFocus;
 }
-AFX_INLINE void CXTPButton::SetShowFocus(BOOL bShowFocus) {
+AFX_INLINE void CXTPButton::SetShowFocus(BOOL bShowFocus)
+{
 	m_bShowFocus = bShowFocus;
 }
-AFX_INLINE void CXTPButton::RedrawButton(BOOL bUpdateWindow) {
-	if (m_hWnd) Invalidate(FALSE);
-	if (m_hWnd && bUpdateWindow) UpdateWindow();
-}
-AFX_INLINE CXTPMarkupContext* CXTPButton::GetMarkupContext() const {
+AFX_INLINE CXTPMarkupContext* CXTPButton::GetMarkupContext() const
+{
 	return m_pMarkupContext;
 }
-
-AFX_INLINE CXTPMarkupUIElement* CXTPButton::GetMarkupUIElement() {
+AFX_INLINE CXTPMarkupUIElement* CXTPButton::GetMarkupUIElement()
+{
 	return m_pUIElement;
 }
-AFX_INLINE BOOL CXTPButton::IsDropDownStyle() const {
-	return m_nPushButtonStyle == xtpButtonDropDown || m_nPushButtonStyle == xtpButtonDropDownRight || m_nPushButtonStyle == xtpButtonSplitDropDown || m_nPushButtonStyle == xtpButtonDropDownNoGlyph;
-}
-AFX_INLINE void CXTPButton::SetTooltip(LPCTSTR lpszTooltip) {
+AFX_INLINE void CXTPButton::SetTooltip(LPCTSTR lpszTooltip)
+{
 	m_strTooltip = lpszTooltip;
 }
-AFX_INLINE CString CXTPButton::GetTooltip() const {
+AFX_INLINE CString CXTPButton::GetTooltip() const
+{
 	return m_strTooltip;
 }
-AFX_INLINE CXTPToolTipContext* CXTPButton::GetToolTipContext() const {
+AFX_INLINE CXTPToolTipContext* CXTPButton::GetToolTipContext() const
+{
 	return m_pToolTipContext;
 }
-AFX_INLINE CXTPButtonTheme* CXTPButton::GetTheme() {
+AFX_INLINE CXTPButtonTheme* CXTPButton::GetTheme()
+{
 	return m_pTheme;
 }
 
-
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPBUTTON_H__)

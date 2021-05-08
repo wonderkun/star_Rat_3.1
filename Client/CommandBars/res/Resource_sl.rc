@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SLV)
 #ifdef _WIN32
 LANGUAGE LANG_SLOVENIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Pokaži bližnjiène tipke v opisih",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Animacije menijev:",IDC_STATIC,10,117,62,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,76,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Animacije menijev:",IDC_STATIC,10,117,82,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,96,115,99,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,22 +141,22 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "&Meniji"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Uporaba menijev",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Kontekst meniji",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Prikaz menija:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,149,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    PUSHBUTTON      "Ponastavitev",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
+    LTEXT           "Privzeti meni\nPrivzeto uporabo menija",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Izberite Kontekstni meni:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,120,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
+    PUSHBUTTON      "Ponastavitev",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
 
 XTP_IDD_NEWTOOLBAR DIALOGEX DISCARDABLE  0, 0, 186, 52
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Po meri"
     XTP_IDS_NEWMENU         "Nov meni"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Prilagodite Status Bar"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -238,7 +237,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOM_BAR      "Lastna or %d"
     XTP_IDS_ERROR_BLANKNAME "Polja za ime orodne vrstice ne smete pustiti praznega. Vnesite ime."
-    XTP_IDS_ERROR_LIMIT     "Sorry you have reached your limit."
+    XTP_IDS_ERROR_LIMIT     "Žal, vi življati sežaj svoj višek."
     XTP_IDS_ERROR_EXISTS    "Orodna vrstica z imenom »%s« že obstaja. Vnesite drugo ime."
     XTP_IDS_RENAMETOOLBAR   "Preimenovanje orodne vrstice"
     XTP_IDS_CONFIRM_DELETE  "Ali ste preprieani, da želite izbrisati orodno vrstico »%s«?"
@@ -255,20 +254,20 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
-                            "Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level."
+                            "Ali ste preprièani, da želite ponastaviti dodelitve tipk? S tem dejanjem boste odstranili vse dodelitve meri tipk na ravni besedila."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Ta bližnjica je trenutno dodeljena.\nDo you want to re-assign this shortcut?"
+    XTP_IDS_CONFIRM_UPDATE  "Zaradi posodobitev programske opreme orodno vrstico '%s' se je spremenilo. Ali želite ponastaviti prilagojeno orodno vrstico in naložiti novega?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "Vse slikovne datoteke|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitne slike(*.Bmp;*.Dib)|*.bmp;*.dib|Metadatoteke(*.Wmf;*.Emf)|*.wmf;*.emf|Ikone(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|Vse datoteke(*.*)|*.*||"
+                            "Vse slike datoteke|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitnimi slikami  (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metadatoteke (*.wmf;*.emf)|*.wmf;*.emf|Ikone (*.ico;*.cur)|*.ico;*.cur|Vse datoteke (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nMožnosti orodne vrstice"
     XTP_ID_TOOLBAR_HIDE     "\nZapri"
-    XTP_ID_POPUPBAR_EXPAND  "\nExpand"
+    XTP_ID_POPUPBAR_EXPAND  "\nRazširite"
     XTP_ID_MENUBAR_CLOSE    "\nZapri okno"
     XTP_ID_MENUBAR_RESTORE  "\nObnovi okno"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimiraj okno"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) je bil pritisnjen. Èaka drugi kljuèni struna..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,28 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Preklièi"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nPremakniti na prejšnjo skupino zavihkov"
+    XTP_ID_WORKSPACE_MOVENEXT "\nPremakniti na naslednjo skupino zavihkov"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNovo skupino zavihkov vodoravno"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNovo skupino zavihkov navpièno"
+    XTP_ID_WORKSPACE_CANCEL "\nPreklièi"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktivne datoteke"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Natisni predogledano element\nPrint"
+    XTP_ID_PREVIEW_PREV     "Iti na prejšnjo stran\nPrejšnja stran"
+    XTP_ID_PREVIEW_NEXT     "Pojdi na naslednjo stran\nNext Page"
+    XTP_ID_PREVIEW_ZOOMIN   "Poveèati poveèavo predogled strani\nPoveèava"
+    XTP_ID_PREVIEW_ZOOMOUT  "Zmanjšati poveèavo predogled strani\nPomanjšava"
+    XTP_ID_PREVIEW_ONEPAGE  "Enotna stran"
+    XTP_ID_PREVIEW_TWOPAGE  "Veè strani"
+    XTP_ID_PREVIEW_CLOSE    "Zapreti predogled\nZapri predogled"
+    XTP_IDS_PREVIEW_WHOLEPAGE "Cela stran"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Širina strani"
+    XTP_IDS_PREVIEW_PAGEI     "Strani %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Strani %i od %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SLV)

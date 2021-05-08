@@ -1,0 +1,41 @@
+﻿  ClientSocket.cpp
+  Buffer.cpp
+  ddos.cpp
+  Dialupass.cpp
+  DllManager.cpp
+  FileManager.cpp
+  install.cpp
+  KernelManager.cpp
+  KeyboardManager.cpp
+  Manager.cpp
+  RegEditEx.cpp
+  RegeditOpt.cpp
+  Registry.cpp
+  RegManager.cpp
+  ScreenManager.cpp
+  ScreenSpy.cpp
+  ShellManager.cpp
+  SysInfo.cpp
+  SystemManager.cpp
+  until.cpp
+  正在生成代码...
+  正在编译...
+  ZXPortMap.cpp
+  svchost.cpp
+  正在生成代码...
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1369,5): warning MSB8012: TargetPath(C:\Users\Administrator\Desktop\star_Rat_3.1-master\Server\svchost\svchost___Win32_Console\svchost.exe) 与 Linker 的 OutputFile 属性值(C:\Users\Administrator\Desktop\star_Rat_3.1-master\Bin\svchost_console.exe)不匹配。这可能导致项目生成不正确。若要更正此问题，请确保 $(OutDir)、$(TargetName) 和 $(TargetExt) 属性值与 %(Link.OutputFile) 中指定的值匹配。
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1371,5): warning MSB8012: TargetName(svchost) 与 Linker 的 OutputFile 属性值(svchost_console)不匹配。这可能导致项目生成不正确。若要更正此问题，请确保 $(OutDir)、$(TargetName) 和 $(TargetExt) 属性值与 %(Link.OutputFile) 中指定的值匹配。
+svchost.obj : warning LNK4229: 遇到无效的指令“/OPT:NOWIN98”；已忽略
+svchost.obj : warning LNK4229: 遇到无效的指令“/RELEASE”；已忽略
+svchost.obj : warning LNK4229: 遇到无效的指令“/OPT:NOWIN98”；已忽略
+zlib.lib(compress.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(uncompr.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(deflate.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(inflate.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(zutil.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(adler32.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(trees.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(crc32.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(inffast.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+zlib.lib(inftrees.obj) : error LNK2026: 模块对于 SAFESEH 映像是不安全的。
+LINK : fatal error LNK1104: 无法打开文件“atl.lib”

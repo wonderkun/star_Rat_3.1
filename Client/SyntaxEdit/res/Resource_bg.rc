@@ -1,7 +1,6 @@
 // SyntaxEdit resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "SyntaxEdit/Resource.h"
 #include "SyntaxEdit/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR)
 #ifdef _WIN32
 LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
@@ -34,43 +33,43 @@ LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
 
 XTP_IDD_EDIT_PAGEEDITOR DIALOGEX DISCARDABLE  0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Editor"
+CAPTION "Редактор"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    GROUPBOX        "Window Settings ",IDC_STATIC,7,7,246,76
-    CONTROL         "&Vertical scrollbar",XTP_IDC_EDIT_CHK_VERT_SCROLLBAR,
+    GROUPBOX        "Прозореца Настройки",IDC_STATIC,7,7,246,76
+    CONTROL         "Вертикален плъзгач",XTP_IDC_EDIT_CHK_VERT_SCROLLBAR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,21,105,10
-    CONTROL         "&Horizontal scrollbar",XTP_IDC_EDIT_CHK_HORZ_SCROLLBAR,
+    CONTROL         "Хоризонтален плъзгач",XTP_IDC_EDIT_CHK_HORZ_SCROLLBAR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,32,105,10
-    CONTROL         "Line &Number",XTP_IDC_EDIT_CHK_LINE_NUMBERS,"Button",
+    CONTROL         "Номер на ред",XTP_IDC_EDIT_CHK_LINE_NUMBERS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,43,105,10
-    CONTROL         "Selection &margin",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
+    CONTROL         "Поле на селекцията",XTP_IDC_EDIT_CHK_SELMARGIN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,54,105,10
-    CONTROL         "C&ollapsible Nodes",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
+    CONTROL         "Сгъваема възли",XTP_IDC_EDIT_CHK_COLLAPSIBLE_NODES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,65,105,10
-    CONTROL         "&Auto indentation",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
+    CONTROL         "Auto отстъп",XTP_IDC_EDIT_CHK_AUTO_INDENT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,20,115,10
-    CONTROL         "Virtual &space",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
+    CONTROL         "Virtual пространство",XTP_IDC_EDIT_CHK_VIRTUAL_SPACE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,130,35,115,10
-    CONTROL         "Synta&x Colorization",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
+    CONTROL         "Синтаксис Colorization",XTP_IDC_EDIT_CHK_SYNTAX_COLOR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,50,115,10
-    GROUPBOX        "Табове",IDC_STATIC,7,88,162,43
-    LTEXT           "&Tab size:",IDC_STATIC,15,103,30,8
-    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,50,100,46,14,ES_AUTOHSCROLL
-    CONTROL         "Insert s&paces",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,102,102,58,10
-    CONTROL         "&Keep Tabs",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
-                    BS_AUTORADIOBUTTON,102,113,51,10
-    GROUPBOX        "Overwrite Caret",XTP_IDC_EDIT_GBOX_CARET,175,88,78,43,
+    GROUPBOX        "Табове",IDC_STATIC,7,88,152,43
+    LTEXT           "Размер на раздела:",IDC_STATIC,15,103,30,8
+    EDITTEXT        XTP_IDC_EDIT_TABS_SIZE,45,100,21,14,ES_AUTOHSCROLL
+    CONTROL         "Вмъкни пространства",XTP_IDC_EDIT_RAD_TABS_SPACES,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,71,102,83,10
+    CONTROL         "Дръжте Tabs",XTP_IDC_EDIT_RAD_TABS_TAB,"Button",
+                    BS_AUTORADIOBUTTON,71,113,55,10
+    GROUPBOX        "Презапишете карета",XTP_IDC_EDIT_GBOX_CARET,165,88,88,43,
                     WS_GROUP
-    CONTROL         "Th&in",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
+    CONTROL         "Тънък",XTP_IDC_EDIT_RAD_CARET_THIN,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,181,102,31,10
-    CONTROL         "Thi&ck",XTP_IDC_EDIT_RAD_CARET_THICK,"Button",
+    CONTROL         "Дебела",XTP_IDC_EDIT_RAD_CARET_THICK,"Button",
                     BS_AUTORADIOBUTTON,181,113,36,10
-    GROUPBOX        "Save Options ",IDC_STATIC,7,135,246,37
-    CONTROL         "Automatic &reload of externally modified files",
+    GROUPBOX        "Запазване на опциите",IDC_STATIC,7,135,246,37
+    CONTROL         "Автоматично презареждане на външно модифицирани файлове",
                     XTP_IDC_EDIT_CHK_AUTO_RELOAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,151,155,10
+                    WS_TABSTOP,15,151,232,10
 END
 XTP_IDD_EDIT_PAGEFONT DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
@@ -120,7 +119,7 @@ END
 
 XTP_IDD_EDIT_PAGECOLOR DIALOGEX 0, 0, 260, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Syntax Color"
+CAPTION "Синтаксис цвят"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Тип на файл:",XTP_IDC_EDIT_TXT_SCHEMANAMES,7,7,123,9
@@ -290,4 +289,4 @@ BEGIN
     XTP_IDS_EDIT_OPENSCHEMAMSG "Желаете ли да затворите диалог. прозорец ""Настройки"" и да отворите схема файла ""%s%s"" в резактора?"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR)

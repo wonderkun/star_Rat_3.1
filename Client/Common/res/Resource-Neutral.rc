@@ -1,7 +1,6 @@
 // Common resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -37,6 +36,8 @@ XTP_IDC_HSPLITBAR        CURSOR  DISCARDABLE     "Common/res/splith.cur"
 XTP_IDC_VSPLITBAR        CURSOR  DISCARDABLE     "Common/res/splitv.cur"
 XTP_IDC_VRESIZE          CURSOR  DISCARDABLE     "Common/res/resize.cur"
 XTP_IDC_HAND             CURSOR  DISCARDABLE     "Common/res/hand.cur"
+
+XTP_IDC_FONT_CODEJOCK    FONT    DISCARDABLE     "Common/res/Codejock.ttf"
 
 #endif // !defined(_XTP_NO_BINARY_RESOURCES)
 

@@ -1,7 +1,6 @@
 // XTPDockingPanePaintManager.h : interface for the CXTPDockingPanePaintManager class.
 //
-// This file is a part of the XTREME DOCKINGPANE MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,26 +19,89 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPDOCKINGPANEPAINTMANAGER_H__)
-#define __XTPDOCKINGPANEPAINTMANAGER_H__
+#	define __XTPDOCKINGPANEPAINTMANAGER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "XTPDockingPaneDefines.h"
-#include "Common/XTPWinThemeWrapper.h"
-#include "Common/XTPColorManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-class CXTPDockingPaneTabsArray;
-class CXTPDockingPaneTabbedContainer;
-class CXTPDockingPaneAutoHidePanel;
 class CXTPTabPaintManager;
+class CXTPDockingPane;
+class CXTPDockingPaneBase;
+class CXTPDockingPaneTabbedContainer;
 class CXTPDockingPaneMiniWnd;
 class CXTPDockingPaneSplitterWnd;
+class CXTPDockingPaneCaptionButton;
 class CXTPDockingPaneCaptionButtons;
 class CXTPDockingPaneSidePanel;
+class CXTPWinThemeWrapper;
 
+//=========================================================================
+// Summary: CXTPDockingPaneTabPaintManager is a CXTPTabPaintManager derived
+//          class that is used to store the color and appearance information
+//          of the tabs in the tab manager.
+//=========================================================================
+class _XTP_EXT_CLASS CXTPDockingPaneTabPaintManager : public CXTPTabPaintManager
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member to apply one of the "built-in" color sets to
+	//             the tabs.
+	// Parameters: tabColor : XTPTabColorStyle to apply to the tabs.
+	// Returns:    Pointer to the CXTPTabPaintManagerColorSet object applied.
+	// See Also:   XTPTabColorStyle, SetColorSet, GetColor, GetColorSet,
+	//             XTPTabAppearanceStyle, SetAppearanceSet, SetAppearance,
+	//             GetAppearance, GetAppearanceSet
+	//-----------------------------------------------------------------------
+	virtual CXTPTabPaintManagerColorSet* SetColor(XTPTabColorStyle tabColor);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member to apply one of the "built-in" appearances to
+	//             the tabs.
+	// Parameters: tabAppearance : XTPTabAppearanceStyle to apply to the tabs.
+	// Returns:    Pointer to the CXTPTabPaintManagerTheme object applied.
+	// Remarks:    Use SetAppearance to apply a "Built-In" theme.  To apply a
+	//             custom them, use the SetAppearanceSet member.
+	// See Also:   XTPTabAppearanceStyle, SetAppearanceSet, GetAppearance,
+	//             GetAppearanceSet, SetColor, GetColor, GetColorSet, SetColorSet
+	//-----------------------------------------------------------------------
+	virtual CXTPTabPaintManagerTheme* SetAppearance(XTPTabAppearanceStyle tabAppearance);
+};
+
+//=========================================================================
+// Summary: CXTPDockingPanePanelPaintManager is a CXTPTabPaintManager derived
+//          class that is used to store the color and appearance information
+//          of the tabs in the tab manager.
+//=========================================================================
+class _XTP_EXT_CLASS CXTPDockingPanePanelPaintManager : public CXTPTabPaintManager
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member to apply one of the "built-in" color sets to
+	//             the tabs.
+	// Parameters: tabColor : XTPTabColorStyle to apply to the tabs.
+	// Returns:    Pointer to the CXTPTabPaintManagerColorSet object applied.
+	// See Also:   XTPTabColorStyle, SetColorSet, GetColor, GetColorSet,
+	//             XTPTabAppearanceStyle, SetAppearanceSet, SetAppearance,
+	//             GetAppearance, GetAppearanceSet
+	//-----------------------------------------------------------------------
+	virtual CXTPTabPaintManagerColorSet* SetColor(XTPTabColorStyle tabColor);
+
+	//-----------------------------------------------------------------------
+	// Summary:    Call this member to apply one of the "built-in" appearances to
+	//             the tabs.
+	// Parameters: tabAppearance : XTPTabAppearanceStyle to apply to the tabs.
+	// Returns:    Pointer to the CXTPTabPaintManagerTheme object applied.
+	// Remarks:    Use SetAppearance to apply a "Built-In" theme.  To apply a
+	//             custom them, use the SetAppearanceSet member.
+	// See Also:   XTPTabAppearanceStyle, SetAppearanceSet, GetAppearance,
+	//             GetAppearanceSet, SetColor, GetColor, GetColorSet, SetColorSet
+	//-----------------------------------------------------------------------
+	virtual CXTPTabPaintManagerTheme* SetAppearance(XTPTabAppearanceStyle tabAppearance);
+};
 
 //-----------------------------------------------------------------------
 // Summary:
@@ -53,28 +115,30 @@ class CXTPDockingPaneSidePanel;
 enum XTPDockingPanePinState
 {
 	xtpPanePinVisible = 1, // Pin button is visible.
-	xtpPanePinPushed = 2   // Pin button is pushed.
+	xtpPanePinPushed  = 2  // Pin button is pushed.
 };
 
 //-----------------------------------------------------------------------
 // Summary:
 //     Enumeration of the splitter styles
 // Example:
-//     m_paneManager.GetPaintManager()->SetSplitterStyle(xtpPaneSplitterSoft3D + xtpPaneSplitterGripperOffice2003);
+//     m_paneManager.GetPaintManager()->SetSplitterStyle(xtpPaneSplitterSoft3D +
+//     xtpPaneSplitterGripperOffice2003);
 // See Also:
 //     CXTPDockingPanePaintManager::SetSplitterStyle
 //
-// <KEYWORDS xtpPaneSplitterFlat, xtpPaneSplitter3D, xtpPaneSplitterSoft3D, xtpPaneSplitterGripperOfficeXP, xtpPaneSplitterGripperOffice2003>
+// <KEYWORDS xtpPaneSplitterFlat, xtpPaneSplitter3D, xtpPaneSplitterSoft3D,
+// xtpPaneSplitterGripperOfficeXP, xtpPaneSplitterGripperOffice2003>
 //-----------------------------------------------------------------------
 enum XTPDockingPaneSplitterStyle
 {
-	xtpPaneSplitterFlat     = 0,            // Flat splitter style
-	xtpPaneSplitter3D       = 1,            // 3D splitter style
-	xtpPaneSplitterSoft3D   = 2,            // Soft splitter style
-	xtpPaneSplitterGradient = 4,            // Gradient splitter style
-	xtpPaneSplitterGradientVert = 8,            // Gradient splitter style
-	xtpPaneSplitterGripperOfficeXP = 0x100,     // Splitter has OfficeXP gripper
-	xtpPaneSplitterGripperOffice2003 = 0x200    // Splitter has Office2003 gripper
+	xtpPaneSplitterFlat				 = 0,	 // Flat splitter style
+	xtpPaneSplitter3D				 = 1,	 // 3D splitter style
+	xtpPaneSplitterSoft3D			 = 2,	 // Soft splitter style
+	xtpPaneSplitterGradient			 = 4,	 // Gradient splitter style
+	xtpPaneSplitterGradientVert		 = 8,	 // Gradient splitter style
+	xtpPaneSplitterGripperOfficeXP   = 0x100, // Splitter has OfficeXP gripper
+	xtpPaneSplitterGripperOffice2003 = 0x200  // Splitter has Office2003 gripper
 };
 
 //-----------------------------------------------------------------------
@@ -87,205 +151,23 @@ enum XTPDockingPaneSplitterStyle
 //-----------------------------------------------------------------------
 enum XTPDockingPaneCaptionButtonStyle
 {
-	xtpPaneCaptionButtonDefault,            // Default caption button style
-	xtpPaneCaptionButtonOffice,             // Office XP caption button style
-	xtpPaneCaptionButtonOffice2003,         // Office 2003 caption button style
-	xtpPaneCaptionButtonThemedExplorerBar,  // Explorer button style
-	xtpPaneCaptionButtonThemedButton,       // Windows XP Button style
-	xtpPaneCaptionButtonThemedToolBar,      // Windows XP Toolbar style
-	xtpPaneCaptionButtonThemedToolWindow,   // Window XP Tool Window style
+	xtpPaneCaptionButtonDefault,		   // Default caption button style
+	xtpPaneCaptionButtonOffice,			   // Office XP caption button style
+	xtpPaneCaptionButtonOffice2003,		   // Office 2003 caption button style
+	xtpPaneCaptionButtonThemedExplorerBar, // Explorer button style
+	xtpPaneCaptionButtonThemedButton,	  // Windows XP Button style
+	xtpPaneCaptionButtonThemedToolBar,	 // Windows XP Toolbar style
+	xtpPaneCaptionButtonThemedToolWindow,  // Window XP Tool Window style
 };
 
+_XTP_EXT_CLASS void AFX_CDECL XTPDeflateRectDirection(CRect& rc, int left, int top, int right,
+													  int bottom, BOOL bVertical);
 
-//===========================================================================
-// Summary:
-//     CXTPDockingPaneCaptionButton is a stand alone internal class.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPDockingPaneCaptionButton
-{
-public:
+_XTP_EXT_CLASS int AFX_CDECL XTPGetRectDirectionHeight(const CRect& rc, BOOL bVertical);
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Constructs a CXTPDockingPaneCaptionButton object
-	// Parameters:
-	//     nID   - If of the caption button.
-	//     pPane - Pane that the caption button controls.
-	//-----------------------------------------------------------------------
-	CXTPDockingPaneCaptionButton (int nID, CXTPDockingPaneBase* pPane)
-	{
-		m_nID = nID; m_pPane = pPane;
-		m_bPressed = m_bSelected = FALSE;
-		m_dwState = 0;
-		m_rcButton.SetRectEmpty();
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the button's rectangle.
-	// Parameters:
-	//     rc - Button's rectangle.
-	//-----------------------------------------------------------------------
-	void SetRect (CRect rc);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw a pin button.
-	// Parameters:
-	//     pDC     - Pointer to the device context in which to draw.
-	//     pt      - Center point.
-	//     bPinned - TRUE if the button is pinned.
-	//-----------------------------------------------------------------------
-	static void AFX_CDECL DrawPinnButton(CDC* pDC, CPoint pt, BOOL bPinned);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to draw the maximize\restore button.
-	// Parameters:
-	//     pDC     - Pointer to the device context in which to draw.
-	//     pt      - Center point.
-	//     bMaximize - TRUE if the button is to be drawn maximized, FALSE to
-	//                 draw restore button.
-	//     clr - Color of button.
-	//-----------------------------------------------------------------------
-	static void AFX_CDECL DrawMaximizeRestoreButton(CDC* pDC, CPoint pt, BOOL bMaximize, COLORREF clr);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to click button.
-	// Parameters:
-	//     pWnd    - Parent window of button.
-	//     pt      - Initial mouse position.
-	//     bClient - TRUE if <i>pt</i> belongs client area of window.
-	//-----------------------------------------------------------------------
-	DWORD Click (CWnd* pWnd, CPoint pt, BOOL bClient = TRUE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to get the bounding rectangle
-	// Returns:
-	//     A CRect object
-	//-----------------------------------------------------------------------
-	CRect GetRect() { return m_rcButton;}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine the state of the caption button.
-	//     This will tell you if the pin caption button is visible or
-	//     if it is pushed.
-	// Returns:
-	//     1 if the the button is visible, 2 if it is pushed, 3 if it
-	//     is both visible and pushed.
-	// See Also: XTPDockingPanePinState
-	//-----------------------------------------------------------------------
-	DWORD GetState() const {
-		return m_dwState;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to set the state of the pin caption button.
-	// Parameters:
-	//     dwState - XTPDockingPanePinState of pin button.
-	// See Also: XTPDockingPanePinState
-	//-----------------------------------------------------------------------
-	void SetState(DWORD dwState) {
-		m_dwState = dwState;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Retrieves button identifier
-	// Returns:
-	//     Button identifier. Standard values are
-	//     * <b>XTP_IDS_DOCKINGPANE_CLOSE</b> Close button
-	//     * <b>XTP_IDS_DOCKINGPANE_AUTOHIDE</b> Auto-hide button
-	//-----------------------------------------------------------------------
-	int GetID() const {
-		return m_nID;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to retrieve the pane that the pin button controls.
-	// Returns:
-	//     Pane that the pin button controls.
-	//-----------------------------------------------------------------------
-	CXTPDockingPaneBase* GetPane() const {
-		return m_pPane;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the point belongs to button.
-	// Parameters:
-	//     pt - Point to test.
-	// Returns:
-	//     TRUE if point belongs to the button; otherwise returns FALSE
-	//-----------------------------------------------------------------------
-	BOOL PtInRect (POINT pt) const {return m_rcButton.PtInRect (pt) != 0; }
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to refresh styles of the button.
-	// Parameters:
-	//     pt - Mouse cursor pointer.
-	//-----------------------------------------------------------------------
-	BOOL CheckForMouseOver (CPoint pt);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to redraw button
-	//-----------------------------------------------------------------------
-	void InvalidateRect();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the button is pushed.
-	// Returns:
-	//     TRUE is the button is pushed, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsPressed() const {
-		return m_bPressed;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the button mouse hover the button
-	// Returns:
-	//     TRUE if mouse hover the button.
-	//-----------------------------------------------------------------------
-	BOOL IsSelected() const {
-		return m_bSelected;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this member to determine if the pin caption button is visible.
-	// Returns:
-	//     TRUE if the pin button is visible, FALSE otherwise.
-	//-----------------------------------------------------------------------
-	BOOL IsVisible();
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Determines if button is enabled
-	// Returns:
-	//     TRUE if button is enabled
-	//-----------------------------------------------------------------------
-	BOOL IsEnabled() const;
-
-protected:
-	CRect m_rcButton;             // Bounding rectangle of the button
-	CXTPDockingPaneBase* m_pPane; // Parent pane
-	int m_nID;                    // Identifier of the button.
-	BOOL m_bPressed;              // TRUE if button is pressed by user.
-	BOOL m_bSelected;             // TRUE if user move mouse cursor inside button rectangle
-	DWORD m_dwState;              // XTPDockingPanePinState of caption button.
-
-	friend class CXTPDockingPaneTabbedContainer;
-	friend class CXTPDockingPaneMiniWnd;
-};
+_XTP_EXT_CLASS void AFX_CDECL
+	XTPFillFramePartRect(CDC* pDC, CRect rc, CWnd* pWnd, CWnd* pParentFrame,
+						 const CXTPPaintManagerColorGradient& clrHeaderFace, BOOL bHoriz);
 
 //===========================================================================
 // Summary:
@@ -295,7 +177,6 @@ protected:
 class _XTP_EXT_CLASS CXTPDockingPanePaintManager : public CXTPCmdTarget
 {
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPDockingPanePaintManager object
@@ -310,7 +191,6 @@ protected:
 	virtual ~CXTPDockingPanePaintManager();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Override this member function to draw a tabbed container.
@@ -343,6 +223,25 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Summary:
+	//     Call this method to draw frame of floating window
+	// Parameters:
+	//     pDC    - Pointer to a valid device context
+	//     pPane - Floating window pointer
+	//     rc    - Client rectangle of floating frame
+	//-----------------------------------------------------------------------
+	virtual void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Override this method to draw splitter.
+	// Parameters:
+	//     pDC        - Pointer to a valid device context
+	//     pSplitter - Pointer to splitter window
+	//-----------------------------------------------------------------------
+	virtual void DrawSplitter(CDC* pDC, CXTPDockingPaneSplitterWnd* pSplitter);
+
+	//-----------------------------------------------------------------------
+	// Summary:
 	//     Override this member function to draw a caption.
 	// Parameters:
 	//     pDC - Reference to the device context in which to draw.
@@ -363,7 +262,9 @@ public:
 	//     nButtonGap  - Distance between buttons.
 	//     bVertical   - TRUE if caption drawn vertically
 	//-----------------------------------------------------------------------
-	virtual void DrawCaptionButtons(CDC* pDC, CXTPDockingPaneCaptionButtons* pButtons, CRect& rcCaption, COLORREF clr, int nButtonSize, int nButtonGap, BOOL bVertical = FALSE);
+	virtual void DrawCaptionButtons(CDC* pDC, CXTPDockingPaneCaptionButtons* pButtons,
+									CRect& rcCaption, COLORREF clr, int nButtonSize, int nButtonGap,
+									BOOL bVertical = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -373,7 +274,8 @@ public:
 	//     pButton     - Button pointer need to draw.
 	//     clrButton   - Color of button text.
 	//-----------------------------------------------------------------------
-	virtual void DrawCaptionButton(CDC* pDC, CXTPDockingPaneCaptionButton* pButton, COLORREF clrButton);
+	virtual void DrawCaptionButton(CDC* pDC, CXTPDockingPaneCaptionButton* pButton,
+								   COLORREF clrButton);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -398,8 +300,8 @@ public:
 	//     Override this member to change the caption rectangle of the child
 	//     docking pane.
 	// Parameters:
-	//     pPane - Pointer to a CXTPDockingPaneTabbedContainer object or CXTPDockingPaneSidePanel object.
-	//     rc    - Caption rectangle to be changed.
+	//     pPane - Pointer to a CXTPDockingPaneTabbedContainer object or CXTPDockingPaneSidePanel
+	//     object. rc    - Caption rectangle to be changed.
 	//-----------------------------------------------------------------------
 	virtual void AdjustCaptionRect(const CXTPDockingPaneSidePanel* pPane, CRect& rc);
 	virtual void AdjustCaptionRect(const CXTPDockingPaneTabbedContainer* pPane, CRect& rc);
@@ -423,7 +325,6 @@ public:
 	virtual CRect GetCaptionGripperRect(const CXTPDockingPaneTabbedContainer* pPane);
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Draws a line.
@@ -436,7 +337,8 @@ public:
 	//     nPen - Specifies the color used to paint the line.
 	//-----------------------------------------------------------------------
 	void Line(CDC* pDC, int x0, int y0, int x1, int y1, int nPen);
-	void Line(CDC* pDC, int x0, int y0, int x1, int y1); // <combine CXTPDockingPanePaintManager::Line@CDC*@int@int@int@int@int>
+	void Line(CDC* pDC, int x0, int y0, int x1,
+			  int y1); // <combine CXTPDockingPanePaintManager::Line@CDC*@int@int@int@int@int>
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -450,7 +352,8 @@ public:
 	// Returns:
 	//     The width of the text that was drawn in the pane caption bar.
 	//-----------------------------------------------------------------------
-	int DrawCaptionText(CDC* pDC, const CString& strTitle, CRect rc, BOOL bVertical, BOOL bCalcWidth = FALSE);
+	int DrawCaptionText(CDC* pDC, const CString& strTitle, CRect rc, BOOL bVertical,
+						BOOL bCalcWidth = FALSE);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -490,25 +393,6 @@ public:
 	//     bUseStandardFont - Must be FALSE
 	//-----------------------------------------------------------------------
 	void SetCaptionFontIndirect(LOGFONT* pLogFont, BOOL bUseStandardFont = FALSE);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Call this method to draw frame of floating window
-	// Parameters:
-	//     pDC    - Pointer to a valid device context
-	//     pPane - Floating window pointer
-	//     rc    - Client rectangle of floating frame
-	//-----------------------------------------------------------------------
-	virtual void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Override this method to draw splitter.
-	// Parameters:
-	//     pDC        - Pointer to a valid device context
-	//     pSplitter - Pointer to splitter window
-	//-----------------------------------------------------------------------
-	virtual void DrawSplitter(CDC* pDC, CXTPDockingPaneSplitterWnd* pSplitter);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -570,43 +454,48 @@ public:
 	//     and then click the "Appearance" tab.
 	//<TABLE>
 	//  <b>Constant</b>                   <b>Value</b>  <b>Description</b>
-	//  --------------------------------  ============  ------------------------------------------------------------
-	//  COLOR_SCROLLBAR                   0             Scroll bar color
-	//  COLOR_BACKGROUND                  1             Desktop color
-	//  COLOR_ACTIVECAPTION               2             Color of the title bar for the active window, Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.
-	//  COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive window, Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.
-	//  COLOR_MENU                        4             Menu background color
-	//  COLOR_WINDOW                      5             Window background color
+	//  --------------------------------  ============
+	//  ------------------------------------------------------------ COLOR_SCROLLBAR 0 Scroll bar
+	//  color COLOR_BACKGROUND                  1             Desktop color COLOR_ACTIVECAPTION 2
+	//  Color of the title bar for the active window, Specifies the left side color in the color
+	//  gradient of an active window's title bar if the gradient effect is enabled.
+	//  COLOR_INACTIVECAPTION             3             Color of the title bar for the inactive
+	//  window, Specifies the left side color in the color gradient of an inactive window's title
+	//  bar if the gradient effect is enabled. COLOR_MENU                        4             Menu
+	//  background color COLOR_WINDOW                      5             Window background color
 	//  COLOR_WINDOWFRAME                 6             Window frame color
 	//  COLOR_MENUTEXT                    7             Color of text on menus
 	//  COLOR_WINDOWTEXT                  8             Color of text in windows
-	//  COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and scroll arrow
-	//  COLOR_ACTIVEBORDER                10            Border color of active window
+	//  COLOR_CAPTIONTEXT                 9             Color of text in caption, size box, and
+	//  scroll arrow COLOR_ACTIVEBORDER                10            Border color of active window
 	//  COLOR_INACTIVEBORDER              11            Border color of inactive window
-	//  COLOR_APPWORKSPACE                12            Background color of multiple-document interface (MDI) applications
-	//  COLOR_HIGHLIGHT                   13            Background color of items selected in a control
-	//  COLOR_HIGHLIGHTTEXT               14            Text color of items selected in a control
-	//  COLOR_BTNFACE                     15            Face color for three-dimensional display elements and for dialog box backgrounds.
-	//  COLOR_BTNSHADOW                   16            Color of shading on the edge of command buttons
-	//  COLOR_GRAYTEXT                    17            Grayed (disabled) text
-	//  COLOR_BTNTEXT                     18            Text color on push buttons
+	//  COLOR_APPWORKSPACE                12            Background color of multiple-document
+	//  interface (MDI) applications COLOR_HIGHLIGHT                   13            Background
+	//  color of items selected in a control COLOR_HIGHLIGHTTEXT               14            Text
+	//  color of items selected in a control COLOR_BTNFACE                     15            Face
+	//  color for three-dimensional display elements and for dialog box backgrounds. COLOR_BTNSHADOW
+	//  16            Color of shading on the edge of command buttons COLOR_GRAYTEXT 17 Grayed
+	//  (disabled) text COLOR_BTNTEXT                     18            Text color on push buttons
 	//  COLOR_INACTIVECAPTIONTEXT         19            Color of text in an inactive caption
 	//  COLOR_BTNHIGHLIGHT                20            Highlight color for 3-D display elements
-	//  COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display elements
-	//  COLOR_3DLIGHT                     22            Second lightest 3-D color after 3DHighlight, Light color for three-dimensional display elements (for edges facing the light source.)
-	//  COLOR_INFOTEXT                    23            Color of text in ToolTips
+	//  COLOR_3DDKSHADOW                  21            Darkest shadow color for 3-D display
+	//  elements COLOR_3DLIGHT                     22            Second lightest 3-D color after
+	//  3DHighlight, Light color for three-dimensional display elements (for edges facing the light
+	//  source.) COLOR_INFOTEXT                    23            Color of text in ToolTips
 	//  COLOR_INFOBK                      24            Background color of ToolTips
-	//  COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single clicking a hot-tracked item executes the item.
-	//  COLOR_GRADIENTACTIVECAPTION       27            Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color.
-	//  COLOR_GRADIENTINACTIVECAPTION     28            Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.
-	//  XPCOLOR_TOOLBAR_FACE              30            XP toolbar background color.
-	//  XPCOLOR_HIGHLIGHT                 31            XP menu item selected color.
-	//  XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border color.
+	//  COLOR_HOTLIGHT                    26            Color for a hot-tracked item. Single
+	//  clicking a hot-tracked item executes the item. COLOR_GRADIENTACTIVECAPTION       27 Right
+	//  side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION
+	//  specifies the left side color. COLOR_GRADIENTINACTIVECAPTION     28            Right side
+	//  color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION
+	//  specifies the left side color. XPCOLOR_TOOLBAR_FACE              30            XP toolbar
+	//  background color. XPCOLOR_HIGHLIGHT                 31            XP menu item selected
+	//  color. XPCOLOR_HIGHLIGHT_BORDER          32            XP menu item selected border color.
 	//  XPCOLOR_HIGHLIGHT_PUSHED          33            XP menu item pushed color.
 	//  XPCOLOR_HIGHLIGHT_CHECKED         36            XP menu item checked color.
-	//  XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu item checked border color.
-	//  XPCOLOR_ICONSHADDOW               34            XP menu item icon shadow.
-	//  XPCOLOR_GRAYTEXT                  35            XP menu item disabled text color.
+	//  XPCOLOR_HIGHLIGHT_CHECKED_BORDER  37            An RGB value that represents the XP menu
+	//  item checked border color. XPCOLOR_ICONSHADDOW               34            XP menu item icon
+	//  shadow. XPCOLOR_GRAYTEXT                  35            XP menu item disabled text color.
 	//  XPCOLOR_TOOLBAR_GRIPPER           38            XP toolbar gripper color.
 	//  XPCOLOR_SEPARATOR                 39            XP toolbar separator color.
 	//  XPCOLOR_DISABLED                  40            XP menu icon disabled color.
@@ -619,13 +508,14 @@ public:
 	//  XPCOLOR_PUSHED_TEXT               47            XP toolbar pushed text color.
 	//  XPCOLOR_TAB_INACTIVE_BACK         48            XP inactive tab background color.
 	//  XPCOLOR_TAB_INACTIVE_TEXT         49            XP inactive tab text color.
-	//  XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP border color for pushed in 3D elements.
-	//  XPCOLOR_CHECKED_TEXT              45            XP color for text displayed in a checked button.
-	//  XPCOLOR_3DFACE                    51            XP face color for three- dimensional display elements and for dialog box backgrounds.
-	//  XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional display elements (for edges facing away from the light source).
-	//  XPCOLOR_EDITCTRLBORDER            53            XP color for the border color of edit controls.
-	//  XPCOLOR_FRAME                     54            Office 2003 frame color.
-	//  XPCOLOR_SPLITTER_FACE             55            XP splitter face color.
+	//  XPCOLOR_HIGHLIGHT_PUSHED_BORDER   50            An RGB value that represents the XP border
+	//  color for pushed in 3D elements. XPCOLOR_CHECKED_TEXT              45            XP color
+	//  for text displayed in a checked button. XPCOLOR_3DFACE                    51            XP
+	//  face color for three- dimensional display elements and for dialog box backgrounds.
+	//  XPCOLOR_3DSHADOW                  52            XP shadow color for three-dimensional
+	//  display elements (for edges facing away from the light source). XPCOLOR_EDITCTRLBORDER 53 XP
+	//  color for the border color of edit controls. XPCOLOR_FRAME                     54 Office
+	//  2003 frame color. XPCOLOR_SPLITTER_FACE             55            XP splitter face color.
 	//  XPCOLOR_LABEL                     56            Color for label control (xtpControlLabel)
 	//  XPCOLOR_STATICFRAME               57            WinXP Static frame color
 	//</TABLE>
@@ -644,7 +534,7 @@ public:
 	//     lpaRgbValues - Array of RGB values.
 	// See Also: SetColor
 	//-----------------------------------------------------------------------
-	void SetColors(int cElements, CONST INT *lpaElements, CONST COLORREF* lpaRgbValues);
+	void SetColors(int cElements, CONST INT* lpaElements, CONST COLORREF* lpaRgbValues);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -673,7 +563,8 @@ public:
 	//     * <b>xtpPaneSplitterGripperOfficeXP</b>
 	//     * <b>xtpPaneSplitterGripperOffice2003</b>
 	// Example:
-	//     m_paneManager.GetPaintManager()->SetSplitterStyle(xtpPaneSplitterSoft3D + xtpPaneSplitterGripperOffice2003);
+	//     m_paneManager.GetPaintManager()->SetSplitterStyle(xtpPaneSplitterSoft3D +
+	//     xtpPaneSplitterGripperOffice2003);
 	//-----------------------------------------------------------------------
 	void SetSplitterStyle(DWORD dwStyle);
 
@@ -740,6 +631,45 @@ public:
 	//-----------------------------------------------------------------------
 	void SetLunaTheme(XTPCurrentSystemTheme systemTheme);
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      This mmethod is called by the framework to draw the docking pane
+	//      auto hide panel background and splitter.
+	// Parameters:
+	//      pDC       - Pointer to the auto hide panes device context.
+	//      rc        - Size of the area to draw.
+	//      direction - Docking direction either xtpPaneDockLeft, xtpPaneDockRight,
+	//                  xtpPaneDockTop or xtpPaneDockBottom.
+	//-----------------------------------------------------------------------
+	virtual void DrawAutoHidePanel(CDC* pDC, CRect rc, XTPDockingPaneDirection direction);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sets custom title brushes.
+	// Parameters:
+	//     hbrActiveTitleHorz - Active horizontal title brush handle. NULL to
+	//                          use default title background drawing.
+	//     hbrInactiveTitleHorz - Inactive horizontal title brush handle. NULL to
+	//                            use hbrActiveTitleHorz value.
+	//     hbrActiveTitleVert - Active horizontal title brush handle. NULL to
+	//                          use hbrActiveTitleHorz value.
+	//     hbrInactiveTitleVert - Inactive horizontal title brush handle. NULL to
+	//                            use hbrInactiveTitleHorz value.
+	//     bDestroyOnCleanup - If TRUE, the brusehs will be destroyed on cleanup.
+	//-----------------------------------------------------------------------
+	void SetCustomTitleBrushes(HBRUSH hbrActiveTitleHorz, HBRUSH hbrInactiveTitleHorz = NULL,
+							   HBRUSH hbrActiveTitleVert = NULL, HBRUSH hbrInactiveTitleVert = NULL,
+							   BOOL bDestroyOnCleanup = FALSE);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Obtains custom title brush.
+	// Parameters:
+	//     bActive - Determines whether to obtain active or inactive title brush.
+	//     bVertical - Determines whether to obtain vertical or horizontal title brush.
+	//-----------------------------------------------------------------------
+	HBRUSH GetCustomTitleBrush(BOOL bActive, BOOL bVertical) const;
+
 protected:
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -747,993 +677,172 @@ protected:
 	// Parameters:
 	//     pDC       - Pointer to the device context in which to draw.
 	//     pButton   - Button pointer need to draw.
-	//     pt        - Center point.
+	//     pt        - Glyph center point.
 	//     clrButton - Color of glyph.
+	//     szOffset  - Glyph offset.
 	//-----------------------------------------------------------------------
-	virtual void DrawCaptionButtonEntry(CDC* pDC, CXTPDockingPaneCaptionButton* pButton, CPoint pt, COLORREF clrButton);
+	virtual void DrawCaptionButtonEntry(CDC* pDC, CXTPDockingPaneCaptionButton* pButton,
+										COLORREF clrButton, CSize szOffset);
+	virtual void DrawCaptionButtonEntry(
+		CDC* pDC, CXTPDockingPaneCaptionButton* pButton, CPoint pt,
+		COLORREF clrButton); // <combine
+							 // DrawCaptionButtonEntry@CDC*@CXTPDockingPaneCaptionButton*@COLORREF>
 
-//{{AFX_CODEJOCK_PRIVATE
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      Clip string and add ellipsis if its width less than nCaptionWidth.
+	// Parameters:
+	//     pDC             - Pointer to the device context in which to draw.
+	//     strTitle        - Text to process.
+	//     nAvailableWidth - Available width to drawing.
+	// Remarks:
+	//     DT_END_ELLIPSIS doesn't work with rotated text.
+	// See Also: DrawCaptionText
+	//-----------------------------------------------------------------------
+	void ClipAndAddEllipsisIfNeeded(CDC* pDC, CString& strTitle, int nCaptionWidth) const;
+
+	//{{AFX_CODEJOCK_PRIVATE
 	void DrawCaptionIcon(CDC* pDC, CXTPDockingPaneBase* pPane, CRect& rcCaption, BOOL bVertical);
+
 public:
 	static CXTPDockingPane* AFX_CDECL GetSelectedPane(CXTPDockingPaneBase* pPane);
 	BOOL IsCaptionEnabled(CXTPDockingPaneBase* pPane);
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 public:
-	BOOL  m_bUseBoldCaptionFont;    // TRUE to use Bold font for caption
-	BOOL  m_bHighlightActiveCaption; // TRUE to highlight active caption.
-	int   m_nSplitterSize;          // Splitter size
-	BOOL  m_bShowCaption;           // TRUE to draw captions of tabbed containers
-	BOOL  m_bDrawSingleTab;         // TRUE to draw single tab.
-	BOOL  m_bDrawCaptionIcon;       // TRUE to draw caption icon.
-	BOOL  m_bAutoHidePanelHighlightSelected;
+	BOOL m_bUseBoldCaptionFont;		// TRUE to use Bold font for caption
+	BOOL m_bHighlightActiveCaption; // TRUE to highlight active caption.
+	int m_nSplitterSize;			// Splitter size
+	BOOL m_bShowCaption;			// TRUE to draw captions of tabbed containers
+	BOOL m_bDrawSingleTab;			// TRUE to draw single tab.
+	BOOL m_bDrawCaptionIcon;		// TRUE to draw caption icon.
+	BOOL m_bAutoHidePanelHighlightSelected;
 
-	int   m_nSplitterIndent;        // Size of splitter indent.
+	int m_nSplitterIndent; // Size of splitter indent.
 
-	CXTPPaintManagerColor    m_clrSplitterGripper; // Splitter gripper color
-	CXTPPaintManagerColor    m_clrSplitter;        // Splitter color
-	CXTPPaintManagerColorGradient    m_clrSplitterGradient;        // Splitter color
-	CXTPPaintManagerColorGradient m_clrNormalCaption;   // Color of pane caption when inactive.
-	CXTPPaintManagerColorGradient m_clrActiveCaption;   // Color of pane caption when active.
-	CXTPPaintManagerColor m_clrNormalCaptionText;                    // Color of pane caption text when the caption is inactive
-	CXTPPaintManagerColor m_clrActiveCaptionText;                    // Active caption text
-	CXTPPaintManagerColor m_clrDisabledCaptionText;                  // Disabled caption text
-
-protected:
-	XTPDockingPaneCaptionButtonStyle m_nCaptionButtonStyle;        // Caption button style
-	DWORD m_dwSplitterStyle;        // Splitter style
-	int   m_nTitleHeight;           // Title's height.
-	int   m_nCaptionFontGap;        // Additional gap of font.
-	int   m_nTabsHeight;            // Tab bar's height.
-	CFont m_fntTitle;               // Title font.
-	CFont m_fntTitleVertical;       // Title vertical font.
-	BOOL  m_bUseOfficeFont;         // TRUE to use Tahoma font.
-	BOOL  m_bUseStandardFont;       // TRUE to use system icon font.
+	CXTPPaintManagerColor m_clrBackground;				 // Background color
+	CXTPPaintManagerColor m_clrSplitterGripper;			 // Splitter gripper color
+	CXTPPaintManagerColor m_clrSplitter;				 // Splitter color
+	CXTPPaintManagerColorGradient m_clrSplitterGradient; // Splitter color
+	CXTPPaintManagerColorGradient m_clrNormalCaption;	// Color of pane caption when inactive.
+	CXTPPaintManagerColorGradient m_clrActiveCaption;	// Color of pane caption when active.
+	CXTPPaintManagerColor m_clrNormalCaptionText; // Color of pane caption text when the caption is
+												  // inactive
+	CXTPPaintManagerColor m_clrActiveCaptionText; // Active caption text
+	CXTPPaintManagerColor m_clrDisabledCaptionText; // Disabled caption text
 
 protected:
-	CXTPTabPaintManager* m_pTabPaintManager;    // Paint Manager used to draw tabs for tabbed container
-	CXTPTabPaintManager* m_pPanelPaintManager;  // Paint Manager used to draw tabs for auto-hide panel
+	XTPDockingPaneCaptionButtonStyle m_nCaptionButtonStyle; // Caption button style
+	DWORD m_dwSplitterStyle;								// Splitter style
+	int m_nTitleHeight;										// Title's height.
+	int m_nCaptionFontGap;									// Additional gap of font.
+	int m_nTabsHeight;										// Tab bar's height.
 
-	COLORREF m_arrColor[XPCOLOR_LAST + 1];      // Self colors array.
-	XTPDockingPanePaintTheme m_themeCurrent;    // Current theme.
-	CString                  m_strOfficeFont;   // Office font name.
-	CRect                    m_rcCaptionMargin; // Margins of caption.
-	XTPCurrentSystemTheme    m_systemTheme;     // Current system theme.
+	CXTPFont m_xtpFontTitle;		 // Title font.
+	CXTPFont m_xtpFontTitleVertical; // Title vertical font.
 
-	CXTPWinThemeWrapper m_themeToolbar;         // Toolbar theme helper
-	CXTPWinThemeWrapper m_themeExplorer;        // WinXP Explorer theme helper
-	CXTPWinThemeWrapper m_themeButton;          // WinXP Button theme helper
-	CXTPWinThemeWrapper m_themeWindow;          // WinXP Window Theme helper.
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntTitle, m_xtpFontTitle, GetTitleFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntTitleVertical, m_xtpFontTitleVertical,
+										  GetVerticalTitleFontHandle);
 
-	BOOL     m_bLunaTheme;                      // TRUE if luna colors user
+	BOOL m_bUseOfficeFont;			   // TRUE to use Tahoma font.
+	BOOL m_bUseStandardFont;		   // TRUE to use system icon font.
+	BOOL m_bDestroyCustomTitleBrushes; // If TRUE, custom title bushes will be destroyed on cleanup.
+	HBRUSH m_hbrActiveTitleHorz;	   // Optional user specified active horizontal title brush.
+	HBRUSH m_hbrInactiveTitleHorz;	 // Optional user specified inactive horizontal title brush.
+	HBRUSH m_hbrActiveTitleVert;	   // Optional user specified active vertical title brush.
+	HBRUSH m_hbrInactiveTitleVert;	 // Optional user specified inactive vertical title brush.
 
+protected:
+	CXTPTabPaintManager* m_pTabPaintManager; // Paint Manager used to draw tabs for tabbed container
+	CXTPTabPaintManager* m_pPanelPaintManager; // Paint Manager used to draw tabs for auto-hide
+											   // panel
+
+	COLORREF m_arrColor[XPCOLOR_LAST + 1];   // Self colors array.
+	XTPDockingPanePaintTheme m_themeCurrent; // Current theme.
+	CString m_strOfficeFont;				 // Office font name.
+	CRect m_rcCaptionMargin;				 // Margins of caption.
+	XTPCurrentSystemTheme m_systemTheme;	 // Current system theme.
+
+	CXTPWinThemeWrapper* m_themeToolbar;  // Toolbar theme helper
+	CXTPWinThemeWrapper* m_themeExplorer; // WinXP Explorer theme helper
+	CXTPWinThemeWrapper* m_themeButton;   // WinXP Button theme helper
+	CXTPWinThemeWrapper* m_themeWindow;   // WinXP Window Theme helper.
+	CXTPWinThemeWrapper* m_themeRebar;	// Rebar theme helper
+
+	BOOL m_bLunaTheme; // TRUE if luna colors user
 
 private:
 	friend class CXTPDockingPaneManager;
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPDockingPanePaintManager);
+
+	LPFONTDISP OleGetFont();
+	void OleSetFont(LPFONTDISP pFontDisp);
+
+	BOOL OleGetUseCustomTitleColors();
+	void OleSetUseCustomTitleColors(BOOL fUse);
+
+	void OleSetCustomTitleColors(OLE_COLOR clrActiveHorz, OLE_COLOR clrInactiveHorz,
+								 OLE_COLOR clrActiveVert, OLE_COLOR clrInactiveVert);
+	OLE_COLOR OleGetCustomTitleColor(BOOL fActive, BOOL fVert);
+
+	COLORREF OleGetSplitterColor();
+	void OleSetSplitterColor(OLE_COLOR clr);
+
+	void OleRefreshMetrics();
+
+	BOOL m_bAxUseCustomTitleColors;
+
+	OLE_COLOR m_clrAxTitleActiveHorz;
+	OLE_COLOR m_clrAxTitleInactiveHorz;
+	OLE_COLOR m_clrAxTitleActiveVert;
+	OLE_COLOR m_clrAxTitleInactiveVert;
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-
-namespace XTPDockingPanePaintThemes
+AFX_INLINE int CXTPDockingPanePaintManager::GetCaptionHeight() const
 {
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneDefaultTheme is CXTPDockingPanePaintManager derived class, represents
-	//     classic theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeDefault); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneDefaultTheme : public CXTPDockingPanePaintManager
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneDefaultTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneDefaultTheme();
-	public:
-		// -----------------------------------------------------
-		// Summary:
-		//     Call this method to draw frame of floating window
-		// Parameters:
-		//     pDC :    Pointer to a valid device context
-		//     pPane :  Floating window pointer
-		//     rc :     CLient rectangle of floating frame
-		//
-		// -----------------------------------------------------
-		void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-		// --------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC :    Reference to the device context in which to draw.
-		//     pPane :  Pointer to the tabbed container.
-		//     rc :     Client rectangle of the tabbed container.
-		//
-		// --------------------------------------------------------------
-		virtual void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		// --------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw the side panel.
-		// Parameters:
-		//     pDC :    Reference to the device context in which to draw.
-		//     pPane :  Pointer to the side panel.
-		//     rc :     Client rectangle of the side panel.
-		//
-		// --------------------------------------------------------------
-		virtual void DrawSidePanel(CDC* pDC, CXTPDockingPaneSidePanel* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-	protected:
-		// ------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC :        Reference to the device context in which to draw.
-		//     pPane :      Container which caption need to draw.
-		//     rcCaption :  Caption bounding rectangle
-		//     strTitle :   Caption text.
-		//     bActive :    TRUE if caption is active.
-		//     bVertical :  TRUE to draw caption vertically
-		//
-		// ------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneGripperedTheme is CXTPDockingPaneDefaultTheme derived class, represents
-	//     gripper theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeGrippered); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneGripperedTheme : public CXTPDockingPaneDefaultTheme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneGripperedTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneGripperedTheme();
-
-	public:
-		// -----------------------------------------------------
-		// Summary:
-		//     Call this method to draw frame of floating window
-		// Parameters:
-		//     pDC :    Pointer to a valid device context
-		//     pPane :  Floating window pointer
-		//     rc :     Client rectangle of floating frame
-		//
-		// -----------------------------------------------------
-		void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		virtual void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-	protected:
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container which caption need to draw.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneWinExplorerTheme is CXTPDockingPaneDefaultTheme derived class, represents
-	//     explorer theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeWinExplorer); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneWinExplorerTheme : public CXTPDockingPaneGripperedTheme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneWinExplorerTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneWinExplorerTheme();
-
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		void RefreshMetrics();
-
-	protected:
-
-		// ------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC :        Reference to the device context in which to draw.
-		//     pPane :      Container which caption need to draw.
-		//     rcCaption :  Caption bounding rectangle
-		//     strTitle :   Caption text.
-		//     bActive :    TRUE if caption is active.
-		//     bVertical :  TRUE to draw caption vertically
-		//
-		// ------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-	protected:
-		CXTPWinThemeWrapper m_themeRebar;           // Rebar theme helper
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio6Theme is CXTPDockingPaneGripperedTheme derived class, represents
-	//     Visual Studio 6 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio6); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio6Theme : public CXTPDockingPaneGripperedTheme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio6Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio6Theme();
-
-	protected:
-		// ------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC :        Reference to the device context in which to draw.
-		//     pPane :      Container which caption need to draw.
-		//     rcCaption :  Caption bounding rectangle
-		//     strTitle :   Caption text.
-		//     bActive :    TRUE if caption is active.
-		//     bVertical :  TRUE to draw caption vertically
-		//
-		// ------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2003Theme is CXTPDockingPaneGripperedTheme derived class, represents
-	//     Office XP theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2003); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2003Theme : public CXTPDockingPaneGripperedTheme
-	{
-		class COfficePanelColorSet;
-
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2003Theme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-	protected:
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container which caption need to draw.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draws the background of the pane caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container of the caption needs to draw the background.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual COLORREF FillCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, BOOL bActive, BOOL bVertical);
-
-	protected:
-		BOOL m_bGradientCaption;                            // TRUE to draw gradient caption.
-		int m_nCaptionButtonSize;
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneWinNativeTheme is CXTPDockingPaneVisualStudio2003Theme derived class, represents
-	//     Win XP theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeWinNative); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneWinNativeTheme : public CXTPDockingPaneVisualStudio2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneWinNativeTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneWinNativeTheme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		virtual void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to draw frame of floating window
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pPane - Floating window pointer
-		//     rc    - CLient rectangle of floating frame
-		//-----------------------------------------------------------------------
-		void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw the side panel.
-		// Parameters:
-		//     pDC    - Reference to the device context in which to draw.
-		//     pPane - Pointer to the side panel.
-		//     rc    - Client rectangle of the side panel.
-		//-----------------------------------------------------------------------
-		void DrawSidePanel(CDC* pDC, CXTPDockingPaneSidePanel* pPane, CRect rc);
-
-	protected:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container which caption need to draw.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-	protected:
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2002VisioTheme is CXTPDockingPaneVisualStudio2003Theme derived class, represents
-	//     Visio theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2002Visio); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2002VisioTheme : public CXTPDockingPaneVisualStudio2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2002VisioTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2002VisioTheme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a tabbed container.
-		// Parameters:
-		//     pDC    - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc    - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawPane(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member to change the caption rectangle of the child
-		//     docking pane.
-		// Parameters:
-		//     pPane - Pointer to a CXTPDockingPaneTabbedContainer object.
-		//     rc    - Caption rectangle to be changed.
-		//-----------------------------------------------------------------------
-		void AdjustCaptionRect(const CXTPDockingPaneTabbedContainer* pPane, CRect& rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to draw frame of floating window
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pPane - Floating window pointer
-		//     rc    - Client rectangle of floating frame
-		//-----------------------------------------------------------------------
-		void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2003VisioTheme is CXTPDockingPaneOffice2002VisioTheme
-	//     derived class, represents Office 2003 Visio theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2003Visio); to set
-	//     this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2003VisioTheme : public CXTPDockingPaneOffice2002VisioTheme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2003VisioTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2003VisioTheme();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2007VisioTheme is CXTPDockingPaneOffice2003VisioTheme
-	//     derived class, represents Office 2007 Visio theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2007Visio); to set
-	//     this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2007VisioTheme : public CXTPDockingPaneOffice2003VisioTheme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2007VisioTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2007VisioTheme();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2003Theme is CXTPDockingPaneVisualStudio2003Theme derived class, represents
-	//     Office 2003 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2003); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2003Theme : public CXTPDockingPaneVisualStudio2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2003Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2003Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Destroys a CXTPDockingPaneOffice2003Theme object, handles cleanup and deallocation.
-		//-------------------------------------------------------------------------
-		virtual ~CXTPDockingPaneOffice2003Theme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		virtual void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to draw frame of floating window
-		// Parameters:
-		//     pDC    - Pointer to a valid device context
-		//     pPane - Floating window pointer
-		//     rc    - Client rectangle of floating frame
-		//-----------------------------------------------------------------------
-		virtual void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw the side panel.
-		// Parameters:
-		//     pDC    - Reference to the device context in which to draw.
-		//     pPane - Pointer to the side panel.
-		//     rc    - Client rectangle of the side panel.
-		//-----------------------------------------------------------------------
-		virtual void DrawSidePanel(CDC* pDC, CXTPDockingPaneSidePanel* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to get pane's caption rectangle.
-		// Parameters:
-		//     pPane - Side Panel container to get caption CRECT.
-		// Returns:
-		//     Bounding rectangle of the side panel's caption.
-		//-----------------------------------------------------------------------
-		virtual CRect GetPaneCaptionRect(const CXTPDockingPaneSidePanel* pPane);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to get caption gripper for tabbed container
-		// Parameters:
-		//     pPane - Tabbed container to test
-		// Returns: Bounding rectangle of gripper to set size cursor
-		//-----------------------------------------------------------------------
-		virtual CRect GetCaptionGripperRect(const CXTPDockingPaneTabbedContainer* pPane);
-
-	protected:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container which caption need to draw.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-	public:
-		BOOL     m_bDrawGripper;            // TRUE to draw gripper
-	protected:
-		BOOL     m_bRoundedCaption;         // TRUE to draw rounded caption
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2007Theme is CXTPDockingPaneOffice2003Theme derived class, represents
-	//     Office 2007 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeResource); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2007Theme : public CXTPDockingPaneOffice2003Theme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2007Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2007Theme();
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2007OutlookTheme is CXTPDockingPaneOffice2007Theme derived class, represents
-	//     Outlook 2007 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2007Outlook); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2007OutlookTheme : public CXTPDockingPaneOffice2007Theme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2007OutlookTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2007OutlookTheme();
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2007WordTheme is CXTPDockingPaneOffice2003Theme derived class, represents
-	//     Office Word 2007 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2007Word); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2007WordTheme : public CXTPDockingPaneOffice2003Theme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2007WordTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2007WordTheme();
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a caption.
-		// Parameters:
-		//     pDC - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawCaption(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draw common part of tabbed and floating caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container which caption need to draw.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		void DrawCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, const CString& strTitle, BOOL bActive, BOOL bVertical);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member to change the client rectangle of the child
-		//     docking pane.
-		// Parameters:
-		//     pPane  - Pointer to the tabbed container.
-		//     rect   - Client rectangle to be changed.
-		//     bApply - TRUE to update tabs inside client area.
-		//-----------------------------------------------------------------------
-		void AdjustClientRect(CXTPDockingPaneTabbedContainer* pPane, CRect& rect, BOOL bApply);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Override this member function to draw a tabbed container.
-		// Parameters:
-		//     pDC    - Reference to the device context in which to draw.
-		//     pPane - Pointer to the tabbed container.
-		//     rc    - Client rectangle of the tabbed container.
-		//-----------------------------------------------------------------------
-		void DrawPane(CDC* pDC, CXTPDockingPaneTabbedContainer* pPane, CRect rc);
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Determines if a pane has borders (if title is visible).
-		// Parameters:
-		//     pPane - Pointer to the tabbed container.
-		// Returns:
-		//      TRUE if the pane has borders (title visible), FALSE otherwise.
-		//-----------------------------------------------------------------------
-		BOOL PaneHasBorders(CXTPDockingPaneTabbedContainer* pPane) const;
-
-	protected:
-		BOOL m_bOffice2010Style;
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneOffice2003OutlookTheme is CXTPDockingPaneOffice2003Theme derived class, represents
-	//     Office 2003 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeOffice2003Outlook); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneOffice2003OutlookTheme : public CXTPDockingPaneOffice2003Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneOffice2003OutlookTheme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneOffice2003OutlookTheme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Destroys a CXTPDockingPaneOffice2003OutlookTheme object, handles cleanup and deallocation.
-		//-------------------------------------------------------------------------
-		virtual ~CXTPDockingPaneOffice2003OutlookTheme();
-
-	public:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Call this method to get caption gripper for tabbed container
-		// Parameters:
-		//     pPane - Tabbed container to test
-		// Returns: Bounding rectangle of gripper to set size cursor
-		//-----------------------------------------------------------------------
-		virtual CRect GetCaptionGripperRect(const CXTPDockingPaneTabbedContainer* pPane);
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2005Beta1Theme is CXTPDockingPaneVisualStudio2003Theme derived class, represents
-	//     Visual Studio 2005 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2005Beta1); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2005Beta1Theme : public CXTPDockingPaneVisualStudio2003Theme
-	{
-	public:
-		class CColorSetVisualStudio2005;
-		class CColorSetVisualStudio2003;
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2005Beta1Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2005Beta1Theme();
-
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2005Beta2Theme is CXTPDockingPaneVisualStudio2005Beta1Theme derived class, represents
-	//     Visual Studio 2005 beta 2 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2005Beta1); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2005Beta2Theme : public CXTPDockingPaneVisualStudio2005Beta1Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2005Beta2Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2005Beta2Theme();
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of the pane.
-		//-------------------------------------------------------------------------
-		void RefreshMetrics();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draws the background of the pane caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container of the caption needs to draw the background.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual COLORREF FillCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, BOOL bActive, BOOL bVertical);
-
-	protected:
-		COLORREF m_clrCaptionBorder;    //Color used to draw the border of the pane caption.
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2005Beta2Theme is CXTPDockingPaneVisualStudio2005Beta2Theme derived class, represents
-	//     Visual Studio 2005 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2005Beta1); to set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2005Theme : public CXTPDockingPaneVisualStudio2005Beta2Theme
-	{
-	public:
-
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2005Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2005Theme();
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2008Theme is CXTPDockingPaneVisualStudio2005Theme
-	//     derived class, represents Visual Studio 2008 theme for docking panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2008); to set
-	//     this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2008Theme : public CXTPDockingPaneVisualStudio2005Theme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2008Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2008Theme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of manager.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-	protected:
-		CXTPWinThemeWrapper m_themeRebar;           // Rebar theme helper
-	};
-
-	//===========================================================================
-	// Summary:
-	//     CXTPDockingPaneVisualStudio2010Theme is CXTPDockingPaneVisualStudio2008Theme
-	//     derived class, represents Visual Studio 2010 Beta 1 theme for docking
-	//     panes.
-	// Remarks:
-	//     Call CXTPDockingPaneManager::SetTheme(xtpPaneThemeVisualStudio2010); to
-	//     set this theme.
-	//===========================================================================
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2010Theme : public CXTPDockingPaneVisualStudio2008Theme
-	{
-	public:
-		//-------------------------------------------------------------------------
-		// Summary:
-		//     Constructs a CXTPDockingPaneVisualStudio2010Theme object.
-		//-------------------------------------------------------------------------
-		CXTPDockingPaneVisualStudio2010Theme();
-
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     This method is called to refresh the visual metrics of manager.
-		//-----------------------------------------------------------------------
-		virtual void RefreshMetrics();
-
-	protected:
-		//-----------------------------------------------------------------------
-		// Summary:
-		//     Draws the background of the pane caption.
-		// Parameters:
-		//     pDC        - Reference to the device context in which to draw.
-		//     pPane     - Container of the caption needs to draw the background.
-		//     rcCaption - Caption bounding rectangle
-		//     strTitle  - Caption text.
-		//     bActive   - TRUE if caption is active.
-		//     bVertical - TRUE to draw caption vertically
-		//-----------------------------------------------------------------------
-		virtual COLORREF FillCaptionPart(CDC* pDC, CXTPDockingPaneBase* pPane, CRect rcCaption, BOOL bActive, BOOL bVertical);
-
-		void DrawFloatingFrame(CDC* pDC, CXTPDockingPaneMiniWnd* pPane, CRect rc);
-
-		virtual void DrawCaptionButtonEntry(CDC* pDC, CXTPDockingPaneCaptionButton* pButton, CPoint pt, COLORREF clrButton);
-	};
-
-	//{{AFX_CODEJOCK_PRIVATE
-
-	// obsolete, for backward compatibility only.
-	class _XTP_EXT_CLASS CXTPDockingPaneNativeXPTheme : public CXTPDockingPaneWinNativeTheme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneExplorerTheme : public CXTPDockingPaneWinExplorerTheme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneOfficeTheme : public CXTPDockingPaneVisualStudio2003Theme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneWhidbeyTheme : public CXTPDockingPaneVisualStudio2005Beta1Theme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneVisioTheme : public CXTPDockingPaneOffice2002VisioTheme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneShortcutBar2003Theme : public CXTPDockingPaneOffice2003OutlookTheme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneOutlook2007Theme : public CXTPDockingPaneOffice2007OutlookTheme {};
-	class _XTP_EXT_CLASS CXTPDockingPaneWord2007Theme : public CXTPDockingPaneOffice2007WordTheme {} ;
-	class _XTP_EXT_CLASS CXTPDockingPaneVisualStudio2005SecondTheme : public CXTPDockingPaneVisualStudio2005Beta2Theme {};
-
-	//}}AFX_CODEJOCK_PRIVATE
-}
-
-using namespace XTPDockingPanePaintThemes;
-
-AFX_INLINE int CXTPDockingPanePaintManager::GetCaptionHeight() const {
 	return m_nTitleHeight;
 }
-AFX_INLINE int CXTPDockingPanePaintManager::GetTabsHeight() const{
+AFX_INLINE int CXTPDockingPanePaintManager::GetTabsHeight() const
+{
 	return m_nTabsHeight;
 }
-
-AFX_INLINE CXTPTabPaintManager* CXTPDockingPanePaintManager::GetTabPaintManager() const {
+AFX_INLINE CXTPTabPaintManager* CXTPDockingPanePaintManager::GetTabPaintManager() const
+{
 	return m_pTabPaintManager;
 }
-AFX_INLINE CXTPTabPaintManager* CXTPDockingPanePaintManager::GetPanelPaintManager() const {
+AFX_INLINE CXTPTabPaintManager* CXTPDockingPanePaintManager::GetPanelPaintManager() const
+{
 	return m_pPanelPaintManager;
 }
-AFX_INLINE void CXTPDockingPanePaintManager::DrawFloatingFrame(CDC* /*pDC*/, CXTPDockingPaneMiniWnd* /*pPane*/, CRect /*rc*/) {
+AFX_INLINE void CXTPDockingPanePaintManager::DrawFloatingFrame(CDC* /*pDC*/,
+															   CXTPDockingPaneMiniWnd* /*pPane*/,
+															   CRect /*rc*/)
+{
 }
-AFX_INLINE void CXTPDockingPanePaintManager::DrawSidePanel(CDC* /*pDC*/, CXTPDockingPaneSidePanel* /*pPane*/, CRect /*rc*/) {
+AFX_INLINE void CXTPDockingPanePaintManager::DrawSidePanel(CDC* /*pDC*/,
+														   CXTPDockingPaneSidePanel* /*pPane*/,
+														   CRect /*rc*/)
+{
 }
-AFX_INLINE void CXTPDockingPanePaintManager::SetCaptionButtonStyle(XTPDockingPaneCaptionButtonStyle nStyle) {
+AFX_INLINE void
+	CXTPDockingPanePaintManager::SetCaptionButtonStyle(XTPDockingPaneCaptionButtonStyle nStyle)
+{
 	m_nCaptionButtonStyle = nStyle;
 }
-AFX_INLINE XTPDockingPaneCaptionButtonStyle CXTPDockingPanePaintManager::GetCaptionButtonStyle() const {
+AFX_INLINE XTPDockingPaneCaptionButtonStyle
+	CXTPDockingPanePaintManager::GetCaptionButtonStyle() const
+{
 	return m_nCaptionButtonStyle;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPDOCKINGPANEPAINTMANAGER_H__)

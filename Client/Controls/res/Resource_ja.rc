@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN))
 #ifdef _WIN32
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
@@ -104,18 +103,18 @@ CAPTION "ウィンドウの整列"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "ウィンドウの選択:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,216,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,211,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "ウィンドウの選択",XTP_IDC_BTN_ACTIVATE,233,7,62,14
-    PUSHBUTTON      "OK",IDOK,233,24,62,14
-    PUSHBUTTON      "上書き保存",XTP_IDC_BTN_SAVE,233,41,62,14
-    PUSHBUTTON      "ウィンドウを閉じる",XTP_IDC_BTN_CLOSEWINDOWS,233,58,62,14
-    PUSHBUTTON      "重ねて表示",XTP_IDC_BTN_CASCADE,233,75,62,14
-    PUSHBUTTON      "上下に並べて表示",XTP_IDC_BTN_TILEHORZ,233,92,62,14
-    PUSHBUTTON      "左右に並べて表示",XTP_IDC_BTN_TILEVERT,233,109,62,14
-    PUSHBUTTON      "最小化",XTP_IDC_BTN_MINIMIZE,233,126,62,14
+    PUSHBUTTON      "ウィンドウの選択",XTP_IDC_BTN_ACTIVATE,223,7,72,14
+    PUSHBUTTON      "OK",IDOK,223,24,72,14
+    PUSHBUTTON      "上書き保存",XTP_IDC_BTN_SAVE,223,41,72,14
+    PUSHBUTTON      "ウィンドウを閉じる",XTP_IDC_BTN_CLOSEWINDOWS,223,58,72,14
+    PUSHBUTTON      "重ねて表示",XTP_IDC_BTN_CASCADE,223,75,72,14
+    PUSHBUTTON      "上下に並べて表示",XTP_IDC_BTN_TILEHORZ,223,92,72,14
+    PUSHBUTTON      "左右に並べて表示",XTP_IDC_BTN_TILEVERT,223,109,72,14
+    PUSHBUTTON      "最小化",XTP_IDC_BTN_MINIMIZE,223,126,72,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "標準の色"
+	XTP_IDS_RECENT_COLORS    "最近の色"
+	XTP_IDS_THEME_COLORS     "テーマの色"
+	XTP_IDS_TAGCLOUD_TIP     "タグ％sは、％dスコア"
     XTP_IDS_TIPTEXT          "ヒント"
     XTP_IDS_DIDYOUKNOW       "ワンポイント"
     XTP_IDS_FILE_ABSENT      "指定のファイルは存在しません。"
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "詳細の非表示"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "背景 1"
+    XTP_IDS_BACKGROUND2        "背景 2"
+    XTP_IDS_TEXT1              "テキスト 1"
+    XTP_IDS_TEXT2              "テキスト 2"
+    XTP_IDS_ACCENT1            "アクセント1"
+    XTP_IDS_ACCENT2            "アクセント2"
+    XTP_IDS_ACCENT3            "アクセント3"
+    XTP_IDS_ACCENT4            "アクセント4"
+    XTP_IDS_ACCENT5            "アクセント5"
+    XTP_IDS_ACCENT6            "アクセント6"
+    XTP_IDS_LIGHTER            "ライター"
+    XTP_IDS_DARKER             "暗い"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN))

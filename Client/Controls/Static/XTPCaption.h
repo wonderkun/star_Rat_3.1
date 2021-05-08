@@ -1,7 +1,6 @@
 // XTPCaption.h : interface for the CXTPCaption class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,20 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCAPTION_H__)
-#define __XTPCAPTION_H__
+#	define __XTPCAPTION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCaption;
 class CXTPCaptionPopupWnd;
 class CXTPCaptionTheme;
 
-#define XTP_IDC_BTN_CLOSE                100
+#	define XTP_IDC_BTN_CLOSE 100
 
 // --------------------------------------------------------------------
 // Summary:
@@ -51,7 +52,8 @@ public:
 	//                parent caption.
 	// Returns      : A pointer to a CXTPCaption object.
 	//-----------------------------------------------------------------------
-	CXTPCaption* GetCaption() {
+	CXTPCaption* GetCaption()
+	{
 		return m_pCaption;
 	}
 	//-----------------------------------------------------------------------
@@ -59,7 +61,8 @@ public:
 	//                parent caption.
 	// Parameters   : pCaption - A pointer to a CXTPCaption object.
 	//-----------------------------------------------------------------------
-	void SetCaption(CXTPCaption* pCaption) {
+	void SetCaption(CXTPCaption* pCaption)
+	{
 		m_pCaption = pCaption;
 	}
 	virtual BOOL SetTheme(XTPControlTheme eTheme);
@@ -68,9 +71,12 @@ protected:
 	CXTPCaption* m_pCaption; // A pointer to the parent CXTPCaption.
 };
 
-const DWORD CPWS_EX_GROOVE_EDGE    = 0x0001;  //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
-const DWORD CPWS_EX_RAISED_EDGE    = 0x0002;  //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
-const DWORD CPWS_EX_CLOSEBUTTON    = 0x0004;  //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
+const DWORD CPWS_EX_GROOVE_EDGE =
+	0x0001; //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
+const DWORD CPWS_EX_RAISED_EDGE =
+	0x0002; //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
+const DWORD CPWS_EX_CLOSEBUTTON =
+	0x0004; //<ALIAS CXTPCaption::Create@CWnd*@LPCTSTR@DWORD@DWORD@const CRect&@UINT>
 
 // ----------------------------------------------------------------------
 // Summary:
@@ -82,7 +88,6 @@ class _XTP_EXT_CLASS CXTPCaption : public CStatic
 	DECLARE_DYNAMIC(CXTPCaption)
 
 public:
-
 	// ------------------------------------------------------------
 	// Summary:
 	//     Destroys a CXTPCaption object, handles cleanup and
@@ -97,7 +102,6 @@ public:
 	CXTPCaption();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member to switch the visual theme of the control.
@@ -126,7 +130,8 @@ public:
 	// Returns      : true if the caption is configured to be used as the application's
 	//                primary caption, otherwise false.
 	//-----------------------------------------------------------------------
-	bool IsAppCaption() const {
+	bool IsAppCaption() const
+	{
 		return m_bAppCaption;
 	}
 	//-----------------------------------------------------------------------
@@ -135,7 +140,8 @@ public:
 	// Parameters   : bAppCaption - true if the caption is configured to be used as the
 	//                applications primary caption.
 	//-----------------------------------------------------------------------
-	void SetAppCaption(bool bAppCaption) {
+	void SetAppCaption(bool bAppCaption)
+	{
 		m_bAppCaption = bAppCaption;
 	}
 
@@ -191,7 +197,8 @@ public:
 	//     drawn around the caption banner, the font that the caption will
 	//     use, and the caption text and icon to be displayed.
 	// -------------------------------------------------------------------
-	virtual void ModifyCaptionStyle(int nBorderSize, CFont* pFont = NULL, LPCTSTR lpszWindText = NULL, HICON hIcon = NULL);
+	virtual void ModifyCaptionStyle(int nBorderSize, CFont* pFont = NULL,
+									LPCTSTR lpszWindText = NULL, HICON hIcon = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -267,7 +274,10 @@ public:
 	// Returns:
 	//     TRUE if successful, otherwise returns FALSE.
 	// ---------------------------------------------------------------------------------
-	virtual BOOL Create(CWnd* pParentWnd, LPCTSTR lpszWindowName, DWORD dwExStyle = CPWS_EX_RAISED_EDGE, DWORD dwStyle = WS_VISIBLE | SS_CENTER | SS_CENTERIMAGE, const CRect& rect = CRect(0, 0, 0, 0), UINT nID = 0xffff);
+	virtual BOOL Create(CWnd* pParentWnd, LPCTSTR lpszWindowName,
+						DWORD dwExStyle   = CPWS_EX_RAISED_EDGE,
+						DWORD dwStyle	 = WS_VISIBLE | SS_CENTER | SS_CENTERIMAGE,
+						const CRect& rect = CRect(0, 0, 0, 0), UINT nID = 0xffff);
 
 	// ----------------------------------------------------------------
 	// Summary:
@@ -303,7 +313,6 @@ public:
 	virtual CRect GetTextRect() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called to draw the caption background.
@@ -354,7 +363,7 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void RefreshMetrics();
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 
 	//{{AFX_VIRTUAL(CXTPCaption)
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -374,38 +383,40 @@ protected:
 	afx_msg LRESULT OnSetTheme(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID = 0xffff);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+				UINT nID = 0xffff);
 
 public:
-	int                 m_nBorder;      // Size in pixels for the caption border.
-	COLORREF            m_clrBorder;    // An RGB value that represents the user defined border color.
-	COLORREF            m_clrFace;      // An RGB value that represents the user defined background color.
-	COLORREF            m_clrText;      // An RGB value that represents the user defined font color.
+	int m_nBorder;		  // Size in pixels for the caption border.
+	COLORREF m_clrBorder; // An RGB value that represents the user defined border color.
+	COLORREF m_clrFace;   // An RGB value that represents the user defined background color.
+	COLORREF m_clrText;   // An RGB value that represents the user defined font color.
 
 protected:
-
-	int                  m_nOffset;      // Size in pixels that the child window should leave for its caption area.
-	bool                 m_bUserColors;  // true if the user has specified caption colors other than the default.
-	bool                 m_bAppCaption;  // true if the caption is used as the application's primary caption.
-	CWnd*                m_pChildWnd;    // A CWnd pointer that represents the child window displayed in the popup window.
-	CWnd*                m_pParentView;  // A CWnd pointer that represents the child window's parent view.
-	CWnd*                m_pSplitterWnd; // A CWnd pointer that represents the splitter window. It is used to track size changes.
-	CSize                m_sizeIcon;     // Width and height of the caption icon area.
-	CRect                m_rcChild;      // Size of the child window displayed in the popup.
-	CRect                m_rcParent;     // Size of the child's parent view.
-	CRect                m_rcSplitter;   // Size of the splitter window.
-	DWORD                m_dwExStyle;    // Border style bits, either CPWS_EX_GROOVE_EDGE | CPWS_EX_RAISED_EDGE.
-	HICON                m_hIcon;        // User defined icon handle. The default value is NULL.
-	CString              m_strCaption;   // Text that will be displayed in the caption.
-	CImageList           m_ilButton;     // Image list used to create the close button icon.
-	CXTPCaptionButton    m_btnCaption;   // Button used to 'tack' the popup window back in place.
-	CXTPCaptionPopupWnd* m_pPopupWnd;    // Points to the popup window.
-	CXTPCaptionTheme*    m_pTheme;       // Pointer to the current theme object.
-	BOOL                 m_bSubclassed;  // TRUE if the window was sub-classed.
+	int m_nOffset;		  // Size in pixels that the child window should leave for its caption area.
+	bool m_bUserColors;   // true if the user has specified caption colors other than the default.
+	bool m_bAppCaption;   // true if the caption is used as the application's primary caption.
+	CWnd* m_pChildWnd;	// A CWnd pointer that represents the child window displayed in the popup
+						  // window.
+	CWnd* m_pParentView;  // A CWnd pointer that represents the child window's parent view.
+	CWnd* m_pSplitterWnd; // A CWnd pointer that represents the splitter window. It is used to track
+						  // size changes.
+	CSize m_sizeIcon;	 // Width and height of the caption icon area.
+	CRect m_rcChild;	  // Size of the child window displayed in the popup.
+	CRect m_rcParent;	 // Size of the child's parent view.
+	CRect m_rcSplitter;   // Size of the splitter window.
+	DWORD m_dwExStyle;	// Border style bits, either CPWS_EX_GROOVE_EDGE | CPWS_EX_RAISED_EDGE.
+	HICON m_hIcon;		  // User defined icon handle. The default value is NULL.
+	CString m_strCaption; // Text that will be displayed in the caption.
+	CXTPCaptionButton m_btnCaption;   // Button used to 'tack' the popup window back in place.
+	CXTPCaptionPopupWnd* m_pPopupWnd; // Points to the popup window.
+	CXTPCaptionTheme* m_pTheme;		  // Pointer to the current theme object.
+	BOOL m_bSubclassed;				  // TRUE if the window was sub-classed.
 
 	friend class CXTPCaptionButton;
 	friend class CXTPCaptionButtonTheme;
@@ -414,26 +425,38 @@ protected:
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE CXTPCaptionButton& CXTPCaption::GetCaptionButton() {
-	ASSERT(::IsWindow(m_btnCaption.m_hWnd)); return m_btnCaption;
+AFX_INLINE CXTPCaptionButton& CXTPCaption::GetCaptionButton()
+{
+	ASSERT(::IsWindow(m_btnCaption.m_hWnd));
+	return m_btnCaption;
 }
-AFX_INLINE DWORD CXTPCaption::GetCaptionStyle() const {
+AFX_INLINE DWORD CXTPCaption::GetCaptionStyle() const
+{
 	return m_dwExStyle;
 }
-AFX_INLINE const CString& CXTPCaption::GetCaptionText() {
+AFX_INLINE const CString& CXTPCaption::GetCaptionText()
+{
 	return m_strCaption;
 }
-AFX_INLINE BOOL CXTPCaption::HasCloseButton() const {
+AFX_INLINE BOOL CXTPCaption::HasCloseButton() const
+{
 	return ((m_dwExStyle & CPWS_EX_CLOSEBUTTON) == CPWS_EX_CLOSEBUTTON);
 }
-AFX_INLINE BOOL CXTPCaption::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPCaption::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+									const RECT& rect, CWnd* pParentWnd, UINT nID,
+									CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
-AFX_INLINE BOOL CXTPCaption::Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID) {
+AFX_INLINE BOOL CXTPCaption::Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect,
+									CWnd* pParentWnd, UINT nID)
+{
 	return CStatic::Create(lpszText, dwStyle, rect, pParentWnd, nID);
 }
-AFX_INLINE CXTPCaptionTheme* CXTPCaption::GetTheme() {
+AFX_INLINE CXTPCaptionTheme* CXTPCaption::GetTheme()
+{
 	return m_pTheme;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCAPTION_H__)

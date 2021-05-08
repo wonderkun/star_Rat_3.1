@@ -1,7 +1,6 @@
 // XTPMarkupKeyboardNavigation.h: interface for the CXTPMarkupKeyboardNavigation class.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,17 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMMARKUPKEYBOARDNAVIGATION_H__)
-#define __XTPMMARKUPKEYBOARDNAVIGATION_H__
+#	define __XTPMMARKUPKEYBOARDNAVIGATION_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPMarkupInputElement;
 class CXTPMarkupContext;
-
-#include "XTPMarkupObject.h"
 
 enum XTPMarkupFocusNavigationDirection
 {
@@ -54,7 +53,6 @@ enum XTPMarkupKeyboardNavigationMode
 	xtpMarkupKeyboardNavigationLocal
 };
 
-
 class _XTP_EXT_CLASS CXTPMarkupKeyboardNavigation : public CXTPMarkupObject
 {
 	DECLARE_MARKUPCLASS(CXTPMarkupKeyboardNavigation)
@@ -66,9 +64,10 @@ protected:
 public:
 	static XTPMarkupKeyboardNavigationMode AFX_CDECL GetTabNavigation(CXTPMarkupObject* pElement);
 
-
 public:
-	static CXTPMarkupObject* AFX_CDECL ConvertKeyboardNavigationMode(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject);
+	static CXTPMarkupObject* AFX_CDECL
+		ConvertKeyboardNavigationMode(CXTPMarkupBuilder* pBuilder, CXTPMarkupObject* pObject,
+									  CXTPMarkupDependencyProperty* pAssociatedProperty = NULL);
 
 public:
 	void ProcessInput(UINT nChar);
@@ -79,7 +78,8 @@ protected:
 
 protected:
 	void Navigate(CXTPMarkupInputElement* pSourceElement, UINT nChar);
-	void Navigate(CXTPMarkupInputElement* pSourceElement, XTPMarkupFocusNavigationDirection direction);
+	void Navigate(CXTPMarkupInputElement* pSourceElement,
+				  XTPMarkupFocusNavigationDirection direction);
 
 private:
 	CXTPMarkupObject* GetGroupParent(CXTPMarkupObject* e, BOOL bIncludeCurrent = FALSE);
@@ -87,16 +87,19 @@ private:
 	BOOL IsInNavigationTree(CXTPMarkupObject* pVisual);
 	XTPMarkupKeyboardNavigationMode GetKeyNavigationMode(CXTPMarkupObject* pElement);
 	BOOL IsGroup(CXTPMarkupObject* e);
-	CXTPMarkupObject* GetNextTab(CXTPMarkupObject* e, CXTPMarkupObject* pContainer, BOOL goDownOnly);
+	CXTPMarkupObject* GetNextTab(CXTPMarkupObject* e, CXTPMarkupObject* pContainer,
+								 BOOL goDownOnly);
 	BOOL IsTabStop(CXTPMarkupObject* e);
 	CXTPMarkupObject* GetTabOnceActiveElement(CXTPMarkupObject* d);
 	CXTPMarkupObject* GetActiveElement(CXTPMarkupObject* d);
-	CXTPMarkupObject* GetNextTabInGroup(CXTPMarkupObject* e, CXTPMarkupObject* container, XTPMarkupKeyboardNavigationMode tabbingType);
+	CXTPMarkupObject* GetNextTabInGroup(CXTPMarkupObject* e, CXTPMarkupObject* container,
+										XTPMarkupKeyboardNavigationMode tabbingType);
 	CXTPMarkupObject* GetFirstTabInGroup(CXTPMarkupObject* container);
 	BOOL IsTabStopOrGroup(CXTPMarkupObject* e);
 	CXTPMarkupObject* GetNextInTree(CXTPMarkupObject* e, CXTPMarkupObject* container);
 	CXTPMarkupObject* GetNextTabWithSameIndex(CXTPMarkupObject* e, CXTPMarkupObject* container);
-	CXTPMarkupObject* GetNextTabWithNextIndex(CXTPMarkupObject* e, CXTPMarkupObject* container, XTPMarkupKeyboardNavigationMode tabbingType);
+	CXTPMarkupObject* GetNextTabWithNextIndex(CXTPMarkupObject* e, CXTPMarkupObject* container,
+											  XTPMarkupKeyboardNavigationMode tabbingType);
 	int GetTabIndexHelper(CXTPMarkupObject* d);
 	CXTPMarkupObject* FocusedElement(CXTPMarkupObject* e);
 
@@ -118,4 +121,5 @@ private:
 	friend class CXTPMarkupContext;
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPMMARKUPKEYBOARDNAVIGATION_H__)

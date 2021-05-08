@@ -1,7 +1,6 @@
-// XTPRibbonBar.h: interface for the CXTPRibbonBar class.
+// XTPRibbonPopups.h
 //
-// This file is a part of the XTREME RIBBON MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,13 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRIBBONPOPUPS_H__)
-#define __XTPRIBBONPOPUPS_H__
+#	define __XTPRIBBONPOPUPS_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPRibbonQuickAccessControls;
 class CXTPRibbonTab;
@@ -34,21 +34,17 @@ class CXTPRibbonControlTab;
 class CXTPTabPaintManager;
 class CXTPRibbonBar;
 class CXTPRibbonGroup;
-class CXTPOffice2007FrameHook;
+class CXTPCommandBarsFrameHook;
 class CXTPRibbonTabContextHeaders;
 class CXTPRibbonGroups;
 
-#include "CommandBars/XTPControls.h"
-#include "CommandBars/XTPMenuBar.h"
-#include "CommandBars/XTPPopupBar.h"
-
-
 //{{AFX_CODEJOCK_PRIVATE
 
-class CXTPRibbonScrollableBar
+class _XTP_EXT_CLASS CXTPRibbonScrollableBar
 {
 public:
 	CXTPRibbonScrollableBar();
+
 private:
 	class CControlGroupsScroll;
 
@@ -59,8 +55,8 @@ protected:
 
 public:
 	void EnableGroupsScroll(BOOL bScrollLeft, BOOL bScrollRight);
-	virtual void OnGroupsScroll(BOOL bScrollLeft) = 0;
-	virtual CRect GetGroupsRect() const = 0;
+	virtual void OnGroupsScroll(BOOL bScrollLeft)			  = 0;
+	virtual CRect GetGroupsRect() const						  = 0;
 	virtual CXTPRibbonGroup* HitTestGroup(CPoint point) const = 0;
 
 	void CreateGroupKeyboardTips(CXTPRibbonTab* pSelectedTab);
@@ -82,18 +78,17 @@ protected:
 	BOOL ProcessSpecialKey(XTPSpecialKey key);
 	CRect _GetBoundRect(CXTPControl* pControl, BOOL bSelected, XTPSpecialKey key);
 
-
 public:
-	int m_nGroupsScrollPos;         // Groups scroll position
+	int m_nGroupsScrollPos; // Groups scroll position
 
 protected:
 	CXTPCommandBar* m_pParent;
-	CXTPControl* m_pControlScrollGroupsLeft;    // Control to draw left scroll
-	CXTPControl* m_pControlScrollGroupsRight;   // Control to draw right scroll
-	CXTPRibbonGroup* m_pHighlightedGroup;       // Currently highlighted group
+	CXTPControl* m_pControlScrollGroupsLeft;  // Control to draw left scroll
+	CXTPControl* m_pControlScrollGroupsRight; // Control to draw right scroll
+	CXTPRibbonGroup* m_pHighlightedGroup;	 // Currently highlighted group
 };
 
-CXTPRibbonScrollableBar* AFX_CDECL GetScrollableBar(CXTPCommandBar* pCommandBar);
+_XTP_EXT_CLASS CXTPRibbonScrollableBar* AFX_CDECL GetScrollableBar(CXTPCommandBar* pCommandBar);
 
 //}}AFX_CODEJOCK_PRIVATE
 
@@ -101,11 +96,12 @@ CXTPRibbonScrollableBar* AFX_CDECL GetScrollableBar(CXTPCommandBar* pCommandBar)
 // Summary:
 //     Implements popup when ribbon is in minimzed mode.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPRibbonTabPopupToolBar : public CXTPPopupToolBar, public CXTPRibbonScrollableBar
+class _XTP_EXT_CLASS CXTPRibbonTabPopupToolBar
+	: public CXTPPopupToolBar
+	, public CXTPRibbonScrollableBar
 {
 	DECLARE_DYNAMIC(CXTPRibbonTabPopupToolBar)
 public:
-
 	// ----------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPRibbonTabPopupToolBar object
@@ -121,7 +117,6 @@ public:
 	~CXTPRibbonTabPopupToolBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves Groups bounding rectangle
@@ -156,8 +151,9 @@ public:
 	// Summary:
 	//     This method is called to get the size of the command bar.
 	// Parameters:
-	//      nLength - The requested dimension of the control bar, either horizontal or vertical, depending on dwMode.
-	//      nMode - see CControlBar::CalcDynamicLayout for list of supported flags.
+	//      nLength - The requested dimension of the control bar, either horizontal or vertical,
+	//      depending on dwMode. nMode - see CControlBar::CalcDynamicLayout for list of supported
+	//      flags.
 	// Returns:
 	//     Size of the command bar.
 	//-----------------------------------------------------------------------
@@ -254,10 +250,10 @@ public:
 	INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -265,35 +261,39 @@ protected:
 	// Parameters:
 	//     key - Special keys enumerator. Can be any of the values listed in the Remarks section.
 	// Remarks:
-	//     CXTPCommandBar maps key passed as parameter of OnKeyDown to XTPSpecialKey enumerator and call ProcessSpecialKey.<p/>
-	//     key parameter can be one of the following:
-	//         * <b>xtpKeyNext</b> Indicates the RIGHT or DOWN key was pressed  Next control must be selected
-	//         * <b>xtpKeyPrev</b> Indicates the LEFT or UP key was pressed. Previous control must be selected.
-	//         * <b>xtpKeyBack</b> Indicates the LEFT key was pressed for popup bar. Current submenu must be closed
-	//         * <b>xtpKeyPopup</b> Indicates the RIGHT key was pressed for popup bar. Submenu must be opened.
+	//     CXTPCommandBar maps key passed as parameter of OnKeyDown to XTPSpecialKey enumerator and
+	//     call ProcessSpecialKey.<p/> key parameter can be one of the following:
+	//         * <b>xtpKeyNext</b> Indicates the RIGHT or DOWN key was pressed  Next control must be
+	//         selected
+	//         * <b>xtpKeyPrev</b> Indicates the LEFT or UP key was pressed. Previous control must
+	//         be selected.
+	//         * <b>xtpKeyBack</b> Indicates the LEFT key was pressed for popup bar. Current submenu
+	//         must be closed
+	//         * <b>xtpKeyPopup</b> Indicates the RIGHT key was pressed for popup bar. Submenu must
+	//         be opened.
 	//         * <b>xtpKeyEscape</b> Indicates the ESCAPE key was pressed.
 	//         * <b>xtpKeyReturn</b> Indicates the RETURN key was pressed
-	//         * <b>xtpKeyHome</b> Indicates the HOME key was pressed. First control must be selected.
+	//         * <b>xtpKeyHome</b> Indicates the HOME key was pressed. First control must be
+	//         selected.
 	//         * <b>xtpKeyEnd</b> Indicates the END key was pressed. Last control must be selected.
 	// Returns:
 	//     TRUE if key handled, otherwise returns FALSE
 	//-----------------------------------------------------------------------
 	virtual BOOL ProcessSpecialKey(XTPSpecialKey key);
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-	CXTPRibbonTab* m_pRibbonTab;  // Ribbon Bar tab the group belongs to.
-	CXTPRibbonBar* m_pRibbonBar;  // The CXTPRibbonBar object the CXTPRibbonTab belongs to.
-	CRect m_rcGroups;             // Groups bounding rectangle.
-
+	CXTPRibbonTab* m_pRibbonTab; // Ribbon Bar tab the group belongs to.
+	CXTPRibbonBar* m_pRibbonBar; // The CXTPRibbonBar object the CXTPRibbonTab belongs to.
+	CRect m_rcGroups;			 // Groups bounding rectangle.
 };
 
 //{{AFX_CODEJOCK_PRIVATE
 
-class CXTPRibbonBarMorePopupToolBar : public CXTPPopupToolBar
+class _XTP_EXT_CLASS CXTPRibbonBarMorePopupToolBar : public CXTPPopupToolBar
 {
 	DECLARE_DYNAMIC(CXTPRibbonBarMorePopupToolBar)
 
@@ -309,8 +309,9 @@ public:
 	CXTPRibbonBar* m_pRibbonBar;
 };
 
-
-class CXTPRibbonGroupPopupToolBar : public CXTPPopupToolBar, public CXTPRibbonScrollableBar
+class _XTP_EXT_CLASS CXTPRibbonGroupPopupToolBar
+	: public CXTPPopupToolBar
+	, public CXTPRibbonScrollableBar
 {
 	DECLARE_XTP_COMMANDBAR(CXTPRibbonGroupPopupToolBar)
 public:
@@ -328,6 +329,7 @@ public:
 	virtual BOOL SetTrackingMode(int bMode, BOOL bSelectFirst = TRUE, BOOL bKeyboard = FALSE);
 	virtual CXTPRibbonGroup* HitTestGroup(CPoint point) const;
 	BOOL IsKeyboardCuesVisible() const;
+
 protected:
 	void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
@@ -342,8 +344,7 @@ public:
 	CXTPRibbonGroup* m_pParentGroup;
 };
 
-
 //}}AFX_CODEJOCK_PRIVATE
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRIBBONPOPUPS_H__)

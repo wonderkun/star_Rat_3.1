@@ -1,7 +1,6 @@
 // XTPResizeFormView.h: interface for the CXTPResizeFormView class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPRESIZEFORMVIEW_H__)
-#define __XTPRESIZEFORMVIEW_H__
+#	define __XTPRESIZEFORMVIEW_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -33,12 +34,13 @@
 //     and CXTPResize. CXTPResizeFormView is used to create a resizable CFormView
 //     type object that allows its form items to be resized or moved dynamically.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPResizeFormView : public CFormView, public CXTPResize
+class _XTP_EXT_CLASS CXTPResizeFormView
+	: public CFormView
+	, public CXTPResize
 {
 	DECLARE_DYNCREATE(CXTPResizeFormView)
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPResizeFormView object
@@ -70,8 +72,7 @@ protected:
 	virtual void AdjustResizeRect(CSize& rcWindow);
 
 protected:
-
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(CXTPResizeFormView)
@@ -84,8 +85,8 @@ protected:
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
-
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(__XTPRESIZEFORMVIEW_H__)

@@ -7,7 +7,7 @@
 * 
 * 部分代码来源于网络,你可以随意使用,传播或修改.但是不可用于商业用途
 *********************************************************************/
-#include "stdafx.h"
+#include "pcl.h"
 #if !defined(AFX_SEU_QQWRY_H)
 #define AFX_SEU_QQWRY_H
 

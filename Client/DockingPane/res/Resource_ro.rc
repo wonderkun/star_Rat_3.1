@@ -1,7 +1,6 @@
 // DockingPane resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "DockingPane/Resource.h"
 #include "DockingPane/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)
 #ifdef _WIN32
 LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -34,13 +33,13 @@ LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_IDS_DOCKINGPANE_AUTOHIDE                    "Automat Piele"
-    XTP_IDS_DOCKINGPANE_CLOSE                       "Inchide"
+    XTP_IDS_DOCKINGPANE_AUTOHIDE                    "Ascundere automatã"
+    XTP_IDS_DOCKINGPANE_CLOSE                       "Închide"
     XTP_IDS_DOCKINGPANE_MAXIMIZE                    "Maximizare"
-    XTP_IDS_DOCKINGPANE_RESTORE                     "Restaurare"
-    XTP_IDS_DOCKINGPANE_MENU                        "Meniu"
-    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVETOOLS    "Active Tool Windows"
-    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVEFILES    "Active Files"
+    XTP_IDS_DOCKINGPANE_RESTORE                     "Restabili"
+    XTP_IDS_DOCKINGPANE_MENU                        "Meniul"
+    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVETOOLS    "Instrumentul activ pentru Windows"
+    XTP_IDS_DOCKINGPANE_SELECTWINDOW_ACTIVEFILES    "Active Fiºierele"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)

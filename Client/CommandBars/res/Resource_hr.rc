@@ -1,7 +1,6 @@
 // CommandBars resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "CommandBars/Resource.h"
 #include "CommandBars/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HRV)
 #ifdef _WIN32
 LANGUAGE LANG_CROATIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
@@ -104,14 +103,14 @@ XTP_IDD_PAGE_OPTIONS DIALOGEX DISCARDABLE  0, 0, 237, 150
 CAPTION "Moguænosti"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Prilago?eni izbornici i alatne trake",XTP_IDC_GROUP_PERSONALIZED,4,5,229,8
+    LTEXT           "Prilagoðeni izbornici i alatne trake",XTP_IDC_GROUP_PERSONALIZED,4,5,229,8
     CONTROL         "Puni izbornici",XTP_IDC_CHECK_FULL_MENUS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,216,10
     CONTROL         "Pokaži cijele izbornike nakon kratke stanke",
                     XTP_IDC_CHECK_AFTERDELAY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,29,204,10
     PUSHBUTTON      "Vrati izvorno stanje mojih podataka o upotrebi",
-                    XTP_IDC_BUTTON_RESETDATA,16,42,155,14
+                    XTP_IDC_BUTTON_RESETDATA,16,42,175,14
     LTEXT           "Drugo", XTP_IDC_GROUP_OTHER,4,70,229,8
     CONTROL         "Velike ikone",XTP_IDC_CHECK_LARGEICONS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,82,216,10
@@ -120,8 +119,8 @@ BEGIN
     CONTROL         "Pokaži tipke preeaca u ZaslonskimOpisima",
                     XTP_IDC_CHECK_SHORTCUTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,22,104,204,10
-    LTEXT           "Animacij&e izbornika:",IDC_STATIC,10,117,63,8
-    COMBOBOX        XTP_IDC_COMBO_ANIMATION,77,115,79,65,CBS_DROPDOWNLIST | 
+    LTEXT           "Animacij&e izbornika:",IDC_STATIC,10,117,83,8
+    COMBOBOX        XTP_IDC_COMBO_ANIMATION,97,115,79,65,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -142,20 +141,20 @@ END
 
 XTP_IDD_PAGE_MENUS DIALOGEX DISCARDABLE  0, 0, 230, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
-CAPTION "&Menus"
+CAPTION "Izbornici"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    LTEXT           "Application Menus",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
+    LTEXT           "Primjena Izbornici",XTP_IDC_STATIC_APPLICATIONMENUS,4,5,222,
                     8
-    LTEXT           "Context Menus",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
-    LTEXT           "&Show Menu:",IDC_STATIC,10,20,44,11
-    COMBOBOX        XTP_IDC_COMBO_APPMENUS,54,18,159,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Kontekst Izbornici",XTP_IDC_STATIC_CONTEXTMENUS,4,80,222,8
+    LTEXT           "Pokaži Izbornik:",IDC_STATIC,10,20,64,11
+    COMBOBOX        XTP_IDC_COMBO_APPMENUS,74,18,159,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETAPP,10,57,70,14
-    LTEXT           "Default menu\nDefault application menu",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
+    LTEXT           "Default izbornik\nIzbornik Default prijava",XTP_IDC_STATIC_DESCRIPTION,37,34,181,18
     ICON            0,XTP_IDC_STATIC_ICON,10,32,21,20
-    LTEXT           "Select &context menu:",IDC_STATIC,10,92,68,10
-    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,83,90,130,79,CBS_DROPDOWNLIST | 
+    LTEXT           "Odaberi kontekst izbornik:",IDC_STATIC,10,92,88,10
+    COMBOBOX        XTP_IDC_COMBO_CONTEXTMENUS,103,90,130,79,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Reset",XTP_IDC_BUTTON_RESETCONTEXT,10,108,70,14
 END
@@ -221,7 +220,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_CUSTOMIZE       "Prilagodi"
     XTP_IDS_NEWMENU         "Novi izbornik"
-    XTP_IDS_CUSTOMIZE_STATUSBAR "Customize Status Bar"
+    XTP_IDS_CUSTOMIZE_STATUSBAR "Prilagodite Statusna traka"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -257,10 +256,10 @@ BEGIN
     XTP_IDS_CONFIRM_KEYBOARD 
                             "Želite li zaista vratiti izvornu dodjelu tipki preeaca?  This action will remove all custom key assignments at the text level."
     XTP_IDS_CONFIRM_REASSIGN 
-                            "This shortcut is currently assigned.\nDo you want to re-assign this shortcut?"
-    XTP_IDS_CONFIRM_UPDATE  "Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?"
+                            "Ovaj preèac trenutno je dodijeljen.\nŽelite li ponovno zauzeti ovaj preèac?"
+    XTP_IDS_CONFIRM_UPDATE  "Zbog nadogradnje softvera toolbar '%s' nije promijenilo. Želite li ponovno postaviti prilagoðene alatne trake i stavite novi?"
     XTP_IDS_IMAGEEDITOR_FILTER 
-                            "All Picture Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.cur;*.gif;*.jpg|Bitmaps(*.Bmp;*.Dib)|*.bmp;*.dib|Metafiles(*.Wmf;*.Emf)|*.wmf;*.emf|Icons(*.Ico;*.Cur)|*.ico;*.cur|GIF(*.Gif)|*.gif|JPEG(*.Jpg)|*.jpg|All Files(*.*)|*.*||"
+                            "Sve slike Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|bitmape (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Meta datoteke (*.wmf;*.emf)|*.wmf;*.emf|Ikone (*.ico;*.cur)|*.ico;*.cur|sve ukupno (*.*)|*.*||"
     XTP_ID_TOOLBAR_EXPAND   "\nIzbornik moguanosti alatne trake"
     XTP_ID_TOOLBAR_HIDE     "\nZatvori"
     XTP_ID_POPUPBAR_EXPAND  "\nExpand"
@@ -268,7 +267,7 @@ BEGIN
     XTP_ID_MENUBAR_RESTORE  "\nVrati prozor na prethodnu velieinu"
     XTP_ID_MENUBAR_MINIMIZE "\nMinimiziraj prozor"
 
-    XTP_IDS_SHORTCUT_SECONDKEY "(%s) was pressed. Waiting for second key of chord..."
+    XTP_IDS_SHORTCUT_SECONDKEY "(%s) je pritisnuo. Èekanje na drugom kljuèu akord ..."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -299,26 +298,26 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nMove to P&revious Tab Group"
-    XTP_ID_WORKSPACE_MOVENEXT "\nMove to Ne&xt Tab Group"
-    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNew Hori&zontal Tab Group"
-    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew &Vertical Tab Group"
-    XTP_ID_WORKSPACE_CANCEL "Odustani"
-    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Active Files"
+    XTP_ID_WORKSPACE_MOVEPREVIOUS "\nPomicanje na prethodnu karticu Grupe"
+    XTP_ID_WORKSPACE_MOVENEXT "\nPremjestiti na sljedeæu karticu Grupe"
+    XTP_ID_WORKSPACE_NEWHORIZONTAL "\nNovi Horizontalni Tab Grupe"
+    XTP_ID_WORKSPACE_NEWVERTICAL "\nNew Tab Vertikala Grupe"
+    XTP_ID_WORKSPACE_CANCEL "\nOdustani"
+    XTP_IDS_TABNAVIGATEBUTTON_ACTIVEFILES "Aktivnost Files"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    XTP_ID_PREVIEW_PRINT    "Print the previewed item\nPrint"
-    XTP_ID_PREVIEW_PREV     "Go to the previous page\nPrevious Page"
-    XTP_ID_PREVIEW_NEXT     "Go to the next page\nNext Page"
-    XTP_ID_PREVIEW_ZOOMIN   "Increase magnification of preview page\nZoom In"
-    XTP_ID_PREVIEW_ZOOMOUT  "Decrease magnification of preview page\nZoom Out"
-    XTP_ID_PREVIEW_CLOSE    "Close the preview\nClose Preview"
-    XTP_IDS_PREVIEW_WHOLEPAGE "Whole Page"
-    XTP_IDS_PREVIEW_PAGEWIDTH "Page Width"
-    XTP_IDS_PREVIEW_PAGEI     "Page %i"
-    XTP_IDS_PREVIEW_PAGEIOFI  "Page %i of %i"
+    XTP_ID_PREVIEW_PRINT    "Ispis pregledanu stavku\notisak"
+    XTP_ID_PREVIEW_PREV     "Idi na prethodnu stranicu\nPrethodna stranica"
+    XTP_ID_PREVIEW_NEXT     "Idi na sljedeæu stranicu\nSljedeæa stranica"
+    XTP_ID_PREVIEW_ZOOMIN   "Poveæanje uveæanja stranici za pregled\nzumirati"
+    XTP_ID_PREVIEW_ZOOMOUT  "Smanjenje uveæanja stranici za pregled\nzoom Out"
+    XTP_ID_PREVIEW_CLOSE    "Zatvorite pregled\nZatvori pregled"
+    XTP_IDS_PREVIEW_WHOLEPAGE "èitav stranica"
+    XTP_IDS_PREVIEW_PAGEWIDTH "Širina stranice"
+    XTP_IDS_PREVIEW_PAGEI     "Stranica %i"
+    XTP_IDS_PREVIEW_PAGEIOFI  "Stranica %i od %i"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HRV)

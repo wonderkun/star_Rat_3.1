@@ -1,7 +1,6 @@
 // Controls resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "Controls/Resource.h"
 #include "Controls/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) && !defined(_XTP_NO_STANDARDCONTROLS_RES)
+#if !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ELL))
 #ifdef _WIN32
 LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
 #pragma code_page(1253)
@@ -39,7 +38,7 @@ FONT 8, "MS Shell Dlg"
 BEGIN
     DEFPUSHBUTTON   "Κλείσιμο",IDOK,224,108,50,14
     CONTROL         "Εμφάνιση συμβουλών στην εκκίνηση",XTP_IDC_CHK_DAYTIP_SHOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,140,10
-    PUSHBUTTON      "Επόμενη συμβουλή",XTP_IDC_BTN_DAYTIP_NEXT,170,108,50,14
+    PUSHBUTTON      "Επόμενη συμβουλή",XTP_IDC_BTN_DAYTIP_NEXT,150,108,70,14
     CONTROL         "",XTP_IDC_BTN_DAYTIP_BORDER,"Static",SS_GRAYFRAME | NOT WS_VISIBLE,0,0,279,103
 END
 
@@ -54,34 +53,34 @@ BEGIN
                     15,119,86
     CONTROL         "",XTP_IDC_CLR_LUM,"Static",SS_BLACKFRAME | WS_TABSTOP,
                     126,15,20,86
-    LTEXT           "Απόχρωση:",XTP_IDC_TXT_HUE,6,108,18,8
-    EDITTEXT        XTP_IDC_EDIT_HUE,34,106,33,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Απόχρωση:",XTP_IDC_TXT_HUE,3,108,45,8
+    EDITTEXT        XTP_IDC_EDIT_HUE,47,106,33,13,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin1",XTP_IDC_SPIN_HUE,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,58,105,
                     10,14
-    LTEXT           "Κορεσμός:",XTP_IDC_TXT_SAT,6,125,18,8
-    EDITTEXT        XTP_IDC_EDIT_SAT,34,122,33,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Κορεσμός:",XTP_IDC_TXT_SAT,3,125,45,8
+    EDITTEXT        XTP_IDC_EDIT_SAT,47,122,33,13,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin2",XTP_IDC_SPIN_SAT,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,58,122,
                     10,14
-    LTEXT           "Φωτεινότητα:",XTP_IDC_TXT_LUM,6,140,25,8
-    EDITTEXT        XTP_IDC_EDIT_LUM,34,138,33,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Φωτεινότητα:",XTP_IDC_TXT_LUM,3,140,45,8
+    EDITTEXT        XTP_IDC_EDIT_LUM,47,138,33,13,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin3",XTP_IDC_SPIN_LUM,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,58,137,
                     10,14
-    LTEXT           "Κόκκινο:",XTP_IDC_TXT_RED,74,108,23,8
-    EDITTEXT        XTP_IDC_EDIT_RED,106,106,33,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Κόκκινο:",XTP_IDC_TXT_RED,84,108,28,8
+    EDITTEXT        XTP_IDC_EDIT_RED,116,106,33,13,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin1",XTP_IDC_SPIN_RED,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,130,105,
                     11,14
-    LTEXT           "Πράσινο (G):",XTP_IDC_TXT_GREEN,74,125,28,8
-    EDITTEXT        XTP_IDC_EDIT_GREEN,106,122,33,13,ES_AUTOHSCROLL | 
+    LTEXT           "Πράσινο:",XTP_IDC_TXT_GREEN,84,125,28,8
+    EDITTEXT        XTP_IDC_EDIT_GREEN,116,122,33,13,ES_AUTOHSCROLL | 
                     ES_NUMBER
     CONTROL         "Spin2",XTP_IDC_SPIN_GREEN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,130,122,
                     11,14
-    LTEXT           "Μπλε:",XTP_IDC_TXT_BLUE,74,140,23,8
-    EDITTEXT        XTP_IDC_EDIT_BLUE,106,138,33,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Μπλε:",XTP_IDC_TXT_BLUE,84,140,23,8
+    EDITTEXT        XTP_IDC_EDIT_BLUE,116,138,33,13,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin3",XTP_IDC_SPIN_BLUE,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,130,137,
                     11,14
@@ -104,18 +103,18 @@ CAPTION "Τακτοποίηση παραθύρων"
 FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT           "Επιλογή παραθύρου:",IDC_STATIC,7,7,147,8
-    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,216,140,LBS_SORT | 
+    LISTBOX         XTP_IDC_LBOX_WINDOWS,7,17,200,140,LBS_SORT | 
                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Ενεργοποίηση",XTP_IDC_BTN_ACTIVATE,233,7,62,14
-    PUSHBUTTON      "ΟΚ",IDOK,233,24,62,14
-    PUSHBUTTON      "Αποθήκευση",XTP_IDC_BTN_SAVE,233,41,62,14
-    PUSHBUTTON      "Κλείσιμο παραθύρου",XTP_IDC_BTN_CLOSEWINDOWS,233,58,62,14
-    PUSHBUTTON      "Σε επικάλυψη",XTP_IDC_BTN_CASCADE,233,75,62,14
-    PUSHBUTTON      "Οριζόντια παράθεση",XTP_IDC_BTN_TILEHORZ,233,92,62,14
-    PUSHBUTTON      "Κατακόρυφη παράθεση",XTP_IDC_BTN_TILEVERT,233,109,62,14
-    PUSHBUTTON      "Ελαχιστοποίηση",XTP_IDC_BTN_MINIMIZE,233,126,62,14
+    PUSHBUTTON      "Ενεργοποίηση",XTP_IDC_BTN_ACTIVATE,212,7,83,14
+    PUSHBUTTON      "ΟΚ",IDOK,212,24,83,14
+    PUSHBUTTON      "Αποθήκευση",XTP_IDC_BTN_SAVE,212,41,83,14
+    PUSHBUTTON      "Κλείσιμο παραθύρου",XTP_IDC_BTN_CLOSEWINDOWS,212,58,83,14
+    PUSHBUTTON      "Σε επικάλυψη",XTP_IDC_BTN_CASCADE,212,75,83,14
+    PUSHBUTTON      "Οριζόντια παράθεση",XTP_IDC_BTN_TILEHORZ,212,92,83,14
+    PUSHBUTTON      "Κατακόρυφη παράθεση",XTP_IDC_BTN_TILEVERT,212,109,83,14
+    PUSHBUTTON      "Ελαχιστοποίηση",XTP_IDC_BTN_MINIMIZE,212,126,83,14
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     XTP_IDS_STD_COLORS       "Βασικά χρώματα"
+	XTP_IDS_RECENT_COLORS    "Πρόσφατα Χρώματα"
+	XTP_IDS_THEME_COLORS     "θέμα Χρώματα"
+	XTP_IDS_TAGCLOUD_TIP     "Ετικέτες %s, να Βαθμολογία %d"
     XTP_IDS_TIPTEXT          "Κείμενο συμβουλής"
     XTP_IDS_DIDYOUKNOW       "Γνωρίζετε ότι..."
     XTP_IDS_FILE_ABSENT      "Το αρχείο που καθορίστηκε δεν υπάρχει."
@@ -255,4 +257,20 @@ BEGIN
     XTP_IDS_TASK_HIDE_DETAILS "Απόκρυψη λεπτομερειών"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+STRINGTABLE DISCARDABLE 
+BEGIN
+    XTP_IDS_BACKGROUND1        "Ιστορικό 1"
+    XTP_IDS_BACKGROUND2        "Ιστορικό 2"
+    XTP_IDS_TEXT1              "Κείμενο 1"
+    XTP_IDS_TEXT2              "Κείμενο 2"
+    XTP_IDS_ACCENT1            "΄εμφαση 1"
+    XTP_IDS_ACCENT2            "΄εμφαση 2"
+    XTP_IDS_ACCENT3            "΄εμφαση 3"
+    XTP_IDS_ACCENT4            "΄εμφαση 4"
+    XTP_IDS_ACCENT5            "΄εμφαση 5"
+    XTP_IDS_ACCENT6            "΄εμφαση 6"
+    XTP_IDS_LIGHTER            "Αναπτήρας"
+    XTP_IDS_DARKER             "Πιο σκούρο"
+END
+
+#endif // !defined(_XTP_NO_STANDARDCONTROLS_RES) && ( !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ELL))

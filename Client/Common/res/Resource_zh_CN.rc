@@ -1,7 +1,6 @@
 // Common resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -24,12 +23,27 @@
 #include "Common/Resource.h"
 #include "Common/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
 #endif //_WIN32
 
+#ifndef _AFXDLL
+
+#include <l.chs/afxctl.rc>
+#include <l.chs/afxdb.rc>
+#include <l.chs/afxolecl.rc>
+#include <l.chs/afxolesv.rc>
+#include <l.chs/afxprint.rc>
+#include <l.chs/afxres.rc>
+
+#ifdef _XTP_INCLUDE_MFC_STRINGS
+#include "Common/res/mfc/l.chs/indicate.rc"
+#include "Common/res/mfc/l.chs/prompts.rc"
+#endif
+
+#endif	//_AFXDLL
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -87,7 +101,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     XTP_IDS_ONEPAGE         "Ò»Ò³"
     XTP_IDS_TWOPAGE         "Á½Ò³"
-    XTP_IDS_PREVIEWPAGEDESC "Page %u\nPages %u-%u"
+    XTP_IDS_PREVIEWPAGEDESC "Ò³Ãæ %u\nÍøÒ³ %u-%u"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -145,5 +159,5 @@ BEGIN
 END
 
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #endif // __XTPCOMMONRESOURCE_RC__

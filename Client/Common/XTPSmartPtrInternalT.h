@@ -1,7 +1,6 @@
 // XTPSmartPtrInternalT.h: CXTPSmartPtrInternalT template definition.
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XtpSmartPtrInternal_H__)
-#define _XtpSmartPtrInternal_H__
+#	define _XtpSmartPtrInternal_H__
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 //}}AFX_CODEJOCK_PRIVATE
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // template: CXTPSmartPtrInternalT
@@ -33,17 +34,17 @@
 //           XTP_DEFINE_SMART_PTR_ARRAY_INTERNAL(_TClassName)
 /////////////////////////////////////////////////////////////////////////////
 
-// -----------------------------------------------------------------------
+// --------------------------------------------------------------------
 // Parameters:
 //     ClassName :  Name of the class used to define the smart pointer.
 // Remarks:
 //     Define smart pointer for the specified class as ClassNamePtr.
-//     CXTPSmartPtrInternalT is used for this purpose.
-//     For example XTP_DEFINE_SMART_PTR_INTERNAL(CCmdTarget) will be replaced
-//     with typedef CXTPSmartPtrInternalT<CCmdTarget> CCmdTargetPtr;
-// -----------------------------------------------------------------------
-#define XTP_DEFINE_SMART_PTR_INTERNAL(ClassName) \
-	typedef CXTPSmartPtrInternalT<ClassName> ClassName##Ptr;
+//     CXTPSmartPtrInternalT is used for this purpose. For example
+//     XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCmdTarget) will be replaced with
+//     typedef CXTPSmartPtrInternalT\<CXTPCmdTarget\> CCmdTargetPtr;
+// --------------------------------------------------------------------
+#	define XTP_DEFINE_SMART_PTR_INTERNAL(ClassName)                                               \
+		typedef CXTPSmartPtrInternalT<ClassName> ClassName##Ptr;
 
 // -----------------------------------------------------------------------
 // Parameters:
@@ -53,14 +54,14 @@
 //     CXTPInternalCollectionT is used for this purpose.
 //     Also define smart pointer for array as ClassNamePtrArrayPtr.
 // -----------------------------------------------------------------------
-#define XTP_DEFINE_SMART_PTR_ARRAY_INTERNAL(ClassName) \
-	typedef CXTPInternalCollectionT<ClassName> ClassName##PtrArray; \
-	typedef CXTPSmartPtrInternalT<ClassName> ClassName##PtrArrayPtr;
+#	define XTP_DEFINE_SMART_PTR_ARRAY_INTERNAL(ClassName)                                         \
+		typedef CXTPInternalCollectionT<ClassName> ClassName##PtrArray;                            \
+		typedef CXTPSmartPtrInternalT<ClassName> ClassName##PtrArrayPtr;
 
 //===========================================================================
 // Remarks:
 //     This internal class is used for semi-automatic incrementing
-//          and decrementing reference to any object derived from CCmdTarget
+//          and decrementing reference to any object derived from CXTPCmdTarget
 //          or other class, which has InternalAddRef(), InternalRelease()
 //          methods.
 // See Also: macro XTP_DEFINE_SMART_PTR_INTERNAL(_TClassName)
@@ -77,7 +78,6 @@ protected:
 
 	_TObject* m_pObject; // A pointer to a handled object
 public:
-
 	//-----------------------------------------------------------------------
 	// Parameters:
 	//     pObject             - Pointer to the handled object.
@@ -93,7 +93,8 @@ public:
 	{
 		m_pObject = pObject;
 
-		if (bCallInternalAddRef && m_pObject) {
+		if (bCallInternalAddRef && m_pObject)
+		{
 			((CCmdTarget*)m_pObject)->InternalAddRef();
 		}
 	};
@@ -109,7 +110,8 @@ public:
 	CXTPSmartPtrInternalT(const Tthis& rSrc)
 	{
 		m_pObject = (_TObject*)rSrc;
-		if (m_pObject) {
+		if (m_pObject)
+		{
 			((CCmdTarget*)m_pObject)->InternalAddRef();
 		}
 	};
@@ -121,8 +123,10 @@ public:
 	//     Call InternalRelease() for the not NULL handled object.
 	// See Also: CXTPSmartPtrInternalT constructors
 	//-----------------------------------------------------------------------
-	virtual ~CXTPSmartPtrInternalT() {
-		if (m_pObject) {
+	virtual ~CXTPSmartPtrInternalT()
+	{
+		if (m_pObject)
+		{
 			((CCmdTarget*)m_pObject)->InternalRelease();
 		}
 	};
@@ -147,12 +151,14 @@ public:
 	{
 		_TObject* pObjOld = m_pObject;
 
-		if (bCallInternalAddRef && pObject) {
+		if (bCallInternalAddRef && pObject)
+		{
 			((CCmdTarget*)pObject)->InternalAddRef();
 		}
 		m_pObject = pObject;
 
-		if (pObjOld) {
+		if (pObjOld)
+		{
 			((CCmdTarget*)pObjOld)->InternalRelease();
 		}
 	};
@@ -164,9 +170,10 @@ public:
 	// Returns:
 	//     Pointer to the handled object.
 	//-----------------------------------------------------------------------
-	_TObject* Detach() {
+	_TObject* Detach()
+	{
 		_TObject* pObj = m_pObject;
-		m_pObject = NULL;
+		m_pObject	  = NULL;
 		return pObj;
 	};
 
@@ -177,8 +184,10 @@ public:
 	// Returns:
 	//     Pointer to the handled object.
 	//-----------------------------------------------------------------------
-	_TObject* GetInterface(BOOL bWithAddRef = TRUE) {
-		if (bWithAddRef && m_pObject) {
+	_TObject* GetInterface(BOOL bWithAddRef = TRUE)
+	{
+		if (bWithAddRef && m_pObject)
+		{
 			((CCmdTarget*)m_pObject)->InternalAddRef();
 		}
 		return m_pObject;
@@ -198,9 +207,10 @@ public:
 	_TObject* operator=(_TObject* pNewObj)
 	{
 		_TObject* pObjOld = m_pObject;
-		m_pObject = pNewObj;
+		m_pObject		  = pNewObj;
 
-		if (pObjOld) {
+		if (pObjOld)
+		{
 			((CCmdTarget*)pObjOld)->InternalRelease();
 		}
 
@@ -219,16 +229,19 @@ public:
 	// Returns:
 	//     Reference to this class instance.
 	//-----------------------------------------------------------------------
-	const Tthis& operator=(const Tthis& rSrc) {
+	const Tthis& operator=(const Tthis& rSrc)
+	{
 		_TObject* pObjOld = m_pObject;
 
 		m_pObject = rSrc;
 
-		if (m_pObject) {
+		if (m_pObject)
+		{
 			((CCmdTarget*)m_pObject)->InternalAddRef();
 		}
 
-		if (pObjOld) {
+		if (pObjOld)
+		{
 			((CCmdTarget*)pObjOld)->InternalRelease();
 		}
 
@@ -241,7 +254,8 @@ public:
 	// Returns:
 	//     Pointer to the handled object.
 	//-----------------------------------------------------------------------
-	_TObject* operator->() const{
+	_TObject* operator->() const
+	{
 		ASSERT(m_pObject);
 		return m_pObject;
 	};
@@ -252,7 +266,8 @@ public:
 	// Returns:
 	//     Pointer to the handled object.
 	//-----------------------------------------------------------------------
-	operator _TObject*() const {
+	operator _TObject*() const
+	{
 		return m_pObject;
 	}
 
@@ -262,7 +277,8 @@ public:
 	// Returns:
 	//     TRUE if handled object equal NULL, else FALSE.
 	//-----------------------------------------------------------------------
-	BOOL operator!() const {
+	BOOL operator!() const
+	{
 		return !m_pObject;
 	}
 
@@ -278,13 +294,15 @@ public:
 	// Returns:
 	//     TRUE if pointer are equal, else FALSE.
 	//-----------------------------------------------------------------------
-	BOOL operator==(const Tthis& ptr2) const {
+	BOOL operator==(const Tthis& ptr2) const
+	{
 		return m_pObject == (_TObject*)ptr2;
 	}
 	// ----------------------------------------------------
 	// <combine CXTPSmartPtrInternalT::==@Tthis&amp;@const>
 	// ----------------------------------------------------
-	BOOL operator==(const _TObject* pObj) const {
+	BOOL operator==(const _TObject* pObj) const
+	{
 		return pObj == m_pObject;
 	}
 };
@@ -300,15 +318,15 @@ public:
 //      CXTPSmartPtrInternalT, CXTPInternalUnknown
 //===========================================================================
 template<class _TObject>
-class CXTPInternalCollectionT : public CArray<CXTPSmartPtrInternalT<_TObject>,
-											  const CXTPSmartPtrInternalT<_TObject>& >
+class CXTPInternalCollectionT
+	: public CArray<CXTPSmartPtrInternalT<_TObject>, const CXTPSmartPtrInternalT<_TObject>&>
 {
 public:
 	//------------------------------------------------------------------------
 	// Remarks:
 	//      Stored objects type definition.
 	//------------------------------------------------------------------------
-	typedef _TObject                        TObject;
+	typedef _TObject TObject;
 
 	//------------------------------------------------------------------------
 	// Remarks:
@@ -327,27 +345,27 @@ public:
 	//      Default object destructor.
 	//--------------------------------------------------------------------
 	virtual ~CXTPInternalCollectionT(){};
-/*
-	//--------------------------------------------------------------------
-	// Summary:
-	//      Get pointer to this object.
-	// Parameters:
-	//      bWithAddRef : [in]  If TRUE - InternalAddRef() is called before
-	//                          returning pointer. It is TRUE by default.
-	// Returns:
-	//      Pointer to this object.
-	// Remarks:
-	//      This function gets pointer to this object and calls
-	//      InternalAddRef() if specified.
-	// See also:
-	//      IXTPInternalUnknown.
-	//--------------------------------------------------------------------
-	CXTPInternalCollectionT<_TObject>* GetInterface(BOOL bWithAddRef = TRUE) {
-		if(bWithAddRef) {
-			InternalAddRef();
-		}
-		return this;
-	};*/
+	/*
+		//--------------------------------------------------------------------
+		// Summary:
+		//      Get pointer to this object.
+		// Parameters:
+		//      bWithAddRef : [in]  If TRUE - InternalAddRef() is called before
+		//                          returning pointer. It is TRUE by default.
+		// Returns:
+		//      Pointer to this object.
+		// Remarks:
+		//      This function gets pointer to this object and calls
+		//      InternalAddRef() if specified.
+		// See also:
+		//      IXTPInternalUnknown.
+		//--------------------------------------------------------------------
+		CXTPInternalCollectionT<_TObject>* GetInterface(BOOL bWithAddRef = TRUE) {
+			if(bWithAddRef) {
+				InternalAddRef();
+			}
+			return this;
+		};*/
 
 	//--------------------------------------------------------------------
 	// Summary:
@@ -367,7 +385,7 @@ public:
 	virtual _TObject* GetAt(int nIndex, BOOL bWithAddRef = TRUE)
 	{
 		TObjectPtr& rPtr = ElementAt(nIndex);
-		_TObject* pObj = rPtr.GetInterface(bWithAddRef);
+		_TObject* pObj   = rPtr.GetInterface(bWithAddRef);
 		return pObj;
 	}
 
@@ -398,9 +416,9 @@ public:
 //     This class represents a simple array of typed elements.
 //     It repeats CArray methods names and parameters as far as CArray behavior.
 // Remarks:
-//     This class derived from CCmdTarget. This allow to use it as base class
+//     This class derived from CXTPCmdTarget. This allow to use it as base class
 //     for collection which has features for ActiveX support.
-// See Also: CArray, CCmdTarget.
+// See Also: CArray, CXTPCmdTarget.
 //===========================================================================
 template<class TYPE, class ARG_TYPE, class OLE_TYPE = long>
 class CXTPArrayT : public CXTPCmdTarget
@@ -649,12 +667,12 @@ public:
 	//-----------------------------------------------------------------------
 	virtual BOOL RemoveElement(ARG_TYPE nElement);
 
-
 protected:
 	CArray<TYPE, ARG_TYPE> m_arElements; // Elements storage.
 
 protected:
-	// OLE collection implementation helpers for macros DECLARE_ENUM_VARIANT_EX(derived-class, long);
+	// OLE collection implementation helpers for macros DECLARE_ENUM_VARIANT_EX(derived-class,
+	// long);
 
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual long OleGetItemCount();
@@ -670,12 +688,12 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::CXTPArrayT()
+AFX_INLINE CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::CXTPArrayT()
 {
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::~CXTPArrayT()
+AFX_INLINE CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::~CXTPArrayT()
 {
 }
 
@@ -764,7 +782,8 @@ AFX_INLINE TYPE& CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::operator[](int nIndex)
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::InsertAt(int nIndex, ARG_TYPE newElement, int nCount)
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::InsertAt(int nIndex, ARG_TYPE newElement,
+															   int nCount)
 {
 	m_arElements.InsertAt(nIndex, newElement, nCount);
 }
@@ -776,7 +795,8 @@ AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::RemoveAt(int nIndex, int n
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::InsertAt(int nStartIndex, CXTPArrayT* pNewArray)
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::InsertAt(int nStartIndex,
+															   CXTPArrayT* pNewArray)
 {
 	ASSERT(pNewArray);
 	if (pNewArray)
@@ -798,7 +818,7 @@ AFX_INLINE int CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::FindElement(ARG_TYPE nEleme
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
 AFX_INLINE BOOL CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::RemoveElement(ARG_TYPE nElement)
 {
-		BOOL bResult = FALSE;
+	BOOL bResult = FALSE;
 
 	int nCount = GetSize();
 	for (int i = nCount - 1; i >= 0; i--)
@@ -822,11 +842,9 @@ AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::AddIfNeed(ARG_TYPE newElem
 	}
 }
 
-
-
 //===========================================================================
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-OLE_TYPE CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleGetItem(long nIndex)
+AFX_INLINE OLE_TYPE CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleGetItem(long nIndex)
 {
 	if (nIndex < 0 || nIndex >= (long)GetSize())
 		AfxThrowOleException(DISP_E_BADINDEX);
@@ -835,7 +853,7 @@ OLE_TYPE CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleGetItem(long nIndex)
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleSetItem(long nIndex, OLE_TYPE oleValue)
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleSetItem(long nIndex, OLE_TYPE oleValue)
 {
 	if (nIndex < 0 || nIndex >= (long)GetSize())
 		AfxThrowOleException(DISP_E_BADINDEX);
@@ -844,19 +862,19 @@ void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleSetItem(long nIndex, OLE_TYPE oleV
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-long CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleGetItemCount()
+AFX_INLINE long CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleGetItemCount()
 {
 	return (long)m_arElements.GetSize();
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleAdd(OLE_TYPE otElement)
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleAdd(OLE_TYPE otElement)
 {
 	Add((TYPE)otElement);
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleRemove(long nIndex)
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleRemove(long nIndex)
 {
 	if (nIndex < 0 || nIndex >= (long)GetSize())
 		AfxThrowOleException(DISP_E_BADINDEX);
@@ -865,9 +883,10 @@ void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleRemove(long nIndex)
 }
 
 template<class TYPE, class ARG_TYPE, class OLE_TYPE>
-void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleRemoveAll()
+AFX_INLINE void CXTPArrayT<TYPE, ARG_TYPE, OLE_TYPE>::OleRemoveAll()
 {
 	RemoveAll();
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XtpSmartPtrInternal_H__)

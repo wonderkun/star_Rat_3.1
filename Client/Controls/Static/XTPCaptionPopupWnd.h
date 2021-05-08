@@ -1,7 +1,6 @@
 // XTPCaptionPopupWnd.h : interface for the CXTPCaptionPopupWnd class.
 //
-// This file is a part of the XTREME CONTROLS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,12 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCAPTIONPOPUPWND_H__)
-#define __XTPCAPTIONPOPUPWND_H__
+#	define __XTPCAPTIONPOPUPWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
+
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 // --------------------------------------------------------------------
 // Summary:
@@ -38,7 +39,6 @@ class _XTP_EXT_CLASS CXTPCaptionPopupWnd : public CWnd
 	DECLARE_DYNAMIC(CXTPCaptionPopupWnd)
 
 public:
-
 	// -------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPCaptionPopupWnd object
@@ -53,7 +53,6 @@ public:
 	virtual ~CXTPCaptionPopupWnd();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is called to create and display the popup
@@ -97,7 +96,6 @@ public:
 	void SetTheme(XTPControlTheme nTheme);
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this member function to register the window class for
@@ -108,7 +106,7 @@ protected:
 	BOOL RegisterWindowClass();
 
 protected:
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPCaptionPopupWnd)
@@ -117,26 +115,30 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//}}AFX_MSG
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
-	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+				CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	CWnd*            m_pParentWnd;    // A CWnd pointer that represents the parent window.
-	CWnd*            m_pChildWnd;     // A CWnd pointer that represents the child displayed in the popup.
-	CWnd*            m_pChildParent;  // A CWnd pointer that represents the parent of the child window.
-	CXTPCaption       m_Caption;       // Caption that is displayed when the window is active.
+	CWnd* m_pParentWnd;	// A CWnd pointer that represents the parent window.
+	CWnd* m_pChildWnd;	 // A CWnd pointer that represents the child displayed in the popup.
+	CWnd* m_pChildParent;  // A CWnd pointer that represents the parent of the child window.
+	CXTPCaption m_Caption; // Caption that is displayed when the window is active.
 	CXTPCaptionButton m_CaptionButton; // Close button associated with the caption.
-	CXTPIconHandle    m_hIconOn;       // Handle to a normal button icon.
-	CXTPIconHandle    m_hIconOff;      // Handle to a pressed button icon.
-
+	CXTPIconHandle m_hIconOn;		   // Handle to a normal button icon.
+	CXTPIconHandle m_hIconOff;		   // Handle to a pressed button icon.
 };
 
 //////////////////////////////////////////////////////////////////////
 
-AFX_INLINE BOOL CXTPCaptionPopupWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) {
+AFX_INLINE BOOL CXTPCaptionPopupWnd::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
+											DWORD dwStyle, const RECT& rect, CWnd* pParentWnd,
+											UINT nID, CCreateContext* pContext)
+{
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPCAPTIONPOPUPWND_H__)

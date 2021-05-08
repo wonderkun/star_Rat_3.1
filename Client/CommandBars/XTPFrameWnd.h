@@ -1,7 +1,6 @@
 // XTPFrameWnd.h : interface for the CXTPFrameWnd and CXTPMDIFrameWnd classes.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,24 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPFRAMEWND_H__)
-#define __XTPFRAMEWND_H__
+#	define __XTPFRAMEWND_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Resource.h"
-#include "XTPCommandBars.h"
-#include "XTPPaintManager.h"
-#include "XTPControlComboBox.h"
-#include "XTPShortcutManager.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
+
+class CXTPShortcutManager;
 
 //===========================================================================
 // Summary:
 //     CXTPCommandBarsSiteBase is a stand alone class. It represents site for Command Bars object
 //===========================================================================
-template <class TBase>
+template<class TBase>
 class CXTPCommandBarsSiteBase : public TBase
 {
 public:
@@ -63,7 +60,8 @@ public:
 	// Summary:
 	//     Creates command bars.
 	// Parameters:
-	//     pCommandBarsClass - Custom runtime class of CommandBars. It can be used if you want to override
+	//     pCommandBarsClass - Custom runtime class of CommandBars. It can be used if you want to
+	//     override
 	//                         some methods of CXTPCommandBars class.
 	// Returns:
 	//     Nonzero if successful; otherwise 0.
@@ -73,7 +71,7 @@ public:
 		CMDTARGET_RELEASE(m_pCommandBars);
 
 		ASSERT(pCommandBarsClass->IsDerivedFrom(RUNTIME_CLASS(CXTPCommandBars)));
-		m_pCommandBars =  (CXTPCommandBars*) pCommandBarsClass->CreateObject();
+		m_pCommandBars = (CXTPCommandBars*)pCommandBarsClass->CreateObject();
 		ASSERT(m_pCommandBars);
 		if (!m_pCommandBars)
 			return FALSE;
@@ -96,8 +94,10 @@ public:
 
 		CXTPWindowRect rcBar(pBarOnLeft);
 
-		if (IsVerticalPosition(pBarOnLeft->GetPosition())) rcBar.OffsetRect(0, rcBar.Height());
-			else rcBar.OffsetRect(rcBar.Width(), 0);
+		if (IsVerticalPosition(pBarOnLeft->GetPosition()))
+			rcBar.OffsetRect(0, rcBar.Height());
+		else
+			rcBar.OffsetRect(rcBar.Width(), 0);
 
 		GetCommandBars()->DockCommandBar(pBarToDock, rcBar, pBarOnLeft->GetDockBar());
 	}
@@ -131,7 +131,8 @@ public:
 	//                       the name of a section in the initialization file
 	//                       or a key in the Windows registry where state
 	//                       information is stored.
-	//     bSilent         - TRUE to disable user notifications when command bars are restore to their original state.
+	//     bSilent         - TRUE to disable user notifications when command bars are restore to
+	//     their original state.
 	//-----------------------------------------------------------------------
 	virtual void LoadCommandBars(LPCTSTR lpszProfileName, BOOL bSilent = FALSE)
 	{
@@ -149,7 +150,10 @@ public:
 	// Returns:
 	//     Retrieves Command Bars object.
 	//----------------------------------------------------------------------
-	CXTPCommandBars* GetCommandBars() const { return m_pCommandBars; }
+	CXTPCommandBars* GetCommandBars() const
+	{
+		return m_pCommandBars;
+	}
 
 	//{{AFX_CODEJOCK_PRIVATE
 	//----------------------------------------------------------------------
@@ -161,7 +165,7 @@ public:
 	}
 	//}}AFX_CODEJOCK_PRIVATE
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -184,26 +188,41 @@ protected:
 
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	{
-		if (m_pCommandBars && m_pCommandBars->OnFrameWndMsg(message, wParam, lParam, pResult))
-			return TRUE;
+		BOOL bBase		  = FALSE; // Message handled by base class
+		BOOL bCommandBars = FALSE; // Message handled by CommandBars
 
-		return TBase::OnWndMsg(message, wParam, lParam, pResult);
+		// The WM_SYSCOLORCHANGE message must be handled in the
+		//  base class first to update the AUX_DATA brushes.
+		if (WM_SYSCOLORCHANGE == message)
+		{
+			bBase = TBase::OnWndMsg(message, wParam, lParam, pResult);
+		}
+
+		if (NULL != m_pCommandBars)
+		{
+			bCommandBars = m_pCommandBars->OnFrameWndMsg(message, wParam, lParam, pResult);
+		}
+
+		if (!bBase && !bCommandBars)
+		{
+			bBase = TBase::OnWndMsg(message, wParam, lParam, pResult);
+		}
+
+		return (bBase || bCommandBars);
 	}
 
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
 private:
 	CXTPCommandBars* m_pCommandBars;
-
 };
-
 
 //===========================================================================
 // Summary:
 //     CXTPFrameWndBase is a stand alone class. It represents the parent
 //     class for a CXTPMDIFrameWnd and CXTPFrameWnd classes .
 //===========================================================================
-template <class TBase>
+template<class TBase>
 class CXTPFrameWndBase : public CXTPCommandBarsSiteBase<TBase>
 {
 public:
@@ -222,12 +241,13 @@ public:
 	{
 	}
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 public:
 	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE,
-		CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL)
+				   CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL)
 	{
-		BOOL bResult = CXTPCommandBarsSiteBase<TBase>::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext);
+		BOOL bResult = CXTPCommandBarsSiteBase<TBase>::LoadFrame(nIDResource, dwDefaultStyle,
+																 pParentWnd, pContext);
 		if (!bResult)
 			return FALSE;
 
@@ -248,9 +268,15 @@ public:
 
 		CXTPCommandBarsSiteBase<TBase>::OnSetPreviewMode(bPreview, pState);
 	}
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 };
 
+//-----------------------------------------------------------------------
+// Summary:
+//     A message that is sent to each MDI child window as a result of
+//     a call to CXTPMDIFrameWnd::UpdateMDIChildrenTheme
+//-----------------------------------------------------------------------
+extern const UINT _XTP_EXTRN XTP_WM_UPDATE_MDI_CHILD_THEME;
 
 //===========================================================================
 // Summary:
@@ -267,20 +293,14 @@ public:
 	//-----------------------------------------------------------------------
 	CXTPMDIFrameWnd();
 
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Sends a theme update notification to all MDI children.
+	//-----------------------------------------------------------------------
+	void UpdateMDIChildrenTheme();
 
 	//{{AFX_CODEJOCK_PRIVATE
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra,
-		AFX_CMDHANDLERINFO* pHandlerInfo)
-	{
-		if (nID >= XTP_ID_WORKSPACE_MOVEPREVIOUS && nID <= XTP_ID_WORKSPACE_NEWVERTICAL)
-		{
-			CWnd* pWnd = CWnd::FromHandlePermanent(m_hWndMDIClient);
-			if (pWnd && pWnd->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
-				return TRUE;
-		}
-		// then pump through normal frame
-		return CMDIFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
-	}
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_CODEJOCK_PRIVATE
 };
 
@@ -298,7 +318,7 @@ public:
 	//     Constructs a CXTPFrameWnd object
 	//-----------------------------------------------------------------------
 	CXTPFrameWnd();
-
 };
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // #if !defined(__XTPFRAMEWND_H__)

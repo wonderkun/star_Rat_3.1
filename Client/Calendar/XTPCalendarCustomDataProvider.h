@@ -1,7 +1,6 @@
 // XTPCalendarCustomDataProvider.h: interface for the CXTPCalendarCustomProperties class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,14 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDAR_CUSTOM_DATA_PROVIDER_H__)
-#define _XTP_CALENDAR_CUSTOM_DATA_PROVIDER_H__
+#	define _XTP_CALENDAR_CUSTOM_DATA_PROVIDER_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendardata.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 //===========================================================================
 // Summary:
@@ -49,7 +48,6 @@ class _XTP_EXT_CLASS CXTPCalendarCustomDataProvider : public CXTPCalendarData
 	DECLARE_DYNAMIC(CXTPCalendarCustomDataProvider)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -76,7 +74,6 @@ public:
 	virtual void Close();
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Retrieves day events for a specified day from the data source.
@@ -191,7 +188,7 @@ protected:
 	// See also:
 	//     XTP_NC_CALENDAR_DoUpdate_Event notification
 	//-----------------------------------------------------------------------
-	virtual BOOL DoUpdate_Event (CXTPCalendarEvent* pEvent);
+	virtual BOOL DoUpdate_Event(CXTPCalendarEvent* pEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -212,7 +209,7 @@ protected:
 	// See also:
 	//     XTP_NC_CALENDAR_DoDelete_Event notification
 	//-----------------------------------------------------------------------
-	virtual BOOL DoDelete_Event (CXTPCalendarEvent* pEvent);
+	virtual BOOL DoDelete_Event(CXTPCalendarEvent* pEvent);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -234,7 +231,7 @@ protected:
 	// See also:
 	//     XTP_NC_CALENDAR_DoCreate_RPattern notification
 	//-----------------------------------------------------------------------
-	virtual BOOL DoCreate_RPattern (CXTPCalendarRecurrencePattern* pPattern, DWORD& rdwNewPatternID);
+	virtual BOOL DoCreate_RPattern(CXTPCalendarRecurrencePattern* pPattern, DWORD& rdwNewPatternID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -254,7 +251,7 @@ protected:
 	// See also:
 	//     XTP_NC_CALENDAR_DoUpdate_RPattern notification
 	//-----------------------------------------------------------------------
-	virtual BOOL DoUpdate_RPattern (CXTPCalendarRecurrencePattern* pPattern);
+	virtual BOOL DoUpdate_RPattern(CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -275,7 +272,7 @@ protected:
 	// See also:
 	//     XTP_NC_CALENDAR_DoDelete_RPattern notification
 	//-----------------------------------------------------------------------
-	virtual BOOL DoDelete_RPattern (CXTPCalendarRecurrencePattern* pPattern);
+	virtual BOOL DoDelete_RPattern(CXTPCalendarRecurrencePattern* pPattern);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -316,8 +313,11 @@ protected:
 	//     CXTPCalendarRemindersManager overview,
 	//     XTP_NC_CALENDAR_DoGetUpcomingEvents notification.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom, COleDateTimeSpan spPeriod);
+	virtual CXTPCalendarEventsPtr DoGetUpcomingEvents(COleDateTime dtFrom,
+													  COleDateTimeSpan spPeriod);
 };
 
 ///////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDAR_CUSTOM_DATA_PROVIDER_H__)

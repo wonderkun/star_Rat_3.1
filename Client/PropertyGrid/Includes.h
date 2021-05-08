@@ -1,7 +1,6 @@
-// XTPPropertyGridIncludes.h
+// Includes.h : header file
 //
-// This file is a part of the XTREME PROPERTYGRID MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -18,27 +17,34 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(__XTPPROPERTYGRIDINCLUDES_H__)
-#define __XTPPROPERTYGRIDINCLUDES_H__
+//{{AFX_CODEJOCK_PRIVATE
+#if !defined(__XTPPROPERTYGRID_INCLUDES_H__)
+#	define __XTPPROPERTYGRID_INCLUDES_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "Resource.h"
+#	include "PropertyGrid/Resource.h"
 
-#include "XTPPropertyGridDefines.h"
-#include "XTPPropertyGridInplaceEdit.h"
-#include "XTPPropertyGridInplaceButton.h"
-#include "XTPPropertyGridInplaceList.h"
-#include "XTPPropertyGridItem.h"
-#include "XTPPropertyGrid.h"
-#include "XTPPropertyGridItemBool.h"
-#include "XTPPropertyGridItemColor.h"
-#include "XTPPropertyGridItemFont.h"
-#include "XTPPropertyGridItemNumber.h"
-#include "XTPPropertyGridItemSize.h"
-#include "XTPPropertyGridItemExt.h"
-#include "XTPPropertyGridItemOption.h"
+#	include "PropertyGrid/XTPPropertyGridDefines.h"
+#	include "PropertyGrid/XTPPropertyGridInplaceEdit.h"
+#	include "PropertyGrid/XTPPropertyGridInplaceButton.h"
+#	include "PropertyGrid/XTPPropertyGridInplaceList.h"
+#	include "PropertyGrid/XTPPropertyGridItem.h"
+#	include "PropertyGrid/XTPPropertyGridToolTip.h"
+#	include "PropertyGrid/XTPPropertyGridView.h"
+#	include "PropertyGrid/XTPPropertyGridToolBar.h"
+#	include "PropertyGrid/XTPPropertyGrid.h"
+#	include "PropertyGrid/XTPPropertyGridItemBool.h"
+#	include "PropertyGrid/XTPPropertyGridItemFlags.h"
+#	include "PropertyGrid/XTPPropertyGridItemColor.h"
+#	include "PropertyGrid/XTPPropertyGridItemFont.h"
+#	include "PropertyGrid/XTPPropertyGridItemNumber.h"
+#	include "PropertyGrid/XTPPropertyGridItemSize.h"
+#	include "PropertyGrid/XTPPropertyGridItemExt.h"
+#	include "PropertyGrid/XTPPropertyGridItemOption.h"
+#	include "PropertyGrid/XTPPropertyGridPaintManager.h"
 
-#endif
+#endif //#if !defined(__XTPPROPERTYGRID_INCLUDES_H__)
+//}}AFX_CODEJOCK_PRIVATE

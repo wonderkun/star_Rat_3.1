@@ -1,7 +1,6 @@
 // XTPCalendarViewEvent.h: interface for the CXTPCalendarViewEvent class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,14 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTP_CALENDARViewEvent_H__)
-#define _XTP_CALENDARViewEvent_H__
+#	define _XTP_CALENDARViewEvent_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarPtrCollectionT.h"
-#include "Common/XTPDrawHelpers.h"
-#include "XTPCalendarDefines.h"
-#include "XTPCalendarView.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
 class CXTPCalendarEvent;
 class CXTPCalendarControl;
@@ -45,10 +41,10 @@ class CXTPMarkupUIElement;
 //===========================================================================
 enum XTPCalendarEventCaptionFormat
 {
-	xtpCalendarCaptionFormatUnknown          = 0,   // Undefined format.
-	xtpCalendarCaptionFormatSubject          = 1,   // Caption displays subject.
-	xtpCalendarCaptionFormatStartSubject     = 2,   // Besides subject displays start time.
-	xtpCalendarCaptionFormatStartEndSubject  = 3    // Besides subject displays start and end time.
+	xtpCalendarCaptionFormatUnknown			= 0, // Undefined format.
+	xtpCalendarCaptionFormatSubject			= 1, // Caption displays subject.
+	xtpCalendarCaptionFormatStartSubject	= 2, // Besides subject displays start time.
+	xtpCalendarCaptionFormatStartEndSubject = 3  // Besides subject displays start and end time.
 };
 
 //===========================================================================
@@ -57,23 +53,25 @@ enum XTPCalendarEventCaptionFormat
 //===========================================================================
 enum XTPCalendarMultiDayEventFlags
 {
-	xtpCalendarMultiDayUnknown     = 0,             // Undefined multi day event.
+	xtpCalendarMultiDayUnknown = 0, // Undefined multi day event.
 
-	xtpCalendarMultiDayNoMultiDay  = 0x01,          // Not a multi day event.
+	xtpCalendarMultiDayNoMultiDay = 0x01, // Not a multi day event.
 
-	xtpCalendarMultiDayFirst       = 0x02,          // First portion of a multi day event.
-	                                                // Displayed in the first (by date) day view.
-	xtpCalendarMultiDayMiddle      = 0x04,          // Middle portion of a multi day event.
-	                                                // Displayed in one of a middle day view.
-	xtpCalendarMultiDayLast        = 0x08,          // Last portion of a multi day event.
-	                                                // Displayed in the last (by date) day view.
+	xtpCalendarMultiDayFirst = 0x02,  // First portion of a multi day event.
+									  // Displayed in the first (by date) day view.
+	xtpCalendarMultiDayMiddle = 0x04, // Middle portion of a multi day event.
+									  // Displayed in one of a middle day view.
+	xtpCalendarMultiDayLast = 0x08,   // Last portion of a multi day event.
+									  // Displayed in the last (by date) day view.
 
-	xtpCalendarMultiDayFMLmask     = xtpCalendarMultiDayFirst | xtpCalendarMultiDayMiddle | xtpCalendarMultiDayLast, // Combined flag.
+	xtpCalendarMultiDayFMLmask = xtpCalendarMultiDayFirst | xtpCalendarMultiDayMiddle
+								 | xtpCalendarMultiDayLast, // Combined flag.
 
-	xtpCalendarMultiDayMaster      = 0x10,          // First portion of a multi day event.
-	                                                // Displayed in the first (by date) day view.
-	xtpCalendarMultiDaySlave       = 0x20,          // Rest of the event views (besides Master).
-	xtpCalendarMultiDayMSmask      = xtpCalendarMultiDayMaster | xtpCalendarMultiDaySlave    // Combines flag.
+	xtpCalendarMultiDayMaster = 0x10, // First portion of a multi day event.
+									  // Displayed in the first (by date) day view.
+	xtpCalendarMultiDaySlave  = 0x20, // Rest of the event views (besides Master).
+	xtpCalendarMultiDayMSmask = xtpCalendarMultiDayMaster
+								| xtpCalendarMultiDaySlave // Combines flag.
 };
 
 //===========================================================================
@@ -112,7 +110,6 @@ class _XTP_EXT_CLASS CXTPCalendarViewEvent : public CXTPCalendarWMHandler
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -141,7 +138,7 @@ public:
 	//     A BOOL. TRUE if the item is found. FALSE otherwise.
 	// See Also: XTP_CALENDAR_HITTESTINFO
 	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) = 0;
+	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -159,7 +156,7 @@ public:
 	// Returns:
 	//     A pointer to a CXTPCalendarEvent object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEvent* GetEvent();
+	virtual CXTPCalendarEvent* GetEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -169,6 +166,8 @@ public:
 	//     A pointer to a CXTPCalendarControl object.
 	//-----------------------------------------------------------------------
 	virtual CXTPCalendarControl* GetCalendarControl() const;
+
+	CXTPCalendarView* GetView() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -180,7 +179,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the event view is visible. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsVisible() = 0;
+	virtual BOOL IsVisible() const = 0;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -210,7 +209,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the event view is a multi-day event. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsMultidayEvent();
+	virtual BOOL IsMultidayEvent() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -231,7 +230,7 @@ public:
 	// Returns:
 	//     A CString object containing the edited subject.
 	//-----------------------------------------------------------------------
-	virtual CString GetEditingSubjectFromEditor();
+	virtual CString GetEditingSubjectFromEditor() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -279,7 +278,7 @@ public:
 	// Returns:
 	//     A pointer to the CWnd or NULL.
 	//-----------------------------------------------------------------------
-	virtual CWnd* GetSubjectEditor();
+	virtual CWnd* GetSubjectEditor() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -300,7 +299,7 @@ public:
 	// Returns:
 	//     A CString object that contains the formatted time.
 	//-----------------------------------------------------------------------
-	virtual CString FormatEventTime(COleDateTime dtTime);
+	virtual CString FormatEventTime(COleDateTime dtTime) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -309,7 +308,7 @@ public:
 	// Returns:
 	//     A CRect object containing the clocks rectangle coordinates.
 	//-----------------------------------------------------------------------
-	virtual CRect GetFirstClockRect();
+	virtual CRect GetFirstClockRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -318,7 +317,7 @@ public:
 	// Returns:
 	//     A CRect object containing the clocks rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetLastClockRect();
+	virtual CRect GetLastClockRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -327,7 +326,7 @@ public:
 	// Returns:
 	//     A CRect object containing the text rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetTextRect();
+	virtual CRect GetTextRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -337,7 +336,7 @@ public:
 	// Returns:
 	//     A CRect object containing the clocks rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetStartTimeRect();
+	virtual CRect GetStartTimeRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -346,7 +345,7 @@ public:
 	// Returns:
 	//     A CRect object containing the clocks rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetEndTimeRect();
+	virtual CRect GetEndTimeRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -355,7 +354,7 @@ public:
 	// Returns:
 	//     A CRect object containing the event's rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetViewEventRect();
+	virtual CRect GetViewEventRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -364,7 +363,7 @@ public:
 	// Returns:
 	//     A CRect object containing the event's maximum rectangle dimensions.
 	//-----------------------------------------------------------------------
-	virtual CRect GetViewEventRectMax();
+	virtual CRect GetViewEventRectMax() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -373,7 +372,7 @@ public:
 	// Returns:
 	//     A CRect object containing the glyph rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetReminderGlyphRect();
+	virtual CRect GetReminderGlyphRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -382,7 +381,7 @@ public:
 	// Returns:
 	//     A CRect object containing the glyph rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetRecurrenceGlyphRect();
+	virtual CRect GetRecurrenceGlyphRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -391,7 +390,7 @@ public:
 	// Returns:
 	//     A CRect object containing the glyph rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetMeetingGlyphRect();
+	virtual CRect GetMeetingGlyphRect() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -400,7 +399,7 @@ public:
 	// Returns:
 	//     A CRect object containing the glyph rectangle.
 	//-----------------------------------------------------------------------
-	virtual CRect GetPrivateGlyphRect();
+	virtual CRect GetPrivateGlyphRect() const;
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the flag to determine if
@@ -411,7 +410,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if multi day text align mode is on. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsMultyDayTextAlign();
+	virtual BOOL IsMultyDayTextAlign() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -420,7 +419,7 @@ public:
 	//     An int that contains the event state flags.
 	// See Also: XTPCalendarMultiDayEventFlags
 	//-----------------------------------------------------------------------
-	virtual int  GetMultiDayEventFlags() const;
+	virtual int GetMultiDayEventFlags() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -480,7 +479,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if text size exceeds the event view bounds. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsTextOutOfBorders();
+	virtual BOOL IsTextOutOfBorders() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -582,7 +581,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextSubject();
+	virtual CString GetItemTextSubject() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -592,7 +591,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextLocation();
+	virtual CString GetItemTextLocation() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -602,7 +601,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextBody();
+	virtual CString GetItemTextBody() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -612,7 +611,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextStartTime();
+	virtual CString GetItemTextStartTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -622,7 +621,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemTextEndTime();
+	virtual CString GetItemTextEndTime() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -637,7 +636,7 @@ public:
 	// Remarks:
 	//      This is a virtual function.
 	//-----------------------------------------------------------------------
-	virtual CString GetItemText(DWORD dwItemFlag, LPCTSTR pcszDefaultText = NULL);
+	virtual CString GetItemText(DWORD dwItemFlag, LPCTSTR pcszDefaultText = NULL) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -653,7 +652,7 @@ public:
 	// Returns:
 	//     String with prepared markup text.
 	//-----------------------------------------------------------------------
-	virtual CString GetMarkupText();
+	virtual CString GetMarkupText() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -662,6 +661,37 @@ public:
 	//     A pointer to CXTPMarkupUIElement object.
 	//-----------------------------------------------------------------------
 	virtual CXTPMarkupUIElement* GetMarkupUIElement();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to determine which view item,
+	//     if any, is at a specified position index, and returns additional
+	//     info in a XTP_CALENDAR_HITTESTINFO template parameter.
+	// Parameters:
+	//     pt       - A CPoint that contains the coordinates of the point to test.
+	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO. Template parameter specifies
+	//                the type of HitTest info structure.
+	// Returns:
+	//     TRUE if item is found. FALSE otherwise.
+	// See Also: XTP_CALENDAR_HITTESTINFO
+	//-----------------------------------------------------------------------
+	virtual BOOL HitTestEx(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest) const = 0;
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to adjust the icons rectangle used
+	//     to draw the event view icons.
+	// Parameters:
+	//     rc  - A CRect that contains the coordinates used to draw the view.
+	// Returns:
+	//     An integer denoting the width of the icon.
+	// Remarks:
+	//     Call this member function to calculate rectangles used to draw event
+	//     view icons depending on what glyphs must be drawn and based on
+	//     the event view rect.
+	//-----------------------------------------------------------------------
+	virtual int CalcIconsRect(CRect rc);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -689,20 +719,68 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual CString GetToolText();
 
+private:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This member function is used to adjust the icons rectangle used
-	//     to draw the event view icons.
+	//     This member function is used to process mouse events by markup if enabled.
 	// Parameters:
-	//     rc  - A CRect that contains the coordinates used to draw the view.
+	//     nMessage - A mouse window message identifier to be processed by markup.
+	//     nFlags  - An int that indicates whether various virtual keys are down.
+	//     point   - A CPoint object that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
 	// Returns:
-	//     An integer denoting the width of the icon.
-	// Remarks:
-	//     Call this member function to calculate rectangles used to draw event
-	//     view icons depending on what glyphs must be drawn and based on
-	//     the event view rect.
+	//     TRUE if the message is handled properly, otherwise FALSE.
 	//-----------------------------------------------------------------------
-	virtual int CalcIconsRect(CRect rc);
+	BOOL MarkupHandleMouseEvent(UINT nMessage, UINT nFlags, const CPoint& point);
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to process left mouse button down events.
+	// Parameters:
+	//     nFlags  - An int that indicates whether various virtual keys are down.
+	//     point   - A CPoint object that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
+	// Returns:
+	//     TRUE if the message is handled properly, FALSE else.
+	// Remarks:
+	//     This method is called by the CalendarView when the user
+	//     presses the left mouse button.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnLButtonDown(UINT nFlags, CPoint point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to process left mouse button up events.
+	// Parameters:
+	//     nFlags  - An int that indicates whether various virtual keys are down.
+	//     point   - A CPoint object that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
+	// Returns:
+	//     TRUE if the message is handled properly, FALSE else.
+	// Remarks:
+	//     This method is called by the CalendarView when the user
+	//     releases the left mouse button.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnLButtonUp(UINT nFlags, CPoint point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to process left mouse button
+	//     double click events.
+	// Parameters:
+	//     nFlags  - An int that indicates whether various virtual keys are down.
+	//     point   - A CPoint object that specifies the x- and y- coordinates of the cursor.
+	//               These coordinates are always relative to the
+	//               upper-left corner of the window.
+	// Remarks:
+	//     This method is called by the CalendarView when the user
+	//     double clicks the left mouse button.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnLButtonDblClk(UINT nFlags, CPoint point);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -717,6 +795,19 @@ protected:
 	//     moves the mouse cursor or stylus.
 	//-----------------------------------------------------------------------
 	virtual void OnMouseMove(UINT nFlags, CPoint point);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//      This method is called by framework after default message processing.
+	// Parameters:
+	//      message - Specifies the message to be sent.
+	//      wParam - Specifies additional message-dependent information.
+	//      lParam - Specifies additional message-dependent information.
+	//      pResult - The return value of WindowProc. Depends on the message; may be NULL.
+	// Returns:
+	//      TRUE if the message is handled properly, FALSE else.
+	//-----------------------------------------------------------------------
+	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -767,7 +858,7 @@ protected:
 	// Returns:
 	//     A DWORD that contains the value of the window styles.
 	//-----------------------------------------------------------------------
-	virtual DWORD GetSubjectEditorStyles(); // like multi-line
+	virtual DWORD GetSubjectEditorStyles() const; // like multi-line
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -776,7 +867,7 @@ protected:
 	// Returns:
 	//     A pointer to a CFont object that contains the editor window font.
 	//-----------------------------------------------------------------------
-	virtual CFont* GetSubjectEditorFont();
+	virtual CFont* GetSubjectEditorFont() const;
 
 	// ------------------------------------------------------------
 	// Summary:
@@ -798,7 +889,7 @@ protected:
 	//     nYbaseNew   - An int that contains the new position.
 	//     rRC         - A CRect that contains the rectangle coordinates.
 	//-----------------------------------------------------------------------
-	static void _MoveRectY(int nYbasePrev, int nYbaseNew, CRect& rRC);
+	static void AFX_CDECL _MoveRectY(int nYbasePrev, int nYbaseNew, CRect& rRC);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -807,48 +898,63 @@ protected:
 	virtual void OnBeforeDestroy();
 
 public:
-	CXTPEmptyRect m_rcEvent;            // Event view rectangle.
-	CXTPEmptyRect m_rcEventMax;         // Event view rectangle margins.
+	CRect m_rcEvent;	// Event view rectangle.
+	CRect m_rcEventMax; // Event view rectangle margins.
 
-	CXTPEmptyRect m_rcText;             // Rectangle to display event text in event view.
-	CSize m_szText;                     // Sizes of displayed text.
+	CRect m_rcText; // Rectangle to display event text in event view.
+	CSize m_szText; // Sizes of displayed text.
 
-	CXTPEmptyRect m_rcFirstClock;       // Rectangle to draw clock in the beginning of the first day of multi day event.
-	CXTPEmptyRect m_rcLastClock;        // Rectangle to draw clock at the end of the last day of multi day event.
-	CXTPEmptyRect m_rcStartTime;        // Rectangle to display start time day event view.
-	CXTPEmptyRect m_rcEndTime;          // Rectangle to display end time event view.
+	CRect m_rcFirstClock; // Rectangle to draw clock in the beginning of the first day of multi day
+						  // event.
+	CRect m_rcLastClock;  // Rectangle to draw clock at the end of the last day of multi day event.
+	CRect m_rcStartTime;  // Rectangle to display start time day event view.
+	CRect m_rcEndTime;	// Rectangle to display end time event view.
 
-	int m_nMultiDayEventFlags;          // Multi day event flags packed into integer by bitwise operations.
-//protected:
-	CXTPEmptyRect m_rcReminderGlyph;    // Rectangle to draw reminder glyph event view.
-	CXTPEmptyRect m_rcRecurrenceGlyph;  // Rectangle to draw recurrence glyph event view.
-	CXTPEmptyRect m_rcMeetingGlyph;     // Rectangle to draw meeting glyph event view.
-	CXTPEmptyRect m_rcPrivateGlyph;     // Rectangle to draw private glyph event view.
+	int m_nMultiDayEventFlags; // Multi day event flags packed into integer by bitwise operations.
+							   // protected:
+	CRect m_rcReminderGlyph;   // Rectangle to draw reminder glyph event view.
+	CRect m_rcRecurrenceGlyph; // Rectangle to draw recurrence glyph event view.
+	CRect m_rcMeetingGlyph;	// Rectangle to draw meeting glyph event view.
+	CRect m_rcPrivateGlyph;	// Rectangle to draw private glyph event view.
 
-	CXTPEmptyRect m_rcSubjectEditor;    // Subject editor rectangle.
-	CXTPEmptyRect m_rcToolTip;          // Tool tip rectangle.
+	CRect m_rcSubjectEditor; // Subject editor rectangle.
+	CRect m_rcToolTip;		 // Tool tip rectangle.
 
-
-	CXTPMarkupUIElement* m_pUIElement;  // Store pointer to CXTPMarkupUIElement object.
-	CString        m_strUIElementText;  // Store last markup text for which m_pUIElement object was updated.
+	CXTPMarkupUIElement* m_pUIElement; // Store pointer to CXTPMarkupUIElement object.
+	CString m_strUIElementText; // Store last markup text for which m_pUIElement object was updated.
 
 protected:
-	CXTPCalendarEvent*    m_ptrEvent;   // Pointer to the displayed event object.
-	BOOL m_bSelected;                   // Event view selected flag.
-	CXTPCalendarViewEvent* m_pMasterView;   // Pointer to Master event view object.
-	int m_nEventPlaceNumber;                // Event view place number (sequential identifier).
-	int m_nEventTimelinePlaceNumber;        // Event view place number in Timeline view.
+	CXTPCalendarEvent* m_ptrEvent;		  // Pointer to the displayed event object.
+	BOOL m_bSelected;					  // Event view selected flag.
+	CXTPCalendarViewEvent* m_pMasterView; // Pointer to Master event view object.
+	int m_nEventPlaceNumber;			  // Event view place number (sequential identifier).
+	int m_nEventTimelinePlaceNumber;	  // Event view place number in Timeline view.
 
-	UINT m_nTimerID_ShowToolTip;        // Identifier of timer event to show tooltip with delay.
+	UINT m_nTimerID_ShowToolTip; // Identifier of timer event to show tooltip with delay.
 
-	CXTPCalendarViewEventSubjectEditor* m_pSubjectEditor;            // Pointer to subject editor.
+	CXTPCalendarViewEventSubjectEditor* m_pSubjectEditor; // Pointer to subject editor.
 
-	BOOL m_bMultyDayTextAlign;          // Flag indicates special text alignment for multi day event.
+	BOOL m_bMultyDayTextAlign; // Flag indicates special text alignment for multi day event.
 
-	BOOL m_bTextOutOfBorders;           // Flag indicates text out of event borders.
+	BOOL m_bTextOutOfBorders; // Flag indicates text out of event borders.
 private:
-	BOOL m_bShowingToolTip;             // Whether we are currently showing event tooltip window.
+	BOOL m_bShowingToolTip; // Whether we are currently showing event tooltip window.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarViewEvent);
+
+	LPDISPATCH OleGetEvent();
+	BOOL OleGetSelected();
+	void OleSetSelected(BOOL bSelected);
+	LPDISPATCH OleGetViewDay();
+	LPDISPATCH OleGetViewGroup();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -856,7 +962,8 @@ private:
 //     This class used as collection of Event View object.
 // See Also: CXTPCalendarPtrCollectionT
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarViewEvents : public CXTPCalendarPtrCollectionT<CXTPCalendarViewEvent>
+class _XTP_EXT_CLASS CXTPCalendarViewEvents
+	: public CXTPCalendarPtrCollectionT<CXTPCalendarViewEvent>
 {
 public:
 	//{{AFX_CODEJOCK_PRIVATE
@@ -886,7 +993,9 @@ public:
 	//      greater than or equal to 0 and less than the value returned
 	//      by GetCount.
 	//-----------------------------------------------------------------------
-	virtual int Find(CXTPCalendarEvent* pEvent);
+	virtual int Find(const CXTPCalendarEvent* pEvent) const;
+
+	using CXTPCalendarPtrCollectionT<CXTPCalendarViewEvent>::Find;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -897,6 +1006,18 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void Remove(CXTPCalendarEvent* pEvent);
 
+	using CXTPCalendarPtrCollectionT<CXTPCalendarViewEvent>::Remove;
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPCalendarViewEvents);
+	DECLARE_ENUM_VARIANT(CXTPCalendarViewEvents)
+
+	//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 //===========================================================================
@@ -911,18 +1032,15 @@ public:
 //     typed objects hierarchy.
 //     These are the template parameters:
 //     _TViewGroup   - Type of View Day objects stored in View
-//     _THitTest   - Type of HitTest struct, used as parameter in the
-//                     member functions.
 //
 //          All of the above parameters are required.
 //
 // See Also: CXTPCalendarViewEvent
 //===========================================================================
-template<class _TViewGroup, class _THitTest>
+template<class _TViewGroup>
 class CXTPCalendarViewEventT : public CXTPCalendarViewEvent
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -931,8 +1049,8 @@ public:
 	//     pViewGroup    - Template parameter specifies type of VIew Day object.
 	// See Also: ~CXTPCalendarViewEventT()
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewEventT(CXTPCalendarEvent* pEvent, _TViewGroup* pViewGroup) :
-		CXTPCalendarViewEvent(pEvent, (CXTPCalendarViewGroup*)pViewGroup)
+	CXTPCalendarViewEventT(CXTPCalendarEvent* pEvent, _TViewGroup* pViewGroup)
+		: CXTPCalendarViewEvent(pEvent, (CXTPCalendarViewGroup*)pViewGroup)
 	{
 		m_pViewGroup = pViewGroup;
 	}
@@ -941,48 +1059,7 @@ public:
 	// Summary:
 	//     Default class destructor.
 	//-----------------------------------------------------------------------
-	virtual ~CXTPCalendarViewEventT()
-	{
-	};
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at a specified position index, and returns additional
-	//     info in a XTP_CALENDAR_HITTESTINFO struct.
-	// Parameters:
-	//     pt       - A CPoint that contains the coordinates of the point to
-	//                test.
-	//     pHitTest - A pointer to a XTP_CALENDAR_HITTESTINFO structure that
-	//                contains information about the point to test.
-	// Returns:
-	//     A BOOL. TRUE if the item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTest(CPoint pt, XTP_CALENDAR_HITTESTINFO* pHitTest)
-	{
-		_THitTest hitInfo;
-		BOOL bRes = HitTestEx(pt, &hitInfo);
-		if (bRes && pHitTest)
-			*pHitTest = (XTP_CALENDAR_HITTESTINFO) hitInfo;
-
-		return bRes;
-	}
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to determine which view item,
-	//     if any, is at a specified position index, and returns additional
-	//     info in a _THitTest template parameter.
-	// Parameters:
-	//     pt       - A CPoint that contains the coordinates of the point to test.
-	//     pHitTest - A pointer to a _THitTest. Template parameter specifies
-	//                the type of HitTest info structure.
-	// Returns:
-	//     TRUE if item is found. FALSE otherwise.
-	// See Also: XTP_CALENDAR_HITTESTINFO
-	//-----------------------------------------------------------------------
-	virtual BOOL HitTestEx(CPoint pt, _THitTest* pHitTest) = 0;
+	virtual ~CXTPCalendarViewEventT(){};
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1020,7 +1097,6 @@ public:
 		ASSERT(this);
 		return this ? m_pViewGroup : NULL;
 	}
-
 
 private:
 	_TViewGroup* m_pViewGroup;
@@ -1066,155 +1142,157 @@ protected:
 	//}}AFX_CODEJOCK_PRIVATE
 };
 
+//===========================================================================
+// Summary:
+//      This class is used to edit event subject in Office 2007 Theme.
+// Remarks:
+//      This class is derived from CXTPCalendarViewEventSubjectEditor and
+//      draw editor background in Office 2007 Theme event object style
+//      or use no background (transparent background).
+// See Also:
+//      CXTPCalendarViewEventSubjectEditor
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCalendarViewEventSubjectEditorColored
+	: public CXTPCalendarViewEventSubjectEditor
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default object constructor.
+	// Parameters:
+	//     pOwner     - A pointer to an owner calendar control object.
+	//     pViewEvent - A pointer to an editing event view object.
+	//     pTheme2007 - A pointer to an owner theme.
+	// See Also: ~CXTPCalendarViewEventSubjectEditor2007()
+	//-----------------------------------------------------------------------
+	CXTPCalendarViewEventSubjectEditorColored(CXTPCalendarControl* pOwner,
+											  CXTPCalendarViewEvent* pViewEvent,
+											  COLORREF clrBackground);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default class destructor.
+	//-----------------------------------------------------------------------
+	virtual ~CXTPCalendarViewEventSubjectEditorColored();
+
+protected:
+	CXTPCalendarViewEvent* m_pViewEvent;	 // Stored pointer to the editing event object.
+	CXTPPaintManagerColorGradient m_grclrBk; // Subject Editor background color (or gradient
+											 // colors).
+
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_MESSAGE_MAP()
+
+	afx_msg virtual BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg virtual HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg virtual void OnChange();
+	//}}AFX_CODEJOCK_PRIVATE
+};
+
 ////////////////////////////////////////////////////////////////////////////
 AFX_INLINE void CXTPCalendarViewEvent::SetTextOutOfBorders(BOOL bOutOfBorders)
 {
 	m_bTextOutOfBorders = bOutOfBorders;
 }
-
-AFX_INLINE  BOOL CXTPCalendarViewEvent::IsTextOutOfBorders()
+AFX_INLINE BOOL CXTPCalendarViewEvent::IsTextOutOfBorders() const
 {
 	return m_bTextOutOfBorders;
 }
 
-AFX_INLINE CXTPCalendarEvent* CXTPCalendarViewEvent::GetEvent()
+AFX_INLINE CXTPCalendarEvent* CXTPCalendarViewEvent::GetEvent() const
 {
 	return m_ptrEvent;
 }
-
 AFX_INLINE int CXTPCalendarViewEvent::GetMultiDayEventFlags() const
 {
 	return m_nMultiDayEventFlags;
 }
-
 AFX_INLINE int CXTPCalendarViewEvent::GetEventPlaceNumber() const
 {
 	return m_nEventPlaceNumber;
 }
-
 AFX_INLINE int CXTPCalendarViewEvent::GetEventTimelinePlaceNumber() const
 {
 	return m_nEventTimelinePlaceNumber;
 }
-
 AFX_INLINE BOOL CXTPCalendarViewEvent::IsEditingSubject() const
 {
 	return m_pSubjectEditor != NULL;
 }
-
 AFX_INLINE CRect CXTPCalendarViewEvent::GetSubjectEditorRect() const
 {
 	return m_rcSubjectEditor;
 }
-
-AFX_INLINE CWnd* CXTPCalendarViewEvent::GetSubjectEditor()
+AFX_INLINE CWnd* CXTPCalendarViewEvent::GetSubjectEditor() const
 {
 	return m_pSubjectEditor;
 }
-
 AFX_INLINE UINT CXTPCalendarViewEvent::GetShowToolTipTimeOut() const
 {
 	return XTP_CALENDAR_SHOW_TOOLTIP_TIMEOUT_MS;
 }
-
-AFX_INLINE DWORD CXTPCalendarViewEvent::GetSubjectEditorStyles()
+AFX_INLINE DWORD CXTPCalendarViewEvent::GetSubjectEditorStyles() const
 {
-	return ES_AUTOHSCROLL | ES_NOHIDESEL;
+	return ES_NOHIDESEL | ES_MULTILINE;
 }
-
-AFX_INLINE CFont* CXTPCalendarViewEvent::GetSubjectEditorFont()
+AFX_INLINE CFont* CXTPCalendarViewEvent::GetSubjectEditorFont() const
 {
 	return NULL;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetFirstClockRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetFirstClockRect() const
 {
 	return m_rcFirstClock;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetLastClockRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetLastClockRect() const
 {
 	return m_rcLastClock;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetTextRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetTextRect() const
 {
 	return m_rcText;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetStartTimeRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetStartTimeRect() const
 {
 	return m_rcStartTime;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetEndTimeRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetEndTimeRect() const
 {
 	return m_rcEndTime;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetViewEventRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetViewEventRect() const
 {
 	return m_rcEvent;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetViewEventRectMax()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetViewEventRectMax() const
 {
 	return m_rcEventMax;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetReminderGlyphRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetReminderGlyphRect() const
 {
 	return m_rcReminderGlyph;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetRecurrenceGlyphRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetRecurrenceGlyphRect() const
 {
 	return m_rcRecurrenceGlyph;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetMeetingGlyphRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetMeetingGlyphRect() const
 {
 	return m_rcMeetingGlyph;
 }
-
-AFX_INLINE CRect CXTPCalendarViewEvent::GetPrivateGlyphRect()
+AFX_INLINE CRect CXTPCalendarViewEvent::GetPrivateGlyphRect() const
 {
 	return m_rcPrivateGlyph;
 }
-
-AFX_INLINE BOOL CXTPCalendarViewEvent::IsMultyDayTextAlign()
+AFX_INLINE BOOL CXTPCalendarViewEvent::IsMultyDayTextAlign() const
 {
 	return m_bMultyDayTextAlign;
 }
-
 AFX_INLINE CRect CXTPCalendarViewEvent::GetEventRect() const
 {
 	return m_rcEvent;
 }
 
-AFX_INLINE CString CXTPCalendarViewEvent::GetItemTextSubject()
-{
-	return GetItemText(xtpCalendarItemText_EventSubject);
-}
-
-AFX_INLINE CString CXTPCalendarViewEvent::GetItemTextLocation()
-{
-	return GetItemText(xtpCalendarItemText_EventLocation);
-}
-
-AFX_INLINE CString CXTPCalendarViewEvent::GetItemTextBody()
-{
-	return GetItemText(xtpCalendarItemText_EventBody);
-}
-
-AFX_INLINE CString CXTPCalendarViewEvent::GetItemTextStartTime()
-{
-	return GetItemText(xtpCalendarItemText_EventStartTimeText);
-}
-
-AFX_INLINE CString CXTPCalendarViewEvent::GetItemTextEndTime()
-{
-	return GetItemText(xtpCalendarItemText_EventEndTimeText);
-}
 //////////////////////////////////////////////////////////////////////////
+
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTP_CALENDARViewEvent_H__)

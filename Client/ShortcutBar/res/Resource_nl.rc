@@ -1,7 +1,6 @@
 // ShortcutBar resource file
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -21,7 +20,7 @@
 #include "ShortcutBar/Resource.h"
 #include "ShortcutBar/res/Resource-Neutral.rc"
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)
 #ifdef _WIN32
 LANGUAGE LANG_DUTCH, SUBLANG_DUTCH
 #pragma code_page(1252)
@@ -37,7 +36,7 @@ BEGIN
     XTP_ID_SHORTCUT_SHOW_MORE		"Meer knoppen weergeven"
     XTP_ID_SHORTCUT_SHOW_FEWER		"Minder knoppen weergeven"
     XTP_IDS_SHORTCUT_CONFIGURE		"Knoppen configureren"
-    XTP_IDS_SHORTCUT_NAVIGATIONPANE	 "Navigation Pane"
+    XTP_IDS_SHORTCUT_NAVIGATIONPANE	 "Navigatie Paneel"
 END
 
-#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#endif // !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)

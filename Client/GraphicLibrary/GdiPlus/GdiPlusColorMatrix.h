@@ -15,6 +15,30 @@
 #ifndef _GDIPLUSCOLORMATRIX_H
 #define _GDIPLUSCOLORMATRIX_H
 
+#if (GDIPVER >= 0x0110)
+//----------------------------------------------------------------------------
+// Color channel look up table (LUT)
+//----------------------------------------------------------------------------
+
+typedef BYTE ColorChannelLUT[256];
+
+//----------------------------------------------------------------------------
+// Per-channel Histogram for 8bpp images.
+//----------------------------------------------------------------------------
+
+enum HistogramFormat
+{
+    HistogramFormatARGB,
+    HistogramFormatPARGB,
+    HistogramFormatRGB,
+    HistogramFormatGray,
+    HistogramFormatB,
+    HistogramFormatG,
+    HistogramFormatR,
+    HistogramFormatA    
+};
+#endif //(GDIPVER >= 0x0110)
+
 //----------------------------------------------------------------------------
 // Color matrix
 //----------------------------------------------------------------------------
@@ -61,3 +85,4 @@ struct ColorMap
 };
 
 #endif
+

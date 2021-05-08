@@ -1,7 +1,6 @@
 // XTPCalendarViewPart.h: interface for the CXTPCalendarViewPart class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,20 +19,22 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDARVIEWPART_H__)
-#define _XTPCALENDARVIEWPART_H__
+#	define _XTPCALENDARVIEWPART_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "Common/XTPColorManager.h"
-#include "Common/XTPPropExchange.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#pragma warning(disable: 4097)
+#	pragma warning(disable : 4097)
 
 class CXTPCalendarView;
 class CXTPPropExchange;
+class CXTPCalendarTimeLineView;
+class CXTPCalendarTimeLineViewEvent;
+class CXTPCalendarControl;
 
 //===========================================================================
 // Summary:
@@ -43,15 +44,11 @@ class CXTPPropExchange;
 class _XTP_EXT_CLASS CXTPCalendarViewPartFontValue
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
 	//-----------------------------------------------------------------------
-	CXTPCalendarViewPartFontValue()
-	{
-
-	}
+	CXTPCalendarViewPartFontValue();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -60,10 +57,7 @@ public:
 	// Returns:
 	//     A BOOL. TRUE if the default value is set. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	BOOL IsDefaultValue()
-	{
-		return (m_fntCustomValue.GetSafeHandle() == NULL) && (m_fntStandardValue.GetSafeHandle() == NULL);
-	}
+	BOOL IsDefaultValue();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -77,11 +71,7 @@ public:
 	//     is used as the default font if there is not a custom font value
 	//     set.
 	//-----------------------------------------------------------------------
-	void SetStandardValue(LOGFONT* pLogFont)
-	{
-		m_fntStandardValue.DeleteObject();
-		m_fntStandardValue.CreateFontIndirect(pLogFont);
-	}
+	void SetStandardValue(LOGFONT* pLogFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -91,10 +81,7 @@ public:
 	//     Call this member function to ensure that the default font is
 	//     used and not the custom font.
 	//-----------------------------------------------------------------------
-	void SetDefaultValue()
-	{
-		m_fntCustomValue.DeleteObject();
-	}
+	void SetDefaultValue();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -107,10 +94,7 @@ public:
 	//     A reference to a CFont object that contains either the standard
 	//     font value or the custom font value.
 	//-----------------------------------------------------------------------
-	operator CFont& ()
-	{
-		return  (m_fntCustomValue.GetSafeHandle() == 0) ? m_fntStandardValue : m_fntCustomValue;
-	}
+	operator CFont&();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -123,10 +107,7 @@ public:
 	//     A pointer to a CFont object that contains either the standard
 	//     font value or the custom font value.
 	//-----------------------------------------------------------------------
-	operator CFont* ()
-	{
-		return  (m_fntCustomValue.GetSafeHandle() == 0) ? &m_fntStandardValue : &m_fntCustomValue;
-	}
+	operator CFont*();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -139,27 +120,24 @@ public:
 	// Returns:
 	//     A reference to a CXTPCalendarViewPartFontValue.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarViewPartFontValue& operator=(LOGFONT* pLogFont)
-	{
-		m_fntCustomValue.DeleteObject();
-		if (pLogFont) m_fntCustomValue.CreateFontIndirect(pLogFont);
-		return *this;
-	}
+	const CXTPCalendarViewPartFontValue& operator=(LOGFONT* pLogFont);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Get a current value object.
 	// Returns:
 	//     Pointer to the current value object.
 	//-----------------------------------------------------------------------
-	CFont* operator->()
-	{
-		return (m_fntCustomValue.GetSafeHandle() == 0) ? &m_fntStandardValue : &m_fntCustomValue;
-	};
+	CFont* operator->();
 
 protected:
-	CFont m_fntStandardValue;   // Stores default font.
-	CFont m_fntCustomValue;     // Stores custom font.
+	CXTPFont m_xtpFontStandardValue; // Stores default font.
+	CXTPFont m_xtpFontCustomValue;   // Stores custom font.
 
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntStandardValue, m_xtpFontStandardValue,
+										  GetStandardFontHandle);
+	XTP_SUBSTITUTE_GDI_MEMBER_WITH_CACHED(CFont, m_fntCustomValue, m_xtpFontCustomValue,
+										  GetCustomFontHandle);
 };
 
 //===========================================================================
@@ -171,7 +149,6 @@ template<class _TValue, class _TValueRef = _TValue&>
 class CXTPCalendarThemeCustomizableXValueT
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -179,13 +156,13 @@ public:
 	CXTPCalendarThemeCustomizableXValueT()
 	{
 		m_bIsStandardSet = FALSE;
-		m_bIsCustomSet = FALSE;
+		m_bIsCustomSet   = FALSE;
 
 		m_bAutoDestroy_Standard = FALSE;
-		m_bAutoDestroy_Custom = FALSE;
+		m_bAutoDestroy_Custom   = FALSE;
 
 		m_ValueStandard = _TValue();
-		m_ValueCustom = _TValue();
+		m_ValueCustom   = _TValue();
 	}
 
 	//-----------------------------------------------------------------------
@@ -211,7 +188,10 @@ public:
 	// Parameters:
 	//      refValue - An object reference to destroy.
 	//-----------------------------------------------------------------------
-	virtual void DoDestroy(_TValue& refValue){UNREFERENCED_PARAMETER(refValue);};
+	virtual void DoDestroy(_TValue& refValue)
+	{
+		UNREFERENCED_PARAMETER(refValue);
+	};
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -272,7 +252,7 @@ public:
 		m_ValueStandard = refValue;
 
 		m_bAutoDestroy_Standard = bAutoDestroy;
-		m_bIsStandardSet = TRUE;
+		m_bIsStandardSet		= TRUE;
 	}
 
 	//<COMBINE CXTPCalendarThemeCustomizableXValueT::SetStandardValue@_TValueRef@BOOL>
@@ -280,7 +260,6 @@ public:
 	{
 		SetStandardValue(refValue, m_bAutoDestroy_Standard);
 	}
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -305,7 +284,7 @@ public:
 		m_ValueCustom = refValue;
 
 		m_bAutoDestroy_Custom = bAutoDestroy;
-		m_bIsCustomSet = TRUE;
+		m_bIsCustomSet		  = TRUE;
 	}
 
 	//<COMBINE CXTPCalendarThemeCustomizableXValueT::SetCustomValue@_TValueRef@BOOL>
@@ -332,7 +311,7 @@ public:
 			{
 				DoDestroy(m_ValueCustom);
 			}
-			m_bIsCustomSet = FALSE;
+			m_bIsCustomSet		  = FALSE;
 			m_bAutoDestroy_Custom = FALSE;
 		}
 	}
@@ -350,7 +329,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual _TValueRef GetValue() const
 	{
-		return  m_bIsCustomSet ? m_ValueCustom : m_ValueStandard;
+		return m_bIsCustomSet ? m_ValueCustom : m_ValueStandard;
 	}
 
 	//-----------------------------------------------------------------------
@@ -366,9 +345,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual const _TValue& GetValueX() const
 	{
-		return  m_bIsCustomSet ? m_ValueCustom : m_ValueStandard;
+		return m_bIsCustomSet ? m_ValueCustom : m_ValueStandard;
 	}
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -380,7 +358,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual _TValueRef GetStandardValue() const
 	{
-		return  m_ValueStandard;
+		return m_ValueStandard;
 	}
 
 	//-----------------------------------------------------------------------
@@ -394,7 +372,7 @@ public:
 	// See Also:
 	//      SetStandardValue, SetCustomValue, SetDefaultValue, GetValue
 	//-----------------------------------------------------------------------
-	operator _TValueRef () const
+	operator _TValueRef() const
 	{
 		return GetValue();
 	}
@@ -457,7 +435,6 @@ public:
 
 			ar >> m_ValueStandard;
 			ar >> m_ValueCustom;
-
 		}
 	}
 
@@ -469,52 +446,16 @@ public:
 	//     pcszPropName - The name of the property being exchanged.
 	// See Also: Serialize(), DoPX_Value()
 	//-----------------------------------------------------------------------
-	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName)
-	{
-		if (!pPX || !pcszPropName)
-		{
-			ASSERT(FALSE);
-			return;
-		}
-
-		CXTPPropExchangeSection secData(pPX->GetSection(pcszPropName));
-		if (pPX->IsStoring())
-			secData->EmptySection();
-
-		PX_Bool(&secData, _T("IsStandardSet"), m_bIsStandardSet);
-		PX_Bool(&secData, _T("IsCustomSet"), m_bIsCustomSet);
-
-		DoPX_Value(&secData, _T("Standard"), m_ValueStandard, TRUE);
-		DoPX_Value(&secData, _T("Custom"), m_ValueCustom, FALSE);
-
-	}
+	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName) = 0;
 
 protected:
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This method reads or writes value data from or to an storage.
-	// Parameters:
-	//     pPX          - A CXTPPropExchange object to serialize to or from.
-	//     pcszPropName - A value name.
-	//     rXValue      - Reference to value.
-	//     bStandard    - Standard or Custom value.
-	// See Also: DoPropExchange()
-	//-----------------------------------------------------------------------
-	virtual void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, _TValue& rXValue, BOOL bStandard)
-	{
-		ASSERT(FALSE);
-		UNREFERENCED_PARAMETER(pPX); UNREFERENCED_PARAMETER(pcszPropName); UNREFERENCED_PARAMETER(rXValue);
-		UNREFERENCED_PARAMETER(bStandard);
-	}
+	_TValue m_ValueStandard;	  // Stores default value.
+	BOOL m_bAutoDestroy_Standard; // Call DoDestroy for standard vale.
+	BOOL m_bIsStandardSet;		  // Is standard value set.
 
-protected:
-	_TValue m_ValueStandard;            // Stores default value.
-	BOOL    m_bAutoDestroy_Standard;    // Call DoDestroy for standard vale.
-	BOOL    m_bIsStandardSet;           // Is standard value set.
-
-	_TValue m_ValueCustom;              // Stores custom value.
-	BOOL    m_bAutoDestroy_Custom;      // Call DoDestroy for custom vale.
-	BOOL    m_bIsCustomSet;             // Is custom value set.
+	_TValue m_ValueCustom;		// Stores custom value.
+	BOOL m_bAutoDestroy_Custom; // Call DoDestroy for custom vale.
+	BOOL m_bIsCustomSet;		// Is custom value set.
 };
 
 //===========================================================================
@@ -526,17 +467,19 @@ template<class _TValue>
 class CXTPCalendarViewPartCustomizableValueT
 {
 public:
+	typedef CXTPCalendarViewPartCustomizableValueT<_TValue> TBase;
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
 	//-----------------------------------------------------------------------
 	CXTPCalendarViewPartCustomizableValueT()
 	{
-		m_pValueStandard = NULL;
+		m_pValueStandard	   = NULL;
 		m_bAutoDelete_Standard = FALSE;
 
-		m_pValueCustom = NULL;
+		m_pValueCustom		 = NULL;
 		m_bAutoDelete_Custom = FALSE;
 	}
 
@@ -546,14 +489,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual ~CXTPCalendarViewPartCustomizableValueT()
 	{
-		if (m_bAutoDelete_Standard)
-		{
-			SAFE_DELETE(m_pValueStandard);
-		}
-		if (m_bAutoDelete_Custom)
-		{
-			SAFE_DELETE(m_pValueCustom);
-		}
+		CXTPCalendarViewPartCustomizableValueT::DeleteStandardValue();
+		CXTPCalendarViewPartCustomizableValueT::DeleteCustomValue();
 	}
 
 	//-----------------------------------------------------------------------
@@ -610,11 +547,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetStandardValue(_TValue* pValue, BOOL bAutoDelete)
 	{
-		if (m_bAutoDelete_Standard)
-		{
-			SAFE_DELETE(m_pValueStandard);
-		}
-		m_pValueStandard = pValue;
+		DeleteStandardValue();
+		m_pValueStandard	   = pValue;
 		m_bAutoDelete_Standard = bAutoDelete;
 	}
 
@@ -639,7 +573,7 @@ public:
 	//
 	//          void Draw(CDC* pDC, CRect& rcRect, BOOL bCustom);
 	//          // ...
-	//          CBrush m_brushBusy_Custom;
+	//          CXTPBrush m_brushBusy_Custom;
 	//
 	//          CXTPCalendarViewPartBrushValue m_brushVal_auto;
 	//          CXTPCalendarViewPartBrushValue m_brushVal_static;
@@ -680,11 +614,8 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetCustomValue(_TValue* pValue, BOOL bAutoDelete)
 	{
-		if (m_bAutoDelete_Custom)
-		{
-			SAFE_DELETE(m_pValueCustom);
-		}
-		m_pValueCustom = pValue;
+		DeleteCustomValue();
+		m_pValueCustom		 = pValue;
 		m_bAutoDelete_Custom = bAutoDelete;
 	}
 
@@ -704,10 +635,7 @@ public:
 	{
 		if (m_pValueStandard)
 		{
-			if (m_bAutoDelete_Custom)
-			{
-				SAFE_DELETE(m_pValueCustom);
-			}
+			DeleteCustomValue();
 			m_pValueCustom = NULL;
 		}
 	}
@@ -727,7 +655,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual _TValue* GetValue() const
 	{
-		return  m_pValueCustom ? m_pValueCustom : m_pValueStandard;
+		return m_pValueCustom ? m_pValueCustom : m_pValueStandard;
 	}
 
 	//-----------------------------------------------------------------------
@@ -742,7 +670,7 @@ public:
 	//-----------------------------------------------------------------------
 	virtual _TValue* GetStandardValue() const
 	{
-		return  m_pValueStandard;
+		return m_pValueStandard;
 	}
 
 	//-----------------------------------------------------------------------
@@ -758,7 +686,7 @@ public:
 	// See Also:
 	//      SetStandardValue, SetCustomValue, SetDefaultValue, GetValue
 	//-----------------------------------------------------------------------
-	operator _TValue* () const
+	operator _TValue*() const
 	{
 		return GetValue();
 	}
@@ -790,41 +718,86 @@ public:
 	}
 
 protected:
-	_TValue* m_pValueStandard;      // Stores default value.
-	BOOL    m_bAutoDelete_Standard; // Call operator delete for the standard value.
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Implementation can override this method for standard value specific
+	//     cleaup logic.
+	// Remarks:
+	//     The method is called from destructor so implementation must not use
+	//     any implementation specific members.
+	//-----------------------------------------------------------------------
+	virtual void DeleteStandardValue()
+	{
+		if (m_bAutoDelete_Standard)
+		{
+			SAFE_DELETE(m_pValueStandard);
+		}
+	}
 
-	_TValue* m_pValueCustom;        // Stores custom value.
-	BOOL    m_bAutoDelete_Custom;   // Call operator delete for the custom value.
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Implementation can override this method for custom value specific
+	//     cleaup logic.
+	// Remarks:
+	//     The method is called from destructor so implementation must not use
+	//     any implementation specific members.
+	//-----------------------------------------------------------------------
+	virtual void DeleteCustomValue()
+	{
+		if (m_bAutoDelete_Custom)
+		{
+			SAFE_DELETE(m_pValueCustom);
+		}
+	}
+
+	_TValue* m_pValueStandard;   // Stores default value.
+	BOOL m_bAutoDelete_Standard; // Call operator delete for the standard value.
+
+	_TValue* m_pValueCustom;   // Stores custom value.
+	BOOL m_bAutoDelete_Custom; // Call operator delete for the custom value.
 };
 
 //===========================================================================
 // Summary:
 //     Helper class provides functionality to manage brush value objects.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarViewPartBrushValue : public
-			CXTPCalendarViewPartCustomizableValueT<CBrush>
+class _XTP_EXT_CLASS CXTPCalendarViewPartBrushValue
+	: public CXTPCalendarViewPartCustomizableValueT<CBrush>
 {
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Handles object deallocation.
+	//-----------------------------------------------------------------------
+	~CXTPCalendarViewPartBrushValue();
+
+private:
+	virtual void DeleteStandardValue();
+	virtual void DeleteCustomValue();
 };
 
 //===========================================================================
 // Summary:
 //     Helper class provides functionality to manage font value objects.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarThemeFontValue : public
-			CXTPCalendarViewPartCustomizableValueT<CFont>
+class _XTP_EXT_CLASS CXTPCalendarThemeFontValue
+	: public CXTPCalendarViewPartCustomizableValueT<CFont>
 {
-	//{{AFX_CODEJOCK_PRIVATE
-	typedef CXTPCalendarViewPartCustomizableValueT<CFont> TBase;
-	//}}AFX_CODEJOCK_PRIVATE
 public:
+	using CXTPCalendarViewPartCustomizableValueT<CFont>::SetCustomValue;
+	using CXTPCalendarViewPartCustomizableValueT<CFont>::SetStandardValue;
 
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
 	//-----------------------------------------------------------------------
-	CXTPCalendarThemeFontValue()
-	{
-	}
+	CXTPCalendarThemeFontValue();
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Handles object deallocation.
+	//-----------------------------------------------------------------------
+	~CXTPCalendarThemeFontValue();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -838,15 +811,7 @@ public:
 	//     is used as the default font if there is not a custom font value
 	//     set.
 	//-----------------------------------------------------------------------
-	virtual void SetStandardValue(LOGFONT* pLogFont)
-	{
-		CFont* pFont = new CFont();
-		if (pFont)
-		{
-			VERIFY(pFont->CreateFontIndirect(pLogFont));
-		}
-		TBase::SetStandardValue(pFont, TRUE);
-	}
+	virtual void SetStandardValue(LOGFONT* pLogFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -860,15 +825,7 @@ public:
 	//     Call this member function to set the custom font.
 	//     If set, this font is used as the object value.
 	//-----------------------------------------------------------------------
-	virtual void SetCustomValue(LOGFONT* pLogFont)
-	{
-		CFont* pFont = new CFont();
-		if (pFont)
-		{
-			VERIFY(pFont->CreateFontIndirect(pLogFont));
-		}
-		TBase::SetCustomValue(pFont, TRUE);
-	}
+	virtual void SetCustomValue(LOGFONT* pLogFont);
 
 	// ------------------------------------------------------------------
 	// <combine CXTPCalendarViewPartCustomizableValueT::SetStandardValue>
@@ -878,20 +835,7 @@ public:
 	// Parameters:
 	//     pFont :  pointer to CFont object
 	// ------------------------------------------------------------------
-	virtual void SetStandardValue(CFont* pFont)
-	{
-		if (!pFont)
-		{
-			TBase::SetStandardValue(pFont, FALSE);
-			return;
-		}
-
-		LOGFONT lfFont;
-		int nRes = pFont->GetLogFont(&lfFont);
-		ASSERT(nRes);
-		if(nRes)
-			SetStandardValue(&lfFont);
-	}
+	virtual void SetStandardValue(CFont* pFont);
 
 	// ----------------------------------------------------------------
 	// <combine CXTPCalendarViewPartCustomizableValueT::SetCustomValue>
@@ -901,20 +845,7 @@ public:
 	// Parameters:
 	//     pFont :  pointer to CFont object
 	// ----------------------------------------------------------------
-	virtual void SetCustomValue(CFont* pFont)
-	{
-		if (!pFont)
-		{
-			TBase::SetStandardValue(pFont, FALSE);
-			return;
-		}
-
-		LOGFONT lfFont;
-		int nRes = pFont->GetLogFont(&lfFont);
-		ASSERT(nRes);
-		if(nRes)
-			SetCustomValue(&lfFont);
-	}
+	virtual void SetCustomValue(CFont* pFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -927,11 +858,7 @@ public:
 	// Returns:
 	//     A reference to a CXTPCalendarViewPartFontValue.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarThemeFontValue& operator=(LOGFONT& rLogFont)
-	{
-		SetCustomValue(&rLogFont);
-		return *this;
-	}
+	const CXTPCalendarThemeFontValue& operator=(LOGFONT& rLogFont);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -943,10 +870,7 @@ public:
 	//      SetStandardValue, SetCustomValue, SetDefaultValue, GetValue,
 	//      IsStandardValue, IsCustomValue, GetStandardValue.
 	//-----------------------------------------------------------------------
-	void CopySettings(const CXTPCalendarThemeFontValue& refSrc)
-	{
-		SetStandardValue(refSrc.GetValue());
-	}
+	void CopySettings(const CXTPCalendarThemeFontValue& refSrc);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -956,6 +880,10 @@ public:
 	// See Also: DoPropExchange()
 	//-----------------------------------------------------------------------
 	virtual void Serialize(CArchive& ar);
+
+private:
+	virtual void DeleteStandardValue();
+	virtual void DeleteCustomValue();
 };
 
 //===========================================================================
@@ -963,19 +891,15 @@ public:
 //     Helper class provides functionality to manage customized string value
 //     objects.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarThemeStringValue : public
-			CXTPCalendarThemeCustomizableXValueT<CString, LPCTSTR>
+class _XTP_EXT_CLASS CXTPCalendarThemeStringValue
+	: public CXTPCalendarThemeCustomizableXValueT<CString, LPCTSTR>
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
 	//-----------------------------------------------------------------------
-	CXTPCalendarThemeStringValue()
-	{
-		m_bAutoDestroy_Standard = m_bAutoDestroy_Custom = TRUE;
-	}
+	CXTPCalendarThemeStringValue();
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1003,12 +927,18 @@ public:
 	// Returns:
 	//      Reference to this object.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarThemeStringValue& operator=(LPCTSTR pcszValue)
-	{
-		SetCustomValue(pcszValue);
-		return *this;
-	}
+	const CXTPCalendarThemeStringValue& operator=(LPCTSTR pcszValue);
 
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method reads or writes data from or to an storage.
+	// Parameters:
+	//     pPX - A CXTPPropExchange object to serialize to or from.
+	//     pcszPropName - The name of the property being exchanged.
+	// See Also: Serialize(), DoPX_Value()
+	//-----------------------------------------------------------------------
+	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName);
 
 protected:
 	//-----------------------------------------------------------------------
@@ -1020,7 +950,7 @@ protected:
 	virtual void DoDestroy(CString& refValue)
 	{
 		refValue.Empty();
-	};
+	}
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1032,18 +962,7 @@ protected:
 	//     bStandard    - Standard or Custom value.
 	// See Also: DoPropExchange()
 	//-----------------------------------------------------------------------
-	virtual void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CString& rXValue, BOOL bStandard)
-	{
-		if (pPX->IsStoring())
-		{
-			if (bStandard && !m_bIsStandardSet ||
-				!bStandard && !m_bIsCustomSet)
-			{
-				rXValue.Empty();
-			}
-		}
-		PX_String(pPX, pcszPropName, rXValue);
-	}
+	void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CString& rXValue, BOOL bStandard);
 };
 
 //===========================================================================
@@ -1051,41 +970,26 @@ protected:
 //     Helper class provides functionality to manage customized int value
 //     objects.
 //===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarThemeIntValue : public CXTPCalendarThemeCustomizableXValueT<int, int>
+class _XTP_EXT_CLASS CXTPCalendarThemeIntValue
+	: public CXTPCalendarThemeCustomizableXValueT<int, int>
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
 	//-----------------------------------------------------------------------
-	CXTPCalendarThemeIntValue()
-	{
-		m_ValueStandard = m_ValueCustom = 0;
-	}
+	CXTPCalendarThemeIntValue();
 
+public:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method reads or writes value data from or to an storage.
+	//     This method reads or writes data from or to an storage.
 	// Parameters:
-	//     pPX          - A CXTPPropExchange object to serialize to or from.
-	//     pcszPropName - A value name.
-	//     rXValue      - Reference to value.
-	//     bStandard    - Standard or Custom value.
-	// See Also: DoPropExchange()
+	//     pPX - A CXTPPropExchange object to serialize to or from.
+	//     pcszPropName - The name of the property being exchanged.
+	// See Also: Serialize(), DoPX_Value()
 	//-----------------------------------------------------------------------
-	virtual void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, int& rXValue, BOOL bStandard)
-	{
-		if (pPX->IsStoring())
-		{
-			if (bStandard && !m_bIsStandardSet ||
-				!bStandard && !m_bIsCustomSet)
-			{
-				rXValue = 0;
-			}
-		}
-		PX_Int(pPX, pcszPropName, rXValue);
-	}
+	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1095,31 +999,9 @@ public:
 	// Returns:
 	//      Reference to this object.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarThemeIntValue& operator=(int nValue)
-	{
-		SetCustomValue(nValue);
-		return *this;
-	}
-};
+	const CXTPCalendarThemeIntValue& operator=(int nValue);
 
-//===========================================================================
-// Summary:
-//     Helper class provides functionality to manage customized BOOL value
-//     objects.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarThemeBOOLValue : public CXTPCalendarThemeCustomizableXValueT<BOOL, BOOL>
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default object constructor.
-	//-----------------------------------------------------------------------
-	CXTPCalendarThemeBOOLValue()
-	{
-		m_ValueStandard = m_ValueCustom = FALSE;
-	}
-
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method reads or writes value data from or to an storage.
@@ -1130,18 +1012,34 @@ public:
 	//     bStandard    - Standard or Custom value.
 	// See Also: DoPropExchange()
 	//-----------------------------------------------------------------------
-	virtual void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, BOOL& rXValue, BOOL bStandard)
-	{
-		if (pPX->IsStoring())
-		{
-			if (bStandard && !m_bIsStandardSet ||
-				!bStandard && !m_bIsCustomSet)
-			{
-				rXValue = FALSE;
-			}
-		}
-		PX_Bool(pPX, pcszPropName, rXValue);
-	}
+	void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, int& rXValue, BOOL bStandard);
+};
+
+//===========================================================================
+// Summary:
+//     Helper class provides functionality to manage customized BOOL value
+//     objects.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCalendarThemeBOOLValue
+	: public CXTPCalendarThemeCustomizableXValueT<BOOL, BOOL>
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default object constructor.
+	//-----------------------------------------------------------------------
+	CXTPCalendarThemeBOOLValue();
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method reads or writes data from or to an storage.
+	// Parameters:
+	//     pPX - A CXTPPropExchange object to serialize to or from.
+	//     pcszPropName - The name of the property being exchanged.
+	// See Also: Serialize(), DoPX_Value()
+	//-----------------------------------------------------------------------
+	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1151,33 +1049,9 @@ public:
 	// Returns:
 	//      Reference to this object.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarThemeBOOLValue& operator=(BOOL bValue)
-	{
-		SetCustomValue(bValue);
-		return *this;
-	}
+	const CXTPCalendarThemeBOOLValue& operator=(BOOL bValue);
 
-};
-
-//===========================================================================
-// Summary:
-//     Helper class provides functionality to manage customized CRect value
-//     objects.
-//===========================================================================
-class _XTP_EXT_CLASS CXTPCalendarThemeRectValue :
-		public CXTPCalendarThemeCustomizableXValueT<CRect, CRect>
-{
-public:
-
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     Default object constructor.
-	//-----------------------------------------------------------------------
-	CXTPCalendarThemeRectValue()
-	{
-		m_ValueStandard = m_ValueCustom = CRect(0, 0, 0, 0);
-	}
-
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This method reads or writes value data from or to an storage.
@@ -1188,20 +1062,34 @@ public:
 	//     bStandard    - Standard or Custom value.
 	// See Also: DoPropExchange()
 	//-----------------------------------------------------------------------
-	virtual void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CRect& rXValue, BOOL bStandard)
-	{
-		const CRect crcZero(0, 0, 0, 0);
-		if (pPX->IsStoring())
-		{
-			if (bStandard && !m_bIsStandardSet ||
-				!bStandard && !m_bIsCustomSet)
-			{
-				rXValue = crcZero;
-			}
-		}
+	void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, BOOL& rXValue, BOOL bStandard);
+};
 
-		PX_Rect(pPX, pcszPropName, rXValue, crcZero);
-	}
+//===========================================================================
+// Summary:
+//     Helper class provides functionality to manage customized CRect value
+//     objects.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCalendarThemeRectValue
+	: public CXTPCalendarThemeCustomizableXValueT<CRect, CRect>
+{
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     Default object constructor.
+	//-----------------------------------------------------------------------
+	CXTPCalendarThemeRectValue();
+
+public:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method reads or writes data from or to an storage.
+	// Parameters:
+	//     pPX - A CXTPPropExchange object to serialize to or from.
+	//     pcszPropName - The name of the property being exchanged.
+	// See Also: Serialize(), DoPX_Value()
+	//-----------------------------------------------------------------------
+	virtual void DoPropExchange(CXTPPropExchange* pPX, LPCTSTR pcszPropName);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1211,11 +1099,20 @@ public:
 	// Returns:
 	//      Reference to this object.
 	//-----------------------------------------------------------------------
-	const CXTPCalendarThemeRectValue& operator=(const CRect& rcValue)
-	{
-		SetCustomValue((CRect&)rcValue);
-		return *this;
-	}
+	const CXTPCalendarThemeRectValue& operator=(const CRect& rcValue);
+
+protected:
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This method reads or writes value data from or to an storage.
+	// Parameters:
+	//     pPX          - A CXTPPropExchange object to serialize to or from.
+	//     pcszPropName - A value name.
+	//     rXValue      - Reference to value.
+	//     bStandard    - Standard or Custom value.
+	// See Also: DoPropExchange()
+	//-----------------------------------------------------------------------
+	void DoPX_Value(CXTPPropExchange* pPX, LPCTSTR pcszPropName, CRect& rXValue, BOOL bStandard);
 };
 
 //===========================================================================
@@ -1230,7 +1127,6 @@ class _XTP_EXT_CLASS CXTPCalendarViewPart : public CXTPCmdTarget
 	//}}AFX_CODEJOCK_PRIVATE
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default constructor.
@@ -1246,7 +1142,6 @@ public:
 	virtual ~CXTPCalendarViewPart();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to set graphical related
@@ -1255,7 +1150,6 @@ public:
 	virtual void RefreshMetrics();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to obtain the color used to fill
@@ -1294,15 +1188,11 @@ public:
 	//     lpRect  - An LPRECT that contains the rectangle coordinates
 	//               used to display the text.
 	//     nFormat - A UINT that contains additional format parameters.
+	//     clrText - RGB value indicating text color, if COLORREF_NULL default color is used.
+	//     pFont   - Points to a valid CFont object, if NULL default color is used.
 	//-----------------------------------------------------------------------
-	void DrawText(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormat)
-	{
-		CFont* pOldFont = pDC->SelectObject(&GetTextFont());
-		pDC->SetTextColor(GetTextColor());
-		nFormat |= DT_NOPREFIX;
-		pDC->DrawText(str, lpRect, nFormat);
-		pDC->SelectObject(pOldFont);
-	}
+	void DrawText(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormat,
+				  COLORREF clrText = COLORREF_NULL, CFont* pFont = NULL);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1317,29 +1207,7 @@ public:
 	//     nFormat - A UINT that contains additional format parameters as
 	//               combination of flags: DT_VCENTER, DT_LEFT, DT_RIGHT or 0.
 	//-----------------------------------------------------------------------
-	void DrawLine_CenterLR(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormat)
-	{
-		CFont* pOldFont = pDC->SelectObject(&GetTextFont());
-		pDC->SetTextColor(GetTextColor());
-		nFormat |= DT_NOPREFIX | DT_SINGLELINE;
-
-		int nLeftRight = nFormat & (DT_LEFT | DT_RIGHT);
-		nFormat &= ~(DT_CENTER | DT_LEFT | DT_RIGHT);
-
-		CSize sz = pDC->GetTextExtent(str);
-		if (sz.cx < labs(lpRect->right - lpRect->left) )
-		{
-			nFormat |= DT_CENTER;
-		}
-		else
-		{
-			nFormat |= nLeftRight ? nLeftRight : DT_LEFT;
-		}
-
-		pDC->DrawText(str, lpRect, nFormat);
-
-		pDC->SelectObject(pOldFont);
-	}
+	void DrawLine_CenterLR(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormat);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1356,27 +1224,8 @@ public:
 	//     nFormatSmall  - A UINT that contains format parameters when rect width
 	//                     is not enough to draw all text chars.
 	//-----------------------------------------------------------------------
-	void DrawLineEx(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormatNormal, UINT nFormatSmall)
-	{
-		CFont* pOldFont = pDC->SelectObject(&GetTextFont());
-		pDC->SetTextColor(GetTextColor());
-		UINT nFormat = 0;
-
-		CSize sz = pDC->GetTextExtent(str);
-		if (sz.cx < labs(lpRect->right - lpRect->left) )
-		{
-			nFormat = nFormatNormal | DT_NOPREFIX | DT_SINGLELINE;
-		}
-		else
-		{
-			nFormat = nFormatSmall | DT_NOPREFIX | DT_SINGLELINE;
-		}
-
-		pDC->DrawText(str, lpRect, nFormat);
-
-		pDC->SelectObject(pOldFont);
-	}
-
+	void DrawLineEx(CDC* pDC, const CString& str, LPRECT lpRect, UINT nFormatNormal,
+					UINT nFormatSmall);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1389,13 +1238,7 @@ public:
 	//     A CSize object that contains the dimensions required to display
 	//     the text.
 	//-----------------------------------------------------------------------
-	CSize GetTextExtent(CDC* pDC, const CString& str)
-	{
-		CFont* pOldFont = pDC->SelectObject(&GetTextFont());
-		CSize sz = pDC->GetTextExtent(str);
-		pDC->SelectObject(pOldFont);
-		return sz;
-	}
+	CSize GetTextExtent(CDC* pDC, const CString& str);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -1404,10 +1247,8 @@ public:
 	// Parameters:
 	//     clr - A COLORREF that contains the new color value.
 	//-----------------------------------------------------------------------
-	void SetBackgroundColor(COLORREF clr)
-	{
-		m_clrBackground = clr;
-	}
+	void SetBackgroundColor(COLORREF clr);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to set the new color used to display
@@ -1415,10 +1256,8 @@ public:
 	// Parameters:
 	//     clr - A COLORREF that contains the new color value.
 	//-----------------------------------------------------------------------
-	void SetTextColor(COLORREF clr)
-	{
-		m_clrTextColor = clr;
-	}
+	void SetTextColor(COLORREF clr);
+
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to set the new font used to display
@@ -1427,24 +1266,181 @@ public:
 	//     pLogFont - A pointer to a LOGFONT struct that contains the new
 	//                font used to display the text.
 	//-----------------------------------------------------------------------
-	void SetTextFont(LOGFONT* pLogFont)
-	{
-		m_fntText = pLogFont;
-	}
+	void SetTextFont(LOGFONT* pLogFont);
 
-// Attributes
-protected:
+	CXTPCalendarControl* GetCalendarControl() const;
+
+	// Attributes
 	CXTPPaintManagerColor m_clrTextColor;  // Stores color settings used to display text.
-	CXTPPaintManagerColor m_clrBackground; // Stores color settings used to to fill background of UI item.
-	CXTPCalendarViewPartFontValue m_fntText;        // Stores font settings used to display text.
-
-	CXTPCalendarViewPart* m_pParentPart;            // Pointer to the parent CXTPCalendarViewPart object.
-	CXTPCalendarPaintManager* m_pPaintManager;      // Pointer to containing CXTPCalendarPaintManager object
+	CXTPPaintManagerColor m_clrBackground; // Stores color settings used to to fill background of UI
+										   // item.
+	CXTPCalendarViewPartFontValue m_fntText;   // Stores font settings used to display text.
+	CXTPCalendarViewPart* m_pParentPart;	   // Pointer to the parent CXTPCalendarViewPart object.
+	CXTPCalendarPaintManager* m_pPaintManager; // Pointer to containing CXTPCalendarPaintManager
+											   // object
 
 protected:
 	//{{AFX_CODEJOCK_PRIVATE
 	virtual void _Init(){};
 	//}}AFX_CODEJOCK_PRIVATE
+};
+
+//===========================================================================
+// Summary:
+//     Helper base class  to implement parts for calendar paint manager.
+//     objects.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCalendarTimeLineViewTimeScalePart : public CXTPCalendarViewPart
+{
+public:
+	// -----------------
+	// Summary:
+	//     Default object constructor.
+	// Parameters:
+	//     pParentPart :  pointer to CXTPCalendarViewPart
+	// --------------------------------
+	CXTPCalendarTimeLineViewTimeScalePart(CXTPCalendarViewPart* pParentPart = NULL);
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to set graphical related
+	//     parameters equal to the system settings.
+	//-----------------------------------------------------------------------
+	virtual void RefreshMetrics();
+
+	// ------------------------
+	// Summary:
+	//     This member function is used to calculate height utilizing
+	//     the specified device context.
+	// Parameters:
+	//     pDC - Pointer to a valid device context.
+	// Returns:
+	//     calculated height as int
+	// ------------------------
+	virtual int CalcHeigt(CDC* pDC);
+
+	// ---------------------------
+	// Summary:
+	//     This member function is used to draw the part content utilizing
+	//     the specified device context.
+	// Parameters:
+	//     pDC - Pointer to a valid device context.
+	//     rcRect :  rectangle to use
+	//     pView :   pointer to CXTPCalendarTimeLineView
+	// ---------------------------
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView);
+
+	// -----------------
+	// Summary:
+	//     access function to get header height
+	// Returns:
+	//     current header height as int
+	// -----------------
+	virtual int GetHeaderHeight()
+	{
+		return m_nHeaderHeight;
+	}
+
+	// -----------------------------------
+	// Summary:
+	//     access function to get header date format
+	// Parameters:
+	//     nLabelInterval :  int param used to select format
+	// Returns:
+	//     current header date format as CString object
+	// -----------------------------------
+	virtual CString GetHeaderDateFormat(int nLabelInterval);
+
+	// -----------------------------------
+	// Summary:
+	//     This member function is used to draw the part content utilizing
+	//     the specified device context.
+	// Parameters:
+	//     pDC - Pointer to a valid device context.
+	//     rcRect :  rectangle to use
+	//     pView :   pointer to CXTPCalendarTimeLineView
+	//     nLabelInterval :  param used to select format
+	// -----------------------------------
+	virtual void DrawHeader(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView,
+							int nLabelInterval);
+
+public:
+	CXTPCalendarViewPartFontValue m_fntScaleHeaderText; // Time scale header text font.
+
+protected:
+	int m_nHeaderHeight; // internal value of current header height
+
+	friend class CXTPCalendarPaintManager;
+};
+
+//===========================================================================
+// Summary:
+//     Helper base class  to implement parts for calendar paint manager.
+//     objects.
+//===========================================================================
+class _XTP_EXT_CLASS CXTPCalendarTimeLineViewPart : public CXTPCalendarViewPart
+{
+public:
+	// -----------------
+	// Summary:
+	//     Default object constructor.
+	// Parameters:
+	//     pParentPart :  pointer to CXTPCalendarViewPart
+	// --------------------------------
+	CXTPCalendarTimeLineViewPart(CXTPCalendarViewPart* pParentPart = NULL)
+		: CXTPCalendarViewPart(pParentPart)
+	{
+		UNREFERENCED_PARAMETER(pParentPart);
+	};
+
+	// ---------------------------
+	// Summary:
+	//     This member function is used to draw the part content utilizing
+	//     the specified device context.
+	// Parameters:
+	//     pDC - Pointer to a valid device context.
+	//     rcRect :  rectangle to use
+	//     pView :   pointer to CXTPCalendarTimeLineView
+	// ---------------------------
+	virtual void Draw(CDC* pDC, const CRect& rcRect, CXTPCalendarTimeLineView* pView)
+	{
+		UNREFERENCED_PARAMETER(pDC);
+		UNREFERENCED_PARAMETER(rcRect);
+		UNREFERENCED_PARAMETER(pView);
+	};
+
+	// -----------------------------------
+	// Summary:
+	//     This member function is used to calculate rectangle needed to draw event
+	// Parameters:
+	//     pDC : Pointer to a valid device context.
+	//     pEventView :  pointer to CXTPCalendarTimeLineViewEvent
+	// Returns:
+	//     CSize object needed to draw event
+	// -----------------------------------
+	virtual CSize CalcEventSize(CDC* pDC, CXTPCalendarTimeLineViewEvent* pEventView)
+	{
+		UNREFERENCED_PARAMETER(pDC);
+		UNREFERENCED_PARAMETER(pEventView);
+		return CSize(0, 0);
+	};
+
+	// ---------------------------
+	// Summary:
+	//     This member function is used to draw the event utilizing
+	//     the specified device context.
+	// Parameters:
+	//     pDC - Pointer to a valid device context.
+	//     rcEvents :  rectangle to use
+	//     pEventView : pointer to CXTPCalendarTimeLineViewEvent
+	// -----------------------------------
+	virtual void DrawEvent(CDC* pDC, const CRect& rcEvents,
+						   CXTPCalendarTimeLineViewEvent* pEventView)
+	{
+		UNREFERENCED_PARAMETER(pDC);
+		UNREFERENCED_PARAMETER(rcEvents);
+		UNREFERENCED_PARAMETER(pEventView);
+	};
 };
 
 //---------------------------------------------------------------------------
@@ -1462,7 +1458,7 @@ protected:
 //     Nonzero if the exchange was successful; 0 if unsuccessful.
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
-											COLORREF& refColor);
+									   COLORREF& refColor);
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -1479,7 +1475,7 @@ _XTP_EXT_CLASS BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pcszPropNa
 //     Nonzero if the exchange was successful; 0 if unsuccessful.
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
-											CXTPPaintManagerColor& refColor);
+									   CXTPPaintManagerColor& refColor);
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -1496,7 +1492,7 @@ _XTP_EXT_CLASS BOOL AFX_CDECL PX_Color(CXTPPropExchange* pPX, LPCTSTR pcszPropNa
 //     Nonzero if the exchange was successful; 0 if unsuccessful.
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFX_CDECL PX_GrColor(CXTPPropExchange* pPX, LPCTSTR psczPropName,
-											CXTPPaintManagerColorGradient& refGrColor);
+										 CXTPPaintManagerColorGradient& refGrColor);
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -1513,7 +1509,7 @@ _XTP_EXT_CLASS BOOL AFX_CDECL PX_GrColor(CXTPPropExchange* pPX, LPCTSTR psczProp
 //     Nonzero if the exchange was successful; 0 if unsuccessful.
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFX_CDECL PX_Font(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
-											LOGFONT& rLogFont);
+									  LOGFONT& rLogFont);
 
 //---------------------------------------------------------------------------
 // Summary:
@@ -1530,10 +1526,11 @@ _XTP_EXT_CLASS BOOL AFX_CDECL PX_Font(CXTPPropExchange* pPX, LPCTSTR pcszPropNam
 //     Nonzero if the exchange was successful; 0 if unsuccessful.
 //---------------------------------------------------------------------------
 _XTP_EXT_CLASS BOOL AFX_CDECL PX_Font(CXTPPropExchange* pPX, LPCTSTR pcszPropName,
-										CXTPCalendarThemeFontValue& refFont);
+									  CXTPCalendarThemeFontValue& refFont);
 
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDARVIEWPART_H__)

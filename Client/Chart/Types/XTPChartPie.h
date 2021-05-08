@@ -1,7 +1,6 @@
 // XTPChartPie.h
 //
-// This file is a part of the XTREME TOOLKIT PRO MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,17 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPCHARTPIE_H__)
-#define __XTPCHARTPIE_H__
+#	define __XTPCHARTPIE_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
-#include "../Types/XTPChartTypes.h"
-#include "../Types/XTPChartDiagramPoint.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-class CXTPChartPie;
+class CXTPChartPieBase;
 class CXTPChartDeviceCommand;
 class CXTPChartBounds;
 
@@ -58,7 +56,7 @@ public:
 	//     dMinorSemiaxis - The length of the minor semi axis.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartEllipse(const CXTPChartDiagramPoint& ptCenter, double dMajorSemiaxis, double dMinorSemiaxis);
+	CXTPChartEllipse(const CXTPPoint3d& ptCenter, double dMajorSemiaxis, double dMinorSemiaxis);
 
 public:
 	//-----------------------------------------------------------------------
@@ -73,10 +71,10 @@ public:
 	// Summary:
 	//     Call this function to get the center of the ellipse.
 	// Returns:
-	//     A CXTPChartDiagramPoint value specifying the center point of the ellipse.
+	//     A CXTPPoint3d value specifying the center point of the ellipse.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartDiagramPoint GetCenter() const;
+	CXTPPoint3d GetCenter() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -89,7 +87,6 @@ public:
 	double CalcEllipseSectorFinishAngle(double areaSector, double startAngle) const;
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Call this function to covert polar coordinates to Cartesian co-ordinates.
@@ -97,10 +94,10 @@ public:
 	//     angle  - The angle in degree.
 	//     radius - The radius of the point.
 	// Returns:
-	//     A CXTPChartDiagramPoint specifying the Cartesian co-ordinate.
+	//     A CXTPPoint3d specifying the Cartesian co-ordinate.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartDiagramPoint Polar2Cartesian(double angle, double radius) const;
+	CXTPPoint3d Polar2Cartesian(double angle, double radius) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -121,10 +118,10 @@ public:
 	// Parameters:
 	//     angle  - The angle in degree.
 	// Returns:
-	//     A CXTPChartDiagramPoint denoting the Cartesian coordinate.
+	//     A CXTPPoint3d denoting the Cartesian coordinate.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartDiagramPoint CalcEllipsePoint(double angle) const;
+	CXTPPoint3d CalcEllipsePoint(double angle) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -156,37 +153,42 @@ public:
 	// Parameters:
 	//     point  - The center point.
 	// Returns:
-	//     A CXTPChartDiagramPoint value specifying the new center point.
+	//     A CXTPPoint3d value specifying the new center point.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartDiagramPoint ApplyCenterPoint(const CXTPChartDiagramPoint& point) const;
+	CXTPPoint3d ApplyCenterPoint(const CXTPPoint3d& point) const;
 
 	//{{AFX_CODEJOCK_PRIVATE
 	double AtanMulTan(double multiplier, double tanAngle) const;
 	//}}AFX_CODEJOCK_PRIVATE
 
-
 public:
-	CXTPChartDiagramPoint m_ptCenter;        //The center of the ellipse.
-	double m_dMajorSemiaxis;                //The major semi axis of the ellipse.
-	double m_dMinorSemiaxis;                //The minor semi axis of the ellipse.
+	CXTPPoint3d m_ptCenter;  // The center of the ellipse.
+	double m_dMajorSemiaxis; // The major semi axis of the ellipse.
+	double m_dMinorSemiaxis; // The minor semi axis of the ellipse.
+	double m_dArea;			 // The area of the ellipse.
 
-	double m_dArea;                         //The area of the ellipse.
-
-	friend class CXTPChartPie;
+	friend class CXTPChartPieBase;
 };
+
+AFX_INLINE double CXTPChartEllipse::GetArea() const
+{
+	return m_dArea;
+}
 
 //===========================================================================
 // Summary:
 //     This class abstracts an pie chart.
 // Remarks:
 //===========================================================================
-class _XTP_EXT_CLASS CXTPChartPie
+class _XTP_EXT_CLASS CXTPChartPieBase : public CObject
 {
-public:
+	DECLARE_DYNAMIC(CXTPChartPieBase);
+
+protected:
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     Constructs a CXTPChartPie object.
+	//     Constructs a CXTPChartPieBase object.
 	// Parameters:
 	//     dStartAngle      - The start angle of the pie.
 	//     dFinishAngle     - The finish angle of the pie.
@@ -195,7 +197,11 @@ public:
 	//     nHolePercent     - The hole percentage.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartPie(double dStartAngle, double dFinishAngle, const CXTPChartEllipse& ellipse, int nDepthPercent, int nHolePercent);
+	CXTPChartPieBase(double dStartAngle, double dFinishAngle, const CXTPChartEllipse& ellipse,
+					 int nDepthPercent, int nHolePercent);
+
+public:
+	virtual ~CXTPChartPieBase();
 
 public:
 	//-----------------------------------------------------------------------
@@ -204,44 +210,31 @@ public:
 	// Parameters:
 	//     basePoint - The base point in the diagram.
 	// Returns:
-	//     A CXTPChartDiagramPoint object denoting the center point of the pie.
+	//     A CXTPPoint3d object denoting the center point of the pie.
 	// Remarks:
 	//-----------------------------------------------------------------------
-	CXTPChartDiagramPoint CalculateCenter(const CXTPChartPointF& basePoint) const;
+	CXTPPoint3d CalculateCenter(const CXTPChartPointF& basePoint) const;
 
 public:
 	//-------------------------------------------------------------------------
 	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
+	//     This function creates a CXTPChartDeviceCommand object, this object
 	//     represents the rendering of the pie.
 	// Parameters:
 	//     color      - The first color used for gradient pie.
 	//     color2     - The second color used for gradient pie.
 	// Returns:
 	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
+	//     the rendering of an element in the chart. Here it handles
 	//     the drawing of the pie.
 	// Remarks:
 	// See Also:
 	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreatePieDeviceCommand(const CXTPChartColor color, const CXTPChartColor color2, const CXTPChartPointF& basePoint);
-	CXTPChartDeviceCommand* CreateBoundedPieDeviceCommand(const CXTPChartColor color, int nThickness, const CXTPChartPointF& basePoint);
-
-	//-------------------------------------------------------------------------
-	// Summary:
-	//     This function create a CXTPChartDeviceCommand object, this object
-	//     represents the rendering of the torus.
-	// Parameters:
-	//     color      - The first color used for gradient torus.
-	//     color2     - The second color used for gradient torus.
-	// Returns:
-	//     Returns CXTPChartDeviceCommand object, this object handles
-	//     the rendering of an element in the chart.Here it handles
-	//     the drawing of the torus.
-	// Remarks:
-	// See Also:
-	//-------------------------------------------------------------------------
-	CXTPChartDeviceCommand* CreateTorusDeviceCommand(const CXTPChartColor color, const CXTPChartColor color2);
+	virtual CXTPChartDeviceCommand* CreatePieDeviceCommand(const CXTPChartColor& color,
+														   const CXTPChartColor& color2,
+														   const CXTPChartPointF& basePoint) = 0;
+	virtual CXTPChartDeviceCommand* CreateBoundedPieDeviceCommand(
+		const CXTPChartColor& color, int nThickness, const CXTPChartPointF& basePoint) = 0;
 
 	//-------------------------------------------------------------------------
 	// Summary:
@@ -305,7 +298,6 @@ public:
 	int GetHolePercent() const;
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Call this function to update the bounds of  the pie when there is
@@ -315,34 +307,31 @@ protected:
 	//-------------------------------------------------------------------------
 	void UpdateBounds();
 
-
 	//{{AFX_CODEJOCK_PRIVATE
 	void UpdateBounds(CXTPChartBounds* bounds, CXTPChartEllipse& ellipse);
 	//}}AFX_CODEJOCK_PRIVATE
 
-
 protected:
-	CXTPChartEllipse m_ellipse;      //The ellipse associated with the pie chart.
-	double m_dStartAngle;           //The start angle of the slice.
-	double m_dSweepAngle;           //The sweep angle of the slice.
-	double m_depth;                 //The depth of the 3D pie.
-	int m_nHolePercent;             //The hole percentage.
-	CXTPChartRectF m_anchorBounds;   //The anchor bounds.
+	CXTPChartEllipse m_ellipse;	// The ellipse associated with the pie chart.
+	double m_dStartAngle;		   // The start angle of the slice.
+	double m_dSweepAngle;		   // The sweep angle of the slice.
+	double m_depth;				   // The depth of the 3D pie.
+	int m_nHolePercent;			   // The hole percentage.
+	CXTPChartRectF m_anchorBounds; // The anchor bounds.
 };
 
-
-AFX_INLINE double CXTPChartEllipse::GetArea() const {
-	return m_dArea;
-}
-
-AFX_INLINE CXTPChartDiagramPoint CXTPChartEllipse::GetCenter() const {
+AFX_INLINE CXTPPoint3d CXTPChartEllipse::GetCenter() const
+{
 	return m_ptCenter;
 }
-AFX_INLINE double CXTPChartPie::GetStartAngle() const {
+AFX_INLINE double CXTPChartPieBase::GetStartAngle() const
+{
 	return m_dStartAngle;
 }
-AFX_INLINE int CXTPChartPie::GetHolePercent() const {
+AFX_INLINE int CXTPChartPieBase::GetHolePercent() const
+{
 	return m_nHolePercent;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPCHARTPIE_H__)

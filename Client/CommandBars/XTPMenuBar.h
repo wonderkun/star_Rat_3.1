@@ -1,7 +1,6 @@
 // XTPMenuBar.h : interface for the CXTPMenuBar class.
 //
-// This file is a part of the XTREME COMMANDBARS MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,18 +19,16 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(__XTPMENUBAR_H__)
-#define __XTPMENUBAR_H__
+#	define __XTPMENUBAR_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#	if _MSC_VER >= 1000
+#		pragma once
+#	endif // _MSC_VER >= 1000
 
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-#include "XTPToolBar.h"
-#include "XTPCommandBarsDefines.h"
-
-#define XTP_IDR_MENUBAR                 1 // Menu Bar
+#	define XTP_IDR_MENUBAR 1 // Menu Bar
 
 class CXTPCommandBars;
 
@@ -39,10 +36,9 @@ class CXTPCommandBars;
 // Summary:
 //     CXTPMenuBarMDIMenuInfo structure used to describe parameters of application MDI menus.
 //===========================================================================
-class CXTPMenuBarMDIMenuInfo : public CXTPCmdTarget
+class _XTP_EXT_CLASS CXTPMenuBarMDIMenuInfo : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPMenuBarMDIMenuInfo object.
@@ -59,17 +55,24 @@ public:
 	~CXTPMenuBarMDIMenuInfo();
 
 public:
-	CXTPControls* m_pControls;  // Menu controls
-	CString m_strTitle;         // Title of MDI menu
-	CString m_strDescription;   // Description of MDI menu
-	HICON m_hIcon;              // Menu Icon
-	UINT m_nIDResource;         // Template identifier
-	BOOL m_bChanged;            // TRUE if menu was changed.
+	CXTPControls* m_pControls; // Menu controls
+	CString m_strTitle;		   // Title of MDI menu
+	CString m_strDescription;  // Description of MDI menu
+	HICON m_hIcon;			   // Menu Icon
+	UINT m_nIDResource;		   // Template identifier
+	BOOL m_bChanged;		   // TRUE if menu was changed.
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_OLETYPELIB_EX(CXTPMenuBarMDIMenuInfo);
+	LPDISPATCH OleGetControls();
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
 class CXTPMenuBar;
-
 
 //===========================================================================
 // Summary:
@@ -78,7 +81,6 @@ class CXTPMenuBar;
 class _XTP_EXT_CLASS CXTPMenuBarMDIMenus : public CXTPCmdTarget
 {
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Constructs a CXTPMenuBarMDIMenus object.
@@ -94,26 +96,37 @@ public:
 	~CXTPMenuBarMDIMenus();
 
 public:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     Returns number of MDI menus in collection.
 	//-------------------------------------------------------------------------
 	int GetCount() const;
 
-//{{AFX_CODEJOCK_PRIVATE
+	//{{AFX_CODEJOCK_PRIVATE
 	void SetAt(UINT nIDResource, CXTPMenuBarMDIMenuInfo* pInfo);
 	CXTPMenuBarMDIMenuInfo* Lookup(UINT nIDResource) const;
 	void Remove(UINT nIDResource);
 	void RemoveAll();
 	POSITION GetStartPosition() const;
 	void GetNextMenu(POSITION& pos, CXTPMenuBarMDIMenuInfo*& pInfo) const;
-//}}AFX_CODEJOCK_PRIVATE
+	//}}AFX_CODEJOCK_PRIVATE
 
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPMenuBarMDIMenus);
+	LPDISPATCH OleGetItem(UINT nID);
+	LPDISPATCH OleAdd(UINT nID, LPCTSTR lpszTitle, LPCTSTR lpszDescription);
+	DECLARE_ENUM_VARIANTLIST(CXTPMenuBarMDIMenus);
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 
 protected:
-	CMap<UINT, UINT, CXTPMenuBarMDIMenuInfo*, CXTPMenuBarMDIMenuInfo*> m_mapMenus;          // Menu map
-	CXTPMenuBar* m_pMenuBar;            // Parent Menu Bar
+	CMap<UINT, UINT, CXTPMenuBarMDIMenuInfo*, CXTPMenuBarMDIMenuInfo*> m_mapMenus; // Menu map
+	CXTPMenuBar* m_pMenuBar; // Parent Menu Bar
 };
 
 //===========================================================================
@@ -136,7 +149,6 @@ public:
 	~CXTPMenuBar();
 
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Loads the menu from resource.
@@ -242,7 +254,6 @@ protected:
 	virtual void Copy(CXTPCommandBar* pCommandBar, BOOL bRecursive = FALSE);
 
 protected:
-
 	//-------------------------------------------------------------------------
 	// Summary:
 	//     This method is called to create hooks for the main window.
@@ -259,7 +270,8 @@ protected:
 	// Summary:
 	//     Retrieves active MDI child window handle
 	// Parameters:
-	//     bMaximized -  If this parameter is not NULL, it is a pointer to a value that indicates the maximized state of the MDI child window.
+	//     bMaximized -  If this parameter is not NULL, it is a pointer to a value that indicates
+	//     the maximized state of the MDI child window.
 	// Returns:
 	//     The return value is the handle to the active MDI child window.
 	//-----------------------------------------------------------------------
@@ -293,11 +305,13 @@ protected:
 	//     pCommandBarList - List of CommandBars.
 	//     pParam          - Address of a XTP_COMMANDBARS_PROPEXCHANGE_PARAM structure.
 	//-----------------------------------------------------------------------
-	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList, XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
+	void GenerateCommandBarList(DWORD& nID, CXTPCommandBarList* pCommandBarList,
+								XTP_COMMANDBARS_PROPEXCHANGE_PARAM* pParam);
 
 	//-----------------------------------------------------------------------
 	// Summary:
-	//     This method is called in serialization process.to restore popups from list of command bars.
+	//     This method is called in serialization process.to restore popups from list of command
+	//     bars.
 	// Parameters:
 	//     pCommandBarList - List of CommandBars.
 	//-----------------------------------------------------------------------
@@ -311,18 +325,29 @@ protected:
 	//-----------------------------------------------------------------------
 	BOOL ShouldSerializeBar();
 
-protected:
+	virtual BOOL OnFrameMouseWheel(BOOL bForward);
 
-//{{AFX_CODEJOCK_PRIVATE
+protected:
+	//{{AFX_CODEJOCK_PRIVATE
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_MSG(CXTPMenuBar)
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
+	//}}AFX_CODEJOCK_PRIVATE
+
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+
+	DECLARE_OLETYPELIB_EX(CXTPMenuBar);
+	afx_msg LPDISPATCH OleGetMDIMenus();
+	afx_msg void OleSwitchMDIMenu(int nId);
 //}}AFX_CODEJOCK_PRIVATE
-
-
+#	endif
 
 private:
 	void AddSysButton(CXTPControl* pControl, int nId, LPCTSTR lpszParameter, int nBefore = -1);
@@ -330,13 +355,13 @@ private:
 	BOOL IsOleDocumentActive(HWND hWndActiveChild) const;
 
 protected:
-	BOOL m_bMdiApp;             // TRUE if parent frame is CMDIFrameWnd derived.
-	HWND m_hWndActiveChild;     // Active MDI window handle.
-	HMENU m_hMenuDefault;       // Default menu handle.
+	BOOL m_bMdiApp;			// TRUE if parent frame is CMDIFrameWnd derived.
+	HWND m_hWndActiveChild; // Active MDI window handle.
+	HMENU m_hMenuDefault;   // Default menu handle.
 
-	UINT m_nIDResource;         // Resource of default menu.
-	UINT m_nIDResourceCurrent;  // Currently active menu.
-	CXTPMenuBarMDIMenus* m_pMDIMenus;   // MDI menus.
+	UINT m_nIDResource;				  // Resource of default menu.
+	UINT m_nIDResourceCurrent;		  // Currently active menu.
+	CXTPMenuBarMDIMenus* m_pMDIMenus; // MDI menus.
 
 private:
 	BOOL m_bDirtyMenu;
@@ -353,15 +378,18 @@ private:
 	friend class CCommandBarsCtrl;
 };
 
-AFX_INLINE UINT CXTPMenuBar::GetCurrentMenuResource() const {
+AFX_INLINE UINT CXTPMenuBar::GetCurrentMenuResource() const
+{
 	return m_nIDResourceCurrent;
 }
-AFX_INLINE UINT CXTPMenuBar::GetDefaultMenuResource() const {
+AFX_INLINE UINT CXTPMenuBar::GetDefaultMenuResource() const
+{
 	return m_nIDResource;
 }
-AFX_INLINE CXTPMenuBarMDIMenus* CXTPMenuBar::GetMDIMenus() const {
+AFX_INLINE CXTPMenuBarMDIMenus* CXTPMenuBar::GetMDIMenus() const
+{
 	return m_pMDIMenus;
 }
 
-
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif //#if !defined(__XTPMENUBAR_H__)

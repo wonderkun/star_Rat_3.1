@@ -1,7 +1,6 @@
 // XTPCalendarEvent.h: interface for the CXTPCalendarEvent class.
 //
-// This file is a part of the XTREME CALENDAR MFC class library.
-// (c)1998-2011 Codejock Software, All Rights Reserved.
+// (c)1998-2020 Codejock Software, All Rights Reserved.
 //
 // THIS SOURCE FILE IS THE PROPERTY OF CODEJOCK SOFTWARE AND IS NOT TO BE
 // RE-DISTRIBUTED BY ANY MEANS WHATSOEVER WITHOUT THE EXPRESSED WRITTEN
@@ -20,31 +19,30 @@
 
 //{{AFX_CODEJOCK_PRIVATE
 #if !defined(_XTPCALENDAREVENT_H__)
-#define _XTPCALENDAREVENT_H__
+#	define _XTPCALENDAREVENT_H__
 //}}AFX_CODEJOCK_PRIVATE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#	if _MSC_VER > 1000
+#		pragma once
+#	endif // _MSC_VER > 1000
 
-#include "XTPCalendarDefines.h"
-#include "XTPCalendarRecurrencePattern.h"
-#include "XTPCalendarPtrs.h"
-#include "XTPCalendarPtrCollectionT.h"
-#include "XTPCalendarEventLabel.h"
+#	include "Common/Base/Diagnostic/XTPDisableNoisyWarnings.h"
 
-/////////////////////////////////////////////////////////////////////////////
 class CXTPCalendarEvent;
 class CXTPCalendarRecurrencePattern;
 
 class CXTPCalendarEventLabel;
 class CXTPCalendarEventLabels;
+class CXTPCalendarEventCategoryIDs;
 
 class CXTPPropExchange;
 class CXTPCalendarCustomProperties;
 
 class CXTPCalendarIconIDs;
 typedef CXTPCalendarIconIDs CXTPCalendarCustomIconIDs;
+
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarRecurrencePattern)
+XTP_DEFINE_SMART_PTR_INTERNAL(CXTPCalendarEvent)
 
 //===========================================================================
 // Summary:
@@ -66,7 +64,7 @@ typedef CXTPCalendarIconIDs CXTPCalendarCustomIconIDs;
 //                                                properties differ than in the
 //                                                Recurrence pattern or this
 //                                                Occurrence is deleted (for
-//                                                example: Start/End time or
+//                                                example Start/End time or
 //                                                Location are different).
 //
 //
@@ -85,7 +83,6 @@ class _XTP_EXT_CLASS CXTPCalendarEvent : public CXTPCmdTarget
 	DECLARE_DYNAMIC(CXTPCalendarEvent)
 	//}}AFX_CODEJOCK_PRIVATE
 public:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     Default object constructor.
@@ -219,7 +216,6 @@ public:
 	// See Also: GetLabelID
 	//-----------------------------------------------------------------------
 	virtual void SetLabelID(int nLabelID);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -666,13 +662,13 @@ public:
 	//     Call this member function to get an occurrence event object.
 	// Returns:
 	//     Pointer to a CXTPCalendarEvent object that contains the cloned
-	//     \occurrence event.
+	//     occurrence event.
 	// See Also:
 	//     CXTPCalendarEvent
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventPtr CloneForOccurrence(COleDateTime dtStart, COleDateTime dtEnd,
-									DWORD dwNewEventID = XTP_CALENDAR_UNKNOWN_EVENT_ID);
-
+	virtual CXTPCalendarEventPtr
+		CloneForOccurrence(COleDateTime dtStart, COleDateTime dtEnd,
+						   DWORD dwNewEventID = XTP_CALENDAR_UNKNOWN_EVENT_ID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -683,7 +679,7 @@ public:
 	// Returns:
 	//     TRUE if the provided event ID is equal the "this" ID. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsEqualIDs(CXTPCalendarEvent* pEvent) const;
+	BOOL IsEqualIDs(const CXTPCalendarEvent* pEvent) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -696,7 +692,7 @@ public:
 	//     TRUE if the provided event start date is equal to the "this" date.
 	//     FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsEqualStartEnd(CXTPCalendarEvent* pEvent) const;
+	BOOL IsEqualStartEnd(const CXTPCalendarEvent* pEvent) const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -715,7 +711,7 @@ public:
 	// Returns:
 	//     TRUE if the event is a meeting. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsMeeting();
+	virtual BOOL IsMeeting() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -736,7 +732,7 @@ public:
 	//     TRUE if the event is private. FALSE otherwise. The private flag
 	//     is used to indicate that a meeting event is private.
 	//-----------------------------------------------------------------------
-	virtual BOOL IsPrivate();
+	virtual BOOL IsPrivate() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -745,7 +741,7 @@ public:
 	// Returns:
 	//     Pointer to CXTPCalendarCustomIconIDs object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarCustomIconIDs* GetCustomIcons();
+	CXTPCalendarCustomIconIDs* GetCustomIcons() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -757,7 +753,19 @@ public:
 	//     CXTPCalendarEventCategories overview,
 	//     CXTPCalendarData::GetEventCategories
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarEventCategoryIDs* GetCategories();
+	CXTPCalendarEventCategoryIDs* GetCategories() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to obtain the count of Event categories
+	//     IDs associated with event object.
+	// Returns:
+	//     Count of CXTPCalendarEventCategoryIDs
+	// See also;
+	//     CXTPCalendarEventCategories overview,
+	//     CXTPCalendarData::GetEventCategories
+	//-----------------------------------------------------------------------
+	int GetCategoriesCount() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -779,7 +787,7 @@ public:
 	// See Also:
 	//      CXTPCalendarCustomProperties.
 	//-----------------------------------------------------------------------
-	CXTPCalendarCustomProperties* GetCustomProperties();
+	CXTPCalendarCustomProperties* GetCustomProperties() const;
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -823,11 +831,10 @@ public:
 	//-----------------------------------------------------------------------
 	virtual void SetRException_EndTimeOrig(COleDateTime dtEndOrig);
 
-	//void SetPermanentlyROccurrence_Reminder(
+	// void SetPermanentlyROccurrence_Reminder(
 	//      int nbIsReminder = xtpCalendarRmdPrm_DontChange,
 	//      int nMinutesBeforeStart = xtpCalendarRmdPrm_DontChange );
 	//      //, int nMinutesBeforeStart2_Snoozed = xtpCalendarRmdPrm_DontChange);
-
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -845,10 +852,19 @@ public:
 	// Returns:
 	//     A pointer to the data provider which stores this event object.
 	//-----------------------------------------------------------------------
-	virtual CXTPCalendarData* GetDataProvider();
+	CXTPCalendarData* GetDataProvider() const;
+
+	//-----------------------------------------------------------------------
+	// Summary:
+	//     This member function is used to obtain a pointer to the
+	//     internally stored Recurrence Pattern object.
+	// Returns:
+	//     A CXTPCalendarRecurrencePattern pointer that contains the
+	//     Recurrence Pattern object.
+	//-----------------------------------------------------------------------
+	CXTPCalendarRecurrencePattern* GetRPatternRef() const;
 
 protected:
-
 	//-----------------------------------------------------------------------
 	// Summary:
 	//     This member function is used to set all event properties to the
@@ -896,7 +912,9 @@ protected:
 	// Returns:
 	//     TRUE if the provided event start dates are equal. FALSE otherwise.
 	//-----------------------------------------------------------------------
-	virtual BOOL SetRecurrenceState_ExceptionOccurrence(XTPCalendarEventRecurrenceState nState, DWORD dwNewPatternID = XTP_CALENDAR_UNKNOWN_RECURRENCE_PATTERN_ID);
+	virtual BOOL SetRecurrenceState_ExceptionOccurrence(
+		XTPCalendarEventRecurrenceState nState,
+		DWORD dwNewPatternID = XTP_CALENDAR_UNKNOWN_RECURRENCE_PATTERN_ID);
 
 	//-----------------------------------------------------------------------
 	// Summary:
@@ -916,333 +934,312 @@ protected:
 	//-----------------------------------------------------------------------
 	virtual void ClearIntermediateData();
 
-	//-----------------------------------------------------------------------
-	// Summary:
-	//     This member function is used to obtain a pointer to the
-	//     internally stored Recurrence Pattern object.
-	// Returns:
-	//     A CXTPCalendarRecurrencePattern pointer that contains the
-	//     Recurrence Pattern object.
-	//-----------------------------------------------------------------------
-	virtual CXTPCalendarRecurrencePattern* GetRPatternRef();
-
-
 protected:
-	CXTPCalendarData*  m_pDataProvider; // Pointer to the owner data provider.
+	CXTPCalendarData* m_pDataProvider; // Pointer to the owner data provider.
 
 	BOOL m_bMeeting; // Boolean flag that is used to indicate if an event is a meeting.
 	BOOL m_bPrivate; // Boolean flag that is used to indicate if an event is a private meeting.
 
-	DWORD   m_dwEventID;    // ID of this event object.
-	int     m_nLabelID;     // Label ID.
-	CString m_strSubject;   // Subject value.
-	CString m_strLocation;  // Location value.
+	DWORD m_dwEventID;	 // ID of this event object.
+	int m_nLabelID;		   // Label ID.
+	CString m_strSubject;  // Subject value.
+	CString m_strLocation; // Location value.
 
-	UINT    m_uScheduleID;  // ID of the corresponding Schedule.
-	BOOL m_bEventVisible;   // flag to display event on screen
-	BOOL m_bAllDayEvent;        // Is this an all day event value.
+	UINT m_uScheduleID;			// ID of the corresponding Schedule.
+	BOOL m_bEventVisible;		// flag to display event on screen
+	BOOL m_bAllDayEvent;		// Is this an all day event value.
 	COleDateTime m_dtStartTime; // Start event time value.
 	COleDateTime m_dtEndTime;   // End event time value.
 
-	BOOL    m_bReminder;                    // This flag value indicates is the Reminder enabled or not.
-	int     m_nReminderMinutesBeforeStart;  // Reminder time value. (in minutes)
-	CString m_strReminderSoundFile;         // Reminder sound file path.
+	BOOL m_bReminder;				   // This flag value indicates is the Reminder enabled or not.
+	int m_nReminderMinutesBeforeStart; // Reminder time value. (in minutes)
+	CString m_strReminderSoundFile;	// Reminder sound file path.
 
-	CString m_strBody;   // Body value.
+	CString m_strBody; // Body value.
 
-	int     m_nBusyStatus;      // Event Busy Status value.
-	int     m_nImportance;      // Event Importance value.
+	int m_nBusyStatus;									// Event Busy Status value.
+	int m_nImportance;									// Event Importance value.
 	XTPCalendarEventRecurrenceState m_nRecurrenceState; // Event Recurrence State.
 
-	COleDateTime m_dtCreationTime;          // Creation event time value.
-	COleDateTime m_dtLastModificationTime;  // Last Modification event time value.
+	COleDateTime m_dtCreationTime;		   // Creation event time value.
+	COleDateTime m_dtLastModificationTime; // Last Modification event time value.
 
-	CXTPCalendarRecurrencePatternPtr m_ptrRPattern; // Recurrence Pattern object for a master event only.
-	DWORD m_dwRecurrencePatternID;                  // Recurrence Pattern ID.
+	CXTPCalendarRecurrencePatternPtr m_ptrRPattern; // Recurrence Pattern object for a master event
+													// only.
+	DWORD m_dwRecurrencePatternID;					// Recurrence Pattern ID.
 
-	BOOL m_bRExceptionDeleted;                  // Is Recurrence Exception deleted.
+	BOOL m_bRExceptionDeleted; // Is Recurrence Exception deleted.
 
-	COleDateTime m_dtRException_StartTimeOrig;  // Original start time of Recurrence exception event.
-	COleDateTime m_dtRException_EndTimeOrig;    // Original end time of Recurrence exception event.
+	COleDateTime m_dtRException_StartTimeOrig; // Original start time of Recurrence exception event.
+	COleDateTime m_dtRException_EndTimeOrig;   // Original end time of Recurrence exception event.
 
-	DWORD m_dwRecurrencePatternID_ToUse;        // Previously used pattern ID.
+	DWORD m_dwRecurrencePatternID_ToUse; // Previously used pattern ID.
 
-	CXTPCalendarCustomProperties* m_pCustomProperties; //Custom properties collection object.
+	CXTPCalendarCustomProperties* m_pCustomProperties; // Custom properties collection object.
 
-	CXTPCalendarCustomIconIDs*  m_pCustomIconsIDs; // An array to store custom icons id's assigned to event.
+	CXTPCalendarCustomIconIDs* m_pCustomIconsIDs; // An array to store custom icons id's assigned to
+												  // event.
 
-	CXTPCalendarEventCategoryIDs*  m_pEventCategoryIDs; // An array to store categories id's assigned to event.
+	CXTPCalendarEventCategoryIDs* m_pEventCategoryIDs; // An array to store categories id's assigned
+													   // to event.
 
-	CString m_sMultipleSchedules;   // ScheduleSet string in form "|#1|...|#N|"
+	CString m_sMultipleSchedules; // ScheduleSet string in form "|#1|...|#N|"
 
 protected:
+#	ifdef _XTP_ACTIVEX
+	//{{AFX_CODEJOCK_PRIVATE
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
 
+	DECLARE_OLETYPELIB_EX(CXTPCalendarEvent);
+
+	afx_msg DATE OleGetStartTime();
+	afx_msg void OleSetStartTime(DATE dt);
+	afx_msg DATE OleGetEndTime();
+	afx_msg void OleSetEndTime(DATE dt);
+	afx_msg LPDISPATCH OleGetStartTimeV();
+	afx_msg LPDISPATCH OleGetEndTimeV();
+
+	afx_msg long OleGetEventID();
+
+	afx_msg DATE OleGetCreationTime();
+	afx_msg void OleSetCreationTime(DATE dt);
+
+	afx_msg DATE OleGetLastModificationTime();
+	afx_msg void OleSetLastModificationTime(DATE dt);
+
+	afx_msg int OleGetRecurrence();
+	afx_msg LPDISPATCH OleGetRecurrencePattern();
+	afx_msg LPDISPATCH OleCreateRecurrence();
+	afx_msg LPDISPATCH OleCreateRecurrenceEx(long nPatternID);
+
+	afx_msg void OleUpdateRecurrence(LPDISPATCH Pattern);
+	afx_msg void OleRemoveRecurrence();
+
+	afx_msg void OleMakeAsRException();
+	afx_msg void OleMakeAsRExceptionEx(long nPatternID);
+	afx_msg void OleSetRExceptionDeleted(BOOL bDeleted);
+
+	afx_msg LPDISPATCH OleCloneEvent();
+	afx_msg void OleUpdate(LPDISPATCH SourceEvent);
+
+	afx_msg LPDISPATCH OleGetCustomProperties();
+	afx_msg LPDISPATCH OleGetCustomIcons();
+	afx_msg LPDISPATCH OleGetDataProvider();
+	afx_msg LPDISPATCH OleGetCategories();
+
+//}}AFX_CODEJOCK_PRIVATE
+#	endif
 };
 
-//===========================================================================
-///////////////////////////////////////////////////////////////////////
 AFX_INLINE DWORD CXTPCalendarEvent::GetEventID() const
 {
 	return m_dwEventID;
 }
-
 AFX_INLINE CString CXTPCalendarEvent::GetSubject() const
 {
 	return m_strSubject;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetSubject(LPCTSTR pcszSubject)
 {
 	m_strSubject = pcszSubject;
 }
-
 AFX_INLINE UINT CXTPCalendarEvent::GetScheduleID() const
 {
 	return m_uScheduleID;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetScheduleID(UINT uScheduleID)
 {
 	m_uScheduleID = uScheduleID;
 }
-
 AFX_INLINE CString CXTPCalendarEvent::GetLocation() const
 {
 	return m_strLocation;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetLocation(LPCTSTR pcszLocation)
 {
 	m_strLocation = pcszLocation;
 }
-
 AFX_INLINE int CXTPCalendarEvent::GetLabelID() const
 {
 	return m_nLabelID;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetLabelID(int nLabelID)
 {
 	m_nLabelID = nLabelID;
 }
-
 AFX_INLINE BOOL CXTPCalendarEvent::IsEventVisible() const
 {
 	return m_bEventVisible;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetEventVisible(BOOL bSet)
 {
 	m_bEventVisible = bSet;
 }
-
 AFX_INLINE BOOL CXTPCalendarEvent::IsAllDayEvent() const
 {
 	return m_bAllDayEvent;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetAllDayEvent(BOOL bSet)
 {
 	ASSERT(m_nRecurrenceState != xtpCalendarRecurrenceOccurrence);
 	m_bAllDayEvent = bSet;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetStartTime() const
 {
 	return m_dtStartTime;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetEndTime() const
 {
 	return m_dtEndTime;
 }
-
 AFX_INLINE BOOL CXTPCalendarEvent::IsReminder() const
 {
 	return m_bReminder;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetReminder(BOOL bReminder)
 {
 	m_bReminder = bReminder;
 }
-
 AFX_INLINE BOOL CXTPCalendarEvent::IsSound() const
 {
 	return !m_strReminderSoundFile.IsEmpty();
 }
-
 AFX_INLINE int CXTPCalendarEvent::GetReminderMinutesBeforeStart() const
 {
 	return m_nReminderMinutesBeforeStart;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetReminderMinutesBeforeStart(int nMinutes)
 {
 	m_nReminderMinutesBeforeStart = nMinutes;
 }
-
 AFX_INLINE CString CXTPCalendarEvent::GetReminderSoundFile() const
 {
 	return m_strReminderSoundFile;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetReminderSoundFile(LPCTSTR pcszFile)
 {
 	m_strReminderSoundFile = pcszFile;
 }
-
 AFX_INLINE CString CXTPCalendarEvent::GetBody() const
 {
 	return m_strBody;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetBody(LPCTSTR pcszDesc)
 {
 	m_strBody = pcszDesc;
 }
-
 AFX_INLINE int CXTPCalendarEvent::GetBusyStatus() const
 {
 	return m_nBusyStatus;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetBusyStatus(int nStatus)
 {
 	m_nBusyStatus = nStatus;
 }
-
 AFX_INLINE int CXTPCalendarEvent::GetImportance() const
 {
 	return m_nImportance;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetImportance(int nImportance)
 {
 	m_nImportance = nImportance;
 }
-
 AFX_INLINE XTPCalendarEventRecurrenceState CXTPCalendarEvent::GetRecurrenceState() const
 {
 	return m_nRecurrenceState;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetCreationTime() const
 {
 	return m_dtCreationTime;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetCreationTime(COleDateTime dtTime)
 {
 	m_dtCreationTime = dtTime;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetLastModificationTime() const
 {
 	return m_dtLastModificationTime;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetLastModificationTime(COleDateTime dtTime)
 {
 	m_dtLastModificationTime = dtTime;
 }
-
 AFX_INLINE DWORD CXTPCalendarEvent::GetRecurrencePatternID() const
 {
 	return m_dwRecurrencePatternID;
 }
-
-//AFX_INLINE void CXTPCalendarEvent::SetRecurrencePatternID(DWORD dwRecurrencePatternID)
-//{
-//  m_dwRecurrencePatternID = dwRecurrencePatternID;
-//}
-
 AFX_INLINE BOOL CXTPCalendarEvent::IsRExceptionDeleted() const
 {
 	return m_bRExceptionDeleted;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetRExceptionDeleted(BOOL bDeleted)
 {
 	m_bRExceptionDeleted = bDeleted;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetRException_StartTimeOrig() const
 {
 	return m_dtRException_StartTimeOrig;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetRException_StartTimeOrig(COleDateTime dtStartOrig)
 {
 	m_dtRException_StartTimeOrig = dtStartOrig;
 }
-
 AFX_INLINE COleDateTime CXTPCalendarEvent::GetRException_EndTimeOrig() const
 {
 	return m_dtRException_EndTimeOrig;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetRException_EndTimeOrig(COleDateTime dtEndOrig)
 {
 	m_dtRException_EndTimeOrig = dtEndOrig;
 }
-
 AFX_INLINE BOOL CXTPCalendarEvent::MakeAsRException(DWORD dwPatternID)
 {
-	ASSERT(m_nRecurrenceState == xtpCalendarRecurrenceNotRecurring ||
-		m_nRecurrenceState == xtpCalendarRecurrenceOccurrence ||
-		m_nRecurrenceState == xtpCalendarRecurrenceException);
+	ASSERT(m_nRecurrenceState == xtpCalendarRecurrenceNotRecurring
+		   || m_nRecurrenceState == xtpCalendarRecurrenceOccurrence
+		   || m_nRecurrenceState == xtpCalendarRecurrenceException);
 	return SetRecurrenceState_ExceptionOccurrence(xtpCalendarRecurrenceException, dwPatternID);
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetMeeting(BOOL bMeeting)
 {
 	m_bMeeting = bMeeting;
 }
-
-AFX_INLINE BOOL CXTPCalendarEvent::IsMeeting()
+AFX_INLINE BOOL CXTPCalendarEvent::IsMeeting() const
 {
 	return m_bMeeting;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetPrivate(BOOL bPrivate)
 {
 	m_bPrivate = bPrivate;
 }
-
-AFX_INLINE BOOL CXTPCalendarEvent::IsPrivate()
+AFX_INLINE BOOL CXTPCalendarEvent::IsPrivate() const
 {
 	return m_bPrivate;
 }
-
-AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarEvent::GetCustomProperties()
+AFX_INLINE CXTPCalendarCustomProperties* CXTPCalendarEvent::GetCustomProperties() const
 {
 	return m_pCustomProperties;
 }
-
-AFX_INLINE CXTPCalendarData* CXTPCalendarEvent::GetDataProvider()
+AFX_INLINE CXTPCalendarData* CXTPCalendarEvent::GetDataProvider() const
 {
 	return m_pDataProvider;
 }
-
-AFX_INLINE CXTPCalendarCustomIconIDs* CXTPCalendarEvent::GetCustomIcons()
+AFX_INLINE CXTPCalendarCustomIconIDs* CXTPCalendarEvent::GetCustomIcons() const
 {
 	return m_pCustomIconsIDs;
 }
-
-AFX_INLINE CXTPCalendarEventCategoryIDs* CXTPCalendarEvent::GetCategories()
+AFX_INLINE CXTPCalendarEventCategoryIDs* CXTPCalendarEvent::GetCategories() const
 {
 	return m_pEventCategoryIDs;
 }
-
 AFX_INLINE CString CXTPCalendarEvent::GetScheduleSet() const
 {
 	return m_sMultipleSchedules;
 }
-
 AFX_INLINE void CXTPCalendarEvent::SetScheduleSet(CString ScheduleSet)
 {
 	m_sMultipleSchedules = ScheduleSet;
 }
 
+#	include "Common/Base/Diagnostic/XTPEnableNoisyWarnings.h"
 #endif // !defined(_XTPCALENDAREVENT_H__)
